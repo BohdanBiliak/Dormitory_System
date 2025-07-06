@@ -60,6 +60,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Detrox\WebstormProjects\Dormitory\server\src" />
       <recent name="C:\Users\Detrox\WebstormProjects\Dormitory\server" />
     </key>
   </component>
@@ -80,7 +81,11 @@
       <updated>1751559476235</updated>
       <workItem from="1751559477298" duration="2187000" />
       <workItem from="1751561691346" duration="2941000" />
-      <workItem from="1751706021992" duration="3439000" />
+      <workItem from="1751706021992" duration="3637000" />
+      <workItem from="1751735491897" duration="29000" />
+      <workItem from="1751796085018" duration="3574000" />
+      <workItem from="1751811739603" duration="636000" />
+      <workItem from="1751812390951" duration="5812000" />
     </task>
     <servers />
   </component>
@@ -93,6 +98,11 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/server/src/app.module.ts</url>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/server/src/auth/auth.controller.ts</url>
+          <line>1</line>
+          <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
