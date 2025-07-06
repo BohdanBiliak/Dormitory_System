@@ -1,7 +1,26 @@
-import { Controller } from '@nestjs/common';
+import {Controller, Get, HttpCode, HttpStatus} from '@nestjs/common';
 import { UserService } from './user.service';
+import {Auth} from "@/auth/entities/auth.entity";
+import {Authorized} from "@/auth/decorators/authtorized.decorator";
+import {Authorization} from "@/auth/decorators/auth.decorator";
+import {$Enums} from "../../__generated__";
+import UserRole = $Enums.UserRole;
 
-@Controller('user')
+@Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
+  @Authorization(UserRole.Admin)
+  @HttpCode(HttpStatus.OK)
+  @Get('profile')
+  public async findProfile(@Authorized('id') userId: string){
+    return this.userService.findById(userId);
+  }
+
+  @Authorization(UserRole.Admin)
+  @HttpCode(HttpStatus.OK)
+  @Get('by-id/:id')
+  public async findById(@Authorized('id') userId: string){
+    return this.userService.findById(userId);
+  }
 }

@@ -47,7 +47,7 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;backend&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -60,6 +60,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Detrox\WebstormProjects\Dormitory\server\src\auth\dercorators" />
       <recent name="C:\Users\Detrox\WebstormProjects\Dormitory\server\src" />
       <recent name="C:\Users\Detrox\WebstormProjects\Dormitory\server" />
     </key>
@@ -86,6 +87,7 @@
       <workItem from="1751796085018" duration="3574000" />
       <workItem from="1751811739603" duration="636000" />
       <workItem from="1751812390951" duration="5812000" />
+      <workItem from="1751823384907" duration="1711000" />
     </task>
     <servers />
   </component>
