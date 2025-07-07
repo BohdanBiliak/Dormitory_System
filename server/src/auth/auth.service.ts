@@ -13,12 +13,16 @@ import { Request, Response } from "express";
 import { LoginDto } from "@/auth/dto/login.dto";
 import { verify } from "argon2";
 import { ConfigService } from "@nestjs/config";
+import {PrismaService} from "@/prisma/prisma.service";
+import {EmailConfirmationService} from "@/auth/email-confirmation/email-confirmation.service";
 
 @Injectable()
 export class AuthService {
   public constructor(
     private readonly userService: UserService,
     private readonly configService: ConfigService,
+    private readonly prismaService: PrismaService,
+    private readonly emailConfirmationService: EmailConfirmationService,
   ) {}
 
   public async register(req: Request, dto: RegisterDto) {
@@ -36,7 +40,10 @@ export class AuthService {
       AuthMethod.CREDENTIALS,
       false,
     );
-    return this.saveSession(req, newUser);
+    await this.emailConfirmationService.sendVerificationToken(newUser)
+    return {
+      message: "Register successfully. Please, approve your email. Mail was sent on your email address.",
+    }
   }
 
   public async login(req: Request, dto: LoginDto) {
@@ -47,6 +54,11 @@ export class AuthService {
     const isValidPassword = await verify(user.password, dto.password);
     if (!isValidPassword) {
       throw new UnauthorizedException("Invalid password");
+    }
+    if(!user.isVerified){
+      await this.emailConfirmationService.sendVerificationToken(user)
+      throw new UnauthorizedException("Email verification failed. Please verify your email. Mail was sent on your email address.");
+
     }
     return this.saveSession(req, user);
   }
@@ -65,7 +77,7 @@ export class AuthService {
     });
   }
 
-  private async saveSession(req: Request, newUser: User) {
+  public async saveSession(req: Request, newUser: User) {
     return new Promise((resolve, reject) => {
       if (!req.session) {
         console.error("Session is undefined");

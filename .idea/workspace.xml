@@ -48,6 +48,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Detrox/WebstormProjects/sprint1_2&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -60,6 +61,8 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Detrox\WebstormProjects\Dormitory\server\src\auth" />
+      <recent name="C:\Users\Detrox\WebstormProjects\Dormitory\server\src\libs" />
       <recent name="C:\Users\Detrox\WebstormProjects\Dormitory\server\src\auth\dercorators" />
       <recent name="C:\Users\Detrox\WebstormProjects\Dormitory\server\src" />
       <recent name="C:\Users\Detrox\WebstormProjects\Dormitory\server" />
@@ -87,7 +90,9 @@
       <workItem from="1751796085018" duration="3574000" />
       <workItem from="1751811739603" duration="636000" />
       <workItem from="1751812390951" duration="5812000" />
-      <workItem from="1751823384907" duration="1711000" />
+      <workItem from="1751823384907" duration="2050000" />
+      <workItem from="1751879095899" duration="8516000" />
+      <workItem from="1751910502835" duration="1158000" />
     </task>
     <servers />
   </component>
@@ -105,6 +110,10 @@
           <url>file://$PROJECT_DIR$/server/src/auth/auth.controller.ts</url>
           <line>1</line>
           <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/server/src/libs/mail/mail.module.ts</url>
+          <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

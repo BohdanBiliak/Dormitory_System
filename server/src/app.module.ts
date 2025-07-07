@@ -4,12 +4,14 @@ import {IS_DEV_ENV} from "@/libs/common/utils/is-dev.util";
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
+import { MailModule } from '@/libs/mail/mail.module';
+import { EmailConfirmationModule } from '@/auth/email-confirmation/email-confirmation.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
     isGlobal: true,
     ignoreEnvFile: !IS_DEV_ENV,
-  }), PrismaModule, AuthModule, UserModule],
+  }), PrismaModule, AuthModule, UserModule, MailModule, EmailConfirmationModule],
   controllers: [],
   providers: [],
 })
