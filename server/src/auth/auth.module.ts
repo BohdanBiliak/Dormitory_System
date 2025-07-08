@@ -8,6 +8,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 import { recaptchaConfig } from "@/config/recaptcha.config";
 import {EmailConfirmationModule} from "@/auth/email-confirmation/email-confirmation.module";
 import {MailService} from "@/libs/mail/mail.service";
+import {TwoFactorAuthService} from "@/auth/two-factor-auth/two-factor-auth.service";
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import {MailService} from "@/libs/mail/mail.service";
 
   ],
   controllers: [AuthController],
-  providers: [AuthService, UserService, MailService],
+  providers: [AuthService, UserService, MailService, TwoFactorAuthService],
   exports: [AuthService]
 })
 export class AuthModule {}

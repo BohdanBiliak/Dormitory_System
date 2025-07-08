@@ -15,6 +15,7 @@ import { verify } from "argon2";
 import { ConfigService } from "@nestjs/config";
 import {PrismaService} from "@/prisma/prisma.service";
 import {EmailConfirmationService} from "@/auth/email-confirmation/email-confirmation.service";
+import {TwoFactorAuthService} from "@/auth/two-factor-auth/two-factor-auth.service";
 
 @Injectable()
 export class AuthService {
@@ -23,6 +24,7 @@ export class AuthService {
     private readonly configService: ConfigService,
     private readonly prismaService: PrismaService,
     private readonly emailConfirmationService: EmailConfirmationService,
+    private readonly twoFactorAuthService: TwoFactorAuthService,
   ) {}
 
   public async register(req: Request, dto: RegisterDto) {
@@ -60,6 +62,15 @@ export class AuthService {
       throw new UnauthorizedException("Email verification failed. Please verify your email. Mail was sent on your email address.");
 
     }
+    if(user.isTwoFactorEnabled){
+      if(!dto.code){
+        await this.twoFactorAuthService.sendTwoFactorToken(user.email)
+        return {
+          message:'Check your email. You need two factor verification code',
+        }
+      }
+    }
+    await this.twoFactorAuthService.validateTwoFactorToken(user.email, dto.code)
     return this.saveSession(req, user);
   }
 
