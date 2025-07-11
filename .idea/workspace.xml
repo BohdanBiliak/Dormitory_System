@@ -55,17 +55,26 @@
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;C:\\Users\\Detrox\\WebstormProjects\\Dormitory\\server\\node_modules\\prettier&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\Detrox\\WebstormProjects\\Dormitory\\server\\node_modules\\typescript\\lib&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\Detrox\\WebstormProjects\\Dormitory\\client\\node_modules\\typescript\\lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="ReactDesignerToolWindowState">
+    <option name="myId2Visible">
+      <map>
+        <entry key="com.intellij.reactbuddy.reactComponents" value="false" />
+        <entry key="com.intellij.reactbuddy.reactInspector" value="false" />
+        <entry key="com.intellij.reactbuddy.storybook" value="false" />
+      </map>
+    </option>
+  </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Detrox\WebstormProjects\Dormitory\client\src\shared\components\ui" />
+      <recent name="C:\Users\Detrox\WebstormProjects\Dormitory\client\src\shared\utils" />
+      <recent name="C:\Users\Detrox\WebstormProjects\Dormitory\client\src\shared\styles" />
+      <recent name="C:\Users\Detrox\WebstormProjects\Dormitory\client\src" />
       <recent name="C:\Users\Detrox\WebstormProjects\Dormitory\server\src\auth" />
-      <recent name="C:\Users\Detrox\WebstormProjects\Dormitory\server\src" />
-      <recent name="C:\Users\Detrox\WebstormProjects\Dormitory\server\src\libs" />
-      <recent name="C:\Users\Detrox\WebstormProjects\Dormitory\server\src\auth\dercorators" />
-      <recent name="C:\Users\Detrox\WebstormProjects\Dormitory\server" />
     </key>
   </component>
   <component name="SharedIndexes">
@@ -94,7 +103,16 @@
       <workItem from="1751879095899" duration="8516000" />
       <workItem from="1751910502835" duration="1506000" />
       <workItem from="1751960332751" duration="1106000" />
-      <workItem from="1751961548227" duration="7606000" />
+      <workItem from="1751961548227" duration="7748000" />
+      <workItem from="1752045292692" duration="12570000" />
+      <workItem from="1752085300089" duration="4501000" />
+      <workItem from="1752137706928" duration="380000" />
+      <workItem from="1752138097370" duration="846000" />
+      <workItem from="1752139244091" duration="1929000" />
+      <workItem from="1752156975325" duration="2798000" />
+      <workItem from="1752232655629" duration="17000" />
+      <workItem from="1752232772133" duration="1662000" />
+      <workItem from="1752237558566" duration="2492000" />
     </task>
     <servers />
   </component>
@@ -116,6 +134,26 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/server/src/libs/mail/mail.module.ts</url>
           <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/client/src/shared/components/ui/index.ts</url>
+          <line>2</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/client/src/features/auth/components/NewVerificationForm.tsx</url>
+          <line>2</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/client/src/features/auth/components/ResetPasswordForm.tsx</url>
+          <line>2</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/client/src/app/layout.tsx</url>
+          <line>2</line>
+          <option name="timeStamp" value="22" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
