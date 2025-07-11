@@ -9,15 +9,13 @@ import {UpdateUserDto} from "@/user/dto/update-user.dto";
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-
-  @Authorization(UserRole.Admin)
+  @Authorization()
   @HttpCode(HttpStatus.OK)
   @Get('profile')
   public async findProfile(@Authorized('id') userId: string){
     return this.userService.findById(userId);
   }
 
-  @Authorization(UserRole.Admin)
   @HttpCode(HttpStatus.OK)
   @Get('by-id/:id')
   public async findById(@Authorized('id') userId: string){
