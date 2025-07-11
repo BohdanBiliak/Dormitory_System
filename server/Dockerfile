@@ -14,4 +14,4 @@ COPY --from=build /app/package.json /app/yarn.lock
 RUN npm install --production --frozen-lockfile
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/prisma/__generated__ ./prisma/__generated__
-CMD["node", "dist/main"]
+CMD ["node", "dist/main"]
