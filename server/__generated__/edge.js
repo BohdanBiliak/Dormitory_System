@@ -183,6 +183,10 @@ const config = {
         "fromEnvVar": null,
         "value": "windows",
         "native": true
+      },
+      {
+        "fromEnvVar": null,
+        "value": "debian-openssl-3.0.x"
       }
     ],
     "previewFeatures": [],
@@ -209,8 +213,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../__generated__\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"POSTGRES_URI\")\n}\n\nenum UserRole {\n  Regular\n  Admin\n}\n\nenum AuthMethod {\n  CREDENTIALS\n  GOOGLE\n}\n\nenum TokenType {\n  VERIFICATION\n  TWO_FACTOR\n  PASSWORD_RESET\n}\n\nmodel User {\n  id                 String     @id @default(uuid())\n  email              String     @unique\n  password           String\n  displayName        String\n  picture            String?\n  isVerified         Boolean    @default(false) @map(\"is_verified\")\n  isTwoFactorEnabled Boolean    @default(false) @map(\"is_two_factor_enabled\")\n  method             AuthMethod\n  role               UserRole   @default(Regular)\n\n  accounts Account[]\n\n  createdAt DateTime @default(now()) @map(\"created_at\")\n  updatedAt DateTime @default(now()) @map(\"updated_at\")\n\n  @@map(\"users\")\n}\n\nmodel Account {\n  id       String @id @default(uuid())\n  type     String\n  provider String\n\n  refreshToken String? @map(\"refresh_token\")\n  accesToken   String? @map(\"access_token\")\n  expiresAt    Int     @map(\"expires_at\")\n\n  createdAt DateTime @default(now()) @map(\"created_at\")\n  updatedAt DateTime @default(now()) @map(\"updated_at\")\n\n  user   User?   @relation(fields: [userId], references: [id])\n  userId String? @map(\"user_id\")\n\n  @@map(\"accounts\")\n}\n\nmodel Token {\n  id        String    @id @default(uuid())\n  email     String\n  token     String    @unique\n  type      TokenType\n  expiresIn DateTime  @map(\"expires_in\")\n\n  @@map(\"tokens\")\n}\n",
-  "inlineSchemaHash": "bc4e11d98e3091bf33c0b774a0a67fc941970062c30aab78b6d48c72cb549b7f",
+  "inlineSchema": "generator client {\n  provider      = \"prisma-client-js\"\n  output        = \"../__generated__\"\n  binaryTargets = [\"native\", \"debian-openssl-3.0.x\"]\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"POSTGRES_URI\")\n}\n\nenum UserRole {\n  Regular\n  Admin\n}\n\nenum AuthMethod {\n  CREDENTIALS\n  GOOGLE\n}\n\nenum TokenType {\n  VERIFICATION\n  TWO_FACTOR\n  PASSWORD_RESET\n}\n\nmodel User {\n  id                 String     @id @default(uuid())\n  email              String     @unique\n  password           String\n  displayName        String\n  picture            String?\n  isVerified         Boolean    @default(false) @map(\"is_verified\")\n  isTwoFactorEnabled Boolean    @default(false) @map(\"is_two_factor_enabled\")\n  method             AuthMethod\n  role               UserRole   @default(Regular)\n\n  accounts Account[]\n\n  createdAt DateTime @default(now()) @map(\"created_at\")\n  updatedAt DateTime @default(now()) @map(\"updated_at\")\n\n  @@map(\"users\")\n}\n\nmodel Account {\n  id       String @id @default(uuid())\n  type     String\n  provider String\n\n  refreshToken String? @map(\"refresh_token\")\n  accesToken   String? @map(\"access_token\")\n  expiresAt    Int     @map(\"expires_at\")\n\n  createdAt DateTime @default(now()) @map(\"created_at\")\n  updatedAt DateTime @default(now()) @map(\"updated_at\")\n\n  user   User?   @relation(fields: [userId], references: [id])\n  userId String? @map(\"user_id\")\n\n  @@map(\"accounts\")\n}\n\nmodel Token {\n  id        String    @id @default(uuid())\n  email     String\n  token     String    @unique\n  type      TokenType\n  expiresIn DateTime  @map(\"expires_in\")\n\n  @@map(\"tokens\")\n}\n",
+  "inlineSchemaHash": "53c8338f52a98de3f7f91ee6d031e2d7bd1554e50d7cb22973a3a160efd885f7",
   "copyEngine": true
 }
 config.dirname = '/'
