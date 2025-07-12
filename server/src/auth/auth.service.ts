@@ -69,8 +69,9 @@ export class AuthService {
           message:'Check your email. You need two factor verification code',
         }
       }
+      await this.twoFactorAuthService.validateTwoFactorToken(user.email, dto.code)
     }
-    await this.twoFactorAuthService.validateTwoFactorToken(user.email, dto.code)
+
     return this.saveSession(req, user);
   }
 
