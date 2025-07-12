@@ -22,8 +22,12 @@ async function bootstrap() {
     app.use(cookieParser(config.getOrThrow("COOKIE_SECRET")));
     app.useGlobalPipes(
         new ValidationPipe({
+            whitelist: true,
+            forbidNonWhitelisted: true,
             transform: true,
-        })
+            transformOptions: { enableImplicitConversion: true },
+            disableErrorMessages: false,
+        }),
     );
 
     app.use(
