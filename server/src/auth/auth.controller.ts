@@ -15,7 +15,9 @@ import { Request ,Response } from 'express';
 import {LoginDto} from "@/auth/dto/login.dto";
 import {Recaptcha} from "@nestlab/google-recaptcha";
 import {FileFieldsInterceptor} from "@nestjs/platform-express";
+import {ApiBody, ApiConsumes, ApiTags} from "@nestjs/swagger";
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -29,6 +31,8 @@ export class AuthController {
   )
   @Recaptcha()
   @Post('register')
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({ type: RegisterDto })
   @HttpCode(HttpStatus.OK)
   public async register(@Req() req: Request, @Body() dto: RegisterDto,    @UploadedFiles()
   files: {
@@ -38,8 +42,11 @@ export class AuthController {
   }){
     return this.authService.register( req, dto, files)
   }
+
   @Recaptcha()
   @Post('login')
+  @ApiConsumes('application/json')
+  @ApiBody({ type: LoginDto })
   @HttpCode(HttpStatus.OK)
   public async login(@Req() req: Request, @Body() dto: LoginDto){
     return this.authService.login(req, dto)

@@ -8,6 +8,7 @@ import * as session from "express-session";
 import {RedisStore} from "connect-redis";
 import { ms, StringValue } from "@/libs/common/utils/ms.util";
 import { parseBoolean } from "@/libs/common/utils/parse_boolean";
+import {SwaggerSetup} from "@/libs/swagger/swagger.module";
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
@@ -58,6 +59,7 @@ async function bootstrap() {
         credentials: true,
         exposeHeaders: ["set-cookie"],
     });
+    SwaggerSetup.setup(app);
 
     await app.listen(config.getOrThrow<number>("APPLICATION_PORT"));
 }
