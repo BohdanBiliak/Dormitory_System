@@ -12,6 +12,7 @@ datasource db {
 enum UserRole {
   Regular
   Admin
+  SignedInUser
 }
 
 enum AuthMethod {
@@ -25,21 +26,33 @@ enum TokenType {
   PASSWORD_RESET
 }
 
+enum ConfirmationType {
+  IDENTITY_VERIFICATION
+  ACCOMMODATION
+  ROOM_CHANGE
+  ROOM_VACATION
+}
+
+enum ConfirmationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 model User {
-  id                 String     @id @default(uuid())
-  email              String     @unique
+  id                 String         @id @default(uuid())
+  email              String         @unique
   password           String
   displayName        String
   picture            String
-  isVerified         Boolean    @default(false) @map("is_verified")
-  isTwoFactorEnabled Boolean    @default(false) @map("is_two_factor_enabled")
+  isVerified         Boolean        @default(false) @map("is_verified")
+  isTwoFactorEnabled Boolean        @default(false) @map("is_two_factor_enabled")
   method             AuthMethod
-  role               UserRole   @default(Regular)
-  secondName         String     @map("second_name")
-  studentIdFront     String     @map("student_id_front")
-  studentIdBack      String?    @map("student_id_back")
-
-  accounts Account[]
+  role               UserRole       @default(Regular)
+  secondName         String         @map("second_name")
+  studentIdFront     String         @map("student_id_front")
+  studentIdBack      String?        @map("student_id_back")
+  confirmations      Confirmation[] @relation("UserConfirmations")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
@@ -47,21 +60,19 @@ model User {
   @@map("users")
 }
 
-model Account {
-  id           String  @id @default(uuid())
-  type         String
-  provider     String
-  expiresAt    Int     @map("expires_at")
-  refreshToken String? @map("refresh_token")
-  accesToken   String? @map("access_token")
+model Confirmation {
+  id         String             @id @default(uuid())
+  type       ConfirmationType
+  status     ConfirmationStatus @default(PENDING)
+  createdAt  DateTime           @default(now())
+  resolvedAt DateTime?
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @default(now()) @map("updated_at")
+  requester User   @relation("UserConfirmations", fields: [userId], references: [id])
+  userId    String
 
-  user   User?   @relation(fields: [userId], references: [id])
-  userId String? @map("user_id")
-
-  @@map("accounts")
+  photo      String?
+  frontIdUrl String?
+  backIdUrl  String?
 }
 
 model Token {

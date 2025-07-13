@@ -19,10 +19,10 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 /**
- * Model Account
+ * Model Confirmation
  * 
  */
-export type Account = $Result.DefaultSelection<Prisma.$AccountPayload>
+export type Confirmation = $Result.DefaultSelection<Prisma.$ConfirmationPayload>
 /**
  * Model Token
  * 
@@ -35,7 +35,8 @@ export type Token = $Result.DefaultSelection<Prisma.$TokenPayload>
 export namespace $Enums {
   export const UserRole: {
   Regular: 'Regular',
-  Admin: 'Admin'
+  Admin: 'Admin',
+  SignedInUser: 'SignedInUser'
 };
 
 export type UserRole = (typeof UserRole)[keyof typeof UserRole]
@@ -57,6 +58,25 @@ export const TokenType: {
 
 export type TokenType = (typeof TokenType)[keyof typeof TokenType]
 
+
+export const ConfirmationType: {
+  IDENTITY_VERIFICATION: 'IDENTITY_VERIFICATION',
+  ACCOMMODATION: 'ACCOMMODATION',
+  ROOM_CHANGE: 'ROOM_CHANGE',
+  ROOM_VACATION: 'ROOM_VACATION'
+};
+
+export type ConfirmationType = (typeof ConfirmationType)[keyof typeof ConfirmationType]
+
+
+export const ConfirmationStatus: {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+};
+
+export type ConfirmationStatus = (typeof ConfirmationStatus)[keyof typeof ConfirmationStatus]
+
 }
 
 export type UserRole = $Enums.UserRole
@@ -70,6 +90,14 @@ export const AuthMethod: typeof $Enums.AuthMethod
 export type TokenType = $Enums.TokenType
 
 export const TokenType: typeof $Enums.TokenType
+
+export type ConfirmationType = $Enums.ConfirmationType
+
+export const ConfirmationType: typeof $Enums.ConfirmationType
+
+export type ConfirmationStatus = $Enums.ConfirmationStatus
+
+export const ConfirmationStatus: typeof $Enums.ConfirmationStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -207,14 +235,14 @@ export class PrismaClient<
   get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.account`: Exposes CRUD operations for the **Account** model.
+   * `prisma.confirmation`: Exposes CRUD operations for the **Confirmation** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more Accounts
-    * const accounts = await prisma.account.findMany()
+    * // Fetch zero or more Confirmations
+    * const confirmations = await prisma.confirmation.findMany()
     * ```
     */
-  get account(): Prisma.AccountDelegate<ExtArgs, ClientOptions>;
+  get confirmation(): Prisma.ConfirmationDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.token`: Exposes CRUD operations for the **Token** model.
@@ -666,7 +694,7 @@ export namespace Prisma {
 
   export const ModelName: {
     User: 'User',
-    Account: 'Account',
+    Confirmation: 'Confirmation',
     Token: 'Token'
   };
 
@@ -686,7 +714,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "account" | "token"
+      modelProps: "user" | "confirmation" | "token"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -764,77 +792,77 @@ export namespace Prisma {
           }
         }
       }
-      Account: {
-        payload: Prisma.$AccountPayload<ExtArgs>
-        fields: Prisma.AccountFieldRefs
+      Confirmation: {
+        payload: Prisma.$ConfirmationPayload<ExtArgs>
+        fields: Prisma.ConfirmationFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.AccountFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AccountPayload> | null
+            args: Prisma.ConfirmationFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConfirmationPayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.AccountFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AccountPayload>
+            args: Prisma.ConfirmationFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConfirmationPayload>
           }
           findFirst: {
-            args: Prisma.AccountFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AccountPayload> | null
+            args: Prisma.ConfirmationFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConfirmationPayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.AccountFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AccountPayload>
+            args: Prisma.ConfirmationFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConfirmationPayload>
           }
           findMany: {
-            args: Prisma.AccountFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AccountPayload>[]
+            args: Prisma.ConfirmationFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConfirmationPayload>[]
           }
           create: {
-            args: Prisma.AccountCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AccountPayload>
+            args: Prisma.ConfirmationCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConfirmationPayload>
           }
           createMany: {
-            args: Prisma.AccountCreateManyArgs<ExtArgs>
+            args: Prisma.ConfirmationCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           createManyAndReturn: {
-            args: Prisma.AccountCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AccountPayload>[]
+            args: Prisma.ConfirmationCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConfirmationPayload>[]
           }
           delete: {
-            args: Prisma.AccountDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AccountPayload>
+            args: Prisma.ConfirmationDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConfirmationPayload>
           }
           update: {
-            args: Prisma.AccountUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AccountPayload>
+            args: Prisma.ConfirmationUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConfirmationPayload>
           }
           deleteMany: {
-            args: Prisma.AccountDeleteManyArgs<ExtArgs>
+            args: Prisma.ConfirmationDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.AccountUpdateManyArgs<ExtArgs>
+            args: Prisma.ConfirmationUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateManyAndReturn: {
-            args: Prisma.AccountUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AccountPayload>[]
+            args: Prisma.ConfirmationUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConfirmationPayload>[]
           }
           upsert: {
-            args: Prisma.AccountUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AccountPayload>
+            args: Prisma.ConfirmationUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConfirmationPayload>
           }
           aggregate: {
-            args: Prisma.AccountAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateAccount>
+            args: Prisma.ConfirmationAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateConfirmation>
           }
           groupBy: {
-            args: Prisma.AccountGroupByArgs<ExtArgs>
-            result: $Utils.Optional<AccountGroupByOutputType>[]
+            args: Prisma.ConfirmationGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ConfirmationGroupByOutputType>[]
           }
           count: {
-            args: Prisma.AccountCountArgs<ExtArgs>
-            result: $Utils.Optional<AccountCountAggregateOutputType> | number
+            args: Prisma.ConfirmationCountArgs<ExtArgs>
+            result: $Utils.Optional<ConfirmationCountAggregateOutputType> | number
           }
         }
       }
@@ -997,7 +1025,7 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     user?: UserOmit
-    account?: AccountOmit
+    confirmation?: ConfirmationOmit
     token?: TokenOmit
   }
 
@@ -1093,11 +1121,11 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
-    accounts: number
+    confirmations: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    accounts?: boolean | UserCountOutputTypeCountAccountsArgs
+    confirmations?: boolean | UserCountOutputTypeCountConfirmationsArgs
   }
 
   // Custom InputTypes
@@ -1114,8 +1142,8 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountAccountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: AccountWhereInput
+  export type UserCountOutputTypeCountConfirmationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ConfirmationWhereInput
   }
 
 
@@ -1359,7 +1387,7 @@ export namespace Prisma {
     studentIdBack?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    accounts?: boolean | User$accountsArgs<ExtArgs>
+    confirmations?: boolean | User$confirmationsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1416,7 +1444,7 @@ export namespace Prisma {
 
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "displayName" | "picture" | "isVerified" | "isTwoFactorEnabled" | "method" | "role" | "secondName" | "studentIdFront" | "studentIdBack" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    accounts?: boolean | User$accountsArgs<ExtArgs>
+    confirmations?: boolean | User$confirmationsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1425,7 +1453,7 @@ export namespace Prisma {
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
-      accounts: Prisma.$AccountPayload<ExtArgs>[]
+      confirmations: Prisma.$ConfirmationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -1836,7 +1864,7 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    accounts<T extends User$accountsArgs<ExtArgs> = {}>(args?: Subset<T, User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    confirmations<T extends User$confirmationsArgs<ExtArgs> = {}>(args?: Subset<T, User$confirmationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConfirmationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2268,27 +2296,27 @@ export namespace Prisma {
   }
 
   /**
-   * User.accounts
+   * User.confirmations
    */
-  export type User$accountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$confirmationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Account
+     * Select specific fields to fetch from the Confirmation
      */
-    select?: AccountSelect<ExtArgs> | null
+    select?: ConfirmationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Account
+     * Omit specific fields from the Confirmation
      */
-    omit?: AccountOmit<ExtArgs> | null
+    omit?: ConfirmationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: AccountInclude<ExtArgs> | null
-    where?: AccountWhereInput
-    orderBy?: AccountOrderByWithRelationInput | AccountOrderByWithRelationInput[]
-    cursor?: AccountWhereUniqueInput
+    include?: ConfirmationInclude<ExtArgs> | null
+    where?: ConfirmationWhereInput
+    orderBy?: ConfirmationOrderByWithRelationInput | ConfirmationOrderByWithRelationInput[]
+    cursor?: ConfirmationWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: AccountScalarFieldEnum | AccountScalarFieldEnum[]
+    distinct?: ConfirmationScalarFieldEnum | ConfirmationScalarFieldEnum[]
   }
 
   /**
@@ -2311,432 +2339,398 @@ export namespace Prisma {
 
 
   /**
-   * Model Account
+   * Model Confirmation
    */
 
-  export type AggregateAccount = {
-    _count: AccountCountAggregateOutputType | null
-    _avg: AccountAvgAggregateOutputType | null
-    _sum: AccountSumAggregateOutputType | null
-    _min: AccountMinAggregateOutputType | null
-    _max: AccountMaxAggregateOutputType | null
+  export type AggregateConfirmation = {
+    _count: ConfirmationCountAggregateOutputType | null
+    _min: ConfirmationMinAggregateOutputType | null
+    _max: ConfirmationMaxAggregateOutputType | null
   }
 
-  export type AccountAvgAggregateOutputType = {
-    expiresAt: number | null
-  }
-
-  export type AccountSumAggregateOutputType = {
-    expiresAt: number | null
-  }
-
-  export type AccountMinAggregateOutputType = {
+  export type ConfirmationMinAggregateOutputType = {
     id: string | null
-    type: string | null
-    provider: string | null
-    expiresAt: number | null
-    refreshToken: string | null
-    accesToken: string | null
+    type: $Enums.ConfirmationType | null
+    status: $Enums.ConfirmationStatus | null
     createdAt: Date | null
-    updatedAt: Date | null
+    resolvedAt: Date | null
     userId: string | null
+    photo: string | null
+    frontIdUrl: string | null
+    backIdUrl: string | null
   }
 
-  export type AccountMaxAggregateOutputType = {
+  export type ConfirmationMaxAggregateOutputType = {
     id: string | null
-    type: string | null
-    provider: string | null
-    expiresAt: number | null
-    refreshToken: string | null
-    accesToken: string | null
+    type: $Enums.ConfirmationType | null
+    status: $Enums.ConfirmationStatus | null
     createdAt: Date | null
-    updatedAt: Date | null
+    resolvedAt: Date | null
     userId: string | null
+    photo: string | null
+    frontIdUrl: string | null
+    backIdUrl: string | null
   }
 
-  export type AccountCountAggregateOutputType = {
+  export type ConfirmationCountAggregateOutputType = {
     id: number
     type: number
-    provider: number
-    expiresAt: number
-    refreshToken: number
-    accesToken: number
+    status: number
     createdAt: number
-    updatedAt: number
+    resolvedAt: number
     userId: number
+    photo: number
+    frontIdUrl: number
+    backIdUrl: number
     _all: number
   }
 
 
-  export type AccountAvgAggregateInputType = {
-    expiresAt?: true
-  }
-
-  export type AccountSumAggregateInputType = {
-    expiresAt?: true
-  }
-
-  export type AccountMinAggregateInputType = {
+  export type ConfirmationMinAggregateInputType = {
     id?: true
     type?: true
-    provider?: true
-    expiresAt?: true
-    refreshToken?: true
-    accesToken?: true
+    status?: true
     createdAt?: true
-    updatedAt?: true
+    resolvedAt?: true
     userId?: true
+    photo?: true
+    frontIdUrl?: true
+    backIdUrl?: true
   }
 
-  export type AccountMaxAggregateInputType = {
+  export type ConfirmationMaxAggregateInputType = {
     id?: true
     type?: true
-    provider?: true
-    expiresAt?: true
-    refreshToken?: true
-    accesToken?: true
+    status?: true
     createdAt?: true
-    updatedAt?: true
+    resolvedAt?: true
     userId?: true
+    photo?: true
+    frontIdUrl?: true
+    backIdUrl?: true
   }
 
-  export type AccountCountAggregateInputType = {
+  export type ConfirmationCountAggregateInputType = {
     id?: true
     type?: true
-    provider?: true
-    expiresAt?: true
-    refreshToken?: true
-    accesToken?: true
+    status?: true
     createdAt?: true
-    updatedAt?: true
+    resolvedAt?: true
     userId?: true
+    photo?: true
+    frontIdUrl?: true
+    backIdUrl?: true
     _all?: true
   }
 
-  export type AccountAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ConfirmationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which Account to aggregate.
+     * Filter which Confirmation to aggregate.
      */
-    where?: AccountWhereInput
+    where?: ConfirmationWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Accounts to fetch.
+     * Determine the order of Confirmations to fetch.
      */
-    orderBy?: AccountOrderByWithRelationInput | AccountOrderByWithRelationInput[]
+    orderBy?: ConfirmationOrderByWithRelationInput | ConfirmationOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: AccountWhereUniqueInput
+    cursor?: ConfirmationWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Accounts from the position of the cursor.
+     * Take `±n` Confirmations from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Accounts.
+     * Skip the first `n` Confirmations.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned Accounts
+     * Count returned Confirmations
     **/
-    _count?: true | AccountCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: AccountAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: AccountSumAggregateInputType
+    _count?: true | ConfirmationCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: AccountMinAggregateInputType
+    _min?: ConfirmationMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: AccountMaxAggregateInputType
+    _max?: ConfirmationMaxAggregateInputType
   }
 
-  export type GetAccountAggregateType<T extends AccountAggregateArgs> = {
-        [P in keyof T & keyof AggregateAccount]: P extends '_count' | 'count'
+  export type GetConfirmationAggregateType<T extends ConfirmationAggregateArgs> = {
+        [P in keyof T & keyof AggregateConfirmation]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateAccount[P]>
-      : GetScalarType<T[P], AggregateAccount[P]>
+        : GetScalarType<T[P], AggregateConfirmation[P]>
+      : GetScalarType<T[P], AggregateConfirmation[P]>
   }
 
 
 
 
-  export type AccountGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: AccountWhereInput
-    orderBy?: AccountOrderByWithAggregationInput | AccountOrderByWithAggregationInput[]
-    by: AccountScalarFieldEnum[] | AccountScalarFieldEnum
-    having?: AccountScalarWhereWithAggregatesInput
+  export type ConfirmationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ConfirmationWhereInput
+    orderBy?: ConfirmationOrderByWithAggregationInput | ConfirmationOrderByWithAggregationInput[]
+    by: ConfirmationScalarFieldEnum[] | ConfirmationScalarFieldEnum
+    having?: ConfirmationScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: AccountCountAggregateInputType | true
-    _avg?: AccountAvgAggregateInputType
-    _sum?: AccountSumAggregateInputType
-    _min?: AccountMinAggregateInputType
-    _max?: AccountMaxAggregateInputType
+    _count?: ConfirmationCountAggregateInputType | true
+    _min?: ConfirmationMinAggregateInputType
+    _max?: ConfirmationMaxAggregateInputType
   }
 
-  export type AccountGroupByOutputType = {
+  export type ConfirmationGroupByOutputType = {
     id: string
-    type: string
-    provider: string
-    expiresAt: number
-    refreshToken: string | null
-    accesToken: string | null
+    type: $Enums.ConfirmationType
+    status: $Enums.ConfirmationStatus
     createdAt: Date
-    updatedAt: Date
-    userId: string | null
-    _count: AccountCountAggregateOutputType | null
-    _avg: AccountAvgAggregateOutputType | null
-    _sum: AccountSumAggregateOutputType | null
-    _min: AccountMinAggregateOutputType | null
-    _max: AccountMaxAggregateOutputType | null
+    resolvedAt: Date | null
+    userId: string
+    photo: string | null
+    frontIdUrl: string | null
+    backIdUrl: string | null
+    _count: ConfirmationCountAggregateOutputType | null
+    _min: ConfirmationMinAggregateOutputType | null
+    _max: ConfirmationMaxAggregateOutputType | null
   }
 
-  type GetAccountGroupByPayload<T extends AccountGroupByArgs> = Prisma.PrismaPromise<
+  type GetConfirmationGroupByPayload<T extends ConfirmationGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<AccountGroupByOutputType, T['by']> &
+      PickEnumerable<ConfirmationGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof AccountGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof ConfirmationGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], AccountGroupByOutputType[P]>
-            : GetScalarType<T[P], AccountGroupByOutputType[P]>
+              : GetScalarType<T[P], ConfirmationGroupByOutputType[P]>
+            : GetScalarType<T[P], ConfirmationGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type AccountSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type ConfirmationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     type?: boolean
-    provider?: boolean
-    expiresAt?: boolean
-    refreshToken?: boolean
-    accesToken?: boolean
+    status?: boolean
     createdAt?: boolean
-    updatedAt?: boolean
+    resolvedAt?: boolean
     userId?: boolean
-    user?: boolean | Account$userArgs<ExtArgs>
-  }, ExtArgs["result"]["account"]>
+    photo?: boolean
+    frontIdUrl?: boolean
+    backIdUrl?: boolean
+    requester?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["confirmation"]>
 
-  export type AccountSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type ConfirmationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     type?: boolean
-    provider?: boolean
-    expiresAt?: boolean
-    refreshToken?: boolean
-    accesToken?: boolean
+    status?: boolean
     createdAt?: boolean
-    updatedAt?: boolean
+    resolvedAt?: boolean
     userId?: boolean
-    user?: boolean | Account$userArgs<ExtArgs>
-  }, ExtArgs["result"]["account"]>
+    photo?: boolean
+    frontIdUrl?: boolean
+    backIdUrl?: boolean
+    requester?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["confirmation"]>
 
-  export type AccountSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type ConfirmationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     type?: boolean
-    provider?: boolean
-    expiresAt?: boolean
-    refreshToken?: boolean
-    accesToken?: boolean
+    status?: boolean
     createdAt?: boolean
-    updatedAt?: boolean
+    resolvedAt?: boolean
     userId?: boolean
-    user?: boolean | Account$userArgs<ExtArgs>
-  }, ExtArgs["result"]["account"]>
+    photo?: boolean
+    frontIdUrl?: boolean
+    backIdUrl?: boolean
+    requester?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["confirmation"]>
 
-  export type AccountSelectScalar = {
+  export type ConfirmationSelectScalar = {
     id?: boolean
     type?: boolean
-    provider?: boolean
-    expiresAt?: boolean
-    refreshToken?: boolean
-    accesToken?: boolean
+    status?: boolean
     createdAt?: boolean
-    updatedAt?: boolean
+    resolvedAt?: boolean
     userId?: boolean
+    photo?: boolean
+    frontIdUrl?: boolean
+    backIdUrl?: boolean
   }
 
-  export type AccountOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "provider" | "expiresAt" | "refreshToken" | "accesToken" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["account"]>
-  export type AccountInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | Account$userArgs<ExtArgs>
+  export type ConfirmationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "status" | "createdAt" | "resolvedAt" | "userId" | "photo" | "frontIdUrl" | "backIdUrl", ExtArgs["result"]["confirmation"]>
+  export type ConfirmationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    requester?: boolean | UserDefaultArgs<ExtArgs>
   }
-  export type AccountIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | Account$userArgs<ExtArgs>
+  export type ConfirmationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    requester?: boolean | UserDefaultArgs<ExtArgs>
   }
-  export type AccountIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | Account$userArgs<ExtArgs>
+  export type ConfirmationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    requester?: boolean | UserDefaultArgs<ExtArgs>
   }
 
-  export type $AccountPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Account"
+  export type $ConfirmationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Confirmation"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs> | null
+      requester: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      type: string
-      provider: string
-      expiresAt: number
-      refreshToken: string | null
-      accesToken: string | null
+      type: $Enums.ConfirmationType
+      status: $Enums.ConfirmationStatus
       createdAt: Date
-      updatedAt: Date
-      userId: string | null
-    }, ExtArgs["result"]["account"]>
+      resolvedAt: Date | null
+      userId: string
+      photo: string | null
+      frontIdUrl: string | null
+      backIdUrl: string | null
+    }, ExtArgs["result"]["confirmation"]>
     composites: {}
   }
 
-  type AccountGetPayload<S extends boolean | null | undefined | AccountDefaultArgs> = $Result.GetResult<Prisma.$AccountPayload, S>
+  type ConfirmationGetPayload<S extends boolean | null | undefined | ConfirmationDefaultArgs> = $Result.GetResult<Prisma.$ConfirmationPayload, S>
 
-  type AccountCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<AccountFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: AccountCountAggregateInputType | true
+  type ConfirmationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ConfirmationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ConfirmationCountAggregateInputType | true
     }
 
-  export interface AccountDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Account'], meta: { name: 'Account' } }
+  export interface ConfirmationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Confirmation'], meta: { name: 'Confirmation' } }
     /**
-     * Find zero or one Account that matches the filter.
-     * @param {AccountFindUniqueArgs} args - Arguments to find a Account
+     * Find zero or one Confirmation that matches the filter.
+     * @param {ConfirmationFindUniqueArgs} args - Arguments to find a Confirmation
      * @example
-     * // Get one Account
-     * const account = await prisma.account.findUnique({
+     * // Get one Confirmation
+     * const confirmation = await prisma.confirmation.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends AccountFindUniqueArgs>(args: SelectSubset<T, AccountFindUniqueArgs<ExtArgs>>): Prisma__AccountClient<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends ConfirmationFindUniqueArgs>(args: SelectSubset<T, ConfirmationFindUniqueArgs<ExtArgs>>): Prisma__ConfirmationClient<$Result.GetResult<Prisma.$ConfirmationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one Account that matches the filter or throw an error with `error.code='P2025'`
+     * Find one Confirmation that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {AccountFindUniqueOrThrowArgs} args - Arguments to find a Account
+     * @param {ConfirmationFindUniqueOrThrowArgs} args - Arguments to find a Confirmation
      * @example
-     * // Get one Account
-     * const account = await prisma.account.findUniqueOrThrow({
+     * // Get one Confirmation
+     * const confirmation = await prisma.confirmation.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends AccountFindUniqueOrThrowArgs>(args: SelectSubset<T, AccountFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AccountClient<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends ConfirmationFindUniqueOrThrowArgs>(args: SelectSubset<T, ConfirmationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ConfirmationClient<$Result.GetResult<Prisma.$ConfirmationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first Account that matches the filter.
+     * Find the first Confirmation that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {AccountFindFirstArgs} args - Arguments to find a Account
+     * @param {ConfirmationFindFirstArgs} args - Arguments to find a Confirmation
      * @example
-     * // Get one Account
-     * const account = await prisma.account.findFirst({
+     * // Get one Confirmation
+     * const confirmation = await prisma.confirmation.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends AccountFindFirstArgs>(args?: SelectSubset<T, AccountFindFirstArgs<ExtArgs>>): Prisma__AccountClient<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends ConfirmationFindFirstArgs>(args?: SelectSubset<T, ConfirmationFindFirstArgs<ExtArgs>>): Prisma__ConfirmationClient<$Result.GetResult<Prisma.$ConfirmationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first Account that matches the filter or
+     * Find the first Confirmation that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {AccountFindFirstOrThrowArgs} args - Arguments to find a Account
+     * @param {ConfirmationFindFirstOrThrowArgs} args - Arguments to find a Confirmation
      * @example
-     * // Get one Account
-     * const account = await prisma.account.findFirstOrThrow({
+     * // Get one Confirmation
+     * const confirmation = await prisma.confirmation.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends AccountFindFirstOrThrowArgs>(args?: SelectSubset<T, AccountFindFirstOrThrowArgs<ExtArgs>>): Prisma__AccountClient<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends ConfirmationFindFirstOrThrowArgs>(args?: SelectSubset<T, ConfirmationFindFirstOrThrowArgs<ExtArgs>>): Prisma__ConfirmationClient<$Result.GetResult<Prisma.$ConfirmationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more Accounts that matches the filter.
+     * Find zero or more Confirmations that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {AccountFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {ConfirmationFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all Accounts
-     * const accounts = await prisma.account.findMany()
+     * // Get all Confirmations
+     * const confirmations = await prisma.confirmation.findMany()
      * 
-     * // Get first 10 Accounts
-     * const accounts = await prisma.account.findMany({ take: 10 })
+     * // Get first 10 Confirmations
+     * const confirmations = await prisma.confirmation.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const accountWithIdOnly = await prisma.account.findMany({ select: { id: true } })
+     * const confirmationWithIdOnly = await prisma.confirmation.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends AccountFindManyArgs>(args?: SelectSubset<T, AccountFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends ConfirmationFindManyArgs>(args?: SelectSubset<T, ConfirmationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConfirmationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a Account.
-     * @param {AccountCreateArgs} args - Arguments to create a Account.
+     * Create a Confirmation.
+     * @param {ConfirmationCreateArgs} args - Arguments to create a Confirmation.
      * @example
-     * // Create one Account
-     * const Account = await prisma.account.create({
+     * // Create one Confirmation
+     * const Confirmation = await prisma.confirmation.create({
      *   data: {
-     *     // ... data to create a Account
+     *     // ... data to create a Confirmation
      *   }
      * })
      * 
      */
-    create<T extends AccountCreateArgs>(args: SelectSubset<T, AccountCreateArgs<ExtArgs>>): Prisma__AccountClient<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends ConfirmationCreateArgs>(args: SelectSubset<T, ConfirmationCreateArgs<ExtArgs>>): Prisma__ConfirmationClient<$Result.GetResult<Prisma.$ConfirmationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many Accounts.
-     * @param {AccountCreateManyArgs} args - Arguments to create many Accounts.
+     * Create many Confirmations.
+     * @param {ConfirmationCreateManyArgs} args - Arguments to create many Confirmations.
      * @example
-     * // Create many Accounts
-     * const account = await prisma.account.createMany({
+     * // Create many Confirmations
+     * const confirmation = await prisma.confirmation.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends AccountCreateManyArgs>(args?: SelectSubset<T, AccountCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends ConfirmationCreateManyArgs>(args?: SelectSubset<T, ConfirmationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create many Accounts and returns the data saved in the database.
-     * @param {AccountCreateManyAndReturnArgs} args - Arguments to create many Accounts.
+     * Create many Confirmations and returns the data saved in the database.
+     * @param {ConfirmationCreateManyAndReturnArgs} args - Arguments to create many Confirmations.
      * @example
-     * // Create many Accounts
-     * const account = await prisma.account.createManyAndReturn({
+     * // Create many Confirmations
+     * const confirmation = await prisma.confirmation.createManyAndReturn({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      * 
-     * // Create many Accounts and only return the `id`
-     * const accountWithIdOnly = await prisma.account.createManyAndReturn({
+     * // Create many Confirmations and only return the `id`
+     * const confirmationWithIdOnly = await prisma.confirmation.createManyAndReturn({
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -2746,28 +2740,28 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    createManyAndReturn<T extends AccountCreateManyAndReturnArgs>(args?: SelectSubset<T, AccountCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+    createManyAndReturn<T extends ConfirmationCreateManyAndReturnArgs>(args?: SelectSubset<T, ConfirmationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConfirmationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Delete a Account.
-     * @param {AccountDeleteArgs} args - Arguments to delete one Account.
+     * Delete a Confirmation.
+     * @param {ConfirmationDeleteArgs} args - Arguments to delete one Confirmation.
      * @example
-     * // Delete one Account
-     * const Account = await prisma.account.delete({
+     * // Delete one Confirmation
+     * const Confirmation = await prisma.confirmation.delete({
      *   where: {
-     *     // ... filter to delete one Account
+     *     // ... filter to delete one Confirmation
      *   }
      * })
      * 
      */
-    delete<T extends AccountDeleteArgs>(args: SelectSubset<T, AccountDeleteArgs<ExtArgs>>): Prisma__AccountClient<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends ConfirmationDeleteArgs>(args: SelectSubset<T, ConfirmationDeleteArgs<ExtArgs>>): Prisma__ConfirmationClient<$Result.GetResult<Prisma.$ConfirmationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one Account.
-     * @param {AccountUpdateArgs} args - Arguments to update one Account.
+     * Update one Confirmation.
+     * @param {ConfirmationUpdateArgs} args - Arguments to update one Confirmation.
      * @example
-     * // Update one Account
-     * const account = await prisma.account.update({
+     * // Update one Confirmation
+     * const confirmation = await prisma.confirmation.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -2777,30 +2771,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends AccountUpdateArgs>(args: SelectSubset<T, AccountUpdateArgs<ExtArgs>>): Prisma__AccountClient<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends ConfirmationUpdateArgs>(args: SelectSubset<T, ConfirmationUpdateArgs<ExtArgs>>): Prisma__ConfirmationClient<$Result.GetResult<Prisma.$ConfirmationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more Accounts.
-     * @param {AccountDeleteManyArgs} args - Arguments to filter Accounts to delete.
+     * Delete zero or more Confirmations.
+     * @param {ConfirmationDeleteManyArgs} args - Arguments to filter Confirmations to delete.
      * @example
-     * // Delete a few Accounts
-     * const { count } = await prisma.account.deleteMany({
+     * // Delete a few Confirmations
+     * const { count } = await prisma.confirmation.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends AccountDeleteManyArgs>(args?: SelectSubset<T, AccountDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends ConfirmationDeleteManyArgs>(args?: SelectSubset<T, ConfirmationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more Accounts.
+     * Update zero or more Confirmations.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {AccountUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {ConfirmationUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many Accounts
-     * const account = await prisma.account.updateMany({
+     * // Update many Confirmations
+     * const confirmation = await prisma.confirmation.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -2810,14 +2804,14 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends AccountUpdateManyArgs>(args: SelectSubset<T, AccountUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends ConfirmationUpdateManyArgs>(args: SelectSubset<T, ConfirmationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more Accounts and returns the data updated in the database.
-     * @param {AccountUpdateManyAndReturnArgs} args - Arguments to update many Accounts.
+     * Update zero or more Confirmations and returns the data updated in the database.
+     * @param {ConfirmationUpdateManyAndReturnArgs} args - Arguments to update many Confirmations.
      * @example
-     * // Update many Accounts
-     * const account = await prisma.account.updateManyAndReturn({
+     * // Update many Confirmations
+     * const confirmation = await prisma.confirmation.updateManyAndReturn({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -2826,8 +2820,8 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more Accounts and only return the `id`
-     * const accountWithIdOnly = await prisma.account.updateManyAndReturn({
+     * // Update zero or more Confirmations and only return the `id`
+     * const confirmationWithIdOnly = await prisma.confirmation.updateManyAndReturn({
      *   select: { id: true },
      *   where: {
      *     // ... provide filter here
@@ -2840,56 +2834,56 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    updateManyAndReturn<T extends AccountUpdateManyAndReturnArgs>(args: SelectSubset<T, AccountUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+    updateManyAndReturn<T extends ConfirmationUpdateManyAndReturnArgs>(args: SelectSubset<T, ConfirmationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConfirmationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Create or update one Account.
-     * @param {AccountUpsertArgs} args - Arguments to update or create a Account.
+     * Create or update one Confirmation.
+     * @param {ConfirmationUpsertArgs} args - Arguments to update or create a Confirmation.
      * @example
-     * // Update or create a Account
-     * const account = await prisma.account.upsert({
+     * // Update or create a Confirmation
+     * const confirmation = await prisma.confirmation.upsert({
      *   create: {
-     *     // ... data to create a Account
+     *     // ... data to create a Confirmation
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the Account we want to update
+     *     // ... the filter for the Confirmation we want to update
      *   }
      * })
      */
-    upsert<T extends AccountUpsertArgs>(args: SelectSubset<T, AccountUpsertArgs<ExtArgs>>): Prisma__AccountClient<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends ConfirmationUpsertArgs>(args: SelectSubset<T, ConfirmationUpsertArgs<ExtArgs>>): Prisma__ConfirmationClient<$Result.GetResult<Prisma.$ConfirmationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
-     * Count the number of Accounts.
+     * Count the number of Confirmations.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {AccountCountArgs} args - Arguments to filter Accounts to count.
+     * @param {ConfirmationCountArgs} args - Arguments to filter Confirmations to count.
      * @example
-     * // Count the number of Accounts
-     * const count = await prisma.account.count({
+     * // Count the number of Confirmations
+     * const count = await prisma.confirmation.count({
      *   where: {
-     *     // ... the filter for the Accounts we want to count
+     *     // ... the filter for the Confirmations we want to count
      *   }
      * })
     **/
-    count<T extends AccountCountArgs>(
-      args?: Subset<T, AccountCountArgs>,
+    count<T extends ConfirmationCountArgs>(
+      args?: Subset<T, ConfirmationCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], AccountCountAggregateOutputType>
+          : GetScalarType<T['select'], ConfirmationCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a Account.
+     * Allows you to perform aggregations operations on a Confirmation.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {AccountAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {ConfirmationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -2909,13 +2903,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends AccountAggregateArgs>(args: Subset<T, AccountAggregateArgs>): Prisma.PrismaPromise<GetAccountAggregateType<T>>
+    aggregate<T extends ConfirmationAggregateArgs>(args: Subset<T, ConfirmationAggregateArgs>): Prisma.PrismaPromise<GetConfirmationAggregateType<T>>
 
     /**
-     * Group by Account.
+     * Group by Confirmation.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {AccountGroupByArgs} args - Group by arguments.
+     * @param {ConfirmationGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -2930,14 +2924,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends AccountGroupByArgs,
+      T extends ConfirmationGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: AccountGroupByArgs['orderBy'] }
-        : { orderBy?: AccountGroupByArgs['orderBy'] },
+        ? { orderBy: ConfirmationGroupByArgs['orderBy'] }
+        : { orderBy?: ConfirmationGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -2986,22 +2980,22 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, AccountGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAccountGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, ConfirmationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetConfirmationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the Account model
+   * Fields of the Confirmation model
    */
-  readonly fields: AccountFieldRefs;
+  readonly fields: ConfirmationFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for Account.
+   * The delegate class that acts as a "Promise-like" for Confirmation.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__AccountClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__ConfirmationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends Account$userArgs<ExtArgs> = {}>(args?: Subset<T, Account$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    requester<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3028,448 +3022,429 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the Account model
+   * Fields of the Confirmation model
    */
-  interface AccountFieldRefs {
-    readonly id: FieldRef<"Account", 'String'>
-    readonly type: FieldRef<"Account", 'String'>
-    readonly provider: FieldRef<"Account", 'String'>
-    readonly expiresAt: FieldRef<"Account", 'Int'>
-    readonly refreshToken: FieldRef<"Account", 'String'>
-    readonly accesToken: FieldRef<"Account", 'String'>
-    readonly createdAt: FieldRef<"Account", 'DateTime'>
-    readonly updatedAt: FieldRef<"Account", 'DateTime'>
-    readonly userId: FieldRef<"Account", 'String'>
+  interface ConfirmationFieldRefs {
+    readonly id: FieldRef<"Confirmation", 'String'>
+    readonly type: FieldRef<"Confirmation", 'ConfirmationType'>
+    readonly status: FieldRef<"Confirmation", 'ConfirmationStatus'>
+    readonly createdAt: FieldRef<"Confirmation", 'DateTime'>
+    readonly resolvedAt: FieldRef<"Confirmation", 'DateTime'>
+    readonly userId: FieldRef<"Confirmation", 'String'>
+    readonly photo: FieldRef<"Confirmation", 'String'>
+    readonly frontIdUrl: FieldRef<"Confirmation", 'String'>
+    readonly backIdUrl: FieldRef<"Confirmation", 'String'>
   }
     
 
   // Custom InputTypes
   /**
-   * Account findUnique
+   * Confirmation findUnique
    */
-  export type AccountFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ConfirmationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Account
+     * Select specific fields to fetch from the Confirmation
      */
-    select?: AccountSelect<ExtArgs> | null
+    select?: ConfirmationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Account
+     * Omit specific fields from the Confirmation
      */
-    omit?: AccountOmit<ExtArgs> | null
+    omit?: ConfirmationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: AccountInclude<ExtArgs> | null
+    include?: ConfirmationInclude<ExtArgs> | null
     /**
-     * Filter, which Account to fetch.
+     * Filter, which Confirmation to fetch.
      */
-    where: AccountWhereUniqueInput
+    where: ConfirmationWhereUniqueInput
   }
 
   /**
-   * Account findUniqueOrThrow
+   * Confirmation findUniqueOrThrow
    */
-  export type AccountFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ConfirmationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Account
+     * Select specific fields to fetch from the Confirmation
      */
-    select?: AccountSelect<ExtArgs> | null
+    select?: ConfirmationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Account
+     * Omit specific fields from the Confirmation
      */
-    omit?: AccountOmit<ExtArgs> | null
+    omit?: ConfirmationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: AccountInclude<ExtArgs> | null
+    include?: ConfirmationInclude<ExtArgs> | null
     /**
-     * Filter, which Account to fetch.
+     * Filter, which Confirmation to fetch.
      */
-    where: AccountWhereUniqueInput
+    where: ConfirmationWhereUniqueInput
   }
 
   /**
-   * Account findFirst
+   * Confirmation findFirst
    */
-  export type AccountFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ConfirmationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Account
+     * Select specific fields to fetch from the Confirmation
      */
-    select?: AccountSelect<ExtArgs> | null
+    select?: ConfirmationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Account
+     * Omit specific fields from the Confirmation
      */
-    omit?: AccountOmit<ExtArgs> | null
+    omit?: ConfirmationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: AccountInclude<ExtArgs> | null
+    include?: ConfirmationInclude<ExtArgs> | null
     /**
-     * Filter, which Account to fetch.
+     * Filter, which Confirmation to fetch.
      */
-    where?: AccountWhereInput
+    where?: ConfirmationWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Accounts to fetch.
+     * Determine the order of Confirmations to fetch.
      */
-    orderBy?: AccountOrderByWithRelationInput | AccountOrderByWithRelationInput[]
+    orderBy?: ConfirmationOrderByWithRelationInput | ConfirmationOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for Accounts.
+     * Sets the position for searching for Confirmations.
      */
-    cursor?: AccountWhereUniqueInput
+    cursor?: ConfirmationWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Accounts from the position of the cursor.
+     * Take `±n` Confirmations from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Accounts.
+     * Skip the first `n` Confirmations.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of Accounts.
+     * Filter by unique combinations of Confirmations.
      */
-    distinct?: AccountScalarFieldEnum | AccountScalarFieldEnum[]
+    distinct?: ConfirmationScalarFieldEnum | ConfirmationScalarFieldEnum[]
   }
 
   /**
-   * Account findFirstOrThrow
+   * Confirmation findFirstOrThrow
    */
-  export type AccountFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ConfirmationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Account
+     * Select specific fields to fetch from the Confirmation
      */
-    select?: AccountSelect<ExtArgs> | null
+    select?: ConfirmationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Account
+     * Omit specific fields from the Confirmation
      */
-    omit?: AccountOmit<ExtArgs> | null
+    omit?: ConfirmationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: AccountInclude<ExtArgs> | null
+    include?: ConfirmationInclude<ExtArgs> | null
     /**
-     * Filter, which Account to fetch.
+     * Filter, which Confirmation to fetch.
      */
-    where?: AccountWhereInput
+    where?: ConfirmationWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Accounts to fetch.
+     * Determine the order of Confirmations to fetch.
      */
-    orderBy?: AccountOrderByWithRelationInput | AccountOrderByWithRelationInput[]
+    orderBy?: ConfirmationOrderByWithRelationInput | ConfirmationOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for Accounts.
+     * Sets the position for searching for Confirmations.
      */
-    cursor?: AccountWhereUniqueInput
+    cursor?: ConfirmationWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Accounts from the position of the cursor.
+     * Take `±n` Confirmations from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Accounts.
+     * Skip the first `n` Confirmations.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of Accounts.
+     * Filter by unique combinations of Confirmations.
      */
-    distinct?: AccountScalarFieldEnum | AccountScalarFieldEnum[]
+    distinct?: ConfirmationScalarFieldEnum | ConfirmationScalarFieldEnum[]
   }
 
   /**
-   * Account findMany
+   * Confirmation findMany
    */
-  export type AccountFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ConfirmationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Account
+     * Select specific fields to fetch from the Confirmation
      */
-    select?: AccountSelect<ExtArgs> | null
+    select?: ConfirmationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Account
+     * Omit specific fields from the Confirmation
      */
-    omit?: AccountOmit<ExtArgs> | null
+    omit?: ConfirmationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: AccountInclude<ExtArgs> | null
+    include?: ConfirmationInclude<ExtArgs> | null
     /**
-     * Filter, which Accounts to fetch.
+     * Filter, which Confirmations to fetch.
      */
-    where?: AccountWhereInput
+    where?: ConfirmationWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Accounts to fetch.
+     * Determine the order of Confirmations to fetch.
      */
-    orderBy?: AccountOrderByWithRelationInput | AccountOrderByWithRelationInput[]
+    orderBy?: ConfirmationOrderByWithRelationInput | ConfirmationOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing Accounts.
+     * Sets the position for listing Confirmations.
      */
-    cursor?: AccountWhereUniqueInput
+    cursor?: ConfirmationWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Accounts from the position of the cursor.
+     * Take `±n` Confirmations from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Accounts.
+     * Skip the first `n` Confirmations.
      */
     skip?: number
-    distinct?: AccountScalarFieldEnum | AccountScalarFieldEnum[]
+    distinct?: ConfirmationScalarFieldEnum | ConfirmationScalarFieldEnum[]
   }
 
   /**
-   * Account create
+   * Confirmation create
    */
-  export type AccountCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ConfirmationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Account
+     * Select specific fields to fetch from the Confirmation
      */
-    select?: AccountSelect<ExtArgs> | null
+    select?: ConfirmationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Account
+     * Omit specific fields from the Confirmation
      */
-    omit?: AccountOmit<ExtArgs> | null
+    omit?: ConfirmationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: AccountInclude<ExtArgs> | null
+    include?: ConfirmationInclude<ExtArgs> | null
     /**
-     * The data needed to create a Account.
+     * The data needed to create a Confirmation.
      */
-    data: XOR<AccountCreateInput, AccountUncheckedCreateInput>
+    data: XOR<ConfirmationCreateInput, ConfirmationUncheckedCreateInput>
   }
 
   /**
-   * Account createMany
+   * Confirmation createMany
    */
-  export type AccountCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ConfirmationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many Accounts.
+     * The data used to create many Confirmations.
      */
-    data: AccountCreateManyInput | AccountCreateManyInput[]
+    data: ConfirmationCreateManyInput | ConfirmationCreateManyInput[]
     skipDuplicates?: boolean
   }
 
   /**
-   * Account createManyAndReturn
+   * Confirmation createManyAndReturn
    */
-  export type AccountCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ConfirmationCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Account
+     * Select specific fields to fetch from the Confirmation
      */
-    select?: AccountSelectCreateManyAndReturn<ExtArgs> | null
+    select?: ConfirmationSelectCreateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the Account
+     * Omit specific fields from the Confirmation
      */
-    omit?: AccountOmit<ExtArgs> | null
+    omit?: ConfirmationOmit<ExtArgs> | null
     /**
-     * The data used to create many Accounts.
+     * The data used to create many Confirmations.
      */
-    data: AccountCreateManyInput | AccountCreateManyInput[]
+    data: ConfirmationCreateManyInput | ConfirmationCreateManyInput[]
     skipDuplicates?: boolean
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: AccountIncludeCreateManyAndReturn<ExtArgs> | null
+    include?: ConfirmationIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * Account update
+   * Confirmation update
    */
-  export type AccountUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ConfirmationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Account
+     * Select specific fields to fetch from the Confirmation
      */
-    select?: AccountSelect<ExtArgs> | null
+    select?: ConfirmationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Account
+     * Omit specific fields from the Confirmation
      */
-    omit?: AccountOmit<ExtArgs> | null
+    omit?: ConfirmationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: AccountInclude<ExtArgs> | null
+    include?: ConfirmationInclude<ExtArgs> | null
     /**
-     * The data needed to update a Account.
+     * The data needed to update a Confirmation.
      */
-    data: XOR<AccountUpdateInput, AccountUncheckedUpdateInput>
+    data: XOR<ConfirmationUpdateInput, ConfirmationUncheckedUpdateInput>
     /**
-     * Choose, which Account to update.
+     * Choose, which Confirmation to update.
      */
-    where: AccountWhereUniqueInput
+    where: ConfirmationWhereUniqueInput
   }
 
   /**
-   * Account updateMany
+   * Confirmation updateMany
    */
-  export type AccountUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ConfirmationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update Accounts.
+     * The data used to update Confirmations.
      */
-    data: XOR<AccountUpdateManyMutationInput, AccountUncheckedUpdateManyInput>
+    data: XOR<ConfirmationUpdateManyMutationInput, ConfirmationUncheckedUpdateManyInput>
     /**
-     * Filter which Accounts to update
+     * Filter which Confirmations to update
      */
-    where?: AccountWhereInput
+    where?: ConfirmationWhereInput
     /**
-     * Limit how many Accounts to update.
+     * Limit how many Confirmations to update.
      */
     limit?: number
   }
 
   /**
-   * Account updateManyAndReturn
+   * Confirmation updateManyAndReturn
    */
-  export type AccountUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ConfirmationUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Account
+     * Select specific fields to fetch from the Confirmation
      */
-    select?: AccountSelectUpdateManyAndReturn<ExtArgs> | null
+    select?: ConfirmationSelectUpdateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the Account
+     * Omit specific fields from the Confirmation
      */
-    omit?: AccountOmit<ExtArgs> | null
+    omit?: ConfirmationOmit<ExtArgs> | null
     /**
-     * The data used to update Accounts.
+     * The data used to update Confirmations.
      */
-    data: XOR<AccountUpdateManyMutationInput, AccountUncheckedUpdateManyInput>
+    data: XOR<ConfirmationUpdateManyMutationInput, ConfirmationUncheckedUpdateManyInput>
     /**
-     * Filter which Accounts to update
+     * Filter which Confirmations to update
      */
-    where?: AccountWhereInput
+    where?: ConfirmationWhereInput
     /**
-     * Limit how many Accounts to update.
+     * Limit how many Confirmations to update.
      */
     limit?: number
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: AccountIncludeUpdateManyAndReturn<ExtArgs> | null
+    include?: ConfirmationIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * Account upsert
+   * Confirmation upsert
    */
-  export type AccountUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ConfirmationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Account
+     * Select specific fields to fetch from the Confirmation
      */
-    select?: AccountSelect<ExtArgs> | null
+    select?: ConfirmationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Account
+     * Omit specific fields from the Confirmation
      */
-    omit?: AccountOmit<ExtArgs> | null
+    omit?: ConfirmationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: AccountInclude<ExtArgs> | null
+    include?: ConfirmationInclude<ExtArgs> | null
     /**
-     * The filter to search for the Account to update in case it exists.
+     * The filter to search for the Confirmation to update in case it exists.
      */
-    where: AccountWhereUniqueInput
+    where: ConfirmationWhereUniqueInput
     /**
-     * In case the Account found by the `where` argument doesn't exist, create a new Account with this data.
+     * In case the Confirmation found by the `where` argument doesn't exist, create a new Confirmation with this data.
      */
-    create: XOR<AccountCreateInput, AccountUncheckedCreateInput>
+    create: XOR<ConfirmationCreateInput, ConfirmationUncheckedCreateInput>
     /**
-     * In case the Account was found with the provided `where` argument, update it with this data.
+     * In case the Confirmation was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<AccountUpdateInput, AccountUncheckedUpdateInput>
+    update: XOR<ConfirmationUpdateInput, ConfirmationUncheckedUpdateInput>
   }
 
   /**
-   * Account delete
+   * Confirmation delete
    */
-  export type AccountDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ConfirmationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Account
+     * Select specific fields to fetch from the Confirmation
      */
-    select?: AccountSelect<ExtArgs> | null
+    select?: ConfirmationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Account
+     * Omit specific fields from the Confirmation
      */
-    omit?: AccountOmit<ExtArgs> | null
+    omit?: ConfirmationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: AccountInclude<ExtArgs> | null
+    include?: ConfirmationInclude<ExtArgs> | null
     /**
-     * Filter which Account to delete.
+     * Filter which Confirmation to delete.
      */
-    where: AccountWhereUniqueInput
+    where: ConfirmationWhereUniqueInput
   }
 
   /**
-   * Account deleteMany
+   * Confirmation deleteMany
    */
-  export type AccountDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ConfirmationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which Accounts to delete
+     * Filter which Confirmations to delete
      */
-    where?: AccountWhereInput
+    where?: ConfirmationWhereInput
     /**
-     * Limit how many Accounts to delete.
+     * Limit how many Confirmations to delete.
      */
     limit?: number
   }
 
   /**
-   * Account.user
+   * Confirmation without action
    */
-  export type Account$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ConfirmationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the User
+     * Select specific fields to fetch from the Confirmation
      */
-    select?: UserSelect<ExtArgs> | null
+    select?: ConfirmationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the User
+     * Omit specific fields from the Confirmation
      */
-    omit?: UserOmit<ExtArgs> | null
+    omit?: ConfirmationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UserInclude<ExtArgs> | null
-    where?: UserWhereInput
-  }
-
-  /**
-   * Account without action
-   */
-  export type AccountDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Account
-     */
-    select?: AccountSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Account
-     */
-    omit?: AccountOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AccountInclude<ExtArgs> | null
+    include?: ConfirmationInclude<ExtArgs> | null
   }
 
 
@@ -4502,19 +4477,19 @@ export namespace Prisma {
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
-  export const AccountScalarFieldEnum: {
+  export const ConfirmationScalarFieldEnum: {
     id: 'id',
     type: 'type',
-    provider: 'provider',
-    expiresAt: 'expiresAt',
-    refreshToken: 'refreshToken',
-    accesToken: 'accesToken',
+    status: 'status',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt',
-    userId: 'userId'
+    resolvedAt: 'resolvedAt',
+    userId: 'userId',
+    photo: 'photo',
+    frontIdUrl: 'frontIdUrl',
+    backIdUrl: 'backIdUrl'
   };
 
-  export type AccountScalarFieldEnum = (typeof AccountScalarFieldEnum)[keyof typeof AccountScalarFieldEnum]
+  export type ConfirmationScalarFieldEnum = (typeof ConfirmationScalarFieldEnum)[keyof typeof ConfirmationScalarFieldEnum]
 
 
   export const TokenScalarFieldEnum: {
@@ -4621,16 +4596,30 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Int'
+   * Reference to a field of type 'ConfirmationType'
    */
-  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+  export type EnumConfirmationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ConfirmationType'>
     
 
 
   /**
-   * Reference to a field of type 'Int[]'
+   * Reference to a field of type 'ConfirmationType[]'
    */
-  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+  export type ListEnumConfirmationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ConfirmationType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'ConfirmationStatus'
+   */
+  export type EnumConfirmationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ConfirmationStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'ConfirmationStatus[]'
+   */
+  export type ListEnumConfirmationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ConfirmationStatus[]'>
     
 
 
@@ -4649,16 +4638,16 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Float'
+   * Reference to a field of type 'Int'
    */
-  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
     
 
 
   /**
-   * Reference to a field of type 'Float[]'
+   * Reference to a field of type 'Int[]'
    */
-  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
   /**
    * Deep Input Types
@@ -4683,7 +4672,7 @@ export namespace Prisma {
     studentIdBack?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
-    accounts?: AccountListRelationFilter
+    confirmations?: ConfirmationListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -4701,7 +4690,7 @@ export namespace Prisma {
     studentIdBack?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    accounts?: AccountOrderByRelationAggregateInput
+    confirmations?: ConfirmationOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -4722,7 +4711,7 @@ export namespace Prisma {
     studentIdBack?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
-    accounts?: AccountListRelationFilter
+    confirmations?: ConfirmationListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -4765,81 +4754,79 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
 
-  export type AccountWhereInput = {
-    AND?: AccountWhereInput | AccountWhereInput[]
-    OR?: AccountWhereInput[]
-    NOT?: AccountWhereInput | AccountWhereInput[]
-    id?: StringFilter<"Account"> | string
-    type?: StringFilter<"Account"> | string
-    provider?: StringFilter<"Account"> | string
-    expiresAt?: IntFilter<"Account"> | number
-    refreshToken?: StringNullableFilter<"Account"> | string | null
-    accesToken?: StringNullableFilter<"Account"> | string | null
-    createdAt?: DateTimeFilter<"Account"> | Date | string
-    updatedAt?: DateTimeFilter<"Account"> | Date | string
-    userId?: StringNullableFilter<"Account"> | string | null
-    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  export type ConfirmationWhereInput = {
+    AND?: ConfirmationWhereInput | ConfirmationWhereInput[]
+    OR?: ConfirmationWhereInput[]
+    NOT?: ConfirmationWhereInput | ConfirmationWhereInput[]
+    id?: StringFilter<"Confirmation"> | string
+    type?: EnumConfirmationTypeFilter<"Confirmation"> | $Enums.ConfirmationType
+    status?: EnumConfirmationStatusFilter<"Confirmation"> | $Enums.ConfirmationStatus
+    createdAt?: DateTimeFilter<"Confirmation"> | Date | string
+    resolvedAt?: DateTimeNullableFilter<"Confirmation"> | Date | string | null
+    userId?: StringFilter<"Confirmation"> | string
+    photo?: StringNullableFilter<"Confirmation"> | string | null
+    frontIdUrl?: StringNullableFilter<"Confirmation"> | string | null
+    backIdUrl?: StringNullableFilter<"Confirmation"> | string | null
+    requester?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
-  export type AccountOrderByWithRelationInput = {
+  export type ConfirmationOrderByWithRelationInput = {
     id?: SortOrder
     type?: SortOrder
-    provider?: SortOrder
-    expiresAt?: SortOrder
-    refreshToken?: SortOrderInput | SortOrder
-    accesToken?: SortOrderInput | SortOrder
+    status?: SortOrder
     createdAt?: SortOrder
-    updatedAt?: SortOrder
-    userId?: SortOrderInput | SortOrder
-    user?: UserOrderByWithRelationInput
+    resolvedAt?: SortOrderInput | SortOrder
+    userId?: SortOrder
+    photo?: SortOrderInput | SortOrder
+    frontIdUrl?: SortOrderInput | SortOrder
+    backIdUrl?: SortOrderInput | SortOrder
+    requester?: UserOrderByWithRelationInput
   }
 
-  export type AccountWhereUniqueInput = Prisma.AtLeast<{
+  export type ConfirmationWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    AND?: AccountWhereInput | AccountWhereInput[]
-    OR?: AccountWhereInput[]
-    NOT?: AccountWhereInput | AccountWhereInput[]
-    type?: StringFilter<"Account"> | string
-    provider?: StringFilter<"Account"> | string
-    expiresAt?: IntFilter<"Account"> | number
-    refreshToken?: StringNullableFilter<"Account"> | string | null
-    accesToken?: StringNullableFilter<"Account"> | string | null
-    createdAt?: DateTimeFilter<"Account"> | Date | string
-    updatedAt?: DateTimeFilter<"Account"> | Date | string
-    userId?: StringNullableFilter<"Account"> | string | null
-    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    AND?: ConfirmationWhereInput | ConfirmationWhereInput[]
+    OR?: ConfirmationWhereInput[]
+    NOT?: ConfirmationWhereInput | ConfirmationWhereInput[]
+    type?: EnumConfirmationTypeFilter<"Confirmation"> | $Enums.ConfirmationType
+    status?: EnumConfirmationStatusFilter<"Confirmation"> | $Enums.ConfirmationStatus
+    createdAt?: DateTimeFilter<"Confirmation"> | Date | string
+    resolvedAt?: DateTimeNullableFilter<"Confirmation"> | Date | string | null
+    userId?: StringFilter<"Confirmation"> | string
+    photo?: StringNullableFilter<"Confirmation"> | string | null
+    frontIdUrl?: StringNullableFilter<"Confirmation"> | string | null
+    backIdUrl?: StringNullableFilter<"Confirmation"> | string | null
+    requester?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
-  export type AccountOrderByWithAggregationInput = {
+  export type ConfirmationOrderByWithAggregationInput = {
     id?: SortOrder
     type?: SortOrder
-    provider?: SortOrder
-    expiresAt?: SortOrder
-    refreshToken?: SortOrderInput | SortOrder
-    accesToken?: SortOrderInput | SortOrder
+    status?: SortOrder
     createdAt?: SortOrder
-    updatedAt?: SortOrder
-    userId?: SortOrderInput | SortOrder
-    _count?: AccountCountOrderByAggregateInput
-    _avg?: AccountAvgOrderByAggregateInput
-    _max?: AccountMaxOrderByAggregateInput
-    _min?: AccountMinOrderByAggregateInput
-    _sum?: AccountSumOrderByAggregateInput
+    resolvedAt?: SortOrderInput | SortOrder
+    userId?: SortOrder
+    photo?: SortOrderInput | SortOrder
+    frontIdUrl?: SortOrderInput | SortOrder
+    backIdUrl?: SortOrderInput | SortOrder
+    _count?: ConfirmationCountOrderByAggregateInput
+    _max?: ConfirmationMaxOrderByAggregateInput
+    _min?: ConfirmationMinOrderByAggregateInput
   }
 
-  export type AccountScalarWhereWithAggregatesInput = {
-    AND?: AccountScalarWhereWithAggregatesInput | AccountScalarWhereWithAggregatesInput[]
-    OR?: AccountScalarWhereWithAggregatesInput[]
-    NOT?: AccountScalarWhereWithAggregatesInput | AccountScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"Account"> | string
-    type?: StringWithAggregatesFilter<"Account"> | string
-    provider?: StringWithAggregatesFilter<"Account"> | string
-    expiresAt?: IntWithAggregatesFilter<"Account"> | number
-    refreshToken?: StringNullableWithAggregatesFilter<"Account"> | string | null
-    accesToken?: StringNullableWithAggregatesFilter<"Account"> | string | null
-    createdAt?: DateTimeWithAggregatesFilter<"Account"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"Account"> | Date | string
-    userId?: StringNullableWithAggregatesFilter<"Account"> | string | null
+  export type ConfirmationScalarWhereWithAggregatesInput = {
+    AND?: ConfirmationScalarWhereWithAggregatesInput | ConfirmationScalarWhereWithAggregatesInput[]
+    OR?: ConfirmationScalarWhereWithAggregatesInput[]
+    NOT?: ConfirmationScalarWhereWithAggregatesInput | ConfirmationScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Confirmation"> | string
+    type?: EnumConfirmationTypeWithAggregatesFilter<"Confirmation"> | $Enums.ConfirmationType
+    status?: EnumConfirmationStatusWithAggregatesFilter<"Confirmation"> | $Enums.ConfirmationStatus
+    createdAt?: DateTimeWithAggregatesFilter<"Confirmation"> | Date | string
+    resolvedAt?: DateTimeNullableWithAggregatesFilter<"Confirmation"> | Date | string | null
+    userId?: StringWithAggregatesFilter<"Confirmation"> | string
+    photo?: StringNullableWithAggregatesFilter<"Confirmation"> | string | null
+    frontIdUrl?: StringNullableWithAggregatesFilter<"Confirmation"> | string | null
+    backIdUrl?: StringNullableWithAggregatesFilter<"Confirmation"> | string | null
   }
 
   export type TokenWhereInput = {
@@ -4909,7 +4896,7 @@ export namespace Prisma {
     studentIdBack?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    accounts?: AccountCreateNestedManyWithoutUserInput
+    confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -4927,7 +4914,7 @@ export namespace Prisma {
     studentIdBack?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    confirmations?: ConfirmationUncheckedCreateNestedManyWithoutRequesterInput
   }
 
   export type UserUpdateInput = {
@@ -4945,7 +4932,7 @@ export namespace Prisma {
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    accounts?: AccountUpdateManyWithoutUserNestedInput
+    confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -4963,7 +4950,7 @@ export namespace Prisma {
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    confirmations?: ConfirmationUncheckedUpdateManyWithoutRequesterNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -5017,87 +5004,87 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type AccountCreateInput = {
+  export type ConfirmationCreateInput = {
     id?: string
-    type: string
-    provider: string
-    expiresAt: number
-    refreshToken?: string | null
-    accesToken?: string | null
+    type: $Enums.ConfirmationType
+    status?: $Enums.ConfirmationStatus
     createdAt?: Date | string
-    updatedAt?: Date | string
-    user?: UserCreateNestedOneWithoutAccountsInput
+    resolvedAt?: Date | string | null
+    photo?: string | null
+    frontIdUrl?: string | null
+    backIdUrl?: string | null
+    requester: UserCreateNestedOneWithoutConfirmationsInput
   }
 
-  export type AccountUncheckedCreateInput = {
+  export type ConfirmationUncheckedCreateInput = {
     id?: string
-    type: string
-    provider: string
-    expiresAt: number
-    refreshToken?: string | null
-    accesToken?: string | null
+    type: $Enums.ConfirmationType
+    status?: $Enums.ConfirmationStatus
     createdAt?: Date | string
-    updatedAt?: Date | string
-    userId?: string | null
+    resolvedAt?: Date | string | null
+    userId: string
+    photo?: string | null
+    frontIdUrl?: string | null
+    backIdUrl?: string | null
   }
 
-  export type AccountUpdateInput = {
+  export type ConfirmationUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    provider?: StringFieldUpdateOperationsInput | string
-    expiresAt?: IntFieldUpdateOperationsInput | number
-    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
-    accesToken?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumConfirmationTypeFieldUpdateOperationsInput | $Enums.ConfirmationType
+    status?: EnumConfirmationStatusFieldUpdateOperationsInput | $Enums.ConfirmationStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneWithoutAccountsNestedInput
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    photo?: NullableStringFieldUpdateOperationsInput | string | null
+    frontIdUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    backIdUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    requester?: UserUpdateOneRequiredWithoutConfirmationsNestedInput
   }
 
-  export type AccountUncheckedUpdateInput = {
+  export type ConfirmationUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    provider?: StringFieldUpdateOperationsInput | string
-    expiresAt?: IntFieldUpdateOperationsInput | number
-    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
-    accesToken?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumConfirmationTypeFieldUpdateOperationsInput | $Enums.ConfirmationType
+    status?: EnumConfirmationStatusFieldUpdateOperationsInput | $Enums.ConfirmationStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userId?: StringFieldUpdateOperationsInput | string
+    photo?: NullableStringFieldUpdateOperationsInput | string | null
+    frontIdUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    backIdUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type AccountCreateManyInput = {
+  export type ConfirmationCreateManyInput = {
     id?: string
-    type: string
-    provider: string
-    expiresAt: number
-    refreshToken?: string | null
-    accesToken?: string | null
+    type: $Enums.ConfirmationType
+    status?: $Enums.ConfirmationStatus
     createdAt?: Date | string
-    updatedAt?: Date | string
-    userId?: string | null
+    resolvedAt?: Date | string | null
+    userId: string
+    photo?: string | null
+    frontIdUrl?: string | null
+    backIdUrl?: string | null
   }
 
-  export type AccountUpdateManyMutationInput = {
+  export type ConfirmationUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    provider?: StringFieldUpdateOperationsInput | string
-    expiresAt?: IntFieldUpdateOperationsInput | number
-    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
-    accesToken?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumConfirmationTypeFieldUpdateOperationsInput | $Enums.ConfirmationType
+    status?: EnumConfirmationStatusFieldUpdateOperationsInput | $Enums.ConfirmationStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    photo?: NullableStringFieldUpdateOperationsInput | string | null
+    frontIdUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    backIdUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type AccountUncheckedUpdateManyInput = {
+  export type ConfirmationUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    provider?: StringFieldUpdateOperationsInput | string
-    expiresAt?: IntFieldUpdateOperationsInput | number
-    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
-    accesToken?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumConfirmationTypeFieldUpdateOperationsInput | $Enums.ConfirmationType
+    status?: EnumConfirmationStatusFieldUpdateOperationsInput | $Enums.ConfirmationStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userId?: StringFieldUpdateOperationsInput | string
+    photo?: NullableStringFieldUpdateOperationsInput | string | null
+    frontIdUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    backIdUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TokenCreateInput = {
@@ -5216,10 +5203,10 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type AccountListRelationFilter = {
-    every?: AccountWhereInput
-    some?: AccountWhereInput
-    none?: AccountWhereInput
+  export type ConfirmationListRelationFilter = {
+    every?: ConfirmationWhereInput
+    some?: ConfirmationWhereInput
+    none?: ConfirmationWhereInput
   }
 
   export type SortOrderInput = {
@@ -5227,7 +5214,7 @@ export namespace Prisma {
     nulls?: NullsOrder
   }
 
-  export type AccountOrderByRelationAggregateInput = {
+  export type ConfirmationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -5360,80 +5347,104 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
+  export type EnumConfirmationTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.ConfirmationType | EnumConfirmationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ConfirmationType[] | ListEnumConfirmationTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ConfirmationType[] | ListEnumConfirmationTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumConfirmationTypeFilter<$PrismaModel> | $Enums.ConfirmationType
   }
 
-  export type UserNullableScalarRelationFilter = {
-    is?: UserWhereInput | null
-    isNot?: UserWhereInput | null
+  export type EnumConfirmationStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ConfirmationStatus | EnumConfirmationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ConfirmationStatus[] | ListEnumConfirmationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ConfirmationStatus[] | ListEnumConfirmationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumConfirmationStatusFilter<$PrismaModel> | $Enums.ConfirmationStatus
   }
 
-  export type AccountCountOrderByAggregateInput = {
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
+  }
+
+  export type ConfirmationCountOrderByAggregateInput = {
     id?: SortOrder
     type?: SortOrder
-    provider?: SortOrder
-    expiresAt?: SortOrder
-    refreshToken?: SortOrder
-    accesToken?: SortOrder
+    status?: SortOrder
     createdAt?: SortOrder
-    updatedAt?: SortOrder
+    resolvedAt?: SortOrder
     userId?: SortOrder
+    photo?: SortOrder
+    frontIdUrl?: SortOrder
+    backIdUrl?: SortOrder
   }
 
-  export type AccountAvgOrderByAggregateInput = {
-    expiresAt?: SortOrder
-  }
-
-  export type AccountMaxOrderByAggregateInput = {
+  export type ConfirmationMaxOrderByAggregateInput = {
     id?: SortOrder
     type?: SortOrder
-    provider?: SortOrder
-    expiresAt?: SortOrder
-    refreshToken?: SortOrder
-    accesToken?: SortOrder
+    status?: SortOrder
     createdAt?: SortOrder
-    updatedAt?: SortOrder
+    resolvedAt?: SortOrder
     userId?: SortOrder
+    photo?: SortOrder
+    frontIdUrl?: SortOrder
+    backIdUrl?: SortOrder
   }
 
-  export type AccountMinOrderByAggregateInput = {
+  export type ConfirmationMinOrderByAggregateInput = {
     id?: SortOrder
     type?: SortOrder
-    provider?: SortOrder
-    expiresAt?: SortOrder
-    refreshToken?: SortOrder
-    accesToken?: SortOrder
+    status?: SortOrder
     createdAt?: SortOrder
-    updatedAt?: SortOrder
+    resolvedAt?: SortOrder
     userId?: SortOrder
+    photo?: SortOrder
+    frontIdUrl?: SortOrder
+    backIdUrl?: SortOrder
   }
 
-  export type AccountSumOrderByAggregateInput = {
-    expiresAt?: SortOrder
-  }
-
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+  export type EnumConfirmationTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ConfirmationType | EnumConfirmationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ConfirmationType[] | ListEnumConfirmationTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ConfirmationType[] | ListEnumConfirmationTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumConfirmationTypeWithAggregatesFilter<$PrismaModel> | $Enums.ConfirmationType
     _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumConfirmationTypeFilter<$PrismaModel>
+    _max?: NestedEnumConfirmationTypeFilter<$PrismaModel>
+  }
+
+  export type EnumConfirmationStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ConfirmationStatus | EnumConfirmationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ConfirmationStatus[] | ListEnumConfirmationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ConfirmationStatus[] | ListEnumConfirmationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumConfirmationStatusWithAggregatesFilter<$PrismaModel> | $Enums.ConfirmationStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumConfirmationStatusFilter<$PrismaModel>
+    _max?: NestedEnumConfirmationStatusFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type EnumTokenTypeFilter<$PrismaModel = never> = {
@@ -5477,18 +5488,18 @@ export namespace Prisma {
     _max?: NestedEnumTokenTypeFilter<$PrismaModel>
   }
 
-  export type AccountCreateNestedManyWithoutUserInput = {
-    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
-    createMany?: AccountCreateManyUserInputEnvelope
-    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+  export type ConfirmationCreateNestedManyWithoutRequesterInput = {
+    create?: XOR<ConfirmationCreateWithoutRequesterInput, ConfirmationUncheckedCreateWithoutRequesterInput> | ConfirmationCreateWithoutRequesterInput[] | ConfirmationUncheckedCreateWithoutRequesterInput[]
+    connectOrCreate?: ConfirmationCreateOrConnectWithoutRequesterInput | ConfirmationCreateOrConnectWithoutRequesterInput[]
+    createMany?: ConfirmationCreateManyRequesterInputEnvelope
+    connect?: ConfirmationWhereUniqueInput | ConfirmationWhereUniqueInput[]
   }
 
-  export type AccountUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
-    createMany?: AccountCreateManyUserInputEnvelope
-    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+  export type ConfirmationUncheckedCreateNestedManyWithoutRequesterInput = {
+    create?: XOR<ConfirmationCreateWithoutRequesterInput, ConfirmationUncheckedCreateWithoutRequesterInput> | ConfirmationCreateWithoutRequesterInput[] | ConfirmationUncheckedCreateWithoutRequesterInput[]
+    connectOrCreate?: ConfirmationCreateOrConnectWithoutRequesterInput | ConfirmationCreateOrConnectWithoutRequesterInput[]
+    createMany?: ConfirmationCreateManyRequesterInputEnvelope
+    connect?: ConfirmationWhereUniqueInput | ConfirmationWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -5515,56 +5526,58 @@ export namespace Prisma {
     set?: Date | string
   }
 
-  export type AccountUpdateManyWithoutUserNestedInput = {
-    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
-    upsert?: AccountUpsertWithWhereUniqueWithoutUserInput | AccountUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: AccountCreateManyUserInputEnvelope
-    set?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    disconnect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    delete?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    update?: AccountUpdateWithWhereUniqueWithoutUserInput | AccountUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: AccountUpdateManyWithWhereWithoutUserInput | AccountUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: AccountScalarWhereInput | AccountScalarWhereInput[]
+  export type ConfirmationUpdateManyWithoutRequesterNestedInput = {
+    create?: XOR<ConfirmationCreateWithoutRequesterInput, ConfirmationUncheckedCreateWithoutRequesterInput> | ConfirmationCreateWithoutRequesterInput[] | ConfirmationUncheckedCreateWithoutRequesterInput[]
+    connectOrCreate?: ConfirmationCreateOrConnectWithoutRequesterInput | ConfirmationCreateOrConnectWithoutRequesterInput[]
+    upsert?: ConfirmationUpsertWithWhereUniqueWithoutRequesterInput | ConfirmationUpsertWithWhereUniqueWithoutRequesterInput[]
+    createMany?: ConfirmationCreateManyRequesterInputEnvelope
+    set?: ConfirmationWhereUniqueInput | ConfirmationWhereUniqueInput[]
+    disconnect?: ConfirmationWhereUniqueInput | ConfirmationWhereUniqueInput[]
+    delete?: ConfirmationWhereUniqueInput | ConfirmationWhereUniqueInput[]
+    connect?: ConfirmationWhereUniqueInput | ConfirmationWhereUniqueInput[]
+    update?: ConfirmationUpdateWithWhereUniqueWithoutRequesterInput | ConfirmationUpdateWithWhereUniqueWithoutRequesterInput[]
+    updateMany?: ConfirmationUpdateManyWithWhereWithoutRequesterInput | ConfirmationUpdateManyWithWhereWithoutRequesterInput[]
+    deleteMany?: ConfirmationScalarWhereInput | ConfirmationScalarWhereInput[]
   }
 
-  export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
-    upsert?: AccountUpsertWithWhereUniqueWithoutUserInput | AccountUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: AccountCreateManyUserInputEnvelope
-    set?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    disconnect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    delete?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    update?: AccountUpdateWithWhereUniqueWithoutUserInput | AccountUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: AccountUpdateManyWithWhereWithoutUserInput | AccountUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: AccountScalarWhereInput | AccountScalarWhereInput[]
+  export type ConfirmationUncheckedUpdateManyWithoutRequesterNestedInput = {
+    create?: XOR<ConfirmationCreateWithoutRequesterInput, ConfirmationUncheckedCreateWithoutRequesterInput> | ConfirmationCreateWithoutRequesterInput[] | ConfirmationUncheckedCreateWithoutRequesterInput[]
+    connectOrCreate?: ConfirmationCreateOrConnectWithoutRequesterInput | ConfirmationCreateOrConnectWithoutRequesterInput[]
+    upsert?: ConfirmationUpsertWithWhereUniqueWithoutRequesterInput | ConfirmationUpsertWithWhereUniqueWithoutRequesterInput[]
+    createMany?: ConfirmationCreateManyRequesterInputEnvelope
+    set?: ConfirmationWhereUniqueInput | ConfirmationWhereUniqueInput[]
+    disconnect?: ConfirmationWhereUniqueInput | ConfirmationWhereUniqueInput[]
+    delete?: ConfirmationWhereUniqueInput | ConfirmationWhereUniqueInput[]
+    connect?: ConfirmationWhereUniqueInput | ConfirmationWhereUniqueInput[]
+    update?: ConfirmationUpdateWithWhereUniqueWithoutRequesterInput | ConfirmationUpdateWithWhereUniqueWithoutRequesterInput[]
+    updateMany?: ConfirmationUpdateManyWithWhereWithoutRequesterInput | ConfirmationUpdateManyWithWhereWithoutRequesterInput[]
+    deleteMany?: ConfirmationScalarWhereInput | ConfirmationScalarWhereInput[]
   }
 
-  export type UserCreateNestedOneWithoutAccountsInput = {
-    create?: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutAccountsInput
+  export type UserCreateNestedOneWithoutConfirmationsInput = {
+    create?: XOR<UserCreateWithoutConfirmationsInput, UserUncheckedCreateWithoutConfirmationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutConfirmationsInput
     connect?: UserWhereUniqueInput
   }
 
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
+  export type EnumConfirmationTypeFieldUpdateOperationsInput = {
+    set?: $Enums.ConfirmationType
   }
 
-  export type UserUpdateOneWithoutAccountsNestedInput = {
-    create?: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutAccountsInput
-    upsert?: UserUpsertWithoutAccountsInput
-    disconnect?: UserWhereInput | boolean
-    delete?: UserWhereInput | boolean
+  export type EnumConfirmationStatusFieldUpdateOperationsInput = {
+    set?: $Enums.ConfirmationStatus
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
+  export type UserUpdateOneRequiredWithoutConfirmationsNestedInput = {
+    create?: XOR<UserCreateWithoutConfirmationsInput, UserUncheckedCreateWithoutConfirmationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutConfirmationsInput
+    upsert?: UserUpsertWithoutConfirmationsInput
     connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAccountsInput, UserUpdateWithoutAccountsInput>, UserUncheckedUpdateWithoutAccountsInput>
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutConfirmationsInput, UserUpdateWithoutConfirmationsInput>, UserUncheckedUpdateWithoutConfirmationsInput>
   }
 
   export type EnumTokenTypeFieldUpdateOperationsInput = {
@@ -5727,31 +5740,63 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
+  export type NestedEnumConfirmationTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.ConfirmationType | EnumConfirmationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ConfirmationType[] | ListEnumConfirmationTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ConfirmationType[] | ListEnumConfirmationTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumConfirmationTypeFilter<$PrismaModel> | $Enums.ConfirmationType
   }
 
-  export type NestedFloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
+  export type NestedEnumConfirmationStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ConfirmationStatus | EnumConfirmationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ConfirmationStatus[] | ListEnumConfirmationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ConfirmationStatus[] | ListEnumConfirmationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumConfirmationStatusFilter<$PrismaModel> | $Enums.ConfirmationStatus
+  }
+
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedEnumConfirmationTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ConfirmationType | EnumConfirmationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ConfirmationType[] | ListEnumConfirmationTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ConfirmationType[] | ListEnumConfirmationTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumConfirmationTypeWithAggregatesFilter<$PrismaModel> | $Enums.ConfirmationType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumConfirmationTypeFilter<$PrismaModel>
+    _max?: NestedEnumConfirmationTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumConfirmationStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ConfirmationStatus | EnumConfirmationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ConfirmationStatus[] | ListEnumConfirmationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ConfirmationStatus[] | ListEnumConfirmationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumConfirmationStatusWithAggregatesFilter<$PrismaModel> | $Enums.ConfirmationStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumConfirmationStatusFilter<$PrismaModel>
+    _max?: NestedEnumConfirmationStatusFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumTokenTypeFilter<$PrismaModel = never> = {
@@ -5771,70 +5816,70 @@ export namespace Prisma {
     _max?: NestedEnumTokenTypeFilter<$PrismaModel>
   }
 
-  export type AccountCreateWithoutUserInput = {
+  export type ConfirmationCreateWithoutRequesterInput = {
     id?: string
-    type: string
-    provider: string
-    expiresAt: number
-    refreshToken?: string | null
-    accesToken?: string | null
+    type: $Enums.ConfirmationType
+    status?: $Enums.ConfirmationStatus
     createdAt?: Date | string
-    updatedAt?: Date | string
+    resolvedAt?: Date | string | null
+    photo?: string | null
+    frontIdUrl?: string | null
+    backIdUrl?: string | null
   }
 
-  export type AccountUncheckedCreateWithoutUserInput = {
+  export type ConfirmationUncheckedCreateWithoutRequesterInput = {
     id?: string
-    type: string
-    provider: string
-    expiresAt: number
-    refreshToken?: string | null
-    accesToken?: string | null
+    type: $Enums.ConfirmationType
+    status?: $Enums.ConfirmationStatus
     createdAt?: Date | string
-    updatedAt?: Date | string
+    resolvedAt?: Date | string | null
+    photo?: string | null
+    frontIdUrl?: string | null
+    backIdUrl?: string | null
   }
 
-  export type AccountCreateOrConnectWithoutUserInput = {
-    where: AccountWhereUniqueInput
-    create: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput>
+  export type ConfirmationCreateOrConnectWithoutRequesterInput = {
+    where: ConfirmationWhereUniqueInput
+    create: XOR<ConfirmationCreateWithoutRequesterInput, ConfirmationUncheckedCreateWithoutRequesterInput>
   }
 
-  export type AccountCreateManyUserInputEnvelope = {
-    data: AccountCreateManyUserInput | AccountCreateManyUserInput[]
+  export type ConfirmationCreateManyRequesterInputEnvelope = {
+    data: ConfirmationCreateManyRequesterInput | ConfirmationCreateManyRequesterInput[]
     skipDuplicates?: boolean
   }
 
-  export type AccountUpsertWithWhereUniqueWithoutUserInput = {
-    where: AccountWhereUniqueInput
-    update: XOR<AccountUpdateWithoutUserInput, AccountUncheckedUpdateWithoutUserInput>
-    create: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput>
+  export type ConfirmationUpsertWithWhereUniqueWithoutRequesterInput = {
+    where: ConfirmationWhereUniqueInput
+    update: XOR<ConfirmationUpdateWithoutRequesterInput, ConfirmationUncheckedUpdateWithoutRequesterInput>
+    create: XOR<ConfirmationCreateWithoutRequesterInput, ConfirmationUncheckedCreateWithoutRequesterInput>
   }
 
-  export type AccountUpdateWithWhereUniqueWithoutUserInput = {
-    where: AccountWhereUniqueInput
-    data: XOR<AccountUpdateWithoutUserInput, AccountUncheckedUpdateWithoutUserInput>
+  export type ConfirmationUpdateWithWhereUniqueWithoutRequesterInput = {
+    where: ConfirmationWhereUniqueInput
+    data: XOR<ConfirmationUpdateWithoutRequesterInput, ConfirmationUncheckedUpdateWithoutRequesterInput>
   }
 
-  export type AccountUpdateManyWithWhereWithoutUserInput = {
-    where: AccountScalarWhereInput
-    data: XOR<AccountUpdateManyMutationInput, AccountUncheckedUpdateManyWithoutUserInput>
+  export type ConfirmationUpdateManyWithWhereWithoutRequesterInput = {
+    where: ConfirmationScalarWhereInput
+    data: XOR<ConfirmationUpdateManyMutationInput, ConfirmationUncheckedUpdateManyWithoutRequesterInput>
   }
 
-  export type AccountScalarWhereInput = {
-    AND?: AccountScalarWhereInput | AccountScalarWhereInput[]
-    OR?: AccountScalarWhereInput[]
-    NOT?: AccountScalarWhereInput | AccountScalarWhereInput[]
-    id?: StringFilter<"Account"> | string
-    type?: StringFilter<"Account"> | string
-    provider?: StringFilter<"Account"> | string
-    expiresAt?: IntFilter<"Account"> | number
-    refreshToken?: StringNullableFilter<"Account"> | string | null
-    accesToken?: StringNullableFilter<"Account"> | string | null
-    createdAt?: DateTimeFilter<"Account"> | Date | string
-    updatedAt?: DateTimeFilter<"Account"> | Date | string
-    userId?: StringNullableFilter<"Account"> | string | null
+  export type ConfirmationScalarWhereInput = {
+    AND?: ConfirmationScalarWhereInput | ConfirmationScalarWhereInput[]
+    OR?: ConfirmationScalarWhereInput[]
+    NOT?: ConfirmationScalarWhereInput | ConfirmationScalarWhereInput[]
+    id?: StringFilter<"Confirmation"> | string
+    type?: EnumConfirmationTypeFilter<"Confirmation"> | $Enums.ConfirmationType
+    status?: EnumConfirmationStatusFilter<"Confirmation"> | $Enums.ConfirmationStatus
+    createdAt?: DateTimeFilter<"Confirmation"> | Date | string
+    resolvedAt?: DateTimeNullableFilter<"Confirmation"> | Date | string | null
+    userId?: StringFilter<"Confirmation"> | string
+    photo?: StringNullableFilter<"Confirmation"> | string | null
+    frontIdUrl?: StringNullableFilter<"Confirmation"> | string | null
+    backIdUrl?: StringNullableFilter<"Confirmation"> | string | null
   }
 
-  export type UserCreateWithoutAccountsInput = {
+  export type UserCreateWithoutConfirmationsInput = {
     id?: string
     email: string
     password: string
@@ -5851,7 +5896,7 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type UserUncheckedCreateWithoutAccountsInput = {
+  export type UserUncheckedCreateWithoutConfirmationsInput = {
     id?: string
     email: string
     password: string
@@ -5868,23 +5913,23 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type UserCreateOrConnectWithoutAccountsInput = {
+  export type UserCreateOrConnectWithoutConfirmationsInput = {
     where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
+    create: XOR<UserCreateWithoutConfirmationsInput, UserUncheckedCreateWithoutConfirmationsInput>
   }
 
-  export type UserUpsertWithoutAccountsInput = {
-    update: XOR<UserUpdateWithoutAccountsInput, UserUncheckedUpdateWithoutAccountsInput>
-    create: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
+  export type UserUpsertWithoutConfirmationsInput = {
+    update: XOR<UserUpdateWithoutConfirmationsInput, UserUncheckedUpdateWithoutConfirmationsInput>
+    create: XOR<UserCreateWithoutConfirmationsInput, UserUncheckedCreateWithoutConfirmationsInput>
     where?: UserWhereInput
   }
 
-  export type UserUpdateToOneWithWhereWithoutAccountsInput = {
+  export type UserUpdateToOneWithWhereWithoutConfirmationsInput = {
     where?: UserWhereInput
-    data: XOR<UserUpdateWithoutAccountsInput, UserUncheckedUpdateWithoutAccountsInput>
+    data: XOR<UserUpdateWithoutConfirmationsInput, UserUncheckedUpdateWithoutConfirmationsInput>
   }
 
-  export type UserUpdateWithoutAccountsInput = {
+  export type UserUpdateWithoutConfirmationsInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
@@ -5901,7 +5946,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type UserUncheckedUpdateWithoutAccountsInput = {
+  export type UserUncheckedUpdateWithoutConfirmationsInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
@@ -5918,48 +5963,48 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type AccountCreateManyUserInput = {
+  export type ConfirmationCreateManyRequesterInput = {
     id?: string
-    type: string
-    provider: string
-    expiresAt: number
-    refreshToken?: string | null
-    accesToken?: string | null
+    type: $Enums.ConfirmationType
+    status?: $Enums.ConfirmationStatus
     createdAt?: Date | string
-    updatedAt?: Date | string
+    resolvedAt?: Date | string | null
+    photo?: string | null
+    frontIdUrl?: string | null
+    backIdUrl?: string | null
   }
 
-  export type AccountUpdateWithoutUserInput = {
+  export type ConfirmationUpdateWithoutRequesterInput = {
     id?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    provider?: StringFieldUpdateOperationsInput | string
-    expiresAt?: IntFieldUpdateOperationsInput | number
-    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
-    accesToken?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumConfirmationTypeFieldUpdateOperationsInput | $Enums.ConfirmationType
+    status?: EnumConfirmationStatusFieldUpdateOperationsInput | $Enums.ConfirmationStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    photo?: NullableStringFieldUpdateOperationsInput | string | null
+    frontIdUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    backIdUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type AccountUncheckedUpdateWithoutUserInput = {
+  export type ConfirmationUncheckedUpdateWithoutRequesterInput = {
     id?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    provider?: StringFieldUpdateOperationsInput | string
-    expiresAt?: IntFieldUpdateOperationsInput | number
-    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
-    accesToken?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumConfirmationTypeFieldUpdateOperationsInput | $Enums.ConfirmationType
+    status?: EnumConfirmationStatusFieldUpdateOperationsInput | $Enums.ConfirmationStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    photo?: NullableStringFieldUpdateOperationsInput | string | null
+    frontIdUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    backIdUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type AccountUncheckedUpdateManyWithoutUserInput = {
+  export type ConfirmationUncheckedUpdateManyWithoutRequesterInput = {
     id?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    provider?: StringFieldUpdateOperationsInput | string
-    expiresAt?: IntFieldUpdateOperationsInput | number
-    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
-    accesToken?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumConfirmationTypeFieldUpdateOperationsInput | $Enums.ConfirmationType
+    status?: EnumConfirmationStatusFieldUpdateOperationsInput | $Enums.ConfirmationStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    photo?: NullableStringFieldUpdateOperationsInput | string | null
+    frontIdUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    backIdUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
 

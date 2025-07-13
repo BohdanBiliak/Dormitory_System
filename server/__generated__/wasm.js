@@ -137,16 +137,16 @@ exports.Prisma.UserScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.AccountScalarFieldEnum = {
+exports.Prisma.ConfirmationScalarFieldEnum = {
   id: 'id',
   type: 'type',
-  provider: 'provider',
-  expiresAt: 'expiresAt',
-  refreshToken: 'refreshToken',
-  accesToken: 'accesToken',
+  status: 'status',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  userId: 'userId'
+  resolvedAt: 'resolvedAt',
+  userId: 'userId',
+  photo: 'photo',
+  frontIdUrl: 'frontIdUrl',
+  backIdUrl: 'backIdUrl'
 };
 
 exports.Prisma.TokenScalarFieldEnum = {
@@ -178,7 +178,21 @@ exports.AuthMethod = exports.$Enums.AuthMethod = {
 
 exports.UserRole = exports.$Enums.UserRole = {
   Regular: 'Regular',
-  Admin: 'Admin'
+  Admin: 'Admin',
+  SignedInUser: 'SignedInUser'
+};
+
+exports.ConfirmationType = exports.$Enums.ConfirmationType = {
+  IDENTITY_VERIFICATION: 'IDENTITY_VERIFICATION',
+  ACCOMMODATION: 'ACCOMMODATION',
+  ROOM_CHANGE: 'ROOM_CHANGE',
+  ROOM_VACATION: 'ROOM_VACATION'
+};
+
+exports.ConfirmationStatus = exports.$Enums.ConfirmationStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
 };
 
 exports.TokenType = exports.$Enums.TokenType = {
@@ -189,7 +203,7 @@ exports.TokenType = exports.$Enums.TokenType = {
 
 exports.Prisma.ModelName = {
   User: 'User',
-  Account: 'Account',
+  Confirmation: 'Confirmation',
   Token: 'Token'
 };
 

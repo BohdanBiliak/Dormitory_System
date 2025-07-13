@@ -8,12 +8,13 @@ import { MailModule } from '@/libs/mail/mail.module';
 import { EmailConfirmationModule } from '@/auth/email-confirmation/email-confirmation.module';
 import {PasswordRecoveryModule} from "@/auth/password-recovery/password-recovery.module";
 import {TwoFactorAuthModule} from "@/auth/two-factor-auth/two-factor-auth.module";
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
     isGlobal: true,
     ignoreEnvFile: !IS_DEV_ENV,
-  }), PrismaModule, AuthModule, UserModule, MailModule, EmailConfirmationModule, MailModule, EmailConfirmationModule, PasswordRecoveryModule, TwoFactorAuthModule],
+  }), PrismaModule, AuthModule, UserModule, MailModule, EmailConfirmationModule, MailModule, EmailConfirmationModule, PasswordRecoveryModule, TwoFactorAuthModule, AdminModule],
   controllers: [],
   providers: [],
 })

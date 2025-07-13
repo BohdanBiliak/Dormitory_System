@@ -1,15 +1,20 @@
-import { IsBoolean, IsEmail, IsNotEmpty, IsString } from 'class-validator'
+
+import { IsBoolean, IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateUserDto {
-    @IsString({ message: 'Name must be a string' })
-    @IsNotEmpty({ message: 'Name is required' })
-    name: string
+    @ApiProperty({ example: 'Bohdan', description: 'User\'s name' })
+    @IsString()
+    @IsNotEmpty()
+    name: string;
 
-    @IsString({ message: 'email must be a string' })
-    @IsEmail({}, { message: 'Must be a valid email' })
-    @IsNotEmpty({ message: 'Email is required' })
-    email: string
+    @ApiProperty({ example: 'user@example.com', description: 'User\'s email' })
+    @IsString()
+    @IsEmail()
+    @IsNotEmpty()
+    email: string;
 
-    @IsBoolean({ message: 'isTwoFactorEnabled must be a boolean' })
-    isTwoFactorEnabled: boolean
+    @ApiProperty({ example: true, description: 'Two-factor enabled or not' })
+    @IsBoolean()
+    isTwoFactorEnabled: boolean;
 }
