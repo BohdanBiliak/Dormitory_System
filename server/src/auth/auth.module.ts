@@ -9,6 +9,7 @@ import { recaptchaConfig } from "@/config/recaptcha.config";
 import {EmailConfirmationModule} from "@/auth/email-confirmation/email-confirmation.module";
 import {MailService} from "@/libs/mail/mail.service";
 import {TwoFactorAuthService} from "@/auth/two-factor-auth/two-factor-auth.service";
+import {S3Service} from "@/libs/s3/s3.service";
 
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import {TwoFactorAuthService} from "@/auth/two-factor-auth/two-factor-auth.servi
 
   ],
   controllers: [AuthController],
-  providers: [AuthService, UserService, MailService, TwoFactorAuthService],
+  providers: [AuthService, UserService, MailService, TwoFactorAuthService, S3Service],
   exports: [AuthService]
 })
 export class AuthModule {}

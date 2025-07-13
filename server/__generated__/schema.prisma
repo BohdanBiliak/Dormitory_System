@@ -30,11 +30,14 @@ model User {
   email              String     @unique
   password           String
   displayName        String
-  picture            String?
+  picture            String
   isVerified         Boolean    @default(false) @map("is_verified")
   isTwoFactorEnabled Boolean    @default(false) @map("is_two_factor_enabled")
   method             AuthMethod
   role               UserRole   @default(Regular)
+  secondName         String     @map("second_name")
+  studentIdFront     String     @map("student_id_front")
+  studentIdBack      String?    @map("student_id_back")
 
   accounts Account[]
 
@@ -45,13 +48,12 @@ model User {
 }
 
 model Account {
-  id       String @id @default(uuid())
-  type     String
-  provider String
-
+  id           String  @id @default(uuid())
+  type         String
+  provider     String
+  expiresAt    Int     @map("expires_at")
   refreshToken String? @map("refresh_token")
   accesToken   String? @map("access_token")
-  expiresAt    Int     @map("expires_at")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")

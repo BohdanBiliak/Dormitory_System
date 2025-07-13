@@ -38,19 +38,25 @@ export class UserService {
   }
 
   public async create(
-    email: string,
-    password: string,
-    displayName: string,
-    picture: string,
-    method: AuthMethod,
-    isVerified: boolean,
+      email: string,
+      password: string,
+      displayName: string,
+      secondName: string,
+      method: AuthMethod,
+      isVerified: boolean,
+      avatarUrl: string,
+      frontUrl: string,
+      backUrl: string
   ) {
     const user = await this.prismaService.user.create({
       data: {
         email,
-        password: password ? await hash(password) : "",
+        password: await hash(password),
         displayName,
-        picture,
+        secondName,
+        picture: avatarUrl,
+        studentIdFront: frontUrl,
+        studentIdBack: backUrl,
         method,
         isVerified,
       },
@@ -60,6 +66,7 @@ export class UserService {
     });
     return user;
   }
+
   public async update(userId: string, dto: UpdateUserDto) {
     const user = await this.findById(userId)
 

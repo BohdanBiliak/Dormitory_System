@@ -16,6 +16,7 @@ import { ConfigService } from "@nestjs/config";
 import {PrismaService} from "@/prisma/prisma.service";
 import {EmailConfirmationService} from "@/auth/email-confirmation/email-confirmation.service";
 import {TwoFactorAuthService} from "@/auth/two-factor-auth/two-factor-auth.service";
+import {S3Service} from "@/libs/s3/s3.service";
 
 @Injectable()
 export class AuthService {
@@ -25,28 +26,62 @@ export class AuthService {
     private readonly prismaService: PrismaService,
     private readonly emailConfirmationService: EmailConfirmationService,
     private readonly twoFactorAuthService: TwoFactorAuthService,
+    private readonly s3Service: S3Service,
   ) {}
 
-  public async register(req: Request, dto: RegisterDto) {
+  public async register(
+      req: Request,
+      dto: RegisterDto,
+      files: {
+        avatar: Express.Multer.File[];
+        studentIdFront: Express.Multer.File[];
+        studentIdBack: Express.Multer.File[];
+      }
+  ) {
     const isExists = await this.userService.findByEmail(dto.email);
     if (isExists) {
-      throw new ConflictException(
-        "Registration not succesfully. User already exists",
-      );
+      throw new ConflictException("Registration not successfully. User already exists");
     }
+    console.log('FILES:', {
+      avatar: files.avatar?.[0]?.originalname,
+      front: files.studentIdFront?.[0]?.originalname,
+      back: files.studentIdBack?.[0]?.originalname,
+    });
+    const avatarFile = files.avatar?.[0];
+    const frontFile = files.studentIdFront?.[0];
+    const backFile = files.studentIdBack?.[0];
+
+    const avatarUrls = avatarFile
+        ? await this.s3Service.uploadResponsiveImage(avatarFile, dto.secondName, 'avatar')
+        : null;
+
+    const frontUrl = frontFile
+        ? await this.s3Service.uploadFile(frontFile, 'users/studentIdFront')
+        : '';
+
+    const backUrl = backFile
+        ? await this.s3Service.uploadFile(backFile, 'users/studentIdBack')
+        : '';
+
     const newUser = await this.userService.create(
-      dto.email,
-      dto.password,
-      dto.name,
-      "",
-      AuthMethod.CREDENTIALS,
-      false,
+        dto.email,
+        dto.password,
+        dto.name,
+        dto.secondName ?? '',
+        AuthMethod.CREDENTIALS,
+        false,
+        avatarUrls?.desktop ?? '',
+        frontUrl,
+        backUrl
     );
-    await this.emailConfirmationService.sendVerificationToken(newUser)
+
+    await this.emailConfirmationService.sendVerificationToken(newUser);
+
     return {
-      message: "Register successfully. Please, approve your email. Mail was sent on your email address.",
-    }
+      message: "Register successfully. Please, approve your email. Mail was sent to your email address.",
+    };
   }
+
 
   public async login(req: Request, dto: LoginDto) {
     const user = await this.userService.findByEmail(dto.email);

@@ -130,6 +130,9 @@ exports.Prisma.UserScalarFieldEnum = {
   isTwoFactorEnabled: 'isTwoFactorEnabled',
   method: 'method',
   role: 'role',
+  secondName: 'secondName',
+  studentIdFront: 'studentIdFront',
+  studentIdBack: 'studentIdBack',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -138,9 +141,9 @@ exports.Prisma.AccountScalarFieldEnum = {
   id: 'id',
   type: 'type',
   provider: 'provider',
+  expiresAt: 'expiresAt',
   refreshToken: 'refreshToken',
   accesToken: 'accesToken',
-  expiresAt: 'expiresAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   userId: 'userId'
