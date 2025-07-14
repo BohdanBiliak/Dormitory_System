@@ -1,6 +1,6 @@
 import { ConfigService } from "@nestjs/config";
 import { GoogleRecaptchaModuleOptions } from "@nestlab/google-recaptcha";
-import {isDev} from "@/libs/common/utils/is-dev.util";
+import {isDev} from "@/libs/utils/is-dev.util";
 
 export const recaptchaConfig = async (
   configService: ConfigService,

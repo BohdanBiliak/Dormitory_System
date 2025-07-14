@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import {ConfigModule} from "@nestjs/config";
-import {IS_DEV_ENV} from "@/libs/common/utils/is-dev.util";
+import {IS_DEV_ENV} from "@/libs/utils/is-dev.util";
 import { PrismaModule } from './prisma/prisma.module';
-import { AuthModule } from './auth/auth.module';
-import { UserModule } from './user/user.module';
+import { AuthModule } from '@/modules/auth/auth.module';
+import { UserModule } from '@/modules/user/user.module';
 import { MailModule } from '@/libs/mail/mail.module';
-import { EmailConfirmationModule } from '@/auth/email-confirmation/email-confirmation.module';
-import {PasswordRecoveryModule} from "@/auth/password-recovery/password-recovery.module";
-import {TwoFactorAuthModule} from "@/auth/two-factor-auth/two-factor-auth.module";
-import { AdminModule } from './admin/admin.module';
+import { EmailConfirmationModule } from '@/modules/auth/submodules/email-confirmation/email-confirmation.module';
+import {PasswordRecoveryModule} from "@/modules/auth/submodules/password-recovery/password-recovery.module";
+import {TwoFactorAuthModule} from "@/modules/auth/submodules/two-factor-auth/two-factor-auth.module";
+import { AdminModule } from '@/modules/admin/admin.module';
 
 @Module({
   imports: [ConfigModule.forRoot({

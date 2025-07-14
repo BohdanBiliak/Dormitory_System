@@ -1,14 +1,14 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import * as cookieParser from 'cookie-parser';
+import cookieParser from 'cookie-parser';
 import { ConfigService } from '@nestjs/config';
 import { ValidationPipe } from '@nestjs/common';
-import * as session from 'express-session';
+import session from 'express-session';
 import { createClient } from 'redis';
 import { RedisStore } from 'connect-redis';
 import { SwaggerSetup } from '@/libs/swagger/swagger.module';
-import { ms, StringValue } from '@/libs/common/utils/ms.util';
-import { parseBoolean } from '@/libs/common/utils/parse_boolean';
+import { ms, StringValue } from '@/libs/utils/ms.util';
+import { parseBoolean } from '@/libs/utils/parse_boolean';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
