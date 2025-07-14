@@ -6,18 +6,15 @@ import {
   HttpCode,
   HttpStatus,
   Patch,
-  Req,
-  UnauthorizedException, UseGuards
+  Param,
 } from '@nestjs/common';
 import { UserService } from '../services/user.service';
-import {Authorized} from "@/libs/common/decorators/authtorized.decorator";
-import {Authorization} from "@/libs/common/decorators/auth.decorator";
-import {$Enums} from "../../../../__generated__";
+import { Authorized } from "@/libs/common/decorators/authtorized.decorator";
+import { Authorization } from "@/libs/common/decorators/auth.decorator";
+import { $Enums } from "../../../../__generated__";
 import UserRole = $Enums.UserRole;
-import {UpdateUserDto} from "@/modules/user/dto/update-user.dto";
-import {Request} from "express"
-import {ApiBearerAuth, ApiBody, ApiOperation, ApiTags} from "@nestjs/swagger";
-import {SessionGuard} from "@/libs/common/guards/SessionGuard.guard";
+import { UpdateUserDto } from "@/modules/user/dto/update-user.dto";
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiOkResponse, ApiTags } from "@nestjs/swagger";
 
 @ApiTags('Users')
 @ApiBearerAuth()
@@ -26,36 +23,89 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Authorization()
-  @ApiOperation({ summary: 'Get current user profile' })
+  @ApiOperation({
+    summary: 'Get current user profile',
+    description: 'Returns the profile of the currently authenticated user.'
+  })
+  @ApiOkResponse({
+    description: 'Current user profile',
+    schema: {
+      example: {
+        id: 'uuid',
+        email: 'user@example.com',
+        displayName: 'Bohdan',
+        isTwoFactorEnabled: true,
+        createdAt: '2024-07-01T12:00:00.000Z'
+      }
+    }
+  })
   @HttpCode(HttpStatus.OK)
   @Get('profile')
-  public async findProfile(@Authorized('id') userId: string){
+  public async findProfile(
+      @Authorized('id') userId: string
+  ) {
     return this.userService.findById(userId);
   }
 
+  @ApiOperation({
+    summary: 'Get user by ID',
+    description: 'Returns the profile of a user by their ID. Only for debugging or internal use.'
+  })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    description: 'User ID to look up'
+  })
+  @ApiOkResponse({
+    description: 'User profile by ID',
+    schema: {
+      example: {
+        id: 'uuid',
+        email: 'user@example.com',
+        displayName: 'Bohdan',
+        isTwoFactorEnabled: true,
+        createdAt: '2024-07-01T12:00:00.000Z'
+      }
+    }
+  })
   @HttpCode(HttpStatus.OK)
   @Get('by-id/:id')
-  public async findById(@Authorized('id') userId: string){
-    return this.userService.findById(userId);
+  public async findById(
+      @Param('id') id: string
+  ) {
+    return this.userService.findById(id);
   }
 
   @Authorization()
+  @ApiOperation({
+    summary: 'Update current user profile',
+    description: 'Allows a verified user to update their profile details.'
+  })
+  @ApiBody({
+    type: UpdateUserDto,
+    description: 'Data to update in the user profile'
+  })
+  @ApiOkResponse({
+    description: 'Updated user profile',
+    schema: {
+      example: {
+        id: 'uuid',
+        email: 'updated@example.com',
+        displayName: 'Updated Name',
+        isTwoFactorEnabled: true
+      }
+    }
+  })
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Update current user profile' })
-  @ApiBody({ type: UpdateUserDto })
   @Patch('profile')
   public async updateProfile(
-
       @Authorized('id') userId: string,
       @Authorized('role') role: UserRole,
-
       @Body() dto: UpdateUserDto
   ) {
-
     if (role !== UserRole.SignedInUser) {
       throw new ForbiddenException('Only verified users can update profile');
     }
-    return this.userService.update(userId, dto)
+    return this.userService.update(userId, dto);
   }
-
 }
