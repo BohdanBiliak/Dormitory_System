@@ -70,11 +70,11 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Detrox\WebstormProjects\Dormitory" />
-      <recent name="C:\Users\Detrox\WebstormProjects\Dormitory\client\src\shared\components\ui" />
-      <recent name="C:\Users\Detrox\WebstormProjects\Dormitory\client\src\shared\utils" />
-      <recent name="C:\Users\Detrox\WebstormProjects\Dormitory\client\src\shared\styles" />
-      <recent name="C:\Users\Detrox\WebstormProjects\Dormitory\client\src" />
+      <recent name="C:\Users\Detrox\WebstormProjects\Dormitory\server\src\modules\auth\submodules\two-factor-auth\services" />
+      <recent name="C:\Users\Detrox\WebstormProjects\Dormitory\server\src\modules\auth\submodules\password-recovery\services" />
+      <recent name="C:\Users\Detrox\WebstormProjects\Dormitory\server\src\modules\auth\submodules\password-recovery\controllers" />
+      <recent name="C:\Users\Detrox\WebstormProjects\Dormitory\server\src\modules\auth\submodules\email-confirmation\services" />
+      <recent name="C:\Users\Detrox\WebstormProjects\Dormitory\server\src\modules\auth\submodules\email-confirmation\controllers" />
     </key>
   </component>
   <component name="SharedIndexes">
@@ -115,7 +115,15 @@
       <workItem from="1752237558566" duration="4780000" />
       <workItem from="1752338487735" duration="6197000" />
       <workItem from="1752396358963" duration="4801000" />
-      <workItem from="1752404266331" duration="1651000" />
+      <workItem from="1752404266331" duration="1827000" />
+      <workItem from="1752408924898" duration="3165000" />
+      <workItem from="1752417354062" duration="8252000" />
+      <workItem from="1752426055534" duration="345000" />
+      <workItem from="1752426415247" duration="1601000" />
+      <workItem from="1752428196386" duration="3776000" />
+      <workItem from="1752480697364" duration="7684000" />
+      <workItem from="1752493423551" duration="3095000" />
+      <workItem from="1752504178884" duration="34000" />
     </task>
     <servers />
   </component>
@@ -130,7 +138,7 @@
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/server/src/auth/auth.controller.ts</url>
+          <url>file://$PROJECT_DIR$/server/src/modules/auth/controllers/auth.controller.ts</url>
           <line>11</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
@@ -157,6 +165,10 @@
           <url>file://$PROJECT_DIR$/client/src/app/layout.tsx</url>
           <line>2</line>
           <option name="timeStamp" value="22" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/server/src/libs/swagger/swagger.service.ts</url>
+          <option name="timeStamp" value="23" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
