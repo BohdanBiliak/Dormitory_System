@@ -133,8 +133,18 @@ exports.Prisma.UserScalarFieldEnum = {
   secondName: 'secondName',
   studentIdFront: 'studentIdFront',
   studentIdBack: 'studentIdBack',
+  dormitoryId: 'dormitoryId',
+  roomId: 'roomId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.DormitoryAdminScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  dormitoryId: 'dormitoryId',
+  role: 'role',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.ConfirmationScalarFieldEnum = {
@@ -155,6 +165,45 @@ exports.Prisma.TokenScalarFieldEnum = {
   token: 'token',
   type: 'type',
   expiresIn: 'expiresIn'
+};
+
+exports.Prisma.DormitoryScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  name: 'name',
+  address: 'address',
+  groundFloorPhoneNumber: 'groundFloorPhoneNumber',
+  status: 'status',
+  photos: 'photos',
+  managerId: 'managerId'
+};
+
+exports.Prisma.RoomScalarFieldEnum = {
+  id: 'id',
+  number: 'number',
+  floor: 'floor',
+  createdAt: 'createdAt',
+  capacity: 'capacity',
+  roomEquipment: 'roomEquipment',
+  photos: 'photos',
+  dormitoryId: 'dormitoryId'
+};
+
+exports.Prisma.RoomStatusScalarFieldEnum = {
+  id: 'id',
+  dateOfStart: 'dateOfStart',
+  dateOfEnd: 'dateOfEnd',
+  description: 'description',
+  roomId: 'roomId'
+};
+
+exports.Prisma.PriceScalarFieldEnum = {
+  id: 'id',
+  roomCapacity: 'roomCapacity',
+  pricePerMonth: 'pricePerMonth',
+  pricePerDay: 'pricePerDay',
+  dateFrom: 'dateFrom',
+  dateTo: 'dateTo'
 };
 
 exports.Prisma.SortOrder = {
@@ -179,7 +228,8 @@ exports.AuthMethod = exports.$Enums.AuthMethod = {
 exports.UserRole = exports.$Enums.UserRole = {
   Regular: 'Regular',
   Admin: 'Admin',
-  SignedInUser: 'SignedInUser'
+  SignedInUser: 'SignedInUser',
+  SuperAdmin: 'SuperAdmin'
 };
 
 exports.ConfirmationType = exports.$Enums.ConfirmationType = {
@@ -203,8 +253,13 @@ exports.TokenType = exports.$Enums.TokenType = {
 
 exports.Prisma.ModelName = {
   User: 'User',
+  DormitoryAdmin: 'DormitoryAdmin',
   Confirmation: 'Confirmation',
-  Token: 'Token'
+  Token: 'Token',
+  Dormitory: 'Dormitory',
+  Room: 'Room',
+  RoomStatus: 'RoomStatus',
+  Price: 'Price'
 };
 
 /**

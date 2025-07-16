@@ -13,6 +13,7 @@ enum UserRole {
   Regular
   Admin
   SignedInUser
+  SuperAdmin
 }
 
 enum AuthMethod {
@@ -25,6 +26,7 @@ enum TokenType {
   TWO_FACTOR
   PASSWORD_RESET
 }
+
 enum ConfirmationType {
   IDENTITY_VERIFICATION
   ACCOMMODATION
@@ -37,6 +39,7 @@ enum ConfirmationStatus {
   APPROVED
   REJECTED
 }
+
 model User {
   id                 String         @id @default(uuid())
   email              String         @unique
@@ -51,13 +54,29 @@ model User {
   studentIdFront     String         @map("student_id_front")
   studentIdBack      String?        @map("student_id_back")
   confirmations      Confirmation[] @relation("UserConfirmations")
-
+  dormitoryAdminAssignments DormitoryAdmin[]
+  dormitory   Dormitory? @relation("DormitoryResidents", fields: [dormitoryId], references: [id])
+  dormitoryId String?
+  managedDormitories Dormitory[] @relation("ManagedDormitories")
+  roomId String?
+  room   Room?   @relation(fields: [roomId], references: [id])
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
-
   @@map("users")
 }
 
+
+model DormitoryAdmin {
+  id          String   @id @default(uuid())
+  userId      String
+  dormitoryId String
+  role        String
+  createdAt   DateTime @default(now())
+  user        User      @relation(fields: [userId], references: [id])
+  dormitory   Dormitory @relation(fields: [dormitoryId], references: [id])
+
+  @@unique([userId, dormitoryId]) // один раз призначити
+}
 model Confirmation {
   id         String             @id @default(uuid())
   type       ConfirmationType
@@ -73,8 +92,6 @@ model Confirmation {
   backIdUrl  String?
 }
 
-
-
 model Token {
   id        String    @id @default(uuid())
   email     String
@@ -84,3 +101,52 @@ model Token {
 
   @@map("tokens")
 }
+
+model Dormitory {
+  id                     String   @id @default(uuid())
+  createdAt              DateTime @default(now())
+  name                   String
+  address                String
+  groundFloorPhoneNumber String
+  status                 String   @default("Active")
+  photos                 String[]
+  managerId String?
+  manager   User?   @relation("ManagedDormitories", fields: [managerId], references: [id])
+  admins DormitoryAdmin[]
+  residents User[] @relation("DormitoryResidents")
+  rooms Room[]
+}
+
+model Room {
+  id            String       @id @default(uuid())
+  number        String
+  floor         Int
+  createdAt     DateTime     @default(now()) @map("created_at")
+  capacity      Int
+  statuses      RoomStatus[]
+  residents     User[]
+  roomEquipment String[]
+  photos        String[]
+  dormitoryId   String
+  dormitroy     Dormitory    @relation(fields: [dormitoryId], references: [id])
+}
+
+model RoomStatus {
+  id          String    @id @default(uuid())
+  dateOfStart DateTime
+  dateOfEnd   DateTime?
+  description String
+
+  roomId String
+  room   Room   @relation(fields: [roomId], references: [id])
+}
+
+model Price {
+  id            String    @id @default(uuid())
+  roomCapacity  Int
+  pricePerMonth Float
+  pricePerDay   Float
+  dateFrom      DateTime
+  dateTo        DateTime?
+}
+

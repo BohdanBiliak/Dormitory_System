@@ -11,7 +11,10 @@
     "outDir": "./dist",
     "baseUrl": "./src",
     "paths": {
-      "@/*": ["*"],
+      "@/*": ["./*"],
+      "@libs/*": ["libs/*"],
+      "@modules/*": ["modules/*"],
+      "@mail/*": ["libs/mail/*"],
       "@prisma/__generated__": ["__generated__"],
       "@prisma/__generated__/*": ["__generated__/*"]
     },
@@ -25,7 +28,9 @@
     "jsx": "react",
     "typeRoots": ["./node_modules/@types", "./src/types"],
     "resolveJsonModule": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "allowJs": true,
+
   },
-  "include": ["src"]
+  "include": ["src", "src/types/**/*.d.ts", "test/**/*.ts"]
 }

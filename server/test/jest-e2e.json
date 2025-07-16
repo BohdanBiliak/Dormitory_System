@@ -1,0 +1,19 @@
+{
+  "rootDir": "../",
+  "moduleDirectories": ["node_modules", "src"],
+  "moduleNameMapper": {
+    "^@/(.*)$": "$1"
+  },
+  "moduleFileExtensions": ["ts","tsx","js","jsx","json","node"],
+  "transform": {
+    "^.+\\.[tj]sx?$": "ts-jest"
+  },
+  "setupFiles": ["dotenv/config"],
+  "setupFilesAfterEnv": ["<rootDir>/test/jest.setup.ts"],
+  "testRegex": "\\.e2e-spec\\.ts$",
+  "testEnvironment": "node",
+  "transformIgnorePatterns": [
+    "node_modules/(?!(axios-cookiejar-support|tough-cookie)/)"
+  ]
+
+}

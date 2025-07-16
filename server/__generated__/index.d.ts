@@ -19,6 +19,11 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 /**
+ * Model DormitoryAdmin
+ * 
+ */
+export type DormitoryAdmin = $Result.DefaultSelection<Prisma.$DormitoryAdminPayload>
+/**
  * Model Confirmation
  * 
  */
@@ -28,6 +33,26 @@ export type Confirmation = $Result.DefaultSelection<Prisma.$ConfirmationPayload>
  * 
  */
 export type Token = $Result.DefaultSelection<Prisma.$TokenPayload>
+/**
+ * Model Dormitory
+ * 
+ */
+export type Dormitory = $Result.DefaultSelection<Prisma.$DormitoryPayload>
+/**
+ * Model Room
+ * 
+ */
+export type Room = $Result.DefaultSelection<Prisma.$RoomPayload>
+/**
+ * Model RoomStatus
+ * 
+ */
+export type RoomStatus = $Result.DefaultSelection<Prisma.$RoomStatusPayload>
+/**
+ * Model Price
+ * 
+ */
+export type Price = $Result.DefaultSelection<Prisma.$PricePayload>
 
 /**
  * Enums
@@ -36,7 +61,8 @@ export namespace $Enums {
   export const UserRole: {
   Regular: 'Regular',
   Admin: 'Admin',
-  SignedInUser: 'SignedInUser'
+  SignedInUser: 'SignedInUser',
+  SuperAdmin: 'SuperAdmin'
 };
 
 export type UserRole = (typeof UserRole)[keyof typeof UserRole]
@@ -235,6 +261,16 @@ export class PrismaClient<
   get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.dormitoryAdmin`: Exposes CRUD operations for the **DormitoryAdmin** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more DormitoryAdmins
+    * const dormitoryAdmins = await prisma.dormitoryAdmin.findMany()
+    * ```
+    */
+  get dormitoryAdmin(): Prisma.DormitoryAdminDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.confirmation`: Exposes CRUD operations for the **Confirmation** model.
     * Example usage:
     * ```ts
@@ -253,6 +289,46 @@ export class PrismaClient<
     * ```
     */
   get token(): Prisma.TokenDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.dormitory`: Exposes CRUD operations for the **Dormitory** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Dormitories
+    * const dormitories = await prisma.dormitory.findMany()
+    * ```
+    */
+  get dormitory(): Prisma.DormitoryDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.room`: Exposes CRUD operations for the **Room** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Rooms
+    * const rooms = await prisma.room.findMany()
+    * ```
+    */
+  get room(): Prisma.RoomDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.roomStatus`: Exposes CRUD operations for the **RoomStatus** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RoomStatuses
+    * const roomStatuses = await prisma.roomStatus.findMany()
+    * ```
+    */
+  get roomStatus(): Prisma.RoomStatusDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.price`: Exposes CRUD operations for the **Price** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Prices
+    * const prices = await prisma.price.findMany()
+    * ```
+    */
+  get price(): Prisma.PriceDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -694,8 +770,13 @@ export namespace Prisma {
 
   export const ModelName: {
     User: 'User',
+    DormitoryAdmin: 'DormitoryAdmin',
     Confirmation: 'Confirmation',
-    Token: 'Token'
+    Token: 'Token',
+    Dormitory: 'Dormitory',
+    Room: 'Room',
+    RoomStatus: 'RoomStatus',
+    Price: 'Price'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -714,7 +795,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "confirmation" | "token"
+      modelProps: "user" | "dormitoryAdmin" | "confirmation" | "token" | "dormitory" | "room" | "roomStatus" | "price"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -789,6 +870,80 @@ export namespace Prisma {
           count: {
             args: Prisma.UserCountArgs<ExtArgs>
             result: $Utils.Optional<UserCountAggregateOutputType> | number
+          }
+        }
+      }
+      DormitoryAdmin: {
+        payload: Prisma.$DormitoryAdminPayload<ExtArgs>
+        fields: Prisma.DormitoryAdminFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DormitoryAdminFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DormitoryAdminPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DormitoryAdminFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DormitoryAdminPayload>
+          }
+          findFirst: {
+            args: Prisma.DormitoryAdminFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DormitoryAdminPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DormitoryAdminFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DormitoryAdminPayload>
+          }
+          findMany: {
+            args: Prisma.DormitoryAdminFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DormitoryAdminPayload>[]
+          }
+          create: {
+            args: Prisma.DormitoryAdminCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DormitoryAdminPayload>
+          }
+          createMany: {
+            args: Prisma.DormitoryAdminCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DormitoryAdminCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DormitoryAdminPayload>[]
+          }
+          delete: {
+            args: Prisma.DormitoryAdminDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DormitoryAdminPayload>
+          }
+          update: {
+            args: Prisma.DormitoryAdminUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DormitoryAdminPayload>
+          }
+          deleteMany: {
+            args: Prisma.DormitoryAdminDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DormitoryAdminUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DormitoryAdminUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DormitoryAdminPayload>[]
+          }
+          upsert: {
+            args: Prisma.DormitoryAdminUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DormitoryAdminPayload>
+          }
+          aggregate: {
+            args: Prisma.DormitoryAdminAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDormitoryAdmin>
+          }
+          groupBy: {
+            args: Prisma.DormitoryAdminGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DormitoryAdminGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DormitoryAdminCountArgs<ExtArgs>
+            result: $Utils.Optional<DormitoryAdminCountAggregateOutputType> | number
           }
         }
       }
@@ -940,6 +1095,302 @@ export namespace Prisma {
           }
         }
       }
+      Dormitory: {
+        payload: Prisma.$DormitoryPayload<ExtArgs>
+        fields: Prisma.DormitoryFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DormitoryFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DormitoryPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DormitoryFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DormitoryPayload>
+          }
+          findFirst: {
+            args: Prisma.DormitoryFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DormitoryPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DormitoryFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DormitoryPayload>
+          }
+          findMany: {
+            args: Prisma.DormitoryFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DormitoryPayload>[]
+          }
+          create: {
+            args: Prisma.DormitoryCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DormitoryPayload>
+          }
+          createMany: {
+            args: Prisma.DormitoryCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DormitoryCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DormitoryPayload>[]
+          }
+          delete: {
+            args: Prisma.DormitoryDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DormitoryPayload>
+          }
+          update: {
+            args: Prisma.DormitoryUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DormitoryPayload>
+          }
+          deleteMany: {
+            args: Prisma.DormitoryDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DormitoryUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DormitoryUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DormitoryPayload>[]
+          }
+          upsert: {
+            args: Prisma.DormitoryUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DormitoryPayload>
+          }
+          aggregate: {
+            args: Prisma.DormitoryAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDormitory>
+          }
+          groupBy: {
+            args: Prisma.DormitoryGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DormitoryGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DormitoryCountArgs<ExtArgs>
+            result: $Utils.Optional<DormitoryCountAggregateOutputType> | number
+          }
+        }
+      }
+      Room: {
+        payload: Prisma.$RoomPayload<ExtArgs>
+        fields: Prisma.RoomFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RoomFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoomPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RoomFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoomPayload>
+          }
+          findFirst: {
+            args: Prisma.RoomFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoomPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RoomFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoomPayload>
+          }
+          findMany: {
+            args: Prisma.RoomFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoomPayload>[]
+          }
+          create: {
+            args: Prisma.RoomCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoomPayload>
+          }
+          createMany: {
+            args: Prisma.RoomCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RoomCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoomPayload>[]
+          }
+          delete: {
+            args: Prisma.RoomDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoomPayload>
+          }
+          update: {
+            args: Prisma.RoomUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoomPayload>
+          }
+          deleteMany: {
+            args: Prisma.RoomDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RoomUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RoomUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoomPayload>[]
+          }
+          upsert: {
+            args: Prisma.RoomUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoomPayload>
+          }
+          aggregate: {
+            args: Prisma.RoomAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRoom>
+          }
+          groupBy: {
+            args: Prisma.RoomGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RoomGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RoomCountArgs<ExtArgs>
+            result: $Utils.Optional<RoomCountAggregateOutputType> | number
+          }
+        }
+      }
+      RoomStatus: {
+        payload: Prisma.$RoomStatusPayload<ExtArgs>
+        fields: Prisma.RoomStatusFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RoomStatusFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoomStatusPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RoomStatusFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoomStatusPayload>
+          }
+          findFirst: {
+            args: Prisma.RoomStatusFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoomStatusPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RoomStatusFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoomStatusPayload>
+          }
+          findMany: {
+            args: Prisma.RoomStatusFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoomStatusPayload>[]
+          }
+          create: {
+            args: Prisma.RoomStatusCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoomStatusPayload>
+          }
+          createMany: {
+            args: Prisma.RoomStatusCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RoomStatusCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoomStatusPayload>[]
+          }
+          delete: {
+            args: Prisma.RoomStatusDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoomStatusPayload>
+          }
+          update: {
+            args: Prisma.RoomStatusUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoomStatusPayload>
+          }
+          deleteMany: {
+            args: Prisma.RoomStatusDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RoomStatusUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RoomStatusUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoomStatusPayload>[]
+          }
+          upsert: {
+            args: Prisma.RoomStatusUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoomStatusPayload>
+          }
+          aggregate: {
+            args: Prisma.RoomStatusAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRoomStatus>
+          }
+          groupBy: {
+            args: Prisma.RoomStatusGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RoomStatusGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RoomStatusCountArgs<ExtArgs>
+            result: $Utils.Optional<RoomStatusCountAggregateOutputType> | number
+          }
+        }
+      }
+      Price: {
+        payload: Prisma.$PricePayload<ExtArgs>
+        fields: Prisma.PriceFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PriceFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PricePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PriceFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PricePayload>
+          }
+          findFirst: {
+            args: Prisma.PriceFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PricePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PriceFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PricePayload>
+          }
+          findMany: {
+            args: Prisma.PriceFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PricePayload>[]
+          }
+          create: {
+            args: Prisma.PriceCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PricePayload>
+          }
+          createMany: {
+            args: Prisma.PriceCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PriceCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PricePayload>[]
+          }
+          delete: {
+            args: Prisma.PriceDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PricePayload>
+          }
+          update: {
+            args: Prisma.PriceUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PricePayload>
+          }
+          deleteMany: {
+            args: Prisma.PriceDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PriceUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PriceUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PricePayload>[]
+          }
+          upsert: {
+            args: Prisma.PriceUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PricePayload>
+          }
+          aggregate: {
+            args: Prisma.PriceAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePrice>
+          }
+          groupBy: {
+            args: Prisma.PriceGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PriceGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PriceCountArgs<ExtArgs>
+            result: $Utils.Optional<PriceCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1025,8 +1476,13 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     user?: UserOmit
+    dormitoryAdmin?: DormitoryAdminOmit
     confirmation?: ConfirmationOmit
     token?: TokenOmit
+    dormitory?: DormitoryOmit
+    room?: RoomOmit
+    roomStatus?: RoomStatusOmit
+    price?: PriceOmit
   }
 
   /* Types for Logging */
@@ -1122,10 +1578,14 @@ export namespace Prisma {
 
   export type UserCountOutputType = {
     confirmations: number
+    dormitoryAdminAssignments: number
+    managedDormitories: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     confirmations?: boolean | UserCountOutputTypeCountConfirmationsArgs
+    dormitoryAdminAssignments?: boolean | UserCountOutputTypeCountDormitoryAdminAssignmentsArgs
+    managedDormitories?: boolean | UserCountOutputTypeCountManagedDormitoriesArgs
   }
 
   // Custom InputTypes
@@ -1144,6 +1604,109 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountConfirmationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ConfirmationWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountDormitoryAdminAssignmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DormitoryAdminWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountManagedDormitoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DormitoryWhereInput
+  }
+
+
+  /**
+   * Count Type DormitoryCountOutputType
+   */
+
+  export type DormitoryCountOutputType = {
+    admins: number
+    residents: number
+    rooms: number
+  }
+
+  export type DormitoryCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    admins?: boolean | DormitoryCountOutputTypeCountAdminsArgs
+    residents?: boolean | DormitoryCountOutputTypeCountResidentsArgs
+    rooms?: boolean | DormitoryCountOutputTypeCountRoomsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * DormitoryCountOutputType without action
+   */
+  export type DormitoryCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DormitoryCountOutputType
+     */
+    select?: DormitoryCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * DormitoryCountOutputType without action
+   */
+  export type DormitoryCountOutputTypeCountAdminsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DormitoryAdminWhereInput
+  }
+
+  /**
+   * DormitoryCountOutputType without action
+   */
+  export type DormitoryCountOutputTypeCountResidentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserWhereInput
+  }
+
+  /**
+   * DormitoryCountOutputType without action
+   */
+  export type DormitoryCountOutputTypeCountRoomsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RoomWhereInput
+  }
+
+
+  /**
+   * Count Type RoomCountOutputType
+   */
+
+  export type RoomCountOutputType = {
+    statuses: number
+    residents: number
+  }
+
+  export type RoomCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    statuses?: boolean | RoomCountOutputTypeCountStatusesArgs
+    residents?: boolean | RoomCountOutputTypeCountResidentsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * RoomCountOutputType without action
+   */
+  export type RoomCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoomCountOutputType
+     */
+    select?: RoomCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * RoomCountOutputType without action
+   */
+  export type RoomCountOutputTypeCountStatusesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RoomStatusWhereInput
+  }
+
+  /**
+   * RoomCountOutputType without action
+   */
+  export type RoomCountOutputTypeCountResidentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserWhereInput
   }
 
 
@@ -1174,6 +1737,8 @@ export namespace Prisma {
     secondName: string | null
     studentIdFront: string | null
     studentIdBack: string | null
+    dormitoryId: string | null
+    roomId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -1191,6 +1756,8 @@ export namespace Prisma {
     secondName: string | null
     studentIdFront: string | null
     studentIdBack: string | null
+    dormitoryId: string | null
+    roomId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -1208,6 +1775,8 @@ export namespace Prisma {
     secondName: number
     studentIdFront: number
     studentIdBack: number
+    dormitoryId: number
+    roomId: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -1227,6 +1796,8 @@ export namespace Prisma {
     secondName?: true
     studentIdFront?: true
     studentIdBack?: true
+    dormitoryId?: true
+    roomId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -1244,6 +1815,8 @@ export namespace Prisma {
     secondName?: true
     studentIdFront?: true
     studentIdBack?: true
+    dormitoryId?: true
+    roomId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -1261,6 +1834,8 @@ export namespace Prisma {
     secondName?: true
     studentIdFront?: true
     studentIdBack?: true
+    dormitoryId?: true
+    roomId?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -1351,6 +1926,8 @@ export namespace Prisma {
     secondName: string
     studentIdFront: string
     studentIdBack: string | null
+    dormitoryId: string | null
+    roomId: string | null
     createdAt: Date
     updatedAt: Date
     _count: UserCountAggregateOutputType | null
@@ -1385,9 +1962,15 @@ export namespace Prisma {
     secondName?: boolean
     studentIdFront?: boolean
     studentIdBack?: boolean
+    dormitoryId?: boolean
+    roomId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     confirmations?: boolean | User$confirmationsArgs<ExtArgs>
+    dormitoryAdminAssignments?: boolean | User$dormitoryAdminAssignmentsArgs<ExtArgs>
+    dormitory?: boolean | User$dormitoryArgs<ExtArgs>
+    managedDormitories?: boolean | User$managedDormitoriesArgs<ExtArgs>
+    room?: boolean | User$roomArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1404,8 +1987,12 @@ export namespace Prisma {
     secondName?: boolean
     studentIdFront?: boolean
     studentIdBack?: boolean
+    dormitoryId?: boolean
+    roomId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    dormitory?: boolean | User$dormitoryArgs<ExtArgs>
+    room?: boolean | User$roomArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1421,8 +2008,12 @@ export namespace Prisma {
     secondName?: boolean
     studentIdFront?: boolean
     studentIdBack?: boolean
+    dormitoryId?: boolean
+    roomId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    dormitory?: boolean | User$dormitoryArgs<ExtArgs>
+    room?: boolean | User$roomArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -1438,22 +2029,38 @@ export namespace Prisma {
     secondName?: boolean
     studentIdFront?: boolean
     studentIdBack?: boolean
+    dormitoryId?: boolean
+    roomId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "displayName" | "picture" | "isVerified" | "isTwoFactorEnabled" | "method" | "role" | "secondName" | "studentIdFront" | "studentIdBack" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "displayName" | "picture" | "isVerified" | "isTwoFactorEnabled" | "method" | "role" | "secondName" | "studentIdFront" | "studentIdBack" | "dormitoryId" | "roomId" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     confirmations?: boolean | User$confirmationsArgs<ExtArgs>
+    dormitoryAdminAssignments?: boolean | User$dormitoryAdminAssignmentsArgs<ExtArgs>
+    dormitory?: boolean | User$dormitoryArgs<ExtArgs>
+    managedDormitories?: boolean | User$managedDormitoriesArgs<ExtArgs>
+    room?: boolean | User$roomArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type UserIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    dormitory?: boolean | User$dormitoryArgs<ExtArgs>
+    room?: boolean | User$roomArgs<ExtArgs>
+  }
+  export type UserIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    dormitory?: boolean | User$dormitoryArgs<ExtArgs>
+    room?: boolean | User$roomArgs<ExtArgs>
+  }
 
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
       confirmations: Prisma.$ConfirmationPayload<ExtArgs>[]
+      dormitoryAdminAssignments: Prisma.$DormitoryAdminPayload<ExtArgs>[]
+      dormitory: Prisma.$DormitoryPayload<ExtArgs> | null
+      managedDormitories: Prisma.$DormitoryPayload<ExtArgs>[]
+      room: Prisma.$RoomPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -1468,6 +2075,8 @@ export namespace Prisma {
       secondName: string
       studentIdFront: string
       studentIdBack: string | null
+      dormitoryId: string | null
+      roomId: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["user"]>
@@ -1865,6 +2474,10 @@ export namespace Prisma {
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     confirmations<T extends User$confirmationsArgs<ExtArgs> = {}>(args?: Subset<T, User$confirmationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConfirmationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    dormitoryAdminAssignments<T extends User$dormitoryAdminAssignmentsArgs<ExtArgs> = {}>(args?: Subset<T, User$dormitoryAdminAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DormitoryAdminPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    dormitory<T extends User$dormitoryArgs<ExtArgs> = {}>(args?: Subset<T, User$dormitoryArgs<ExtArgs>>): Prisma__DormitoryClient<$Result.GetResult<Prisma.$DormitoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    managedDormitories<T extends User$managedDormitoriesArgs<ExtArgs> = {}>(args?: Subset<T, User$managedDormitoriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DormitoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    room<T extends User$roomArgs<ExtArgs> = {}>(args?: Subset<T, User$roomArgs<ExtArgs>>): Prisma__RoomClient<$Result.GetResult<Prisma.$RoomPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1906,6 +2519,8 @@ export namespace Prisma {
     readonly secondName: FieldRef<"User", 'String'>
     readonly studentIdFront: FieldRef<"User", 'String'>
     readonly studentIdBack: FieldRef<"User", 'String'>
+    readonly dormitoryId: FieldRef<"User", 'String'>
+    readonly roomId: FieldRef<"User", 'String'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
   }
@@ -2157,6 +2772,10 @@ export namespace Prisma {
      */
     data: UserCreateManyInput | UserCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -2227,6 +2846,10 @@ export namespace Prisma {
      * Limit how many Users to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -2320,6 +2943,92 @@ export namespace Prisma {
   }
 
   /**
+   * User.dormitoryAdminAssignments
+   */
+  export type User$dormitoryAdminAssignmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DormitoryAdmin
+     */
+    select?: DormitoryAdminSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DormitoryAdmin
+     */
+    omit?: DormitoryAdminOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryAdminInclude<ExtArgs> | null
+    where?: DormitoryAdminWhereInput
+    orderBy?: DormitoryAdminOrderByWithRelationInput | DormitoryAdminOrderByWithRelationInput[]
+    cursor?: DormitoryAdminWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DormitoryAdminScalarFieldEnum | DormitoryAdminScalarFieldEnum[]
+  }
+
+  /**
+   * User.dormitory
+   */
+  export type User$dormitoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dormitory
+     */
+    select?: DormitorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dormitory
+     */
+    omit?: DormitoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryInclude<ExtArgs> | null
+    where?: DormitoryWhereInput
+  }
+
+  /**
+   * User.managedDormitories
+   */
+  export type User$managedDormitoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dormitory
+     */
+    select?: DormitorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dormitory
+     */
+    omit?: DormitoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryInclude<ExtArgs> | null
+    where?: DormitoryWhereInput
+    orderBy?: DormitoryOrderByWithRelationInput | DormitoryOrderByWithRelationInput[]
+    cursor?: DormitoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DormitoryScalarFieldEnum | DormitoryScalarFieldEnum[]
+  }
+
+  /**
+   * User.room
+   */
+  export type User$roomArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Room
+     */
+    select?: RoomSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Room
+     */
+    omit?: RoomOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomInclude<ExtArgs> | null
+    where?: RoomWhereInput
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2335,6 +3044,1072 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model DormitoryAdmin
+   */
+
+  export type AggregateDormitoryAdmin = {
+    _count: DormitoryAdminCountAggregateOutputType | null
+    _min: DormitoryAdminMinAggregateOutputType | null
+    _max: DormitoryAdminMaxAggregateOutputType | null
+  }
+
+  export type DormitoryAdminMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    dormitoryId: string | null
+    role: string | null
+    createdAt: Date | null
+  }
+
+  export type DormitoryAdminMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    dormitoryId: string | null
+    role: string | null
+    createdAt: Date | null
+  }
+
+  export type DormitoryAdminCountAggregateOutputType = {
+    id: number
+    userId: number
+    dormitoryId: number
+    role: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type DormitoryAdminMinAggregateInputType = {
+    id?: true
+    userId?: true
+    dormitoryId?: true
+    role?: true
+    createdAt?: true
+  }
+
+  export type DormitoryAdminMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    dormitoryId?: true
+    role?: true
+    createdAt?: true
+  }
+
+  export type DormitoryAdminCountAggregateInputType = {
+    id?: true
+    userId?: true
+    dormitoryId?: true
+    role?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type DormitoryAdminAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DormitoryAdmin to aggregate.
+     */
+    where?: DormitoryAdminWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DormitoryAdmins to fetch.
+     */
+    orderBy?: DormitoryAdminOrderByWithRelationInput | DormitoryAdminOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DormitoryAdminWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DormitoryAdmins from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DormitoryAdmins.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned DormitoryAdmins
+    **/
+    _count?: true | DormitoryAdminCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DormitoryAdminMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DormitoryAdminMaxAggregateInputType
+  }
+
+  export type GetDormitoryAdminAggregateType<T extends DormitoryAdminAggregateArgs> = {
+        [P in keyof T & keyof AggregateDormitoryAdmin]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDormitoryAdmin[P]>
+      : GetScalarType<T[P], AggregateDormitoryAdmin[P]>
+  }
+
+
+
+
+  export type DormitoryAdminGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DormitoryAdminWhereInput
+    orderBy?: DormitoryAdminOrderByWithAggregationInput | DormitoryAdminOrderByWithAggregationInput[]
+    by: DormitoryAdminScalarFieldEnum[] | DormitoryAdminScalarFieldEnum
+    having?: DormitoryAdminScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DormitoryAdminCountAggregateInputType | true
+    _min?: DormitoryAdminMinAggregateInputType
+    _max?: DormitoryAdminMaxAggregateInputType
+  }
+
+  export type DormitoryAdminGroupByOutputType = {
+    id: string
+    userId: string
+    dormitoryId: string
+    role: string
+    createdAt: Date
+    _count: DormitoryAdminCountAggregateOutputType | null
+    _min: DormitoryAdminMinAggregateOutputType | null
+    _max: DormitoryAdminMaxAggregateOutputType | null
+  }
+
+  type GetDormitoryAdminGroupByPayload<T extends DormitoryAdminGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DormitoryAdminGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DormitoryAdminGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DormitoryAdminGroupByOutputType[P]>
+            : GetScalarType<T[P], DormitoryAdminGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DormitoryAdminSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    dormitoryId?: boolean
+    role?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    dormitory?: boolean | DormitoryDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dormitoryAdmin"]>
+
+  export type DormitoryAdminSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    dormitoryId?: boolean
+    role?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    dormitory?: boolean | DormitoryDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dormitoryAdmin"]>
+
+  export type DormitoryAdminSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    dormitoryId?: boolean
+    role?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    dormitory?: boolean | DormitoryDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dormitoryAdmin"]>
+
+  export type DormitoryAdminSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    dormitoryId?: boolean
+    role?: boolean
+    createdAt?: boolean
+  }
+
+  export type DormitoryAdminOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "dormitoryId" | "role" | "createdAt", ExtArgs["result"]["dormitoryAdmin"]>
+  export type DormitoryAdminInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    dormitory?: boolean | DormitoryDefaultArgs<ExtArgs>
+  }
+  export type DormitoryAdminIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    dormitory?: boolean | DormitoryDefaultArgs<ExtArgs>
+  }
+  export type DormitoryAdminIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    dormitory?: boolean | DormitoryDefaultArgs<ExtArgs>
+  }
+
+  export type $DormitoryAdminPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "DormitoryAdmin"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      dormitory: Prisma.$DormitoryPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      dormitoryId: string
+      role: string
+      createdAt: Date
+    }, ExtArgs["result"]["dormitoryAdmin"]>
+    composites: {}
+  }
+
+  type DormitoryAdminGetPayload<S extends boolean | null | undefined | DormitoryAdminDefaultArgs> = $Result.GetResult<Prisma.$DormitoryAdminPayload, S>
+
+  type DormitoryAdminCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DormitoryAdminFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DormitoryAdminCountAggregateInputType | true
+    }
+
+  export interface DormitoryAdminDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DormitoryAdmin'], meta: { name: 'DormitoryAdmin' } }
+    /**
+     * Find zero or one DormitoryAdmin that matches the filter.
+     * @param {DormitoryAdminFindUniqueArgs} args - Arguments to find a DormitoryAdmin
+     * @example
+     * // Get one DormitoryAdmin
+     * const dormitoryAdmin = await prisma.dormitoryAdmin.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DormitoryAdminFindUniqueArgs>(args: SelectSubset<T, DormitoryAdminFindUniqueArgs<ExtArgs>>): Prisma__DormitoryAdminClient<$Result.GetResult<Prisma.$DormitoryAdminPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one DormitoryAdmin that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DormitoryAdminFindUniqueOrThrowArgs} args - Arguments to find a DormitoryAdmin
+     * @example
+     * // Get one DormitoryAdmin
+     * const dormitoryAdmin = await prisma.dormitoryAdmin.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DormitoryAdminFindUniqueOrThrowArgs>(args: SelectSubset<T, DormitoryAdminFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DormitoryAdminClient<$Result.GetResult<Prisma.$DormitoryAdminPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DormitoryAdmin that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DormitoryAdminFindFirstArgs} args - Arguments to find a DormitoryAdmin
+     * @example
+     * // Get one DormitoryAdmin
+     * const dormitoryAdmin = await prisma.dormitoryAdmin.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DormitoryAdminFindFirstArgs>(args?: SelectSubset<T, DormitoryAdminFindFirstArgs<ExtArgs>>): Prisma__DormitoryAdminClient<$Result.GetResult<Prisma.$DormitoryAdminPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DormitoryAdmin that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DormitoryAdminFindFirstOrThrowArgs} args - Arguments to find a DormitoryAdmin
+     * @example
+     * // Get one DormitoryAdmin
+     * const dormitoryAdmin = await prisma.dormitoryAdmin.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DormitoryAdminFindFirstOrThrowArgs>(args?: SelectSubset<T, DormitoryAdminFindFirstOrThrowArgs<ExtArgs>>): Prisma__DormitoryAdminClient<$Result.GetResult<Prisma.$DormitoryAdminPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more DormitoryAdmins that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DormitoryAdminFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all DormitoryAdmins
+     * const dormitoryAdmins = await prisma.dormitoryAdmin.findMany()
+     * 
+     * // Get first 10 DormitoryAdmins
+     * const dormitoryAdmins = await prisma.dormitoryAdmin.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const dormitoryAdminWithIdOnly = await prisma.dormitoryAdmin.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DormitoryAdminFindManyArgs>(args?: SelectSubset<T, DormitoryAdminFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DormitoryAdminPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a DormitoryAdmin.
+     * @param {DormitoryAdminCreateArgs} args - Arguments to create a DormitoryAdmin.
+     * @example
+     * // Create one DormitoryAdmin
+     * const DormitoryAdmin = await prisma.dormitoryAdmin.create({
+     *   data: {
+     *     // ... data to create a DormitoryAdmin
+     *   }
+     * })
+     * 
+     */
+    create<T extends DormitoryAdminCreateArgs>(args: SelectSubset<T, DormitoryAdminCreateArgs<ExtArgs>>): Prisma__DormitoryAdminClient<$Result.GetResult<Prisma.$DormitoryAdminPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many DormitoryAdmins.
+     * @param {DormitoryAdminCreateManyArgs} args - Arguments to create many DormitoryAdmins.
+     * @example
+     * // Create many DormitoryAdmins
+     * const dormitoryAdmin = await prisma.dormitoryAdmin.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DormitoryAdminCreateManyArgs>(args?: SelectSubset<T, DormitoryAdminCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many DormitoryAdmins and returns the data saved in the database.
+     * @param {DormitoryAdminCreateManyAndReturnArgs} args - Arguments to create many DormitoryAdmins.
+     * @example
+     * // Create many DormitoryAdmins
+     * const dormitoryAdmin = await prisma.dormitoryAdmin.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many DormitoryAdmins and only return the `id`
+     * const dormitoryAdminWithIdOnly = await prisma.dormitoryAdmin.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DormitoryAdminCreateManyAndReturnArgs>(args?: SelectSubset<T, DormitoryAdminCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DormitoryAdminPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a DormitoryAdmin.
+     * @param {DormitoryAdminDeleteArgs} args - Arguments to delete one DormitoryAdmin.
+     * @example
+     * // Delete one DormitoryAdmin
+     * const DormitoryAdmin = await prisma.dormitoryAdmin.delete({
+     *   where: {
+     *     // ... filter to delete one DormitoryAdmin
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DormitoryAdminDeleteArgs>(args: SelectSubset<T, DormitoryAdminDeleteArgs<ExtArgs>>): Prisma__DormitoryAdminClient<$Result.GetResult<Prisma.$DormitoryAdminPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one DormitoryAdmin.
+     * @param {DormitoryAdminUpdateArgs} args - Arguments to update one DormitoryAdmin.
+     * @example
+     * // Update one DormitoryAdmin
+     * const dormitoryAdmin = await prisma.dormitoryAdmin.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DormitoryAdminUpdateArgs>(args: SelectSubset<T, DormitoryAdminUpdateArgs<ExtArgs>>): Prisma__DormitoryAdminClient<$Result.GetResult<Prisma.$DormitoryAdminPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more DormitoryAdmins.
+     * @param {DormitoryAdminDeleteManyArgs} args - Arguments to filter DormitoryAdmins to delete.
+     * @example
+     * // Delete a few DormitoryAdmins
+     * const { count } = await prisma.dormitoryAdmin.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DormitoryAdminDeleteManyArgs>(args?: SelectSubset<T, DormitoryAdminDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DormitoryAdmins.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DormitoryAdminUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many DormitoryAdmins
+     * const dormitoryAdmin = await prisma.dormitoryAdmin.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DormitoryAdminUpdateManyArgs>(args: SelectSubset<T, DormitoryAdminUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DormitoryAdmins and returns the data updated in the database.
+     * @param {DormitoryAdminUpdateManyAndReturnArgs} args - Arguments to update many DormitoryAdmins.
+     * @example
+     * // Update many DormitoryAdmins
+     * const dormitoryAdmin = await prisma.dormitoryAdmin.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more DormitoryAdmins and only return the `id`
+     * const dormitoryAdminWithIdOnly = await prisma.dormitoryAdmin.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends DormitoryAdminUpdateManyAndReturnArgs>(args: SelectSubset<T, DormitoryAdminUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DormitoryAdminPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one DormitoryAdmin.
+     * @param {DormitoryAdminUpsertArgs} args - Arguments to update or create a DormitoryAdmin.
+     * @example
+     * // Update or create a DormitoryAdmin
+     * const dormitoryAdmin = await prisma.dormitoryAdmin.upsert({
+     *   create: {
+     *     // ... data to create a DormitoryAdmin
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the DormitoryAdmin we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DormitoryAdminUpsertArgs>(args: SelectSubset<T, DormitoryAdminUpsertArgs<ExtArgs>>): Prisma__DormitoryAdminClient<$Result.GetResult<Prisma.$DormitoryAdminPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of DormitoryAdmins.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DormitoryAdminCountArgs} args - Arguments to filter DormitoryAdmins to count.
+     * @example
+     * // Count the number of DormitoryAdmins
+     * const count = await prisma.dormitoryAdmin.count({
+     *   where: {
+     *     // ... the filter for the DormitoryAdmins we want to count
+     *   }
+     * })
+    **/
+    count<T extends DormitoryAdminCountArgs>(
+      args?: Subset<T, DormitoryAdminCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DormitoryAdminCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a DormitoryAdmin.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DormitoryAdminAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DormitoryAdminAggregateArgs>(args: Subset<T, DormitoryAdminAggregateArgs>): Prisma.PrismaPromise<GetDormitoryAdminAggregateType<T>>
+
+    /**
+     * Group by DormitoryAdmin.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DormitoryAdminGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DormitoryAdminGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DormitoryAdminGroupByArgs['orderBy'] }
+        : { orderBy?: DormitoryAdminGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DormitoryAdminGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDormitoryAdminGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the DormitoryAdmin model
+   */
+  readonly fields: DormitoryAdminFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for DormitoryAdmin.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DormitoryAdminClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    dormitory<T extends DormitoryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DormitoryDefaultArgs<ExtArgs>>): Prisma__DormitoryClient<$Result.GetResult<Prisma.$DormitoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the DormitoryAdmin model
+   */
+  interface DormitoryAdminFieldRefs {
+    readonly id: FieldRef<"DormitoryAdmin", 'String'>
+    readonly userId: FieldRef<"DormitoryAdmin", 'String'>
+    readonly dormitoryId: FieldRef<"DormitoryAdmin", 'String'>
+    readonly role: FieldRef<"DormitoryAdmin", 'String'>
+    readonly createdAt: FieldRef<"DormitoryAdmin", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * DormitoryAdmin findUnique
+   */
+  export type DormitoryAdminFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DormitoryAdmin
+     */
+    select?: DormitoryAdminSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DormitoryAdmin
+     */
+    omit?: DormitoryAdminOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryAdminInclude<ExtArgs> | null
+    /**
+     * Filter, which DormitoryAdmin to fetch.
+     */
+    where: DormitoryAdminWhereUniqueInput
+  }
+
+  /**
+   * DormitoryAdmin findUniqueOrThrow
+   */
+  export type DormitoryAdminFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DormitoryAdmin
+     */
+    select?: DormitoryAdminSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DormitoryAdmin
+     */
+    omit?: DormitoryAdminOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryAdminInclude<ExtArgs> | null
+    /**
+     * Filter, which DormitoryAdmin to fetch.
+     */
+    where: DormitoryAdminWhereUniqueInput
+  }
+
+  /**
+   * DormitoryAdmin findFirst
+   */
+  export type DormitoryAdminFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DormitoryAdmin
+     */
+    select?: DormitoryAdminSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DormitoryAdmin
+     */
+    omit?: DormitoryAdminOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryAdminInclude<ExtArgs> | null
+    /**
+     * Filter, which DormitoryAdmin to fetch.
+     */
+    where?: DormitoryAdminWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DormitoryAdmins to fetch.
+     */
+    orderBy?: DormitoryAdminOrderByWithRelationInput | DormitoryAdminOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DormitoryAdmins.
+     */
+    cursor?: DormitoryAdminWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DormitoryAdmins from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DormitoryAdmins.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DormitoryAdmins.
+     */
+    distinct?: DormitoryAdminScalarFieldEnum | DormitoryAdminScalarFieldEnum[]
+  }
+
+  /**
+   * DormitoryAdmin findFirstOrThrow
+   */
+  export type DormitoryAdminFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DormitoryAdmin
+     */
+    select?: DormitoryAdminSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DormitoryAdmin
+     */
+    omit?: DormitoryAdminOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryAdminInclude<ExtArgs> | null
+    /**
+     * Filter, which DormitoryAdmin to fetch.
+     */
+    where?: DormitoryAdminWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DormitoryAdmins to fetch.
+     */
+    orderBy?: DormitoryAdminOrderByWithRelationInput | DormitoryAdminOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DormitoryAdmins.
+     */
+    cursor?: DormitoryAdminWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DormitoryAdmins from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DormitoryAdmins.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DormitoryAdmins.
+     */
+    distinct?: DormitoryAdminScalarFieldEnum | DormitoryAdminScalarFieldEnum[]
+  }
+
+  /**
+   * DormitoryAdmin findMany
+   */
+  export type DormitoryAdminFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DormitoryAdmin
+     */
+    select?: DormitoryAdminSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DormitoryAdmin
+     */
+    omit?: DormitoryAdminOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryAdminInclude<ExtArgs> | null
+    /**
+     * Filter, which DormitoryAdmins to fetch.
+     */
+    where?: DormitoryAdminWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DormitoryAdmins to fetch.
+     */
+    orderBy?: DormitoryAdminOrderByWithRelationInput | DormitoryAdminOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing DormitoryAdmins.
+     */
+    cursor?: DormitoryAdminWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DormitoryAdmins from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DormitoryAdmins.
+     */
+    skip?: number
+    distinct?: DormitoryAdminScalarFieldEnum | DormitoryAdminScalarFieldEnum[]
+  }
+
+  /**
+   * DormitoryAdmin create
+   */
+  export type DormitoryAdminCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DormitoryAdmin
+     */
+    select?: DormitoryAdminSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DormitoryAdmin
+     */
+    omit?: DormitoryAdminOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryAdminInclude<ExtArgs> | null
+    /**
+     * The data needed to create a DormitoryAdmin.
+     */
+    data: XOR<DormitoryAdminCreateInput, DormitoryAdminUncheckedCreateInput>
+  }
+
+  /**
+   * DormitoryAdmin createMany
+   */
+  export type DormitoryAdminCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many DormitoryAdmins.
+     */
+    data: DormitoryAdminCreateManyInput | DormitoryAdminCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * DormitoryAdmin createManyAndReturn
+   */
+  export type DormitoryAdminCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DormitoryAdmin
+     */
+    select?: DormitoryAdminSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DormitoryAdmin
+     */
+    omit?: DormitoryAdminOmit<ExtArgs> | null
+    /**
+     * The data used to create many DormitoryAdmins.
+     */
+    data: DormitoryAdminCreateManyInput | DormitoryAdminCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryAdminIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DormitoryAdmin update
+   */
+  export type DormitoryAdminUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DormitoryAdmin
+     */
+    select?: DormitoryAdminSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DormitoryAdmin
+     */
+    omit?: DormitoryAdminOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryAdminInclude<ExtArgs> | null
+    /**
+     * The data needed to update a DormitoryAdmin.
+     */
+    data: XOR<DormitoryAdminUpdateInput, DormitoryAdminUncheckedUpdateInput>
+    /**
+     * Choose, which DormitoryAdmin to update.
+     */
+    where: DormitoryAdminWhereUniqueInput
+  }
+
+  /**
+   * DormitoryAdmin updateMany
+   */
+  export type DormitoryAdminUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update DormitoryAdmins.
+     */
+    data: XOR<DormitoryAdminUpdateManyMutationInput, DormitoryAdminUncheckedUpdateManyInput>
+    /**
+     * Filter which DormitoryAdmins to update
+     */
+    where?: DormitoryAdminWhereInput
+    /**
+     * Limit how many DormitoryAdmins to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * DormitoryAdmin updateManyAndReturn
+   */
+  export type DormitoryAdminUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DormitoryAdmin
+     */
+    select?: DormitoryAdminSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DormitoryAdmin
+     */
+    omit?: DormitoryAdminOmit<ExtArgs> | null
+    /**
+     * The data used to update DormitoryAdmins.
+     */
+    data: XOR<DormitoryAdminUpdateManyMutationInput, DormitoryAdminUncheckedUpdateManyInput>
+    /**
+     * Filter which DormitoryAdmins to update
+     */
+    where?: DormitoryAdminWhereInput
+    /**
+     * Limit how many DormitoryAdmins to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryAdminIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DormitoryAdmin upsert
+   */
+  export type DormitoryAdminUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DormitoryAdmin
+     */
+    select?: DormitoryAdminSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DormitoryAdmin
+     */
+    omit?: DormitoryAdminOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryAdminInclude<ExtArgs> | null
+    /**
+     * The filter to search for the DormitoryAdmin to update in case it exists.
+     */
+    where: DormitoryAdminWhereUniqueInput
+    /**
+     * In case the DormitoryAdmin found by the `where` argument doesn't exist, create a new DormitoryAdmin with this data.
+     */
+    create: XOR<DormitoryAdminCreateInput, DormitoryAdminUncheckedCreateInput>
+    /**
+     * In case the DormitoryAdmin was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DormitoryAdminUpdateInput, DormitoryAdminUncheckedUpdateInput>
+  }
+
+  /**
+   * DormitoryAdmin delete
+   */
+  export type DormitoryAdminDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DormitoryAdmin
+     */
+    select?: DormitoryAdminSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DormitoryAdmin
+     */
+    omit?: DormitoryAdminOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryAdminInclude<ExtArgs> | null
+    /**
+     * Filter which DormitoryAdmin to delete.
+     */
+    where: DormitoryAdminWhereUniqueInput
+  }
+
+  /**
+   * DormitoryAdmin deleteMany
+   */
+  export type DormitoryAdminDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DormitoryAdmins to delete
+     */
+    where?: DormitoryAdminWhereInput
+    /**
+     * Limit how many DormitoryAdmins to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * DormitoryAdmin without action
+   */
+  export type DormitoryAdminDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DormitoryAdmin
+     */
+    select?: DormitoryAdminSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DormitoryAdmin
+     */
+    omit?: DormitoryAdminOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryAdminInclude<ExtArgs> | null
   }
 
 
@@ -4444,6 +6219,4497 @@ export namespace Prisma {
 
 
   /**
+   * Model Dormitory
+   */
+
+  export type AggregateDormitory = {
+    _count: DormitoryCountAggregateOutputType | null
+    _min: DormitoryMinAggregateOutputType | null
+    _max: DormitoryMaxAggregateOutputType | null
+  }
+
+  export type DormitoryMinAggregateOutputType = {
+    id: string | null
+    createdAt: Date | null
+    name: string | null
+    address: string | null
+    groundFloorPhoneNumber: string | null
+    status: string | null
+    managerId: string | null
+  }
+
+  export type DormitoryMaxAggregateOutputType = {
+    id: string | null
+    createdAt: Date | null
+    name: string | null
+    address: string | null
+    groundFloorPhoneNumber: string | null
+    status: string | null
+    managerId: string | null
+  }
+
+  export type DormitoryCountAggregateOutputType = {
+    id: number
+    createdAt: number
+    name: number
+    address: number
+    groundFloorPhoneNumber: number
+    status: number
+    photos: number
+    managerId: number
+    _all: number
+  }
+
+
+  export type DormitoryMinAggregateInputType = {
+    id?: true
+    createdAt?: true
+    name?: true
+    address?: true
+    groundFloorPhoneNumber?: true
+    status?: true
+    managerId?: true
+  }
+
+  export type DormitoryMaxAggregateInputType = {
+    id?: true
+    createdAt?: true
+    name?: true
+    address?: true
+    groundFloorPhoneNumber?: true
+    status?: true
+    managerId?: true
+  }
+
+  export type DormitoryCountAggregateInputType = {
+    id?: true
+    createdAt?: true
+    name?: true
+    address?: true
+    groundFloorPhoneNumber?: true
+    status?: true
+    photos?: true
+    managerId?: true
+    _all?: true
+  }
+
+  export type DormitoryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Dormitory to aggregate.
+     */
+    where?: DormitoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Dormitories to fetch.
+     */
+    orderBy?: DormitoryOrderByWithRelationInput | DormitoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DormitoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Dormitories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Dormitories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Dormitories
+    **/
+    _count?: true | DormitoryCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DormitoryMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DormitoryMaxAggregateInputType
+  }
+
+  export type GetDormitoryAggregateType<T extends DormitoryAggregateArgs> = {
+        [P in keyof T & keyof AggregateDormitory]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDormitory[P]>
+      : GetScalarType<T[P], AggregateDormitory[P]>
+  }
+
+
+
+
+  export type DormitoryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DormitoryWhereInput
+    orderBy?: DormitoryOrderByWithAggregationInput | DormitoryOrderByWithAggregationInput[]
+    by: DormitoryScalarFieldEnum[] | DormitoryScalarFieldEnum
+    having?: DormitoryScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DormitoryCountAggregateInputType | true
+    _min?: DormitoryMinAggregateInputType
+    _max?: DormitoryMaxAggregateInputType
+  }
+
+  export type DormitoryGroupByOutputType = {
+    id: string
+    createdAt: Date
+    name: string
+    address: string
+    groundFloorPhoneNumber: string
+    status: string
+    photos: string[]
+    managerId: string | null
+    _count: DormitoryCountAggregateOutputType | null
+    _min: DormitoryMinAggregateOutputType | null
+    _max: DormitoryMaxAggregateOutputType | null
+  }
+
+  type GetDormitoryGroupByPayload<T extends DormitoryGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DormitoryGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DormitoryGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DormitoryGroupByOutputType[P]>
+            : GetScalarType<T[P], DormitoryGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DormitorySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    createdAt?: boolean
+    name?: boolean
+    address?: boolean
+    groundFloorPhoneNumber?: boolean
+    status?: boolean
+    photos?: boolean
+    managerId?: boolean
+    manager?: boolean | Dormitory$managerArgs<ExtArgs>
+    admins?: boolean | Dormitory$adminsArgs<ExtArgs>
+    residents?: boolean | Dormitory$residentsArgs<ExtArgs>
+    rooms?: boolean | Dormitory$roomsArgs<ExtArgs>
+    _count?: boolean | DormitoryCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dormitory"]>
+
+  export type DormitorySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    createdAt?: boolean
+    name?: boolean
+    address?: boolean
+    groundFloorPhoneNumber?: boolean
+    status?: boolean
+    photos?: boolean
+    managerId?: boolean
+    manager?: boolean | Dormitory$managerArgs<ExtArgs>
+  }, ExtArgs["result"]["dormitory"]>
+
+  export type DormitorySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    createdAt?: boolean
+    name?: boolean
+    address?: boolean
+    groundFloorPhoneNumber?: boolean
+    status?: boolean
+    photos?: boolean
+    managerId?: boolean
+    manager?: boolean | Dormitory$managerArgs<ExtArgs>
+  }, ExtArgs["result"]["dormitory"]>
+
+  export type DormitorySelectScalar = {
+    id?: boolean
+    createdAt?: boolean
+    name?: boolean
+    address?: boolean
+    groundFloorPhoneNumber?: boolean
+    status?: boolean
+    photos?: boolean
+    managerId?: boolean
+  }
+
+  export type DormitoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "name" | "address" | "groundFloorPhoneNumber" | "status" | "photos" | "managerId", ExtArgs["result"]["dormitory"]>
+  export type DormitoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    manager?: boolean | Dormitory$managerArgs<ExtArgs>
+    admins?: boolean | Dormitory$adminsArgs<ExtArgs>
+    residents?: boolean | Dormitory$residentsArgs<ExtArgs>
+    rooms?: boolean | Dormitory$roomsArgs<ExtArgs>
+    _count?: boolean | DormitoryCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type DormitoryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    manager?: boolean | Dormitory$managerArgs<ExtArgs>
+  }
+  export type DormitoryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    manager?: boolean | Dormitory$managerArgs<ExtArgs>
+  }
+
+  export type $DormitoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Dormitory"
+    objects: {
+      manager: Prisma.$UserPayload<ExtArgs> | null
+      admins: Prisma.$DormitoryAdminPayload<ExtArgs>[]
+      residents: Prisma.$UserPayload<ExtArgs>[]
+      rooms: Prisma.$RoomPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      createdAt: Date
+      name: string
+      address: string
+      groundFloorPhoneNumber: string
+      status: string
+      photos: string[]
+      managerId: string | null
+    }, ExtArgs["result"]["dormitory"]>
+    composites: {}
+  }
+
+  type DormitoryGetPayload<S extends boolean | null | undefined | DormitoryDefaultArgs> = $Result.GetResult<Prisma.$DormitoryPayload, S>
+
+  type DormitoryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DormitoryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DormitoryCountAggregateInputType | true
+    }
+
+  export interface DormitoryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Dormitory'], meta: { name: 'Dormitory' } }
+    /**
+     * Find zero or one Dormitory that matches the filter.
+     * @param {DormitoryFindUniqueArgs} args - Arguments to find a Dormitory
+     * @example
+     * // Get one Dormitory
+     * const dormitory = await prisma.dormitory.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DormitoryFindUniqueArgs>(args: SelectSubset<T, DormitoryFindUniqueArgs<ExtArgs>>): Prisma__DormitoryClient<$Result.GetResult<Prisma.$DormitoryPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Dormitory that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DormitoryFindUniqueOrThrowArgs} args - Arguments to find a Dormitory
+     * @example
+     * // Get one Dormitory
+     * const dormitory = await prisma.dormitory.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DormitoryFindUniqueOrThrowArgs>(args: SelectSubset<T, DormitoryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DormitoryClient<$Result.GetResult<Prisma.$DormitoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Dormitory that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DormitoryFindFirstArgs} args - Arguments to find a Dormitory
+     * @example
+     * // Get one Dormitory
+     * const dormitory = await prisma.dormitory.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DormitoryFindFirstArgs>(args?: SelectSubset<T, DormitoryFindFirstArgs<ExtArgs>>): Prisma__DormitoryClient<$Result.GetResult<Prisma.$DormitoryPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Dormitory that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DormitoryFindFirstOrThrowArgs} args - Arguments to find a Dormitory
+     * @example
+     * // Get one Dormitory
+     * const dormitory = await prisma.dormitory.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DormitoryFindFirstOrThrowArgs>(args?: SelectSubset<T, DormitoryFindFirstOrThrowArgs<ExtArgs>>): Prisma__DormitoryClient<$Result.GetResult<Prisma.$DormitoryPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Dormitories that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DormitoryFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Dormitories
+     * const dormitories = await prisma.dormitory.findMany()
+     * 
+     * // Get first 10 Dormitories
+     * const dormitories = await prisma.dormitory.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const dormitoryWithIdOnly = await prisma.dormitory.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DormitoryFindManyArgs>(args?: SelectSubset<T, DormitoryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DormitoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Dormitory.
+     * @param {DormitoryCreateArgs} args - Arguments to create a Dormitory.
+     * @example
+     * // Create one Dormitory
+     * const Dormitory = await prisma.dormitory.create({
+     *   data: {
+     *     // ... data to create a Dormitory
+     *   }
+     * })
+     * 
+     */
+    create<T extends DormitoryCreateArgs>(args: SelectSubset<T, DormitoryCreateArgs<ExtArgs>>): Prisma__DormitoryClient<$Result.GetResult<Prisma.$DormitoryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Dormitories.
+     * @param {DormitoryCreateManyArgs} args - Arguments to create many Dormitories.
+     * @example
+     * // Create many Dormitories
+     * const dormitory = await prisma.dormitory.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DormitoryCreateManyArgs>(args?: SelectSubset<T, DormitoryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Dormitories and returns the data saved in the database.
+     * @param {DormitoryCreateManyAndReturnArgs} args - Arguments to create many Dormitories.
+     * @example
+     * // Create many Dormitories
+     * const dormitory = await prisma.dormitory.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Dormitories and only return the `id`
+     * const dormitoryWithIdOnly = await prisma.dormitory.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DormitoryCreateManyAndReturnArgs>(args?: SelectSubset<T, DormitoryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DormitoryPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Dormitory.
+     * @param {DormitoryDeleteArgs} args - Arguments to delete one Dormitory.
+     * @example
+     * // Delete one Dormitory
+     * const Dormitory = await prisma.dormitory.delete({
+     *   where: {
+     *     // ... filter to delete one Dormitory
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DormitoryDeleteArgs>(args: SelectSubset<T, DormitoryDeleteArgs<ExtArgs>>): Prisma__DormitoryClient<$Result.GetResult<Prisma.$DormitoryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Dormitory.
+     * @param {DormitoryUpdateArgs} args - Arguments to update one Dormitory.
+     * @example
+     * // Update one Dormitory
+     * const dormitory = await prisma.dormitory.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DormitoryUpdateArgs>(args: SelectSubset<T, DormitoryUpdateArgs<ExtArgs>>): Prisma__DormitoryClient<$Result.GetResult<Prisma.$DormitoryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Dormitories.
+     * @param {DormitoryDeleteManyArgs} args - Arguments to filter Dormitories to delete.
+     * @example
+     * // Delete a few Dormitories
+     * const { count } = await prisma.dormitory.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DormitoryDeleteManyArgs>(args?: SelectSubset<T, DormitoryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Dormitories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DormitoryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Dormitories
+     * const dormitory = await prisma.dormitory.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DormitoryUpdateManyArgs>(args: SelectSubset<T, DormitoryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Dormitories and returns the data updated in the database.
+     * @param {DormitoryUpdateManyAndReturnArgs} args - Arguments to update many Dormitories.
+     * @example
+     * // Update many Dormitories
+     * const dormitory = await prisma.dormitory.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Dormitories and only return the `id`
+     * const dormitoryWithIdOnly = await prisma.dormitory.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends DormitoryUpdateManyAndReturnArgs>(args: SelectSubset<T, DormitoryUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DormitoryPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Dormitory.
+     * @param {DormitoryUpsertArgs} args - Arguments to update or create a Dormitory.
+     * @example
+     * // Update or create a Dormitory
+     * const dormitory = await prisma.dormitory.upsert({
+     *   create: {
+     *     // ... data to create a Dormitory
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Dormitory we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DormitoryUpsertArgs>(args: SelectSubset<T, DormitoryUpsertArgs<ExtArgs>>): Prisma__DormitoryClient<$Result.GetResult<Prisma.$DormitoryPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Dormitories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DormitoryCountArgs} args - Arguments to filter Dormitories to count.
+     * @example
+     * // Count the number of Dormitories
+     * const count = await prisma.dormitory.count({
+     *   where: {
+     *     // ... the filter for the Dormitories we want to count
+     *   }
+     * })
+    **/
+    count<T extends DormitoryCountArgs>(
+      args?: Subset<T, DormitoryCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DormitoryCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Dormitory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DormitoryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DormitoryAggregateArgs>(args: Subset<T, DormitoryAggregateArgs>): Prisma.PrismaPromise<GetDormitoryAggregateType<T>>
+
+    /**
+     * Group by Dormitory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DormitoryGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DormitoryGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DormitoryGroupByArgs['orderBy'] }
+        : { orderBy?: DormitoryGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DormitoryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDormitoryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Dormitory model
+   */
+  readonly fields: DormitoryFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Dormitory.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DormitoryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    manager<T extends Dormitory$managerArgs<ExtArgs> = {}>(args?: Subset<T, Dormitory$managerArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    admins<T extends Dormitory$adminsArgs<ExtArgs> = {}>(args?: Subset<T, Dormitory$adminsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DormitoryAdminPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    residents<T extends Dormitory$residentsArgs<ExtArgs> = {}>(args?: Subset<T, Dormitory$residentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    rooms<T extends Dormitory$roomsArgs<ExtArgs> = {}>(args?: Subset<T, Dormitory$roomsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoomPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Dormitory model
+   */
+  interface DormitoryFieldRefs {
+    readonly id: FieldRef<"Dormitory", 'String'>
+    readonly createdAt: FieldRef<"Dormitory", 'DateTime'>
+    readonly name: FieldRef<"Dormitory", 'String'>
+    readonly address: FieldRef<"Dormitory", 'String'>
+    readonly groundFloorPhoneNumber: FieldRef<"Dormitory", 'String'>
+    readonly status: FieldRef<"Dormitory", 'String'>
+    readonly photos: FieldRef<"Dormitory", 'String[]'>
+    readonly managerId: FieldRef<"Dormitory", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Dormitory findUnique
+   */
+  export type DormitoryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dormitory
+     */
+    select?: DormitorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dormitory
+     */
+    omit?: DormitoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryInclude<ExtArgs> | null
+    /**
+     * Filter, which Dormitory to fetch.
+     */
+    where: DormitoryWhereUniqueInput
+  }
+
+  /**
+   * Dormitory findUniqueOrThrow
+   */
+  export type DormitoryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dormitory
+     */
+    select?: DormitorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dormitory
+     */
+    omit?: DormitoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryInclude<ExtArgs> | null
+    /**
+     * Filter, which Dormitory to fetch.
+     */
+    where: DormitoryWhereUniqueInput
+  }
+
+  /**
+   * Dormitory findFirst
+   */
+  export type DormitoryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dormitory
+     */
+    select?: DormitorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dormitory
+     */
+    omit?: DormitoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryInclude<ExtArgs> | null
+    /**
+     * Filter, which Dormitory to fetch.
+     */
+    where?: DormitoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Dormitories to fetch.
+     */
+    orderBy?: DormitoryOrderByWithRelationInput | DormitoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Dormitories.
+     */
+    cursor?: DormitoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Dormitories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Dormitories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Dormitories.
+     */
+    distinct?: DormitoryScalarFieldEnum | DormitoryScalarFieldEnum[]
+  }
+
+  /**
+   * Dormitory findFirstOrThrow
+   */
+  export type DormitoryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dormitory
+     */
+    select?: DormitorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dormitory
+     */
+    omit?: DormitoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryInclude<ExtArgs> | null
+    /**
+     * Filter, which Dormitory to fetch.
+     */
+    where?: DormitoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Dormitories to fetch.
+     */
+    orderBy?: DormitoryOrderByWithRelationInput | DormitoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Dormitories.
+     */
+    cursor?: DormitoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Dormitories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Dormitories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Dormitories.
+     */
+    distinct?: DormitoryScalarFieldEnum | DormitoryScalarFieldEnum[]
+  }
+
+  /**
+   * Dormitory findMany
+   */
+  export type DormitoryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dormitory
+     */
+    select?: DormitorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dormitory
+     */
+    omit?: DormitoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryInclude<ExtArgs> | null
+    /**
+     * Filter, which Dormitories to fetch.
+     */
+    where?: DormitoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Dormitories to fetch.
+     */
+    orderBy?: DormitoryOrderByWithRelationInput | DormitoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Dormitories.
+     */
+    cursor?: DormitoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Dormitories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Dormitories.
+     */
+    skip?: number
+    distinct?: DormitoryScalarFieldEnum | DormitoryScalarFieldEnum[]
+  }
+
+  /**
+   * Dormitory create
+   */
+  export type DormitoryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dormitory
+     */
+    select?: DormitorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dormitory
+     */
+    omit?: DormitoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Dormitory.
+     */
+    data: XOR<DormitoryCreateInput, DormitoryUncheckedCreateInput>
+  }
+
+  /**
+   * Dormitory createMany
+   */
+  export type DormitoryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Dormitories.
+     */
+    data: DormitoryCreateManyInput | DormitoryCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Dormitory createManyAndReturn
+   */
+  export type DormitoryCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dormitory
+     */
+    select?: DormitorySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dormitory
+     */
+    omit?: DormitoryOmit<ExtArgs> | null
+    /**
+     * The data used to create many Dormitories.
+     */
+    data: DormitoryCreateManyInput | DormitoryCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Dormitory update
+   */
+  export type DormitoryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dormitory
+     */
+    select?: DormitorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dormitory
+     */
+    omit?: DormitoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Dormitory.
+     */
+    data: XOR<DormitoryUpdateInput, DormitoryUncheckedUpdateInput>
+    /**
+     * Choose, which Dormitory to update.
+     */
+    where: DormitoryWhereUniqueInput
+  }
+
+  /**
+   * Dormitory updateMany
+   */
+  export type DormitoryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Dormitories.
+     */
+    data: XOR<DormitoryUpdateManyMutationInput, DormitoryUncheckedUpdateManyInput>
+    /**
+     * Filter which Dormitories to update
+     */
+    where?: DormitoryWhereInput
+    /**
+     * Limit how many Dormitories to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Dormitory updateManyAndReturn
+   */
+  export type DormitoryUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dormitory
+     */
+    select?: DormitorySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dormitory
+     */
+    omit?: DormitoryOmit<ExtArgs> | null
+    /**
+     * The data used to update Dormitories.
+     */
+    data: XOR<DormitoryUpdateManyMutationInput, DormitoryUncheckedUpdateManyInput>
+    /**
+     * Filter which Dormitories to update
+     */
+    where?: DormitoryWhereInput
+    /**
+     * Limit how many Dormitories to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Dormitory upsert
+   */
+  export type DormitoryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dormitory
+     */
+    select?: DormitorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dormitory
+     */
+    omit?: DormitoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Dormitory to update in case it exists.
+     */
+    where: DormitoryWhereUniqueInput
+    /**
+     * In case the Dormitory found by the `where` argument doesn't exist, create a new Dormitory with this data.
+     */
+    create: XOR<DormitoryCreateInput, DormitoryUncheckedCreateInput>
+    /**
+     * In case the Dormitory was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DormitoryUpdateInput, DormitoryUncheckedUpdateInput>
+  }
+
+  /**
+   * Dormitory delete
+   */
+  export type DormitoryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dormitory
+     */
+    select?: DormitorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dormitory
+     */
+    omit?: DormitoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryInclude<ExtArgs> | null
+    /**
+     * Filter which Dormitory to delete.
+     */
+    where: DormitoryWhereUniqueInput
+  }
+
+  /**
+   * Dormitory deleteMany
+   */
+  export type DormitoryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Dormitories to delete
+     */
+    where?: DormitoryWhereInput
+    /**
+     * Limit how many Dormitories to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Dormitory.manager
+   */
+  export type Dormitory$managerArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * Dormitory.admins
+   */
+  export type Dormitory$adminsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DormitoryAdmin
+     */
+    select?: DormitoryAdminSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DormitoryAdmin
+     */
+    omit?: DormitoryAdminOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryAdminInclude<ExtArgs> | null
+    where?: DormitoryAdminWhereInput
+    orderBy?: DormitoryAdminOrderByWithRelationInput | DormitoryAdminOrderByWithRelationInput[]
+    cursor?: DormitoryAdminWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DormitoryAdminScalarFieldEnum | DormitoryAdminScalarFieldEnum[]
+  }
+
+  /**
+   * Dormitory.residents
+   */
+  export type Dormitory$residentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
+    cursor?: UserWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
+  }
+
+  /**
+   * Dormitory.rooms
+   */
+  export type Dormitory$roomsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Room
+     */
+    select?: RoomSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Room
+     */
+    omit?: RoomOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomInclude<ExtArgs> | null
+    where?: RoomWhereInput
+    orderBy?: RoomOrderByWithRelationInput | RoomOrderByWithRelationInput[]
+    cursor?: RoomWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RoomScalarFieldEnum | RoomScalarFieldEnum[]
+  }
+
+  /**
+   * Dormitory without action
+   */
+  export type DormitoryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dormitory
+     */
+    select?: DormitorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dormitory
+     */
+    omit?: DormitoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Room
+   */
+
+  export type AggregateRoom = {
+    _count: RoomCountAggregateOutputType | null
+    _avg: RoomAvgAggregateOutputType | null
+    _sum: RoomSumAggregateOutputType | null
+    _min: RoomMinAggregateOutputType | null
+    _max: RoomMaxAggregateOutputType | null
+  }
+
+  export type RoomAvgAggregateOutputType = {
+    floor: number | null
+    capacity: number | null
+  }
+
+  export type RoomSumAggregateOutputType = {
+    floor: number | null
+    capacity: number | null
+  }
+
+  export type RoomMinAggregateOutputType = {
+    id: string | null
+    number: string | null
+    floor: number | null
+    createdAt: Date | null
+    capacity: number | null
+    dormitoryId: string | null
+  }
+
+  export type RoomMaxAggregateOutputType = {
+    id: string | null
+    number: string | null
+    floor: number | null
+    createdAt: Date | null
+    capacity: number | null
+    dormitoryId: string | null
+  }
+
+  export type RoomCountAggregateOutputType = {
+    id: number
+    number: number
+    floor: number
+    createdAt: number
+    capacity: number
+    roomEquipment: number
+    photos: number
+    dormitoryId: number
+    _all: number
+  }
+
+
+  export type RoomAvgAggregateInputType = {
+    floor?: true
+    capacity?: true
+  }
+
+  export type RoomSumAggregateInputType = {
+    floor?: true
+    capacity?: true
+  }
+
+  export type RoomMinAggregateInputType = {
+    id?: true
+    number?: true
+    floor?: true
+    createdAt?: true
+    capacity?: true
+    dormitoryId?: true
+  }
+
+  export type RoomMaxAggregateInputType = {
+    id?: true
+    number?: true
+    floor?: true
+    createdAt?: true
+    capacity?: true
+    dormitoryId?: true
+  }
+
+  export type RoomCountAggregateInputType = {
+    id?: true
+    number?: true
+    floor?: true
+    createdAt?: true
+    capacity?: true
+    roomEquipment?: true
+    photos?: true
+    dormitoryId?: true
+    _all?: true
+  }
+
+  export type RoomAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Room to aggregate.
+     */
+    where?: RoomWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Rooms to fetch.
+     */
+    orderBy?: RoomOrderByWithRelationInput | RoomOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RoomWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Rooms from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Rooms.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Rooms
+    **/
+    _count?: true | RoomCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: RoomAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: RoomSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RoomMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RoomMaxAggregateInputType
+  }
+
+  export type GetRoomAggregateType<T extends RoomAggregateArgs> = {
+        [P in keyof T & keyof AggregateRoom]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRoom[P]>
+      : GetScalarType<T[P], AggregateRoom[P]>
+  }
+
+
+
+
+  export type RoomGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RoomWhereInput
+    orderBy?: RoomOrderByWithAggregationInput | RoomOrderByWithAggregationInput[]
+    by: RoomScalarFieldEnum[] | RoomScalarFieldEnum
+    having?: RoomScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RoomCountAggregateInputType | true
+    _avg?: RoomAvgAggregateInputType
+    _sum?: RoomSumAggregateInputType
+    _min?: RoomMinAggregateInputType
+    _max?: RoomMaxAggregateInputType
+  }
+
+  export type RoomGroupByOutputType = {
+    id: string
+    number: string
+    floor: number
+    createdAt: Date
+    capacity: number
+    roomEquipment: string[]
+    photos: string[]
+    dormitoryId: string
+    _count: RoomCountAggregateOutputType | null
+    _avg: RoomAvgAggregateOutputType | null
+    _sum: RoomSumAggregateOutputType | null
+    _min: RoomMinAggregateOutputType | null
+    _max: RoomMaxAggregateOutputType | null
+  }
+
+  type GetRoomGroupByPayload<T extends RoomGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RoomGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RoomGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RoomGroupByOutputType[P]>
+            : GetScalarType<T[P], RoomGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RoomSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    number?: boolean
+    floor?: boolean
+    createdAt?: boolean
+    capacity?: boolean
+    roomEquipment?: boolean
+    photos?: boolean
+    dormitoryId?: boolean
+    statuses?: boolean | Room$statusesArgs<ExtArgs>
+    residents?: boolean | Room$residentsArgs<ExtArgs>
+    dormitroy?: boolean | DormitoryDefaultArgs<ExtArgs>
+    _count?: boolean | RoomCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["room"]>
+
+  export type RoomSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    number?: boolean
+    floor?: boolean
+    createdAt?: boolean
+    capacity?: boolean
+    roomEquipment?: boolean
+    photos?: boolean
+    dormitoryId?: boolean
+    dormitroy?: boolean | DormitoryDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["room"]>
+
+  export type RoomSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    number?: boolean
+    floor?: boolean
+    createdAt?: boolean
+    capacity?: boolean
+    roomEquipment?: boolean
+    photos?: boolean
+    dormitoryId?: boolean
+    dormitroy?: boolean | DormitoryDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["room"]>
+
+  export type RoomSelectScalar = {
+    id?: boolean
+    number?: boolean
+    floor?: boolean
+    createdAt?: boolean
+    capacity?: boolean
+    roomEquipment?: boolean
+    photos?: boolean
+    dormitoryId?: boolean
+  }
+
+  export type RoomOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "number" | "floor" | "createdAt" | "capacity" | "roomEquipment" | "photos" | "dormitoryId", ExtArgs["result"]["room"]>
+  export type RoomInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    statuses?: boolean | Room$statusesArgs<ExtArgs>
+    residents?: boolean | Room$residentsArgs<ExtArgs>
+    dormitroy?: boolean | DormitoryDefaultArgs<ExtArgs>
+    _count?: boolean | RoomCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type RoomIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    dormitroy?: boolean | DormitoryDefaultArgs<ExtArgs>
+  }
+  export type RoomIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    dormitroy?: boolean | DormitoryDefaultArgs<ExtArgs>
+  }
+
+  export type $RoomPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Room"
+    objects: {
+      statuses: Prisma.$RoomStatusPayload<ExtArgs>[]
+      residents: Prisma.$UserPayload<ExtArgs>[]
+      dormitroy: Prisma.$DormitoryPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      number: string
+      floor: number
+      createdAt: Date
+      capacity: number
+      roomEquipment: string[]
+      photos: string[]
+      dormitoryId: string
+    }, ExtArgs["result"]["room"]>
+    composites: {}
+  }
+
+  type RoomGetPayload<S extends boolean | null | undefined | RoomDefaultArgs> = $Result.GetResult<Prisma.$RoomPayload, S>
+
+  type RoomCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RoomFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RoomCountAggregateInputType | true
+    }
+
+  export interface RoomDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Room'], meta: { name: 'Room' } }
+    /**
+     * Find zero or one Room that matches the filter.
+     * @param {RoomFindUniqueArgs} args - Arguments to find a Room
+     * @example
+     * // Get one Room
+     * const room = await prisma.room.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RoomFindUniqueArgs>(args: SelectSubset<T, RoomFindUniqueArgs<ExtArgs>>): Prisma__RoomClient<$Result.GetResult<Prisma.$RoomPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Room that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RoomFindUniqueOrThrowArgs} args - Arguments to find a Room
+     * @example
+     * // Get one Room
+     * const room = await prisma.room.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RoomFindUniqueOrThrowArgs>(args: SelectSubset<T, RoomFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RoomClient<$Result.GetResult<Prisma.$RoomPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Room that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoomFindFirstArgs} args - Arguments to find a Room
+     * @example
+     * // Get one Room
+     * const room = await prisma.room.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RoomFindFirstArgs>(args?: SelectSubset<T, RoomFindFirstArgs<ExtArgs>>): Prisma__RoomClient<$Result.GetResult<Prisma.$RoomPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Room that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoomFindFirstOrThrowArgs} args - Arguments to find a Room
+     * @example
+     * // Get one Room
+     * const room = await prisma.room.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RoomFindFirstOrThrowArgs>(args?: SelectSubset<T, RoomFindFirstOrThrowArgs<ExtArgs>>): Prisma__RoomClient<$Result.GetResult<Prisma.$RoomPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Rooms that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoomFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Rooms
+     * const rooms = await prisma.room.findMany()
+     * 
+     * // Get first 10 Rooms
+     * const rooms = await prisma.room.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const roomWithIdOnly = await prisma.room.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RoomFindManyArgs>(args?: SelectSubset<T, RoomFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoomPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Room.
+     * @param {RoomCreateArgs} args - Arguments to create a Room.
+     * @example
+     * // Create one Room
+     * const Room = await prisma.room.create({
+     *   data: {
+     *     // ... data to create a Room
+     *   }
+     * })
+     * 
+     */
+    create<T extends RoomCreateArgs>(args: SelectSubset<T, RoomCreateArgs<ExtArgs>>): Prisma__RoomClient<$Result.GetResult<Prisma.$RoomPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Rooms.
+     * @param {RoomCreateManyArgs} args - Arguments to create many Rooms.
+     * @example
+     * // Create many Rooms
+     * const room = await prisma.room.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RoomCreateManyArgs>(args?: SelectSubset<T, RoomCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Rooms and returns the data saved in the database.
+     * @param {RoomCreateManyAndReturnArgs} args - Arguments to create many Rooms.
+     * @example
+     * // Create many Rooms
+     * const room = await prisma.room.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Rooms and only return the `id`
+     * const roomWithIdOnly = await prisma.room.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RoomCreateManyAndReturnArgs>(args?: SelectSubset<T, RoomCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoomPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Room.
+     * @param {RoomDeleteArgs} args - Arguments to delete one Room.
+     * @example
+     * // Delete one Room
+     * const Room = await prisma.room.delete({
+     *   where: {
+     *     // ... filter to delete one Room
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RoomDeleteArgs>(args: SelectSubset<T, RoomDeleteArgs<ExtArgs>>): Prisma__RoomClient<$Result.GetResult<Prisma.$RoomPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Room.
+     * @param {RoomUpdateArgs} args - Arguments to update one Room.
+     * @example
+     * // Update one Room
+     * const room = await prisma.room.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RoomUpdateArgs>(args: SelectSubset<T, RoomUpdateArgs<ExtArgs>>): Prisma__RoomClient<$Result.GetResult<Prisma.$RoomPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Rooms.
+     * @param {RoomDeleteManyArgs} args - Arguments to filter Rooms to delete.
+     * @example
+     * // Delete a few Rooms
+     * const { count } = await prisma.room.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RoomDeleteManyArgs>(args?: SelectSubset<T, RoomDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Rooms.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoomUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Rooms
+     * const room = await prisma.room.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RoomUpdateManyArgs>(args: SelectSubset<T, RoomUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Rooms and returns the data updated in the database.
+     * @param {RoomUpdateManyAndReturnArgs} args - Arguments to update many Rooms.
+     * @example
+     * // Update many Rooms
+     * const room = await prisma.room.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Rooms and only return the `id`
+     * const roomWithIdOnly = await prisma.room.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RoomUpdateManyAndReturnArgs>(args: SelectSubset<T, RoomUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoomPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Room.
+     * @param {RoomUpsertArgs} args - Arguments to update or create a Room.
+     * @example
+     * // Update or create a Room
+     * const room = await prisma.room.upsert({
+     *   create: {
+     *     // ... data to create a Room
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Room we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RoomUpsertArgs>(args: SelectSubset<T, RoomUpsertArgs<ExtArgs>>): Prisma__RoomClient<$Result.GetResult<Prisma.$RoomPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Rooms.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoomCountArgs} args - Arguments to filter Rooms to count.
+     * @example
+     * // Count the number of Rooms
+     * const count = await prisma.room.count({
+     *   where: {
+     *     // ... the filter for the Rooms we want to count
+     *   }
+     * })
+    **/
+    count<T extends RoomCountArgs>(
+      args?: Subset<T, RoomCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RoomCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Room.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoomAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RoomAggregateArgs>(args: Subset<T, RoomAggregateArgs>): Prisma.PrismaPromise<GetRoomAggregateType<T>>
+
+    /**
+     * Group by Room.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoomGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RoomGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RoomGroupByArgs['orderBy'] }
+        : { orderBy?: RoomGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RoomGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRoomGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Room model
+   */
+  readonly fields: RoomFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Room.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RoomClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    statuses<T extends Room$statusesArgs<ExtArgs> = {}>(args?: Subset<T, Room$statusesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoomStatusPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    residents<T extends Room$residentsArgs<ExtArgs> = {}>(args?: Subset<T, Room$residentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    dormitroy<T extends DormitoryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DormitoryDefaultArgs<ExtArgs>>): Prisma__DormitoryClient<$Result.GetResult<Prisma.$DormitoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Room model
+   */
+  interface RoomFieldRefs {
+    readonly id: FieldRef<"Room", 'String'>
+    readonly number: FieldRef<"Room", 'String'>
+    readonly floor: FieldRef<"Room", 'Int'>
+    readonly createdAt: FieldRef<"Room", 'DateTime'>
+    readonly capacity: FieldRef<"Room", 'Int'>
+    readonly roomEquipment: FieldRef<"Room", 'String[]'>
+    readonly photos: FieldRef<"Room", 'String[]'>
+    readonly dormitoryId: FieldRef<"Room", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Room findUnique
+   */
+  export type RoomFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Room
+     */
+    select?: RoomSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Room
+     */
+    omit?: RoomOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomInclude<ExtArgs> | null
+    /**
+     * Filter, which Room to fetch.
+     */
+    where: RoomWhereUniqueInput
+  }
+
+  /**
+   * Room findUniqueOrThrow
+   */
+  export type RoomFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Room
+     */
+    select?: RoomSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Room
+     */
+    omit?: RoomOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomInclude<ExtArgs> | null
+    /**
+     * Filter, which Room to fetch.
+     */
+    where: RoomWhereUniqueInput
+  }
+
+  /**
+   * Room findFirst
+   */
+  export type RoomFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Room
+     */
+    select?: RoomSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Room
+     */
+    omit?: RoomOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomInclude<ExtArgs> | null
+    /**
+     * Filter, which Room to fetch.
+     */
+    where?: RoomWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Rooms to fetch.
+     */
+    orderBy?: RoomOrderByWithRelationInput | RoomOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Rooms.
+     */
+    cursor?: RoomWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Rooms from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Rooms.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Rooms.
+     */
+    distinct?: RoomScalarFieldEnum | RoomScalarFieldEnum[]
+  }
+
+  /**
+   * Room findFirstOrThrow
+   */
+  export type RoomFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Room
+     */
+    select?: RoomSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Room
+     */
+    omit?: RoomOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomInclude<ExtArgs> | null
+    /**
+     * Filter, which Room to fetch.
+     */
+    where?: RoomWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Rooms to fetch.
+     */
+    orderBy?: RoomOrderByWithRelationInput | RoomOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Rooms.
+     */
+    cursor?: RoomWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Rooms from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Rooms.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Rooms.
+     */
+    distinct?: RoomScalarFieldEnum | RoomScalarFieldEnum[]
+  }
+
+  /**
+   * Room findMany
+   */
+  export type RoomFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Room
+     */
+    select?: RoomSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Room
+     */
+    omit?: RoomOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomInclude<ExtArgs> | null
+    /**
+     * Filter, which Rooms to fetch.
+     */
+    where?: RoomWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Rooms to fetch.
+     */
+    orderBy?: RoomOrderByWithRelationInput | RoomOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Rooms.
+     */
+    cursor?: RoomWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Rooms from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Rooms.
+     */
+    skip?: number
+    distinct?: RoomScalarFieldEnum | RoomScalarFieldEnum[]
+  }
+
+  /**
+   * Room create
+   */
+  export type RoomCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Room
+     */
+    select?: RoomSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Room
+     */
+    omit?: RoomOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Room.
+     */
+    data: XOR<RoomCreateInput, RoomUncheckedCreateInput>
+  }
+
+  /**
+   * Room createMany
+   */
+  export type RoomCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Rooms.
+     */
+    data: RoomCreateManyInput | RoomCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Room createManyAndReturn
+   */
+  export type RoomCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Room
+     */
+    select?: RoomSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Room
+     */
+    omit?: RoomOmit<ExtArgs> | null
+    /**
+     * The data used to create many Rooms.
+     */
+    data: RoomCreateManyInput | RoomCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Room update
+   */
+  export type RoomUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Room
+     */
+    select?: RoomSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Room
+     */
+    omit?: RoomOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Room.
+     */
+    data: XOR<RoomUpdateInput, RoomUncheckedUpdateInput>
+    /**
+     * Choose, which Room to update.
+     */
+    where: RoomWhereUniqueInput
+  }
+
+  /**
+   * Room updateMany
+   */
+  export type RoomUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Rooms.
+     */
+    data: XOR<RoomUpdateManyMutationInput, RoomUncheckedUpdateManyInput>
+    /**
+     * Filter which Rooms to update
+     */
+    where?: RoomWhereInput
+    /**
+     * Limit how many Rooms to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Room updateManyAndReturn
+   */
+  export type RoomUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Room
+     */
+    select?: RoomSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Room
+     */
+    omit?: RoomOmit<ExtArgs> | null
+    /**
+     * The data used to update Rooms.
+     */
+    data: XOR<RoomUpdateManyMutationInput, RoomUncheckedUpdateManyInput>
+    /**
+     * Filter which Rooms to update
+     */
+    where?: RoomWhereInput
+    /**
+     * Limit how many Rooms to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Room upsert
+   */
+  export type RoomUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Room
+     */
+    select?: RoomSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Room
+     */
+    omit?: RoomOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Room to update in case it exists.
+     */
+    where: RoomWhereUniqueInput
+    /**
+     * In case the Room found by the `where` argument doesn't exist, create a new Room with this data.
+     */
+    create: XOR<RoomCreateInput, RoomUncheckedCreateInput>
+    /**
+     * In case the Room was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RoomUpdateInput, RoomUncheckedUpdateInput>
+  }
+
+  /**
+   * Room delete
+   */
+  export type RoomDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Room
+     */
+    select?: RoomSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Room
+     */
+    omit?: RoomOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomInclude<ExtArgs> | null
+    /**
+     * Filter which Room to delete.
+     */
+    where: RoomWhereUniqueInput
+  }
+
+  /**
+   * Room deleteMany
+   */
+  export type RoomDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Rooms to delete
+     */
+    where?: RoomWhereInput
+    /**
+     * Limit how many Rooms to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Room.statuses
+   */
+  export type Room$statusesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoomStatus
+     */
+    select?: RoomStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoomStatus
+     */
+    omit?: RoomStatusOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomStatusInclude<ExtArgs> | null
+    where?: RoomStatusWhereInput
+    orderBy?: RoomStatusOrderByWithRelationInput | RoomStatusOrderByWithRelationInput[]
+    cursor?: RoomStatusWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RoomStatusScalarFieldEnum | RoomStatusScalarFieldEnum[]
+  }
+
+  /**
+   * Room.residents
+   */
+  export type Room$residentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
+    cursor?: UserWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
+  }
+
+  /**
+   * Room without action
+   */
+  export type RoomDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Room
+     */
+    select?: RoomSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Room
+     */
+    omit?: RoomOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model RoomStatus
+   */
+
+  export type AggregateRoomStatus = {
+    _count: RoomStatusCountAggregateOutputType | null
+    _min: RoomStatusMinAggregateOutputType | null
+    _max: RoomStatusMaxAggregateOutputType | null
+  }
+
+  export type RoomStatusMinAggregateOutputType = {
+    id: string | null
+    dateOfStart: Date | null
+    dateOfEnd: Date | null
+    description: string | null
+    roomId: string | null
+  }
+
+  export type RoomStatusMaxAggregateOutputType = {
+    id: string | null
+    dateOfStart: Date | null
+    dateOfEnd: Date | null
+    description: string | null
+    roomId: string | null
+  }
+
+  export type RoomStatusCountAggregateOutputType = {
+    id: number
+    dateOfStart: number
+    dateOfEnd: number
+    description: number
+    roomId: number
+    _all: number
+  }
+
+
+  export type RoomStatusMinAggregateInputType = {
+    id?: true
+    dateOfStart?: true
+    dateOfEnd?: true
+    description?: true
+    roomId?: true
+  }
+
+  export type RoomStatusMaxAggregateInputType = {
+    id?: true
+    dateOfStart?: true
+    dateOfEnd?: true
+    description?: true
+    roomId?: true
+  }
+
+  export type RoomStatusCountAggregateInputType = {
+    id?: true
+    dateOfStart?: true
+    dateOfEnd?: true
+    description?: true
+    roomId?: true
+    _all?: true
+  }
+
+  export type RoomStatusAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RoomStatus to aggregate.
+     */
+    where?: RoomStatusWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RoomStatuses to fetch.
+     */
+    orderBy?: RoomStatusOrderByWithRelationInput | RoomStatusOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RoomStatusWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RoomStatuses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RoomStatuses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned RoomStatuses
+    **/
+    _count?: true | RoomStatusCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RoomStatusMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RoomStatusMaxAggregateInputType
+  }
+
+  export type GetRoomStatusAggregateType<T extends RoomStatusAggregateArgs> = {
+        [P in keyof T & keyof AggregateRoomStatus]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRoomStatus[P]>
+      : GetScalarType<T[P], AggregateRoomStatus[P]>
+  }
+
+
+
+
+  export type RoomStatusGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RoomStatusWhereInput
+    orderBy?: RoomStatusOrderByWithAggregationInput | RoomStatusOrderByWithAggregationInput[]
+    by: RoomStatusScalarFieldEnum[] | RoomStatusScalarFieldEnum
+    having?: RoomStatusScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RoomStatusCountAggregateInputType | true
+    _min?: RoomStatusMinAggregateInputType
+    _max?: RoomStatusMaxAggregateInputType
+  }
+
+  export type RoomStatusGroupByOutputType = {
+    id: string
+    dateOfStart: Date
+    dateOfEnd: Date | null
+    description: string
+    roomId: string
+    _count: RoomStatusCountAggregateOutputType | null
+    _min: RoomStatusMinAggregateOutputType | null
+    _max: RoomStatusMaxAggregateOutputType | null
+  }
+
+  type GetRoomStatusGroupByPayload<T extends RoomStatusGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RoomStatusGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RoomStatusGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RoomStatusGroupByOutputType[P]>
+            : GetScalarType<T[P], RoomStatusGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RoomStatusSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    dateOfStart?: boolean
+    dateOfEnd?: boolean
+    description?: boolean
+    roomId?: boolean
+    room?: boolean | RoomDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["roomStatus"]>
+
+  export type RoomStatusSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    dateOfStart?: boolean
+    dateOfEnd?: boolean
+    description?: boolean
+    roomId?: boolean
+    room?: boolean | RoomDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["roomStatus"]>
+
+  export type RoomStatusSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    dateOfStart?: boolean
+    dateOfEnd?: boolean
+    description?: boolean
+    roomId?: boolean
+    room?: boolean | RoomDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["roomStatus"]>
+
+  export type RoomStatusSelectScalar = {
+    id?: boolean
+    dateOfStart?: boolean
+    dateOfEnd?: boolean
+    description?: boolean
+    roomId?: boolean
+  }
+
+  export type RoomStatusOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "dateOfStart" | "dateOfEnd" | "description" | "roomId", ExtArgs["result"]["roomStatus"]>
+  export type RoomStatusInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    room?: boolean | RoomDefaultArgs<ExtArgs>
+  }
+  export type RoomStatusIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    room?: boolean | RoomDefaultArgs<ExtArgs>
+  }
+  export type RoomStatusIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    room?: boolean | RoomDefaultArgs<ExtArgs>
+  }
+
+  export type $RoomStatusPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RoomStatus"
+    objects: {
+      room: Prisma.$RoomPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      dateOfStart: Date
+      dateOfEnd: Date | null
+      description: string
+      roomId: string
+    }, ExtArgs["result"]["roomStatus"]>
+    composites: {}
+  }
+
+  type RoomStatusGetPayload<S extends boolean | null | undefined | RoomStatusDefaultArgs> = $Result.GetResult<Prisma.$RoomStatusPayload, S>
+
+  type RoomStatusCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RoomStatusFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RoomStatusCountAggregateInputType | true
+    }
+
+  export interface RoomStatusDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RoomStatus'], meta: { name: 'RoomStatus' } }
+    /**
+     * Find zero or one RoomStatus that matches the filter.
+     * @param {RoomStatusFindUniqueArgs} args - Arguments to find a RoomStatus
+     * @example
+     * // Get one RoomStatus
+     * const roomStatus = await prisma.roomStatus.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RoomStatusFindUniqueArgs>(args: SelectSubset<T, RoomStatusFindUniqueArgs<ExtArgs>>): Prisma__RoomStatusClient<$Result.GetResult<Prisma.$RoomStatusPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one RoomStatus that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RoomStatusFindUniqueOrThrowArgs} args - Arguments to find a RoomStatus
+     * @example
+     * // Get one RoomStatus
+     * const roomStatus = await prisma.roomStatus.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RoomStatusFindUniqueOrThrowArgs>(args: SelectSubset<T, RoomStatusFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RoomStatusClient<$Result.GetResult<Prisma.$RoomStatusPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RoomStatus that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoomStatusFindFirstArgs} args - Arguments to find a RoomStatus
+     * @example
+     * // Get one RoomStatus
+     * const roomStatus = await prisma.roomStatus.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RoomStatusFindFirstArgs>(args?: SelectSubset<T, RoomStatusFindFirstArgs<ExtArgs>>): Prisma__RoomStatusClient<$Result.GetResult<Prisma.$RoomStatusPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RoomStatus that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoomStatusFindFirstOrThrowArgs} args - Arguments to find a RoomStatus
+     * @example
+     * // Get one RoomStatus
+     * const roomStatus = await prisma.roomStatus.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RoomStatusFindFirstOrThrowArgs>(args?: SelectSubset<T, RoomStatusFindFirstOrThrowArgs<ExtArgs>>): Prisma__RoomStatusClient<$Result.GetResult<Prisma.$RoomStatusPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more RoomStatuses that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoomStatusFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RoomStatuses
+     * const roomStatuses = await prisma.roomStatus.findMany()
+     * 
+     * // Get first 10 RoomStatuses
+     * const roomStatuses = await prisma.roomStatus.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const roomStatusWithIdOnly = await prisma.roomStatus.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RoomStatusFindManyArgs>(args?: SelectSubset<T, RoomStatusFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoomStatusPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a RoomStatus.
+     * @param {RoomStatusCreateArgs} args - Arguments to create a RoomStatus.
+     * @example
+     * // Create one RoomStatus
+     * const RoomStatus = await prisma.roomStatus.create({
+     *   data: {
+     *     // ... data to create a RoomStatus
+     *   }
+     * })
+     * 
+     */
+    create<T extends RoomStatusCreateArgs>(args: SelectSubset<T, RoomStatusCreateArgs<ExtArgs>>): Prisma__RoomStatusClient<$Result.GetResult<Prisma.$RoomStatusPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many RoomStatuses.
+     * @param {RoomStatusCreateManyArgs} args - Arguments to create many RoomStatuses.
+     * @example
+     * // Create many RoomStatuses
+     * const roomStatus = await prisma.roomStatus.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RoomStatusCreateManyArgs>(args?: SelectSubset<T, RoomStatusCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many RoomStatuses and returns the data saved in the database.
+     * @param {RoomStatusCreateManyAndReturnArgs} args - Arguments to create many RoomStatuses.
+     * @example
+     * // Create many RoomStatuses
+     * const roomStatus = await prisma.roomStatus.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many RoomStatuses and only return the `id`
+     * const roomStatusWithIdOnly = await prisma.roomStatus.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RoomStatusCreateManyAndReturnArgs>(args?: SelectSubset<T, RoomStatusCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoomStatusPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a RoomStatus.
+     * @param {RoomStatusDeleteArgs} args - Arguments to delete one RoomStatus.
+     * @example
+     * // Delete one RoomStatus
+     * const RoomStatus = await prisma.roomStatus.delete({
+     *   where: {
+     *     // ... filter to delete one RoomStatus
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RoomStatusDeleteArgs>(args: SelectSubset<T, RoomStatusDeleteArgs<ExtArgs>>): Prisma__RoomStatusClient<$Result.GetResult<Prisma.$RoomStatusPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one RoomStatus.
+     * @param {RoomStatusUpdateArgs} args - Arguments to update one RoomStatus.
+     * @example
+     * // Update one RoomStatus
+     * const roomStatus = await prisma.roomStatus.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RoomStatusUpdateArgs>(args: SelectSubset<T, RoomStatusUpdateArgs<ExtArgs>>): Prisma__RoomStatusClient<$Result.GetResult<Prisma.$RoomStatusPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more RoomStatuses.
+     * @param {RoomStatusDeleteManyArgs} args - Arguments to filter RoomStatuses to delete.
+     * @example
+     * // Delete a few RoomStatuses
+     * const { count } = await prisma.roomStatus.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RoomStatusDeleteManyArgs>(args?: SelectSubset<T, RoomStatusDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RoomStatuses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoomStatusUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RoomStatuses
+     * const roomStatus = await prisma.roomStatus.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RoomStatusUpdateManyArgs>(args: SelectSubset<T, RoomStatusUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RoomStatuses and returns the data updated in the database.
+     * @param {RoomStatusUpdateManyAndReturnArgs} args - Arguments to update many RoomStatuses.
+     * @example
+     * // Update many RoomStatuses
+     * const roomStatus = await prisma.roomStatus.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more RoomStatuses and only return the `id`
+     * const roomStatusWithIdOnly = await prisma.roomStatus.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RoomStatusUpdateManyAndReturnArgs>(args: SelectSubset<T, RoomStatusUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoomStatusPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one RoomStatus.
+     * @param {RoomStatusUpsertArgs} args - Arguments to update or create a RoomStatus.
+     * @example
+     * // Update or create a RoomStatus
+     * const roomStatus = await prisma.roomStatus.upsert({
+     *   create: {
+     *     // ... data to create a RoomStatus
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RoomStatus we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RoomStatusUpsertArgs>(args: SelectSubset<T, RoomStatusUpsertArgs<ExtArgs>>): Prisma__RoomStatusClient<$Result.GetResult<Prisma.$RoomStatusPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of RoomStatuses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoomStatusCountArgs} args - Arguments to filter RoomStatuses to count.
+     * @example
+     * // Count the number of RoomStatuses
+     * const count = await prisma.roomStatus.count({
+     *   where: {
+     *     // ... the filter for the RoomStatuses we want to count
+     *   }
+     * })
+    **/
+    count<T extends RoomStatusCountArgs>(
+      args?: Subset<T, RoomStatusCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RoomStatusCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a RoomStatus.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoomStatusAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RoomStatusAggregateArgs>(args: Subset<T, RoomStatusAggregateArgs>): Prisma.PrismaPromise<GetRoomStatusAggregateType<T>>
+
+    /**
+     * Group by RoomStatus.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoomStatusGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RoomStatusGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RoomStatusGroupByArgs['orderBy'] }
+        : { orderBy?: RoomStatusGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RoomStatusGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRoomStatusGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the RoomStatus model
+   */
+  readonly fields: RoomStatusFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for RoomStatus.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RoomStatusClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    room<T extends RoomDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RoomDefaultArgs<ExtArgs>>): Prisma__RoomClient<$Result.GetResult<Prisma.$RoomPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the RoomStatus model
+   */
+  interface RoomStatusFieldRefs {
+    readonly id: FieldRef<"RoomStatus", 'String'>
+    readonly dateOfStart: FieldRef<"RoomStatus", 'DateTime'>
+    readonly dateOfEnd: FieldRef<"RoomStatus", 'DateTime'>
+    readonly description: FieldRef<"RoomStatus", 'String'>
+    readonly roomId: FieldRef<"RoomStatus", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * RoomStatus findUnique
+   */
+  export type RoomStatusFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoomStatus
+     */
+    select?: RoomStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoomStatus
+     */
+    omit?: RoomStatusOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomStatusInclude<ExtArgs> | null
+    /**
+     * Filter, which RoomStatus to fetch.
+     */
+    where: RoomStatusWhereUniqueInput
+  }
+
+  /**
+   * RoomStatus findUniqueOrThrow
+   */
+  export type RoomStatusFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoomStatus
+     */
+    select?: RoomStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoomStatus
+     */
+    omit?: RoomStatusOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomStatusInclude<ExtArgs> | null
+    /**
+     * Filter, which RoomStatus to fetch.
+     */
+    where: RoomStatusWhereUniqueInput
+  }
+
+  /**
+   * RoomStatus findFirst
+   */
+  export type RoomStatusFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoomStatus
+     */
+    select?: RoomStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoomStatus
+     */
+    omit?: RoomStatusOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomStatusInclude<ExtArgs> | null
+    /**
+     * Filter, which RoomStatus to fetch.
+     */
+    where?: RoomStatusWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RoomStatuses to fetch.
+     */
+    orderBy?: RoomStatusOrderByWithRelationInput | RoomStatusOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RoomStatuses.
+     */
+    cursor?: RoomStatusWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RoomStatuses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RoomStatuses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RoomStatuses.
+     */
+    distinct?: RoomStatusScalarFieldEnum | RoomStatusScalarFieldEnum[]
+  }
+
+  /**
+   * RoomStatus findFirstOrThrow
+   */
+  export type RoomStatusFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoomStatus
+     */
+    select?: RoomStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoomStatus
+     */
+    omit?: RoomStatusOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomStatusInclude<ExtArgs> | null
+    /**
+     * Filter, which RoomStatus to fetch.
+     */
+    where?: RoomStatusWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RoomStatuses to fetch.
+     */
+    orderBy?: RoomStatusOrderByWithRelationInput | RoomStatusOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RoomStatuses.
+     */
+    cursor?: RoomStatusWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RoomStatuses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RoomStatuses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RoomStatuses.
+     */
+    distinct?: RoomStatusScalarFieldEnum | RoomStatusScalarFieldEnum[]
+  }
+
+  /**
+   * RoomStatus findMany
+   */
+  export type RoomStatusFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoomStatus
+     */
+    select?: RoomStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoomStatus
+     */
+    omit?: RoomStatusOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomStatusInclude<ExtArgs> | null
+    /**
+     * Filter, which RoomStatuses to fetch.
+     */
+    where?: RoomStatusWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RoomStatuses to fetch.
+     */
+    orderBy?: RoomStatusOrderByWithRelationInput | RoomStatusOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing RoomStatuses.
+     */
+    cursor?: RoomStatusWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RoomStatuses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RoomStatuses.
+     */
+    skip?: number
+    distinct?: RoomStatusScalarFieldEnum | RoomStatusScalarFieldEnum[]
+  }
+
+  /**
+   * RoomStatus create
+   */
+  export type RoomStatusCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoomStatus
+     */
+    select?: RoomStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoomStatus
+     */
+    omit?: RoomStatusOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomStatusInclude<ExtArgs> | null
+    /**
+     * The data needed to create a RoomStatus.
+     */
+    data: XOR<RoomStatusCreateInput, RoomStatusUncheckedCreateInput>
+  }
+
+  /**
+   * RoomStatus createMany
+   */
+  export type RoomStatusCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RoomStatuses.
+     */
+    data: RoomStatusCreateManyInput | RoomStatusCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RoomStatus createManyAndReturn
+   */
+  export type RoomStatusCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoomStatus
+     */
+    select?: RoomStatusSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoomStatus
+     */
+    omit?: RoomStatusOmit<ExtArgs> | null
+    /**
+     * The data used to create many RoomStatuses.
+     */
+    data: RoomStatusCreateManyInput | RoomStatusCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomStatusIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RoomStatus update
+   */
+  export type RoomStatusUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoomStatus
+     */
+    select?: RoomStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoomStatus
+     */
+    omit?: RoomStatusOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomStatusInclude<ExtArgs> | null
+    /**
+     * The data needed to update a RoomStatus.
+     */
+    data: XOR<RoomStatusUpdateInput, RoomStatusUncheckedUpdateInput>
+    /**
+     * Choose, which RoomStatus to update.
+     */
+    where: RoomStatusWhereUniqueInput
+  }
+
+  /**
+   * RoomStatus updateMany
+   */
+  export type RoomStatusUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RoomStatuses.
+     */
+    data: XOR<RoomStatusUpdateManyMutationInput, RoomStatusUncheckedUpdateManyInput>
+    /**
+     * Filter which RoomStatuses to update
+     */
+    where?: RoomStatusWhereInput
+    /**
+     * Limit how many RoomStatuses to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RoomStatus updateManyAndReturn
+   */
+  export type RoomStatusUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoomStatus
+     */
+    select?: RoomStatusSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoomStatus
+     */
+    omit?: RoomStatusOmit<ExtArgs> | null
+    /**
+     * The data used to update RoomStatuses.
+     */
+    data: XOR<RoomStatusUpdateManyMutationInput, RoomStatusUncheckedUpdateManyInput>
+    /**
+     * Filter which RoomStatuses to update
+     */
+    where?: RoomStatusWhereInput
+    /**
+     * Limit how many RoomStatuses to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomStatusIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RoomStatus upsert
+   */
+  export type RoomStatusUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoomStatus
+     */
+    select?: RoomStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoomStatus
+     */
+    omit?: RoomStatusOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomStatusInclude<ExtArgs> | null
+    /**
+     * The filter to search for the RoomStatus to update in case it exists.
+     */
+    where: RoomStatusWhereUniqueInput
+    /**
+     * In case the RoomStatus found by the `where` argument doesn't exist, create a new RoomStatus with this data.
+     */
+    create: XOR<RoomStatusCreateInput, RoomStatusUncheckedCreateInput>
+    /**
+     * In case the RoomStatus was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RoomStatusUpdateInput, RoomStatusUncheckedUpdateInput>
+  }
+
+  /**
+   * RoomStatus delete
+   */
+  export type RoomStatusDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoomStatus
+     */
+    select?: RoomStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoomStatus
+     */
+    omit?: RoomStatusOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomStatusInclude<ExtArgs> | null
+    /**
+     * Filter which RoomStatus to delete.
+     */
+    where: RoomStatusWhereUniqueInput
+  }
+
+  /**
+   * RoomStatus deleteMany
+   */
+  export type RoomStatusDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RoomStatuses to delete
+     */
+    where?: RoomStatusWhereInput
+    /**
+     * Limit how many RoomStatuses to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * RoomStatus without action
+   */
+  export type RoomStatusDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoomStatus
+     */
+    select?: RoomStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoomStatus
+     */
+    omit?: RoomStatusOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomStatusInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Price
+   */
+
+  export type AggregatePrice = {
+    _count: PriceCountAggregateOutputType | null
+    _avg: PriceAvgAggregateOutputType | null
+    _sum: PriceSumAggregateOutputType | null
+    _min: PriceMinAggregateOutputType | null
+    _max: PriceMaxAggregateOutputType | null
+  }
+
+  export type PriceAvgAggregateOutputType = {
+    roomCapacity: number | null
+    pricePerMonth: number | null
+    pricePerDay: number | null
+  }
+
+  export type PriceSumAggregateOutputType = {
+    roomCapacity: number | null
+    pricePerMonth: number | null
+    pricePerDay: number | null
+  }
+
+  export type PriceMinAggregateOutputType = {
+    id: string | null
+    roomCapacity: number | null
+    pricePerMonth: number | null
+    pricePerDay: number | null
+    dateFrom: Date | null
+    dateTo: Date | null
+  }
+
+  export type PriceMaxAggregateOutputType = {
+    id: string | null
+    roomCapacity: number | null
+    pricePerMonth: number | null
+    pricePerDay: number | null
+    dateFrom: Date | null
+    dateTo: Date | null
+  }
+
+  export type PriceCountAggregateOutputType = {
+    id: number
+    roomCapacity: number
+    pricePerMonth: number
+    pricePerDay: number
+    dateFrom: number
+    dateTo: number
+    _all: number
+  }
+
+
+  export type PriceAvgAggregateInputType = {
+    roomCapacity?: true
+    pricePerMonth?: true
+    pricePerDay?: true
+  }
+
+  export type PriceSumAggregateInputType = {
+    roomCapacity?: true
+    pricePerMonth?: true
+    pricePerDay?: true
+  }
+
+  export type PriceMinAggregateInputType = {
+    id?: true
+    roomCapacity?: true
+    pricePerMonth?: true
+    pricePerDay?: true
+    dateFrom?: true
+    dateTo?: true
+  }
+
+  export type PriceMaxAggregateInputType = {
+    id?: true
+    roomCapacity?: true
+    pricePerMonth?: true
+    pricePerDay?: true
+    dateFrom?: true
+    dateTo?: true
+  }
+
+  export type PriceCountAggregateInputType = {
+    id?: true
+    roomCapacity?: true
+    pricePerMonth?: true
+    pricePerDay?: true
+    dateFrom?: true
+    dateTo?: true
+    _all?: true
+  }
+
+  export type PriceAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Price to aggregate.
+     */
+    where?: PriceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Prices to fetch.
+     */
+    orderBy?: PriceOrderByWithRelationInput | PriceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PriceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Prices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Prices.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Prices
+    **/
+    _count?: true | PriceCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PriceAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PriceSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PriceMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PriceMaxAggregateInputType
+  }
+
+  export type GetPriceAggregateType<T extends PriceAggregateArgs> = {
+        [P in keyof T & keyof AggregatePrice]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePrice[P]>
+      : GetScalarType<T[P], AggregatePrice[P]>
+  }
+
+
+
+
+  export type PriceGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PriceWhereInput
+    orderBy?: PriceOrderByWithAggregationInput | PriceOrderByWithAggregationInput[]
+    by: PriceScalarFieldEnum[] | PriceScalarFieldEnum
+    having?: PriceScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PriceCountAggregateInputType | true
+    _avg?: PriceAvgAggregateInputType
+    _sum?: PriceSumAggregateInputType
+    _min?: PriceMinAggregateInputType
+    _max?: PriceMaxAggregateInputType
+  }
+
+  export type PriceGroupByOutputType = {
+    id: string
+    roomCapacity: number
+    pricePerMonth: number
+    pricePerDay: number
+    dateFrom: Date
+    dateTo: Date | null
+    _count: PriceCountAggregateOutputType | null
+    _avg: PriceAvgAggregateOutputType | null
+    _sum: PriceSumAggregateOutputType | null
+    _min: PriceMinAggregateOutputType | null
+    _max: PriceMaxAggregateOutputType | null
+  }
+
+  type GetPriceGroupByPayload<T extends PriceGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PriceGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PriceGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PriceGroupByOutputType[P]>
+            : GetScalarType<T[P], PriceGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PriceSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    roomCapacity?: boolean
+    pricePerMonth?: boolean
+    pricePerDay?: boolean
+    dateFrom?: boolean
+    dateTo?: boolean
+  }, ExtArgs["result"]["price"]>
+
+  export type PriceSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    roomCapacity?: boolean
+    pricePerMonth?: boolean
+    pricePerDay?: boolean
+    dateFrom?: boolean
+    dateTo?: boolean
+  }, ExtArgs["result"]["price"]>
+
+  export type PriceSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    roomCapacity?: boolean
+    pricePerMonth?: boolean
+    pricePerDay?: boolean
+    dateFrom?: boolean
+    dateTo?: boolean
+  }, ExtArgs["result"]["price"]>
+
+  export type PriceSelectScalar = {
+    id?: boolean
+    roomCapacity?: boolean
+    pricePerMonth?: boolean
+    pricePerDay?: boolean
+    dateFrom?: boolean
+    dateTo?: boolean
+  }
+
+  export type PriceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "roomCapacity" | "pricePerMonth" | "pricePerDay" | "dateFrom" | "dateTo", ExtArgs["result"]["price"]>
+
+  export type $PricePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Price"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      roomCapacity: number
+      pricePerMonth: number
+      pricePerDay: number
+      dateFrom: Date
+      dateTo: Date | null
+    }, ExtArgs["result"]["price"]>
+    composites: {}
+  }
+
+  type PriceGetPayload<S extends boolean | null | undefined | PriceDefaultArgs> = $Result.GetResult<Prisma.$PricePayload, S>
+
+  type PriceCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PriceFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PriceCountAggregateInputType | true
+    }
+
+  export interface PriceDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Price'], meta: { name: 'Price' } }
+    /**
+     * Find zero or one Price that matches the filter.
+     * @param {PriceFindUniqueArgs} args - Arguments to find a Price
+     * @example
+     * // Get one Price
+     * const price = await prisma.price.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PriceFindUniqueArgs>(args: SelectSubset<T, PriceFindUniqueArgs<ExtArgs>>): Prisma__PriceClient<$Result.GetResult<Prisma.$PricePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Price that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PriceFindUniqueOrThrowArgs} args - Arguments to find a Price
+     * @example
+     * // Get one Price
+     * const price = await prisma.price.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PriceFindUniqueOrThrowArgs>(args: SelectSubset<T, PriceFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PriceClient<$Result.GetResult<Prisma.$PricePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Price that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PriceFindFirstArgs} args - Arguments to find a Price
+     * @example
+     * // Get one Price
+     * const price = await prisma.price.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PriceFindFirstArgs>(args?: SelectSubset<T, PriceFindFirstArgs<ExtArgs>>): Prisma__PriceClient<$Result.GetResult<Prisma.$PricePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Price that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PriceFindFirstOrThrowArgs} args - Arguments to find a Price
+     * @example
+     * // Get one Price
+     * const price = await prisma.price.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PriceFindFirstOrThrowArgs>(args?: SelectSubset<T, PriceFindFirstOrThrowArgs<ExtArgs>>): Prisma__PriceClient<$Result.GetResult<Prisma.$PricePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Prices that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PriceFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Prices
+     * const prices = await prisma.price.findMany()
+     * 
+     * // Get first 10 Prices
+     * const prices = await prisma.price.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const priceWithIdOnly = await prisma.price.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PriceFindManyArgs>(args?: SelectSubset<T, PriceFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PricePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Price.
+     * @param {PriceCreateArgs} args - Arguments to create a Price.
+     * @example
+     * // Create one Price
+     * const Price = await prisma.price.create({
+     *   data: {
+     *     // ... data to create a Price
+     *   }
+     * })
+     * 
+     */
+    create<T extends PriceCreateArgs>(args: SelectSubset<T, PriceCreateArgs<ExtArgs>>): Prisma__PriceClient<$Result.GetResult<Prisma.$PricePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Prices.
+     * @param {PriceCreateManyArgs} args - Arguments to create many Prices.
+     * @example
+     * // Create many Prices
+     * const price = await prisma.price.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PriceCreateManyArgs>(args?: SelectSubset<T, PriceCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Prices and returns the data saved in the database.
+     * @param {PriceCreateManyAndReturnArgs} args - Arguments to create many Prices.
+     * @example
+     * // Create many Prices
+     * const price = await prisma.price.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Prices and only return the `id`
+     * const priceWithIdOnly = await prisma.price.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PriceCreateManyAndReturnArgs>(args?: SelectSubset<T, PriceCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PricePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Price.
+     * @param {PriceDeleteArgs} args - Arguments to delete one Price.
+     * @example
+     * // Delete one Price
+     * const Price = await prisma.price.delete({
+     *   where: {
+     *     // ... filter to delete one Price
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PriceDeleteArgs>(args: SelectSubset<T, PriceDeleteArgs<ExtArgs>>): Prisma__PriceClient<$Result.GetResult<Prisma.$PricePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Price.
+     * @param {PriceUpdateArgs} args - Arguments to update one Price.
+     * @example
+     * // Update one Price
+     * const price = await prisma.price.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PriceUpdateArgs>(args: SelectSubset<T, PriceUpdateArgs<ExtArgs>>): Prisma__PriceClient<$Result.GetResult<Prisma.$PricePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Prices.
+     * @param {PriceDeleteManyArgs} args - Arguments to filter Prices to delete.
+     * @example
+     * // Delete a few Prices
+     * const { count } = await prisma.price.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PriceDeleteManyArgs>(args?: SelectSubset<T, PriceDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Prices.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PriceUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Prices
+     * const price = await prisma.price.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PriceUpdateManyArgs>(args: SelectSubset<T, PriceUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Prices and returns the data updated in the database.
+     * @param {PriceUpdateManyAndReturnArgs} args - Arguments to update many Prices.
+     * @example
+     * // Update many Prices
+     * const price = await prisma.price.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Prices and only return the `id`
+     * const priceWithIdOnly = await prisma.price.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PriceUpdateManyAndReturnArgs>(args: SelectSubset<T, PriceUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PricePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Price.
+     * @param {PriceUpsertArgs} args - Arguments to update or create a Price.
+     * @example
+     * // Update or create a Price
+     * const price = await prisma.price.upsert({
+     *   create: {
+     *     // ... data to create a Price
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Price we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PriceUpsertArgs>(args: SelectSubset<T, PriceUpsertArgs<ExtArgs>>): Prisma__PriceClient<$Result.GetResult<Prisma.$PricePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Prices.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PriceCountArgs} args - Arguments to filter Prices to count.
+     * @example
+     * // Count the number of Prices
+     * const count = await prisma.price.count({
+     *   where: {
+     *     // ... the filter for the Prices we want to count
+     *   }
+     * })
+    **/
+    count<T extends PriceCountArgs>(
+      args?: Subset<T, PriceCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PriceCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Price.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PriceAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PriceAggregateArgs>(args: Subset<T, PriceAggregateArgs>): Prisma.PrismaPromise<GetPriceAggregateType<T>>
+
+    /**
+     * Group by Price.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PriceGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PriceGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PriceGroupByArgs['orderBy'] }
+        : { orderBy?: PriceGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PriceGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPriceGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Price model
+   */
+  readonly fields: PriceFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Price.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PriceClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Price model
+   */
+  interface PriceFieldRefs {
+    readonly id: FieldRef<"Price", 'String'>
+    readonly roomCapacity: FieldRef<"Price", 'Int'>
+    readonly pricePerMonth: FieldRef<"Price", 'Float'>
+    readonly pricePerDay: FieldRef<"Price", 'Float'>
+    readonly dateFrom: FieldRef<"Price", 'DateTime'>
+    readonly dateTo: FieldRef<"Price", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Price findUnique
+   */
+  export type PriceFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Price
+     */
+    select?: PriceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Price
+     */
+    omit?: PriceOmit<ExtArgs> | null
+    /**
+     * Filter, which Price to fetch.
+     */
+    where: PriceWhereUniqueInput
+  }
+
+  /**
+   * Price findUniqueOrThrow
+   */
+  export type PriceFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Price
+     */
+    select?: PriceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Price
+     */
+    omit?: PriceOmit<ExtArgs> | null
+    /**
+     * Filter, which Price to fetch.
+     */
+    where: PriceWhereUniqueInput
+  }
+
+  /**
+   * Price findFirst
+   */
+  export type PriceFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Price
+     */
+    select?: PriceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Price
+     */
+    omit?: PriceOmit<ExtArgs> | null
+    /**
+     * Filter, which Price to fetch.
+     */
+    where?: PriceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Prices to fetch.
+     */
+    orderBy?: PriceOrderByWithRelationInput | PriceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Prices.
+     */
+    cursor?: PriceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Prices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Prices.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Prices.
+     */
+    distinct?: PriceScalarFieldEnum | PriceScalarFieldEnum[]
+  }
+
+  /**
+   * Price findFirstOrThrow
+   */
+  export type PriceFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Price
+     */
+    select?: PriceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Price
+     */
+    omit?: PriceOmit<ExtArgs> | null
+    /**
+     * Filter, which Price to fetch.
+     */
+    where?: PriceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Prices to fetch.
+     */
+    orderBy?: PriceOrderByWithRelationInput | PriceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Prices.
+     */
+    cursor?: PriceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Prices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Prices.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Prices.
+     */
+    distinct?: PriceScalarFieldEnum | PriceScalarFieldEnum[]
+  }
+
+  /**
+   * Price findMany
+   */
+  export type PriceFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Price
+     */
+    select?: PriceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Price
+     */
+    omit?: PriceOmit<ExtArgs> | null
+    /**
+     * Filter, which Prices to fetch.
+     */
+    where?: PriceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Prices to fetch.
+     */
+    orderBy?: PriceOrderByWithRelationInput | PriceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Prices.
+     */
+    cursor?: PriceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Prices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Prices.
+     */
+    skip?: number
+    distinct?: PriceScalarFieldEnum | PriceScalarFieldEnum[]
+  }
+
+  /**
+   * Price create
+   */
+  export type PriceCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Price
+     */
+    select?: PriceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Price
+     */
+    omit?: PriceOmit<ExtArgs> | null
+    /**
+     * The data needed to create a Price.
+     */
+    data: XOR<PriceCreateInput, PriceUncheckedCreateInput>
+  }
+
+  /**
+   * Price createMany
+   */
+  export type PriceCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Prices.
+     */
+    data: PriceCreateManyInput | PriceCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Price createManyAndReturn
+   */
+  export type PriceCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Price
+     */
+    select?: PriceSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Price
+     */
+    omit?: PriceOmit<ExtArgs> | null
+    /**
+     * The data used to create many Prices.
+     */
+    data: PriceCreateManyInput | PriceCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Price update
+   */
+  export type PriceUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Price
+     */
+    select?: PriceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Price
+     */
+    omit?: PriceOmit<ExtArgs> | null
+    /**
+     * The data needed to update a Price.
+     */
+    data: XOR<PriceUpdateInput, PriceUncheckedUpdateInput>
+    /**
+     * Choose, which Price to update.
+     */
+    where: PriceWhereUniqueInput
+  }
+
+  /**
+   * Price updateMany
+   */
+  export type PriceUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Prices.
+     */
+    data: XOR<PriceUpdateManyMutationInput, PriceUncheckedUpdateManyInput>
+    /**
+     * Filter which Prices to update
+     */
+    where?: PriceWhereInput
+    /**
+     * Limit how many Prices to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Price updateManyAndReturn
+   */
+  export type PriceUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Price
+     */
+    select?: PriceSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Price
+     */
+    omit?: PriceOmit<ExtArgs> | null
+    /**
+     * The data used to update Prices.
+     */
+    data: XOR<PriceUpdateManyMutationInput, PriceUncheckedUpdateManyInput>
+    /**
+     * Filter which Prices to update
+     */
+    where?: PriceWhereInput
+    /**
+     * Limit how many Prices to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Price upsert
+   */
+  export type PriceUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Price
+     */
+    select?: PriceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Price
+     */
+    omit?: PriceOmit<ExtArgs> | null
+    /**
+     * The filter to search for the Price to update in case it exists.
+     */
+    where: PriceWhereUniqueInput
+    /**
+     * In case the Price found by the `where` argument doesn't exist, create a new Price with this data.
+     */
+    create: XOR<PriceCreateInput, PriceUncheckedCreateInput>
+    /**
+     * In case the Price was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PriceUpdateInput, PriceUncheckedUpdateInput>
+  }
+
+  /**
+   * Price delete
+   */
+  export type PriceDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Price
+     */
+    select?: PriceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Price
+     */
+    omit?: PriceOmit<ExtArgs> | null
+    /**
+     * Filter which Price to delete.
+     */
+    where: PriceWhereUniqueInput
+  }
+
+  /**
+   * Price deleteMany
+   */
+  export type PriceDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Prices to delete
+     */
+    where?: PriceWhereInput
+    /**
+     * Limit how many Prices to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Price without action
+   */
+  export type PriceDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Price
+     */
+    select?: PriceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Price
+     */
+    omit?: PriceOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -4470,11 +10736,24 @@ export namespace Prisma {
     secondName: 'secondName',
     studentIdFront: 'studentIdFront',
     studentIdBack: 'studentIdBack',
+    dormitoryId: 'dormitoryId',
+    roomId: 'roomId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+  export const DormitoryAdminScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    dormitoryId: 'dormitoryId',
+    role: 'role',
+    createdAt: 'createdAt'
+  };
+
+  export type DormitoryAdminScalarFieldEnum = (typeof DormitoryAdminScalarFieldEnum)[keyof typeof DormitoryAdminScalarFieldEnum]
 
 
   export const ConfirmationScalarFieldEnum: {
@@ -4501,6 +10780,57 @@ export namespace Prisma {
   };
 
   export type TokenScalarFieldEnum = (typeof TokenScalarFieldEnum)[keyof typeof TokenScalarFieldEnum]
+
+
+  export const DormitoryScalarFieldEnum: {
+    id: 'id',
+    createdAt: 'createdAt',
+    name: 'name',
+    address: 'address',
+    groundFloorPhoneNumber: 'groundFloorPhoneNumber',
+    status: 'status',
+    photos: 'photos',
+    managerId: 'managerId'
+  };
+
+  export type DormitoryScalarFieldEnum = (typeof DormitoryScalarFieldEnum)[keyof typeof DormitoryScalarFieldEnum]
+
+
+  export const RoomScalarFieldEnum: {
+    id: 'id',
+    number: 'number',
+    floor: 'floor',
+    createdAt: 'createdAt',
+    capacity: 'capacity',
+    roomEquipment: 'roomEquipment',
+    photos: 'photos',
+    dormitoryId: 'dormitoryId'
+  };
+
+  export type RoomScalarFieldEnum = (typeof RoomScalarFieldEnum)[keyof typeof RoomScalarFieldEnum]
+
+
+  export const RoomStatusScalarFieldEnum: {
+    id: 'id',
+    dateOfStart: 'dateOfStart',
+    dateOfEnd: 'dateOfEnd',
+    description: 'description',
+    roomId: 'roomId'
+  };
+
+  export type RoomStatusScalarFieldEnum = (typeof RoomStatusScalarFieldEnum)[keyof typeof RoomStatusScalarFieldEnum]
+
+
+  export const PriceScalarFieldEnum: {
+    id: 'id',
+    roomCapacity: 'roomCapacity',
+    pricePerMonth: 'pricePerMonth',
+    pricePerDay: 'pricePerDay',
+    dateFrom: 'dateFrom',
+    dateTo: 'dateTo'
+  };
+
+  export type PriceScalarFieldEnum = (typeof PriceScalarFieldEnum)[keyof typeof PriceScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -4649,6 +10979,20 @@ export namespace Prisma {
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
+
+
+  /**
+   * Reference to a field of type 'Float'
+   */
+  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float[]'
+   */
+  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
   /**
    * Deep Input Types
    */
@@ -4670,9 +11014,15 @@ export namespace Prisma {
     secondName?: StringFilter<"User"> | string
     studentIdFront?: StringFilter<"User"> | string
     studentIdBack?: StringNullableFilter<"User"> | string | null
+    dormitoryId?: StringNullableFilter<"User"> | string | null
+    roomId?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     confirmations?: ConfirmationListRelationFilter
+    dormitoryAdminAssignments?: DormitoryAdminListRelationFilter
+    dormitory?: XOR<DormitoryNullableScalarRelationFilter, DormitoryWhereInput> | null
+    managedDormitories?: DormitoryListRelationFilter
+    room?: XOR<RoomNullableScalarRelationFilter, RoomWhereInput> | null
   }
 
   export type UserOrderByWithRelationInput = {
@@ -4688,9 +11038,15 @@ export namespace Prisma {
     secondName?: SortOrder
     studentIdFront?: SortOrder
     studentIdBack?: SortOrderInput | SortOrder
+    dormitoryId?: SortOrderInput | SortOrder
+    roomId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     confirmations?: ConfirmationOrderByRelationAggregateInput
+    dormitoryAdminAssignments?: DormitoryAdminOrderByRelationAggregateInput
+    dormitory?: DormitoryOrderByWithRelationInput
+    managedDormitories?: DormitoryOrderByRelationAggregateInput
+    room?: RoomOrderByWithRelationInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -4709,9 +11065,15 @@ export namespace Prisma {
     secondName?: StringFilter<"User"> | string
     studentIdFront?: StringFilter<"User"> | string
     studentIdBack?: StringNullableFilter<"User"> | string | null
+    dormitoryId?: StringNullableFilter<"User"> | string | null
+    roomId?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     confirmations?: ConfirmationListRelationFilter
+    dormitoryAdminAssignments?: DormitoryAdminListRelationFilter
+    dormitory?: XOR<DormitoryNullableScalarRelationFilter, DormitoryWhereInput> | null
+    managedDormitories?: DormitoryListRelationFilter
+    room?: XOR<RoomNullableScalarRelationFilter, RoomWhereInput> | null
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -4727,6 +11089,8 @@ export namespace Prisma {
     secondName?: SortOrder
     studentIdFront?: SortOrder
     studentIdBack?: SortOrderInput | SortOrder
+    dormitoryId?: SortOrderInput | SortOrder
+    roomId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: UserCountOrderByAggregateInput
@@ -4750,8 +11114,69 @@ export namespace Prisma {
     secondName?: StringWithAggregatesFilter<"User"> | string
     studentIdFront?: StringWithAggregatesFilter<"User"> | string
     studentIdBack?: StringNullableWithAggregatesFilter<"User"> | string | null
+    dormitoryId?: StringNullableWithAggregatesFilter<"User"> | string | null
+    roomId?: StringNullableWithAggregatesFilter<"User"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
+  }
+
+  export type DormitoryAdminWhereInput = {
+    AND?: DormitoryAdminWhereInput | DormitoryAdminWhereInput[]
+    OR?: DormitoryAdminWhereInput[]
+    NOT?: DormitoryAdminWhereInput | DormitoryAdminWhereInput[]
+    id?: StringFilter<"DormitoryAdmin"> | string
+    userId?: StringFilter<"DormitoryAdmin"> | string
+    dormitoryId?: StringFilter<"DormitoryAdmin"> | string
+    role?: StringFilter<"DormitoryAdmin"> | string
+    createdAt?: DateTimeFilter<"DormitoryAdmin"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    dormitory?: XOR<DormitoryScalarRelationFilter, DormitoryWhereInput>
+  }
+
+  export type DormitoryAdminOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    dormitoryId?: SortOrder
+    role?: SortOrder
+    createdAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    dormitory?: DormitoryOrderByWithRelationInput
+  }
+
+  export type DormitoryAdminWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    userId_dormitoryId?: DormitoryAdminUserIdDormitoryIdCompoundUniqueInput
+    AND?: DormitoryAdminWhereInput | DormitoryAdminWhereInput[]
+    OR?: DormitoryAdminWhereInput[]
+    NOT?: DormitoryAdminWhereInput | DormitoryAdminWhereInput[]
+    userId?: StringFilter<"DormitoryAdmin"> | string
+    dormitoryId?: StringFilter<"DormitoryAdmin"> | string
+    role?: StringFilter<"DormitoryAdmin"> | string
+    createdAt?: DateTimeFilter<"DormitoryAdmin"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    dormitory?: XOR<DormitoryScalarRelationFilter, DormitoryWhereInput>
+  }, "id" | "userId_dormitoryId">
+
+  export type DormitoryAdminOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    dormitoryId?: SortOrder
+    role?: SortOrder
+    createdAt?: SortOrder
+    _count?: DormitoryAdminCountOrderByAggregateInput
+    _max?: DormitoryAdminMaxOrderByAggregateInput
+    _min?: DormitoryAdminMinOrderByAggregateInput
+  }
+
+  export type DormitoryAdminScalarWhereWithAggregatesInput = {
+    AND?: DormitoryAdminScalarWhereWithAggregatesInput | DormitoryAdminScalarWhereWithAggregatesInput[]
+    OR?: DormitoryAdminScalarWhereWithAggregatesInput[]
+    NOT?: DormitoryAdminScalarWhereWithAggregatesInput | DormitoryAdminScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"DormitoryAdmin"> | string
+    userId?: StringWithAggregatesFilter<"DormitoryAdmin"> | string
+    dormitoryId?: StringWithAggregatesFilter<"DormitoryAdmin"> | string
+    role?: StringWithAggregatesFilter<"DormitoryAdmin"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"DormitoryAdmin"> | Date | string
   }
 
   export type ConfirmationWhereInput = {
@@ -4881,6 +11306,277 @@ export namespace Prisma {
     expiresIn?: DateTimeWithAggregatesFilter<"Token"> | Date | string
   }
 
+  export type DormitoryWhereInput = {
+    AND?: DormitoryWhereInput | DormitoryWhereInput[]
+    OR?: DormitoryWhereInput[]
+    NOT?: DormitoryWhereInput | DormitoryWhereInput[]
+    id?: StringFilter<"Dormitory"> | string
+    createdAt?: DateTimeFilter<"Dormitory"> | Date | string
+    name?: StringFilter<"Dormitory"> | string
+    address?: StringFilter<"Dormitory"> | string
+    groundFloorPhoneNumber?: StringFilter<"Dormitory"> | string
+    status?: StringFilter<"Dormitory"> | string
+    photos?: StringNullableListFilter<"Dormitory">
+    managerId?: StringNullableFilter<"Dormitory"> | string | null
+    manager?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    admins?: DormitoryAdminListRelationFilter
+    residents?: UserListRelationFilter
+    rooms?: RoomListRelationFilter
+  }
+
+  export type DormitoryOrderByWithRelationInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    name?: SortOrder
+    address?: SortOrder
+    groundFloorPhoneNumber?: SortOrder
+    status?: SortOrder
+    photos?: SortOrder
+    managerId?: SortOrderInput | SortOrder
+    manager?: UserOrderByWithRelationInput
+    admins?: DormitoryAdminOrderByRelationAggregateInput
+    residents?: UserOrderByRelationAggregateInput
+    rooms?: RoomOrderByRelationAggregateInput
+  }
+
+  export type DormitoryWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: DormitoryWhereInput | DormitoryWhereInput[]
+    OR?: DormitoryWhereInput[]
+    NOT?: DormitoryWhereInput | DormitoryWhereInput[]
+    createdAt?: DateTimeFilter<"Dormitory"> | Date | string
+    name?: StringFilter<"Dormitory"> | string
+    address?: StringFilter<"Dormitory"> | string
+    groundFloorPhoneNumber?: StringFilter<"Dormitory"> | string
+    status?: StringFilter<"Dormitory"> | string
+    photos?: StringNullableListFilter<"Dormitory">
+    managerId?: StringNullableFilter<"Dormitory"> | string | null
+    manager?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    admins?: DormitoryAdminListRelationFilter
+    residents?: UserListRelationFilter
+    rooms?: RoomListRelationFilter
+  }, "id">
+
+  export type DormitoryOrderByWithAggregationInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    name?: SortOrder
+    address?: SortOrder
+    groundFloorPhoneNumber?: SortOrder
+    status?: SortOrder
+    photos?: SortOrder
+    managerId?: SortOrderInput | SortOrder
+    _count?: DormitoryCountOrderByAggregateInput
+    _max?: DormitoryMaxOrderByAggregateInput
+    _min?: DormitoryMinOrderByAggregateInput
+  }
+
+  export type DormitoryScalarWhereWithAggregatesInput = {
+    AND?: DormitoryScalarWhereWithAggregatesInput | DormitoryScalarWhereWithAggregatesInput[]
+    OR?: DormitoryScalarWhereWithAggregatesInput[]
+    NOT?: DormitoryScalarWhereWithAggregatesInput | DormitoryScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Dormitory"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Dormitory"> | Date | string
+    name?: StringWithAggregatesFilter<"Dormitory"> | string
+    address?: StringWithAggregatesFilter<"Dormitory"> | string
+    groundFloorPhoneNumber?: StringWithAggregatesFilter<"Dormitory"> | string
+    status?: StringWithAggregatesFilter<"Dormitory"> | string
+    photos?: StringNullableListFilter<"Dormitory">
+    managerId?: StringNullableWithAggregatesFilter<"Dormitory"> | string | null
+  }
+
+  export type RoomWhereInput = {
+    AND?: RoomWhereInput | RoomWhereInput[]
+    OR?: RoomWhereInput[]
+    NOT?: RoomWhereInput | RoomWhereInput[]
+    id?: StringFilter<"Room"> | string
+    number?: StringFilter<"Room"> | string
+    floor?: IntFilter<"Room"> | number
+    createdAt?: DateTimeFilter<"Room"> | Date | string
+    capacity?: IntFilter<"Room"> | number
+    roomEquipment?: StringNullableListFilter<"Room">
+    photos?: StringNullableListFilter<"Room">
+    dormitoryId?: StringFilter<"Room"> | string
+    statuses?: RoomStatusListRelationFilter
+    residents?: UserListRelationFilter
+    dormitroy?: XOR<DormitoryScalarRelationFilter, DormitoryWhereInput>
+  }
+
+  export type RoomOrderByWithRelationInput = {
+    id?: SortOrder
+    number?: SortOrder
+    floor?: SortOrder
+    createdAt?: SortOrder
+    capacity?: SortOrder
+    roomEquipment?: SortOrder
+    photos?: SortOrder
+    dormitoryId?: SortOrder
+    statuses?: RoomStatusOrderByRelationAggregateInput
+    residents?: UserOrderByRelationAggregateInput
+    dormitroy?: DormitoryOrderByWithRelationInput
+  }
+
+  export type RoomWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: RoomWhereInput | RoomWhereInput[]
+    OR?: RoomWhereInput[]
+    NOT?: RoomWhereInput | RoomWhereInput[]
+    number?: StringFilter<"Room"> | string
+    floor?: IntFilter<"Room"> | number
+    createdAt?: DateTimeFilter<"Room"> | Date | string
+    capacity?: IntFilter<"Room"> | number
+    roomEquipment?: StringNullableListFilter<"Room">
+    photos?: StringNullableListFilter<"Room">
+    dormitoryId?: StringFilter<"Room"> | string
+    statuses?: RoomStatusListRelationFilter
+    residents?: UserListRelationFilter
+    dormitroy?: XOR<DormitoryScalarRelationFilter, DormitoryWhereInput>
+  }, "id">
+
+  export type RoomOrderByWithAggregationInput = {
+    id?: SortOrder
+    number?: SortOrder
+    floor?: SortOrder
+    createdAt?: SortOrder
+    capacity?: SortOrder
+    roomEquipment?: SortOrder
+    photos?: SortOrder
+    dormitoryId?: SortOrder
+    _count?: RoomCountOrderByAggregateInput
+    _avg?: RoomAvgOrderByAggregateInput
+    _max?: RoomMaxOrderByAggregateInput
+    _min?: RoomMinOrderByAggregateInput
+    _sum?: RoomSumOrderByAggregateInput
+  }
+
+  export type RoomScalarWhereWithAggregatesInput = {
+    AND?: RoomScalarWhereWithAggregatesInput | RoomScalarWhereWithAggregatesInput[]
+    OR?: RoomScalarWhereWithAggregatesInput[]
+    NOT?: RoomScalarWhereWithAggregatesInput | RoomScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Room"> | string
+    number?: StringWithAggregatesFilter<"Room"> | string
+    floor?: IntWithAggregatesFilter<"Room"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"Room"> | Date | string
+    capacity?: IntWithAggregatesFilter<"Room"> | number
+    roomEquipment?: StringNullableListFilter<"Room">
+    photos?: StringNullableListFilter<"Room">
+    dormitoryId?: StringWithAggregatesFilter<"Room"> | string
+  }
+
+  export type RoomStatusWhereInput = {
+    AND?: RoomStatusWhereInput | RoomStatusWhereInput[]
+    OR?: RoomStatusWhereInput[]
+    NOT?: RoomStatusWhereInput | RoomStatusWhereInput[]
+    id?: StringFilter<"RoomStatus"> | string
+    dateOfStart?: DateTimeFilter<"RoomStatus"> | Date | string
+    dateOfEnd?: DateTimeNullableFilter<"RoomStatus"> | Date | string | null
+    description?: StringFilter<"RoomStatus"> | string
+    roomId?: StringFilter<"RoomStatus"> | string
+    room?: XOR<RoomScalarRelationFilter, RoomWhereInput>
+  }
+
+  export type RoomStatusOrderByWithRelationInput = {
+    id?: SortOrder
+    dateOfStart?: SortOrder
+    dateOfEnd?: SortOrderInput | SortOrder
+    description?: SortOrder
+    roomId?: SortOrder
+    room?: RoomOrderByWithRelationInput
+  }
+
+  export type RoomStatusWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: RoomStatusWhereInput | RoomStatusWhereInput[]
+    OR?: RoomStatusWhereInput[]
+    NOT?: RoomStatusWhereInput | RoomStatusWhereInput[]
+    dateOfStart?: DateTimeFilter<"RoomStatus"> | Date | string
+    dateOfEnd?: DateTimeNullableFilter<"RoomStatus"> | Date | string | null
+    description?: StringFilter<"RoomStatus"> | string
+    roomId?: StringFilter<"RoomStatus"> | string
+    room?: XOR<RoomScalarRelationFilter, RoomWhereInput>
+  }, "id">
+
+  export type RoomStatusOrderByWithAggregationInput = {
+    id?: SortOrder
+    dateOfStart?: SortOrder
+    dateOfEnd?: SortOrderInput | SortOrder
+    description?: SortOrder
+    roomId?: SortOrder
+    _count?: RoomStatusCountOrderByAggregateInput
+    _max?: RoomStatusMaxOrderByAggregateInput
+    _min?: RoomStatusMinOrderByAggregateInput
+  }
+
+  export type RoomStatusScalarWhereWithAggregatesInput = {
+    AND?: RoomStatusScalarWhereWithAggregatesInput | RoomStatusScalarWhereWithAggregatesInput[]
+    OR?: RoomStatusScalarWhereWithAggregatesInput[]
+    NOT?: RoomStatusScalarWhereWithAggregatesInput | RoomStatusScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"RoomStatus"> | string
+    dateOfStart?: DateTimeWithAggregatesFilter<"RoomStatus"> | Date | string
+    dateOfEnd?: DateTimeNullableWithAggregatesFilter<"RoomStatus"> | Date | string | null
+    description?: StringWithAggregatesFilter<"RoomStatus"> | string
+    roomId?: StringWithAggregatesFilter<"RoomStatus"> | string
+  }
+
+  export type PriceWhereInput = {
+    AND?: PriceWhereInput | PriceWhereInput[]
+    OR?: PriceWhereInput[]
+    NOT?: PriceWhereInput | PriceWhereInput[]
+    id?: StringFilter<"Price"> | string
+    roomCapacity?: IntFilter<"Price"> | number
+    pricePerMonth?: FloatFilter<"Price"> | number
+    pricePerDay?: FloatFilter<"Price"> | number
+    dateFrom?: DateTimeFilter<"Price"> | Date | string
+    dateTo?: DateTimeNullableFilter<"Price"> | Date | string | null
+  }
+
+  export type PriceOrderByWithRelationInput = {
+    id?: SortOrder
+    roomCapacity?: SortOrder
+    pricePerMonth?: SortOrder
+    pricePerDay?: SortOrder
+    dateFrom?: SortOrder
+    dateTo?: SortOrderInput | SortOrder
+  }
+
+  export type PriceWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: PriceWhereInput | PriceWhereInput[]
+    OR?: PriceWhereInput[]
+    NOT?: PriceWhereInput | PriceWhereInput[]
+    roomCapacity?: IntFilter<"Price"> | number
+    pricePerMonth?: FloatFilter<"Price"> | number
+    pricePerDay?: FloatFilter<"Price"> | number
+    dateFrom?: DateTimeFilter<"Price"> | Date | string
+    dateTo?: DateTimeNullableFilter<"Price"> | Date | string | null
+  }, "id">
+
+  export type PriceOrderByWithAggregationInput = {
+    id?: SortOrder
+    roomCapacity?: SortOrder
+    pricePerMonth?: SortOrder
+    pricePerDay?: SortOrder
+    dateFrom?: SortOrder
+    dateTo?: SortOrderInput | SortOrder
+    _count?: PriceCountOrderByAggregateInput
+    _avg?: PriceAvgOrderByAggregateInput
+    _max?: PriceMaxOrderByAggregateInput
+    _min?: PriceMinOrderByAggregateInput
+    _sum?: PriceSumOrderByAggregateInput
+  }
+
+  export type PriceScalarWhereWithAggregatesInput = {
+    AND?: PriceScalarWhereWithAggregatesInput | PriceScalarWhereWithAggregatesInput[]
+    OR?: PriceScalarWhereWithAggregatesInput[]
+    NOT?: PriceScalarWhereWithAggregatesInput | PriceScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Price"> | string
+    roomCapacity?: IntWithAggregatesFilter<"Price"> | number
+    pricePerMonth?: FloatWithAggregatesFilter<"Price"> | number
+    pricePerDay?: FloatWithAggregatesFilter<"Price"> | number
+    dateFrom?: DateTimeWithAggregatesFilter<"Price"> | Date | string
+    dateTo?: DateTimeNullableWithAggregatesFilter<"Price"> | Date | string | null
+  }
+
   export type UserCreateInput = {
     id?: string
     email: string
@@ -4897,6 +11593,10 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
+    dormitoryAdminAssignments?: DormitoryAdminCreateNestedManyWithoutUserInput
+    dormitory?: DormitoryCreateNestedOneWithoutResidentsInput
+    managedDormitories?: DormitoryCreateNestedManyWithoutManagerInput
+    room?: RoomCreateNestedOneWithoutResidentsInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -4912,9 +11612,13 @@ export namespace Prisma {
     secondName: string
     studentIdFront: string
     studentIdBack?: string | null
+    dormitoryId?: string | null
+    roomId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     confirmations?: ConfirmationUncheckedCreateNestedManyWithoutRequesterInput
+    dormitoryAdminAssignments?: DormitoryAdminUncheckedCreateNestedManyWithoutUserInput
+    managedDormitories?: DormitoryUncheckedCreateNestedManyWithoutManagerInput
   }
 
   export type UserUpdateInput = {
@@ -4933,6 +11637,10 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
+    dormitoryAdminAssignments?: DormitoryAdminUpdateManyWithoutUserNestedInput
+    dormitory?: DormitoryUpdateOneWithoutResidentsNestedInput
+    managedDormitories?: DormitoryUpdateManyWithoutManagerNestedInput
+    room?: RoomUpdateOneWithoutResidentsNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -4948,9 +11656,13 @@ export namespace Prisma {
     secondName?: StringFieldUpdateOperationsInput | string
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
+    dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
+    roomId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmations?: ConfirmationUncheckedUpdateManyWithoutRequesterNestedInput
+    dormitoryAdminAssignments?: DormitoryAdminUncheckedUpdateManyWithoutUserNestedInput
+    managedDormitories?: DormitoryUncheckedUpdateManyWithoutManagerNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -4966,6 +11678,8 @@ export namespace Prisma {
     secondName: string
     studentIdFront: string
     studentIdBack?: string | null
+    dormitoryId?: string | null
+    roomId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -5000,8 +11714,64 @@ export namespace Prisma {
     secondName?: StringFieldUpdateOperationsInput | string
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
+    dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
+    roomId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DormitoryAdminCreateInput = {
+    id?: string
+    role: string
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutDormitoryAdminAssignmentsInput
+    dormitory: DormitoryCreateNestedOneWithoutAdminsInput
+  }
+
+  export type DormitoryAdminUncheckedCreateInput = {
+    id?: string
+    userId: string
+    dormitoryId: string
+    role: string
+    createdAt?: Date | string
+  }
+
+  export type DormitoryAdminUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutDormitoryAdminAssignmentsNestedInput
+    dormitory?: DormitoryUpdateOneRequiredWithoutAdminsNestedInput
+  }
+
+  export type DormitoryAdminUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    dormitoryId?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DormitoryAdminCreateManyInput = {
+    id?: string
+    userId: string
+    dormitoryId: string
+    role: string
+    createdAt?: Date | string
+  }
+
+  export type DormitoryAdminUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DormitoryAdminUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    dormitoryId?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ConfirmationCreateInput = {
@@ -5143,6 +11913,296 @@ export namespace Prisma {
     expiresIn?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type DormitoryCreateInput = {
+    id?: string
+    createdAt?: Date | string
+    name: string
+    address: string
+    groundFloorPhoneNumber: string
+    status?: string
+    photos?: DormitoryCreatephotosInput | string[]
+    manager?: UserCreateNestedOneWithoutManagedDormitoriesInput
+    admins?: DormitoryAdminCreateNestedManyWithoutDormitoryInput
+    residents?: UserCreateNestedManyWithoutDormitoryInput
+    rooms?: RoomCreateNestedManyWithoutDormitroyInput
+  }
+
+  export type DormitoryUncheckedCreateInput = {
+    id?: string
+    createdAt?: Date | string
+    name: string
+    address: string
+    groundFloorPhoneNumber: string
+    status?: string
+    photos?: DormitoryCreatephotosInput | string[]
+    managerId?: string | null
+    admins?: DormitoryAdminUncheckedCreateNestedManyWithoutDormitoryInput
+    residents?: UserUncheckedCreateNestedManyWithoutDormitoryInput
+    rooms?: RoomUncheckedCreateNestedManyWithoutDormitroyInput
+  }
+
+  export type DormitoryUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    name?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    groundFloorPhoneNumber?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    photos?: DormitoryUpdatephotosInput | string[]
+    manager?: UserUpdateOneWithoutManagedDormitoriesNestedInput
+    admins?: DormitoryAdminUpdateManyWithoutDormitoryNestedInput
+    residents?: UserUpdateManyWithoutDormitoryNestedInput
+    rooms?: RoomUpdateManyWithoutDormitroyNestedInput
+  }
+
+  export type DormitoryUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    name?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    groundFloorPhoneNumber?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    photos?: DormitoryUpdatephotosInput | string[]
+    managerId?: NullableStringFieldUpdateOperationsInput | string | null
+    admins?: DormitoryAdminUncheckedUpdateManyWithoutDormitoryNestedInput
+    residents?: UserUncheckedUpdateManyWithoutDormitoryNestedInput
+    rooms?: RoomUncheckedUpdateManyWithoutDormitroyNestedInput
+  }
+
+  export type DormitoryCreateManyInput = {
+    id?: string
+    createdAt?: Date | string
+    name: string
+    address: string
+    groundFloorPhoneNumber: string
+    status?: string
+    photos?: DormitoryCreatephotosInput | string[]
+    managerId?: string | null
+  }
+
+  export type DormitoryUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    name?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    groundFloorPhoneNumber?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    photos?: DormitoryUpdatephotosInput | string[]
+  }
+
+  export type DormitoryUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    name?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    groundFloorPhoneNumber?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    photos?: DormitoryUpdatephotosInput | string[]
+    managerId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type RoomCreateInput = {
+    id?: string
+    number: string
+    floor: number
+    createdAt?: Date | string
+    capacity: number
+    roomEquipment?: RoomCreateroomEquipmentInput | string[]
+    photos?: RoomCreatephotosInput | string[]
+    statuses?: RoomStatusCreateNestedManyWithoutRoomInput
+    residents?: UserCreateNestedManyWithoutRoomInput
+    dormitroy: DormitoryCreateNestedOneWithoutRoomsInput
+  }
+
+  export type RoomUncheckedCreateInput = {
+    id?: string
+    number: string
+    floor: number
+    createdAt?: Date | string
+    capacity: number
+    roomEquipment?: RoomCreateroomEquipmentInput | string[]
+    photos?: RoomCreatephotosInput | string[]
+    dormitoryId: string
+    statuses?: RoomStatusUncheckedCreateNestedManyWithoutRoomInput
+    residents?: UserUncheckedCreateNestedManyWithoutRoomInput
+  }
+
+  export type RoomUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    number?: StringFieldUpdateOperationsInput | string
+    floor?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    roomEquipment?: RoomUpdateroomEquipmentInput | string[]
+    photos?: RoomUpdatephotosInput | string[]
+    statuses?: RoomStatusUpdateManyWithoutRoomNestedInput
+    residents?: UserUpdateManyWithoutRoomNestedInput
+    dormitroy?: DormitoryUpdateOneRequiredWithoutRoomsNestedInput
+  }
+
+  export type RoomUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    number?: StringFieldUpdateOperationsInput | string
+    floor?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    roomEquipment?: RoomUpdateroomEquipmentInput | string[]
+    photos?: RoomUpdatephotosInput | string[]
+    dormitoryId?: StringFieldUpdateOperationsInput | string
+    statuses?: RoomStatusUncheckedUpdateManyWithoutRoomNestedInput
+    residents?: UserUncheckedUpdateManyWithoutRoomNestedInput
+  }
+
+  export type RoomCreateManyInput = {
+    id?: string
+    number: string
+    floor: number
+    createdAt?: Date | string
+    capacity: number
+    roomEquipment?: RoomCreateroomEquipmentInput | string[]
+    photos?: RoomCreatephotosInput | string[]
+    dormitoryId: string
+  }
+
+  export type RoomUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    number?: StringFieldUpdateOperationsInput | string
+    floor?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    roomEquipment?: RoomUpdateroomEquipmentInput | string[]
+    photos?: RoomUpdatephotosInput | string[]
+  }
+
+  export type RoomUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    number?: StringFieldUpdateOperationsInput | string
+    floor?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    roomEquipment?: RoomUpdateroomEquipmentInput | string[]
+    photos?: RoomUpdatephotosInput | string[]
+    dormitoryId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type RoomStatusCreateInput = {
+    id?: string
+    dateOfStart: Date | string
+    dateOfEnd?: Date | string | null
+    description: string
+    room: RoomCreateNestedOneWithoutStatusesInput
+  }
+
+  export type RoomStatusUncheckedCreateInput = {
+    id?: string
+    dateOfStart: Date | string
+    dateOfEnd?: Date | string | null
+    description: string
+    roomId: string
+  }
+
+  export type RoomStatusUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dateOfStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateOfEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    description?: StringFieldUpdateOperationsInput | string
+    room?: RoomUpdateOneRequiredWithoutStatusesNestedInput
+  }
+
+  export type RoomStatusUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dateOfStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateOfEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    description?: StringFieldUpdateOperationsInput | string
+    roomId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type RoomStatusCreateManyInput = {
+    id?: string
+    dateOfStart: Date | string
+    dateOfEnd?: Date | string | null
+    description: string
+    roomId: string
+  }
+
+  export type RoomStatusUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dateOfStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateOfEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    description?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type RoomStatusUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dateOfStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateOfEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    description?: StringFieldUpdateOperationsInput | string
+    roomId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PriceCreateInput = {
+    id?: string
+    roomCapacity: number
+    pricePerMonth: number
+    pricePerDay: number
+    dateFrom: Date | string
+    dateTo?: Date | string | null
+  }
+
+  export type PriceUncheckedCreateInput = {
+    id?: string
+    roomCapacity: number
+    pricePerMonth: number
+    pricePerDay: number
+    dateFrom: Date | string
+    dateTo?: Date | string | null
+  }
+
+  export type PriceUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    roomCapacity?: IntFieldUpdateOperationsInput | number
+    pricePerMonth?: FloatFieldUpdateOperationsInput | number
+    pricePerDay?: FloatFieldUpdateOperationsInput | number
+    dateFrom?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateTo?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type PriceUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    roomCapacity?: IntFieldUpdateOperationsInput | number
+    pricePerMonth?: FloatFieldUpdateOperationsInput | number
+    pricePerDay?: FloatFieldUpdateOperationsInput | number
+    dateFrom?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateTo?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type PriceCreateManyInput = {
+    id?: string
+    roomCapacity: number
+    pricePerMonth: number
+    pricePerDay: number
+    dateFrom: Date | string
+    dateTo?: Date | string | null
+  }
+
+  export type PriceUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    roomCapacity?: IntFieldUpdateOperationsInput | number
+    pricePerMonth?: FloatFieldUpdateOperationsInput | number
+    pricePerDay?: FloatFieldUpdateOperationsInput | number
+    dateFrom?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateTo?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type PriceUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    roomCapacity?: IntFieldUpdateOperationsInput | number
+    pricePerMonth?: FloatFieldUpdateOperationsInput | number
+    pricePerDay?: FloatFieldUpdateOperationsInput | number
+    dateFrom?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateTo?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -5209,12 +12269,42 @@ export namespace Prisma {
     none?: ConfirmationWhereInput
   }
 
+  export type DormitoryAdminListRelationFilter = {
+    every?: DormitoryAdminWhereInput
+    some?: DormitoryAdminWhereInput
+    none?: DormitoryAdminWhereInput
+  }
+
+  export type DormitoryNullableScalarRelationFilter = {
+    is?: DormitoryWhereInput | null
+    isNot?: DormitoryWhereInput | null
+  }
+
+  export type DormitoryListRelationFilter = {
+    every?: DormitoryWhereInput
+    some?: DormitoryWhereInput
+    none?: DormitoryWhereInput
+  }
+
+  export type RoomNullableScalarRelationFilter = {
+    is?: RoomWhereInput | null
+    isNot?: RoomWhereInput | null
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
   }
 
   export type ConfirmationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DormitoryAdminOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DormitoryOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -5231,6 +12321,8 @@ export namespace Prisma {
     secondName?: SortOrder
     studentIdFront?: SortOrder
     studentIdBack?: SortOrder
+    dormitoryId?: SortOrder
+    roomId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -5248,6 +12340,8 @@ export namespace Prisma {
     secondName?: SortOrder
     studentIdFront?: SortOrder
     studentIdBack?: SortOrder
+    dormitoryId?: SortOrder
+    roomId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -5265,6 +12359,8 @@ export namespace Prisma {
     secondName?: SortOrder
     studentIdFront?: SortOrder
     studentIdBack?: SortOrder
+    dormitoryId?: SortOrder
+    roomId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -5347,6 +12443,45 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
+  }
+
+  export type DormitoryScalarRelationFilter = {
+    is?: DormitoryWhereInput
+    isNot?: DormitoryWhereInput
+  }
+
+  export type DormitoryAdminUserIdDormitoryIdCompoundUniqueInput = {
+    userId: string
+    dormitoryId: string
+  }
+
+  export type DormitoryAdminCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    dormitoryId?: SortOrder
+    role?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type DormitoryAdminMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    dormitoryId?: SortOrder
+    role?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type DormitoryAdminMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    dormitoryId?: SortOrder
+    role?: SortOrder
+    createdAt?: SortOrder
+  }
+
   export type EnumConfirmationTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.ConfirmationType | EnumConfirmationTypeFieldRefInput<$PrismaModel>
     in?: $Enums.ConfirmationType[] | ListEnumConfirmationTypeFieldRefInput<$PrismaModel>
@@ -5370,11 +12505,6 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
-  export type UserScalarRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
   }
 
   export type ConfirmationCountOrderByAggregateInput = {
@@ -5488,6 +12618,241 @@ export namespace Prisma {
     _max?: NestedEnumTokenTypeFilter<$PrismaModel>
   }
 
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
+  export type UserNullableScalarRelationFilter = {
+    is?: UserWhereInput | null
+    isNot?: UserWhereInput | null
+  }
+
+  export type UserListRelationFilter = {
+    every?: UserWhereInput
+    some?: UserWhereInput
+    none?: UserWhereInput
+  }
+
+  export type RoomListRelationFilter = {
+    every?: RoomWhereInput
+    some?: RoomWhereInput
+    none?: RoomWhereInput
+  }
+
+  export type UserOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type RoomOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DormitoryCountOrderByAggregateInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    name?: SortOrder
+    address?: SortOrder
+    groundFloorPhoneNumber?: SortOrder
+    status?: SortOrder
+    photos?: SortOrder
+    managerId?: SortOrder
+  }
+
+  export type DormitoryMaxOrderByAggregateInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    name?: SortOrder
+    address?: SortOrder
+    groundFloorPhoneNumber?: SortOrder
+    status?: SortOrder
+    managerId?: SortOrder
+  }
+
+  export type DormitoryMinOrderByAggregateInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    name?: SortOrder
+    address?: SortOrder
+    groundFloorPhoneNumber?: SortOrder
+    status?: SortOrder
+    managerId?: SortOrder
+  }
+
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type RoomStatusListRelationFilter = {
+    every?: RoomStatusWhereInput
+    some?: RoomStatusWhereInput
+    none?: RoomStatusWhereInput
+  }
+
+  export type RoomStatusOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type RoomCountOrderByAggregateInput = {
+    id?: SortOrder
+    number?: SortOrder
+    floor?: SortOrder
+    createdAt?: SortOrder
+    capacity?: SortOrder
+    roomEquipment?: SortOrder
+    photos?: SortOrder
+    dormitoryId?: SortOrder
+  }
+
+  export type RoomAvgOrderByAggregateInput = {
+    floor?: SortOrder
+    capacity?: SortOrder
+  }
+
+  export type RoomMaxOrderByAggregateInput = {
+    id?: SortOrder
+    number?: SortOrder
+    floor?: SortOrder
+    createdAt?: SortOrder
+    capacity?: SortOrder
+    dormitoryId?: SortOrder
+  }
+
+  export type RoomMinOrderByAggregateInput = {
+    id?: SortOrder
+    number?: SortOrder
+    floor?: SortOrder
+    createdAt?: SortOrder
+    capacity?: SortOrder
+    dormitoryId?: SortOrder
+  }
+
+  export type RoomSumOrderByAggregateInput = {
+    floor?: SortOrder
+    capacity?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type RoomScalarRelationFilter = {
+    is?: RoomWhereInput
+    isNot?: RoomWhereInput
+  }
+
+  export type RoomStatusCountOrderByAggregateInput = {
+    id?: SortOrder
+    dateOfStart?: SortOrder
+    dateOfEnd?: SortOrder
+    description?: SortOrder
+    roomId?: SortOrder
+  }
+
+  export type RoomStatusMaxOrderByAggregateInput = {
+    id?: SortOrder
+    dateOfStart?: SortOrder
+    dateOfEnd?: SortOrder
+    description?: SortOrder
+    roomId?: SortOrder
+  }
+
+  export type RoomStatusMinOrderByAggregateInput = {
+    id?: SortOrder
+    dateOfStart?: SortOrder
+    dateOfEnd?: SortOrder
+    description?: SortOrder
+    roomId?: SortOrder
+  }
+
+  export type FloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type PriceCountOrderByAggregateInput = {
+    id?: SortOrder
+    roomCapacity?: SortOrder
+    pricePerMonth?: SortOrder
+    pricePerDay?: SortOrder
+    dateFrom?: SortOrder
+    dateTo?: SortOrder
+  }
+
+  export type PriceAvgOrderByAggregateInput = {
+    roomCapacity?: SortOrder
+    pricePerMonth?: SortOrder
+    pricePerDay?: SortOrder
+  }
+
+  export type PriceMaxOrderByAggregateInput = {
+    id?: SortOrder
+    roomCapacity?: SortOrder
+    pricePerMonth?: SortOrder
+    pricePerDay?: SortOrder
+    dateFrom?: SortOrder
+    dateTo?: SortOrder
+  }
+
+  export type PriceMinOrderByAggregateInput = {
+    id?: SortOrder
+    roomCapacity?: SortOrder
+    pricePerMonth?: SortOrder
+    pricePerDay?: SortOrder
+    dateFrom?: SortOrder
+    dateTo?: SortOrder
+  }
+
+  export type PriceSumOrderByAggregateInput = {
+    roomCapacity?: SortOrder
+    pricePerMonth?: SortOrder
+    pricePerDay?: SortOrder
+  }
+
+  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
+  }
+
   export type ConfirmationCreateNestedManyWithoutRequesterInput = {
     create?: XOR<ConfirmationCreateWithoutRequesterInput, ConfirmationUncheckedCreateWithoutRequesterInput> | ConfirmationCreateWithoutRequesterInput[] | ConfirmationUncheckedCreateWithoutRequesterInput[]
     connectOrCreate?: ConfirmationCreateOrConnectWithoutRequesterInput | ConfirmationCreateOrConnectWithoutRequesterInput[]
@@ -5495,11 +12860,51 @@ export namespace Prisma {
     connect?: ConfirmationWhereUniqueInput | ConfirmationWhereUniqueInput[]
   }
 
+  export type DormitoryAdminCreateNestedManyWithoutUserInput = {
+    create?: XOR<DormitoryAdminCreateWithoutUserInput, DormitoryAdminUncheckedCreateWithoutUserInput> | DormitoryAdminCreateWithoutUserInput[] | DormitoryAdminUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DormitoryAdminCreateOrConnectWithoutUserInput | DormitoryAdminCreateOrConnectWithoutUserInput[]
+    createMany?: DormitoryAdminCreateManyUserInputEnvelope
+    connect?: DormitoryAdminWhereUniqueInput | DormitoryAdminWhereUniqueInput[]
+  }
+
+  export type DormitoryCreateNestedOneWithoutResidentsInput = {
+    create?: XOR<DormitoryCreateWithoutResidentsInput, DormitoryUncheckedCreateWithoutResidentsInput>
+    connectOrCreate?: DormitoryCreateOrConnectWithoutResidentsInput
+    connect?: DormitoryWhereUniqueInput
+  }
+
+  export type DormitoryCreateNestedManyWithoutManagerInput = {
+    create?: XOR<DormitoryCreateWithoutManagerInput, DormitoryUncheckedCreateWithoutManagerInput> | DormitoryCreateWithoutManagerInput[] | DormitoryUncheckedCreateWithoutManagerInput[]
+    connectOrCreate?: DormitoryCreateOrConnectWithoutManagerInput | DormitoryCreateOrConnectWithoutManagerInput[]
+    createMany?: DormitoryCreateManyManagerInputEnvelope
+    connect?: DormitoryWhereUniqueInput | DormitoryWhereUniqueInput[]
+  }
+
+  export type RoomCreateNestedOneWithoutResidentsInput = {
+    create?: XOR<RoomCreateWithoutResidentsInput, RoomUncheckedCreateWithoutResidentsInput>
+    connectOrCreate?: RoomCreateOrConnectWithoutResidentsInput
+    connect?: RoomWhereUniqueInput
+  }
+
   export type ConfirmationUncheckedCreateNestedManyWithoutRequesterInput = {
     create?: XOR<ConfirmationCreateWithoutRequesterInput, ConfirmationUncheckedCreateWithoutRequesterInput> | ConfirmationCreateWithoutRequesterInput[] | ConfirmationUncheckedCreateWithoutRequesterInput[]
     connectOrCreate?: ConfirmationCreateOrConnectWithoutRequesterInput | ConfirmationCreateOrConnectWithoutRequesterInput[]
     createMany?: ConfirmationCreateManyRequesterInputEnvelope
     connect?: ConfirmationWhereUniqueInput | ConfirmationWhereUniqueInput[]
+  }
+
+  export type DormitoryAdminUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<DormitoryAdminCreateWithoutUserInput, DormitoryAdminUncheckedCreateWithoutUserInput> | DormitoryAdminCreateWithoutUserInput[] | DormitoryAdminUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DormitoryAdminCreateOrConnectWithoutUserInput | DormitoryAdminCreateOrConnectWithoutUserInput[]
+    createMany?: DormitoryAdminCreateManyUserInputEnvelope
+    connect?: DormitoryAdminWhereUniqueInput | DormitoryAdminWhereUniqueInput[]
+  }
+
+  export type DormitoryUncheckedCreateNestedManyWithoutManagerInput = {
+    create?: XOR<DormitoryCreateWithoutManagerInput, DormitoryUncheckedCreateWithoutManagerInput> | DormitoryCreateWithoutManagerInput[] | DormitoryUncheckedCreateWithoutManagerInput[]
+    connectOrCreate?: DormitoryCreateOrConnectWithoutManagerInput | DormitoryCreateOrConnectWithoutManagerInput[]
+    createMany?: DormitoryCreateManyManagerInputEnvelope
+    connect?: DormitoryWhereUniqueInput | DormitoryWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -5540,6 +12945,54 @@ export namespace Prisma {
     deleteMany?: ConfirmationScalarWhereInput | ConfirmationScalarWhereInput[]
   }
 
+  export type DormitoryAdminUpdateManyWithoutUserNestedInput = {
+    create?: XOR<DormitoryAdminCreateWithoutUserInput, DormitoryAdminUncheckedCreateWithoutUserInput> | DormitoryAdminCreateWithoutUserInput[] | DormitoryAdminUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DormitoryAdminCreateOrConnectWithoutUserInput | DormitoryAdminCreateOrConnectWithoutUserInput[]
+    upsert?: DormitoryAdminUpsertWithWhereUniqueWithoutUserInput | DormitoryAdminUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: DormitoryAdminCreateManyUserInputEnvelope
+    set?: DormitoryAdminWhereUniqueInput | DormitoryAdminWhereUniqueInput[]
+    disconnect?: DormitoryAdminWhereUniqueInput | DormitoryAdminWhereUniqueInput[]
+    delete?: DormitoryAdminWhereUniqueInput | DormitoryAdminWhereUniqueInput[]
+    connect?: DormitoryAdminWhereUniqueInput | DormitoryAdminWhereUniqueInput[]
+    update?: DormitoryAdminUpdateWithWhereUniqueWithoutUserInput | DormitoryAdminUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: DormitoryAdminUpdateManyWithWhereWithoutUserInput | DormitoryAdminUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: DormitoryAdminScalarWhereInput | DormitoryAdminScalarWhereInput[]
+  }
+
+  export type DormitoryUpdateOneWithoutResidentsNestedInput = {
+    create?: XOR<DormitoryCreateWithoutResidentsInput, DormitoryUncheckedCreateWithoutResidentsInput>
+    connectOrCreate?: DormitoryCreateOrConnectWithoutResidentsInput
+    upsert?: DormitoryUpsertWithoutResidentsInput
+    disconnect?: DormitoryWhereInput | boolean
+    delete?: DormitoryWhereInput | boolean
+    connect?: DormitoryWhereUniqueInput
+    update?: XOR<XOR<DormitoryUpdateToOneWithWhereWithoutResidentsInput, DormitoryUpdateWithoutResidentsInput>, DormitoryUncheckedUpdateWithoutResidentsInput>
+  }
+
+  export type DormitoryUpdateManyWithoutManagerNestedInput = {
+    create?: XOR<DormitoryCreateWithoutManagerInput, DormitoryUncheckedCreateWithoutManagerInput> | DormitoryCreateWithoutManagerInput[] | DormitoryUncheckedCreateWithoutManagerInput[]
+    connectOrCreate?: DormitoryCreateOrConnectWithoutManagerInput | DormitoryCreateOrConnectWithoutManagerInput[]
+    upsert?: DormitoryUpsertWithWhereUniqueWithoutManagerInput | DormitoryUpsertWithWhereUniqueWithoutManagerInput[]
+    createMany?: DormitoryCreateManyManagerInputEnvelope
+    set?: DormitoryWhereUniqueInput | DormitoryWhereUniqueInput[]
+    disconnect?: DormitoryWhereUniqueInput | DormitoryWhereUniqueInput[]
+    delete?: DormitoryWhereUniqueInput | DormitoryWhereUniqueInput[]
+    connect?: DormitoryWhereUniqueInput | DormitoryWhereUniqueInput[]
+    update?: DormitoryUpdateWithWhereUniqueWithoutManagerInput | DormitoryUpdateWithWhereUniqueWithoutManagerInput[]
+    updateMany?: DormitoryUpdateManyWithWhereWithoutManagerInput | DormitoryUpdateManyWithWhereWithoutManagerInput[]
+    deleteMany?: DormitoryScalarWhereInput | DormitoryScalarWhereInput[]
+  }
+
+  export type RoomUpdateOneWithoutResidentsNestedInput = {
+    create?: XOR<RoomCreateWithoutResidentsInput, RoomUncheckedCreateWithoutResidentsInput>
+    connectOrCreate?: RoomCreateOrConnectWithoutResidentsInput
+    upsert?: RoomUpsertWithoutResidentsInput
+    disconnect?: RoomWhereInput | boolean
+    delete?: RoomWhereInput | boolean
+    connect?: RoomWhereUniqueInput
+    update?: XOR<XOR<RoomUpdateToOneWithWhereWithoutResidentsInput, RoomUpdateWithoutResidentsInput>, RoomUncheckedUpdateWithoutResidentsInput>
+  }
+
   export type ConfirmationUncheckedUpdateManyWithoutRequesterNestedInput = {
     create?: XOR<ConfirmationCreateWithoutRequesterInput, ConfirmationUncheckedCreateWithoutRequesterInput> | ConfirmationCreateWithoutRequesterInput[] | ConfirmationUncheckedCreateWithoutRequesterInput[]
     connectOrCreate?: ConfirmationCreateOrConnectWithoutRequesterInput | ConfirmationCreateOrConnectWithoutRequesterInput[]
@@ -5552,6 +13005,62 @@ export namespace Prisma {
     update?: ConfirmationUpdateWithWhereUniqueWithoutRequesterInput | ConfirmationUpdateWithWhereUniqueWithoutRequesterInput[]
     updateMany?: ConfirmationUpdateManyWithWhereWithoutRequesterInput | ConfirmationUpdateManyWithWhereWithoutRequesterInput[]
     deleteMany?: ConfirmationScalarWhereInput | ConfirmationScalarWhereInput[]
+  }
+
+  export type DormitoryAdminUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<DormitoryAdminCreateWithoutUserInput, DormitoryAdminUncheckedCreateWithoutUserInput> | DormitoryAdminCreateWithoutUserInput[] | DormitoryAdminUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DormitoryAdminCreateOrConnectWithoutUserInput | DormitoryAdminCreateOrConnectWithoutUserInput[]
+    upsert?: DormitoryAdminUpsertWithWhereUniqueWithoutUserInput | DormitoryAdminUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: DormitoryAdminCreateManyUserInputEnvelope
+    set?: DormitoryAdminWhereUniqueInput | DormitoryAdminWhereUniqueInput[]
+    disconnect?: DormitoryAdminWhereUniqueInput | DormitoryAdminWhereUniqueInput[]
+    delete?: DormitoryAdminWhereUniqueInput | DormitoryAdminWhereUniqueInput[]
+    connect?: DormitoryAdminWhereUniqueInput | DormitoryAdminWhereUniqueInput[]
+    update?: DormitoryAdminUpdateWithWhereUniqueWithoutUserInput | DormitoryAdminUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: DormitoryAdminUpdateManyWithWhereWithoutUserInput | DormitoryAdminUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: DormitoryAdminScalarWhereInput | DormitoryAdminScalarWhereInput[]
+  }
+
+  export type DormitoryUncheckedUpdateManyWithoutManagerNestedInput = {
+    create?: XOR<DormitoryCreateWithoutManagerInput, DormitoryUncheckedCreateWithoutManagerInput> | DormitoryCreateWithoutManagerInput[] | DormitoryUncheckedCreateWithoutManagerInput[]
+    connectOrCreate?: DormitoryCreateOrConnectWithoutManagerInput | DormitoryCreateOrConnectWithoutManagerInput[]
+    upsert?: DormitoryUpsertWithWhereUniqueWithoutManagerInput | DormitoryUpsertWithWhereUniqueWithoutManagerInput[]
+    createMany?: DormitoryCreateManyManagerInputEnvelope
+    set?: DormitoryWhereUniqueInput | DormitoryWhereUniqueInput[]
+    disconnect?: DormitoryWhereUniqueInput | DormitoryWhereUniqueInput[]
+    delete?: DormitoryWhereUniqueInput | DormitoryWhereUniqueInput[]
+    connect?: DormitoryWhereUniqueInput | DormitoryWhereUniqueInput[]
+    update?: DormitoryUpdateWithWhereUniqueWithoutManagerInput | DormitoryUpdateWithWhereUniqueWithoutManagerInput[]
+    updateMany?: DormitoryUpdateManyWithWhereWithoutManagerInput | DormitoryUpdateManyWithWhereWithoutManagerInput[]
+    deleteMany?: DormitoryScalarWhereInput | DormitoryScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutDormitoryAdminAssignmentsInput = {
+    create?: XOR<UserCreateWithoutDormitoryAdminAssignmentsInput, UserUncheckedCreateWithoutDormitoryAdminAssignmentsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDormitoryAdminAssignmentsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type DormitoryCreateNestedOneWithoutAdminsInput = {
+    create?: XOR<DormitoryCreateWithoutAdminsInput, DormitoryUncheckedCreateWithoutAdminsInput>
+    connectOrCreate?: DormitoryCreateOrConnectWithoutAdminsInput
+    connect?: DormitoryWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutDormitoryAdminAssignmentsNestedInput = {
+    create?: XOR<UserCreateWithoutDormitoryAdminAssignmentsInput, UserUncheckedCreateWithoutDormitoryAdminAssignmentsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDormitoryAdminAssignmentsInput
+    upsert?: UserUpsertWithoutDormitoryAdminAssignmentsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDormitoryAdminAssignmentsInput, UserUpdateWithoutDormitoryAdminAssignmentsInput>, UserUncheckedUpdateWithoutDormitoryAdminAssignmentsInput>
+  }
+
+  export type DormitoryUpdateOneRequiredWithoutAdminsNestedInput = {
+    create?: XOR<DormitoryCreateWithoutAdminsInput, DormitoryUncheckedCreateWithoutAdminsInput>
+    connectOrCreate?: DormitoryCreateOrConnectWithoutAdminsInput
+    upsert?: DormitoryUpsertWithoutAdminsInput
+    connect?: DormitoryWhereUniqueInput
+    update?: XOR<XOR<DormitoryUpdateToOneWithWhereWithoutAdminsInput, DormitoryUpdateWithoutAdminsInput>, DormitoryUncheckedUpdateWithoutAdminsInput>
   }
 
   export type UserCreateNestedOneWithoutConfirmationsInput = {
@@ -5582,6 +13091,303 @@ export namespace Prisma {
 
   export type EnumTokenTypeFieldUpdateOperationsInput = {
     set?: $Enums.TokenType
+  }
+
+  export type DormitoryCreatephotosInput = {
+    set: string[]
+  }
+
+  export type UserCreateNestedOneWithoutManagedDormitoriesInput = {
+    create?: XOR<UserCreateWithoutManagedDormitoriesInput, UserUncheckedCreateWithoutManagedDormitoriesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutManagedDormitoriesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type DormitoryAdminCreateNestedManyWithoutDormitoryInput = {
+    create?: XOR<DormitoryAdminCreateWithoutDormitoryInput, DormitoryAdminUncheckedCreateWithoutDormitoryInput> | DormitoryAdminCreateWithoutDormitoryInput[] | DormitoryAdminUncheckedCreateWithoutDormitoryInput[]
+    connectOrCreate?: DormitoryAdminCreateOrConnectWithoutDormitoryInput | DormitoryAdminCreateOrConnectWithoutDormitoryInput[]
+    createMany?: DormitoryAdminCreateManyDormitoryInputEnvelope
+    connect?: DormitoryAdminWhereUniqueInput | DormitoryAdminWhereUniqueInput[]
+  }
+
+  export type UserCreateNestedManyWithoutDormitoryInput = {
+    create?: XOR<UserCreateWithoutDormitoryInput, UserUncheckedCreateWithoutDormitoryInput> | UserCreateWithoutDormitoryInput[] | UserUncheckedCreateWithoutDormitoryInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutDormitoryInput | UserCreateOrConnectWithoutDormitoryInput[]
+    createMany?: UserCreateManyDormitoryInputEnvelope
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
+  export type RoomCreateNestedManyWithoutDormitroyInput = {
+    create?: XOR<RoomCreateWithoutDormitroyInput, RoomUncheckedCreateWithoutDormitroyInput> | RoomCreateWithoutDormitroyInput[] | RoomUncheckedCreateWithoutDormitroyInput[]
+    connectOrCreate?: RoomCreateOrConnectWithoutDormitroyInput | RoomCreateOrConnectWithoutDormitroyInput[]
+    createMany?: RoomCreateManyDormitroyInputEnvelope
+    connect?: RoomWhereUniqueInput | RoomWhereUniqueInput[]
+  }
+
+  export type DormitoryAdminUncheckedCreateNestedManyWithoutDormitoryInput = {
+    create?: XOR<DormitoryAdminCreateWithoutDormitoryInput, DormitoryAdminUncheckedCreateWithoutDormitoryInput> | DormitoryAdminCreateWithoutDormitoryInput[] | DormitoryAdminUncheckedCreateWithoutDormitoryInput[]
+    connectOrCreate?: DormitoryAdminCreateOrConnectWithoutDormitoryInput | DormitoryAdminCreateOrConnectWithoutDormitoryInput[]
+    createMany?: DormitoryAdminCreateManyDormitoryInputEnvelope
+    connect?: DormitoryAdminWhereUniqueInput | DormitoryAdminWhereUniqueInput[]
+  }
+
+  export type UserUncheckedCreateNestedManyWithoutDormitoryInput = {
+    create?: XOR<UserCreateWithoutDormitoryInput, UserUncheckedCreateWithoutDormitoryInput> | UserCreateWithoutDormitoryInput[] | UserUncheckedCreateWithoutDormitoryInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutDormitoryInput | UserCreateOrConnectWithoutDormitoryInput[]
+    createMany?: UserCreateManyDormitoryInputEnvelope
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
+  export type RoomUncheckedCreateNestedManyWithoutDormitroyInput = {
+    create?: XOR<RoomCreateWithoutDormitroyInput, RoomUncheckedCreateWithoutDormitroyInput> | RoomCreateWithoutDormitroyInput[] | RoomUncheckedCreateWithoutDormitroyInput[]
+    connectOrCreate?: RoomCreateOrConnectWithoutDormitroyInput | RoomCreateOrConnectWithoutDormitroyInput[]
+    createMany?: RoomCreateManyDormitroyInputEnvelope
+    connect?: RoomWhereUniqueInput | RoomWhereUniqueInput[]
+  }
+
+  export type DormitoryUpdatephotosInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type UserUpdateOneWithoutManagedDormitoriesNestedInput = {
+    create?: XOR<UserCreateWithoutManagedDormitoriesInput, UserUncheckedCreateWithoutManagedDormitoriesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutManagedDormitoriesInput
+    upsert?: UserUpsertWithoutManagedDormitoriesInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutManagedDormitoriesInput, UserUpdateWithoutManagedDormitoriesInput>, UserUncheckedUpdateWithoutManagedDormitoriesInput>
+  }
+
+  export type DormitoryAdminUpdateManyWithoutDormitoryNestedInput = {
+    create?: XOR<DormitoryAdminCreateWithoutDormitoryInput, DormitoryAdminUncheckedCreateWithoutDormitoryInput> | DormitoryAdminCreateWithoutDormitoryInput[] | DormitoryAdminUncheckedCreateWithoutDormitoryInput[]
+    connectOrCreate?: DormitoryAdminCreateOrConnectWithoutDormitoryInput | DormitoryAdminCreateOrConnectWithoutDormitoryInput[]
+    upsert?: DormitoryAdminUpsertWithWhereUniqueWithoutDormitoryInput | DormitoryAdminUpsertWithWhereUniqueWithoutDormitoryInput[]
+    createMany?: DormitoryAdminCreateManyDormitoryInputEnvelope
+    set?: DormitoryAdminWhereUniqueInput | DormitoryAdminWhereUniqueInput[]
+    disconnect?: DormitoryAdminWhereUniqueInput | DormitoryAdminWhereUniqueInput[]
+    delete?: DormitoryAdminWhereUniqueInput | DormitoryAdminWhereUniqueInput[]
+    connect?: DormitoryAdminWhereUniqueInput | DormitoryAdminWhereUniqueInput[]
+    update?: DormitoryAdminUpdateWithWhereUniqueWithoutDormitoryInput | DormitoryAdminUpdateWithWhereUniqueWithoutDormitoryInput[]
+    updateMany?: DormitoryAdminUpdateManyWithWhereWithoutDormitoryInput | DormitoryAdminUpdateManyWithWhereWithoutDormitoryInput[]
+    deleteMany?: DormitoryAdminScalarWhereInput | DormitoryAdminScalarWhereInput[]
+  }
+
+  export type UserUpdateManyWithoutDormitoryNestedInput = {
+    create?: XOR<UserCreateWithoutDormitoryInput, UserUncheckedCreateWithoutDormitoryInput> | UserCreateWithoutDormitoryInput[] | UserUncheckedCreateWithoutDormitoryInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutDormitoryInput | UserCreateOrConnectWithoutDormitoryInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutDormitoryInput | UserUpsertWithWhereUniqueWithoutDormitoryInput[]
+    createMany?: UserCreateManyDormitoryInputEnvelope
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutDormitoryInput | UserUpdateWithWhereUniqueWithoutDormitoryInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutDormitoryInput | UserUpdateManyWithWhereWithoutDormitoryInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
+  }
+
+  export type RoomUpdateManyWithoutDormitroyNestedInput = {
+    create?: XOR<RoomCreateWithoutDormitroyInput, RoomUncheckedCreateWithoutDormitroyInput> | RoomCreateWithoutDormitroyInput[] | RoomUncheckedCreateWithoutDormitroyInput[]
+    connectOrCreate?: RoomCreateOrConnectWithoutDormitroyInput | RoomCreateOrConnectWithoutDormitroyInput[]
+    upsert?: RoomUpsertWithWhereUniqueWithoutDormitroyInput | RoomUpsertWithWhereUniqueWithoutDormitroyInput[]
+    createMany?: RoomCreateManyDormitroyInputEnvelope
+    set?: RoomWhereUniqueInput | RoomWhereUniqueInput[]
+    disconnect?: RoomWhereUniqueInput | RoomWhereUniqueInput[]
+    delete?: RoomWhereUniqueInput | RoomWhereUniqueInput[]
+    connect?: RoomWhereUniqueInput | RoomWhereUniqueInput[]
+    update?: RoomUpdateWithWhereUniqueWithoutDormitroyInput | RoomUpdateWithWhereUniqueWithoutDormitroyInput[]
+    updateMany?: RoomUpdateManyWithWhereWithoutDormitroyInput | RoomUpdateManyWithWhereWithoutDormitroyInput[]
+    deleteMany?: RoomScalarWhereInput | RoomScalarWhereInput[]
+  }
+
+  export type DormitoryAdminUncheckedUpdateManyWithoutDormitoryNestedInput = {
+    create?: XOR<DormitoryAdminCreateWithoutDormitoryInput, DormitoryAdminUncheckedCreateWithoutDormitoryInput> | DormitoryAdminCreateWithoutDormitoryInput[] | DormitoryAdminUncheckedCreateWithoutDormitoryInput[]
+    connectOrCreate?: DormitoryAdminCreateOrConnectWithoutDormitoryInput | DormitoryAdminCreateOrConnectWithoutDormitoryInput[]
+    upsert?: DormitoryAdminUpsertWithWhereUniqueWithoutDormitoryInput | DormitoryAdminUpsertWithWhereUniqueWithoutDormitoryInput[]
+    createMany?: DormitoryAdminCreateManyDormitoryInputEnvelope
+    set?: DormitoryAdminWhereUniqueInput | DormitoryAdminWhereUniqueInput[]
+    disconnect?: DormitoryAdminWhereUniqueInput | DormitoryAdminWhereUniqueInput[]
+    delete?: DormitoryAdminWhereUniqueInput | DormitoryAdminWhereUniqueInput[]
+    connect?: DormitoryAdminWhereUniqueInput | DormitoryAdminWhereUniqueInput[]
+    update?: DormitoryAdminUpdateWithWhereUniqueWithoutDormitoryInput | DormitoryAdminUpdateWithWhereUniqueWithoutDormitoryInput[]
+    updateMany?: DormitoryAdminUpdateManyWithWhereWithoutDormitoryInput | DormitoryAdminUpdateManyWithWhereWithoutDormitoryInput[]
+    deleteMany?: DormitoryAdminScalarWhereInput | DormitoryAdminScalarWhereInput[]
+  }
+
+  export type UserUncheckedUpdateManyWithoutDormitoryNestedInput = {
+    create?: XOR<UserCreateWithoutDormitoryInput, UserUncheckedCreateWithoutDormitoryInput> | UserCreateWithoutDormitoryInput[] | UserUncheckedCreateWithoutDormitoryInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutDormitoryInput | UserCreateOrConnectWithoutDormitoryInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutDormitoryInput | UserUpsertWithWhereUniqueWithoutDormitoryInput[]
+    createMany?: UserCreateManyDormitoryInputEnvelope
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutDormitoryInput | UserUpdateWithWhereUniqueWithoutDormitoryInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutDormitoryInput | UserUpdateManyWithWhereWithoutDormitoryInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
+  }
+
+  export type RoomUncheckedUpdateManyWithoutDormitroyNestedInput = {
+    create?: XOR<RoomCreateWithoutDormitroyInput, RoomUncheckedCreateWithoutDormitroyInput> | RoomCreateWithoutDormitroyInput[] | RoomUncheckedCreateWithoutDormitroyInput[]
+    connectOrCreate?: RoomCreateOrConnectWithoutDormitroyInput | RoomCreateOrConnectWithoutDormitroyInput[]
+    upsert?: RoomUpsertWithWhereUniqueWithoutDormitroyInput | RoomUpsertWithWhereUniqueWithoutDormitroyInput[]
+    createMany?: RoomCreateManyDormitroyInputEnvelope
+    set?: RoomWhereUniqueInput | RoomWhereUniqueInput[]
+    disconnect?: RoomWhereUniqueInput | RoomWhereUniqueInput[]
+    delete?: RoomWhereUniqueInput | RoomWhereUniqueInput[]
+    connect?: RoomWhereUniqueInput | RoomWhereUniqueInput[]
+    update?: RoomUpdateWithWhereUniqueWithoutDormitroyInput | RoomUpdateWithWhereUniqueWithoutDormitroyInput[]
+    updateMany?: RoomUpdateManyWithWhereWithoutDormitroyInput | RoomUpdateManyWithWhereWithoutDormitroyInput[]
+    deleteMany?: RoomScalarWhereInput | RoomScalarWhereInput[]
+  }
+
+  export type RoomCreateroomEquipmentInput = {
+    set: string[]
+  }
+
+  export type RoomCreatephotosInput = {
+    set: string[]
+  }
+
+  export type RoomStatusCreateNestedManyWithoutRoomInput = {
+    create?: XOR<RoomStatusCreateWithoutRoomInput, RoomStatusUncheckedCreateWithoutRoomInput> | RoomStatusCreateWithoutRoomInput[] | RoomStatusUncheckedCreateWithoutRoomInput[]
+    connectOrCreate?: RoomStatusCreateOrConnectWithoutRoomInput | RoomStatusCreateOrConnectWithoutRoomInput[]
+    createMany?: RoomStatusCreateManyRoomInputEnvelope
+    connect?: RoomStatusWhereUniqueInput | RoomStatusWhereUniqueInput[]
+  }
+
+  export type UserCreateNestedManyWithoutRoomInput = {
+    create?: XOR<UserCreateWithoutRoomInput, UserUncheckedCreateWithoutRoomInput> | UserCreateWithoutRoomInput[] | UserUncheckedCreateWithoutRoomInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutRoomInput | UserCreateOrConnectWithoutRoomInput[]
+    createMany?: UserCreateManyRoomInputEnvelope
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
+  export type DormitoryCreateNestedOneWithoutRoomsInput = {
+    create?: XOR<DormitoryCreateWithoutRoomsInput, DormitoryUncheckedCreateWithoutRoomsInput>
+    connectOrCreate?: DormitoryCreateOrConnectWithoutRoomsInput
+    connect?: DormitoryWhereUniqueInput
+  }
+
+  export type RoomStatusUncheckedCreateNestedManyWithoutRoomInput = {
+    create?: XOR<RoomStatusCreateWithoutRoomInput, RoomStatusUncheckedCreateWithoutRoomInput> | RoomStatusCreateWithoutRoomInput[] | RoomStatusUncheckedCreateWithoutRoomInput[]
+    connectOrCreate?: RoomStatusCreateOrConnectWithoutRoomInput | RoomStatusCreateOrConnectWithoutRoomInput[]
+    createMany?: RoomStatusCreateManyRoomInputEnvelope
+    connect?: RoomStatusWhereUniqueInput | RoomStatusWhereUniqueInput[]
+  }
+
+  export type UserUncheckedCreateNestedManyWithoutRoomInput = {
+    create?: XOR<UserCreateWithoutRoomInput, UserUncheckedCreateWithoutRoomInput> | UserCreateWithoutRoomInput[] | UserUncheckedCreateWithoutRoomInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutRoomInput | UserCreateOrConnectWithoutRoomInput[]
+    createMany?: UserCreateManyRoomInputEnvelope
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type RoomUpdateroomEquipmentInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type RoomUpdatephotosInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type RoomStatusUpdateManyWithoutRoomNestedInput = {
+    create?: XOR<RoomStatusCreateWithoutRoomInput, RoomStatusUncheckedCreateWithoutRoomInput> | RoomStatusCreateWithoutRoomInput[] | RoomStatusUncheckedCreateWithoutRoomInput[]
+    connectOrCreate?: RoomStatusCreateOrConnectWithoutRoomInput | RoomStatusCreateOrConnectWithoutRoomInput[]
+    upsert?: RoomStatusUpsertWithWhereUniqueWithoutRoomInput | RoomStatusUpsertWithWhereUniqueWithoutRoomInput[]
+    createMany?: RoomStatusCreateManyRoomInputEnvelope
+    set?: RoomStatusWhereUniqueInput | RoomStatusWhereUniqueInput[]
+    disconnect?: RoomStatusWhereUniqueInput | RoomStatusWhereUniqueInput[]
+    delete?: RoomStatusWhereUniqueInput | RoomStatusWhereUniqueInput[]
+    connect?: RoomStatusWhereUniqueInput | RoomStatusWhereUniqueInput[]
+    update?: RoomStatusUpdateWithWhereUniqueWithoutRoomInput | RoomStatusUpdateWithWhereUniqueWithoutRoomInput[]
+    updateMany?: RoomStatusUpdateManyWithWhereWithoutRoomInput | RoomStatusUpdateManyWithWhereWithoutRoomInput[]
+    deleteMany?: RoomStatusScalarWhereInput | RoomStatusScalarWhereInput[]
+  }
+
+  export type UserUpdateManyWithoutRoomNestedInput = {
+    create?: XOR<UserCreateWithoutRoomInput, UserUncheckedCreateWithoutRoomInput> | UserCreateWithoutRoomInput[] | UserUncheckedCreateWithoutRoomInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutRoomInput | UserCreateOrConnectWithoutRoomInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutRoomInput | UserUpsertWithWhereUniqueWithoutRoomInput[]
+    createMany?: UserCreateManyRoomInputEnvelope
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutRoomInput | UserUpdateWithWhereUniqueWithoutRoomInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutRoomInput | UserUpdateManyWithWhereWithoutRoomInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
+  }
+
+  export type DormitoryUpdateOneRequiredWithoutRoomsNestedInput = {
+    create?: XOR<DormitoryCreateWithoutRoomsInput, DormitoryUncheckedCreateWithoutRoomsInput>
+    connectOrCreate?: DormitoryCreateOrConnectWithoutRoomsInput
+    upsert?: DormitoryUpsertWithoutRoomsInput
+    connect?: DormitoryWhereUniqueInput
+    update?: XOR<XOR<DormitoryUpdateToOneWithWhereWithoutRoomsInput, DormitoryUpdateWithoutRoomsInput>, DormitoryUncheckedUpdateWithoutRoomsInput>
+  }
+
+  export type RoomStatusUncheckedUpdateManyWithoutRoomNestedInput = {
+    create?: XOR<RoomStatusCreateWithoutRoomInput, RoomStatusUncheckedCreateWithoutRoomInput> | RoomStatusCreateWithoutRoomInput[] | RoomStatusUncheckedCreateWithoutRoomInput[]
+    connectOrCreate?: RoomStatusCreateOrConnectWithoutRoomInput | RoomStatusCreateOrConnectWithoutRoomInput[]
+    upsert?: RoomStatusUpsertWithWhereUniqueWithoutRoomInput | RoomStatusUpsertWithWhereUniqueWithoutRoomInput[]
+    createMany?: RoomStatusCreateManyRoomInputEnvelope
+    set?: RoomStatusWhereUniqueInput | RoomStatusWhereUniqueInput[]
+    disconnect?: RoomStatusWhereUniqueInput | RoomStatusWhereUniqueInput[]
+    delete?: RoomStatusWhereUniqueInput | RoomStatusWhereUniqueInput[]
+    connect?: RoomStatusWhereUniqueInput | RoomStatusWhereUniqueInput[]
+    update?: RoomStatusUpdateWithWhereUniqueWithoutRoomInput | RoomStatusUpdateWithWhereUniqueWithoutRoomInput[]
+    updateMany?: RoomStatusUpdateManyWithWhereWithoutRoomInput | RoomStatusUpdateManyWithWhereWithoutRoomInput[]
+    deleteMany?: RoomStatusScalarWhereInput | RoomStatusScalarWhereInput[]
+  }
+
+  export type UserUncheckedUpdateManyWithoutRoomNestedInput = {
+    create?: XOR<UserCreateWithoutRoomInput, UserUncheckedCreateWithoutRoomInput> | UserCreateWithoutRoomInput[] | UserUncheckedCreateWithoutRoomInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutRoomInput | UserCreateOrConnectWithoutRoomInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutRoomInput | UserUpsertWithWhereUniqueWithoutRoomInput[]
+    createMany?: UserCreateManyRoomInputEnvelope
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutRoomInput | UserUpdateWithWhereUniqueWithoutRoomInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutRoomInput | UserUpdateManyWithWhereWithoutRoomInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
+  }
+
+  export type RoomCreateNestedOneWithoutStatusesInput = {
+    create?: XOR<RoomCreateWithoutStatusesInput, RoomUncheckedCreateWithoutStatusesInput>
+    connectOrCreate?: RoomCreateOrConnectWithoutStatusesInput
+    connect?: RoomWhereUniqueInput
+  }
+
+  export type RoomUpdateOneRequiredWithoutStatusesNestedInput = {
+    create?: XOR<RoomCreateWithoutStatusesInput, RoomUncheckedCreateWithoutStatusesInput>
+    connectOrCreate?: RoomCreateOrConnectWithoutStatusesInput
+    upsert?: RoomUpsertWithoutStatusesInput
+    connect?: RoomWhereUniqueInput
+    update?: XOR<XOR<RoomUpdateToOneWithWhereWithoutStatusesInput, RoomUpdateWithoutStatusesInput>, RoomUncheckedUpdateWithoutStatusesInput>
+  }
+
+  export type FloatFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -5816,6 +13622,49 @@ export namespace Prisma {
     _max?: NestedEnumTokenTypeFilter<$PrismaModel>
   }
 
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
+  }
+
   export type ConfirmationCreateWithoutRequesterInput = {
     id?: string
     type: $Enums.ConfirmationType
@@ -5846,6 +13695,126 @@ export namespace Prisma {
   export type ConfirmationCreateManyRequesterInputEnvelope = {
     data: ConfirmationCreateManyRequesterInput | ConfirmationCreateManyRequesterInput[]
     skipDuplicates?: boolean
+  }
+
+  export type DormitoryAdminCreateWithoutUserInput = {
+    id?: string
+    role: string
+    createdAt?: Date | string
+    dormitory: DormitoryCreateNestedOneWithoutAdminsInput
+  }
+
+  export type DormitoryAdminUncheckedCreateWithoutUserInput = {
+    id?: string
+    dormitoryId: string
+    role: string
+    createdAt?: Date | string
+  }
+
+  export type DormitoryAdminCreateOrConnectWithoutUserInput = {
+    where: DormitoryAdminWhereUniqueInput
+    create: XOR<DormitoryAdminCreateWithoutUserInput, DormitoryAdminUncheckedCreateWithoutUserInput>
+  }
+
+  export type DormitoryAdminCreateManyUserInputEnvelope = {
+    data: DormitoryAdminCreateManyUserInput | DormitoryAdminCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DormitoryCreateWithoutResidentsInput = {
+    id?: string
+    createdAt?: Date | string
+    name: string
+    address: string
+    groundFloorPhoneNumber: string
+    status?: string
+    photos?: DormitoryCreatephotosInput | string[]
+    manager?: UserCreateNestedOneWithoutManagedDormitoriesInput
+    admins?: DormitoryAdminCreateNestedManyWithoutDormitoryInput
+    rooms?: RoomCreateNestedManyWithoutDormitroyInput
+  }
+
+  export type DormitoryUncheckedCreateWithoutResidentsInput = {
+    id?: string
+    createdAt?: Date | string
+    name: string
+    address: string
+    groundFloorPhoneNumber: string
+    status?: string
+    photos?: DormitoryCreatephotosInput | string[]
+    managerId?: string | null
+    admins?: DormitoryAdminUncheckedCreateNestedManyWithoutDormitoryInput
+    rooms?: RoomUncheckedCreateNestedManyWithoutDormitroyInput
+  }
+
+  export type DormitoryCreateOrConnectWithoutResidentsInput = {
+    where: DormitoryWhereUniqueInput
+    create: XOR<DormitoryCreateWithoutResidentsInput, DormitoryUncheckedCreateWithoutResidentsInput>
+  }
+
+  export type DormitoryCreateWithoutManagerInput = {
+    id?: string
+    createdAt?: Date | string
+    name: string
+    address: string
+    groundFloorPhoneNumber: string
+    status?: string
+    photos?: DormitoryCreatephotosInput | string[]
+    admins?: DormitoryAdminCreateNestedManyWithoutDormitoryInput
+    residents?: UserCreateNestedManyWithoutDormitoryInput
+    rooms?: RoomCreateNestedManyWithoutDormitroyInput
+  }
+
+  export type DormitoryUncheckedCreateWithoutManagerInput = {
+    id?: string
+    createdAt?: Date | string
+    name: string
+    address: string
+    groundFloorPhoneNumber: string
+    status?: string
+    photos?: DormitoryCreatephotosInput | string[]
+    admins?: DormitoryAdminUncheckedCreateNestedManyWithoutDormitoryInput
+    residents?: UserUncheckedCreateNestedManyWithoutDormitoryInput
+    rooms?: RoomUncheckedCreateNestedManyWithoutDormitroyInput
+  }
+
+  export type DormitoryCreateOrConnectWithoutManagerInput = {
+    where: DormitoryWhereUniqueInput
+    create: XOR<DormitoryCreateWithoutManagerInput, DormitoryUncheckedCreateWithoutManagerInput>
+  }
+
+  export type DormitoryCreateManyManagerInputEnvelope = {
+    data: DormitoryCreateManyManagerInput | DormitoryCreateManyManagerInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RoomCreateWithoutResidentsInput = {
+    id?: string
+    number: string
+    floor: number
+    createdAt?: Date | string
+    capacity: number
+    roomEquipment?: RoomCreateroomEquipmentInput | string[]
+    photos?: RoomCreatephotosInput | string[]
+    statuses?: RoomStatusCreateNestedManyWithoutRoomInput
+    dormitroy: DormitoryCreateNestedOneWithoutRoomsInput
+  }
+
+  export type RoomUncheckedCreateWithoutResidentsInput = {
+    id?: string
+    number: string
+    floor: number
+    createdAt?: Date | string
+    capacity: number
+    roomEquipment?: RoomCreateroomEquipmentInput | string[]
+    photos?: RoomCreatephotosInput | string[]
+    dormitoryId: string
+    statuses?: RoomStatusUncheckedCreateNestedManyWithoutRoomInput
+  }
+
+  export type RoomCreateOrConnectWithoutResidentsInput = {
+    where: RoomWhereUniqueInput
+    create: XOR<RoomCreateWithoutResidentsInput, RoomUncheckedCreateWithoutResidentsInput>
   }
 
   export type ConfirmationUpsertWithWhereUniqueWithoutRequesterInput = {
@@ -5879,6 +13848,303 @@ export namespace Prisma {
     backIdUrl?: StringNullableFilter<"Confirmation"> | string | null
   }
 
+  export type DormitoryAdminUpsertWithWhereUniqueWithoutUserInput = {
+    where: DormitoryAdminWhereUniqueInput
+    update: XOR<DormitoryAdminUpdateWithoutUserInput, DormitoryAdminUncheckedUpdateWithoutUserInput>
+    create: XOR<DormitoryAdminCreateWithoutUserInput, DormitoryAdminUncheckedCreateWithoutUserInput>
+  }
+
+  export type DormitoryAdminUpdateWithWhereUniqueWithoutUserInput = {
+    where: DormitoryAdminWhereUniqueInput
+    data: XOR<DormitoryAdminUpdateWithoutUserInput, DormitoryAdminUncheckedUpdateWithoutUserInput>
+  }
+
+  export type DormitoryAdminUpdateManyWithWhereWithoutUserInput = {
+    where: DormitoryAdminScalarWhereInput
+    data: XOR<DormitoryAdminUpdateManyMutationInput, DormitoryAdminUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type DormitoryAdminScalarWhereInput = {
+    AND?: DormitoryAdminScalarWhereInput | DormitoryAdminScalarWhereInput[]
+    OR?: DormitoryAdminScalarWhereInput[]
+    NOT?: DormitoryAdminScalarWhereInput | DormitoryAdminScalarWhereInput[]
+    id?: StringFilter<"DormitoryAdmin"> | string
+    userId?: StringFilter<"DormitoryAdmin"> | string
+    dormitoryId?: StringFilter<"DormitoryAdmin"> | string
+    role?: StringFilter<"DormitoryAdmin"> | string
+    createdAt?: DateTimeFilter<"DormitoryAdmin"> | Date | string
+  }
+
+  export type DormitoryUpsertWithoutResidentsInput = {
+    update: XOR<DormitoryUpdateWithoutResidentsInput, DormitoryUncheckedUpdateWithoutResidentsInput>
+    create: XOR<DormitoryCreateWithoutResidentsInput, DormitoryUncheckedCreateWithoutResidentsInput>
+    where?: DormitoryWhereInput
+  }
+
+  export type DormitoryUpdateToOneWithWhereWithoutResidentsInput = {
+    where?: DormitoryWhereInput
+    data: XOR<DormitoryUpdateWithoutResidentsInput, DormitoryUncheckedUpdateWithoutResidentsInput>
+  }
+
+  export type DormitoryUpdateWithoutResidentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    name?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    groundFloorPhoneNumber?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    photos?: DormitoryUpdatephotosInput | string[]
+    manager?: UserUpdateOneWithoutManagedDormitoriesNestedInput
+    admins?: DormitoryAdminUpdateManyWithoutDormitoryNestedInput
+    rooms?: RoomUpdateManyWithoutDormitroyNestedInput
+  }
+
+  export type DormitoryUncheckedUpdateWithoutResidentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    name?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    groundFloorPhoneNumber?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    photos?: DormitoryUpdatephotosInput | string[]
+    managerId?: NullableStringFieldUpdateOperationsInput | string | null
+    admins?: DormitoryAdminUncheckedUpdateManyWithoutDormitoryNestedInput
+    rooms?: RoomUncheckedUpdateManyWithoutDormitroyNestedInput
+  }
+
+  export type DormitoryUpsertWithWhereUniqueWithoutManagerInput = {
+    where: DormitoryWhereUniqueInput
+    update: XOR<DormitoryUpdateWithoutManagerInput, DormitoryUncheckedUpdateWithoutManagerInput>
+    create: XOR<DormitoryCreateWithoutManagerInput, DormitoryUncheckedCreateWithoutManagerInput>
+  }
+
+  export type DormitoryUpdateWithWhereUniqueWithoutManagerInput = {
+    where: DormitoryWhereUniqueInput
+    data: XOR<DormitoryUpdateWithoutManagerInput, DormitoryUncheckedUpdateWithoutManagerInput>
+  }
+
+  export type DormitoryUpdateManyWithWhereWithoutManagerInput = {
+    where: DormitoryScalarWhereInput
+    data: XOR<DormitoryUpdateManyMutationInput, DormitoryUncheckedUpdateManyWithoutManagerInput>
+  }
+
+  export type DormitoryScalarWhereInput = {
+    AND?: DormitoryScalarWhereInput | DormitoryScalarWhereInput[]
+    OR?: DormitoryScalarWhereInput[]
+    NOT?: DormitoryScalarWhereInput | DormitoryScalarWhereInput[]
+    id?: StringFilter<"Dormitory"> | string
+    createdAt?: DateTimeFilter<"Dormitory"> | Date | string
+    name?: StringFilter<"Dormitory"> | string
+    address?: StringFilter<"Dormitory"> | string
+    groundFloorPhoneNumber?: StringFilter<"Dormitory"> | string
+    status?: StringFilter<"Dormitory"> | string
+    photos?: StringNullableListFilter<"Dormitory">
+    managerId?: StringNullableFilter<"Dormitory"> | string | null
+  }
+
+  export type RoomUpsertWithoutResidentsInput = {
+    update: XOR<RoomUpdateWithoutResidentsInput, RoomUncheckedUpdateWithoutResidentsInput>
+    create: XOR<RoomCreateWithoutResidentsInput, RoomUncheckedCreateWithoutResidentsInput>
+    where?: RoomWhereInput
+  }
+
+  export type RoomUpdateToOneWithWhereWithoutResidentsInput = {
+    where?: RoomWhereInput
+    data: XOR<RoomUpdateWithoutResidentsInput, RoomUncheckedUpdateWithoutResidentsInput>
+  }
+
+  export type RoomUpdateWithoutResidentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    number?: StringFieldUpdateOperationsInput | string
+    floor?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    roomEquipment?: RoomUpdateroomEquipmentInput | string[]
+    photos?: RoomUpdatephotosInput | string[]
+    statuses?: RoomStatusUpdateManyWithoutRoomNestedInput
+    dormitroy?: DormitoryUpdateOneRequiredWithoutRoomsNestedInput
+  }
+
+  export type RoomUncheckedUpdateWithoutResidentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    number?: StringFieldUpdateOperationsInput | string
+    floor?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    roomEquipment?: RoomUpdateroomEquipmentInput | string[]
+    photos?: RoomUpdatephotosInput | string[]
+    dormitoryId?: StringFieldUpdateOperationsInput | string
+    statuses?: RoomStatusUncheckedUpdateManyWithoutRoomNestedInput
+  }
+
+  export type UserCreateWithoutDormitoryAdminAssignmentsInput = {
+    id?: string
+    email: string
+    password: string
+    displayName: string
+    picture: string
+    isVerified?: boolean
+    isTwoFactorEnabled?: boolean
+    method: $Enums.AuthMethod
+    role?: $Enums.UserRole
+    secondName: string
+    studentIdFront: string
+    studentIdBack?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
+    dormitory?: DormitoryCreateNestedOneWithoutResidentsInput
+    managedDormitories?: DormitoryCreateNestedManyWithoutManagerInput
+    room?: RoomCreateNestedOneWithoutResidentsInput
+  }
+
+  export type UserUncheckedCreateWithoutDormitoryAdminAssignmentsInput = {
+    id?: string
+    email: string
+    password: string
+    displayName: string
+    picture: string
+    isVerified?: boolean
+    isTwoFactorEnabled?: boolean
+    method: $Enums.AuthMethod
+    role?: $Enums.UserRole
+    secondName: string
+    studentIdFront: string
+    studentIdBack?: string | null
+    dormitoryId?: string | null
+    roomId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    confirmations?: ConfirmationUncheckedCreateNestedManyWithoutRequesterInput
+    managedDormitories?: DormitoryUncheckedCreateNestedManyWithoutManagerInput
+  }
+
+  export type UserCreateOrConnectWithoutDormitoryAdminAssignmentsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutDormitoryAdminAssignmentsInput, UserUncheckedCreateWithoutDormitoryAdminAssignmentsInput>
+  }
+
+  export type DormitoryCreateWithoutAdminsInput = {
+    id?: string
+    createdAt?: Date | string
+    name: string
+    address: string
+    groundFloorPhoneNumber: string
+    status?: string
+    photos?: DormitoryCreatephotosInput | string[]
+    manager?: UserCreateNestedOneWithoutManagedDormitoriesInput
+    residents?: UserCreateNestedManyWithoutDormitoryInput
+    rooms?: RoomCreateNestedManyWithoutDormitroyInput
+  }
+
+  export type DormitoryUncheckedCreateWithoutAdminsInput = {
+    id?: string
+    createdAt?: Date | string
+    name: string
+    address: string
+    groundFloorPhoneNumber: string
+    status?: string
+    photos?: DormitoryCreatephotosInput | string[]
+    managerId?: string | null
+    residents?: UserUncheckedCreateNestedManyWithoutDormitoryInput
+    rooms?: RoomUncheckedCreateNestedManyWithoutDormitroyInput
+  }
+
+  export type DormitoryCreateOrConnectWithoutAdminsInput = {
+    where: DormitoryWhereUniqueInput
+    create: XOR<DormitoryCreateWithoutAdminsInput, DormitoryUncheckedCreateWithoutAdminsInput>
+  }
+
+  export type UserUpsertWithoutDormitoryAdminAssignmentsInput = {
+    update: XOR<UserUpdateWithoutDormitoryAdminAssignmentsInput, UserUncheckedUpdateWithoutDormitoryAdminAssignmentsInput>
+    create: XOR<UserCreateWithoutDormitoryAdminAssignmentsInput, UserUncheckedCreateWithoutDormitoryAdminAssignmentsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutDormitoryAdminAssignmentsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutDormitoryAdminAssignmentsInput, UserUncheckedUpdateWithoutDormitoryAdminAssignmentsInput>
+  }
+
+  export type UserUpdateWithoutDormitoryAdminAssignmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    picture?: StringFieldUpdateOperationsInput | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    method?: EnumAuthMethodFieldUpdateOperationsInput | $Enums.AuthMethod
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    secondName?: StringFieldUpdateOperationsInput | string
+    studentIdFront?: StringFieldUpdateOperationsInput | string
+    studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
+    dormitory?: DormitoryUpdateOneWithoutResidentsNestedInput
+    managedDormitories?: DormitoryUpdateManyWithoutManagerNestedInput
+    room?: RoomUpdateOneWithoutResidentsNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutDormitoryAdminAssignmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    picture?: StringFieldUpdateOperationsInput | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    method?: EnumAuthMethodFieldUpdateOperationsInput | $Enums.AuthMethod
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    secondName?: StringFieldUpdateOperationsInput | string
+    studentIdFront?: StringFieldUpdateOperationsInput | string
+    studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
+    dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
+    roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    confirmations?: ConfirmationUncheckedUpdateManyWithoutRequesterNestedInput
+    managedDormitories?: DormitoryUncheckedUpdateManyWithoutManagerNestedInput
+  }
+
+  export type DormitoryUpsertWithoutAdminsInput = {
+    update: XOR<DormitoryUpdateWithoutAdminsInput, DormitoryUncheckedUpdateWithoutAdminsInput>
+    create: XOR<DormitoryCreateWithoutAdminsInput, DormitoryUncheckedCreateWithoutAdminsInput>
+    where?: DormitoryWhereInput
+  }
+
+  export type DormitoryUpdateToOneWithWhereWithoutAdminsInput = {
+    where?: DormitoryWhereInput
+    data: XOR<DormitoryUpdateWithoutAdminsInput, DormitoryUncheckedUpdateWithoutAdminsInput>
+  }
+
+  export type DormitoryUpdateWithoutAdminsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    name?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    groundFloorPhoneNumber?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    photos?: DormitoryUpdatephotosInput | string[]
+    manager?: UserUpdateOneWithoutManagedDormitoriesNestedInput
+    residents?: UserUpdateManyWithoutDormitoryNestedInput
+    rooms?: RoomUpdateManyWithoutDormitroyNestedInput
+  }
+
+  export type DormitoryUncheckedUpdateWithoutAdminsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    name?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    groundFloorPhoneNumber?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    photos?: DormitoryUpdatephotosInput | string[]
+    managerId?: NullableStringFieldUpdateOperationsInput | string | null
+    residents?: UserUncheckedUpdateManyWithoutDormitoryNestedInput
+    rooms?: RoomUncheckedUpdateManyWithoutDormitroyNestedInput
+  }
+
   export type UserCreateWithoutConfirmationsInput = {
     id?: string
     email: string
@@ -5894,6 +14160,10 @@ export namespace Prisma {
     studentIdBack?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    dormitoryAdminAssignments?: DormitoryAdminCreateNestedManyWithoutUserInput
+    dormitory?: DormitoryCreateNestedOneWithoutResidentsInput
+    managedDormitories?: DormitoryCreateNestedManyWithoutManagerInput
+    room?: RoomCreateNestedOneWithoutResidentsInput
   }
 
   export type UserUncheckedCreateWithoutConfirmationsInput = {
@@ -5909,8 +14179,12 @@ export namespace Prisma {
     secondName: string
     studentIdFront: string
     studentIdBack?: string | null
+    dormitoryId?: string | null
+    roomId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    dormitoryAdminAssignments?: DormitoryAdminUncheckedCreateNestedManyWithoutUserInput
+    managedDormitories?: DormitoryUncheckedCreateNestedManyWithoutManagerInput
   }
 
   export type UserCreateOrConnectWithoutConfirmationsInput = {
@@ -5944,6 +14218,10 @@ export namespace Prisma {
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    dormitoryAdminAssignments?: DormitoryAdminUpdateManyWithoutUserNestedInput
+    dormitory?: DormitoryUpdateOneWithoutResidentsNestedInput
+    managedDormitories?: DormitoryUpdateManyWithoutManagerNestedInput
+    room?: RoomUpdateOneWithoutResidentsNestedInput
   }
 
   export type UserUncheckedUpdateWithoutConfirmationsInput = {
@@ -5959,8 +14237,557 @@ export namespace Prisma {
     secondName?: StringFieldUpdateOperationsInput | string
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
+    dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
+    roomId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    dormitoryAdminAssignments?: DormitoryAdminUncheckedUpdateManyWithoutUserNestedInput
+    managedDormitories?: DormitoryUncheckedUpdateManyWithoutManagerNestedInput
+  }
+
+  export type UserCreateWithoutManagedDormitoriesInput = {
+    id?: string
+    email: string
+    password: string
+    displayName: string
+    picture: string
+    isVerified?: boolean
+    isTwoFactorEnabled?: boolean
+    method: $Enums.AuthMethod
+    role?: $Enums.UserRole
+    secondName: string
+    studentIdFront: string
+    studentIdBack?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
+    dormitoryAdminAssignments?: DormitoryAdminCreateNestedManyWithoutUserInput
+    dormitory?: DormitoryCreateNestedOneWithoutResidentsInput
+    room?: RoomCreateNestedOneWithoutResidentsInput
+  }
+
+  export type UserUncheckedCreateWithoutManagedDormitoriesInput = {
+    id?: string
+    email: string
+    password: string
+    displayName: string
+    picture: string
+    isVerified?: boolean
+    isTwoFactorEnabled?: boolean
+    method: $Enums.AuthMethod
+    role?: $Enums.UserRole
+    secondName: string
+    studentIdFront: string
+    studentIdBack?: string | null
+    dormitoryId?: string | null
+    roomId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    confirmations?: ConfirmationUncheckedCreateNestedManyWithoutRequesterInput
+    dormitoryAdminAssignments?: DormitoryAdminUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutManagedDormitoriesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutManagedDormitoriesInput, UserUncheckedCreateWithoutManagedDormitoriesInput>
+  }
+
+  export type DormitoryAdminCreateWithoutDormitoryInput = {
+    id?: string
+    role: string
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutDormitoryAdminAssignmentsInput
+  }
+
+  export type DormitoryAdminUncheckedCreateWithoutDormitoryInput = {
+    id?: string
+    userId: string
+    role: string
+    createdAt?: Date | string
+  }
+
+  export type DormitoryAdminCreateOrConnectWithoutDormitoryInput = {
+    where: DormitoryAdminWhereUniqueInput
+    create: XOR<DormitoryAdminCreateWithoutDormitoryInput, DormitoryAdminUncheckedCreateWithoutDormitoryInput>
+  }
+
+  export type DormitoryAdminCreateManyDormitoryInputEnvelope = {
+    data: DormitoryAdminCreateManyDormitoryInput | DormitoryAdminCreateManyDormitoryInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserCreateWithoutDormitoryInput = {
+    id?: string
+    email: string
+    password: string
+    displayName: string
+    picture: string
+    isVerified?: boolean
+    isTwoFactorEnabled?: boolean
+    method: $Enums.AuthMethod
+    role?: $Enums.UserRole
+    secondName: string
+    studentIdFront: string
+    studentIdBack?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
+    dormitoryAdminAssignments?: DormitoryAdminCreateNestedManyWithoutUserInput
+    managedDormitories?: DormitoryCreateNestedManyWithoutManagerInput
+    room?: RoomCreateNestedOneWithoutResidentsInput
+  }
+
+  export type UserUncheckedCreateWithoutDormitoryInput = {
+    id?: string
+    email: string
+    password: string
+    displayName: string
+    picture: string
+    isVerified?: boolean
+    isTwoFactorEnabled?: boolean
+    method: $Enums.AuthMethod
+    role?: $Enums.UserRole
+    secondName: string
+    studentIdFront: string
+    studentIdBack?: string | null
+    roomId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    confirmations?: ConfirmationUncheckedCreateNestedManyWithoutRequesterInput
+    dormitoryAdminAssignments?: DormitoryAdminUncheckedCreateNestedManyWithoutUserInput
+    managedDormitories?: DormitoryUncheckedCreateNestedManyWithoutManagerInput
+  }
+
+  export type UserCreateOrConnectWithoutDormitoryInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutDormitoryInput, UserUncheckedCreateWithoutDormitoryInput>
+  }
+
+  export type UserCreateManyDormitoryInputEnvelope = {
+    data: UserCreateManyDormitoryInput | UserCreateManyDormitoryInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RoomCreateWithoutDormitroyInput = {
+    id?: string
+    number: string
+    floor: number
+    createdAt?: Date | string
+    capacity: number
+    roomEquipment?: RoomCreateroomEquipmentInput | string[]
+    photos?: RoomCreatephotosInput | string[]
+    statuses?: RoomStatusCreateNestedManyWithoutRoomInput
+    residents?: UserCreateNestedManyWithoutRoomInput
+  }
+
+  export type RoomUncheckedCreateWithoutDormitroyInput = {
+    id?: string
+    number: string
+    floor: number
+    createdAt?: Date | string
+    capacity: number
+    roomEquipment?: RoomCreateroomEquipmentInput | string[]
+    photos?: RoomCreatephotosInput | string[]
+    statuses?: RoomStatusUncheckedCreateNestedManyWithoutRoomInput
+    residents?: UserUncheckedCreateNestedManyWithoutRoomInput
+  }
+
+  export type RoomCreateOrConnectWithoutDormitroyInput = {
+    where: RoomWhereUniqueInput
+    create: XOR<RoomCreateWithoutDormitroyInput, RoomUncheckedCreateWithoutDormitroyInput>
+  }
+
+  export type RoomCreateManyDormitroyInputEnvelope = {
+    data: RoomCreateManyDormitroyInput | RoomCreateManyDormitroyInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutManagedDormitoriesInput = {
+    update: XOR<UserUpdateWithoutManagedDormitoriesInput, UserUncheckedUpdateWithoutManagedDormitoriesInput>
+    create: XOR<UserCreateWithoutManagedDormitoriesInput, UserUncheckedCreateWithoutManagedDormitoriesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutManagedDormitoriesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutManagedDormitoriesInput, UserUncheckedUpdateWithoutManagedDormitoriesInput>
+  }
+
+  export type UserUpdateWithoutManagedDormitoriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    picture?: StringFieldUpdateOperationsInput | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    method?: EnumAuthMethodFieldUpdateOperationsInput | $Enums.AuthMethod
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    secondName?: StringFieldUpdateOperationsInput | string
+    studentIdFront?: StringFieldUpdateOperationsInput | string
+    studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
+    dormitoryAdminAssignments?: DormitoryAdminUpdateManyWithoutUserNestedInput
+    dormitory?: DormitoryUpdateOneWithoutResidentsNestedInput
+    room?: RoomUpdateOneWithoutResidentsNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutManagedDormitoriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    picture?: StringFieldUpdateOperationsInput | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    method?: EnumAuthMethodFieldUpdateOperationsInput | $Enums.AuthMethod
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    secondName?: StringFieldUpdateOperationsInput | string
+    studentIdFront?: StringFieldUpdateOperationsInput | string
+    studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
+    dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
+    roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    confirmations?: ConfirmationUncheckedUpdateManyWithoutRequesterNestedInput
+    dormitoryAdminAssignments?: DormitoryAdminUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type DormitoryAdminUpsertWithWhereUniqueWithoutDormitoryInput = {
+    where: DormitoryAdminWhereUniqueInput
+    update: XOR<DormitoryAdminUpdateWithoutDormitoryInput, DormitoryAdminUncheckedUpdateWithoutDormitoryInput>
+    create: XOR<DormitoryAdminCreateWithoutDormitoryInput, DormitoryAdminUncheckedCreateWithoutDormitoryInput>
+  }
+
+  export type DormitoryAdminUpdateWithWhereUniqueWithoutDormitoryInput = {
+    where: DormitoryAdminWhereUniqueInput
+    data: XOR<DormitoryAdminUpdateWithoutDormitoryInput, DormitoryAdminUncheckedUpdateWithoutDormitoryInput>
+  }
+
+  export type DormitoryAdminUpdateManyWithWhereWithoutDormitoryInput = {
+    where: DormitoryAdminScalarWhereInput
+    data: XOR<DormitoryAdminUpdateManyMutationInput, DormitoryAdminUncheckedUpdateManyWithoutDormitoryInput>
+  }
+
+  export type UserUpsertWithWhereUniqueWithoutDormitoryInput = {
+    where: UserWhereUniqueInput
+    update: XOR<UserUpdateWithoutDormitoryInput, UserUncheckedUpdateWithoutDormitoryInput>
+    create: XOR<UserCreateWithoutDormitoryInput, UserUncheckedCreateWithoutDormitoryInput>
+  }
+
+  export type UserUpdateWithWhereUniqueWithoutDormitoryInput = {
+    where: UserWhereUniqueInput
+    data: XOR<UserUpdateWithoutDormitoryInput, UserUncheckedUpdateWithoutDormitoryInput>
+  }
+
+  export type UserUpdateManyWithWhereWithoutDormitoryInput = {
+    where: UserScalarWhereInput
+    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutDormitoryInput>
+  }
+
+  export type UserScalarWhereInput = {
+    AND?: UserScalarWhereInput | UserScalarWhereInput[]
+    OR?: UserScalarWhereInput[]
+    NOT?: UserScalarWhereInput | UserScalarWhereInput[]
+    id?: StringFilter<"User"> | string
+    email?: StringFilter<"User"> | string
+    password?: StringFilter<"User"> | string
+    displayName?: StringFilter<"User"> | string
+    picture?: StringFilter<"User"> | string
+    isVerified?: BoolFilter<"User"> | boolean
+    isTwoFactorEnabled?: BoolFilter<"User"> | boolean
+    method?: EnumAuthMethodFilter<"User"> | $Enums.AuthMethod
+    role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
+    secondName?: StringFilter<"User"> | string
+    studentIdFront?: StringFilter<"User"> | string
+    studentIdBack?: StringNullableFilter<"User"> | string | null
+    dormitoryId?: StringNullableFilter<"User"> | string | null
+    roomId?: StringNullableFilter<"User"> | string | null
+    createdAt?: DateTimeFilter<"User"> | Date | string
+    updatedAt?: DateTimeFilter<"User"> | Date | string
+  }
+
+  export type RoomUpsertWithWhereUniqueWithoutDormitroyInput = {
+    where: RoomWhereUniqueInput
+    update: XOR<RoomUpdateWithoutDormitroyInput, RoomUncheckedUpdateWithoutDormitroyInput>
+    create: XOR<RoomCreateWithoutDormitroyInput, RoomUncheckedCreateWithoutDormitroyInput>
+  }
+
+  export type RoomUpdateWithWhereUniqueWithoutDormitroyInput = {
+    where: RoomWhereUniqueInput
+    data: XOR<RoomUpdateWithoutDormitroyInput, RoomUncheckedUpdateWithoutDormitroyInput>
+  }
+
+  export type RoomUpdateManyWithWhereWithoutDormitroyInput = {
+    where: RoomScalarWhereInput
+    data: XOR<RoomUpdateManyMutationInput, RoomUncheckedUpdateManyWithoutDormitroyInput>
+  }
+
+  export type RoomScalarWhereInput = {
+    AND?: RoomScalarWhereInput | RoomScalarWhereInput[]
+    OR?: RoomScalarWhereInput[]
+    NOT?: RoomScalarWhereInput | RoomScalarWhereInput[]
+    id?: StringFilter<"Room"> | string
+    number?: StringFilter<"Room"> | string
+    floor?: IntFilter<"Room"> | number
+    createdAt?: DateTimeFilter<"Room"> | Date | string
+    capacity?: IntFilter<"Room"> | number
+    roomEquipment?: StringNullableListFilter<"Room">
+    photos?: StringNullableListFilter<"Room">
+    dormitoryId?: StringFilter<"Room"> | string
+  }
+
+  export type RoomStatusCreateWithoutRoomInput = {
+    id?: string
+    dateOfStart: Date | string
+    dateOfEnd?: Date | string | null
+    description: string
+  }
+
+  export type RoomStatusUncheckedCreateWithoutRoomInput = {
+    id?: string
+    dateOfStart: Date | string
+    dateOfEnd?: Date | string | null
+    description: string
+  }
+
+  export type RoomStatusCreateOrConnectWithoutRoomInput = {
+    where: RoomStatusWhereUniqueInput
+    create: XOR<RoomStatusCreateWithoutRoomInput, RoomStatusUncheckedCreateWithoutRoomInput>
+  }
+
+  export type RoomStatusCreateManyRoomInputEnvelope = {
+    data: RoomStatusCreateManyRoomInput | RoomStatusCreateManyRoomInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserCreateWithoutRoomInput = {
+    id?: string
+    email: string
+    password: string
+    displayName: string
+    picture: string
+    isVerified?: boolean
+    isTwoFactorEnabled?: boolean
+    method: $Enums.AuthMethod
+    role?: $Enums.UserRole
+    secondName: string
+    studentIdFront: string
+    studentIdBack?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
+    dormitoryAdminAssignments?: DormitoryAdminCreateNestedManyWithoutUserInput
+    dormitory?: DormitoryCreateNestedOneWithoutResidentsInput
+    managedDormitories?: DormitoryCreateNestedManyWithoutManagerInput
+  }
+
+  export type UserUncheckedCreateWithoutRoomInput = {
+    id?: string
+    email: string
+    password: string
+    displayName: string
+    picture: string
+    isVerified?: boolean
+    isTwoFactorEnabled?: boolean
+    method: $Enums.AuthMethod
+    role?: $Enums.UserRole
+    secondName: string
+    studentIdFront: string
+    studentIdBack?: string | null
+    dormitoryId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    confirmations?: ConfirmationUncheckedCreateNestedManyWithoutRequesterInput
+    dormitoryAdminAssignments?: DormitoryAdminUncheckedCreateNestedManyWithoutUserInput
+    managedDormitories?: DormitoryUncheckedCreateNestedManyWithoutManagerInput
+  }
+
+  export type UserCreateOrConnectWithoutRoomInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutRoomInput, UserUncheckedCreateWithoutRoomInput>
+  }
+
+  export type UserCreateManyRoomInputEnvelope = {
+    data: UserCreateManyRoomInput | UserCreateManyRoomInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DormitoryCreateWithoutRoomsInput = {
+    id?: string
+    createdAt?: Date | string
+    name: string
+    address: string
+    groundFloorPhoneNumber: string
+    status?: string
+    photos?: DormitoryCreatephotosInput | string[]
+    manager?: UserCreateNestedOneWithoutManagedDormitoriesInput
+    admins?: DormitoryAdminCreateNestedManyWithoutDormitoryInput
+    residents?: UserCreateNestedManyWithoutDormitoryInput
+  }
+
+  export type DormitoryUncheckedCreateWithoutRoomsInput = {
+    id?: string
+    createdAt?: Date | string
+    name: string
+    address: string
+    groundFloorPhoneNumber: string
+    status?: string
+    photos?: DormitoryCreatephotosInput | string[]
+    managerId?: string | null
+    admins?: DormitoryAdminUncheckedCreateNestedManyWithoutDormitoryInput
+    residents?: UserUncheckedCreateNestedManyWithoutDormitoryInput
+  }
+
+  export type DormitoryCreateOrConnectWithoutRoomsInput = {
+    where: DormitoryWhereUniqueInput
+    create: XOR<DormitoryCreateWithoutRoomsInput, DormitoryUncheckedCreateWithoutRoomsInput>
+  }
+
+  export type RoomStatusUpsertWithWhereUniqueWithoutRoomInput = {
+    where: RoomStatusWhereUniqueInput
+    update: XOR<RoomStatusUpdateWithoutRoomInput, RoomStatusUncheckedUpdateWithoutRoomInput>
+    create: XOR<RoomStatusCreateWithoutRoomInput, RoomStatusUncheckedCreateWithoutRoomInput>
+  }
+
+  export type RoomStatusUpdateWithWhereUniqueWithoutRoomInput = {
+    where: RoomStatusWhereUniqueInput
+    data: XOR<RoomStatusUpdateWithoutRoomInput, RoomStatusUncheckedUpdateWithoutRoomInput>
+  }
+
+  export type RoomStatusUpdateManyWithWhereWithoutRoomInput = {
+    where: RoomStatusScalarWhereInput
+    data: XOR<RoomStatusUpdateManyMutationInput, RoomStatusUncheckedUpdateManyWithoutRoomInput>
+  }
+
+  export type RoomStatusScalarWhereInput = {
+    AND?: RoomStatusScalarWhereInput | RoomStatusScalarWhereInput[]
+    OR?: RoomStatusScalarWhereInput[]
+    NOT?: RoomStatusScalarWhereInput | RoomStatusScalarWhereInput[]
+    id?: StringFilter<"RoomStatus"> | string
+    dateOfStart?: DateTimeFilter<"RoomStatus"> | Date | string
+    dateOfEnd?: DateTimeNullableFilter<"RoomStatus"> | Date | string | null
+    description?: StringFilter<"RoomStatus"> | string
+    roomId?: StringFilter<"RoomStatus"> | string
+  }
+
+  export type UserUpsertWithWhereUniqueWithoutRoomInput = {
+    where: UserWhereUniqueInput
+    update: XOR<UserUpdateWithoutRoomInput, UserUncheckedUpdateWithoutRoomInput>
+    create: XOR<UserCreateWithoutRoomInput, UserUncheckedCreateWithoutRoomInput>
+  }
+
+  export type UserUpdateWithWhereUniqueWithoutRoomInput = {
+    where: UserWhereUniqueInput
+    data: XOR<UserUpdateWithoutRoomInput, UserUncheckedUpdateWithoutRoomInput>
+  }
+
+  export type UserUpdateManyWithWhereWithoutRoomInput = {
+    where: UserScalarWhereInput
+    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutRoomInput>
+  }
+
+  export type DormitoryUpsertWithoutRoomsInput = {
+    update: XOR<DormitoryUpdateWithoutRoomsInput, DormitoryUncheckedUpdateWithoutRoomsInput>
+    create: XOR<DormitoryCreateWithoutRoomsInput, DormitoryUncheckedCreateWithoutRoomsInput>
+    where?: DormitoryWhereInput
+  }
+
+  export type DormitoryUpdateToOneWithWhereWithoutRoomsInput = {
+    where?: DormitoryWhereInput
+    data: XOR<DormitoryUpdateWithoutRoomsInput, DormitoryUncheckedUpdateWithoutRoomsInput>
+  }
+
+  export type DormitoryUpdateWithoutRoomsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    name?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    groundFloorPhoneNumber?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    photos?: DormitoryUpdatephotosInput | string[]
+    manager?: UserUpdateOneWithoutManagedDormitoriesNestedInput
+    admins?: DormitoryAdminUpdateManyWithoutDormitoryNestedInput
+    residents?: UserUpdateManyWithoutDormitoryNestedInput
+  }
+
+  export type DormitoryUncheckedUpdateWithoutRoomsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    name?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    groundFloorPhoneNumber?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    photos?: DormitoryUpdatephotosInput | string[]
+    managerId?: NullableStringFieldUpdateOperationsInput | string | null
+    admins?: DormitoryAdminUncheckedUpdateManyWithoutDormitoryNestedInput
+    residents?: UserUncheckedUpdateManyWithoutDormitoryNestedInput
+  }
+
+  export type RoomCreateWithoutStatusesInput = {
+    id?: string
+    number: string
+    floor: number
+    createdAt?: Date | string
+    capacity: number
+    roomEquipment?: RoomCreateroomEquipmentInput | string[]
+    photos?: RoomCreatephotosInput | string[]
+    residents?: UserCreateNestedManyWithoutRoomInput
+    dormitroy: DormitoryCreateNestedOneWithoutRoomsInput
+  }
+
+  export type RoomUncheckedCreateWithoutStatusesInput = {
+    id?: string
+    number: string
+    floor: number
+    createdAt?: Date | string
+    capacity: number
+    roomEquipment?: RoomCreateroomEquipmentInput | string[]
+    photos?: RoomCreatephotosInput | string[]
+    dormitoryId: string
+    residents?: UserUncheckedCreateNestedManyWithoutRoomInput
+  }
+
+  export type RoomCreateOrConnectWithoutStatusesInput = {
+    where: RoomWhereUniqueInput
+    create: XOR<RoomCreateWithoutStatusesInput, RoomUncheckedCreateWithoutStatusesInput>
+  }
+
+  export type RoomUpsertWithoutStatusesInput = {
+    update: XOR<RoomUpdateWithoutStatusesInput, RoomUncheckedUpdateWithoutStatusesInput>
+    create: XOR<RoomCreateWithoutStatusesInput, RoomUncheckedCreateWithoutStatusesInput>
+    where?: RoomWhereInput
+  }
+
+  export type RoomUpdateToOneWithWhereWithoutStatusesInput = {
+    where?: RoomWhereInput
+    data: XOR<RoomUpdateWithoutStatusesInput, RoomUncheckedUpdateWithoutStatusesInput>
+  }
+
+  export type RoomUpdateWithoutStatusesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    number?: StringFieldUpdateOperationsInput | string
+    floor?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    roomEquipment?: RoomUpdateroomEquipmentInput | string[]
+    photos?: RoomUpdatephotosInput | string[]
+    residents?: UserUpdateManyWithoutRoomNestedInput
+    dormitroy?: DormitoryUpdateOneRequiredWithoutRoomsNestedInput
+  }
+
+  export type RoomUncheckedUpdateWithoutStatusesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    number?: StringFieldUpdateOperationsInput | string
+    floor?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    roomEquipment?: RoomUpdateroomEquipmentInput | string[]
+    photos?: RoomUpdatephotosInput | string[]
+    dormitoryId?: StringFieldUpdateOperationsInput | string
+    residents?: UserUncheckedUpdateManyWithoutRoomNestedInput
   }
 
   export type ConfirmationCreateManyRequesterInput = {
@@ -5972,6 +14799,23 @@ export namespace Prisma {
     photo?: string | null
     frontIdUrl?: string | null
     backIdUrl?: string | null
+  }
+
+  export type DormitoryAdminCreateManyUserInput = {
+    id?: string
+    dormitoryId: string
+    role: string
+    createdAt?: Date | string
+  }
+
+  export type DormitoryCreateManyManagerInput = {
+    id?: string
+    createdAt?: Date | string
+    name: string
+    address: string
+    groundFloorPhoneNumber: string
+    status?: string
+    photos?: DormitoryCreatephotosInput | string[]
   }
 
   export type ConfirmationUpdateWithoutRequesterInput = {
@@ -6005,6 +14849,319 @@ export namespace Prisma {
     photo?: NullableStringFieldUpdateOperationsInput | string | null
     frontIdUrl?: NullableStringFieldUpdateOperationsInput | string | null
     backIdUrl?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type DormitoryAdminUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    dormitory?: DormitoryUpdateOneRequiredWithoutAdminsNestedInput
+  }
+
+  export type DormitoryAdminUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dormitoryId?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DormitoryAdminUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dormitoryId?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DormitoryUpdateWithoutManagerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    name?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    groundFloorPhoneNumber?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    photos?: DormitoryUpdatephotosInput | string[]
+    admins?: DormitoryAdminUpdateManyWithoutDormitoryNestedInput
+    residents?: UserUpdateManyWithoutDormitoryNestedInput
+    rooms?: RoomUpdateManyWithoutDormitroyNestedInput
+  }
+
+  export type DormitoryUncheckedUpdateWithoutManagerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    name?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    groundFloorPhoneNumber?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    photos?: DormitoryUpdatephotosInput | string[]
+    admins?: DormitoryAdminUncheckedUpdateManyWithoutDormitoryNestedInput
+    residents?: UserUncheckedUpdateManyWithoutDormitoryNestedInput
+    rooms?: RoomUncheckedUpdateManyWithoutDormitroyNestedInput
+  }
+
+  export type DormitoryUncheckedUpdateManyWithoutManagerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    name?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    groundFloorPhoneNumber?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    photos?: DormitoryUpdatephotosInput | string[]
+  }
+
+  export type DormitoryAdminCreateManyDormitoryInput = {
+    id?: string
+    userId: string
+    role: string
+    createdAt?: Date | string
+  }
+
+  export type UserCreateManyDormitoryInput = {
+    id?: string
+    email: string
+    password: string
+    displayName: string
+    picture: string
+    isVerified?: boolean
+    isTwoFactorEnabled?: boolean
+    method: $Enums.AuthMethod
+    role?: $Enums.UserRole
+    secondName: string
+    studentIdFront: string
+    studentIdBack?: string | null
+    roomId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RoomCreateManyDormitroyInput = {
+    id?: string
+    number: string
+    floor: number
+    createdAt?: Date | string
+    capacity: number
+    roomEquipment?: RoomCreateroomEquipmentInput | string[]
+    photos?: RoomCreatephotosInput | string[]
+  }
+
+  export type DormitoryAdminUpdateWithoutDormitoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutDormitoryAdminAssignmentsNestedInput
+  }
+
+  export type DormitoryAdminUncheckedUpdateWithoutDormitoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DormitoryAdminUncheckedUpdateManyWithoutDormitoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserUpdateWithoutDormitoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    picture?: StringFieldUpdateOperationsInput | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    method?: EnumAuthMethodFieldUpdateOperationsInput | $Enums.AuthMethod
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    secondName?: StringFieldUpdateOperationsInput | string
+    studentIdFront?: StringFieldUpdateOperationsInput | string
+    studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
+    dormitoryAdminAssignments?: DormitoryAdminUpdateManyWithoutUserNestedInput
+    managedDormitories?: DormitoryUpdateManyWithoutManagerNestedInput
+    room?: RoomUpdateOneWithoutResidentsNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutDormitoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    picture?: StringFieldUpdateOperationsInput | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    method?: EnumAuthMethodFieldUpdateOperationsInput | $Enums.AuthMethod
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    secondName?: StringFieldUpdateOperationsInput | string
+    studentIdFront?: StringFieldUpdateOperationsInput | string
+    studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
+    roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    confirmations?: ConfirmationUncheckedUpdateManyWithoutRequesterNestedInput
+    dormitoryAdminAssignments?: DormitoryAdminUncheckedUpdateManyWithoutUserNestedInput
+    managedDormitories?: DormitoryUncheckedUpdateManyWithoutManagerNestedInput
+  }
+
+  export type UserUncheckedUpdateManyWithoutDormitoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    picture?: StringFieldUpdateOperationsInput | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    method?: EnumAuthMethodFieldUpdateOperationsInput | $Enums.AuthMethod
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    secondName?: StringFieldUpdateOperationsInput | string
+    studentIdFront?: StringFieldUpdateOperationsInput | string
+    studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
+    roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RoomUpdateWithoutDormitroyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    number?: StringFieldUpdateOperationsInput | string
+    floor?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    roomEquipment?: RoomUpdateroomEquipmentInput | string[]
+    photos?: RoomUpdatephotosInput | string[]
+    statuses?: RoomStatusUpdateManyWithoutRoomNestedInput
+    residents?: UserUpdateManyWithoutRoomNestedInput
+  }
+
+  export type RoomUncheckedUpdateWithoutDormitroyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    number?: StringFieldUpdateOperationsInput | string
+    floor?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    roomEquipment?: RoomUpdateroomEquipmentInput | string[]
+    photos?: RoomUpdatephotosInput | string[]
+    statuses?: RoomStatusUncheckedUpdateManyWithoutRoomNestedInput
+    residents?: UserUncheckedUpdateManyWithoutRoomNestedInput
+  }
+
+  export type RoomUncheckedUpdateManyWithoutDormitroyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    number?: StringFieldUpdateOperationsInput | string
+    floor?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    roomEquipment?: RoomUpdateroomEquipmentInput | string[]
+    photos?: RoomUpdatephotosInput | string[]
+  }
+
+  export type RoomStatusCreateManyRoomInput = {
+    id?: string
+    dateOfStart: Date | string
+    dateOfEnd?: Date | string | null
+    description: string
+  }
+
+  export type UserCreateManyRoomInput = {
+    id?: string
+    email: string
+    password: string
+    displayName: string
+    picture: string
+    isVerified?: boolean
+    isTwoFactorEnabled?: boolean
+    method: $Enums.AuthMethod
+    role?: $Enums.UserRole
+    secondName: string
+    studentIdFront: string
+    studentIdBack?: string | null
+    dormitoryId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RoomStatusUpdateWithoutRoomInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dateOfStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateOfEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    description?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type RoomStatusUncheckedUpdateWithoutRoomInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dateOfStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateOfEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    description?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type RoomStatusUncheckedUpdateManyWithoutRoomInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dateOfStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateOfEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    description?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type UserUpdateWithoutRoomInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    picture?: StringFieldUpdateOperationsInput | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    method?: EnumAuthMethodFieldUpdateOperationsInput | $Enums.AuthMethod
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    secondName?: StringFieldUpdateOperationsInput | string
+    studentIdFront?: StringFieldUpdateOperationsInput | string
+    studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
+    dormitoryAdminAssignments?: DormitoryAdminUpdateManyWithoutUserNestedInput
+    dormitory?: DormitoryUpdateOneWithoutResidentsNestedInput
+    managedDormitories?: DormitoryUpdateManyWithoutManagerNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutRoomInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    picture?: StringFieldUpdateOperationsInput | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    method?: EnumAuthMethodFieldUpdateOperationsInput | $Enums.AuthMethod
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    secondName?: StringFieldUpdateOperationsInput | string
+    studentIdFront?: StringFieldUpdateOperationsInput | string
+    studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
+    dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    confirmations?: ConfirmationUncheckedUpdateManyWithoutRequesterNestedInput
+    dormitoryAdminAssignments?: DormitoryAdminUncheckedUpdateManyWithoutUserNestedInput
+    managedDormitories?: DormitoryUncheckedUpdateManyWithoutManagerNestedInput
+  }
+
+  export type UserUncheckedUpdateManyWithoutRoomInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    picture?: StringFieldUpdateOperationsInput | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    method?: EnumAuthMethodFieldUpdateOperationsInput | $Enums.AuthMethod
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    secondName?: StringFieldUpdateOperationsInput | string
+    studentIdFront?: StringFieldUpdateOperationsInput | string
+    studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
+    dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

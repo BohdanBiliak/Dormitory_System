@@ -35,6 +35,7 @@ type Version = (typeof ALLOWED_VERSIONS)[number];
 
 @ApiTags("Admin")
 @ApiBearerAuth()
+
 @UseGuards(RolesGuard)
 @Roles(UserRole.Admin)
 @Controller("admin")
