@@ -17,7 +17,7 @@ import { LoginDto } from "@/modules/auth/dto/login.dto";
 import { Recaptcha } from "@nestlab/google-recaptcha";
 import { FileFieldsInterceptor } from "@nestjs/platform-express";
 import {ApiBody, ApiConsumes, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
-
+import * as Sentry from '@sentry/node';
 @ApiTags("Auth")
 @Controller("auth")
 export class AuthController {
@@ -78,8 +78,20 @@ export class AuthController {
   @ApiConsumes("application/json")
   @HttpCode(HttpStatus.OK)
   public async login(@Req() req: Request, @Body() dto: LoginDto) {
-    return this.authService.login(req, dto);
+    const result = await this.authService.login(req, dto);
+
+    Sentry.captureMessage('User logged in', {
+      level: 'info',
+      extra: {
+        userId: req.user?.id,
+        ip: req.ip,
+        agent: req.headers['user-agent'],
+      }
+    });
+
+    return result;
   }
+
 
   @ApiOperation({ summary: 'Log out and destroy session' })
   @ApiResponse({ status: 200, description: 'Session cleared' })

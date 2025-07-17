@@ -1,7 +1,7 @@
 import {AnnouncementModule} from "@modules/announcement/announcement.module";
 
 console.log("__dirname (app.module):", __dirname);
-import { Module } from '@nestjs/common';
+import {MiddlewareConsumer, Module} from '@nestjs/common';
 import {ConfigModule} from "@nestjs/config";
 import {IS_DEV_ENV} from "@/libs/utils/is-dev.util";
 import { PrismaModule } from './prisma/prisma.module';
@@ -14,13 +14,25 @@ import {TwoFactorAuthModule} from "@/modules/auth/submodules/two-factor-auth/two
 import { AdminModule } from '@/modules/admin/admin.module';
 import { RoomModule } from '@/modules/room/room.module';
 import {DormitoryModule} from "@/modules/dormitory/dormitory.module";
+import {SentryGlobalFilter, SentryModule} from "@sentry/nestjs/setup";
+import {APP_FILTER} from "@nestjs/core";
+import {SentryUserMiddleware} from "@libs/common/middleware/sentry-action-logger.middleware";
 
 @Module({
+
   imports: [ConfigModule.forRoot({
     isGlobal: true,
     ignoreEnvFile: !IS_DEV_ENV,
-  }), PrismaModule, AuthModule, UserModule, MailModule, EmailConfirmationModule, MailModule, EmailConfirmationModule, PasswordRecoveryModule, TwoFactorAuthModule, AdminModule,DormitoryModule, RoomModule,AnnouncementModule],
+  }),   SentryModule.forRoot(), PrismaModule, AuthModule, UserModule, MailModule, EmailConfirmationModule, MailModule, EmailConfirmationModule, PasswordRecoveryModule, TwoFactorAuthModule, AdminModule,DormitoryModule, RoomModule,AnnouncementModule],
   controllers: [],
-  providers: [],
+  providers: [ {
+    provide: APP_FILTER,
+    useClass: SentryGlobalFilter,
+  },],
 })
-export class AppModule {}
+
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(SentryUserMiddleware).forRoutes('*');
+  }
+}

@@ -182,7 +182,7 @@
       <workItem from="1752667228747" duration="1139000" />
       <workItem from="1752668395188" duration="5824000" />
       <workItem from="1752674292468" duration="5539000" />
-      <workItem from="1752735013573" duration="6786000" />
+      <workItem from="1752735013573" duration="11284000" />
     </task>
     <servers />
   </component>
@@ -242,6 +242,12 @@
           <url>file://$PROJECT_DIR$/server/src/modules/dormitory/dormitory.controller.ts</url>
           <line>27</line>
           <option name="timeStamp" value="26" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/server/src/libs/common/middleware/sentry-action-logger.middleware.ts</url>
+          <line>10</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="27" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
