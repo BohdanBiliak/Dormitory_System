@@ -2,6 +2,8 @@
   "rootDir": "../",
   "moduleDirectories": ["node_modules", "src"],
   "moduleNameMapper": {
+    "^@modules/(.*)$": "<rootDir>/src/modules/$1",
+    "^@libs/(.*)$": "<rootDir>/src/libs/$1",
     "^@/(.*)$": "$1"
   },
   "moduleFileExtensions": ["ts","tsx","js","jsx","json","node"],

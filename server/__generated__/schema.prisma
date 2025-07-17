@@ -41,27 +41,29 @@ enum ConfirmationStatus {
 }
 
 model User {
-  id                        String           @id @default(uuid())
-  email                     String           @unique
+  id                        String                  @id @default(uuid())
+  email                     String                  @unique
   password                  String
   displayName               String
   picture                   String
-  isVerified                Boolean          @default(false) @map("is_verified")
-  isTwoFactorEnabled        Boolean          @default(false) @map("is_two_factor_enabled")
+  isVerified                Boolean                 @default(false) @map("is_verified")
+  isTwoFactorEnabled        Boolean                 @default(false) @map("is_two_factor_enabled")
   method                    AuthMethod
-  role                      UserRole         @default(Regular)
-  secondName                String           @map("second_name")
-  studentIdFront            String           @map("student_id_front")
-  studentIdBack             String?          @map("student_id_back")
-  confirmations             Confirmation[]   @relation("UserConfirmations")
+  role                      UserRole                @default(Regular)
+  secondName                String                  @map("second_name")
+  studentIdFront            String                  @map("student_id_front")
+  studentIdBack             String?                 @map("student_id_back")
+  confirmations             Confirmation[]          @relation("UserConfirmations")
   dormitoryAdminAssignments DormitoryAdmin[]
-  dormitory                 Dormitory?       @relation("DormitoryResidents", fields: [dormitoryId], references: [id])
+  dormitory                 Dormitory?              @relation("DormitoryResidents", fields: [dormitoryId], references: [id])
   dormitoryId               String?
-  managedDormitories        Dormitory[]      @relation("ManagedDormitories")
+  managedDormitories        Dormitory[]             @relation("ManagedDormitories")
   roomId                    String?
-  room                      Room?            @relation(fields: [roomId], references: [id])
-  createdAt                 DateTime         @default(now()) @map("created_at")
-  updatedAt                 DateTime         @default(now()) @map("updated_at")
+  room                      Room?                   @relation(fields: [roomId], references: [id])
+  announcements             Announcement[]          @relation("AnnouncementAuthor")
+  announcementRecipients    AnnouncementRecipient[] @relation("AnnouncementRecipientUser")
+  createdAt                 DateTime                @default(now()) @map("created_at")
+  updatedAt                 DateTime                @default(now()) @map("updated_at")
 
   @@map("users")
 }
@@ -119,17 +121,18 @@ model Dormitory {
 }
 
 model Room {
-  id            String       @id @default(uuid())
-  number        String
-  floor         Int
-  createdAt     DateTime     @default(now()) @map("created_at")
-  capacity      Int
-  statuses      RoomStatus[]
-  residents     User[]
-  roomEquipment String[]
-  photos        String[]
-  dormitoryId   String
-  dormitroy     Dormitory    @relation(fields: [dormitoryId], references: [id])
+  id                     String                  @id @default(uuid())
+  number                 String
+  floor                  Int
+  createdAt              DateTime                @default(now()) @map("created_at")
+  capacity               Int
+  statuses               RoomStatus[]
+  residents              User[]
+  roomEquipment          String[]
+  photos                 String[]
+  dormitoryId            String
+  announcementRecipients AnnouncementRecipient[] @relation("AnnouncementRecipientRoom")
+  dormitroy              Dormitory               @relation(fields: [dormitoryId], references: [id])
 }
 
 model RoomStatus {
@@ -149,4 +152,37 @@ model Price {
   pricePerDay   Float
   dateFrom      DateTime
   dateTo        DateTime?
+}
+
+model Announcement {
+  id          String                  @id @default(uuid())
+  title       String
+  content     String
+  postedAt    DateTime                @default(now())
+  expiresAt   DateTime
+  isHidden    Boolean                 @default(false)
+  authorId    String
+  author      User                    @relation("AnnouncementAuthor", fields: [authorId], references: [id])
+  attachments Attachment[]
+  recipients  AnnouncementRecipient[]
+}
+
+model Attachment {
+  id             String       @id @default(uuid())
+  url            String
+  filename       String
+  announcementId String
+  announcement   Announcement @relation(fields: [announcementId], references: [id])
+}
+
+model AnnouncementRecipient {
+  id             String       @id @default(uuid())
+  announcementId String
+  announcement   Announcement @relation(fields: [announcementId], references: [id])
+  userId         String?
+  user           User?        @relation("AnnouncementRecipientUser", fields: [userId], references: [id])
+  roomId         String?
+  room           Room?        @relation("AnnouncementRecipientRoom", fields: [roomId], references: [id])
+  floor          Int?
+  forEveryone    Boolean      @default(false)
 }

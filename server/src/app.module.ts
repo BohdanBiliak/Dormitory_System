@@ -1,3 +1,5 @@
+import {AnnouncementModule} from "@modules/announcement/announcement.module";
+
 console.log("__dirname (app.module):", __dirname);
 import { Module } from '@nestjs/common';
 import {ConfigModule} from "@nestjs/config";
@@ -17,7 +19,7 @@ import {DormitoryModule} from "@/modules/dormitory/dormitory.module";
   imports: [ConfigModule.forRoot({
     isGlobal: true,
     ignoreEnvFile: !IS_DEV_ENV,
-  }), PrismaModule, AuthModule, UserModule, MailModule, EmailConfirmationModule, MailModule, EmailConfirmationModule, PasswordRecoveryModule, TwoFactorAuthModule, AdminModule, RoomModule, DormitoryModule],
+  }), PrismaModule, AuthModule, UserModule, MailModule, EmailConfirmationModule, MailModule, EmailConfirmationModule, PasswordRecoveryModule, TwoFactorAuthModule, AdminModule,DormitoryModule, RoomModule,AnnouncementModule],
   controllers: [],
   providers: [],
 })

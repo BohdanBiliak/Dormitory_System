@@ -53,6 +53,21 @@ export type RoomStatus = $Result.DefaultSelection<Prisma.$RoomStatusPayload>
  * 
  */
 export type Price = $Result.DefaultSelection<Prisma.$PricePayload>
+/**
+ * Model Announcement
+ * 
+ */
+export type Announcement = $Result.DefaultSelection<Prisma.$AnnouncementPayload>
+/**
+ * Model Attachment
+ * 
+ */
+export type Attachment = $Result.DefaultSelection<Prisma.$AttachmentPayload>
+/**
+ * Model AnnouncementRecipient
+ * 
+ */
+export type AnnouncementRecipient = $Result.DefaultSelection<Prisma.$AnnouncementRecipientPayload>
 
 /**
  * Enums
@@ -329,6 +344,36 @@ export class PrismaClient<
     * ```
     */
   get price(): Prisma.PriceDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.announcement`: Exposes CRUD operations for the **Announcement** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Announcements
+    * const announcements = await prisma.announcement.findMany()
+    * ```
+    */
+  get announcement(): Prisma.AnnouncementDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.attachment`: Exposes CRUD operations for the **Attachment** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Attachments
+    * const attachments = await prisma.attachment.findMany()
+    * ```
+    */
+  get attachment(): Prisma.AttachmentDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.announcementRecipient`: Exposes CRUD operations for the **AnnouncementRecipient** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AnnouncementRecipients
+    * const announcementRecipients = await prisma.announcementRecipient.findMany()
+    * ```
+    */
+  get announcementRecipient(): Prisma.AnnouncementRecipientDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -776,7 +821,10 @@ export namespace Prisma {
     Dormitory: 'Dormitory',
     Room: 'Room',
     RoomStatus: 'RoomStatus',
-    Price: 'Price'
+    Price: 'Price',
+    Announcement: 'Announcement',
+    Attachment: 'Attachment',
+    AnnouncementRecipient: 'AnnouncementRecipient'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -795,7 +843,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "dormitoryAdmin" | "confirmation" | "token" | "dormitory" | "room" | "roomStatus" | "price"
+      modelProps: "user" | "dormitoryAdmin" | "confirmation" | "token" | "dormitory" | "room" | "roomStatus" | "price" | "announcement" | "attachment" | "announcementRecipient"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1391,6 +1439,228 @@ export namespace Prisma {
           }
         }
       }
+      Announcement: {
+        payload: Prisma.$AnnouncementPayload<ExtArgs>
+        fields: Prisma.AnnouncementFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AnnouncementFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AnnouncementFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementPayload>
+          }
+          findFirst: {
+            args: Prisma.AnnouncementFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AnnouncementFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementPayload>
+          }
+          findMany: {
+            args: Prisma.AnnouncementFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementPayload>[]
+          }
+          create: {
+            args: Prisma.AnnouncementCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementPayload>
+          }
+          createMany: {
+            args: Prisma.AnnouncementCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AnnouncementCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementPayload>[]
+          }
+          delete: {
+            args: Prisma.AnnouncementDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementPayload>
+          }
+          update: {
+            args: Prisma.AnnouncementUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementPayload>
+          }
+          deleteMany: {
+            args: Prisma.AnnouncementDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AnnouncementUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AnnouncementUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementPayload>[]
+          }
+          upsert: {
+            args: Prisma.AnnouncementUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementPayload>
+          }
+          aggregate: {
+            args: Prisma.AnnouncementAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAnnouncement>
+          }
+          groupBy: {
+            args: Prisma.AnnouncementGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AnnouncementGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AnnouncementCountArgs<ExtArgs>
+            result: $Utils.Optional<AnnouncementCountAggregateOutputType> | number
+          }
+        }
+      }
+      Attachment: {
+        payload: Prisma.$AttachmentPayload<ExtArgs>
+        fields: Prisma.AttachmentFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AttachmentFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttachmentPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AttachmentFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttachmentPayload>
+          }
+          findFirst: {
+            args: Prisma.AttachmentFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttachmentPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AttachmentFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttachmentPayload>
+          }
+          findMany: {
+            args: Prisma.AttachmentFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttachmentPayload>[]
+          }
+          create: {
+            args: Prisma.AttachmentCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttachmentPayload>
+          }
+          createMany: {
+            args: Prisma.AttachmentCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AttachmentCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttachmentPayload>[]
+          }
+          delete: {
+            args: Prisma.AttachmentDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttachmentPayload>
+          }
+          update: {
+            args: Prisma.AttachmentUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttachmentPayload>
+          }
+          deleteMany: {
+            args: Prisma.AttachmentDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AttachmentUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AttachmentUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttachmentPayload>[]
+          }
+          upsert: {
+            args: Prisma.AttachmentUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttachmentPayload>
+          }
+          aggregate: {
+            args: Prisma.AttachmentAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAttachment>
+          }
+          groupBy: {
+            args: Prisma.AttachmentGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AttachmentGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AttachmentCountArgs<ExtArgs>
+            result: $Utils.Optional<AttachmentCountAggregateOutputType> | number
+          }
+        }
+      }
+      AnnouncementRecipient: {
+        payload: Prisma.$AnnouncementRecipientPayload<ExtArgs>
+        fields: Prisma.AnnouncementRecipientFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AnnouncementRecipientFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementRecipientPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AnnouncementRecipientFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementRecipientPayload>
+          }
+          findFirst: {
+            args: Prisma.AnnouncementRecipientFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementRecipientPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AnnouncementRecipientFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementRecipientPayload>
+          }
+          findMany: {
+            args: Prisma.AnnouncementRecipientFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementRecipientPayload>[]
+          }
+          create: {
+            args: Prisma.AnnouncementRecipientCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementRecipientPayload>
+          }
+          createMany: {
+            args: Prisma.AnnouncementRecipientCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AnnouncementRecipientCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementRecipientPayload>[]
+          }
+          delete: {
+            args: Prisma.AnnouncementRecipientDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementRecipientPayload>
+          }
+          update: {
+            args: Prisma.AnnouncementRecipientUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementRecipientPayload>
+          }
+          deleteMany: {
+            args: Prisma.AnnouncementRecipientDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AnnouncementRecipientUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AnnouncementRecipientUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementRecipientPayload>[]
+          }
+          upsert: {
+            args: Prisma.AnnouncementRecipientUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementRecipientPayload>
+          }
+          aggregate: {
+            args: Prisma.AnnouncementRecipientAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAnnouncementRecipient>
+          }
+          groupBy: {
+            args: Prisma.AnnouncementRecipientGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AnnouncementRecipientGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AnnouncementRecipientCountArgs<ExtArgs>
+            result: $Utils.Optional<AnnouncementRecipientCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1483,6 +1753,9 @@ export namespace Prisma {
     room?: RoomOmit
     roomStatus?: RoomStatusOmit
     price?: PriceOmit
+    announcement?: AnnouncementOmit
+    attachment?: AttachmentOmit
+    announcementRecipient?: AnnouncementRecipientOmit
   }
 
   /* Types for Logging */
@@ -1580,12 +1853,16 @@ export namespace Prisma {
     confirmations: number
     dormitoryAdminAssignments: number
     managedDormitories: number
+    announcements: number
+    announcementRecipients: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     confirmations?: boolean | UserCountOutputTypeCountConfirmationsArgs
     dormitoryAdminAssignments?: boolean | UserCountOutputTypeCountDormitoryAdminAssignmentsArgs
     managedDormitories?: boolean | UserCountOutputTypeCountManagedDormitoriesArgs
+    announcements?: boolean | UserCountOutputTypeCountAnnouncementsArgs
+    announcementRecipients?: boolean | UserCountOutputTypeCountAnnouncementRecipientsArgs
   }
 
   // Custom InputTypes
@@ -1618,6 +1895,20 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountManagedDormitoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DormitoryWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAnnouncementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AnnouncementWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAnnouncementRecipientsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AnnouncementRecipientWhereInput
   }
 
 
@@ -1677,11 +1968,13 @@ export namespace Prisma {
   export type RoomCountOutputType = {
     statuses: number
     residents: number
+    announcementRecipients: number
   }
 
   export type RoomCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     statuses?: boolean | RoomCountOutputTypeCountStatusesArgs
     residents?: boolean | RoomCountOutputTypeCountResidentsArgs
+    announcementRecipients?: boolean | RoomCountOutputTypeCountAnnouncementRecipientsArgs
   }
 
   // Custom InputTypes
@@ -1707,6 +2000,53 @@ export namespace Prisma {
    */
   export type RoomCountOutputTypeCountResidentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: UserWhereInput
+  }
+
+  /**
+   * RoomCountOutputType without action
+   */
+  export type RoomCountOutputTypeCountAnnouncementRecipientsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AnnouncementRecipientWhereInput
+  }
+
+
+  /**
+   * Count Type AnnouncementCountOutputType
+   */
+
+  export type AnnouncementCountOutputType = {
+    attachments: number
+    recipients: number
+  }
+
+  export type AnnouncementCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    attachments?: boolean | AnnouncementCountOutputTypeCountAttachmentsArgs
+    recipients?: boolean | AnnouncementCountOutputTypeCountRecipientsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * AnnouncementCountOutputType without action
+   */
+  export type AnnouncementCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementCountOutputType
+     */
+    select?: AnnouncementCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * AnnouncementCountOutputType without action
+   */
+  export type AnnouncementCountOutputTypeCountAttachmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AttachmentWhereInput
+  }
+
+  /**
+   * AnnouncementCountOutputType without action
+   */
+  export type AnnouncementCountOutputTypeCountRecipientsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AnnouncementRecipientWhereInput
   }
 
 
@@ -1971,6 +2311,8 @@ export namespace Prisma {
     dormitory?: boolean | User$dormitoryArgs<ExtArgs>
     managedDormitories?: boolean | User$managedDormitoriesArgs<ExtArgs>
     room?: boolean | User$roomArgs<ExtArgs>
+    announcements?: boolean | User$announcementsArgs<ExtArgs>
+    announcementRecipients?: boolean | User$announcementRecipientsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2042,6 +2384,8 @@ export namespace Prisma {
     dormitory?: boolean | User$dormitoryArgs<ExtArgs>
     managedDormitories?: boolean | User$managedDormitoriesArgs<ExtArgs>
     room?: boolean | User$roomArgs<ExtArgs>
+    announcements?: boolean | User$announcementsArgs<ExtArgs>
+    announcementRecipients?: boolean | User$announcementRecipientsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2061,6 +2405,8 @@ export namespace Prisma {
       dormitory: Prisma.$DormitoryPayload<ExtArgs> | null
       managedDormitories: Prisma.$DormitoryPayload<ExtArgs>[]
       room: Prisma.$RoomPayload<ExtArgs> | null
+      announcements: Prisma.$AnnouncementPayload<ExtArgs>[]
+      announcementRecipients: Prisma.$AnnouncementRecipientPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2478,6 +2824,8 @@ export namespace Prisma {
     dormitory<T extends User$dormitoryArgs<ExtArgs> = {}>(args?: Subset<T, User$dormitoryArgs<ExtArgs>>): Prisma__DormitoryClient<$Result.GetResult<Prisma.$DormitoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     managedDormitories<T extends User$managedDormitoriesArgs<ExtArgs> = {}>(args?: Subset<T, User$managedDormitoriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DormitoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     room<T extends User$roomArgs<ExtArgs> = {}>(args?: Subset<T, User$roomArgs<ExtArgs>>): Prisma__RoomClient<$Result.GetResult<Prisma.$RoomPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    announcements<T extends User$announcementsArgs<ExtArgs> = {}>(args?: Subset<T, User$announcementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    announcementRecipients<T extends User$announcementRecipientsArgs<ExtArgs> = {}>(args?: Subset<T, User$announcementRecipientsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnouncementRecipientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3026,6 +3374,54 @@ export namespace Prisma {
      */
     include?: RoomInclude<ExtArgs> | null
     where?: RoomWhereInput
+  }
+
+  /**
+   * User.announcements
+   */
+  export type User$announcementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Announcement
+     */
+    select?: AnnouncementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Announcement
+     */
+    omit?: AnnouncementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementInclude<ExtArgs> | null
+    where?: AnnouncementWhereInput
+    orderBy?: AnnouncementOrderByWithRelationInput | AnnouncementOrderByWithRelationInput[]
+    cursor?: AnnouncementWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AnnouncementScalarFieldEnum | AnnouncementScalarFieldEnum[]
+  }
+
+  /**
+   * User.announcementRecipients
+   */
+  export type User$announcementRecipientsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementRecipient
+     */
+    select?: AnnouncementRecipientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementRecipient
+     */
+    omit?: AnnouncementRecipientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementRecipientInclude<ExtArgs> | null
+    where?: AnnouncementRecipientWhereInput
+    orderBy?: AnnouncementRecipientOrderByWithRelationInput | AnnouncementRecipientOrderByWithRelationInput[]
+    cursor?: AnnouncementRecipientWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AnnouncementRecipientScalarFieldEnum | AnnouncementRecipientScalarFieldEnum[]
   }
 
   /**
@@ -7636,6 +8032,7 @@ export namespace Prisma {
     dormitoryId?: boolean
     statuses?: boolean | Room$statusesArgs<ExtArgs>
     residents?: boolean | Room$residentsArgs<ExtArgs>
+    announcementRecipients?: boolean | Room$announcementRecipientsArgs<ExtArgs>
     dormitroy?: boolean | DormitoryDefaultArgs<ExtArgs>
     _count?: boolean | RoomCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["room"]>
@@ -7679,6 +8076,7 @@ export namespace Prisma {
   export type RoomInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     statuses?: boolean | Room$statusesArgs<ExtArgs>
     residents?: boolean | Room$residentsArgs<ExtArgs>
+    announcementRecipients?: boolean | Room$announcementRecipientsArgs<ExtArgs>
     dormitroy?: boolean | DormitoryDefaultArgs<ExtArgs>
     _count?: boolean | RoomCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -7694,6 +8092,7 @@ export namespace Prisma {
     objects: {
       statuses: Prisma.$RoomStatusPayload<ExtArgs>[]
       residents: Prisma.$UserPayload<ExtArgs>[]
+      announcementRecipients: Prisma.$AnnouncementRecipientPayload<ExtArgs>[]
       dormitroy: Prisma.$DormitoryPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -8101,6 +8500,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     statuses<T extends Room$statusesArgs<ExtArgs> = {}>(args?: Subset<T, Room$statusesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoomStatusPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     residents<T extends Room$residentsArgs<ExtArgs> = {}>(args?: Subset<T, Room$residentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    announcementRecipients<T extends Room$announcementRecipientsArgs<ExtArgs> = {}>(args?: Subset<T, Room$announcementRecipientsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnouncementRecipientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     dormitroy<T extends DormitoryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DormitoryDefaultArgs<ExtArgs>>): Prisma__DormitoryClient<$Result.GetResult<Prisma.$DormitoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -8580,6 +8980,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
+  }
+
+  /**
+   * Room.announcementRecipients
+   */
+  export type Room$announcementRecipientsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementRecipient
+     */
+    select?: AnnouncementRecipientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementRecipient
+     */
+    omit?: AnnouncementRecipientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementRecipientInclude<ExtArgs> | null
+    where?: AnnouncementRecipientWhereInput
+    orderBy?: AnnouncementRecipientOrderByWithRelationInput | AnnouncementRecipientOrderByWithRelationInput[]
+    cursor?: AnnouncementRecipientWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AnnouncementRecipientScalarFieldEnum | AnnouncementRecipientScalarFieldEnum[]
   }
 
   /**
@@ -10710,6 +11134,3352 @@ export namespace Prisma {
 
 
   /**
+   * Model Announcement
+   */
+
+  export type AggregateAnnouncement = {
+    _count: AnnouncementCountAggregateOutputType | null
+    _min: AnnouncementMinAggregateOutputType | null
+    _max: AnnouncementMaxAggregateOutputType | null
+  }
+
+  export type AnnouncementMinAggregateOutputType = {
+    id: string | null
+    title: string | null
+    content: string | null
+    postedAt: Date | null
+    expiresAt: Date | null
+    isHidden: boolean | null
+    authorId: string | null
+  }
+
+  export type AnnouncementMaxAggregateOutputType = {
+    id: string | null
+    title: string | null
+    content: string | null
+    postedAt: Date | null
+    expiresAt: Date | null
+    isHidden: boolean | null
+    authorId: string | null
+  }
+
+  export type AnnouncementCountAggregateOutputType = {
+    id: number
+    title: number
+    content: number
+    postedAt: number
+    expiresAt: number
+    isHidden: number
+    authorId: number
+    _all: number
+  }
+
+
+  export type AnnouncementMinAggregateInputType = {
+    id?: true
+    title?: true
+    content?: true
+    postedAt?: true
+    expiresAt?: true
+    isHidden?: true
+    authorId?: true
+  }
+
+  export type AnnouncementMaxAggregateInputType = {
+    id?: true
+    title?: true
+    content?: true
+    postedAt?: true
+    expiresAt?: true
+    isHidden?: true
+    authorId?: true
+  }
+
+  export type AnnouncementCountAggregateInputType = {
+    id?: true
+    title?: true
+    content?: true
+    postedAt?: true
+    expiresAt?: true
+    isHidden?: true
+    authorId?: true
+    _all?: true
+  }
+
+  export type AnnouncementAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Announcement to aggregate.
+     */
+    where?: AnnouncementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Announcements to fetch.
+     */
+    orderBy?: AnnouncementOrderByWithRelationInput | AnnouncementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AnnouncementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Announcements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Announcements.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Announcements
+    **/
+    _count?: true | AnnouncementCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AnnouncementMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AnnouncementMaxAggregateInputType
+  }
+
+  export type GetAnnouncementAggregateType<T extends AnnouncementAggregateArgs> = {
+        [P in keyof T & keyof AggregateAnnouncement]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAnnouncement[P]>
+      : GetScalarType<T[P], AggregateAnnouncement[P]>
+  }
+
+
+
+
+  export type AnnouncementGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AnnouncementWhereInput
+    orderBy?: AnnouncementOrderByWithAggregationInput | AnnouncementOrderByWithAggregationInput[]
+    by: AnnouncementScalarFieldEnum[] | AnnouncementScalarFieldEnum
+    having?: AnnouncementScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AnnouncementCountAggregateInputType | true
+    _min?: AnnouncementMinAggregateInputType
+    _max?: AnnouncementMaxAggregateInputType
+  }
+
+  export type AnnouncementGroupByOutputType = {
+    id: string
+    title: string
+    content: string
+    postedAt: Date
+    expiresAt: Date
+    isHidden: boolean
+    authorId: string
+    _count: AnnouncementCountAggregateOutputType | null
+    _min: AnnouncementMinAggregateOutputType | null
+    _max: AnnouncementMaxAggregateOutputType | null
+  }
+
+  type GetAnnouncementGroupByPayload<T extends AnnouncementGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AnnouncementGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AnnouncementGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AnnouncementGroupByOutputType[P]>
+            : GetScalarType<T[P], AnnouncementGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AnnouncementSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    content?: boolean
+    postedAt?: boolean
+    expiresAt?: boolean
+    isHidden?: boolean
+    authorId?: boolean
+    author?: boolean | UserDefaultArgs<ExtArgs>
+    attachments?: boolean | Announcement$attachmentsArgs<ExtArgs>
+    recipients?: boolean | Announcement$recipientsArgs<ExtArgs>
+    _count?: boolean | AnnouncementCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["announcement"]>
+
+  export type AnnouncementSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    content?: boolean
+    postedAt?: boolean
+    expiresAt?: boolean
+    isHidden?: boolean
+    authorId?: boolean
+    author?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["announcement"]>
+
+  export type AnnouncementSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    content?: boolean
+    postedAt?: boolean
+    expiresAt?: boolean
+    isHidden?: boolean
+    authorId?: boolean
+    author?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["announcement"]>
+
+  export type AnnouncementSelectScalar = {
+    id?: boolean
+    title?: boolean
+    content?: boolean
+    postedAt?: boolean
+    expiresAt?: boolean
+    isHidden?: boolean
+    authorId?: boolean
+  }
+
+  export type AnnouncementOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "content" | "postedAt" | "expiresAt" | "isHidden" | "authorId", ExtArgs["result"]["announcement"]>
+  export type AnnouncementInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    author?: boolean | UserDefaultArgs<ExtArgs>
+    attachments?: boolean | Announcement$attachmentsArgs<ExtArgs>
+    recipients?: boolean | Announcement$recipientsArgs<ExtArgs>
+    _count?: boolean | AnnouncementCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type AnnouncementIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    author?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type AnnouncementIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    author?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $AnnouncementPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Announcement"
+    objects: {
+      author: Prisma.$UserPayload<ExtArgs>
+      attachments: Prisma.$AttachmentPayload<ExtArgs>[]
+      recipients: Prisma.$AnnouncementRecipientPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      title: string
+      content: string
+      postedAt: Date
+      expiresAt: Date
+      isHidden: boolean
+      authorId: string
+    }, ExtArgs["result"]["announcement"]>
+    composites: {}
+  }
+
+  type AnnouncementGetPayload<S extends boolean | null | undefined | AnnouncementDefaultArgs> = $Result.GetResult<Prisma.$AnnouncementPayload, S>
+
+  type AnnouncementCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AnnouncementFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AnnouncementCountAggregateInputType | true
+    }
+
+  export interface AnnouncementDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Announcement'], meta: { name: 'Announcement' } }
+    /**
+     * Find zero or one Announcement that matches the filter.
+     * @param {AnnouncementFindUniqueArgs} args - Arguments to find a Announcement
+     * @example
+     * // Get one Announcement
+     * const announcement = await prisma.announcement.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AnnouncementFindUniqueArgs>(args: SelectSubset<T, AnnouncementFindUniqueArgs<ExtArgs>>): Prisma__AnnouncementClient<$Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Announcement that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AnnouncementFindUniqueOrThrowArgs} args - Arguments to find a Announcement
+     * @example
+     * // Get one Announcement
+     * const announcement = await prisma.announcement.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AnnouncementFindUniqueOrThrowArgs>(args: SelectSubset<T, AnnouncementFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AnnouncementClient<$Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Announcement that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnouncementFindFirstArgs} args - Arguments to find a Announcement
+     * @example
+     * // Get one Announcement
+     * const announcement = await prisma.announcement.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AnnouncementFindFirstArgs>(args?: SelectSubset<T, AnnouncementFindFirstArgs<ExtArgs>>): Prisma__AnnouncementClient<$Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Announcement that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnouncementFindFirstOrThrowArgs} args - Arguments to find a Announcement
+     * @example
+     * // Get one Announcement
+     * const announcement = await prisma.announcement.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AnnouncementFindFirstOrThrowArgs>(args?: SelectSubset<T, AnnouncementFindFirstOrThrowArgs<ExtArgs>>): Prisma__AnnouncementClient<$Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Announcements that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnouncementFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Announcements
+     * const announcements = await prisma.announcement.findMany()
+     * 
+     * // Get first 10 Announcements
+     * const announcements = await prisma.announcement.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const announcementWithIdOnly = await prisma.announcement.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AnnouncementFindManyArgs>(args?: SelectSubset<T, AnnouncementFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Announcement.
+     * @param {AnnouncementCreateArgs} args - Arguments to create a Announcement.
+     * @example
+     * // Create one Announcement
+     * const Announcement = await prisma.announcement.create({
+     *   data: {
+     *     // ... data to create a Announcement
+     *   }
+     * })
+     * 
+     */
+    create<T extends AnnouncementCreateArgs>(args: SelectSubset<T, AnnouncementCreateArgs<ExtArgs>>): Prisma__AnnouncementClient<$Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Announcements.
+     * @param {AnnouncementCreateManyArgs} args - Arguments to create many Announcements.
+     * @example
+     * // Create many Announcements
+     * const announcement = await prisma.announcement.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AnnouncementCreateManyArgs>(args?: SelectSubset<T, AnnouncementCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Announcements and returns the data saved in the database.
+     * @param {AnnouncementCreateManyAndReturnArgs} args - Arguments to create many Announcements.
+     * @example
+     * // Create many Announcements
+     * const announcement = await prisma.announcement.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Announcements and only return the `id`
+     * const announcementWithIdOnly = await prisma.announcement.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AnnouncementCreateManyAndReturnArgs>(args?: SelectSubset<T, AnnouncementCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Announcement.
+     * @param {AnnouncementDeleteArgs} args - Arguments to delete one Announcement.
+     * @example
+     * // Delete one Announcement
+     * const Announcement = await prisma.announcement.delete({
+     *   where: {
+     *     // ... filter to delete one Announcement
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AnnouncementDeleteArgs>(args: SelectSubset<T, AnnouncementDeleteArgs<ExtArgs>>): Prisma__AnnouncementClient<$Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Announcement.
+     * @param {AnnouncementUpdateArgs} args - Arguments to update one Announcement.
+     * @example
+     * // Update one Announcement
+     * const announcement = await prisma.announcement.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AnnouncementUpdateArgs>(args: SelectSubset<T, AnnouncementUpdateArgs<ExtArgs>>): Prisma__AnnouncementClient<$Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Announcements.
+     * @param {AnnouncementDeleteManyArgs} args - Arguments to filter Announcements to delete.
+     * @example
+     * // Delete a few Announcements
+     * const { count } = await prisma.announcement.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AnnouncementDeleteManyArgs>(args?: SelectSubset<T, AnnouncementDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Announcements.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnouncementUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Announcements
+     * const announcement = await prisma.announcement.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AnnouncementUpdateManyArgs>(args: SelectSubset<T, AnnouncementUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Announcements and returns the data updated in the database.
+     * @param {AnnouncementUpdateManyAndReturnArgs} args - Arguments to update many Announcements.
+     * @example
+     * // Update many Announcements
+     * const announcement = await prisma.announcement.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Announcements and only return the `id`
+     * const announcementWithIdOnly = await prisma.announcement.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AnnouncementUpdateManyAndReturnArgs>(args: SelectSubset<T, AnnouncementUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Announcement.
+     * @param {AnnouncementUpsertArgs} args - Arguments to update or create a Announcement.
+     * @example
+     * // Update or create a Announcement
+     * const announcement = await prisma.announcement.upsert({
+     *   create: {
+     *     // ... data to create a Announcement
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Announcement we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AnnouncementUpsertArgs>(args: SelectSubset<T, AnnouncementUpsertArgs<ExtArgs>>): Prisma__AnnouncementClient<$Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Announcements.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnouncementCountArgs} args - Arguments to filter Announcements to count.
+     * @example
+     * // Count the number of Announcements
+     * const count = await prisma.announcement.count({
+     *   where: {
+     *     // ... the filter for the Announcements we want to count
+     *   }
+     * })
+    **/
+    count<T extends AnnouncementCountArgs>(
+      args?: Subset<T, AnnouncementCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AnnouncementCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Announcement.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnouncementAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AnnouncementAggregateArgs>(args: Subset<T, AnnouncementAggregateArgs>): Prisma.PrismaPromise<GetAnnouncementAggregateType<T>>
+
+    /**
+     * Group by Announcement.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnouncementGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AnnouncementGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AnnouncementGroupByArgs['orderBy'] }
+        : { orderBy?: AnnouncementGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AnnouncementGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAnnouncementGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Announcement model
+   */
+  readonly fields: AnnouncementFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Announcement.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AnnouncementClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    author<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    attachments<T extends Announcement$attachmentsArgs<ExtArgs> = {}>(args?: Subset<T, Announcement$attachmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    recipients<T extends Announcement$recipientsArgs<ExtArgs> = {}>(args?: Subset<T, Announcement$recipientsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnouncementRecipientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Announcement model
+   */
+  interface AnnouncementFieldRefs {
+    readonly id: FieldRef<"Announcement", 'String'>
+    readonly title: FieldRef<"Announcement", 'String'>
+    readonly content: FieldRef<"Announcement", 'String'>
+    readonly postedAt: FieldRef<"Announcement", 'DateTime'>
+    readonly expiresAt: FieldRef<"Announcement", 'DateTime'>
+    readonly isHidden: FieldRef<"Announcement", 'Boolean'>
+    readonly authorId: FieldRef<"Announcement", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Announcement findUnique
+   */
+  export type AnnouncementFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Announcement
+     */
+    select?: AnnouncementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Announcement
+     */
+    omit?: AnnouncementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementInclude<ExtArgs> | null
+    /**
+     * Filter, which Announcement to fetch.
+     */
+    where: AnnouncementWhereUniqueInput
+  }
+
+  /**
+   * Announcement findUniqueOrThrow
+   */
+  export type AnnouncementFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Announcement
+     */
+    select?: AnnouncementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Announcement
+     */
+    omit?: AnnouncementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementInclude<ExtArgs> | null
+    /**
+     * Filter, which Announcement to fetch.
+     */
+    where: AnnouncementWhereUniqueInput
+  }
+
+  /**
+   * Announcement findFirst
+   */
+  export type AnnouncementFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Announcement
+     */
+    select?: AnnouncementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Announcement
+     */
+    omit?: AnnouncementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementInclude<ExtArgs> | null
+    /**
+     * Filter, which Announcement to fetch.
+     */
+    where?: AnnouncementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Announcements to fetch.
+     */
+    orderBy?: AnnouncementOrderByWithRelationInput | AnnouncementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Announcements.
+     */
+    cursor?: AnnouncementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Announcements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Announcements.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Announcements.
+     */
+    distinct?: AnnouncementScalarFieldEnum | AnnouncementScalarFieldEnum[]
+  }
+
+  /**
+   * Announcement findFirstOrThrow
+   */
+  export type AnnouncementFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Announcement
+     */
+    select?: AnnouncementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Announcement
+     */
+    omit?: AnnouncementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementInclude<ExtArgs> | null
+    /**
+     * Filter, which Announcement to fetch.
+     */
+    where?: AnnouncementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Announcements to fetch.
+     */
+    orderBy?: AnnouncementOrderByWithRelationInput | AnnouncementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Announcements.
+     */
+    cursor?: AnnouncementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Announcements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Announcements.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Announcements.
+     */
+    distinct?: AnnouncementScalarFieldEnum | AnnouncementScalarFieldEnum[]
+  }
+
+  /**
+   * Announcement findMany
+   */
+  export type AnnouncementFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Announcement
+     */
+    select?: AnnouncementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Announcement
+     */
+    omit?: AnnouncementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementInclude<ExtArgs> | null
+    /**
+     * Filter, which Announcements to fetch.
+     */
+    where?: AnnouncementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Announcements to fetch.
+     */
+    orderBy?: AnnouncementOrderByWithRelationInput | AnnouncementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Announcements.
+     */
+    cursor?: AnnouncementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Announcements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Announcements.
+     */
+    skip?: number
+    distinct?: AnnouncementScalarFieldEnum | AnnouncementScalarFieldEnum[]
+  }
+
+  /**
+   * Announcement create
+   */
+  export type AnnouncementCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Announcement
+     */
+    select?: AnnouncementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Announcement
+     */
+    omit?: AnnouncementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Announcement.
+     */
+    data: XOR<AnnouncementCreateInput, AnnouncementUncheckedCreateInput>
+  }
+
+  /**
+   * Announcement createMany
+   */
+  export type AnnouncementCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Announcements.
+     */
+    data: AnnouncementCreateManyInput | AnnouncementCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Announcement createManyAndReturn
+   */
+  export type AnnouncementCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Announcement
+     */
+    select?: AnnouncementSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Announcement
+     */
+    omit?: AnnouncementOmit<ExtArgs> | null
+    /**
+     * The data used to create many Announcements.
+     */
+    data: AnnouncementCreateManyInput | AnnouncementCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Announcement update
+   */
+  export type AnnouncementUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Announcement
+     */
+    select?: AnnouncementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Announcement
+     */
+    omit?: AnnouncementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Announcement.
+     */
+    data: XOR<AnnouncementUpdateInput, AnnouncementUncheckedUpdateInput>
+    /**
+     * Choose, which Announcement to update.
+     */
+    where: AnnouncementWhereUniqueInput
+  }
+
+  /**
+   * Announcement updateMany
+   */
+  export type AnnouncementUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Announcements.
+     */
+    data: XOR<AnnouncementUpdateManyMutationInput, AnnouncementUncheckedUpdateManyInput>
+    /**
+     * Filter which Announcements to update
+     */
+    where?: AnnouncementWhereInput
+    /**
+     * Limit how many Announcements to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Announcement updateManyAndReturn
+   */
+  export type AnnouncementUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Announcement
+     */
+    select?: AnnouncementSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Announcement
+     */
+    omit?: AnnouncementOmit<ExtArgs> | null
+    /**
+     * The data used to update Announcements.
+     */
+    data: XOR<AnnouncementUpdateManyMutationInput, AnnouncementUncheckedUpdateManyInput>
+    /**
+     * Filter which Announcements to update
+     */
+    where?: AnnouncementWhereInput
+    /**
+     * Limit how many Announcements to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Announcement upsert
+   */
+  export type AnnouncementUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Announcement
+     */
+    select?: AnnouncementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Announcement
+     */
+    omit?: AnnouncementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Announcement to update in case it exists.
+     */
+    where: AnnouncementWhereUniqueInput
+    /**
+     * In case the Announcement found by the `where` argument doesn't exist, create a new Announcement with this data.
+     */
+    create: XOR<AnnouncementCreateInput, AnnouncementUncheckedCreateInput>
+    /**
+     * In case the Announcement was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AnnouncementUpdateInput, AnnouncementUncheckedUpdateInput>
+  }
+
+  /**
+   * Announcement delete
+   */
+  export type AnnouncementDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Announcement
+     */
+    select?: AnnouncementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Announcement
+     */
+    omit?: AnnouncementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementInclude<ExtArgs> | null
+    /**
+     * Filter which Announcement to delete.
+     */
+    where: AnnouncementWhereUniqueInput
+  }
+
+  /**
+   * Announcement deleteMany
+   */
+  export type AnnouncementDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Announcements to delete
+     */
+    where?: AnnouncementWhereInput
+    /**
+     * Limit how many Announcements to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Announcement.attachments
+   */
+  export type Announcement$attachmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attachment
+     */
+    select?: AttachmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Attachment
+     */
+    omit?: AttachmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AttachmentInclude<ExtArgs> | null
+    where?: AttachmentWhereInput
+    orderBy?: AttachmentOrderByWithRelationInput | AttachmentOrderByWithRelationInput[]
+    cursor?: AttachmentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AttachmentScalarFieldEnum | AttachmentScalarFieldEnum[]
+  }
+
+  /**
+   * Announcement.recipients
+   */
+  export type Announcement$recipientsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementRecipient
+     */
+    select?: AnnouncementRecipientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementRecipient
+     */
+    omit?: AnnouncementRecipientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementRecipientInclude<ExtArgs> | null
+    where?: AnnouncementRecipientWhereInput
+    orderBy?: AnnouncementRecipientOrderByWithRelationInput | AnnouncementRecipientOrderByWithRelationInput[]
+    cursor?: AnnouncementRecipientWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AnnouncementRecipientScalarFieldEnum | AnnouncementRecipientScalarFieldEnum[]
+  }
+
+  /**
+   * Announcement without action
+   */
+  export type AnnouncementDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Announcement
+     */
+    select?: AnnouncementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Announcement
+     */
+    omit?: AnnouncementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Attachment
+   */
+
+  export type AggregateAttachment = {
+    _count: AttachmentCountAggregateOutputType | null
+    _min: AttachmentMinAggregateOutputType | null
+    _max: AttachmentMaxAggregateOutputType | null
+  }
+
+  export type AttachmentMinAggregateOutputType = {
+    id: string | null
+    url: string | null
+    filename: string | null
+    announcementId: string | null
+  }
+
+  export type AttachmentMaxAggregateOutputType = {
+    id: string | null
+    url: string | null
+    filename: string | null
+    announcementId: string | null
+  }
+
+  export type AttachmentCountAggregateOutputType = {
+    id: number
+    url: number
+    filename: number
+    announcementId: number
+    _all: number
+  }
+
+
+  export type AttachmentMinAggregateInputType = {
+    id?: true
+    url?: true
+    filename?: true
+    announcementId?: true
+  }
+
+  export type AttachmentMaxAggregateInputType = {
+    id?: true
+    url?: true
+    filename?: true
+    announcementId?: true
+  }
+
+  export type AttachmentCountAggregateInputType = {
+    id?: true
+    url?: true
+    filename?: true
+    announcementId?: true
+    _all?: true
+  }
+
+  export type AttachmentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Attachment to aggregate.
+     */
+    where?: AttachmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Attachments to fetch.
+     */
+    orderBy?: AttachmentOrderByWithRelationInput | AttachmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AttachmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Attachments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Attachments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Attachments
+    **/
+    _count?: true | AttachmentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AttachmentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AttachmentMaxAggregateInputType
+  }
+
+  export type GetAttachmentAggregateType<T extends AttachmentAggregateArgs> = {
+        [P in keyof T & keyof AggregateAttachment]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAttachment[P]>
+      : GetScalarType<T[P], AggregateAttachment[P]>
+  }
+
+
+
+
+  export type AttachmentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AttachmentWhereInput
+    orderBy?: AttachmentOrderByWithAggregationInput | AttachmentOrderByWithAggregationInput[]
+    by: AttachmentScalarFieldEnum[] | AttachmentScalarFieldEnum
+    having?: AttachmentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AttachmentCountAggregateInputType | true
+    _min?: AttachmentMinAggregateInputType
+    _max?: AttachmentMaxAggregateInputType
+  }
+
+  export type AttachmentGroupByOutputType = {
+    id: string
+    url: string
+    filename: string
+    announcementId: string
+    _count: AttachmentCountAggregateOutputType | null
+    _min: AttachmentMinAggregateOutputType | null
+    _max: AttachmentMaxAggregateOutputType | null
+  }
+
+  type GetAttachmentGroupByPayload<T extends AttachmentGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AttachmentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AttachmentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AttachmentGroupByOutputType[P]>
+            : GetScalarType<T[P], AttachmentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AttachmentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    url?: boolean
+    filename?: boolean
+    announcementId?: boolean
+    announcement?: boolean | AnnouncementDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["attachment"]>
+
+  export type AttachmentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    url?: boolean
+    filename?: boolean
+    announcementId?: boolean
+    announcement?: boolean | AnnouncementDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["attachment"]>
+
+  export type AttachmentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    url?: boolean
+    filename?: boolean
+    announcementId?: boolean
+    announcement?: boolean | AnnouncementDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["attachment"]>
+
+  export type AttachmentSelectScalar = {
+    id?: boolean
+    url?: boolean
+    filename?: boolean
+    announcementId?: boolean
+  }
+
+  export type AttachmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "url" | "filename" | "announcementId", ExtArgs["result"]["attachment"]>
+  export type AttachmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    announcement?: boolean | AnnouncementDefaultArgs<ExtArgs>
+  }
+  export type AttachmentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    announcement?: boolean | AnnouncementDefaultArgs<ExtArgs>
+  }
+  export type AttachmentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    announcement?: boolean | AnnouncementDefaultArgs<ExtArgs>
+  }
+
+  export type $AttachmentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Attachment"
+    objects: {
+      announcement: Prisma.$AnnouncementPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      url: string
+      filename: string
+      announcementId: string
+    }, ExtArgs["result"]["attachment"]>
+    composites: {}
+  }
+
+  type AttachmentGetPayload<S extends boolean | null | undefined | AttachmentDefaultArgs> = $Result.GetResult<Prisma.$AttachmentPayload, S>
+
+  type AttachmentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AttachmentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AttachmentCountAggregateInputType | true
+    }
+
+  export interface AttachmentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Attachment'], meta: { name: 'Attachment' } }
+    /**
+     * Find zero or one Attachment that matches the filter.
+     * @param {AttachmentFindUniqueArgs} args - Arguments to find a Attachment
+     * @example
+     * // Get one Attachment
+     * const attachment = await prisma.attachment.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AttachmentFindUniqueArgs>(args: SelectSubset<T, AttachmentFindUniqueArgs<ExtArgs>>): Prisma__AttachmentClient<$Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Attachment that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AttachmentFindUniqueOrThrowArgs} args - Arguments to find a Attachment
+     * @example
+     * // Get one Attachment
+     * const attachment = await prisma.attachment.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AttachmentFindUniqueOrThrowArgs>(args: SelectSubset<T, AttachmentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AttachmentClient<$Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Attachment that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AttachmentFindFirstArgs} args - Arguments to find a Attachment
+     * @example
+     * // Get one Attachment
+     * const attachment = await prisma.attachment.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AttachmentFindFirstArgs>(args?: SelectSubset<T, AttachmentFindFirstArgs<ExtArgs>>): Prisma__AttachmentClient<$Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Attachment that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AttachmentFindFirstOrThrowArgs} args - Arguments to find a Attachment
+     * @example
+     * // Get one Attachment
+     * const attachment = await prisma.attachment.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AttachmentFindFirstOrThrowArgs>(args?: SelectSubset<T, AttachmentFindFirstOrThrowArgs<ExtArgs>>): Prisma__AttachmentClient<$Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Attachments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AttachmentFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Attachments
+     * const attachments = await prisma.attachment.findMany()
+     * 
+     * // Get first 10 Attachments
+     * const attachments = await prisma.attachment.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const attachmentWithIdOnly = await prisma.attachment.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AttachmentFindManyArgs>(args?: SelectSubset<T, AttachmentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Attachment.
+     * @param {AttachmentCreateArgs} args - Arguments to create a Attachment.
+     * @example
+     * // Create one Attachment
+     * const Attachment = await prisma.attachment.create({
+     *   data: {
+     *     // ... data to create a Attachment
+     *   }
+     * })
+     * 
+     */
+    create<T extends AttachmentCreateArgs>(args: SelectSubset<T, AttachmentCreateArgs<ExtArgs>>): Prisma__AttachmentClient<$Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Attachments.
+     * @param {AttachmentCreateManyArgs} args - Arguments to create many Attachments.
+     * @example
+     * // Create many Attachments
+     * const attachment = await prisma.attachment.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AttachmentCreateManyArgs>(args?: SelectSubset<T, AttachmentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Attachments and returns the data saved in the database.
+     * @param {AttachmentCreateManyAndReturnArgs} args - Arguments to create many Attachments.
+     * @example
+     * // Create many Attachments
+     * const attachment = await prisma.attachment.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Attachments and only return the `id`
+     * const attachmentWithIdOnly = await prisma.attachment.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AttachmentCreateManyAndReturnArgs>(args?: SelectSubset<T, AttachmentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Attachment.
+     * @param {AttachmentDeleteArgs} args - Arguments to delete one Attachment.
+     * @example
+     * // Delete one Attachment
+     * const Attachment = await prisma.attachment.delete({
+     *   where: {
+     *     // ... filter to delete one Attachment
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AttachmentDeleteArgs>(args: SelectSubset<T, AttachmentDeleteArgs<ExtArgs>>): Prisma__AttachmentClient<$Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Attachment.
+     * @param {AttachmentUpdateArgs} args - Arguments to update one Attachment.
+     * @example
+     * // Update one Attachment
+     * const attachment = await prisma.attachment.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AttachmentUpdateArgs>(args: SelectSubset<T, AttachmentUpdateArgs<ExtArgs>>): Prisma__AttachmentClient<$Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Attachments.
+     * @param {AttachmentDeleteManyArgs} args - Arguments to filter Attachments to delete.
+     * @example
+     * // Delete a few Attachments
+     * const { count } = await prisma.attachment.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AttachmentDeleteManyArgs>(args?: SelectSubset<T, AttachmentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Attachments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AttachmentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Attachments
+     * const attachment = await prisma.attachment.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AttachmentUpdateManyArgs>(args: SelectSubset<T, AttachmentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Attachments and returns the data updated in the database.
+     * @param {AttachmentUpdateManyAndReturnArgs} args - Arguments to update many Attachments.
+     * @example
+     * // Update many Attachments
+     * const attachment = await prisma.attachment.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Attachments and only return the `id`
+     * const attachmentWithIdOnly = await prisma.attachment.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AttachmentUpdateManyAndReturnArgs>(args: SelectSubset<T, AttachmentUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Attachment.
+     * @param {AttachmentUpsertArgs} args - Arguments to update or create a Attachment.
+     * @example
+     * // Update or create a Attachment
+     * const attachment = await prisma.attachment.upsert({
+     *   create: {
+     *     // ... data to create a Attachment
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Attachment we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AttachmentUpsertArgs>(args: SelectSubset<T, AttachmentUpsertArgs<ExtArgs>>): Prisma__AttachmentClient<$Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Attachments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AttachmentCountArgs} args - Arguments to filter Attachments to count.
+     * @example
+     * // Count the number of Attachments
+     * const count = await prisma.attachment.count({
+     *   where: {
+     *     // ... the filter for the Attachments we want to count
+     *   }
+     * })
+    **/
+    count<T extends AttachmentCountArgs>(
+      args?: Subset<T, AttachmentCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AttachmentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Attachment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AttachmentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AttachmentAggregateArgs>(args: Subset<T, AttachmentAggregateArgs>): Prisma.PrismaPromise<GetAttachmentAggregateType<T>>
+
+    /**
+     * Group by Attachment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AttachmentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AttachmentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AttachmentGroupByArgs['orderBy'] }
+        : { orderBy?: AttachmentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AttachmentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAttachmentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Attachment model
+   */
+  readonly fields: AttachmentFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Attachment.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AttachmentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    announcement<T extends AnnouncementDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AnnouncementDefaultArgs<ExtArgs>>): Prisma__AnnouncementClient<$Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Attachment model
+   */
+  interface AttachmentFieldRefs {
+    readonly id: FieldRef<"Attachment", 'String'>
+    readonly url: FieldRef<"Attachment", 'String'>
+    readonly filename: FieldRef<"Attachment", 'String'>
+    readonly announcementId: FieldRef<"Attachment", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Attachment findUnique
+   */
+  export type AttachmentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attachment
+     */
+    select?: AttachmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Attachment
+     */
+    omit?: AttachmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AttachmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Attachment to fetch.
+     */
+    where: AttachmentWhereUniqueInput
+  }
+
+  /**
+   * Attachment findUniqueOrThrow
+   */
+  export type AttachmentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attachment
+     */
+    select?: AttachmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Attachment
+     */
+    omit?: AttachmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AttachmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Attachment to fetch.
+     */
+    where: AttachmentWhereUniqueInput
+  }
+
+  /**
+   * Attachment findFirst
+   */
+  export type AttachmentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attachment
+     */
+    select?: AttachmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Attachment
+     */
+    omit?: AttachmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AttachmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Attachment to fetch.
+     */
+    where?: AttachmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Attachments to fetch.
+     */
+    orderBy?: AttachmentOrderByWithRelationInput | AttachmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Attachments.
+     */
+    cursor?: AttachmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Attachments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Attachments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Attachments.
+     */
+    distinct?: AttachmentScalarFieldEnum | AttachmentScalarFieldEnum[]
+  }
+
+  /**
+   * Attachment findFirstOrThrow
+   */
+  export type AttachmentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attachment
+     */
+    select?: AttachmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Attachment
+     */
+    omit?: AttachmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AttachmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Attachment to fetch.
+     */
+    where?: AttachmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Attachments to fetch.
+     */
+    orderBy?: AttachmentOrderByWithRelationInput | AttachmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Attachments.
+     */
+    cursor?: AttachmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Attachments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Attachments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Attachments.
+     */
+    distinct?: AttachmentScalarFieldEnum | AttachmentScalarFieldEnum[]
+  }
+
+  /**
+   * Attachment findMany
+   */
+  export type AttachmentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attachment
+     */
+    select?: AttachmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Attachment
+     */
+    omit?: AttachmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AttachmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Attachments to fetch.
+     */
+    where?: AttachmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Attachments to fetch.
+     */
+    orderBy?: AttachmentOrderByWithRelationInput | AttachmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Attachments.
+     */
+    cursor?: AttachmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Attachments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Attachments.
+     */
+    skip?: number
+    distinct?: AttachmentScalarFieldEnum | AttachmentScalarFieldEnum[]
+  }
+
+  /**
+   * Attachment create
+   */
+  export type AttachmentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attachment
+     */
+    select?: AttachmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Attachment
+     */
+    omit?: AttachmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AttachmentInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Attachment.
+     */
+    data: XOR<AttachmentCreateInput, AttachmentUncheckedCreateInput>
+  }
+
+  /**
+   * Attachment createMany
+   */
+  export type AttachmentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Attachments.
+     */
+    data: AttachmentCreateManyInput | AttachmentCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Attachment createManyAndReturn
+   */
+  export type AttachmentCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attachment
+     */
+    select?: AttachmentSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Attachment
+     */
+    omit?: AttachmentOmit<ExtArgs> | null
+    /**
+     * The data used to create many Attachments.
+     */
+    data: AttachmentCreateManyInput | AttachmentCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AttachmentIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Attachment update
+   */
+  export type AttachmentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attachment
+     */
+    select?: AttachmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Attachment
+     */
+    omit?: AttachmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AttachmentInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Attachment.
+     */
+    data: XOR<AttachmentUpdateInput, AttachmentUncheckedUpdateInput>
+    /**
+     * Choose, which Attachment to update.
+     */
+    where: AttachmentWhereUniqueInput
+  }
+
+  /**
+   * Attachment updateMany
+   */
+  export type AttachmentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Attachments.
+     */
+    data: XOR<AttachmentUpdateManyMutationInput, AttachmentUncheckedUpdateManyInput>
+    /**
+     * Filter which Attachments to update
+     */
+    where?: AttachmentWhereInput
+    /**
+     * Limit how many Attachments to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Attachment updateManyAndReturn
+   */
+  export type AttachmentUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attachment
+     */
+    select?: AttachmentSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Attachment
+     */
+    omit?: AttachmentOmit<ExtArgs> | null
+    /**
+     * The data used to update Attachments.
+     */
+    data: XOR<AttachmentUpdateManyMutationInput, AttachmentUncheckedUpdateManyInput>
+    /**
+     * Filter which Attachments to update
+     */
+    where?: AttachmentWhereInput
+    /**
+     * Limit how many Attachments to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AttachmentIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Attachment upsert
+   */
+  export type AttachmentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attachment
+     */
+    select?: AttachmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Attachment
+     */
+    omit?: AttachmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AttachmentInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Attachment to update in case it exists.
+     */
+    where: AttachmentWhereUniqueInput
+    /**
+     * In case the Attachment found by the `where` argument doesn't exist, create a new Attachment with this data.
+     */
+    create: XOR<AttachmentCreateInput, AttachmentUncheckedCreateInput>
+    /**
+     * In case the Attachment was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AttachmentUpdateInput, AttachmentUncheckedUpdateInput>
+  }
+
+  /**
+   * Attachment delete
+   */
+  export type AttachmentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attachment
+     */
+    select?: AttachmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Attachment
+     */
+    omit?: AttachmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AttachmentInclude<ExtArgs> | null
+    /**
+     * Filter which Attachment to delete.
+     */
+    where: AttachmentWhereUniqueInput
+  }
+
+  /**
+   * Attachment deleteMany
+   */
+  export type AttachmentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Attachments to delete
+     */
+    where?: AttachmentWhereInput
+    /**
+     * Limit how many Attachments to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Attachment without action
+   */
+  export type AttachmentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attachment
+     */
+    select?: AttachmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Attachment
+     */
+    omit?: AttachmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AttachmentInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AnnouncementRecipient
+   */
+
+  export type AggregateAnnouncementRecipient = {
+    _count: AnnouncementRecipientCountAggregateOutputType | null
+    _avg: AnnouncementRecipientAvgAggregateOutputType | null
+    _sum: AnnouncementRecipientSumAggregateOutputType | null
+    _min: AnnouncementRecipientMinAggregateOutputType | null
+    _max: AnnouncementRecipientMaxAggregateOutputType | null
+  }
+
+  export type AnnouncementRecipientAvgAggregateOutputType = {
+    floor: number | null
+  }
+
+  export type AnnouncementRecipientSumAggregateOutputType = {
+    floor: number | null
+  }
+
+  export type AnnouncementRecipientMinAggregateOutputType = {
+    id: string | null
+    announcementId: string | null
+    userId: string | null
+    roomId: string | null
+    floor: number | null
+    forEveryone: boolean | null
+  }
+
+  export type AnnouncementRecipientMaxAggregateOutputType = {
+    id: string | null
+    announcementId: string | null
+    userId: string | null
+    roomId: string | null
+    floor: number | null
+    forEveryone: boolean | null
+  }
+
+  export type AnnouncementRecipientCountAggregateOutputType = {
+    id: number
+    announcementId: number
+    userId: number
+    roomId: number
+    floor: number
+    forEveryone: number
+    _all: number
+  }
+
+
+  export type AnnouncementRecipientAvgAggregateInputType = {
+    floor?: true
+  }
+
+  export type AnnouncementRecipientSumAggregateInputType = {
+    floor?: true
+  }
+
+  export type AnnouncementRecipientMinAggregateInputType = {
+    id?: true
+    announcementId?: true
+    userId?: true
+    roomId?: true
+    floor?: true
+    forEveryone?: true
+  }
+
+  export type AnnouncementRecipientMaxAggregateInputType = {
+    id?: true
+    announcementId?: true
+    userId?: true
+    roomId?: true
+    floor?: true
+    forEveryone?: true
+  }
+
+  export type AnnouncementRecipientCountAggregateInputType = {
+    id?: true
+    announcementId?: true
+    userId?: true
+    roomId?: true
+    floor?: true
+    forEveryone?: true
+    _all?: true
+  }
+
+  export type AnnouncementRecipientAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AnnouncementRecipient to aggregate.
+     */
+    where?: AnnouncementRecipientWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AnnouncementRecipients to fetch.
+     */
+    orderBy?: AnnouncementRecipientOrderByWithRelationInput | AnnouncementRecipientOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AnnouncementRecipientWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AnnouncementRecipients from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AnnouncementRecipients.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AnnouncementRecipients
+    **/
+    _count?: true | AnnouncementRecipientCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AnnouncementRecipientAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AnnouncementRecipientSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AnnouncementRecipientMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AnnouncementRecipientMaxAggregateInputType
+  }
+
+  export type GetAnnouncementRecipientAggregateType<T extends AnnouncementRecipientAggregateArgs> = {
+        [P in keyof T & keyof AggregateAnnouncementRecipient]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAnnouncementRecipient[P]>
+      : GetScalarType<T[P], AggregateAnnouncementRecipient[P]>
+  }
+
+
+
+
+  export type AnnouncementRecipientGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AnnouncementRecipientWhereInput
+    orderBy?: AnnouncementRecipientOrderByWithAggregationInput | AnnouncementRecipientOrderByWithAggregationInput[]
+    by: AnnouncementRecipientScalarFieldEnum[] | AnnouncementRecipientScalarFieldEnum
+    having?: AnnouncementRecipientScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AnnouncementRecipientCountAggregateInputType | true
+    _avg?: AnnouncementRecipientAvgAggregateInputType
+    _sum?: AnnouncementRecipientSumAggregateInputType
+    _min?: AnnouncementRecipientMinAggregateInputType
+    _max?: AnnouncementRecipientMaxAggregateInputType
+  }
+
+  export type AnnouncementRecipientGroupByOutputType = {
+    id: string
+    announcementId: string
+    userId: string | null
+    roomId: string | null
+    floor: number | null
+    forEveryone: boolean
+    _count: AnnouncementRecipientCountAggregateOutputType | null
+    _avg: AnnouncementRecipientAvgAggregateOutputType | null
+    _sum: AnnouncementRecipientSumAggregateOutputType | null
+    _min: AnnouncementRecipientMinAggregateOutputType | null
+    _max: AnnouncementRecipientMaxAggregateOutputType | null
+  }
+
+  type GetAnnouncementRecipientGroupByPayload<T extends AnnouncementRecipientGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AnnouncementRecipientGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AnnouncementRecipientGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AnnouncementRecipientGroupByOutputType[P]>
+            : GetScalarType<T[P], AnnouncementRecipientGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AnnouncementRecipientSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    announcementId?: boolean
+    userId?: boolean
+    roomId?: boolean
+    floor?: boolean
+    forEveryone?: boolean
+    announcement?: boolean | AnnouncementDefaultArgs<ExtArgs>
+    user?: boolean | AnnouncementRecipient$userArgs<ExtArgs>
+    room?: boolean | AnnouncementRecipient$roomArgs<ExtArgs>
+  }, ExtArgs["result"]["announcementRecipient"]>
+
+  export type AnnouncementRecipientSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    announcementId?: boolean
+    userId?: boolean
+    roomId?: boolean
+    floor?: boolean
+    forEveryone?: boolean
+    announcement?: boolean | AnnouncementDefaultArgs<ExtArgs>
+    user?: boolean | AnnouncementRecipient$userArgs<ExtArgs>
+    room?: boolean | AnnouncementRecipient$roomArgs<ExtArgs>
+  }, ExtArgs["result"]["announcementRecipient"]>
+
+  export type AnnouncementRecipientSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    announcementId?: boolean
+    userId?: boolean
+    roomId?: boolean
+    floor?: boolean
+    forEveryone?: boolean
+    announcement?: boolean | AnnouncementDefaultArgs<ExtArgs>
+    user?: boolean | AnnouncementRecipient$userArgs<ExtArgs>
+    room?: boolean | AnnouncementRecipient$roomArgs<ExtArgs>
+  }, ExtArgs["result"]["announcementRecipient"]>
+
+  export type AnnouncementRecipientSelectScalar = {
+    id?: boolean
+    announcementId?: boolean
+    userId?: boolean
+    roomId?: boolean
+    floor?: boolean
+    forEveryone?: boolean
+  }
+
+  export type AnnouncementRecipientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "announcementId" | "userId" | "roomId" | "floor" | "forEveryone", ExtArgs["result"]["announcementRecipient"]>
+  export type AnnouncementRecipientInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    announcement?: boolean | AnnouncementDefaultArgs<ExtArgs>
+    user?: boolean | AnnouncementRecipient$userArgs<ExtArgs>
+    room?: boolean | AnnouncementRecipient$roomArgs<ExtArgs>
+  }
+  export type AnnouncementRecipientIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    announcement?: boolean | AnnouncementDefaultArgs<ExtArgs>
+    user?: boolean | AnnouncementRecipient$userArgs<ExtArgs>
+    room?: boolean | AnnouncementRecipient$roomArgs<ExtArgs>
+  }
+  export type AnnouncementRecipientIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    announcement?: boolean | AnnouncementDefaultArgs<ExtArgs>
+    user?: boolean | AnnouncementRecipient$userArgs<ExtArgs>
+    room?: boolean | AnnouncementRecipient$roomArgs<ExtArgs>
+  }
+
+  export type $AnnouncementRecipientPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AnnouncementRecipient"
+    objects: {
+      announcement: Prisma.$AnnouncementPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs> | null
+      room: Prisma.$RoomPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      announcementId: string
+      userId: string | null
+      roomId: string | null
+      floor: number | null
+      forEveryone: boolean
+    }, ExtArgs["result"]["announcementRecipient"]>
+    composites: {}
+  }
+
+  type AnnouncementRecipientGetPayload<S extends boolean | null | undefined | AnnouncementRecipientDefaultArgs> = $Result.GetResult<Prisma.$AnnouncementRecipientPayload, S>
+
+  type AnnouncementRecipientCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AnnouncementRecipientFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AnnouncementRecipientCountAggregateInputType | true
+    }
+
+  export interface AnnouncementRecipientDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AnnouncementRecipient'], meta: { name: 'AnnouncementRecipient' } }
+    /**
+     * Find zero or one AnnouncementRecipient that matches the filter.
+     * @param {AnnouncementRecipientFindUniqueArgs} args - Arguments to find a AnnouncementRecipient
+     * @example
+     * // Get one AnnouncementRecipient
+     * const announcementRecipient = await prisma.announcementRecipient.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AnnouncementRecipientFindUniqueArgs>(args: SelectSubset<T, AnnouncementRecipientFindUniqueArgs<ExtArgs>>): Prisma__AnnouncementRecipientClient<$Result.GetResult<Prisma.$AnnouncementRecipientPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AnnouncementRecipient that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AnnouncementRecipientFindUniqueOrThrowArgs} args - Arguments to find a AnnouncementRecipient
+     * @example
+     * // Get one AnnouncementRecipient
+     * const announcementRecipient = await prisma.announcementRecipient.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AnnouncementRecipientFindUniqueOrThrowArgs>(args: SelectSubset<T, AnnouncementRecipientFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AnnouncementRecipientClient<$Result.GetResult<Prisma.$AnnouncementRecipientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AnnouncementRecipient that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnouncementRecipientFindFirstArgs} args - Arguments to find a AnnouncementRecipient
+     * @example
+     * // Get one AnnouncementRecipient
+     * const announcementRecipient = await prisma.announcementRecipient.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AnnouncementRecipientFindFirstArgs>(args?: SelectSubset<T, AnnouncementRecipientFindFirstArgs<ExtArgs>>): Prisma__AnnouncementRecipientClient<$Result.GetResult<Prisma.$AnnouncementRecipientPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AnnouncementRecipient that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnouncementRecipientFindFirstOrThrowArgs} args - Arguments to find a AnnouncementRecipient
+     * @example
+     * // Get one AnnouncementRecipient
+     * const announcementRecipient = await prisma.announcementRecipient.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AnnouncementRecipientFindFirstOrThrowArgs>(args?: SelectSubset<T, AnnouncementRecipientFindFirstOrThrowArgs<ExtArgs>>): Prisma__AnnouncementRecipientClient<$Result.GetResult<Prisma.$AnnouncementRecipientPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AnnouncementRecipients that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnouncementRecipientFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AnnouncementRecipients
+     * const announcementRecipients = await prisma.announcementRecipient.findMany()
+     * 
+     * // Get first 10 AnnouncementRecipients
+     * const announcementRecipients = await prisma.announcementRecipient.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const announcementRecipientWithIdOnly = await prisma.announcementRecipient.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AnnouncementRecipientFindManyArgs>(args?: SelectSubset<T, AnnouncementRecipientFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnouncementRecipientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AnnouncementRecipient.
+     * @param {AnnouncementRecipientCreateArgs} args - Arguments to create a AnnouncementRecipient.
+     * @example
+     * // Create one AnnouncementRecipient
+     * const AnnouncementRecipient = await prisma.announcementRecipient.create({
+     *   data: {
+     *     // ... data to create a AnnouncementRecipient
+     *   }
+     * })
+     * 
+     */
+    create<T extends AnnouncementRecipientCreateArgs>(args: SelectSubset<T, AnnouncementRecipientCreateArgs<ExtArgs>>): Prisma__AnnouncementRecipientClient<$Result.GetResult<Prisma.$AnnouncementRecipientPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AnnouncementRecipients.
+     * @param {AnnouncementRecipientCreateManyArgs} args - Arguments to create many AnnouncementRecipients.
+     * @example
+     * // Create many AnnouncementRecipients
+     * const announcementRecipient = await prisma.announcementRecipient.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AnnouncementRecipientCreateManyArgs>(args?: SelectSubset<T, AnnouncementRecipientCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AnnouncementRecipients and returns the data saved in the database.
+     * @param {AnnouncementRecipientCreateManyAndReturnArgs} args - Arguments to create many AnnouncementRecipients.
+     * @example
+     * // Create many AnnouncementRecipients
+     * const announcementRecipient = await prisma.announcementRecipient.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AnnouncementRecipients and only return the `id`
+     * const announcementRecipientWithIdOnly = await prisma.announcementRecipient.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AnnouncementRecipientCreateManyAndReturnArgs>(args?: SelectSubset<T, AnnouncementRecipientCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnouncementRecipientPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AnnouncementRecipient.
+     * @param {AnnouncementRecipientDeleteArgs} args - Arguments to delete one AnnouncementRecipient.
+     * @example
+     * // Delete one AnnouncementRecipient
+     * const AnnouncementRecipient = await prisma.announcementRecipient.delete({
+     *   where: {
+     *     // ... filter to delete one AnnouncementRecipient
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AnnouncementRecipientDeleteArgs>(args: SelectSubset<T, AnnouncementRecipientDeleteArgs<ExtArgs>>): Prisma__AnnouncementRecipientClient<$Result.GetResult<Prisma.$AnnouncementRecipientPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AnnouncementRecipient.
+     * @param {AnnouncementRecipientUpdateArgs} args - Arguments to update one AnnouncementRecipient.
+     * @example
+     * // Update one AnnouncementRecipient
+     * const announcementRecipient = await prisma.announcementRecipient.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AnnouncementRecipientUpdateArgs>(args: SelectSubset<T, AnnouncementRecipientUpdateArgs<ExtArgs>>): Prisma__AnnouncementRecipientClient<$Result.GetResult<Prisma.$AnnouncementRecipientPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AnnouncementRecipients.
+     * @param {AnnouncementRecipientDeleteManyArgs} args - Arguments to filter AnnouncementRecipients to delete.
+     * @example
+     * // Delete a few AnnouncementRecipients
+     * const { count } = await prisma.announcementRecipient.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AnnouncementRecipientDeleteManyArgs>(args?: SelectSubset<T, AnnouncementRecipientDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AnnouncementRecipients.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnouncementRecipientUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AnnouncementRecipients
+     * const announcementRecipient = await prisma.announcementRecipient.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AnnouncementRecipientUpdateManyArgs>(args: SelectSubset<T, AnnouncementRecipientUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AnnouncementRecipients and returns the data updated in the database.
+     * @param {AnnouncementRecipientUpdateManyAndReturnArgs} args - Arguments to update many AnnouncementRecipients.
+     * @example
+     * // Update many AnnouncementRecipients
+     * const announcementRecipient = await prisma.announcementRecipient.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AnnouncementRecipients and only return the `id`
+     * const announcementRecipientWithIdOnly = await prisma.announcementRecipient.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AnnouncementRecipientUpdateManyAndReturnArgs>(args: SelectSubset<T, AnnouncementRecipientUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnouncementRecipientPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AnnouncementRecipient.
+     * @param {AnnouncementRecipientUpsertArgs} args - Arguments to update or create a AnnouncementRecipient.
+     * @example
+     * // Update or create a AnnouncementRecipient
+     * const announcementRecipient = await prisma.announcementRecipient.upsert({
+     *   create: {
+     *     // ... data to create a AnnouncementRecipient
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AnnouncementRecipient we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AnnouncementRecipientUpsertArgs>(args: SelectSubset<T, AnnouncementRecipientUpsertArgs<ExtArgs>>): Prisma__AnnouncementRecipientClient<$Result.GetResult<Prisma.$AnnouncementRecipientPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AnnouncementRecipients.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnouncementRecipientCountArgs} args - Arguments to filter AnnouncementRecipients to count.
+     * @example
+     * // Count the number of AnnouncementRecipients
+     * const count = await prisma.announcementRecipient.count({
+     *   where: {
+     *     // ... the filter for the AnnouncementRecipients we want to count
+     *   }
+     * })
+    **/
+    count<T extends AnnouncementRecipientCountArgs>(
+      args?: Subset<T, AnnouncementRecipientCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AnnouncementRecipientCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AnnouncementRecipient.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnouncementRecipientAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AnnouncementRecipientAggregateArgs>(args: Subset<T, AnnouncementRecipientAggregateArgs>): Prisma.PrismaPromise<GetAnnouncementRecipientAggregateType<T>>
+
+    /**
+     * Group by AnnouncementRecipient.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnouncementRecipientGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AnnouncementRecipientGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AnnouncementRecipientGroupByArgs['orderBy'] }
+        : { orderBy?: AnnouncementRecipientGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AnnouncementRecipientGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAnnouncementRecipientGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AnnouncementRecipient model
+   */
+  readonly fields: AnnouncementRecipientFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AnnouncementRecipient.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AnnouncementRecipientClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    announcement<T extends AnnouncementDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AnnouncementDefaultArgs<ExtArgs>>): Prisma__AnnouncementClient<$Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends AnnouncementRecipient$userArgs<ExtArgs> = {}>(args?: Subset<T, AnnouncementRecipient$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    room<T extends AnnouncementRecipient$roomArgs<ExtArgs> = {}>(args?: Subset<T, AnnouncementRecipient$roomArgs<ExtArgs>>): Prisma__RoomClient<$Result.GetResult<Prisma.$RoomPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AnnouncementRecipient model
+   */
+  interface AnnouncementRecipientFieldRefs {
+    readonly id: FieldRef<"AnnouncementRecipient", 'String'>
+    readonly announcementId: FieldRef<"AnnouncementRecipient", 'String'>
+    readonly userId: FieldRef<"AnnouncementRecipient", 'String'>
+    readonly roomId: FieldRef<"AnnouncementRecipient", 'String'>
+    readonly floor: FieldRef<"AnnouncementRecipient", 'Int'>
+    readonly forEveryone: FieldRef<"AnnouncementRecipient", 'Boolean'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AnnouncementRecipient findUnique
+   */
+  export type AnnouncementRecipientFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementRecipient
+     */
+    select?: AnnouncementRecipientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementRecipient
+     */
+    omit?: AnnouncementRecipientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementRecipientInclude<ExtArgs> | null
+    /**
+     * Filter, which AnnouncementRecipient to fetch.
+     */
+    where: AnnouncementRecipientWhereUniqueInput
+  }
+
+  /**
+   * AnnouncementRecipient findUniqueOrThrow
+   */
+  export type AnnouncementRecipientFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementRecipient
+     */
+    select?: AnnouncementRecipientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementRecipient
+     */
+    omit?: AnnouncementRecipientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementRecipientInclude<ExtArgs> | null
+    /**
+     * Filter, which AnnouncementRecipient to fetch.
+     */
+    where: AnnouncementRecipientWhereUniqueInput
+  }
+
+  /**
+   * AnnouncementRecipient findFirst
+   */
+  export type AnnouncementRecipientFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementRecipient
+     */
+    select?: AnnouncementRecipientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementRecipient
+     */
+    omit?: AnnouncementRecipientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementRecipientInclude<ExtArgs> | null
+    /**
+     * Filter, which AnnouncementRecipient to fetch.
+     */
+    where?: AnnouncementRecipientWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AnnouncementRecipients to fetch.
+     */
+    orderBy?: AnnouncementRecipientOrderByWithRelationInput | AnnouncementRecipientOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AnnouncementRecipients.
+     */
+    cursor?: AnnouncementRecipientWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AnnouncementRecipients from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AnnouncementRecipients.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AnnouncementRecipients.
+     */
+    distinct?: AnnouncementRecipientScalarFieldEnum | AnnouncementRecipientScalarFieldEnum[]
+  }
+
+  /**
+   * AnnouncementRecipient findFirstOrThrow
+   */
+  export type AnnouncementRecipientFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementRecipient
+     */
+    select?: AnnouncementRecipientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementRecipient
+     */
+    omit?: AnnouncementRecipientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementRecipientInclude<ExtArgs> | null
+    /**
+     * Filter, which AnnouncementRecipient to fetch.
+     */
+    where?: AnnouncementRecipientWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AnnouncementRecipients to fetch.
+     */
+    orderBy?: AnnouncementRecipientOrderByWithRelationInput | AnnouncementRecipientOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AnnouncementRecipients.
+     */
+    cursor?: AnnouncementRecipientWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AnnouncementRecipients from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AnnouncementRecipients.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AnnouncementRecipients.
+     */
+    distinct?: AnnouncementRecipientScalarFieldEnum | AnnouncementRecipientScalarFieldEnum[]
+  }
+
+  /**
+   * AnnouncementRecipient findMany
+   */
+  export type AnnouncementRecipientFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementRecipient
+     */
+    select?: AnnouncementRecipientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementRecipient
+     */
+    omit?: AnnouncementRecipientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementRecipientInclude<ExtArgs> | null
+    /**
+     * Filter, which AnnouncementRecipients to fetch.
+     */
+    where?: AnnouncementRecipientWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AnnouncementRecipients to fetch.
+     */
+    orderBy?: AnnouncementRecipientOrderByWithRelationInput | AnnouncementRecipientOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AnnouncementRecipients.
+     */
+    cursor?: AnnouncementRecipientWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AnnouncementRecipients from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AnnouncementRecipients.
+     */
+    skip?: number
+    distinct?: AnnouncementRecipientScalarFieldEnum | AnnouncementRecipientScalarFieldEnum[]
+  }
+
+  /**
+   * AnnouncementRecipient create
+   */
+  export type AnnouncementRecipientCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementRecipient
+     */
+    select?: AnnouncementRecipientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementRecipient
+     */
+    omit?: AnnouncementRecipientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementRecipientInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AnnouncementRecipient.
+     */
+    data: XOR<AnnouncementRecipientCreateInput, AnnouncementRecipientUncheckedCreateInput>
+  }
+
+  /**
+   * AnnouncementRecipient createMany
+   */
+  export type AnnouncementRecipientCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AnnouncementRecipients.
+     */
+    data: AnnouncementRecipientCreateManyInput | AnnouncementRecipientCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AnnouncementRecipient createManyAndReturn
+   */
+  export type AnnouncementRecipientCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementRecipient
+     */
+    select?: AnnouncementRecipientSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementRecipient
+     */
+    omit?: AnnouncementRecipientOmit<ExtArgs> | null
+    /**
+     * The data used to create many AnnouncementRecipients.
+     */
+    data: AnnouncementRecipientCreateManyInput | AnnouncementRecipientCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementRecipientIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AnnouncementRecipient update
+   */
+  export type AnnouncementRecipientUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementRecipient
+     */
+    select?: AnnouncementRecipientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementRecipient
+     */
+    omit?: AnnouncementRecipientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementRecipientInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AnnouncementRecipient.
+     */
+    data: XOR<AnnouncementRecipientUpdateInput, AnnouncementRecipientUncheckedUpdateInput>
+    /**
+     * Choose, which AnnouncementRecipient to update.
+     */
+    where: AnnouncementRecipientWhereUniqueInput
+  }
+
+  /**
+   * AnnouncementRecipient updateMany
+   */
+  export type AnnouncementRecipientUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AnnouncementRecipients.
+     */
+    data: XOR<AnnouncementRecipientUpdateManyMutationInput, AnnouncementRecipientUncheckedUpdateManyInput>
+    /**
+     * Filter which AnnouncementRecipients to update
+     */
+    where?: AnnouncementRecipientWhereInput
+    /**
+     * Limit how many AnnouncementRecipients to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AnnouncementRecipient updateManyAndReturn
+   */
+  export type AnnouncementRecipientUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementRecipient
+     */
+    select?: AnnouncementRecipientSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementRecipient
+     */
+    omit?: AnnouncementRecipientOmit<ExtArgs> | null
+    /**
+     * The data used to update AnnouncementRecipients.
+     */
+    data: XOR<AnnouncementRecipientUpdateManyMutationInput, AnnouncementRecipientUncheckedUpdateManyInput>
+    /**
+     * Filter which AnnouncementRecipients to update
+     */
+    where?: AnnouncementRecipientWhereInput
+    /**
+     * Limit how many AnnouncementRecipients to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementRecipientIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AnnouncementRecipient upsert
+   */
+  export type AnnouncementRecipientUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementRecipient
+     */
+    select?: AnnouncementRecipientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementRecipient
+     */
+    omit?: AnnouncementRecipientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementRecipientInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AnnouncementRecipient to update in case it exists.
+     */
+    where: AnnouncementRecipientWhereUniqueInput
+    /**
+     * In case the AnnouncementRecipient found by the `where` argument doesn't exist, create a new AnnouncementRecipient with this data.
+     */
+    create: XOR<AnnouncementRecipientCreateInput, AnnouncementRecipientUncheckedCreateInput>
+    /**
+     * In case the AnnouncementRecipient was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AnnouncementRecipientUpdateInput, AnnouncementRecipientUncheckedUpdateInput>
+  }
+
+  /**
+   * AnnouncementRecipient delete
+   */
+  export type AnnouncementRecipientDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementRecipient
+     */
+    select?: AnnouncementRecipientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementRecipient
+     */
+    omit?: AnnouncementRecipientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementRecipientInclude<ExtArgs> | null
+    /**
+     * Filter which AnnouncementRecipient to delete.
+     */
+    where: AnnouncementRecipientWhereUniqueInput
+  }
+
+  /**
+   * AnnouncementRecipient deleteMany
+   */
+  export type AnnouncementRecipientDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AnnouncementRecipients to delete
+     */
+    where?: AnnouncementRecipientWhereInput
+    /**
+     * Limit how many AnnouncementRecipients to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AnnouncementRecipient.user
+   */
+  export type AnnouncementRecipient$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * AnnouncementRecipient.room
+   */
+  export type AnnouncementRecipient$roomArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Room
+     */
+    select?: RoomSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Room
+     */
+    omit?: RoomOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomInclude<ExtArgs> | null
+    where?: RoomWhereInput
+  }
+
+  /**
+   * AnnouncementRecipient without action
+   */
+  export type AnnouncementRecipientDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementRecipient
+     */
+    select?: AnnouncementRecipientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementRecipient
+     */
+    omit?: AnnouncementRecipientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementRecipientInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -10831,6 +14601,41 @@ export namespace Prisma {
   };
 
   export type PriceScalarFieldEnum = (typeof PriceScalarFieldEnum)[keyof typeof PriceScalarFieldEnum]
+
+
+  export const AnnouncementScalarFieldEnum: {
+    id: 'id',
+    title: 'title',
+    content: 'content',
+    postedAt: 'postedAt',
+    expiresAt: 'expiresAt',
+    isHidden: 'isHidden',
+    authorId: 'authorId'
+  };
+
+  export type AnnouncementScalarFieldEnum = (typeof AnnouncementScalarFieldEnum)[keyof typeof AnnouncementScalarFieldEnum]
+
+
+  export const AttachmentScalarFieldEnum: {
+    id: 'id',
+    url: 'url',
+    filename: 'filename',
+    announcementId: 'announcementId'
+  };
+
+  export type AttachmentScalarFieldEnum = (typeof AttachmentScalarFieldEnum)[keyof typeof AttachmentScalarFieldEnum]
+
+
+  export const AnnouncementRecipientScalarFieldEnum: {
+    id: 'id',
+    announcementId: 'announcementId',
+    userId: 'userId',
+    roomId: 'roomId',
+    floor: 'floor',
+    forEveryone: 'forEveryone'
+  };
+
+  export type AnnouncementRecipientScalarFieldEnum = (typeof AnnouncementRecipientScalarFieldEnum)[keyof typeof AnnouncementRecipientScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -11023,6 +14828,8 @@ export namespace Prisma {
     dormitory?: XOR<DormitoryNullableScalarRelationFilter, DormitoryWhereInput> | null
     managedDormitories?: DormitoryListRelationFilter
     room?: XOR<RoomNullableScalarRelationFilter, RoomWhereInput> | null
+    announcements?: AnnouncementListRelationFilter
+    announcementRecipients?: AnnouncementRecipientListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -11047,6 +14854,8 @@ export namespace Prisma {
     dormitory?: DormitoryOrderByWithRelationInput
     managedDormitories?: DormitoryOrderByRelationAggregateInput
     room?: RoomOrderByWithRelationInput
+    announcements?: AnnouncementOrderByRelationAggregateInput
+    announcementRecipients?: AnnouncementRecipientOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -11074,6 +14883,8 @@ export namespace Prisma {
     dormitory?: XOR<DormitoryNullableScalarRelationFilter, DormitoryWhereInput> | null
     managedDormitories?: DormitoryListRelationFilter
     room?: XOR<RoomNullableScalarRelationFilter, RoomWhereInput> | null
+    announcements?: AnnouncementListRelationFilter
+    announcementRecipients?: AnnouncementRecipientListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -11399,6 +15210,7 @@ export namespace Prisma {
     dormitoryId?: StringFilter<"Room"> | string
     statuses?: RoomStatusListRelationFilter
     residents?: UserListRelationFilter
+    announcementRecipients?: AnnouncementRecipientListRelationFilter
     dormitroy?: XOR<DormitoryScalarRelationFilter, DormitoryWhereInput>
   }
 
@@ -11413,6 +15225,7 @@ export namespace Prisma {
     dormitoryId?: SortOrder
     statuses?: RoomStatusOrderByRelationAggregateInput
     residents?: UserOrderByRelationAggregateInput
+    announcementRecipients?: AnnouncementRecipientOrderByRelationAggregateInput
     dormitroy?: DormitoryOrderByWithRelationInput
   }
 
@@ -11430,6 +15243,7 @@ export namespace Prisma {
     dormitoryId?: StringFilter<"Room"> | string
     statuses?: RoomStatusListRelationFilter
     residents?: UserListRelationFilter
+    announcementRecipients?: AnnouncementRecipientListRelationFilter
     dormitroy?: XOR<DormitoryScalarRelationFilter, DormitoryWhereInput>
   }, "id">
 
@@ -11577,6 +15391,195 @@ export namespace Prisma {
     dateTo?: DateTimeNullableWithAggregatesFilter<"Price"> | Date | string | null
   }
 
+  export type AnnouncementWhereInput = {
+    AND?: AnnouncementWhereInput | AnnouncementWhereInput[]
+    OR?: AnnouncementWhereInput[]
+    NOT?: AnnouncementWhereInput | AnnouncementWhereInput[]
+    id?: StringFilter<"Announcement"> | string
+    title?: StringFilter<"Announcement"> | string
+    content?: StringFilter<"Announcement"> | string
+    postedAt?: DateTimeFilter<"Announcement"> | Date | string
+    expiresAt?: DateTimeFilter<"Announcement"> | Date | string
+    isHidden?: BoolFilter<"Announcement"> | boolean
+    authorId?: StringFilter<"Announcement"> | string
+    author?: XOR<UserScalarRelationFilter, UserWhereInput>
+    attachments?: AttachmentListRelationFilter
+    recipients?: AnnouncementRecipientListRelationFilter
+  }
+
+  export type AnnouncementOrderByWithRelationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
+    postedAt?: SortOrder
+    expiresAt?: SortOrder
+    isHidden?: SortOrder
+    authorId?: SortOrder
+    author?: UserOrderByWithRelationInput
+    attachments?: AttachmentOrderByRelationAggregateInput
+    recipients?: AnnouncementRecipientOrderByRelationAggregateInput
+  }
+
+  export type AnnouncementWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AnnouncementWhereInput | AnnouncementWhereInput[]
+    OR?: AnnouncementWhereInput[]
+    NOT?: AnnouncementWhereInput | AnnouncementWhereInput[]
+    title?: StringFilter<"Announcement"> | string
+    content?: StringFilter<"Announcement"> | string
+    postedAt?: DateTimeFilter<"Announcement"> | Date | string
+    expiresAt?: DateTimeFilter<"Announcement"> | Date | string
+    isHidden?: BoolFilter<"Announcement"> | boolean
+    authorId?: StringFilter<"Announcement"> | string
+    author?: XOR<UserScalarRelationFilter, UserWhereInput>
+    attachments?: AttachmentListRelationFilter
+    recipients?: AnnouncementRecipientListRelationFilter
+  }, "id">
+
+  export type AnnouncementOrderByWithAggregationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
+    postedAt?: SortOrder
+    expiresAt?: SortOrder
+    isHidden?: SortOrder
+    authorId?: SortOrder
+    _count?: AnnouncementCountOrderByAggregateInput
+    _max?: AnnouncementMaxOrderByAggregateInput
+    _min?: AnnouncementMinOrderByAggregateInput
+  }
+
+  export type AnnouncementScalarWhereWithAggregatesInput = {
+    AND?: AnnouncementScalarWhereWithAggregatesInput | AnnouncementScalarWhereWithAggregatesInput[]
+    OR?: AnnouncementScalarWhereWithAggregatesInput[]
+    NOT?: AnnouncementScalarWhereWithAggregatesInput | AnnouncementScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Announcement"> | string
+    title?: StringWithAggregatesFilter<"Announcement"> | string
+    content?: StringWithAggregatesFilter<"Announcement"> | string
+    postedAt?: DateTimeWithAggregatesFilter<"Announcement"> | Date | string
+    expiresAt?: DateTimeWithAggregatesFilter<"Announcement"> | Date | string
+    isHidden?: BoolWithAggregatesFilter<"Announcement"> | boolean
+    authorId?: StringWithAggregatesFilter<"Announcement"> | string
+  }
+
+  export type AttachmentWhereInput = {
+    AND?: AttachmentWhereInput | AttachmentWhereInput[]
+    OR?: AttachmentWhereInput[]
+    NOT?: AttachmentWhereInput | AttachmentWhereInput[]
+    id?: StringFilter<"Attachment"> | string
+    url?: StringFilter<"Attachment"> | string
+    filename?: StringFilter<"Attachment"> | string
+    announcementId?: StringFilter<"Attachment"> | string
+    announcement?: XOR<AnnouncementScalarRelationFilter, AnnouncementWhereInput>
+  }
+
+  export type AttachmentOrderByWithRelationInput = {
+    id?: SortOrder
+    url?: SortOrder
+    filename?: SortOrder
+    announcementId?: SortOrder
+    announcement?: AnnouncementOrderByWithRelationInput
+  }
+
+  export type AttachmentWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AttachmentWhereInput | AttachmentWhereInput[]
+    OR?: AttachmentWhereInput[]
+    NOT?: AttachmentWhereInput | AttachmentWhereInput[]
+    url?: StringFilter<"Attachment"> | string
+    filename?: StringFilter<"Attachment"> | string
+    announcementId?: StringFilter<"Attachment"> | string
+    announcement?: XOR<AnnouncementScalarRelationFilter, AnnouncementWhereInput>
+  }, "id">
+
+  export type AttachmentOrderByWithAggregationInput = {
+    id?: SortOrder
+    url?: SortOrder
+    filename?: SortOrder
+    announcementId?: SortOrder
+    _count?: AttachmentCountOrderByAggregateInput
+    _max?: AttachmentMaxOrderByAggregateInput
+    _min?: AttachmentMinOrderByAggregateInput
+  }
+
+  export type AttachmentScalarWhereWithAggregatesInput = {
+    AND?: AttachmentScalarWhereWithAggregatesInput | AttachmentScalarWhereWithAggregatesInput[]
+    OR?: AttachmentScalarWhereWithAggregatesInput[]
+    NOT?: AttachmentScalarWhereWithAggregatesInput | AttachmentScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Attachment"> | string
+    url?: StringWithAggregatesFilter<"Attachment"> | string
+    filename?: StringWithAggregatesFilter<"Attachment"> | string
+    announcementId?: StringWithAggregatesFilter<"Attachment"> | string
+  }
+
+  export type AnnouncementRecipientWhereInput = {
+    AND?: AnnouncementRecipientWhereInput | AnnouncementRecipientWhereInput[]
+    OR?: AnnouncementRecipientWhereInput[]
+    NOT?: AnnouncementRecipientWhereInput | AnnouncementRecipientWhereInput[]
+    id?: StringFilter<"AnnouncementRecipient"> | string
+    announcementId?: StringFilter<"AnnouncementRecipient"> | string
+    userId?: StringNullableFilter<"AnnouncementRecipient"> | string | null
+    roomId?: StringNullableFilter<"AnnouncementRecipient"> | string | null
+    floor?: IntNullableFilter<"AnnouncementRecipient"> | number | null
+    forEveryone?: BoolFilter<"AnnouncementRecipient"> | boolean
+    announcement?: XOR<AnnouncementScalarRelationFilter, AnnouncementWhereInput>
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    room?: XOR<RoomNullableScalarRelationFilter, RoomWhereInput> | null
+  }
+
+  export type AnnouncementRecipientOrderByWithRelationInput = {
+    id?: SortOrder
+    announcementId?: SortOrder
+    userId?: SortOrderInput | SortOrder
+    roomId?: SortOrderInput | SortOrder
+    floor?: SortOrderInput | SortOrder
+    forEveryone?: SortOrder
+    announcement?: AnnouncementOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+    room?: RoomOrderByWithRelationInput
+  }
+
+  export type AnnouncementRecipientWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AnnouncementRecipientWhereInput | AnnouncementRecipientWhereInput[]
+    OR?: AnnouncementRecipientWhereInput[]
+    NOT?: AnnouncementRecipientWhereInput | AnnouncementRecipientWhereInput[]
+    announcementId?: StringFilter<"AnnouncementRecipient"> | string
+    userId?: StringNullableFilter<"AnnouncementRecipient"> | string | null
+    roomId?: StringNullableFilter<"AnnouncementRecipient"> | string | null
+    floor?: IntNullableFilter<"AnnouncementRecipient"> | number | null
+    forEveryone?: BoolFilter<"AnnouncementRecipient"> | boolean
+    announcement?: XOR<AnnouncementScalarRelationFilter, AnnouncementWhereInput>
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    room?: XOR<RoomNullableScalarRelationFilter, RoomWhereInput> | null
+  }, "id">
+
+  export type AnnouncementRecipientOrderByWithAggregationInput = {
+    id?: SortOrder
+    announcementId?: SortOrder
+    userId?: SortOrderInput | SortOrder
+    roomId?: SortOrderInput | SortOrder
+    floor?: SortOrderInput | SortOrder
+    forEveryone?: SortOrder
+    _count?: AnnouncementRecipientCountOrderByAggregateInput
+    _avg?: AnnouncementRecipientAvgOrderByAggregateInput
+    _max?: AnnouncementRecipientMaxOrderByAggregateInput
+    _min?: AnnouncementRecipientMinOrderByAggregateInput
+    _sum?: AnnouncementRecipientSumOrderByAggregateInput
+  }
+
+  export type AnnouncementRecipientScalarWhereWithAggregatesInput = {
+    AND?: AnnouncementRecipientScalarWhereWithAggregatesInput | AnnouncementRecipientScalarWhereWithAggregatesInput[]
+    OR?: AnnouncementRecipientScalarWhereWithAggregatesInput[]
+    NOT?: AnnouncementRecipientScalarWhereWithAggregatesInput | AnnouncementRecipientScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AnnouncementRecipient"> | string
+    announcementId?: StringWithAggregatesFilter<"AnnouncementRecipient"> | string
+    userId?: StringNullableWithAggregatesFilter<"AnnouncementRecipient"> | string | null
+    roomId?: StringNullableWithAggregatesFilter<"AnnouncementRecipient"> | string | null
+    floor?: IntNullableWithAggregatesFilter<"AnnouncementRecipient"> | number | null
+    forEveryone?: BoolWithAggregatesFilter<"AnnouncementRecipient"> | boolean
+  }
+
   export type UserCreateInput = {
     id?: string
     email: string
@@ -11597,6 +15600,8 @@ export namespace Prisma {
     dormitory?: DormitoryCreateNestedOneWithoutResidentsInput
     managedDormitories?: DormitoryCreateNestedManyWithoutManagerInput
     room?: RoomCreateNestedOneWithoutResidentsInput
+    announcements?: AnnouncementCreateNestedManyWithoutAuthorInput
+    announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -11619,6 +15624,8 @@ export namespace Prisma {
     confirmations?: ConfirmationUncheckedCreateNestedManyWithoutRequesterInput
     dormitoryAdminAssignments?: DormitoryAdminUncheckedCreateNestedManyWithoutUserInput
     managedDormitories?: DormitoryUncheckedCreateNestedManyWithoutManagerInput
+    announcements?: AnnouncementUncheckedCreateNestedManyWithoutAuthorInput
+    announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -11641,6 +15648,8 @@ export namespace Prisma {
     dormitory?: DormitoryUpdateOneWithoutResidentsNestedInput
     managedDormitories?: DormitoryUpdateManyWithoutManagerNestedInput
     room?: RoomUpdateOneWithoutResidentsNestedInput
+    announcements?: AnnouncementUpdateManyWithoutAuthorNestedInput
+    announcementRecipients?: AnnouncementRecipientUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -11663,6 +15672,8 @@ export namespace Prisma {
     confirmations?: ConfirmationUncheckedUpdateManyWithoutRequesterNestedInput
     dormitoryAdminAssignments?: DormitoryAdminUncheckedUpdateManyWithoutUserNestedInput
     managedDormitories?: DormitoryUncheckedUpdateManyWithoutManagerNestedInput
+    announcements?: AnnouncementUncheckedUpdateManyWithoutAuthorNestedInput
+    announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -12011,6 +16022,7 @@ export namespace Prisma {
     photos?: RoomCreatephotosInput | string[]
     statuses?: RoomStatusCreateNestedManyWithoutRoomInput
     residents?: UserCreateNestedManyWithoutRoomInput
+    announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutRoomInput
     dormitroy: DormitoryCreateNestedOneWithoutRoomsInput
   }
 
@@ -12025,6 +16037,7 @@ export namespace Prisma {
     dormitoryId: string
     statuses?: RoomStatusUncheckedCreateNestedManyWithoutRoomInput
     residents?: UserUncheckedCreateNestedManyWithoutRoomInput
+    announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutRoomInput
   }
 
   export type RoomUpdateInput = {
@@ -12037,6 +16050,7 @@ export namespace Prisma {
     photos?: RoomUpdatephotosInput | string[]
     statuses?: RoomStatusUpdateManyWithoutRoomNestedInput
     residents?: UserUpdateManyWithoutRoomNestedInput
+    announcementRecipients?: AnnouncementRecipientUpdateManyWithoutRoomNestedInput
     dormitroy?: DormitoryUpdateOneRequiredWithoutRoomsNestedInput
   }
 
@@ -12051,6 +16065,7 @@ export namespace Prisma {
     dormitoryId?: StringFieldUpdateOperationsInput | string
     statuses?: RoomStatusUncheckedUpdateManyWithoutRoomNestedInput
     residents?: UserUncheckedUpdateManyWithoutRoomNestedInput
+    announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutRoomNestedInput
   }
 
   export type RoomCreateManyInput = {
@@ -12203,6 +16218,191 @@ export namespace Prisma {
     dateTo?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
+  export type AnnouncementCreateInput = {
+    id?: string
+    title: string
+    content: string
+    postedAt?: Date | string
+    expiresAt: Date | string
+    isHidden?: boolean
+    author: UserCreateNestedOneWithoutAnnouncementsInput
+    attachments?: AttachmentCreateNestedManyWithoutAnnouncementInput
+    recipients?: AnnouncementRecipientCreateNestedManyWithoutAnnouncementInput
+  }
+
+  export type AnnouncementUncheckedCreateInput = {
+    id?: string
+    title: string
+    content: string
+    postedAt?: Date | string
+    expiresAt: Date | string
+    isHidden?: boolean
+    authorId: string
+    attachments?: AttachmentUncheckedCreateNestedManyWithoutAnnouncementInput
+    recipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutAnnouncementInput
+  }
+
+  export type AnnouncementUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    postedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isHidden?: BoolFieldUpdateOperationsInput | boolean
+    author?: UserUpdateOneRequiredWithoutAnnouncementsNestedInput
+    attachments?: AttachmentUpdateManyWithoutAnnouncementNestedInput
+    recipients?: AnnouncementRecipientUpdateManyWithoutAnnouncementNestedInput
+  }
+
+  export type AnnouncementUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    postedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isHidden?: BoolFieldUpdateOperationsInput | boolean
+    authorId?: StringFieldUpdateOperationsInput | string
+    attachments?: AttachmentUncheckedUpdateManyWithoutAnnouncementNestedInput
+    recipients?: AnnouncementRecipientUncheckedUpdateManyWithoutAnnouncementNestedInput
+  }
+
+  export type AnnouncementCreateManyInput = {
+    id?: string
+    title: string
+    content: string
+    postedAt?: Date | string
+    expiresAt: Date | string
+    isHidden?: boolean
+    authorId: string
+  }
+
+  export type AnnouncementUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    postedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isHidden?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type AnnouncementUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    postedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isHidden?: BoolFieldUpdateOperationsInput | boolean
+    authorId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AttachmentCreateInput = {
+    id?: string
+    url: string
+    filename: string
+    announcement: AnnouncementCreateNestedOneWithoutAttachmentsInput
+  }
+
+  export type AttachmentUncheckedCreateInput = {
+    id?: string
+    url: string
+    filename: string
+    announcementId: string
+  }
+
+  export type AttachmentUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+    announcement?: AnnouncementUpdateOneRequiredWithoutAttachmentsNestedInput
+  }
+
+  export type AttachmentUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+    announcementId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AttachmentCreateManyInput = {
+    id?: string
+    url: string
+    filename: string
+    announcementId: string
+  }
+
+  export type AttachmentUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AttachmentUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+    announcementId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AnnouncementRecipientCreateInput = {
+    id?: string
+    floor?: number | null
+    forEveryone?: boolean
+    announcement: AnnouncementCreateNestedOneWithoutRecipientsInput
+    user?: UserCreateNestedOneWithoutAnnouncementRecipientsInput
+    room?: RoomCreateNestedOneWithoutAnnouncementRecipientsInput
+  }
+
+  export type AnnouncementRecipientUncheckedCreateInput = {
+    id?: string
+    announcementId: string
+    userId?: string | null
+    roomId?: string | null
+    floor?: number | null
+    forEveryone?: boolean
+  }
+
+  export type AnnouncementRecipientUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    floor?: NullableIntFieldUpdateOperationsInput | number | null
+    forEveryone?: BoolFieldUpdateOperationsInput | boolean
+    announcement?: AnnouncementUpdateOneRequiredWithoutRecipientsNestedInput
+    user?: UserUpdateOneWithoutAnnouncementRecipientsNestedInput
+    room?: RoomUpdateOneWithoutAnnouncementRecipientsNestedInput
+  }
+
+  export type AnnouncementRecipientUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    announcementId?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    floor?: NullableIntFieldUpdateOperationsInput | number | null
+    forEveryone?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type AnnouncementRecipientCreateManyInput = {
+    id?: string
+    announcementId: string
+    userId?: string | null
+    roomId?: string | null
+    floor?: number | null
+    forEveryone?: boolean
+  }
+
+  export type AnnouncementRecipientUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    floor?: NullableIntFieldUpdateOperationsInput | number | null
+    forEveryone?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type AnnouncementRecipientUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    announcementId?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    floor?: NullableIntFieldUpdateOperationsInput | number | null
+    forEveryone?: BoolFieldUpdateOperationsInput | boolean
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -12291,6 +16491,18 @@ export namespace Prisma {
     isNot?: RoomWhereInput | null
   }
 
+  export type AnnouncementListRelationFilter = {
+    every?: AnnouncementWhereInput
+    some?: AnnouncementWhereInput
+    none?: AnnouncementWhereInput
+  }
+
+  export type AnnouncementRecipientListRelationFilter = {
+    every?: AnnouncementRecipientWhereInput
+    some?: AnnouncementRecipientWhereInput
+    none?: AnnouncementRecipientWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -12305,6 +16517,14 @@ export namespace Prisma {
   }
 
   export type DormitoryOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AnnouncementOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AnnouncementRecipientOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -12853,6 +17073,134 @@ export namespace Prisma {
     _max?: NestedFloatFilter<$PrismaModel>
   }
 
+  export type AttachmentListRelationFilter = {
+    every?: AttachmentWhereInput
+    some?: AttachmentWhereInput
+    none?: AttachmentWhereInput
+  }
+
+  export type AttachmentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AnnouncementCountOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
+    postedAt?: SortOrder
+    expiresAt?: SortOrder
+    isHidden?: SortOrder
+    authorId?: SortOrder
+  }
+
+  export type AnnouncementMaxOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
+    postedAt?: SortOrder
+    expiresAt?: SortOrder
+    isHidden?: SortOrder
+    authorId?: SortOrder
+  }
+
+  export type AnnouncementMinOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
+    postedAt?: SortOrder
+    expiresAt?: SortOrder
+    isHidden?: SortOrder
+    authorId?: SortOrder
+  }
+
+  export type AnnouncementScalarRelationFilter = {
+    is?: AnnouncementWhereInput
+    isNot?: AnnouncementWhereInput
+  }
+
+  export type AttachmentCountOrderByAggregateInput = {
+    id?: SortOrder
+    url?: SortOrder
+    filename?: SortOrder
+    announcementId?: SortOrder
+  }
+
+  export type AttachmentMaxOrderByAggregateInput = {
+    id?: SortOrder
+    url?: SortOrder
+    filename?: SortOrder
+    announcementId?: SortOrder
+  }
+
+  export type AttachmentMinOrderByAggregateInput = {
+    id?: SortOrder
+    url?: SortOrder
+    filename?: SortOrder
+    announcementId?: SortOrder
+  }
+
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type AnnouncementRecipientCountOrderByAggregateInput = {
+    id?: SortOrder
+    announcementId?: SortOrder
+    userId?: SortOrder
+    roomId?: SortOrder
+    floor?: SortOrder
+    forEveryone?: SortOrder
+  }
+
+  export type AnnouncementRecipientAvgOrderByAggregateInput = {
+    floor?: SortOrder
+  }
+
+  export type AnnouncementRecipientMaxOrderByAggregateInput = {
+    id?: SortOrder
+    announcementId?: SortOrder
+    userId?: SortOrder
+    roomId?: SortOrder
+    floor?: SortOrder
+    forEveryone?: SortOrder
+  }
+
+  export type AnnouncementRecipientMinOrderByAggregateInput = {
+    id?: SortOrder
+    announcementId?: SortOrder
+    userId?: SortOrder
+    roomId?: SortOrder
+    floor?: SortOrder
+    forEveryone?: SortOrder
+  }
+
+  export type AnnouncementRecipientSumOrderByAggregateInput = {
+    floor?: SortOrder
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
   export type ConfirmationCreateNestedManyWithoutRequesterInput = {
     create?: XOR<ConfirmationCreateWithoutRequesterInput, ConfirmationUncheckedCreateWithoutRequesterInput> | ConfirmationCreateWithoutRequesterInput[] | ConfirmationUncheckedCreateWithoutRequesterInput[]
     connectOrCreate?: ConfirmationCreateOrConnectWithoutRequesterInput | ConfirmationCreateOrConnectWithoutRequesterInput[]
@@ -12886,6 +17234,20 @@ export namespace Prisma {
     connect?: RoomWhereUniqueInput
   }
 
+  export type AnnouncementCreateNestedManyWithoutAuthorInput = {
+    create?: XOR<AnnouncementCreateWithoutAuthorInput, AnnouncementUncheckedCreateWithoutAuthorInput> | AnnouncementCreateWithoutAuthorInput[] | AnnouncementUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: AnnouncementCreateOrConnectWithoutAuthorInput | AnnouncementCreateOrConnectWithoutAuthorInput[]
+    createMany?: AnnouncementCreateManyAuthorInputEnvelope
+    connect?: AnnouncementWhereUniqueInput | AnnouncementWhereUniqueInput[]
+  }
+
+  export type AnnouncementRecipientCreateNestedManyWithoutUserInput = {
+    create?: XOR<AnnouncementRecipientCreateWithoutUserInput, AnnouncementRecipientUncheckedCreateWithoutUserInput> | AnnouncementRecipientCreateWithoutUserInput[] | AnnouncementRecipientUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AnnouncementRecipientCreateOrConnectWithoutUserInput | AnnouncementRecipientCreateOrConnectWithoutUserInput[]
+    createMany?: AnnouncementRecipientCreateManyUserInputEnvelope
+    connect?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+  }
+
   export type ConfirmationUncheckedCreateNestedManyWithoutRequesterInput = {
     create?: XOR<ConfirmationCreateWithoutRequesterInput, ConfirmationUncheckedCreateWithoutRequesterInput> | ConfirmationCreateWithoutRequesterInput[] | ConfirmationUncheckedCreateWithoutRequesterInput[]
     connectOrCreate?: ConfirmationCreateOrConnectWithoutRequesterInput | ConfirmationCreateOrConnectWithoutRequesterInput[]
@@ -12905,6 +17267,20 @@ export namespace Prisma {
     connectOrCreate?: DormitoryCreateOrConnectWithoutManagerInput | DormitoryCreateOrConnectWithoutManagerInput[]
     createMany?: DormitoryCreateManyManagerInputEnvelope
     connect?: DormitoryWhereUniqueInput | DormitoryWhereUniqueInput[]
+  }
+
+  export type AnnouncementUncheckedCreateNestedManyWithoutAuthorInput = {
+    create?: XOR<AnnouncementCreateWithoutAuthorInput, AnnouncementUncheckedCreateWithoutAuthorInput> | AnnouncementCreateWithoutAuthorInput[] | AnnouncementUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: AnnouncementCreateOrConnectWithoutAuthorInput | AnnouncementCreateOrConnectWithoutAuthorInput[]
+    createMany?: AnnouncementCreateManyAuthorInputEnvelope
+    connect?: AnnouncementWhereUniqueInput | AnnouncementWhereUniqueInput[]
+  }
+
+  export type AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<AnnouncementRecipientCreateWithoutUserInput, AnnouncementRecipientUncheckedCreateWithoutUserInput> | AnnouncementRecipientCreateWithoutUserInput[] | AnnouncementRecipientUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AnnouncementRecipientCreateOrConnectWithoutUserInput | AnnouncementRecipientCreateOrConnectWithoutUserInput[]
+    createMany?: AnnouncementRecipientCreateManyUserInputEnvelope
+    connect?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -12993,6 +17369,34 @@ export namespace Prisma {
     update?: XOR<XOR<RoomUpdateToOneWithWhereWithoutResidentsInput, RoomUpdateWithoutResidentsInput>, RoomUncheckedUpdateWithoutResidentsInput>
   }
 
+  export type AnnouncementUpdateManyWithoutAuthorNestedInput = {
+    create?: XOR<AnnouncementCreateWithoutAuthorInput, AnnouncementUncheckedCreateWithoutAuthorInput> | AnnouncementCreateWithoutAuthorInput[] | AnnouncementUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: AnnouncementCreateOrConnectWithoutAuthorInput | AnnouncementCreateOrConnectWithoutAuthorInput[]
+    upsert?: AnnouncementUpsertWithWhereUniqueWithoutAuthorInput | AnnouncementUpsertWithWhereUniqueWithoutAuthorInput[]
+    createMany?: AnnouncementCreateManyAuthorInputEnvelope
+    set?: AnnouncementWhereUniqueInput | AnnouncementWhereUniqueInput[]
+    disconnect?: AnnouncementWhereUniqueInput | AnnouncementWhereUniqueInput[]
+    delete?: AnnouncementWhereUniqueInput | AnnouncementWhereUniqueInput[]
+    connect?: AnnouncementWhereUniqueInput | AnnouncementWhereUniqueInput[]
+    update?: AnnouncementUpdateWithWhereUniqueWithoutAuthorInput | AnnouncementUpdateWithWhereUniqueWithoutAuthorInput[]
+    updateMany?: AnnouncementUpdateManyWithWhereWithoutAuthorInput | AnnouncementUpdateManyWithWhereWithoutAuthorInput[]
+    deleteMany?: AnnouncementScalarWhereInput | AnnouncementScalarWhereInput[]
+  }
+
+  export type AnnouncementRecipientUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AnnouncementRecipientCreateWithoutUserInput, AnnouncementRecipientUncheckedCreateWithoutUserInput> | AnnouncementRecipientCreateWithoutUserInput[] | AnnouncementRecipientUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AnnouncementRecipientCreateOrConnectWithoutUserInput | AnnouncementRecipientCreateOrConnectWithoutUserInput[]
+    upsert?: AnnouncementRecipientUpsertWithWhereUniqueWithoutUserInput | AnnouncementRecipientUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AnnouncementRecipientCreateManyUserInputEnvelope
+    set?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    disconnect?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    delete?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    connect?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    update?: AnnouncementRecipientUpdateWithWhereUniqueWithoutUserInput | AnnouncementRecipientUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AnnouncementRecipientUpdateManyWithWhereWithoutUserInput | AnnouncementRecipientUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AnnouncementRecipientScalarWhereInput | AnnouncementRecipientScalarWhereInput[]
+  }
+
   export type ConfirmationUncheckedUpdateManyWithoutRequesterNestedInput = {
     create?: XOR<ConfirmationCreateWithoutRequesterInput, ConfirmationUncheckedCreateWithoutRequesterInput> | ConfirmationCreateWithoutRequesterInput[] | ConfirmationUncheckedCreateWithoutRequesterInput[]
     connectOrCreate?: ConfirmationCreateOrConnectWithoutRequesterInput | ConfirmationCreateOrConnectWithoutRequesterInput[]
@@ -13033,6 +17437,34 @@ export namespace Prisma {
     update?: DormitoryUpdateWithWhereUniqueWithoutManagerInput | DormitoryUpdateWithWhereUniqueWithoutManagerInput[]
     updateMany?: DormitoryUpdateManyWithWhereWithoutManagerInput | DormitoryUpdateManyWithWhereWithoutManagerInput[]
     deleteMany?: DormitoryScalarWhereInput | DormitoryScalarWhereInput[]
+  }
+
+  export type AnnouncementUncheckedUpdateManyWithoutAuthorNestedInput = {
+    create?: XOR<AnnouncementCreateWithoutAuthorInput, AnnouncementUncheckedCreateWithoutAuthorInput> | AnnouncementCreateWithoutAuthorInput[] | AnnouncementUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: AnnouncementCreateOrConnectWithoutAuthorInput | AnnouncementCreateOrConnectWithoutAuthorInput[]
+    upsert?: AnnouncementUpsertWithWhereUniqueWithoutAuthorInput | AnnouncementUpsertWithWhereUniqueWithoutAuthorInput[]
+    createMany?: AnnouncementCreateManyAuthorInputEnvelope
+    set?: AnnouncementWhereUniqueInput | AnnouncementWhereUniqueInput[]
+    disconnect?: AnnouncementWhereUniqueInput | AnnouncementWhereUniqueInput[]
+    delete?: AnnouncementWhereUniqueInput | AnnouncementWhereUniqueInput[]
+    connect?: AnnouncementWhereUniqueInput | AnnouncementWhereUniqueInput[]
+    update?: AnnouncementUpdateWithWhereUniqueWithoutAuthorInput | AnnouncementUpdateWithWhereUniqueWithoutAuthorInput[]
+    updateMany?: AnnouncementUpdateManyWithWhereWithoutAuthorInput | AnnouncementUpdateManyWithWhereWithoutAuthorInput[]
+    deleteMany?: AnnouncementScalarWhereInput | AnnouncementScalarWhereInput[]
+  }
+
+  export type AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AnnouncementRecipientCreateWithoutUserInput, AnnouncementRecipientUncheckedCreateWithoutUserInput> | AnnouncementRecipientCreateWithoutUserInput[] | AnnouncementRecipientUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AnnouncementRecipientCreateOrConnectWithoutUserInput | AnnouncementRecipientCreateOrConnectWithoutUserInput[]
+    upsert?: AnnouncementRecipientUpsertWithWhereUniqueWithoutUserInput | AnnouncementRecipientUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AnnouncementRecipientCreateManyUserInputEnvelope
+    set?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    disconnect?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    delete?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    connect?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    update?: AnnouncementRecipientUpdateWithWhereUniqueWithoutUserInput | AnnouncementRecipientUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AnnouncementRecipientUpdateManyWithWhereWithoutUserInput | AnnouncementRecipientUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AnnouncementRecipientScalarWhereInput | AnnouncementRecipientScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutDormitoryAdminAssignmentsInput = {
@@ -13266,6 +17698,13 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
   }
 
+  export type AnnouncementRecipientCreateNestedManyWithoutRoomInput = {
+    create?: XOR<AnnouncementRecipientCreateWithoutRoomInput, AnnouncementRecipientUncheckedCreateWithoutRoomInput> | AnnouncementRecipientCreateWithoutRoomInput[] | AnnouncementRecipientUncheckedCreateWithoutRoomInput[]
+    connectOrCreate?: AnnouncementRecipientCreateOrConnectWithoutRoomInput | AnnouncementRecipientCreateOrConnectWithoutRoomInput[]
+    createMany?: AnnouncementRecipientCreateManyRoomInputEnvelope
+    connect?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+  }
+
   export type DormitoryCreateNestedOneWithoutRoomsInput = {
     create?: XOR<DormitoryCreateWithoutRoomsInput, DormitoryUncheckedCreateWithoutRoomsInput>
     connectOrCreate?: DormitoryCreateOrConnectWithoutRoomsInput
@@ -13284,6 +17723,13 @@ export namespace Prisma {
     connectOrCreate?: UserCreateOrConnectWithoutRoomInput | UserCreateOrConnectWithoutRoomInput[]
     createMany?: UserCreateManyRoomInputEnvelope
     connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
+  export type AnnouncementRecipientUncheckedCreateNestedManyWithoutRoomInput = {
+    create?: XOR<AnnouncementRecipientCreateWithoutRoomInput, AnnouncementRecipientUncheckedCreateWithoutRoomInput> | AnnouncementRecipientCreateWithoutRoomInput[] | AnnouncementRecipientUncheckedCreateWithoutRoomInput[]
+    connectOrCreate?: AnnouncementRecipientCreateOrConnectWithoutRoomInput | AnnouncementRecipientCreateOrConnectWithoutRoomInput[]
+    createMany?: AnnouncementRecipientCreateManyRoomInputEnvelope
+    connect?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -13332,6 +17778,20 @@ export namespace Prisma {
     deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
   }
 
+  export type AnnouncementRecipientUpdateManyWithoutRoomNestedInput = {
+    create?: XOR<AnnouncementRecipientCreateWithoutRoomInput, AnnouncementRecipientUncheckedCreateWithoutRoomInput> | AnnouncementRecipientCreateWithoutRoomInput[] | AnnouncementRecipientUncheckedCreateWithoutRoomInput[]
+    connectOrCreate?: AnnouncementRecipientCreateOrConnectWithoutRoomInput | AnnouncementRecipientCreateOrConnectWithoutRoomInput[]
+    upsert?: AnnouncementRecipientUpsertWithWhereUniqueWithoutRoomInput | AnnouncementRecipientUpsertWithWhereUniqueWithoutRoomInput[]
+    createMany?: AnnouncementRecipientCreateManyRoomInputEnvelope
+    set?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    disconnect?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    delete?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    connect?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    update?: AnnouncementRecipientUpdateWithWhereUniqueWithoutRoomInput | AnnouncementRecipientUpdateWithWhereUniqueWithoutRoomInput[]
+    updateMany?: AnnouncementRecipientUpdateManyWithWhereWithoutRoomInput | AnnouncementRecipientUpdateManyWithWhereWithoutRoomInput[]
+    deleteMany?: AnnouncementRecipientScalarWhereInput | AnnouncementRecipientScalarWhereInput[]
+  }
+
   export type DormitoryUpdateOneRequiredWithoutRoomsNestedInput = {
     create?: XOR<DormitoryCreateWithoutRoomsInput, DormitoryUncheckedCreateWithoutRoomsInput>
     connectOrCreate?: DormitoryCreateOrConnectWithoutRoomsInput
@@ -13368,6 +17828,20 @@ export namespace Prisma {
     deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
   }
 
+  export type AnnouncementRecipientUncheckedUpdateManyWithoutRoomNestedInput = {
+    create?: XOR<AnnouncementRecipientCreateWithoutRoomInput, AnnouncementRecipientUncheckedCreateWithoutRoomInput> | AnnouncementRecipientCreateWithoutRoomInput[] | AnnouncementRecipientUncheckedCreateWithoutRoomInput[]
+    connectOrCreate?: AnnouncementRecipientCreateOrConnectWithoutRoomInput | AnnouncementRecipientCreateOrConnectWithoutRoomInput[]
+    upsert?: AnnouncementRecipientUpsertWithWhereUniqueWithoutRoomInput | AnnouncementRecipientUpsertWithWhereUniqueWithoutRoomInput[]
+    createMany?: AnnouncementRecipientCreateManyRoomInputEnvelope
+    set?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    disconnect?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    delete?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    connect?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    update?: AnnouncementRecipientUpdateWithWhereUniqueWithoutRoomInput | AnnouncementRecipientUpdateWithWhereUniqueWithoutRoomInput[]
+    updateMany?: AnnouncementRecipientUpdateManyWithWhereWithoutRoomInput | AnnouncementRecipientUpdateManyWithWhereWithoutRoomInput[]
+    deleteMany?: AnnouncementRecipientScalarWhereInput | AnnouncementRecipientScalarWhereInput[]
+  }
+
   export type RoomCreateNestedOneWithoutStatusesInput = {
     create?: XOR<RoomCreateWithoutStatusesInput, RoomUncheckedCreateWithoutStatusesInput>
     connectOrCreate?: RoomCreateOrConnectWithoutStatusesInput
@@ -13388,6 +17862,172 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type UserCreateNestedOneWithoutAnnouncementsInput = {
+    create?: XOR<UserCreateWithoutAnnouncementsInput, UserUncheckedCreateWithoutAnnouncementsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAnnouncementsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type AttachmentCreateNestedManyWithoutAnnouncementInput = {
+    create?: XOR<AttachmentCreateWithoutAnnouncementInput, AttachmentUncheckedCreateWithoutAnnouncementInput> | AttachmentCreateWithoutAnnouncementInput[] | AttachmentUncheckedCreateWithoutAnnouncementInput[]
+    connectOrCreate?: AttachmentCreateOrConnectWithoutAnnouncementInput | AttachmentCreateOrConnectWithoutAnnouncementInput[]
+    createMany?: AttachmentCreateManyAnnouncementInputEnvelope
+    connect?: AttachmentWhereUniqueInput | AttachmentWhereUniqueInput[]
+  }
+
+  export type AnnouncementRecipientCreateNestedManyWithoutAnnouncementInput = {
+    create?: XOR<AnnouncementRecipientCreateWithoutAnnouncementInput, AnnouncementRecipientUncheckedCreateWithoutAnnouncementInput> | AnnouncementRecipientCreateWithoutAnnouncementInput[] | AnnouncementRecipientUncheckedCreateWithoutAnnouncementInput[]
+    connectOrCreate?: AnnouncementRecipientCreateOrConnectWithoutAnnouncementInput | AnnouncementRecipientCreateOrConnectWithoutAnnouncementInput[]
+    createMany?: AnnouncementRecipientCreateManyAnnouncementInputEnvelope
+    connect?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+  }
+
+  export type AttachmentUncheckedCreateNestedManyWithoutAnnouncementInput = {
+    create?: XOR<AttachmentCreateWithoutAnnouncementInput, AttachmentUncheckedCreateWithoutAnnouncementInput> | AttachmentCreateWithoutAnnouncementInput[] | AttachmentUncheckedCreateWithoutAnnouncementInput[]
+    connectOrCreate?: AttachmentCreateOrConnectWithoutAnnouncementInput | AttachmentCreateOrConnectWithoutAnnouncementInput[]
+    createMany?: AttachmentCreateManyAnnouncementInputEnvelope
+    connect?: AttachmentWhereUniqueInput | AttachmentWhereUniqueInput[]
+  }
+
+  export type AnnouncementRecipientUncheckedCreateNestedManyWithoutAnnouncementInput = {
+    create?: XOR<AnnouncementRecipientCreateWithoutAnnouncementInput, AnnouncementRecipientUncheckedCreateWithoutAnnouncementInput> | AnnouncementRecipientCreateWithoutAnnouncementInput[] | AnnouncementRecipientUncheckedCreateWithoutAnnouncementInput[]
+    connectOrCreate?: AnnouncementRecipientCreateOrConnectWithoutAnnouncementInput | AnnouncementRecipientCreateOrConnectWithoutAnnouncementInput[]
+    createMany?: AnnouncementRecipientCreateManyAnnouncementInputEnvelope
+    connect?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+  }
+
+  export type UserUpdateOneRequiredWithoutAnnouncementsNestedInput = {
+    create?: XOR<UserCreateWithoutAnnouncementsInput, UserUncheckedCreateWithoutAnnouncementsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAnnouncementsInput
+    upsert?: UserUpsertWithoutAnnouncementsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAnnouncementsInput, UserUpdateWithoutAnnouncementsInput>, UserUncheckedUpdateWithoutAnnouncementsInput>
+  }
+
+  export type AttachmentUpdateManyWithoutAnnouncementNestedInput = {
+    create?: XOR<AttachmentCreateWithoutAnnouncementInput, AttachmentUncheckedCreateWithoutAnnouncementInput> | AttachmentCreateWithoutAnnouncementInput[] | AttachmentUncheckedCreateWithoutAnnouncementInput[]
+    connectOrCreate?: AttachmentCreateOrConnectWithoutAnnouncementInput | AttachmentCreateOrConnectWithoutAnnouncementInput[]
+    upsert?: AttachmentUpsertWithWhereUniqueWithoutAnnouncementInput | AttachmentUpsertWithWhereUniqueWithoutAnnouncementInput[]
+    createMany?: AttachmentCreateManyAnnouncementInputEnvelope
+    set?: AttachmentWhereUniqueInput | AttachmentWhereUniqueInput[]
+    disconnect?: AttachmentWhereUniqueInput | AttachmentWhereUniqueInput[]
+    delete?: AttachmentWhereUniqueInput | AttachmentWhereUniqueInput[]
+    connect?: AttachmentWhereUniqueInput | AttachmentWhereUniqueInput[]
+    update?: AttachmentUpdateWithWhereUniqueWithoutAnnouncementInput | AttachmentUpdateWithWhereUniqueWithoutAnnouncementInput[]
+    updateMany?: AttachmentUpdateManyWithWhereWithoutAnnouncementInput | AttachmentUpdateManyWithWhereWithoutAnnouncementInput[]
+    deleteMany?: AttachmentScalarWhereInput | AttachmentScalarWhereInput[]
+  }
+
+  export type AnnouncementRecipientUpdateManyWithoutAnnouncementNestedInput = {
+    create?: XOR<AnnouncementRecipientCreateWithoutAnnouncementInput, AnnouncementRecipientUncheckedCreateWithoutAnnouncementInput> | AnnouncementRecipientCreateWithoutAnnouncementInput[] | AnnouncementRecipientUncheckedCreateWithoutAnnouncementInput[]
+    connectOrCreate?: AnnouncementRecipientCreateOrConnectWithoutAnnouncementInput | AnnouncementRecipientCreateOrConnectWithoutAnnouncementInput[]
+    upsert?: AnnouncementRecipientUpsertWithWhereUniqueWithoutAnnouncementInput | AnnouncementRecipientUpsertWithWhereUniqueWithoutAnnouncementInput[]
+    createMany?: AnnouncementRecipientCreateManyAnnouncementInputEnvelope
+    set?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    disconnect?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    delete?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    connect?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    update?: AnnouncementRecipientUpdateWithWhereUniqueWithoutAnnouncementInput | AnnouncementRecipientUpdateWithWhereUniqueWithoutAnnouncementInput[]
+    updateMany?: AnnouncementRecipientUpdateManyWithWhereWithoutAnnouncementInput | AnnouncementRecipientUpdateManyWithWhereWithoutAnnouncementInput[]
+    deleteMany?: AnnouncementRecipientScalarWhereInput | AnnouncementRecipientScalarWhereInput[]
+  }
+
+  export type AttachmentUncheckedUpdateManyWithoutAnnouncementNestedInput = {
+    create?: XOR<AttachmentCreateWithoutAnnouncementInput, AttachmentUncheckedCreateWithoutAnnouncementInput> | AttachmentCreateWithoutAnnouncementInput[] | AttachmentUncheckedCreateWithoutAnnouncementInput[]
+    connectOrCreate?: AttachmentCreateOrConnectWithoutAnnouncementInput | AttachmentCreateOrConnectWithoutAnnouncementInput[]
+    upsert?: AttachmentUpsertWithWhereUniqueWithoutAnnouncementInput | AttachmentUpsertWithWhereUniqueWithoutAnnouncementInput[]
+    createMany?: AttachmentCreateManyAnnouncementInputEnvelope
+    set?: AttachmentWhereUniqueInput | AttachmentWhereUniqueInput[]
+    disconnect?: AttachmentWhereUniqueInput | AttachmentWhereUniqueInput[]
+    delete?: AttachmentWhereUniqueInput | AttachmentWhereUniqueInput[]
+    connect?: AttachmentWhereUniqueInput | AttachmentWhereUniqueInput[]
+    update?: AttachmentUpdateWithWhereUniqueWithoutAnnouncementInput | AttachmentUpdateWithWhereUniqueWithoutAnnouncementInput[]
+    updateMany?: AttachmentUpdateManyWithWhereWithoutAnnouncementInput | AttachmentUpdateManyWithWhereWithoutAnnouncementInput[]
+    deleteMany?: AttachmentScalarWhereInput | AttachmentScalarWhereInput[]
+  }
+
+  export type AnnouncementRecipientUncheckedUpdateManyWithoutAnnouncementNestedInput = {
+    create?: XOR<AnnouncementRecipientCreateWithoutAnnouncementInput, AnnouncementRecipientUncheckedCreateWithoutAnnouncementInput> | AnnouncementRecipientCreateWithoutAnnouncementInput[] | AnnouncementRecipientUncheckedCreateWithoutAnnouncementInput[]
+    connectOrCreate?: AnnouncementRecipientCreateOrConnectWithoutAnnouncementInput | AnnouncementRecipientCreateOrConnectWithoutAnnouncementInput[]
+    upsert?: AnnouncementRecipientUpsertWithWhereUniqueWithoutAnnouncementInput | AnnouncementRecipientUpsertWithWhereUniqueWithoutAnnouncementInput[]
+    createMany?: AnnouncementRecipientCreateManyAnnouncementInputEnvelope
+    set?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    disconnect?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    delete?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    connect?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    update?: AnnouncementRecipientUpdateWithWhereUniqueWithoutAnnouncementInput | AnnouncementRecipientUpdateWithWhereUniqueWithoutAnnouncementInput[]
+    updateMany?: AnnouncementRecipientUpdateManyWithWhereWithoutAnnouncementInput | AnnouncementRecipientUpdateManyWithWhereWithoutAnnouncementInput[]
+    deleteMany?: AnnouncementRecipientScalarWhereInput | AnnouncementRecipientScalarWhereInput[]
+  }
+
+  export type AnnouncementCreateNestedOneWithoutAttachmentsInput = {
+    create?: XOR<AnnouncementCreateWithoutAttachmentsInput, AnnouncementUncheckedCreateWithoutAttachmentsInput>
+    connectOrCreate?: AnnouncementCreateOrConnectWithoutAttachmentsInput
+    connect?: AnnouncementWhereUniqueInput
+  }
+
+  export type AnnouncementUpdateOneRequiredWithoutAttachmentsNestedInput = {
+    create?: XOR<AnnouncementCreateWithoutAttachmentsInput, AnnouncementUncheckedCreateWithoutAttachmentsInput>
+    connectOrCreate?: AnnouncementCreateOrConnectWithoutAttachmentsInput
+    upsert?: AnnouncementUpsertWithoutAttachmentsInput
+    connect?: AnnouncementWhereUniqueInput
+    update?: XOR<XOR<AnnouncementUpdateToOneWithWhereWithoutAttachmentsInput, AnnouncementUpdateWithoutAttachmentsInput>, AnnouncementUncheckedUpdateWithoutAttachmentsInput>
+  }
+
+  export type AnnouncementCreateNestedOneWithoutRecipientsInput = {
+    create?: XOR<AnnouncementCreateWithoutRecipientsInput, AnnouncementUncheckedCreateWithoutRecipientsInput>
+    connectOrCreate?: AnnouncementCreateOrConnectWithoutRecipientsInput
+    connect?: AnnouncementWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutAnnouncementRecipientsInput = {
+    create?: XOR<UserCreateWithoutAnnouncementRecipientsInput, UserUncheckedCreateWithoutAnnouncementRecipientsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAnnouncementRecipientsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type RoomCreateNestedOneWithoutAnnouncementRecipientsInput = {
+    create?: XOR<RoomCreateWithoutAnnouncementRecipientsInput, RoomUncheckedCreateWithoutAnnouncementRecipientsInput>
+    connectOrCreate?: RoomCreateOrConnectWithoutAnnouncementRecipientsInput
+    connect?: RoomWhereUniqueInput
+  }
+
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type AnnouncementUpdateOneRequiredWithoutRecipientsNestedInput = {
+    create?: XOR<AnnouncementCreateWithoutRecipientsInput, AnnouncementUncheckedCreateWithoutRecipientsInput>
+    connectOrCreate?: AnnouncementCreateOrConnectWithoutRecipientsInput
+    upsert?: AnnouncementUpsertWithoutRecipientsInput
+    connect?: AnnouncementWhereUniqueInput
+    update?: XOR<XOR<AnnouncementUpdateToOneWithWhereWithoutRecipientsInput, AnnouncementUpdateWithoutRecipientsInput>, AnnouncementUncheckedUpdateWithoutRecipientsInput>
+  }
+
+  export type UserUpdateOneWithoutAnnouncementRecipientsNestedInput = {
+    create?: XOR<UserCreateWithoutAnnouncementRecipientsInput, UserUncheckedCreateWithoutAnnouncementRecipientsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAnnouncementRecipientsInput
+    upsert?: UserUpsertWithoutAnnouncementRecipientsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAnnouncementRecipientsInput, UserUpdateWithoutAnnouncementRecipientsInput>, UserUncheckedUpdateWithoutAnnouncementRecipientsInput>
+  }
+
+  export type RoomUpdateOneWithoutAnnouncementRecipientsNestedInput = {
+    create?: XOR<RoomCreateWithoutAnnouncementRecipientsInput, RoomUncheckedCreateWithoutAnnouncementRecipientsInput>
+    connectOrCreate?: RoomCreateOrConnectWithoutAnnouncementRecipientsInput
+    upsert?: RoomUpsertWithoutAnnouncementRecipientsInput
+    disconnect?: RoomWhereInput | boolean
+    delete?: RoomWhereInput | boolean
+    connect?: RoomWhereUniqueInput
+    update?: XOR<XOR<RoomUpdateToOneWithWhereWithoutAnnouncementRecipientsInput, RoomUpdateWithoutAnnouncementRecipientsInput>, RoomUncheckedUpdateWithoutAnnouncementRecipientsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -13665,6 +18305,33 @@ export namespace Prisma {
     _max?: NestedFloatFilter<$PrismaModel>
   }
 
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type ConfirmationCreateWithoutRequesterInput = {
     id?: string
     type: $Enums.ConfirmationType
@@ -13797,6 +18464,7 @@ export namespace Prisma {
     roomEquipment?: RoomCreateroomEquipmentInput | string[]
     photos?: RoomCreatephotosInput | string[]
     statuses?: RoomStatusCreateNestedManyWithoutRoomInput
+    announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutRoomInput
     dormitroy: DormitoryCreateNestedOneWithoutRoomsInput
   }
 
@@ -13810,11 +18478,70 @@ export namespace Prisma {
     photos?: RoomCreatephotosInput | string[]
     dormitoryId: string
     statuses?: RoomStatusUncheckedCreateNestedManyWithoutRoomInput
+    announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutRoomInput
   }
 
   export type RoomCreateOrConnectWithoutResidentsInput = {
     where: RoomWhereUniqueInput
     create: XOR<RoomCreateWithoutResidentsInput, RoomUncheckedCreateWithoutResidentsInput>
+  }
+
+  export type AnnouncementCreateWithoutAuthorInput = {
+    id?: string
+    title: string
+    content: string
+    postedAt?: Date | string
+    expiresAt: Date | string
+    isHidden?: boolean
+    attachments?: AttachmentCreateNestedManyWithoutAnnouncementInput
+    recipients?: AnnouncementRecipientCreateNestedManyWithoutAnnouncementInput
+  }
+
+  export type AnnouncementUncheckedCreateWithoutAuthorInput = {
+    id?: string
+    title: string
+    content: string
+    postedAt?: Date | string
+    expiresAt: Date | string
+    isHidden?: boolean
+    attachments?: AttachmentUncheckedCreateNestedManyWithoutAnnouncementInput
+    recipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutAnnouncementInput
+  }
+
+  export type AnnouncementCreateOrConnectWithoutAuthorInput = {
+    where: AnnouncementWhereUniqueInput
+    create: XOR<AnnouncementCreateWithoutAuthorInput, AnnouncementUncheckedCreateWithoutAuthorInput>
+  }
+
+  export type AnnouncementCreateManyAuthorInputEnvelope = {
+    data: AnnouncementCreateManyAuthorInput | AnnouncementCreateManyAuthorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AnnouncementRecipientCreateWithoutUserInput = {
+    id?: string
+    floor?: number | null
+    forEveryone?: boolean
+    announcement: AnnouncementCreateNestedOneWithoutRecipientsInput
+    room?: RoomCreateNestedOneWithoutAnnouncementRecipientsInput
+  }
+
+  export type AnnouncementRecipientUncheckedCreateWithoutUserInput = {
+    id?: string
+    announcementId: string
+    roomId?: string | null
+    floor?: number | null
+    forEveryone?: boolean
+  }
+
+  export type AnnouncementRecipientCreateOrConnectWithoutUserInput = {
+    where: AnnouncementRecipientWhereUniqueInput
+    create: XOR<AnnouncementRecipientCreateWithoutUserInput, AnnouncementRecipientUncheckedCreateWithoutUserInput>
+  }
+
+  export type AnnouncementRecipientCreateManyUserInputEnvelope = {
+    data: AnnouncementRecipientCreateManyUserInput | AnnouncementRecipientCreateManyUserInput[]
+    skipDuplicates?: boolean
   }
 
   export type ConfirmationUpsertWithWhereUniqueWithoutRequesterInput = {
@@ -13962,6 +18689,7 @@ export namespace Prisma {
     roomEquipment?: RoomUpdateroomEquipmentInput | string[]
     photos?: RoomUpdatephotosInput | string[]
     statuses?: RoomStatusUpdateManyWithoutRoomNestedInput
+    announcementRecipients?: AnnouncementRecipientUpdateManyWithoutRoomNestedInput
     dormitroy?: DormitoryUpdateOneRequiredWithoutRoomsNestedInput
   }
 
@@ -13975,6 +18703,64 @@ export namespace Prisma {
     photos?: RoomUpdatephotosInput | string[]
     dormitoryId?: StringFieldUpdateOperationsInput | string
     statuses?: RoomStatusUncheckedUpdateManyWithoutRoomNestedInput
+    announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutRoomNestedInput
+  }
+
+  export type AnnouncementUpsertWithWhereUniqueWithoutAuthorInput = {
+    where: AnnouncementWhereUniqueInput
+    update: XOR<AnnouncementUpdateWithoutAuthorInput, AnnouncementUncheckedUpdateWithoutAuthorInput>
+    create: XOR<AnnouncementCreateWithoutAuthorInput, AnnouncementUncheckedCreateWithoutAuthorInput>
+  }
+
+  export type AnnouncementUpdateWithWhereUniqueWithoutAuthorInput = {
+    where: AnnouncementWhereUniqueInput
+    data: XOR<AnnouncementUpdateWithoutAuthorInput, AnnouncementUncheckedUpdateWithoutAuthorInput>
+  }
+
+  export type AnnouncementUpdateManyWithWhereWithoutAuthorInput = {
+    where: AnnouncementScalarWhereInput
+    data: XOR<AnnouncementUpdateManyMutationInput, AnnouncementUncheckedUpdateManyWithoutAuthorInput>
+  }
+
+  export type AnnouncementScalarWhereInput = {
+    AND?: AnnouncementScalarWhereInput | AnnouncementScalarWhereInput[]
+    OR?: AnnouncementScalarWhereInput[]
+    NOT?: AnnouncementScalarWhereInput | AnnouncementScalarWhereInput[]
+    id?: StringFilter<"Announcement"> | string
+    title?: StringFilter<"Announcement"> | string
+    content?: StringFilter<"Announcement"> | string
+    postedAt?: DateTimeFilter<"Announcement"> | Date | string
+    expiresAt?: DateTimeFilter<"Announcement"> | Date | string
+    isHidden?: BoolFilter<"Announcement"> | boolean
+    authorId?: StringFilter<"Announcement"> | string
+  }
+
+  export type AnnouncementRecipientUpsertWithWhereUniqueWithoutUserInput = {
+    where: AnnouncementRecipientWhereUniqueInput
+    update: XOR<AnnouncementRecipientUpdateWithoutUserInput, AnnouncementRecipientUncheckedUpdateWithoutUserInput>
+    create: XOR<AnnouncementRecipientCreateWithoutUserInput, AnnouncementRecipientUncheckedCreateWithoutUserInput>
+  }
+
+  export type AnnouncementRecipientUpdateWithWhereUniqueWithoutUserInput = {
+    where: AnnouncementRecipientWhereUniqueInput
+    data: XOR<AnnouncementRecipientUpdateWithoutUserInput, AnnouncementRecipientUncheckedUpdateWithoutUserInput>
+  }
+
+  export type AnnouncementRecipientUpdateManyWithWhereWithoutUserInput = {
+    where: AnnouncementRecipientScalarWhereInput
+    data: XOR<AnnouncementRecipientUpdateManyMutationInput, AnnouncementRecipientUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type AnnouncementRecipientScalarWhereInput = {
+    AND?: AnnouncementRecipientScalarWhereInput | AnnouncementRecipientScalarWhereInput[]
+    OR?: AnnouncementRecipientScalarWhereInput[]
+    NOT?: AnnouncementRecipientScalarWhereInput | AnnouncementRecipientScalarWhereInput[]
+    id?: StringFilter<"AnnouncementRecipient"> | string
+    announcementId?: StringFilter<"AnnouncementRecipient"> | string
+    userId?: StringNullableFilter<"AnnouncementRecipient"> | string | null
+    roomId?: StringNullableFilter<"AnnouncementRecipient"> | string | null
+    floor?: IntNullableFilter<"AnnouncementRecipient"> | number | null
+    forEveryone?: BoolFilter<"AnnouncementRecipient"> | boolean
   }
 
   export type UserCreateWithoutDormitoryAdminAssignmentsInput = {
@@ -13996,6 +18782,8 @@ export namespace Prisma {
     dormitory?: DormitoryCreateNestedOneWithoutResidentsInput
     managedDormitories?: DormitoryCreateNestedManyWithoutManagerInput
     room?: RoomCreateNestedOneWithoutResidentsInput
+    announcements?: AnnouncementCreateNestedManyWithoutAuthorInput
+    announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDormitoryAdminAssignmentsInput = {
@@ -14017,6 +18805,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     confirmations?: ConfirmationUncheckedCreateNestedManyWithoutRequesterInput
     managedDormitories?: DormitoryUncheckedCreateNestedManyWithoutManagerInput
+    announcements?: AnnouncementUncheckedCreateNestedManyWithoutAuthorInput
+    announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDormitoryAdminAssignmentsInput = {
@@ -14085,6 +18875,8 @@ export namespace Prisma {
     dormitory?: DormitoryUpdateOneWithoutResidentsNestedInput
     managedDormitories?: DormitoryUpdateManyWithoutManagerNestedInput
     room?: RoomUpdateOneWithoutResidentsNestedInput
+    announcements?: AnnouncementUpdateManyWithoutAuthorNestedInput
+    announcementRecipients?: AnnouncementRecipientUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDormitoryAdminAssignmentsInput = {
@@ -14106,6 +18898,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmations?: ConfirmationUncheckedUpdateManyWithoutRequesterNestedInput
     managedDormitories?: DormitoryUncheckedUpdateManyWithoutManagerNestedInput
+    announcements?: AnnouncementUncheckedUpdateManyWithoutAuthorNestedInput
+    announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DormitoryUpsertWithoutAdminsInput = {
@@ -14164,6 +18958,8 @@ export namespace Prisma {
     dormitory?: DormitoryCreateNestedOneWithoutResidentsInput
     managedDormitories?: DormitoryCreateNestedManyWithoutManagerInput
     room?: RoomCreateNestedOneWithoutResidentsInput
+    announcements?: AnnouncementCreateNestedManyWithoutAuthorInput
+    announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutConfirmationsInput = {
@@ -14185,6 +18981,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     dormitoryAdminAssignments?: DormitoryAdminUncheckedCreateNestedManyWithoutUserInput
     managedDormitories?: DormitoryUncheckedCreateNestedManyWithoutManagerInput
+    announcements?: AnnouncementUncheckedCreateNestedManyWithoutAuthorInput
+    announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutConfirmationsInput = {
@@ -14222,6 +19020,8 @@ export namespace Prisma {
     dormitory?: DormitoryUpdateOneWithoutResidentsNestedInput
     managedDormitories?: DormitoryUpdateManyWithoutManagerNestedInput
     room?: RoomUpdateOneWithoutResidentsNestedInput
+    announcements?: AnnouncementUpdateManyWithoutAuthorNestedInput
+    announcementRecipients?: AnnouncementRecipientUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutConfirmationsInput = {
@@ -14243,6 +19043,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dormitoryAdminAssignments?: DormitoryAdminUncheckedUpdateManyWithoutUserNestedInput
     managedDormitories?: DormitoryUncheckedUpdateManyWithoutManagerNestedInput
+    announcements?: AnnouncementUncheckedUpdateManyWithoutAuthorNestedInput
+    announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutManagedDormitoriesInput = {
@@ -14264,6 +19066,8 @@ export namespace Prisma {
     dormitoryAdminAssignments?: DormitoryAdminCreateNestedManyWithoutUserInput
     dormitory?: DormitoryCreateNestedOneWithoutResidentsInput
     room?: RoomCreateNestedOneWithoutResidentsInput
+    announcements?: AnnouncementCreateNestedManyWithoutAuthorInput
+    announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutManagedDormitoriesInput = {
@@ -14285,6 +19089,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     confirmations?: ConfirmationUncheckedCreateNestedManyWithoutRequesterInput
     dormitoryAdminAssignments?: DormitoryAdminUncheckedCreateNestedManyWithoutUserInput
+    announcements?: AnnouncementUncheckedCreateNestedManyWithoutAuthorInput
+    announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutManagedDormitoriesInput = {
@@ -14335,6 +19141,8 @@ export namespace Prisma {
     dormitoryAdminAssignments?: DormitoryAdminCreateNestedManyWithoutUserInput
     managedDormitories?: DormitoryCreateNestedManyWithoutManagerInput
     room?: RoomCreateNestedOneWithoutResidentsInput
+    announcements?: AnnouncementCreateNestedManyWithoutAuthorInput
+    announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDormitoryInput = {
@@ -14356,6 +19164,8 @@ export namespace Prisma {
     confirmations?: ConfirmationUncheckedCreateNestedManyWithoutRequesterInput
     dormitoryAdminAssignments?: DormitoryAdminUncheckedCreateNestedManyWithoutUserInput
     managedDormitories?: DormitoryUncheckedCreateNestedManyWithoutManagerInput
+    announcements?: AnnouncementUncheckedCreateNestedManyWithoutAuthorInput
+    announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDormitoryInput = {
@@ -14378,6 +19188,7 @@ export namespace Prisma {
     photos?: RoomCreatephotosInput | string[]
     statuses?: RoomStatusCreateNestedManyWithoutRoomInput
     residents?: UserCreateNestedManyWithoutRoomInput
+    announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutRoomInput
   }
 
   export type RoomUncheckedCreateWithoutDormitroyInput = {
@@ -14390,6 +19201,7 @@ export namespace Prisma {
     photos?: RoomCreatephotosInput | string[]
     statuses?: RoomStatusUncheckedCreateNestedManyWithoutRoomInput
     residents?: UserUncheckedCreateNestedManyWithoutRoomInput
+    announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutRoomInput
   }
 
   export type RoomCreateOrConnectWithoutDormitroyInput = {
@@ -14432,6 +19244,8 @@ export namespace Prisma {
     dormitoryAdminAssignments?: DormitoryAdminUpdateManyWithoutUserNestedInput
     dormitory?: DormitoryUpdateOneWithoutResidentsNestedInput
     room?: RoomUpdateOneWithoutResidentsNestedInput
+    announcements?: AnnouncementUpdateManyWithoutAuthorNestedInput
+    announcementRecipients?: AnnouncementRecipientUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutManagedDormitoriesInput = {
@@ -14453,6 +19267,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmations?: ConfirmationUncheckedUpdateManyWithoutRequesterNestedInput
     dormitoryAdminAssignments?: DormitoryAdminUncheckedUpdateManyWithoutUserNestedInput
+    announcements?: AnnouncementUncheckedUpdateManyWithoutAuthorNestedInput
+    announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DormitoryAdminUpsertWithWhereUniqueWithoutDormitoryInput = {
@@ -14582,6 +19398,8 @@ export namespace Prisma {
     dormitoryAdminAssignments?: DormitoryAdminCreateNestedManyWithoutUserInput
     dormitory?: DormitoryCreateNestedOneWithoutResidentsInput
     managedDormitories?: DormitoryCreateNestedManyWithoutManagerInput
+    announcements?: AnnouncementCreateNestedManyWithoutAuthorInput
+    announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRoomInput = {
@@ -14603,6 +19421,8 @@ export namespace Prisma {
     confirmations?: ConfirmationUncheckedCreateNestedManyWithoutRequesterInput
     dormitoryAdminAssignments?: DormitoryAdminUncheckedCreateNestedManyWithoutUserInput
     managedDormitories?: DormitoryUncheckedCreateNestedManyWithoutManagerInput
+    announcements?: AnnouncementUncheckedCreateNestedManyWithoutAuthorInput
+    announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRoomInput = {
@@ -14612,6 +19432,32 @@ export namespace Prisma {
 
   export type UserCreateManyRoomInputEnvelope = {
     data: UserCreateManyRoomInput | UserCreateManyRoomInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AnnouncementRecipientCreateWithoutRoomInput = {
+    id?: string
+    floor?: number | null
+    forEveryone?: boolean
+    announcement: AnnouncementCreateNestedOneWithoutRecipientsInput
+    user?: UserCreateNestedOneWithoutAnnouncementRecipientsInput
+  }
+
+  export type AnnouncementRecipientUncheckedCreateWithoutRoomInput = {
+    id?: string
+    announcementId: string
+    userId?: string | null
+    floor?: number | null
+    forEveryone?: boolean
+  }
+
+  export type AnnouncementRecipientCreateOrConnectWithoutRoomInput = {
+    where: AnnouncementRecipientWhereUniqueInput
+    create: XOR<AnnouncementRecipientCreateWithoutRoomInput, AnnouncementRecipientUncheckedCreateWithoutRoomInput>
+  }
+
+  export type AnnouncementRecipientCreateManyRoomInputEnvelope = {
+    data: AnnouncementRecipientCreateManyRoomInput | AnnouncementRecipientCreateManyRoomInput[]
     skipDuplicates?: boolean
   }
 
@@ -14689,6 +19535,22 @@ export namespace Prisma {
     data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutRoomInput>
   }
 
+  export type AnnouncementRecipientUpsertWithWhereUniqueWithoutRoomInput = {
+    where: AnnouncementRecipientWhereUniqueInput
+    update: XOR<AnnouncementRecipientUpdateWithoutRoomInput, AnnouncementRecipientUncheckedUpdateWithoutRoomInput>
+    create: XOR<AnnouncementRecipientCreateWithoutRoomInput, AnnouncementRecipientUncheckedCreateWithoutRoomInput>
+  }
+
+  export type AnnouncementRecipientUpdateWithWhereUniqueWithoutRoomInput = {
+    where: AnnouncementRecipientWhereUniqueInput
+    data: XOR<AnnouncementRecipientUpdateWithoutRoomInput, AnnouncementRecipientUncheckedUpdateWithoutRoomInput>
+  }
+
+  export type AnnouncementRecipientUpdateManyWithWhereWithoutRoomInput = {
+    where: AnnouncementRecipientScalarWhereInput
+    data: XOR<AnnouncementRecipientUpdateManyMutationInput, AnnouncementRecipientUncheckedUpdateManyWithoutRoomInput>
+  }
+
   export type DormitoryUpsertWithoutRoomsInput = {
     update: XOR<DormitoryUpdateWithoutRoomsInput, DormitoryUncheckedUpdateWithoutRoomsInput>
     create: XOR<DormitoryCreateWithoutRoomsInput, DormitoryUncheckedCreateWithoutRoomsInput>
@@ -14735,6 +19597,7 @@ export namespace Prisma {
     roomEquipment?: RoomCreateroomEquipmentInput | string[]
     photos?: RoomCreatephotosInput | string[]
     residents?: UserCreateNestedManyWithoutRoomInput
+    announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutRoomInput
     dormitroy: DormitoryCreateNestedOneWithoutRoomsInput
   }
 
@@ -14748,6 +19611,7 @@ export namespace Prisma {
     photos?: RoomCreatephotosInput | string[]
     dormitoryId: string
     residents?: UserUncheckedCreateNestedManyWithoutRoomInput
+    announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutRoomInput
   }
 
   export type RoomCreateOrConnectWithoutStatusesInput = {
@@ -14775,6 +19639,7 @@ export namespace Prisma {
     roomEquipment?: RoomUpdateroomEquipmentInput | string[]
     photos?: RoomUpdatephotosInput | string[]
     residents?: UserUpdateManyWithoutRoomNestedInput
+    announcementRecipients?: AnnouncementRecipientUpdateManyWithoutRoomNestedInput
     dormitroy?: DormitoryUpdateOneRequiredWithoutRoomsNestedInput
   }
 
@@ -14787,6 +19652,501 @@ export namespace Prisma {
     roomEquipment?: RoomUpdateroomEquipmentInput | string[]
     photos?: RoomUpdatephotosInput | string[]
     dormitoryId?: StringFieldUpdateOperationsInput | string
+    residents?: UserUncheckedUpdateManyWithoutRoomNestedInput
+    announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutRoomNestedInput
+  }
+
+  export type UserCreateWithoutAnnouncementsInput = {
+    id?: string
+    email: string
+    password: string
+    displayName: string
+    picture: string
+    isVerified?: boolean
+    isTwoFactorEnabled?: boolean
+    method: $Enums.AuthMethod
+    role?: $Enums.UserRole
+    secondName: string
+    studentIdFront: string
+    studentIdBack?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
+    dormitoryAdminAssignments?: DormitoryAdminCreateNestedManyWithoutUserInput
+    dormitory?: DormitoryCreateNestedOneWithoutResidentsInput
+    managedDormitories?: DormitoryCreateNestedManyWithoutManagerInput
+    room?: RoomCreateNestedOneWithoutResidentsInput
+    announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutAnnouncementsInput = {
+    id?: string
+    email: string
+    password: string
+    displayName: string
+    picture: string
+    isVerified?: boolean
+    isTwoFactorEnabled?: boolean
+    method: $Enums.AuthMethod
+    role?: $Enums.UserRole
+    secondName: string
+    studentIdFront: string
+    studentIdBack?: string | null
+    dormitoryId?: string | null
+    roomId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    confirmations?: ConfirmationUncheckedCreateNestedManyWithoutRequesterInput
+    dormitoryAdminAssignments?: DormitoryAdminUncheckedCreateNestedManyWithoutUserInput
+    managedDormitories?: DormitoryUncheckedCreateNestedManyWithoutManagerInput
+    announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutAnnouncementsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAnnouncementsInput, UserUncheckedCreateWithoutAnnouncementsInput>
+  }
+
+  export type AttachmentCreateWithoutAnnouncementInput = {
+    id?: string
+    url: string
+    filename: string
+  }
+
+  export type AttachmentUncheckedCreateWithoutAnnouncementInput = {
+    id?: string
+    url: string
+    filename: string
+  }
+
+  export type AttachmentCreateOrConnectWithoutAnnouncementInput = {
+    where: AttachmentWhereUniqueInput
+    create: XOR<AttachmentCreateWithoutAnnouncementInput, AttachmentUncheckedCreateWithoutAnnouncementInput>
+  }
+
+  export type AttachmentCreateManyAnnouncementInputEnvelope = {
+    data: AttachmentCreateManyAnnouncementInput | AttachmentCreateManyAnnouncementInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AnnouncementRecipientCreateWithoutAnnouncementInput = {
+    id?: string
+    floor?: number | null
+    forEveryone?: boolean
+    user?: UserCreateNestedOneWithoutAnnouncementRecipientsInput
+    room?: RoomCreateNestedOneWithoutAnnouncementRecipientsInput
+  }
+
+  export type AnnouncementRecipientUncheckedCreateWithoutAnnouncementInput = {
+    id?: string
+    userId?: string | null
+    roomId?: string | null
+    floor?: number | null
+    forEveryone?: boolean
+  }
+
+  export type AnnouncementRecipientCreateOrConnectWithoutAnnouncementInput = {
+    where: AnnouncementRecipientWhereUniqueInput
+    create: XOR<AnnouncementRecipientCreateWithoutAnnouncementInput, AnnouncementRecipientUncheckedCreateWithoutAnnouncementInput>
+  }
+
+  export type AnnouncementRecipientCreateManyAnnouncementInputEnvelope = {
+    data: AnnouncementRecipientCreateManyAnnouncementInput | AnnouncementRecipientCreateManyAnnouncementInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutAnnouncementsInput = {
+    update: XOR<UserUpdateWithoutAnnouncementsInput, UserUncheckedUpdateWithoutAnnouncementsInput>
+    create: XOR<UserCreateWithoutAnnouncementsInput, UserUncheckedCreateWithoutAnnouncementsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAnnouncementsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAnnouncementsInput, UserUncheckedUpdateWithoutAnnouncementsInput>
+  }
+
+  export type UserUpdateWithoutAnnouncementsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    picture?: StringFieldUpdateOperationsInput | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    method?: EnumAuthMethodFieldUpdateOperationsInput | $Enums.AuthMethod
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    secondName?: StringFieldUpdateOperationsInput | string
+    studentIdFront?: StringFieldUpdateOperationsInput | string
+    studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
+    dormitoryAdminAssignments?: DormitoryAdminUpdateManyWithoutUserNestedInput
+    dormitory?: DormitoryUpdateOneWithoutResidentsNestedInput
+    managedDormitories?: DormitoryUpdateManyWithoutManagerNestedInput
+    room?: RoomUpdateOneWithoutResidentsNestedInput
+    announcementRecipients?: AnnouncementRecipientUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAnnouncementsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    picture?: StringFieldUpdateOperationsInput | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    method?: EnumAuthMethodFieldUpdateOperationsInput | $Enums.AuthMethod
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    secondName?: StringFieldUpdateOperationsInput | string
+    studentIdFront?: StringFieldUpdateOperationsInput | string
+    studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
+    dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
+    roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    confirmations?: ConfirmationUncheckedUpdateManyWithoutRequesterNestedInput
+    dormitoryAdminAssignments?: DormitoryAdminUncheckedUpdateManyWithoutUserNestedInput
+    managedDormitories?: DormitoryUncheckedUpdateManyWithoutManagerNestedInput
+    announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type AttachmentUpsertWithWhereUniqueWithoutAnnouncementInput = {
+    where: AttachmentWhereUniqueInput
+    update: XOR<AttachmentUpdateWithoutAnnouncementInput, AttachmentUncheckedUpdateWithoutAnnouncementInput>
+    create: XOR<AttachmentCreateWithoutAnnouncementInput, AttachmentUncheckedCreateWithoutAnnouncementInput>
+  }
+
+  export type AttachmentUpdateWithWhereUniqueWithoutAnnouncementInput = {
+    where: AttachmentWhereUniqueInput
+    data: XOR<AttachmentUpdateWithoutAnnouncementInput, AttachmentUncheckedUpdateWithoutAnnouncementInput>
+  }
+
+  export type AttachmentUpdateManyWithWhereWithoutAnnouncementInput = {
+    where: AttachmentScalarWhereInput
+    data: XOR<AttachmentUpdateManyMutationInput, AttachmentUncheckedUpdateManyWithoutAnnouncementInput>
+  }
+
+  export type AttachmentScalarWhereInput = {
+    AND?: AttachmentScalarWhereInput | AttachmentScalarWhereInput[]
+    OR?: AttachmentScalarWhereInput[]
+    NOT?: AttachmentScalarWhereInput | AttachmentScalarWhereInput[]
+    id?: StringFilter<"Attachment"> | string
+    url?: StringFilter<"Attachment"> | string
+    filename?: StringFilter<"Attachment"> | string
+    announcementId?: StringFilter<"Attachment"> | string
+  }
+
+  export type AnnouncementRecipientUpsertWithWhereUniqueWithoutAnnouncementInput = {
+    where: AnnouncementRecipientWhereUniqueInput
+    update: XOR<AnnouncementRecipientUpdateWithoutAnnouncementInput, AnnouncementRecipientUncheckedUpdateWithoutAnnouncementInput>
+    create: XOR<AnnouncementRecipientCreateWithoutAnnouncementInput, AnnouncementRecipientUncheckedCreateWithoutAnnouncementInput>
+  }
+
+  export type AnnouncementRecipientUpdateWithWhereUniqueWithoutAnnouncementInput = {
+    where: AnnouncementRecipientWhereUniqueInput
+    data: XOR<AnnouncementRecipientUpdateWithoutAnnouncementInput, AnnouncementRecipientUncheckedUpdateWithoutAnnouncementInput>
+  }
+
+  export type AnnouncementRecipientUpdateManyWithWhereWithoutAnnouncementInput = {
+    where: AnnouncementRecipientScalarWhereInput
+    data: XOR<AnnouncementRecipientUpdateManyMutationInput, AnnouncementRecipientUncheckedUpdateManyWithoutAnnouncementInput>
+  }
+
+  export type AnnouncementCreateWithoutAttachmentsInput = {
+    id?: string
+    title: string
+    content: string
+    postedAt?: Date | string
+    expiresAt: Date | string
+    isHidden?: boolean
+    author: UserCreateNestedOneWithoutAnnouncementsInput
+    recipients?: AnnouncementRecipientCreateNestedManyWithoutAnnouncementInput
+  }
+
+  export type AnnouncementUncheckedCreateWithoutAttachmentsInput = {
+    id?: string
+    title: string
+    content: string
+    postedAt?: Date | string
+    expiresAt: Date | string
+    isHidden?: boolean
+    authorId: string
+    recipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutAnnouncementInput
+  }
+
+  export type AnnouncementCreateOrConnectWithoutAttachmentsInput = {
+    where: AnnouncementWhereUniqueInput
+    create: XOR<AnnouncementCreateWithoutAttachmentsInput, AnnouncementUncheckedCreateWithoutAttachmentsInput>
+  }
+
+  export type AnnouncementUpsertWithoutAttachmentsInput = {
+    update: XOR<AnnouncementUpdateWithoutAttachmentsInput, AnnouncementUncheckedUpdateWithoutAttachmentsInput>
+    create: XOR<AnnouncementCreateWithoutAttachmentsInput, AnnouncementUncheckedCreateWithoutAttachmentsInput>
+    where?: AnnouncementWhereInput
+  }
+
+  export type AnnouncementUpdateToOneWithWhereWithoutAttachmentsInput = {
+    where?: AnnouncementWhereInput
+    data: XOR<AnnouncementUpdateWithoutAttachmentsInput, AnnouncementUncheckedUpdateWithoutAttachmentsInput>
+  }
+
+  export type AnnouncementUpdateWithoutAttachmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    postedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isHidden?: BoolFieldUpdateOperationsInput | boolean
+    author?: UserUpdateOneRequiredWithoutAnnouncementsNestedInput
+    recipients?: AnnouncementRecipientUpdateManyWithoutAnnouncementNestedInput
+  }
+
+  export type AnnouncementUncheckedUpdateWithoutAttachmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    postedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isHidden?: BoolFieldUpdateOperationsInput | boolean
+    authorId?: StringFieldUpdateOperationsInput | string
+    recipients?: AnnouncementRecipientUncheckedUpdateManyWithoutAnnouncementNestedInput
+  }
+
+  export type AnnouncementCreateWithoutRecipientsInput = {
+    id?: string
+    title: string
+    content: string
+    postedAt?: Date | string
+    expiresAt: Date | string
+    isHidden?: boolean
+    author: UserCreateNestedOneWithoutAnnouncementsInput
+    attachments?: AttachmentCreateNestedManyWithoutAnnouncementInput
+  }
+
+  export type AnnouncementUncheckedCreateWithoutRecipientsInput = {
+    id?: string
+    title: string
+    content: string
+    postedAt?: Date | string
+    expiresAt: Date | string
+    isHidden?: boolean
+    authorId: string
+    attachments?: AttachmentUncheckedCreateNestedManyWithoutAnnouncementInput
+  }
+
+  export type AnnouncementCreateOrConnectWithoutRecipientsInput = {
+    where: AnnouncementWhereUniqueInput
+    create: XOR<AnnouncementCreateWithoutRecipientsInput, AnnouncementUncheckedCreateWithoutRecipientsInput>
+  }
+
+  export type UserCreateWithoutAnnouncementRecipientsInput = {
+    id?: string
+    email: string
+    password: string
+    displayName: string
+    picture: string
+    isVerified?: boolean
+    isTwoFactorEnabled?: boolean
+    method: $Enums.AuthMethod
+    role?: $Enums.UserRole
+    secondName: string
+    studentIdFront: string
+    studentIdBack?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
+    dormitoryAdminAssignments?: DormitoryAdminCreateNestedManyWithoutUserInput
+    dormitory?: DormitoryCreateNestedOneWithoutResidentsInput
+    managedDormitories?: DormitoryCreateNestedManyWithoutManagerInput
+    room?: RoomCreateNestedOneWithoutResidentsInput
+    announcements?: AnnouncementCreateNestedManyWithoutAuthorInput
+  }
+
+  export type UserUncheckedCreateWithoutAnnouncementRecipientsInput = {
+    id?: string
+    email: string
+    password: string
+    displayName: string
+    picture: string
+    isVerified?: boolean
+    isTwoFactorEnabled?: boolean
+    method: $Enums.AuthMethod
+    role?: $Enums.UserRole
+    secondName: string
+    studentIdFront: string
+    studentIdBack?: string | null
+    dormitoryId?: string | null
+    roomId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    confirmations?: ConfirmationUncheckedCreateNestedManyWithoutRequesterInput
+    dormitoryAdminAssignments?: DormitoryAdminUncheckedCreateNestedManyWithoutUserInput
+    managedDormitories?: DormitoryUncheckedCreateNestedManyWithoutManagerInput
+    announcements?: AnnouncementUncheckedCreateNestedManyWithoutAuthorInput
+  }
+
+  export type UserCreateOrConnectWithoutAnnouncementRecipientsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAnnouncementRecipientsInput, UserUncheckedCreateWithoutAnnouncementRecipientsInput>
+  }
+
+  export type RoomCreateWithoutAnnouncementRecipientsInput = {
+    id?: string
+    number: string
+    floor: number
+    createdAt?: Date | string
+    capacity: number
+    roomEquipment?: RoomCreateroomEquipmentInput | string[]
+    photos?: RoomCreatephotosInput | string[]
+    statuses?: RoomStatusCreateNestedManyWithoutRoomInput
+    residents?: UserCreateNestedManyWithoutRoomInput
+    dormitroy: DormitoryCreateNestedOneWithoutRoomsInput
+  }
+
+  export type RoomUncheckedCreateWithoutAnnouncementRecipientsInput = {
+    id?: string
+    number: string
+    floor: number
+    createdAt?: Date | string
+    capacity: number
+    roomEquipment?: RoomCreateroomEquipmentInput | string[]
+    photos?: RoomCreatephotosInput | string[]
+    dormitoryId: string
+    statuses?: RoomStatusUncheckedCreateNestedManyWithoutRoomInput
+    residents?: UserUncheckedCreateNestedManyWithoutRoomInput
+  }
+
+  export type RoomCreateOrConnectWithoutAnnouncementRecipientsInput = {
+    where: RoomWhereUniqueInput
+    create: XOR<RoomCreateWithoutAnnouncementRecipientsInput, RoomUncheckedCreateWithoutAnnouncementRecipientsInput>
+  }
+
+  export type AnnouncementUpsertWithoutRecipientsInput = {
+    update: XOR<AnnouncementUpdateWithoutRecipientsInput, AnnouncementUncheckedUpdateWithoutRecipientsInput>
+    create: XOR<AnnouncementCreateWithoutRecipientsInput, AnnouncementUncheckedCreateWithoutRecipientsInput>
+    where?: AnnouncementWhereInput
+  }
+
+  export type AnnouncementUpdateToOneWithWhereWithoutRecipientsInput = {
+    where?: AnnouncementWhereInput
+    data: XOR<AnnouncementUpdateWithoutRecipientsInput, AnnouncementUncheckedUpdateWithoutRecipientsInput>
+  }
+
+  export type AnnouncementUpdateWithoutRecipientsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    postedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isHidden?: BoolFieldUpdateOperationsInput | boolean
+    author?: UserUpdateOneRequiredWithoutAnnouncementsNestedInput
+    attachments?: AttachmentUpdateManyWithoutAnnouncementNestedInput
+  }
+
+  export type AnnouncementUncheckedUpdateWithoutRecipientsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    postedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isHidden?: BoolFieldUpdateOperationsInput | boolean
+    authorId?: StringFieldUpdateOperationsInput | string
+    attachments?: AttachmentUncheckedUpdateManyWithoutAnnouncementNestedInput
+  }
+
+  export type UserUpsertWithoutAnnouncementRecipientsInput = {
+    update: XOR<UserUpdateWithoutAnnouncementRecipientsInput, UserUncheckedUpdateWithoutAnnouncementRecipientsInput>
+    create: XOR<UserCreateWithoutAnnouncementRecipientsInput, UserUncheckedCreateWithoutAnnouncementRecipientsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAnnouncementRecipientsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAnnouncementRecipientsInput, UserUncheckedUpdateWithoutAnnouncementRecipientsInput>
+  }
+
+  export type UserUpdateWithoutAnnouncementRecipientsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    picture?: StringFieldUpdateOperationsInput | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    method?: EnumAuthMethodFieldUpdateOperationsInput | $Enums.AuthMethod
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    secondName?: StringFieldUpdateOperationsInput | string
+    studentIdFront?: StringFieldUpdateOperationsInput | string
+    studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
+    dormitoryAdminAssignments?: DormitoryAdminUpdateManyWithoutUserNestedInput
+    dormitory?: DormitoryUpdateOneWithoutResidentsNestedInput
+    managedDormitories?: DormitoryUpdateManyWithoutManagerNestedInput
+    room?: RoomUpdateOneWithoutResidentsNestedInput
+    announcements?: AnnouncementUpdateManyWithoutAuthorNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAnnouncementRecipientsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    picture?: StringFieldUpdateOperationsInput | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    method?: EnumAuthMethodFieldUpdateOperationsInput | $Enums.AuthMethod
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    secondName?: StringFieldUpdateOperationsInput | string
+    studentIdFront?: StringFieldUpdateOperationsInput | string
+    studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
+    dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
+    roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    confirmations?: ConfirmationUncheckedUpdateManyWithoutRequesterNestedInput
+    dormitoryAdminAssignments?: DormitoryAdminUncheckedUpdateManyWithoutUserNestedInput
+    managedDormitories?: DormitoryUncheckedUpdateManyWithoutManagerNestedInput
+    announcements?: AnnouncementUncheckedUpdateManyWithoutAuthorNestedInput
+  }
+
+  export type RoomUpsertWithoutAnnouncementRecipientsInput = {
+    update: XOR<RoomUpdateWithoutAnnouncementRecipientsInput, RoomUncheckedUpdateWithoutAnnouncementRecipientsInput>
+    create: XOR<RoomCreateWithoutAnnouncementRecipientsInput, RoomUncheckedCreateWithoutAnnouncementRecipientsInput>
+    where?: RoomWhereInput
+  }
+
+  export type RoomUpdateToOneWithWhereWithoutAnnouncementRecipientsInput = {
+    where?: RoomWhereInput
+    data: XOR<RoomUpdateWithoutAnnouncementRecipientsInput, RoomUncheckedUpdateWithoutAnnouncementRecipientsInput>
+  }
+
+  export type RoomUpdateWithoutAnnouncementRecipientsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    number?: StringFieldUpdateOperationsInput | string
+    floor?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    roomEquipment?: RoomUpdateroomEquipmentInput | string[]
+    photos?: RoomUpdatephotosInput | string[]
+    statuses?: RoomStatusUpdateManyWithoutRoomNestedInput
+    residents?: UserUpdateManyWithoutRoomNestedInput
+    dormitroy?: DormitoryUpdateOneRequiredWithoutRoomsNestedInput
+  }
+
+  export type RoomUncheckedUpdateWithoutAnnouncementRecipientsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    number?: StringFieldUpdateOperationsInput | string
+    floor?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    roomEquipment?: RoomUpdateroomEquipmentInput | string[]
+    photos?: RoomUpdatephotosInput | string[]
+    dormitoryId?: StringFieldUpdateOperationsInput | string
+    statuses?: RoomStatusUncheckedUpdateManyWithoutRoomNestedInput
     residents?: UserUncheckedUpdateManyWithoutRoomNestedInput
   }
 
@@ -14816,6 +20176,23 @@ export namespace Prisma {
     groundFloorPhoneNumber: string
     status?: string
     photos?: DormitoryCreatephotosInput | string[]
+  }
+
+  export type AnnouncementCreateManyAuthorInput = {
+    id?: string
+    title: string
+    content: string
+    postedAt?: Date | string
+    expiresAt: Date | string
+    isHidden?: boolean
+  }
+
+  export type AnnouncementRecipientCreateManyUserInput = {
+    id?: string
+    announcementId: string
+    roomId?: string | null
+    floor?: number | null
+    forEveryone?: boolean
   }
 
   export type ConfirmationUpdateWithoutRequesterInput = {
@@ -14908,6 +20285,61 @@ export namespace Prisma {
     photos?: DormitoryUpdatephotosInput | string[]
   }
 
+  export type AnnouncementUpdateWithoutAuthorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    postedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isHidden?: BoolFieldUpdateOperationsInput | boolean
+    attachments?: AttachmentUpdateManyWithoutAnnouncementNestedInput
+    recipients?: AnnouncementRecipientUpdateManyWithoutAnnouncementNestedInput
+  }
+
+  export type AnnouncementUncheckedUpdateWithoutAuthorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    postedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isHidden?: BoolFieldUpdateOperationsInput | boolean
+    attachments?: AttachmentUncheckedUpdateManyWithoutAnnouncementNestedInput
+    recipients?: AnnouncementRecipientUncheckedUpdateManyWithoutAnnouncementNestedInput
+  }
+
+  export type AnnouncementUncheckedUpdateManyWithoutAuthorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    postedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isHidden?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type AnnouncementRecipientUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    floor?: NullableIntFieldUpdateOperationsInput | number | null
+    forEveryone?: BoolFieldUpdateOperationsInput | boolean
+    announcement?: AnnouncementUpdateOneRequiredWithoutRecipientsNestedInput
+    room?: RoomUpdateOneWithoutAnnouncementRecipientsNestedInput
+  }
+
+  export type AnnouncementRecipientUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    announcementId?: StringFieldUpdateOperationsInput | string
+    roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    floor?: NullableIntFieldUpdateOperationsInput | number | null
+    forEveryone?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type AnnouncementRecipientUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    announcementId?: StringFieldUpdateOperationsInput | string
+    roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    floor?: NullableIntFieldUpdateOperationsInput | number | null
+    forEveryone?: BoolFieldUpdateOperationsInput | boolean
+  }
+
   export type DormitoryAdminCreateManyDormitoryInput = {
     id?: string
     userId: string
@@ -14983,6 +20415,8 @@ export namespace Prisma {
     dormitoryAdminAssignments?: DormitoryAdminUpdateManyWithoutUserNestedInput
     managedDormitories?: DormitoryUpdateManyWithoutManagerNestedInput
     room?: RoomUpdateOneWithoutResidentsNestedInput
+    announcements?: AnnouncementUpdateManyWithoutAuthorNestedInput
+    announcementRecipients?: AnnouncementRecipientUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDormitoryInput = {
@@ -15004,6 +20438,8 @@ export namespace Prisma {
     confirmations?: ConfirmationUncheckedUpdateManyWithoutRequesterNestedInput
     dormitoryAdminAssignments?: DormitoryAdminUncheckedUpdateManyWithoutUserNestedInput
     managedDormitories?: DormitoryUncheckedUpdateManyWithoutManagerNestedInput
+    announcements?: AnnouncementUncheckedUpdateManyWithoutAuthorNestedInput
+    announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutDormitoryInput = {
@@ -15034,6 +20470,7 @@ export namespace Prisma {
     photos?: RoomUpdatephotosInput | string[]
     statuses?: RoomStatusUpdateManyWithoutRoomNestedInput
     residents?: UserUpdateManyWithoutRoomNestedInput
+    announcementRecipients?: AnnouncementRecipientUpdateManyWithoutRoomNestedInput
   }
 
   export type RoomUncheckedUpdateWithoutDormitroyInput = {
@@ -15046,6 +20483,7 @@ export namespace Prisma {
     photos?: RoomUpdatephotosInput | string[]
     statuses?: RoomStatusUncheckedUpdateManyWithoutRoomNestedInput
     residents?: UserUncheckedUpdateManyWithoutRoomNestedInput
+    announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutRoomNestedInput
   }
 
   export type RoomUncheckedUpdateManyWithoutDormitroyInput = {
@@ -15081,6 +20519,14 @@ export namespace Prisma {
     dormitoryId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type AnnouncementRecipientCreateManyRoomInput = {
+    id?: string
+    announcementId: string
+    userId?: string | null
+    floor?: number | null
+    forEveryone?: boolean
   }
 
   export type RoomStatusUpdateWithoutRoomInput = {
@@ -15123,6 +20569,8 @@ export namespace Prisma {
     dormitoryAdminAssignments?: DormitoryAdminUpdateManyWithoutUserNestedInput
     dormitory?: DormitoryUpdateOneWithoutResidentsNestedInput
     managedDormitories?: DormitoryUpdateManyWithoutManagerNestedInput
+    announcements?: AnnouncementUpdateManyWithoutAuthorNestedInput
+    announcementRecipients?: AnnouncementRecipientUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRoomInput = {
@@ -15144,6 +20592,8 @@ export namespace Prisma {
     confirmations?: ConfirmationUncheckedUpdateManyWithoutRequesterNestedInput
     dormitoryAdminAssignments?: DormitoryAdminUncheckedUpdateManyWithoutUserNestedInput
     managedDormitories?: DormitoryUncheckedUpdateManyWithoutManagerNestedInput
+    announcements?: AnnouncementUncheckedUpdateManyWithoutAuthorNestedInput
+    announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutRoomInput = {
@@ -15162,6 +20612,86 @@ export namespace Prisma {
     dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AnnouncementRecipientUpdateWithoutRoomInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    floor?: NullableIntFieldUpdateOperationsInput | number | null
+    forEveryone?: BoolFieldUpdateOperationsInput | boolean
+    announcement?: AnnouncementUpdateOneRequiredWithoutRecipientsNestedInput
+    user?: UserUpdateOneWithoutAnnouncementRecipientsNestedInput
+  }
+
+  export type AnnouncementRecipientUncheckedUpdateWithoutRoomInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    announcementId?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    floor?: NullableIntFieldUpdateOperationsInput | number | null
+    forEveryone?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type AnnouncementRecipientUncheckedUpdateManyWithoutRoomInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    announcementId?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    floor?: NullableIntFieldUpdateOperationsInput | number | null
+    forEveryone?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type AttachmentCreateManyAnnouncementInput = {
+    id?: string
+    url: string
+    filename: string
+  }
+
+  export type AnnouncementRecipientCreateManyAnnouncementInput = {
+    id?: string
+    userId?: string | null
+    roomId?: string | null
+    floor?: number | null
+    forEveryone?: boolean
+  }
+
+  export type AttachmentUpdateWithoutAnnouncementInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AttachmentUncheckedUpdateWithoutAnnouncementInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AttachmentUncheckedUpdateManyWithoutAnnouncementInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AnnouncementRecipientUpdateWithoutAnnouncementInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    floor?: NullableIntFieldUpdateOperationsInput | number | null
+    forEveryone?: BoolFieldUpdateOperationsInput | boolean
+    user?: UserUpdateOneWithoutAnnouncementRecipientsNestedInput
+    room?: RoomUpdateOneWithoutAnnouncementRecipientsNestedInput
+  }
+
+  export type AnnouncementRecipientUncheckedUpdateWithoutAnnouncementInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    floor?: NullableIntFieldUpdateOperationsInput | number | null
+    forEveryone?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type AnnouncementRecipientUncheckedUpdateManyWithoutAnnouncementInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    floor?: NullableIntFieldUpdateOperationsInput | number | null
+    forEveryone?: BoolFieldUpdateOperationsInput | boolean
   }
 
 

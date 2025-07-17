@@ -206,6 +206,32 @@ exports.Prisma.PriceScalarFieldEnum = {
   dateTo: 'dateTo'
 };
 
+exports.Prisma.AnnouncementScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  content: 'content',
+  postedAt: 'postedAt',
+  expiresAt: 'expiresAt',
+  isHidden: 'isHidden',
+  authorId: 'authorId'
+};
+
+exports.Prisma.AttachmentScalarFieldEnum = {
+  id: 'id',
+  url: 'url',
+  filename: 'filename',
+  announcementId: 'announcementId'
+};
+
+exports.Prisma.AnnouncementRecipientScalarFieldEnum = {
+  id: 'id',
+  announcementId: 'announcementId',
+  userId: 'userId',
+  roomId: 'roomId',
+  floor: 'floor',
+  forEveryone: 'forEveryone'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -259,7 +285,10 @@ exports.Prisma.ModelName = {
   Dormitory: 'Dormitory',
   Room: 'Room',
   RoomStatus: 'RoomStatus',
-  Price: 'Price'
+  Price: 'Price',
+  Announcement: 'Announcement',
+  Attachment: 'Attachment',
+  AnnouncementRecipient: 'AnnouncementRecipient'
 };
 
 /**
