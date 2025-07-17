@@ -78,4 +78,14 @@ export class UserService {
     return updatedUser
   }
 
+  async findAll(filters: any = {}) {
+
+    return this.prismaService.user.findMany({
+      where: {
+        ...filters,
+      },
+      orderBy: { displayName: 'asc' },
+    });
+  }
+
 }

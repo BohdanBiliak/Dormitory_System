@@ -12,6 +12,7 @@ import {
   UploadAnnouncementAttachmentsUseCase
 } from "@modules/announcement/use-cases/upload-announcement-attachments.use-case";
 import {GetAnnouncementByIdUseCase} from "@modules/announcement/use-cases/get-announcement-by-id.use-case";
+import {GetPublicAnnouncementsUseCase} from "@modules/announcement/use-cases/get-public-announcements.use-case";
 
 @Module({
   imports: [PrismaModule, S3Module],
@@ -23,7 +24,8 @@ import {GetAnnouncementByIdUseCase} from "@modules/announcement/use-cases/get-an
     UpdateAnnouncementUseCase,
     DeleteAnnouncementUseCase,
     UploadAnnouncementAttachmentsUseCase,
-    GetAnnouncementByIdUseCase
+    GetAnnouncementByIdUseCase,
+      GetPublicAnnouncementsUseCase
 
   ],
   exports: [

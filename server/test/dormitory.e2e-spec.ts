@@ -4,6 +4,16 @@ import request, { SuperTest, Test } from 'supertest';
 import path from 'path';
 import fs from 'fs';
 
+const regularUser = {
+    email: 'arheroha@gmail.com',
+    password: '12345678',
+};
+
+const adminUser = {
+    email: 'bohdan.biliak.detrox@email.com',
+    password: '12345678',
+};
+
 describe('DormitoryController (e2e) with SuperTest', () => {
     let app: INestApplication;
     let agent: any;
@@ -117,5 +127,58 @@ describe('DormitoryController (e2e) with SuperTest', () => {
             .expect(200);
         expect(res.body.isHidden).toBe(true);
     });
+
+    let userProfile: any;
+
+    it('GET /users/profile → returns current user', async () => {
+        const res = await agent.get('/users/profile').expect(200);
+        expect(res.body).toHaveProperty('id');
+        expect(res.body.email).toBe(regularUser.email);
+        userProfile = res.body;
+    });
+
+    it('PATCH /users/profile → updates profile', async () => {
+        const res = await agent
+            .patch('/users/profile')
+            .send({
+                email: 'updated+e2e@mail.com',
+                displayName: 'Updated E2E',
+                isTwoFactorEnabled: false
+            })
+            .expect(200);
+        expect(res.body.email).toBe('updated+e2e@mail.com');
+        expect(res.body.displayName).toBe('Updated E2E');
+    });
+
+    it('GET /users/by-id/:id → fetches user by id (forbidden for regular user)', async () => {
+        await agent.get(`/users/by-id/${userProfile.id}`).expect(403); // має бути заборонено
+    });
+
+    let adminAgent: any;
+    let adminProfile: any;
+
+    it('admin: login and get profile', async () => {
+        adminAgent = request.agent(app.getHttpServer());
+        await adminAgent
+            .post('/auth/login')
+            .send(adminUser)
+            .expect(200);
+
+        const res = await adminAgent.get('/users/profile').expect(200);
+        adminProfile = res.body;
+        expect(adminProfile.email).toBe(adminUser.email);
+    });
+
+    it('admin: GET /users/by-id/:id → allowed for admin', async () => {
+        const res = await adminAgent.get(`/users/by-id/${userProfile.id}`).expect(200);
+        expect(res.body.id).toBe(userProfile.id);
+    });
+
+    it('admin: GET /users?role=SignedInUser → list all users by filter', async () => {
+        const res = await adminAgent.get('/users?role=SignedInUser').expect(200);
+        expect(Array.isArray(res.body)).toBe(true);
+        expect(res.body.some(u => u.id === userProfile.id)).toBe(true);
+    });
+
 
 });

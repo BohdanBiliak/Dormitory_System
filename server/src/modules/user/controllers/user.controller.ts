@@ -6,7 +6,7 @@ import {
   HttpCode,
   HttpStatus,
   Patch,
-  Param,
+  Param, Query,
 } from '@nestjs/common';
 import { UserService } from '../services/user.service';
 import { Authorized } from "@/libs/common/decorators/authtorized.decorator";
@@ -15,6 +15,7 @@ import { $Enums } from "../../../../__generated__";
 import UserRole = $Enums.UserRole;
 import { UpdateUserDto } from "@/modules/user/dto/update-user.dto";
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiOkResponse, ApiTags } from "@nestjs/swagger";
+import {Roles} from "@libs/common/decorators/roles.decorator";
 
 @ApiTags('Users')
 @ApiBearerAuth()
@@ -69,6 +70,8 @@ export class UserController {
     }
   })
   @HttpCode(HttpStatus.OK)
+
+  @Authorization(UserRole.Admin, UserRole.SuperAdmin)
   @Get('by-id/:id')
   public async findById(
       @Param('id') id: string
@@ -103,9 +106,13 @@ export class UserController {
       @Authorized('role') role: UserRole,
       @Body() dto: UpdateUserDto
   ) {
-    if (role !== UserRole.SignedInUser) {
-      throw new ForbiddenException('Only verified users can update profile');
-    }
     return this.userService.update(userId, dto);
+  }
+
+  @Get()
+  @Roles(UserRole.Admin, UserRole.SuperAdmin)
+  @HttpCode(HttpStatus.OK)
+  async findAll(@Query() filters: any) {
+    return this.userService.findAll(filters);
   }
 }
