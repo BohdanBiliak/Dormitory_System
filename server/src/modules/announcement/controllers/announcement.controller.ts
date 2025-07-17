@@ -30,6 +30,7 @@ import {RolesGuard} from "@libs/common/guards/roles.guard";
 import {Roles} from "@libs/common/decorators/roles.decorator";
 import {$Enums} from "../../../../__generated__";
 import UserRole = $Enums.UserRole;
+import {GetPublicAnnouncementsUseCase} from "@modules/announcement/use-cases/get-public-announcements.use-case";
 
 @ApiTags('Announcements')
 @ApiBearerAuth()
@@ -43,6 +44,7 @@ export class AnnouncementController {
       private readonly deleteUseCase: DeleteAnnouncementUseCase,
       private readonly uploadUseCase: UploadAnnouncementAttachmentsUseCase,
       private readonly getAnnouncementByIdUseCase: GetAnnouncementByIdUseCase,
+      private readonly getPublicAnnouncementsUseCase: GetPublicAnnouncementsUseCase
   ){}
 
   @Post()
@@ -71,7 +73,7 @@ export class AnnouncementController {
   }
 
   @Get(':id')
-  @Roles(UserRole.Admin)
+  @Roles(UserRole.Admin, UserRole.SignedInUser, UserRole.Regular)
   @ApiOperation({ summary: 'Get announcement by ID' })
   @ApiParam({ name: 'id', type: String })
   @ApiResponse({ status: 200, description: 'Announcement', type: AnnouncementResponseDto })
@@ -118,5 +120,14 @@ export class AnnouncementController {
   async upload(@UploadedFiles() files: Express.Multer.File[]) {
     const urls = await this.uploadUseCase.execute(files, 'announcements');
     return { urls };
+  }
+
+
+  @Get('public')
+  @Roles(UserRole.SignedInUser, UserRole.Regular)
+  @ApiOperation({ summary: 'Get all public announcements (for everyone)' })
+  @ApiResponse({ status: 200, description: 'List of public announcements', type: [AnnouncementResponseDto] })
+  findPublic() {
+    return this.getPublicAnnouncementsUseCase.execute();
   }
 }

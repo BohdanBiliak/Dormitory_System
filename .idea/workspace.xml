@@ -182,7 +182,8 @@
       <workItem from="1752667228747" duration="1139000" />
       <workItem from="1752668395188" duration="5824000" />
       <workItem from="1752674292468" duration="5539000" />
-      <workItem from="1752735013573" duration="11284000" />
+      <workItem from="1752735013573" duration="11606000" />
+      <workItem from="1752779490230" duration="681000" />
     </task>
     <servers />
   </component>
@@ -246,7 +247,6 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/server/src/libs/common/middleware/sentry-action-logger.middleware.ts</url>
           <line>10</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="27" />
         </line-breakpoint>
       </breakpoints>
