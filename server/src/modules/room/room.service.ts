@@ -1,5 +1,6 @@
 import {
-  BadRequestException, Body,
+  BadRequestException,
+  Body,
   ConflictException,
   Injectable,
   NotFoundException,
@@ -9,13 +10,17 @@ import { $Enums, User } from "../../../__generated__";
 import { AvailableRoomsDto } from "@modules/room/dto/AvailableRooms.dto";
 import { BookRoomDto } from "@modules/room/dto/book-room.dto";
 import { RequestAccommmodationDto } from "@modules/room/dto/RequestAccommmodation.dto";
-import {RequestMoveOutDto} from "@modules/room/dto/request-moveout.dto";
-import {CreateRoomStatusDto} from "@modules/room/dto/create-room-status.dto";
-import {SetPriceDto} from "@modules/room/dto/set-price.dto";
+import { RequestMoveOutDto } from "@modules/room/dto/request-moveout.dto";
+import { CreateRoomStatusDto } from "@modules/room/dto/create-room-status.dto";
+import { SetPriceDto } from "@modules/room/dto/set-price.dto";
+import { AuditService } from "@modules/audit/audit.service";
 
 @Injectable()
 export class RoomService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly auditService: AuditService,
+  ) {}
 
   async findAll(user: User) {
     if (user.role === $Enums.UserRole.Admin) {
@@ -85,11 +90,11 @@ export class RoomService {
     }
 
     const isTaken = room.statuses.some(
-        (status) =>
-            !(
-                new Date(status.dateOfEnd ?? new Date(9999, 1, 1)) <= from ||
-                new Date(status.dateOfStart) >= to
-            ),
+      (status) =>
+        !(
+          new Date(status.dateOfEnd ?? new Date(9999, 1, 1)) <= from ||
+          new Date(status.dateOfStart) >= to
+        ),
     );
 
     if (isTaken)
@@ -109,9 +114,17 @@ export class RoomService {
       data: { roomId: room.id },
     });
 
-    // TODO: create audit trail for this action
-    // await this.auditService.log({ action: 'BOOK_ROOM', userId, roomId: room.id })
-
+    await this.auditService.log({
+      userId,
+      action: 'BOOK_ROOM',
+      entity: 'RoomStatus',
+      entityId: booking.id,
+      meta: {
+        roomId: room.id,
+        from: from.toISOString(),
+        to: to.toISOString(),
+      },
+    });
     return {
       message: "Room booked successfully",
       booking,
@@ -191,7 +204,9 @@ export class RoomService {
   }
 
   async assignUserToRoom(roomId: string, userId: string) {
-    const user = await this.prismaService.user.findUnique({ where: { id: userId } });
+    const user = await this.prismaService.user.findUnique({
+      where: { id: userId },
+    });
 
     if (!user) throw new NotFoundException("User not found");
 

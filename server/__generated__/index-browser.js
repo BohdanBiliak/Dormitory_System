@@ -232,9 +232,24 @@ exports.Prisma.AnnouncementRecipientScalarFieldEnum = {
   forEveryone: 'forEveryone'
 };
 
+exports.Prisma.AuditLogScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  action: 'action',
+  entity: 'entity',
+  entityId: 'entityId',
+  meta: 'meta',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -245,6 +260,12 @@ exports.Prisma.QueryMode = {
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
 };
 exports.AuthMethod = exports.$Enums.AuthMethod = {
   CREDENTIALS: 'CREDENTIALS',
@@ -288,7 +309,8 @@ exports.Prisma.ModelName = {
   Price: 'Price',
   Announcement: 'Announcement',
   Attachment: 'Attachment',
-  AnnouncementRecipient: 'AnnouncementRecipient'
+  AnnouncementRecipient: 'AnnouncementRecipient',
+  AuditLog: 'AuditLog'
 };
 
 /**
