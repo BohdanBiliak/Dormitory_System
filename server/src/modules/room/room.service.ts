@@ -77,18 +77,25 @@ export class RoomService {
     const from = new Date(dto.from);
     const to = new Date(dto.to);
 
+    const msInDay = 1000 * 60 * 60 * 24;
+    const diffDays = Math.floor((to.getTime() - from.getTime()) / msInDay);
+
+    if (diffDays < 1) {
+      throw new BadRequestException("Booking must be at least 1 night long");
+    }
+
     const isTaken = room.statuses.some(
-      (status) =>
-        !(
-          new Date(status.dateOfEnd ?? new Date(9999, 1, 1)) <= from ||
-          new Date(status.dateOfStart) >= to
-        ),
+        (status) =>
+            !(
+                new Date(status.dateOfEnd ?? new Date(9999, 1, 1)) <= from ||
+                new Date(status.dateOfStart) >= to
+            ),
     );
 
     if (isTaken)
       throw new ConflictException("Room already booked or unavailable");
 
-    await this.prismaService.roomStatus.create({
+    const booking = await this.prismaService.roomStatus.create({
       data: {
         roomId: room.id,
         dateOfStart: from,
@@ -102,9 +109,14 @@ export class RoomService {
       data: { roomId: room.id },
     });
 
-    return { message: "Room booked successfully" };
-  }
+    // TODO: create audit trail for this action
+    // await this.auditService.log({ action: 'BOOK_ROOM', userId, roomId: room.id })
 
+    return {
+      message: "Room booked successfully",
+      booking,
+    };
+  }
 
   async requestAccommodation(user: User, dto: RequestAccommmodationDto) {
     const { from, to, roomId, roommateIds, numberOfPeople } = dto;
