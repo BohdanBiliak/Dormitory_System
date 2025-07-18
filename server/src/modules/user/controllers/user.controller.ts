@@ -23,7 +23,6 @@ import {Roles} from "@libs/common/decorators/roles.decorator";
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Authorization()
   @ApiOperation({
     summary: 'Get current user profile',
     description: 'Returns the profile of the currently authenticated user.'
@@ -41,10 +40,13 @@ export class UserController {
     }
   })
   @HttpCode(HttpStatus.OK)
+
   @Get('profile')
+  @Authorization()
   public async findProfile(
       @Authorized('id') userId: string
   ) {
+    console.log('userId in controller:', userId);
     return this.userService.findById(userId);
   }
 
@@ -71,8 +73,9 @@ export class UserController {
   })
   @HttpCode(HttpStatus.OK)
 
-  @Authorization(UserRole.Admin, UserRole.SuperAdmin)
+
   @Get('by-id/:id')
+  @Authorization(UserRole.Admin, UserRole.SuperAdmin)
   public async findById(
       @Param('id') id: string
   ) {
@@ -100,7 +103,9 @@ export class UserController {
     }
   })
   @HttpCode(HttpStatus.OK)
+
   @Patch('profile')
+  @Authorization()
   public async updateProfile(
       @Authorized('id') userId: string,
       @Authorized('role') role: UserRole,
@@ -110,7 +115,7 @@ export class UserController {
   }
 
   @Get()
-  @Roles(UserRole.Admin, UserRole.SuperAdmin)
+  @Authorization(UserRole.Admin, UserRole.SuperAdmin)
   @HttpCode(HttpStatus.OK)
   async findAll(@Query() filters: any) {
     return this.userService.findAll(filters);

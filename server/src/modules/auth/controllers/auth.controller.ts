@@ -52,6 +52,7 @@ export class AuthController {
   @ApiResponse({ status: 200, description: "User successfully registered" })
   @ApiResponse({ status: 409, description: "User already exists" })
   @ApiResponse({ status: 400, description: "Validation failed" })
+
   @Post("register")
   @ApiConsumes("multipart/form-data")
   @HttpCode(HttpStatus.OK)
@@ -74,6 +75,7 @@ export class AuthController {
   @ApiResponse({ status: 200, description: 'Logged in / 2FA initiated' })
   @ApiResponse({ status: 404, description: 'Invalid email or password' })
   @ApiResponse({ status: 401, description: 'Email not verified or 2FA required' })
+
   @Post("login")
   @ApiConsumes("application/json")
   @HttpCode(HttpStatus.OK)

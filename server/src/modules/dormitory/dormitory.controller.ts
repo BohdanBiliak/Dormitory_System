@@ -6,11 +6,8 @@ import {
   Patch,
   Post,
   UploadedFiles,
-  UseGuards,
   UseInterceptors,
 } from "@nestjs/common";
-import { RolesGuard } from "@/libs/common/guards/roles.guard";
-import { Roles } from "@/libs/common/decorators/roles.decorator";
 import { $Enums } from "../../../__generated__";
 import UserRole = $Enums.UserRole;
 import {
@@ -26,17 +23,17 @@ import { CreateDormitoryDto } from "@/modules/dormitory/dto/create-dormitory.dto
 import { UpdateDormitoryDto } from "@/modules/dormitory/dto/update-dormitory.dto";
 import { FilesInterceptor } from "@nestjs/platform-express";
 import { DormitoryService } from "./dormitory.service";
+import {Authorization} from "@libs/common/decorators/auth.decorator";
 
 @ApiTags("Dormitories")
 @ApiBearerAuth()
-@UseGuards(RolesGuard)
 @Controller("dormitories")
 export class DormitoryController {
   constructor(private readonly dormitoryService: DormitoryService) {}
 
 
   @Post()
-  @Roles(UserRole.Admin)
+  @Authorization(UserRole.Admin)
   @UseInterceptors(FilesInterceptor("photos"))
   @ApiConsumes("multipart/form-data")
   @ApiOperation({
@@ -75,6 +72,7 @@ export class DormitoryController {
   }
 
   @Get()
+  @Authorization()
   @ApiOperation({ summary: "List all active dormitories" })
   @ApiResponse({
     status: 200,
@@ -98,6 +96,7 @@ export class DormitoryController {
   }
 
   @Get(":id")
+  @Authorization()
   @ApiOperation({ summary: "Get dormitory by ID" })
   @ApiParam({ name: "id", description: "Dormitory UUID" })
   @ApiResponse({
@@ -119,7 +118,7 @@ export class DormitoryController {
   }
 
   @Patch(":id")
-  @Roles(UserRole.Admin)
+  @Authorization(UserRole.Admin)
   @ApiOperation({ summary: "Update dormitory information" })
   @ApiParam({ name: "id", description: "Dormitory UUID" })
   @ApiBody({
@@ -135,7 +134,7 @@ export class DormitoryController {
   }
 
   @Patch(":id/deactivate")
-  @Roles(UserRole.Admin)
+  @Authorization(UserRole.Admin)
   @ApiOperation({ summary: "Deactivate dormitory" })
   @ApiParam({ name: "id", description: "Dormitory UUID" })
   @ApiResponse({

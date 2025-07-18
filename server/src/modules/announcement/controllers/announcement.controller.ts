@@ -31,11 +31,11 @@ import {Roles} from "@libs/common/decorators/roles.decorator";
 import {$Enums} from "../../../../__generated__";
 import UserRole = $Enums.UserRole;
 import {GetPublicAnnouncementsUseCase} from "@modules/announcement/use-cases/get-public-announcements.use-case";
+import {Authorization} from "@libs/common/decorators/auth.decorator";
 
 @ApiTags('Announcements')
 @ApiBearerAuth()
 @Controller('announcements')
-@UseGuards(RolesGuard)
 export class AnnouncementController {
   constructor(
       private readonly createUseCase: CreateAnnouncementUseCase,
@@ -48,7 +48,7 @@ export class AnnouncementController {
   ){}
 
   @Post()
-  @Roles(UserRole.Admin)
+  @Authorization(UserRole.Admin, UserRole.SuperAdmin)
   @ApiOperation({ summary: 'Create announcement', description: 'Створення оголошення адміністратором' })
   @ApiResponse({ status: 201, description: 'Announcement created', type: AnnouncementResponseDto })
   @ApiBody({ type: CreateAnnouncementDto })
@@ -57,7 +57,7 @@ export class AnnouncementController {
   }
 
   @Get()
-  @Roles(UserRole.Admin)
+  @Authorization(UserRole.Admin, UserRole.SuperAdmin)
   @ApiOperation({ summary: 'Get all announcements' })
   @ApiQuery({ name: 'showHidden', required: false, type: Boolean })
   @ApiQuery({ name: 'showExpired', required: false, type: Boolean })
@@ -73,7 +73,7 @@ export class AnnouncementController {
   }
 
   @Get(':id')
-  @Roles(UserRole.Admin, UserRole.SignedInUser, UserRole.Regular)
+  @Authorization()
   @ApiOperation({ summary: 'Get announcement by ID' })
   @ApiParam({ name: 'id', type: String })
   @ApiResponse({ status: 200, description: 'Announcement', type: AnnouncementResponseDto })
@@ -82,7 +82,7 @@ export class AnnouncementController {
   }
 
   @Patch(':id')
-  @Roles(UserRole.Admin)
+  @Authorization(UserRole.Admin, UserRole.SuperAdmin)
   @ApiOperation({ summary: 'Update announcement' })
   @ApiParam({ name: 'id', type: String })
   @ApiBody({ type: UpdateAnnouncementDto })
@@ -92,7 +92,7 @@ export class AnnouncementController {
   }
 
   @Delete(':id')
-  @Roles(UserRole.Admin)
+  @Authorization(UserRole.Admin, UserRole.SuperAdmin)
   @ApiOperation({ summary: 'Delete announcement (soft)' })
   @ApiParam({ name: 'id', type: String })
   @ApiResponse({ status: 200, description: 'Announcement deleted (soft)' })
@@ -101,7 +101,7 @@ export class AnnouncementController {
   }
 
   @Post('upload')
-  @Roles(UserRole.Admin)
+  @Authorization(UserRole.Admin, UserRole.SuperAdmin)
   @ApiOperation({ summary: 'Upload announcement attachments' })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
@@ -124,7 +124,7 @@ export class AnnouncementController {
 
 
   @Get('public')
-  @Roles(UserRole.SignedInUser, UserRole.Regular)
+  @Authorization(UserRole.Admin, UserRole.SuperAdmin)
   @ApiOperation({ summary: 'Get all public announcements (for everyone)' })
   @ApiResponse({ status: 200, description: 'List of public announcements', type: [AnnouncementResponseDto] })
   findPublic() {

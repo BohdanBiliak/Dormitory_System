@@ -6,7 +6,7 @@ import {S3Service} from "@/libs/common/s3/s3.service";
 import {UserModule} from "@/modules/user/user.module";
 
 @Module({
-  imports: [UserModule],
+  imports: [UserModule, UserModule],
   controllers: [DormitoryController],
   providers: [DormitoryService, PrismaService, S3Service],
 })

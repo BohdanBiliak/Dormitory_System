@@ -13,14 +13,16 @@ export class AuthGuard implements CanActivate {
 
   public async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
+    const sessionUser = request.session?.user;
     console.log('AUTHGUARD USER:', request.user);
-    if (typeof request.session.userId === "undefined") {
+    console.log('Session at AuthGuard:', request.session);
+    if (!sessionUser || !sessionUser.id) {
       throw new UnauthorizedException(
         "User is not authorized, please login to continue",
       );
     }
 
-    const user = await this.userService.findById(request.session.userId);
+    const user = await this.userService.findById(request.session.user.id);
 
     request.user = user;
 

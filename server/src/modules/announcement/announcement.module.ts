@@ -13,9 +13,10 @@ import {
 } from "@modules/announcement/use-cases/upload-announcement-attachments.use-case";
 import {GetAnnouncementByIdUseCase} from "@modules/announcement/use-cases/get-announcement-by-id.use-case";
 import {GetPublicAnnouncementsUseCase} from "@modules/announcement/use-cases/get-public-announcements.use-case";
+import {UserModule} from "@modules/user/user.module";
 
 @Module({
-  imports: [PrismaModule, S3Module],
+  imports: [PrismaModule, S3Module, UserModule],
   controllers: [AnnouncementController],
   providers: [
     AnnouncementRepository,

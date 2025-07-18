@@ -5,12 +5,8 @@ import {
   Param,
   Patch, Post,
   Query, UploadedFile,
-  UseGuards,
 } from "@nestjs/common";
-import { RolesGuard } from "@/libs/common/guards/roles.guard";
-import { Roles } from "@/libs/common/decorators/roles.decorator";
 import { $Enums, ConfirmationStatus } from "../../../../__generated__";
-import UserRole = $Enums.UserRole;
 import { ConfirmationService } from "@/modules/confirmation/services/confirmation.service";
 import {
   ApiBearerAuth,
@@ -28,7 +24,8 @@ import { CurrentUser } from "@/libs/common/decorators/current-user.decorator";
 import { UpdateAdminProfileDto } from "@/modules/admin/dto/UpdateAdminProfile.dto";
 import { AdminService } from "@/modules/admin/services/admin.service";
 import {UseAvatarInterceptor} from "@/libs/common/decorators/upload-avatar.decorator";
-import {UploadAvatarDto} from "@/modules/admin/dto/UploadAvatarDto";
+import {Authorization} from "@libs/common/decorators/auth.decorator";
+import UserRole = $Enums.UserRole;
 
 const ALLOWED_VERSIONS = ['original', 'mobile', 'tablet', 'desktop'] as const;
 type Version = (typeof ALLOWED_VERSIONS)[number];
@@ -36,8 +33,7 @@ type Version = (typeof ALLOWED_VERSIONS)[number];
 @ApiTags("Admin")
 @ApiBearerAuth()
 
-@UseGuards(RolesGuard)
-@Roles(UserRole.Admin)
+
 @Controller("admin")
 export class AdminController {
   constructor(
@@ -105,6 +101,7 @@ export class AdminController {
     },
   })
   @Get("confirmations")
+  @Authorization(UserRole.Admin, UserRole.SuperAdmin)
   getAllConfirmations(@Query() query: GetConfirmationsQueryDto) {
     return this.confirmationService.getAllFiltered(query);
   }
@@ -153,6 +150,7 @@ export class AdminController {
     },
   })
   @Get("profile")
+  @Authorization(UserRole.Admin, UserRole.SuperAdmin)
   getMyProfile(@CurrentUser("id") id: string) {
     return this.adminService.getById(id);
   }
@@ -179,7 +177,9 @@ export class AdminController {
       },
     },
   })
+
   @Patch("profile")
+  @Authorization(UserRole.Admin, UserRole.SuperAdmin)
   updateMyProfile(
     @CurrentUser("id") id: string,
     @Body() dto: UpdateAdminProfileDto,
@@ -189,6 +189,7 @@ export class AdminController {
 
 
   @Post('upload-avatar')
+  @Authorization(UserRole.Admin, UserRole.SuperAdmin)
   @UseAvatarInterceptor()
   @ApiConsumes('multipart/form-data')
   @ApiQuery({

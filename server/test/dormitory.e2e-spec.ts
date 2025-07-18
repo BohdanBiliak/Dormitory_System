@@ -4,36 +4,48 @@ import request, { SuperTest, Test } from 'supertest';
 import path from 'path';
 import fs from 'fs';
 
-const regularUser = {
-    email: 'arheroha@gmail.com',
-    password: '12345678',
-};
-
-const adminUser = {
-    email: 'bohdan.biliak.detrox@email.com',
-    password: '12345678',
-};
-
 describe('DormitoryController (e2e) with SuperTest', () => {
     let app: INestApplication;
     let agent: any;
     let redisClient: any;
-    let createdId: string;
+    let dormitoryId: string;
+    let announcementId: string;
+    let roomId: string;
+
+    const fixturesDir = path.join(__dirname, 'fixtures');
 
     beforeAll(async () => {
         app = await createTestApp();
         redisClient = (app as any).redisClient;
+
         const server = app.getHttpServer();
         agent = request.agent(server);
 
-        const loginRes = await agent
+        // Логін
+        await agent
             .post('/auth/login')
             .send({ email: 'arheroha@gmail.com', password: '12345678' })
             .expect(200);
-        console.log('Login headers:', loginRes.headers);
+
+        // Створити dummy фото, якщо не існують
+        if (!fs.existsSync(fixturesDir)) fs.mkdirSync(fixturesDir);
+        ['photo1.jpg', 'photo2.jpg'].forEach((file) => {
+            const filePath = path.join(fixturesDir, file);
+            if (!fs.existsSync(filePath)) {
+                fs.writeFileSync(filePath, 'dummy');
+            }
+        });
     });
 
     afterAll(async () => {
+        // Очистити файли
+        ['photo1.jpg', 'photo2.jpg'].forEach((file) => {
+            const filePath = path.join(fixturesDir, file);
+            if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+        });
+
+        if (fs.existsSync(fixturesDir)) fs.rmdirSync(fixturesDir);
+
         await redisClient.disconnect();
         await app.close();
     });
@@ -44,93 +56,91 @@ describe('DormitoryController (e2e) with SuperTest', () => {
     });
 
     it('POST /dormitories → creates a dorm', async () => {
-        const fixturesDir = path.join(__dirname, 'fixtures');
-        if (!fs.existsSync(fixturesDir)) fs.mkdirSync(fixturesDir);
-        ['photo1.jpg', 'photo2.jpg'].forEach(fn => {
-            const p = path.join(fixturesDir, fn);
-            if (!fs.existsSync(p)) fs.writeFileSync(p, 'dummy');
-        });
+        const roomGen = {
+            numberOfFloors: 2,
+            roomsPerFloor: 2,
+            pricePerDay: 30,
+            pricePerMonth: 500,
+        };
 
-        const roomGen = { numberOfFloors: 2, roomsPerFloor: 2, pricePerDay: 30, pricePerMonth: 500 };
-        const req = agent
+        const res = await agent
             .post('/dormitories')
             .field('name', 'Dorm A')
             .field('address', '123 Dorm Street')
             .field('groundFloorPhoneNumber', '+380987654321')
             .field('roomGeneration', JSON.stringify(roomGen))
             .attach('photos', path.join(fixturesDir, 'photo1.jpg'))
-            .attach('photos', path.join(fixturesDir, 'photo2.jpg'));
+            .attach('photos', path.join(fixturesDir, 'photo2.jpg'))
+            .expect(201);
 
-        const res = await req.expect(201);
         expect(res.body).toHaveProperty('id');
-        createdId = res.body.id;
+        dormitoryId = res.body.id;
     });
 
-    it('GET /dormitories/:id → fetches by ID', async () => {
-        const res = await agent.get(`/dormitories/${createdId}`).expect(200);
-        expect(res.body.id).toBe(createdId);
+    it('GET /dormitories/:id → fetches dormitory by ID', async () => {
+        const res = await agent.get(`/dormitories/${dormitoryId}`).expect(200);
+        expect(res.body.id).toBe(dormitoryId);
     });
 
-    it('PATCH /dormitories/:id → updates name', async () => {
+    it('PATCH /dormitories/:id → updates dormitory name', async () => {
         const res = await agent
-            .patch(`/dormitories/${createdId}`)
+            .patch(`/dormitories/${dormitoryId}`)
             .send({ name: 'Updated Dorm Name' })
             .expect(200);
         expect(res.body.name).toBe('Updated Dorm Name');
     });
 
-    it('PATCH /dormitories/:id/deactivate → deactivates', async () => {
+    it('PATCH /dormitories/:id/deactivate → deactivates dormitory', async () => {
         const res = await agent
-            .patch(`/dormitories/${createdId}/deactivate`)
+            .patch(`/dormitories/${dormitoryId}/deactivate`)
             .expect(200);
         expect(res.body.status).toBe('NotActive');
     });
 
-    it('POST /announcements — creates announcement', async () => {
+    it('POST /announcements → creates announcement', async () => {
         const res = await agent
             .post('/announcements')
             .send({
                 title: 'Test Announcement',
                 content: 'This is a test',
-                expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24).toISOString(),
+                expiresAt: new Date(Date.now() + 86400000).toISOString(),
                 attachmentUrls: [],
-                forEveryone: true
+                forEveryone: true,
             })
             .expect(201);
 
         expect(res.body).toHaveProperty('id');
-        createdId = res.body.id;
+        announcementId = res.body.id;
     });
 
-    it('GET /announcements — returns all announcements', async () => {
+    it('GET /announcements → returns all announcements', async () => {
         const res = await agent.get('/announcements').expect(200);
-        expect(Array.isArray(res.body)).toBe(true);
-        expect(res.body.find(a => a.id === createdId)).toBeDefined();
+        expect(res.body.find((a: any) => a.id === announcementId)).toBeDefined();
     });
 
-    it('GET /announcements/:id — fetches by ID', async () => {
-        const res = await agent.get(`/announcements/${createdId}`).expect(200);
-        expect(res.body.id).toBe(createdId);
-    });
-
-    it('PATCH /announcements/:id — updates announcement', async () => {
+    it('GET /announcements/:id → fetches announcement by ID', async () => {
         const res = await agent
-            .patch(`/announcements/${createdId}`)
+            .get(`/announcements/${announcementId}`)
+            .expect(200);
+        expect(res.body.id).toBe(announcementId);
+    });
+
+    it('PATCH /announcements/:id → updates announcement', async () => {
+        const res = await agent
+            .patch(`/announcements/${announcementId}`)
             .send({ title: 'Updated Title' })
             .expect(200);
         expect(res.body.title).toBe('Updated Title');
     });
 
-    it('DELETE /announcements/:id — soft deletes announcement', async () => {
+    it('DELETE /announcements/:id → soft deletes announcement', async () => {
         const res = await agent
-            .delete(`/announcements/${createdId}`)
+            .delete(`/announcements/${announcementId}`)
             .expect(200);
         expect(res.body.isHidden).toBe(true);
     });
 
-    let roomId: string;
-
-    it('GET /rooms/avalible → returns filtered list', async () => {
+    it('GET /rooms/avalible → returns available rooms', async () => {
         const res = await agent
             .get('/rooms/avalible')
             .query({ from: '2025-08-01', to: '2025-08-10' })
@@ -142,9 +152,8 @@ describe('DormitoryController (e2e) with SuperTest', () => {
         }
     });
 
-    it('POST /rooms/request-accommodation → creates request', async () => {
+    it('POST /rooms/request-accommodation → creates accommodation request', async () => {
         if (!roomId) return;
-
         const res = await agent
             .post('/rooms/request-accommodation')
             .send({
@@ -154,9 +163,6 @@ describe('DormitoryController (e2e) with SuperTest', () => {
                 numberOfPeople: 1,
             })
             .expect(201);
-
         expect(res.body).toHaveProperty('id');
     });
-
-
 });

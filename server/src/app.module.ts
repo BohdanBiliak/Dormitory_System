@@ -20,7 +20,7 @@ import {SentryUserMiddleware} from "@libs/common/middleware/sentry-action-logger
 
 @Module({
 
-  imports: [ConfigModule.forRoot({
+  imports: [  UserModule, ConfigModule.forRoot({
     isGlobal: true,
     ignoreEnvFile: !IS_DEV_ENV,
   }),   SentryModule.forRoot(), PrismaModule, AuthModule, UserModule, MailModule, EmailConfirmationModule, MailModule, EmailConfirmationModule, PasswordRecoveryModule, TwoFactorAuthModule, AdminModule,DormitoryModule, RoomModule,AnnouncementModule],

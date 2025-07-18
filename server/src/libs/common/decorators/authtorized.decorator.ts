@@ -8,8 +8,8 @@ import { User } from '../../../../__generated__'
 export const Authorized = createParamDecorator(
     (data: keyof User, ctx: ExecutionContext) => {
         const request = ctx.switchToHttp().getRequest()
-        const user = request.user
-        console.log('AUTHGUARD USER:', request.user);
+        const user = request.session?.user;
+        console.log('AUTHGUARD USER:', user);
         if (!user) {
             throw new UnauthorizedException('User is not authenticated')
         }

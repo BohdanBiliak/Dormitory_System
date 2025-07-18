@@ -1,6 +1,5 @@
-import {Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Param, Patch, Post, Query} from "@nestjs/common";
 import { RoomService } from "./room.service";
-import { RoomAccessGuard } from "@/libs/common/guards/roomaccessguard.guard";
 import {ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags} from "@nestjs/swagger";
 import { Authorized } from "@/libs/common/decorators/authtorized.decorator";
 import {$Enums, User} from "../../../__generated__";
@@ -12,14 +11,11 @@ import {RequestAccommmodationDto} from "@modules/room/dto/RequestAccommmodation.
 import {CreateRoomStatusDto} from "@modules/room/dto/create-room-status.dto";
 import {AssignUserToRoomDto} from "@modules/room/dto/assign-user.dto";
 import {SetPriceDto} from "@modules/room/dto/set-price.dto";
-import {RolesGuard} from "@libs/common/guards/roles.guard";
-import {Roles} from "@libs/common/decorators/roles.decorator";
 import UserRole = $Enums.UserRole;
 
 
 @ApiTags("Rooms")
 @ApiBearerAuth()
-@UseGuards(RoomAccessGuard, RolesGuard)
 @Controller("rooms")
 export class RoomController {
   constructor(private roomService: RoomService) {}
@@ -41,8 +37,9 @@ export class RoomController {
     return this.roomService.findOne(id);
   }
 
+
   @Get("avalible")
-  @Authorization()
+  @Authorization(UserRole.Admin, UserRole.SignedInUser)
   @ApiOperation({ summary: "Get available rooms in date range" })
   @ApiQuery({ name: 'from', required: true, type: String, example: '2025-08-01' })
   @ApiQuery({ name: 'to', required: true, type: String, example: '2025-08-10' })
@@ -53,8 +50,7 @@ export class RoomController {
   }
 
   @Post("book")
-  @Roles(UserRole.SignedInUser)
-  @Authorization()
+  @Authorization(UserRole.SignedInUser)
   @ApiOperation({ summary: "Book a room for specific dates" })
   @ApiBody({ type: BookRoomDto })
   @ApiResponse({ status: 201, description: 'Room booked successfully' })
@@ -63,8 +59,7 @@ export class RoomController {
   }
 
   @Post("request-accommodation")
-  @Roles(UserRole.SignedInUser)
-  @Authorization()
+  @Authorization(UserRole.SignedInUser)
   @ApiOperation({ summary: "Request to book a room (confirmation flow)" })
   @ApiBody({ type: RequestAccommmodationDto })
   @ApiResponse({ status: 201, description: 'Accommodation request created' })
@@ -76,8 +71,7 @@ export class RoomController {
   }
 
   @Post("request-move-out")
-  @Roles(UserRole.SignedInUser)
-  @Authorization()
+  @Authorization(UserRole.SignedInUser)
   @ApiOperation({ summary: "Resident requests to move out" })
   @ApiBody({ type: RequestMoveOutDto })
   @ApiResponse({ status: 201, description: 'Move out request created' })
@@ -89,7 +83,7 @@ export class RoomController {
   }
 
   @Post(":id/statuses")
-  @Roles(UserRole.Admin)
+  @Authorization(UserRole.Admin)
   @ApiOperation({ summary: "Create a room status (Admin only)" })
   @ApiParam({ name: "id", type: String })
   @ApiBody({ type: CreateRoomStatusDto })
@@ -102,7 +96,7 @@ export class RoomController {
   }
 
   @Delete(":id/statuses/:sid")
-  @Roles(UserRole.Admin)
+  @Authorization(UserRole.Admin)
   @ApiOperation({ summary: "Delete room status (Admin only)" })
   @ApiParam({ name: "id", type: String })
   @ApiParam({ name: "sid", type: String })
@@ -115,7 +109,7 @@ export class RoomController {
   }
 
   @Patch(":id/assign-user")
-  @Roles(UserRole.Admin)
+  @Authorization(UserRole.Admin)
   @ApiOperation({ summary: "Assign user to a room (Admin only)" })
   @ApiParam({ name: "id", type: String })
   @ApiBody({ type: AssignUserToRoomDto })
@@ -128,7 +122,7 @@ export class RoomController {
   }
 
   @Post("/prices")
-  @Roles(UserRole.Admin)
+  @Authorization(UserRole.Admin)
   @ApiOperation({ summary: "Set pricing for room capacity (Admin only)" })
   @ApiBody({ type: SetPriceDto })
   @ApiResponse({ status: 201, description: 'Price created' })
