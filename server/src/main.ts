@@ -10,10 +10,28 @@ import { RedisStore } from 'connect-redis';
 import { SwaggerSetup } from '@/libs/swagger/swagger.module';
 import { ms, StringValue } from '@/libs/utils/ms.util';
 import { parseBoolean } from '@/libs/utils/parse_boolean';
+import helmet from 'helmet';
+import compression from 'compression';
+import rateLimit from 'express-rate-limit';
+import { SecurityConfig } from '@/config/security.config';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
     const config = app.get(ConfigService);
+    const securityConfig = new SecurityConfig(config);
+
+    
+    // Compression
+    app.use(compression());
+    
+    // Rate Limiting
+    app.use('/api', rateLimit({
+        windowMs: 15 * 60 * 1000, // 15 minutes
+        max: 100, // limit each IP to 100 requests per windowMs
+        message: 'Too many requests from this IP, please try again later.',
+        standardHeaders: true,
+        legacyHeaders: false,
+    }));
 
     // Redis client
     const redisClient = createClient({
@@ -22,43 +40,45 @@ async function bootstrap() {
     } as any);
     await redisClient.connect();
 
-    // express-session з Redis
+    // express-session with improved security
+    const sessionConfig = securityConfig.getSessionConfig();
     app.use(
         session({
             store: new RedisStore({
                 client: redisClient,
                 prefix: config.getOrThrow<string>('SESSION_FOLDER') + ':',
-                ttl: 60 * 60 * 24 * 30, // 30 днів
+                ttl: sessionConfig.cookie.maxAge / 1000, // Convert to seconds
                 disableTouch: false,
                 disableTTL: false,
             }),
-            secret: config.getOrThrow<string>('SESSION_SECRET'),
-            name: config.getOrThrow<string>('SESSION_NAME'),
-            resave: false,
-            saveUninitialized: false,
-            cookie: {
-                maxAge: ms(config.getOrThrow<StringValue>('SESSION_MAX_AGE')),
-                httpOnly: parseBoolean(config.getOrThrow<string>('SESSION_HTTP_ONLY')),
-                secure: parseBoolean(config.getOrThrow<string>('SESSION_SECURE')),
-                sameSite: 'lax',
-            },
+            ...sessionConfig,
         })
     );
 
     // cookie parser
     app.use(cookieParser(config.getOrThrow('COOKIE_SECRET')));
 
-    // req.user ← з req.session.user
-    app.use((req, res, next) => {
-        console.log('Current session:', req.session);
-        if (req.session?.user) {
-            console.log('Assigning req.user from session...');
-            req.user = req.session.user;
-        } else {
-            console.log('No user in session.');
-        }
-        next();
-    });
+    // req.user ← з req.session.user (remove in production)
+    if (config.get('NODE_ENV') === 'development') {
+        app.use((req, res, next) => {
+            console.log('Current session:', req.session);
+            if (req.session?.user) {
+                console.log('Assigning req.user from session...');
+                req.user = req.session.user;
+            } else {
+                console.log('No user in session.');
+            }
+            next();
+        });
+    } else {
+        // Production: Silent session handling
+        app.use((req, res, next) => {
+            if (req.session?.user) {
+                req.user = req.session.user;
+            }
+            next();
+        });
+    }
 
     // Global validation
     app.useGlobalPipes(
