@@ -28,17 +28,8 @@ export class RoomController {
     return this.roomService.findAll(user);
   }
 
-  @Get(":id")
-  @Authorization()
-  @ApiOperation({ summary: "Get room by ID if accessible" })
-  @ApiParam({ name: 'id', type: String, description: 'Room ID' })
-  @ApiResponse({ status: 200, description: 'Room details returned successfully' })
-  async getRoom(@Param("id") id: string) {
-    return this.roomService.findOne(id);
-  }
 
-
-  @Get("avalible")
+  @Get("available")
   @Authorization(UserRole.Admin, UserRole.SignedInUser)
   @ApiOperation({ summary: "Get available rooms in date range" })
   @ApiQuery({ name: 'from', required: true, type: String, example: '2025-08-01' })
@@ -49,8 +40,19 @@ export class RoomController {
     return this.roomService.findAvailableRooms(query);
   }
 
+  @Get(":id")
+  @Authorization()
+  @ApiOperation({ summary: "Get room by ID if accessible" })
+  @ApiParam({ name: 'id', type: String, description: 'Room ID' })
+  @ApiResponse({ status: 200, description: 'Room details returned successfully' })
+  async getRoom(@Param("id") id: string) {
+    return this.roomService.findOne(id);
+  }
+
+
+
   @Post("book")
-  @Authorization(UserRole.SignedInUser)
+  @Authorization(UserRole.SignedInUser, UserRole.Admin)
   @ApiOperation({ summary: "Book a room for specific dates" })
   @ApiBody({ type: BookRoomDto })
   @ApiResponse({ status: 201, description: 'Room booked successfully' })

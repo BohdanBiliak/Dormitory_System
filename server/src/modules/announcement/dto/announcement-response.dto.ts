@@ -4,21 +4,21 @@ import { IsString, IsBoolean, IsDate, IsArray, IsOptional, IsNumber, IsUUID } fr
 export class AttachmentDto {
     @ApiProperty()
     @IsString()
-    id: string;
+    id!: string;
 
     @ApiProperty()
     @IsString()
-    url: string;
+    url!: string;
 
     @ApiProperty()
     @IsString()
-    filename: string;
+    filename!: string;
 }
 
 export class RecipientDto {
     @ApiProperty()
     @IsString()
-    id: string;
+    id!: string;
 
     @ApiProperty({ required: false, nullable: true })
     @IsOptional()
@@ -37,37 +37,37 @@ export class RecipientDto {
 
     @ApiProperty()
     @IsBoolean()
-    forEveryone: boolean;
+    forEveryone?: boolean;
 }
 
 export class AnnouncementResponseDto {
     @ApiProperty()
     @IsString()
-    id: string;
+    id!: string;
 
     @ApiProperty()
     @IsString()
-    title: string;
+    title!: string;
 
     @ApiProperty()
     @IsString()
-    content: string;
+    content!: string;
 
     @ApiProperty()
     @IsDate()
-    postedAt: Date;
+    postedAt!: Date;
 
     @ApiProperty()
     @IsDate()
-    expiresAt: Date;
+    expiresAt!: Date;
 
     @ApiProperty()
     @IsBoolean()
-    isHidden: boolean;
+    isHidden?: boolean;
 
     @ApiProperty()
     @IsString()
-    authorId: string;
+    authorId!: string;
 
     @ApiProperty({ type: [AttachmentDto] })
     @IsArray()

@@ -6,15 +6,15 @@ export class UpdateUserDto {
     @ApiProperty({ example: 'Bohdan', description: 'User\'s name' })
     @IsString()
     @IsNotEmpty()
-    name: string;
+    name?: string;
 
     @ApiProperty({ example: 'user@example.com', description: 'User\'s email' })
     @IsString()
     @IsEmail()
     @IsNotEmpty()
-    email: string;
+    email?: string;
 
     @ApiProperty({ example: true, description: 'Two-factor enabled or not' })
     @IsBoolean()
-    isTwoFactorEnabled: boolean;
+    isTwoFactorEnabled?: boolean;
 }

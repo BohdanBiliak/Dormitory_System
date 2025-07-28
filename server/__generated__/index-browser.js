@@ -167,6 +167,16 @@ exports.Prisma.TokenScalarFieldEnum = {
   expiresIn: 'expiresIn'
 };
 
+exports.Prisma.AuditLogScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  action: 'action',
+  entity: 'entity',
+  entityId: 'entityId',
+  meta: 'meta',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.DormitoryScalarFieldEnum = {
   id: 'id',
   createdAt: 'createdAt',
@@ -206,6 +216,67 @@ exports.Prisma.PriceScalarFieldEnum = {
   dateTo: 'dateTo'
 };
 
+exports.Prisma.BookingScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  roomId: 'roomId',
+  status: 'status',
+  checkInDate: 'checkInDate',
+  checkOutDate: 'checkOutDate',
+  totalAmount: 'totalAmount',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PaymentScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  bookingId: 'bookingId',
+  amount: 'amount',
+  status: 'status',
+  paymentMethod: 'paymentMethod',
+  transactionId: 'transactionId',
+  dueDate: 'dueDate',
+  paidAt: 'paidAt',
+  description: 'description',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.NotificationScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  title: 'title',
+  message: 'message',
+  priority: 'priority',
+  fromUserId: 'fromUserId',
+  toUserId: 'toUserId',
+  isRead: 'isRead',
+  isArchived: 'isArchived',
+  readAt: 'readAt',
+  archivedAt: 'archivedAt',
+  metadata: 'metadata',
+  roomId: 'roomId',
+  bookingId: 'bookingId',
+  paymentId: 'paymentId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.NotificationSettingsScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  emailNotifications: 'emailNotifications',
+  emailPaymentReminders: 'emailPaymentReminders',
+  emailBookingUpdates: 'emailBookingUpdates',
+  emailAnnouncements: 'emailAnnouncements',
+  inAppNotifications: 'inAppNotifications',
+  markAsReadOnView: 'markAsReadOnView',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.AnnouncementScalarFieldEnum = {
   id: 'id',
   title: 'title',
@@ -230,16 +301,6 @@ exports.Prisma.AnnouncementRecipientScalarFieldEnum = {
   roomId: 'roomId',
   floor: 'floor',
   forEveryone: 'forEveryone'
-};
-
-exports.Prisma.AuditLogScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  action: 'action',
-  entity: 'entity',
-  entityId: 'entityId',
-  meta: 'meta',
-  createdAt: 'createdAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -298,19 +359,73 @@ exports.TokenType = exports.$Enums.TokenType = {
   PASSWORD_RESET: 'PASSWORD_RESET'
 };
 
+exports.BookingStatus = exports.$Enums.BookingStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  CANCELLED: 'CANCELLED',
+  COMPLETED: 'COMPLETED'
+};
+
+exports.PaymentStatus = exports.$Enums.PaymentStatus = {
+  PENDING: 'PENDING',
+  PAID: 'PAID',
+  OVERDUE: 'OVERDUE',
+  CANCELLED: 'CANCELLED',
+  REFUNDED: 'REFUNDED'
+};
+
+exports.NotificationType = exports.$Enums.NotificationType = {
+  ROOM_BOOKING_REQUEST: 'ROOM_BOOKING_REQUEST',
+  ROOM_BOOKING_APPROVED: 'ROOM_BOOKING_APPROVED',
+  ROOM_BOOKING_REJECTED: 'ROOM_BOOKING_REJECTED',
+  ROOM_ASSIGNMENT_UPDATED: 'ROOM_ASSIGNMENT_UPDATED',
+  ROOM_AVAILABLE: 'ROOM_AVAILABLE',
+  ACCOMMODATION_CHANGE_REQUEST: 'ACCOMMODATION_CHANGE_REQUEST',
+  ACCOMMODATION_CHANGE_APPROVED: 'ACCOMMODATION_CHANGE_APPROVED',
+  ACCOMMODATION_CHANGE_REJECTED: 'ACCOMMODATION_CHANGE_REJECTED',
+  PAYMENT_DUE: 'PAYMENT_DUE',
+  PAYMENT_RECEIVED: 'PAYMENT_RECEIVED',
+  PAYMENT_OVERDUE: 'PAYMENT_OVERDUE',
+  PAYMENT_REMINDER: 'PAYMENT_REMINDER',
+  MAINTENANCE_SCHEDULED: 'MAINTENANCE_SCHEDULED',
+  MAINTENANCE_COMPLETED: 'MAINTENANCE_COMPLETED',
+  MAINTENANCE_URGENT: 'MAINTENANCE_URGENT',
+  ADMIN_ANNOUNCEMENT: 'ADMIN_ANNOUNCEMENT',
+  POLICY_UPDATE: 'POLICY_UPDATE',
+  SYSTEM_MAINTENANCE: 'SYSTEM_MAINTENANCE',
+  STUDENT_MESSAGE: 'STUDENT_MESSAGE',
+  ROOMMATE_REQUEST: 'ROOMMATE_REQUEST',
+  ROOMMATE_APPROVED: 'ROOMMATE_APPROVED',
+  ACCOUNT_VERIFIED: 'ACCOUNT_VERIFIED',
+  PASSWORD_CHANGED: 'PASSWORD_CHANGED',
+  LOGIN_ALERT: 'LOGIN_ALERT'
+};
+
+exports.NotificationPriority = exports.$Enums.NotificationPriority = {
+  LOW: 'LOW',
+  NORMAL: 'NORMAL',
+  HIGH: 'HIGH',
+  URGENT: 'URGENT'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   DormitoryAdmin: 'DormitoryAdmin',
   Confirmation: 'Confirmation',
   Token: 'Token',
+  AuditLog: 'AuditLog',
   Dormitory: 'Dormitory',
   Room: 'Room',
   RoomStatus: 'RoomStatus',
   Price: 'Price',
+  Booking: 'Booking',
+  Payment: 'Payment',
+  Notification: 'Notification',
+  NotificationSettings: 'NotificationSettings',
   Announcement: 'Announcement',
   Attachment: 'Attachment',
-  AnnouncementRecipient: 'AnnouncementRecipient',
-  AuditLog: 'AuditLog'
+  AnnouncementRecipient: 'AnnouncementRecipient'
 };
 
 /**

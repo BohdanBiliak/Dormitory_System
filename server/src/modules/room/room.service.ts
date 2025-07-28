@@ -14,12 +14,14 @@ import { RequestMoveOutDto } from "@modules/room/dto/request-moveout.dto";
 import { CreateRoomStatusDto } from "@modules/room/dto/create-room-status.dto";
 import { SetPriceDto } from "@modules/room/dto/set-price.dto";
 import { AuditService } from "@modules/audit/audit.service";
+import { NotificationsService } from "@modules/notifications/notifications.service"
 
 @Injectable()
 export class RoomService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly auditService: AuditService,
+    private readonly notificationService: NotificationsService,
   ) {}
 
   async findAll(user: User) {
@@ -44,6 +46,7 @@ export class RoomService {
   }
 
   async findAvailableRooms(dto: AvailableRoomsDto) {
+ 
     const from = new Date(dto.from);
     const to = new Date(dto.to);
 
@@ -51,7 +54,7 @@ export class RoomService {
       where: dto.dormitoryId ? { dormitoryId: dto.dormitoryId } : {},
       include: {
         statuses: true,
-        dormitroy: true,
+        dormitory: true,
       },
     });
 
@@ -71,65 +74,129 @@ export class RoomService {
     });
   }
 
-  async bookRoom(dto: BookRoomDto, userId: string) {
-    const room = await this.prismaService.room.findUnique({
-      where: { id: dto.roomId },
-      include: { statuses: true },
+async bookRoom(dto: BookRoomDto, userId: string) {
+  const room = await this.prismaService.room.findUnique({
+    where: { id: dto.roomId },
+    include: { statuses: true, dormitory: true },
+  });
+
+  if (!room) throw new NotFoundException("Room not found");
+
+  const from = new Date(dto.from);
+  const to = new Date(dto.to);
+
+  const msInDay = 1000 * 60 * 60 * 24;
+  const diffDays = Math.floor((to.getTime() - from.getTime()) / msInDay);
+
+  if (diffDays < 1) {
+    throw new BadRequestException("Booking must be at least 1 night long");
+  }
+
+  const isTaken = room.statuses.some(
+    (status) =>
+      !(
+        new Date(status.dateOfEnd ?? new Date(9999, 1, 1)) <= from ||
+        new Date(status.dateOfStart) >= to
+      ),
+  );
+
+  if (isTaken)
+    throw new ConflictException("Room already booked or unavailable");
+
+  const booking = await this.prismaService.booking.create({
+    data: {
+      userId,
+      roomId: room.id,
+      status: 'PENDING',
+      checkInDate: from,
+      checkOutDate: to,
+      totalAmount: 0,
+      notes: `Direct booking by user`,
+    },
+  });
+
+  const roomStatus = await this.prismaService.roomStatus.create({
+    data: {
+      roomId: room.id,
+      dateOfStart: from,
+      dateOfEnd: to,
+      description: `Booking by user ${userId}`,
+    },
+  });
+
+  await this.prismaService.user.update({
+    where: { id: userId },
+    data: { roomId: room.id },
+  });
+
+  
+  try {
+
+    await this.notificationService.createNotification({
+      toUserId: String(userId),
+      type: $Enums.NotificationType.ROOM_BOOKING_APPROVED,
+      title: 'Room Booking Confirmed',
+      message: `Your booking for room ${room.number} in ${room.dormitory?.name || 'Unknown Dormitory'} has been confirmed for ${from.toDateString()} to ${to.toDateString()}`,
+      bookingId: String(booking.id), 
+      roomId: String(room.id),
     });
 
-    if (!room) throw new NotFoundException("Room not found");
+    // Notify dormitory admins
+    const dormitoryAdmins = await this.prismaService.dormitoryAdmin.findMany({
+      where: { dormitoryId: room.dormitoryId },
+      include: { user: true },
+    });
 
-    const from = new Date(dto.from);
-    const to = new Date(dto.to);
-
-    const msInDay = 1000 * 60 * 60 * 24;
-    const diffDays = Math.floor((to.getTime() - from.getTime()) / msInDay);
-
-    if (diffDays < 1) {
-      throw new BadRequestException("Booking must be at least 1 night long");
+    for (const admin of dormitoryAdmins) {
+      await this.notificationService.createNotification({
+        toUserId: admin.userId, 
+        fromUserId: userId, 
+        type: $Enums.NotificationType.ROOM_BOOKING_REQUEST,
+        title: 'New Room Booking',
+        message: `Room ${room.number} has been booked by a student for ${from.toDateString()} to ${to.toDateString()}`,
+        bookingId: booking.id, 
+        roomId: room.id,
+      });
     }
 
-    const isTaken = room.statuses.some(
-      (status) =>
-        !(
-          new Date(status.dateOfEnd ?? new Date(9999, 1, 1)) <= from ||
-          new Date(status.dateOfStart) >= to
-        ),
-    );
-
-    if (isTaken)
-      throw new ConflictException("Room already booked or unavailable");
-
-    const booking = await this.prismaService.roomStatus.create({
+    // Send email notification
+    await this.notificationService.sendEmailNotification({
+      to: userId,
+      subject: 'Room Booking Confirmation',
+      template: 'room-booking-confirmation',
       data: {
-        roomId: room.id,
-        dateOfStart: from,
-        dateOfEnd: to,
-        description: `Booking by user ${userId}`,
+        roomNumber: room.number,
+        dormitoryName: room.dormitory?.name || 'Unknown Dormitory',
+        checkIn: from.toDateString(),
+        checkOut: to.toDateString(),
+        bookingId: booking.id,
+        totalAmount: 0,
       },
     });
 
-    await this.prismaService.user.update({
-      where: { id: userId },
-      data: { roomId: room.id },
-    });
-
-    await this.auditService.log({
-      userId,
-      action: 'BOOK_ROOM',
-      entity: 'RoomStatus',
-      entityId: booking.id,
-      meta: {
-        roomId: room.id,
-        from: from.toISOString(),
-        to: to.toISOString(),
-      },
-    });
-    return {
-      message: "Room booked successfully",
-      booking,
-    };
+  } catch (notificationError) {
+    console.error('❌ Error sending notifications:', notificationError);
+    // Don't throw - booking was successful, notifications are optional
   }
+
+  await this.auditService.log({
+    userId,
+    action: 'BOOK_ROOM',
+    entity: 'Booking',
+    entityId: booking.id,
+    meta: {
+      roomId: room.id,
+      from: from.toISOString(),
+      to: to.toISOString(),
+    },
+  });
+
+  return {
+    message: "Room booked successfully",
+    booking,
+    roomStatus,
+  };
+}
 
   async requestAccommodation(user: User, dto: RequestAccommmodationDto) {
     const { from, to, roomId, roommateIds, numberOfPeople } = dto;

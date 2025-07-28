@@ -2,10 +2,10 @@ import { IsDateString, IsOptional, IsUUID } from "class-validator";
 
 export class AvailableRoomsDto {
     @IsDateString()
-    from: string;
+    from!: string;
 
     @IsDateString()
-    to: string;
+    to!: string;
 
     @IsUUID()
     @IsOptional()

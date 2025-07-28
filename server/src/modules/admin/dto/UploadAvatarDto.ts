@@ -14,7 +14,7 @@ export class UploadAvatarDto {
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
-    userLastName: string;
+    userLastName!: string;
 
     @ApiPropertyOptional({ enum: ['original', 'mobile', 'tablet', 'desktop'] })
     @IsOptional()

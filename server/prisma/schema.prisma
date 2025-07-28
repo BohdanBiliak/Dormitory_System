@@ -9,6 +9,9 @@ datasource db {
   url      = env("POSTGRES_URI")
 }
 
+// ==========================================
+// ENUMS (from schema/enums.prisma)
+// ==========================================
 enum UserRole {
   Regular
   Admin
@@ -40,6 +43,72 @@ enum ConfirmationStatus {
   REJECTED
 }
 
+enum NotificationPriority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
+enum NotificationType {
+  // Room related
+  ROOM_BOOKING_REQUEST
+  ROOM_BOOKING_APPROVED
+  ROOM_BOOKING_REJECTED
+  ROOM_ASSIGNMENT_UPDATED
+  ROOM_AVAILABLE
+  
+  // Accommodation changes
+  ACCOMMODATION_CHANGE_REQUEST
+  ACCOMMODATION_CHANGE_APPROVED
+  ACCOMMODATION_CHANGE_REJECTED
+  
+  // Payments
+  PAYMENT_DUE
+  PAYMENT_RECEIVED
+  PAYMENT_OVERDUE
+  PAYMENT_REMINDER
+  
+  // Maintenance
+  MAINTENANCE_SCHEDULED
+  MAINTENANCE_COMPLETED
+  MAINTENANCE_URGENT
+  
+  // Administrative
+  ADMIN_ANNOUNCEMENT
+  POLICY_UPDATE
+  SYSTEM_MAINTENANCE
+  
+  // Student interactions
+  STUDENT_MESSAGE
+  ROOMMATE_REQUEST
+  ROOMMATE_APPROVED
+  
+  // System events
+  ACCOUNT_VERIFIED
+  PASSWORD_CHANGED
+  LOGIN_ALERT
+}
+
+enum BookingStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+  COMPLETED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  OVERDUE
+  CANCELLED
+  REFUNDED
+}
+
+// ==========================================
+// USER MODELS (from schema/user.prisma)
+// ==========================================
 model User {
   id                        String                  @id @default(uuid())
   email                     String                  @unique
@@ -53,6 +122,8 @@ model User {
   secondName                String                  @map("second_name")
   studentIdFront            String                  @map("student_id_front")
   studentIdBack             String?                 @map("student_id_back")
+  
+  // Relations
   confirmations             Confirmation[]          @relation("UserConfirmations")
   dormitoryAdminAssignments DormitoryAdmin[]
   dormitory                 Dormitory?              @relation("DormitoryResidents", fields: [dormitoryId], references: [id])
@@ -62,7 +133,17 @@ model User {
   room                      Room?                   @relation(fields: [roomId], references: [id])
   announcements             Announcement[]          @relation("AnnouncementAuthor")
   announcementRecipients    AnnouncementRecipient[] @relation("AnnouncementRecipientUser")
-  AuditLog AuditLog[] @relation("UserAuditLogs")
+  auditLogs                 AuditLog[]              @relation("UserAuditLogs")
+  
+  // Notification relations
+  sentNotifications         Notification[]          @relation("NotificationSender")
+  receivedNotifications     Notification[]          @relation("NotificationReceiver")
+  notificationSettings      NotificationSettings?
+  
+  // Booking relations
+  bookings                  Booking[]               @relation("UserBookings")
+  payments                  Payment[]               @relation("UserPayments")
+  
   createdAt                 DateTime                @default(now()) @map("created_at")
   updatedAt                 DateTime                @default(now()) @map("updated_at")
 
@@ -78,7 +159,7 @@ model DormitoryAdmin {
   user        User      @relation(fields: [userId], references: [id])
   dormitory   Dormitory @relation(fields: [dormitoryId], references: [id])
 
-  @@unique([userId, dormitoryId]) // один раз призначити
+  @@unique([userId, dormitoryId])
 }
 
 model Confirmation {
@@ -106,6 +187,22 @@ model Token {
   @@map("tokens")
 }
 
+model AuditLog {
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation("UserAuditLogs", fields: [userId], references: [id])
+  action     String
+  entity     String
+  entityId   String
+  meta       Json?
+  createdAt  DateTime @default(now())
+
+  @@index([userId])
+}
+
+// ==========================================
+// DORMITORY MODELS (from schema/dormitory.prisma)
+// ==========================================
 model Dormitory {
   id                     String           @id @default(uuid())
   createdAt              DateTime         @default(now())
@@ -133,7 +230,9 @@ model Room {
   photos                 String[]
   dormitoryId            String
   announcementRecipients AnnouncementRecipient[] @relation("AnnouncementRecipientRoom")
-  dormitroy              Dormitory               @relation(fields: [dormitoryId], references: [id])
+  dormitory              Dormitory               @relation(fields: [dormitoryId], references: [id])
+  notifications          Notification[]
+  bookings               Booking[]
 }
 
 model RoomStatus {
@@ -155,6 +254,128 @@ model Price {
   dateTo        DateTime?
 }
 
+// ==========================================
+// BOOKING MODELS (from schema/booking.prisma)
+// ==========================================
+model Booking {
+  id           String        @id @default(uuid())
+  userId       String        @map("user_id")
+  roomId       String        @map("room_id")
+  status       BookingStatus @default(PENDING)
+  checkInDate  DateTime      @map("check_in_date")
+  checkOutDate DateTime?     @map("check_out_date")
+  totalAmount  Float         @map("total_amount")
+  notes        String?
+  
+  user         User          @relation("UserBookings", fields: [userId], references: [id], onDelete: Cascade)
+  room         Room          @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  notifications Notification[]
+  payments     Payment[]
+  
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
+  
+  @@map("bookings")
+  @@index([userId])
+  @@index([roomId])
+  @@index([status])
+}
+
+model Payment {
+  id            String        @id @default(uuid())
+  userId        String        @map("user_id") 
+  bookingId     String?       @map("booking_id")
+  amount        Float
+  status        PaymentStatus @default(PENDING)
+  paymentMethod String?       @map("payment_method")
+  transactionId String?       @map("transaction_id")
+  dueDate       DateTime      @map("due_date")
+  paidAt        DateTime?     @map("paid_at")
+  description   String?
+  
+  user          User          @relation("UserPayments", fields: [userId], references: [id], onDelete: Cascade)
+  booking       Booking?      @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+  notifications Notification[]
+  
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @updatedAt @map("updated_at")
+  
+  @@map("payments")
+  @@index([userId])
+  @@index([status])
+  @@index([dueDate])
+}
+
+// ==========================================
+// NOTIFICATION MODELS (from schema/notification.prisma)
+// ==========================================
+model Notification {
+  id          String               @id @default(uuid())
+  
+  // Content 
+  type        NotificationType
+  title       String
+  message     String               @db.Text
+  priority    NotificationPriority @default(NORMAL)
+
+  // Relationships
+  fromUserId  String?              @map("from_user_id")
+  toUserId    String               @map("to_user_id")
+  fromUser    User?                @relation("NotificationSender", fields: [fromUserId], references: [id], onDelete: SetNull)
+  toUser      User                 @relation("NotificationReceiver", fields: [toUserId], references: [id], onDelete: Cascade)
+
+  // Status
+  isRead      Boolean              @default(false) @map("is_read")
+  isArchived  Boolean              @default(false) @map("is_archived")
+  readAt      DateTime?            @map("read_at")
+  archivedAt  DateTime?            @map("archived_at")
+
+  // Metadata
+  metadata    Json?
+
+  // Related entities
+  roomId      String?              @map("room_id")
+  bookingId   String?              @map("booking_id")
+  paymentId   String?              @map("payment_id")
+  
+  room        Room?                @relation(fields: [roomId], references: [id], onDelete: SetNull)
+  booking     Booking?             @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+  payment     Payment?             @relation(fields: [paymentId], references: [id], onDelete: SetNull)
+  
+  // Timestamps
+  createdAt   DateTime             @default(now()) @map("created_at")
+  updatedAt   DateTime             @updatedAt @map("updated_at")
+  
+  @@map("notifications")
+  @@index([toUserId, isArchived, createdAt])
+  @@index([type, createdAt])
+  @@index([isRead, toUserId])
+}
+
+model NotificationSettings {
+  id                    String    @id @default(uuid())
+  userId                String    @unique @map("user_id")
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Email preferences
+  emailNotifications    Boolean   @default(true) @map("email_notifications")
+  emailPaymentReminders Boolean   @default(true) @map("email_payment_reminders")
+  emailBookingUpdates   Boolean   @default(true) @map("email_booking_updates")
+  emailAnnouncements    Boolean   @default(true) @map("email_announcements")
+  
+  // In-app preferences
+  inAppNotifications    Boolean   @default(true) @map("in_app_notifications")
+  markAsReadOnView      Boolean   @default(true) @map("mark_as_read_on_view")
+  
+  createdAt            DateTime   @default(now()) @map("created_at")
+  updatedAt            DateTime   @updatedAt @map("updated_at")
+  
+  @@map("notification_settings")
+}
+
+// ==========================================
+// ANNOUNCEMENT MODELS (from schema/announcement.prisma)
+// ==========================================
 model Announcement {
   id          String                  @id @default(uuid())
   title       String
@@ -186,16 +407,4 @@ model AnnouncementRecipient {
   room           Room?        @relation("AnnouncementRecipientRoom", fields: [roomId], references: [id])
   floor          Int?
   forEveryone    Boolean      @default(false)
-}
-model AuditLog {
-  id         String   @id @default(uuid())
-  userId     String
-  user       User     @relation("UserAuditLogs", fields: [userId], references: [id]) // ✅ ВИПРАВЛЕНО
-  action     String
-  entity     String
-  entityId   String
-  meta       Json?
-  createdAt  DateTime @default(now())
-
-  @@index([userId])
 }

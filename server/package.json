@@ -27,8 +27,10 @@
     "@nestjs/core": "^11.0.1",
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^11.0.1",
+    "@nestjs/platform-socket.io": "^11.1.5",
     "@nestjs/swagger": "^11.2.0",
     "@nestjs/throttler": "^6.4.0",
+    "@nestjs/websockets": "^11.1.5",
     "@nestlab/google-recaptcha": "^3.10.0",
     "@prisma/client": "^6.11.1",
     "@react-email/components": "^0.1.1",
@@ -51,6 +53,7 @@
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
     "sharp": "^0.34.3",
+    "socket.io": "^4.8.1",
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
@@ -70,6 +73,7 @@
     "@types/multer": "^2.0.0",
     "@types/node": "^22.10.7",
     "@types/react": "^19.1.8",
+    "@types/socket.io": "^3.0.1",
     "@types/supertest": "^6.0.2",
     "@types/uuid": "^10.0.0",
     "axios": "^1.10.0",
