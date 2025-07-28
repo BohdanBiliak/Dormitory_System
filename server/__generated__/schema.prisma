@@ -10,7 +10,7 @@ datasource db {
 }
 
 // ==========================================
-// ENUMS (from schema/enums.prisma)
+// ENUMS
 // ==========================================
 enum UserRole {
   Regular
@@ -63,12 +63,6 @@ enum NotificationType {
   ACCOMMODATION_CHANGE_APPROVED
   ACCOMMODATION_CHANGE_REJECTED
 
-  // Payments
-  PAYMENT_DUE
-  PAYMENT_RECEIVED
-  PAYMENT_OVERDUE
-  PAYMENT_REMINDER
-
   // Maintenance
   MAINTENANCE_SCHEDULED
   MAINTENANCE_COMPLETED
@@ -88,6 +82,16 @@ enum NotificationType {
   ACCOUNT_VERIFIED
   PASSWORD_CHANGED
   LOGIN_ALERT
+
+  // Payment events
+  PAYMENT_DUE
+  PAYMENT_RECEIVED
+  PAYMENT_OVERDUE
+  PAYMENT_FAILED
+  PAYMENT_REMINDER
+  PAYMENT_CONFIRMATION_REQUIRED
+  PAYMENT_CONFIRMED
+  PAYMENT_REFUNDED
 }
 
 enum BookingStatus {
@@ -98,16 +102,54 @@ enum BookingStatus {
   COMPLETED
 }
 
+enum PaymentType {
+  MONTHLY_RENT
+  DAILY_RENT
+  SECURITY_DEPOSIT
+  UTILITIES
+  MAINTENANCE_FEE
+  LATE_FEE
+  CLEANING_FEE
+  OTHER
+}
+
+enum PaymentMethod {
+  STRIPE_CARD
+  CASH_TO_MANAGER
+  BANK_TRANSFER
+  OTHER
+}
+
 enum PaymentStatus {
   PENDING
+  AWAITING_CONFIRMATION
+  PROCESSING
   PAID
+  FAILED
   OVERDUE
   CANCELLED
   REFUNDED
+  PARTIAL_REFUND
+}
+
+enum RecurringFrequency {
+  MONTHLY
+  WEEKLY
+  CUSTOM
+}
+
+enum PaymentItemType {
+  RENT
+  SECURITY_DEPOSIT
+  UTILITIES
+  MAINTENANCE_FEE
+  LATE_FEE
+  CLEANING_FEE
+  OTHER
 }
 
 // ==========================================
-// USER MODELS (from schema/user.prisma)
+// USER MODELS
 // ==========================================
 model User {
   id                 String     @id @default(uuid())
@@ -123,13 +165,15 @@ model User {
   studentIdFront     String     @map("student_id_front")
   studentIdBack      String?    @map("student_id_back")
 
+  // Foreign Keys
+  dormitoryId String? @map("dormitory_id")
+  roomId      String? @map("room_id")
+
   // Relations
   confirmations             Confirmation[]          @relation("UserConfirmations")
   dormitoryAdminAssignments DormitoryAdmin[]
   dormitory                 Dormitory?              @relation("DormitoryResidents", fields: [dormitoryId], references: [id])
-  dormitoryId               String?
   managedDormitories        Dormitory[]             @relation("ManagedDormitories")
-  roomId                    String?
   room                      Room?                   @relation(fields: [roomId], references: [id])
   announcements             Announcement[]          @relation("AnnouncementAuthor")
   announcementRecipients    AnnouncementRecipient[] @relation("AnnouncementRecipientUser")
@@ -140,41 +184,46 @@ model User {
   receivedNotifications Notification[]        @relation("NotificationReceiver")
   notificationSettings  NotificationSettings?
 
-  // Booking relations
-  bookings Booking[] @relation("UserBookings")
-  payments Payment[] @relation("UserPayments")
+  // Booking and Payment relations
+  bookings              Booking[]           @relation("UserBookings")
+  payments              Payment[]           @relation("UserPayments")
+  confirmedPayments     Payment[]           @relation("ManagerConfirmedPayments")
+  paymentAuditLogs      PaymentAuditLog[]
 
   createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @default(now()) @map("updated_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("users")
 }
 
 model DormitoryAdmin {
   id          String    @id @default(uuid())
-  userId      String
-  dormitoryId String
+  userId      String    @map("user_id")
+  dormitoryId String    @map("dormitory_id")
   role        String
-  createdAt   DateTime  @default(now())
-  user        User      @relation(fields: [userId], references: [id])
-  dormitory   Dormitory @relation(fields: [dormitoryId], references: [id])
+  createdAt   DateTime  @default(now()) @map("created_at")
+  
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  dormitory   Dormitory @relation(fields: [dormitoryId], references: [id], onDelete: Cascade)
 
   @@unique([userId, dormitoryId])
+  @@map("dormitory_admins")
 }
 
 model Confirmation {
   id         String             @id @default(uuid())
+  userId     String             @map("user_id")
   type       ConfirmationType
   status     ConfirmationStatus @default(PENDING)
-  createdAt  DateTime           @default(now())
-  resolvedAt DateTime?
-
-  requester User   @relation("UserConfirmations", fields: [userId], references: [id])
-  userId    String
-
   photo      String?
-  frontIdUrl String?
-  backIdUrl  String?
+  frontIdUrl String?            @map("front_id_url")
+  backIdUrl  String?            @map("back_id_url")
+  createdAt  DateTime           @default(now()) @map("created_at")
+  resolvedAt DateTime?          @map("resolved_at")
+
+  requester User @relation("UserConfirmations", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("confirmations")
 }
 
 model Token {
@@ -189,73 +238,95 @@ model Token {
 
 model AuditLog {
   id        String   @id @default(uuid())
-  userId    String
-  user      User     @relation("UserAuditLogs", fields: [userId], references: [id])
+  userId    String   @map("user_id")
   action    String
   entity    String
-  entityId  String
+  entityId  String   @map("entity_id")
   meta      Json?
-  createdAt DateTime @default(now())
+  createdAt DateTime @default(now()) @map("created_at")
+  
+  user User @relation("UserAuditLogs", fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
+  @@index([entity, entityId])
+  @@map("audit_logs")
 }
 
 // ==========================================
-// DORMITORY MODELS (from schema/dormitory.prisma)
+// DORMITORY MODELS
 // ==========================================
 model Dormitory {
   id                     String           @id @default(uuid())
-  createdAt              DateTime         @default(now())
   name                   String
   address                String
-  groundFloorPhoneNumber String
+  groundFloorPhoneNumber String           @map("ground_floor_phone_number")
   status                 String           @default("Active")
   photos                 String[]
-  managerId              String?
-  manager                User?            @relation("ManagedDormitories", fields: [managerId], references: [id])
-  admins                 DormitoryAdmin[]
-  residents              User[]           @relation("DormitoryResidents")
-  rooms                  Room[]
+  managerId              String?          @map("manager_id")
+  createdAt              DateTime         @default(now()) @map("created_at")
+  
+  manager   User?            @relation("ManagedDormitories", fields: [managerId], references: [id])
+  admins    DormitoryAdmin[]
+  residents User[]           @relation("DormitoryResidents")
+  rooms     Room[]
+
+  @@map("dormitories")
 }
 
 model Room {
-  id                     String                  @id @default(uuid())
-  number                 String
-  floor                  Int
-  createdAt              DateTime                @default(now()) @map("created_at")
-  capacity               Int
+  id            String   @id @default(uuid())
+  number        String
+  floor         Int
+  capacity      Int
+  roomEquipment String[] @map("room_equipment")
+  photos        String[]
+  dormitoryId   String   @map("dormitory_id")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  dormitory              Dormitory               @relation(fields: [dormitoryId], references: [id], onDelete: Cascade)
   statuses               RoomStatus[]
   residents              User[]
-  roomEquipment          String[]
-  photos                 String[]
-  dormitoryId            String
   announcementRecipients AnnouncementRecipient[] @relation("AnnouncementRecipientRoom")
-  dormitory              Dormitory               @relation(fields: [dormitoryId], references: [id])
   notifications          Notification[]
   bookings               Booking[]
+  prices                 Price[]
+
+  @@index([dormitoryId])
+  @@map("rooms")
 }
 
 model RoomStatus {
   id          String    @id @default(uuid())
-  dateOfStart DateTime
-  dateOfEnd   DateTime?
+  roomId      String    @map("room_id")
+  dateOfStart DateTime  @map("date_of_start")
+  dateOfEnd   DateTime? @map("date_of_end")
   description String
 
-  roomId String
-  room   Room   @relation(fields: [roomId], references: [id])
+  room Room @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  @@index([roomId])
+  @@map("room_statuses")
 }
 
 model Price {
   id            String    @id @default(uuid())
-  roomCapacity  Int
-  pricePerMonth Float
-  pricePerDay   Float
-  dateFrom      DateTime
-  dateTo        DateTime?
+  roomId        String?   @map("room_id")
+  roomCapacity  Int       @map("room_capacity")
+  pricePerMonth Float     @map("price_per_month")
+  pricePerDay   Float     @map("price_per_day")
+  dateFrom      DateTime  @map("date_from")
+  dateTo        DateTime? @map("date_to")
+
+  room     Room?     @relation(fields: [roomId], references: [id], onDelete: SetNull)
+  payments Payment[]
+
+  @@index([roomId])
+  @@index([dateFrom, dateTo])
+  @@map("prices")
 }
 
 // ==========================================
-// BOOKING MODELS (from schema/booking.prisma)
+// BOOKING MODELS
 // ==========================================
 model Booking {
   id           String        @id @default(uuid())
@@ -267,10 +338,11 @@ model Booking {
   totalAmount  Float         @map("total_amount")
   notes        String?
 
-  user          User           @relation("UserBookings", fields: [userId], references: [id], onDelete: Cascade)
-  room          Room           @relation(fields: [roomId], references: [id], onDelete: Cascade)
-  notifications Notification[]
-  payments      Payment[]
+  user                User                @relation("UserBookings", fields: [userId], references: [id], onDelete: Cascade)
+  room                Room                @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  notifications       Notification[]
+  payments            Payment[]
+  recurringPayments   RecurringPayment[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -281,21 +353,37 @@ model Booking {
   @@map("bookings")
 }
 
+// ==========================================
+// PAYMENT MODELS
+// ==========================================
 model Payment {
-  id            String        @id @default(uuid())
-  userId        String        @map("user_id")
-  bookingId     String?       @map("booking_id")
-  amount        Float
-  status        PaymentStatus @default(PENDING)
-  paymentMethod String?       @map("payment_method")
-  transactionId String?       @map("transaction_id")
-  dueDate       DateTime      @map("due_date")
-  paidAt        DateTime?     @map("paid_at")
-  description   String?
+  id                      String        @id @default(uuid())
+  userId                  String        @map("user_id")
+  bookingId               String?       @map("booking_id")
+  priceId                 String?       @map("price_id")
+  amount                  Float
+  currency                String        @default("PLN")
+  paymentType             PaymentType   @map("payment_type")
+  paymentMethod           PaymentMethod @map("payment_method")
+  status                  PaymentStatus @default(PENDING)
+  dueDate                 DateTime      @map("due_date")
+  paidAt                  DateTime?     @map("paid_at")
+  description             String?
+  externalPaymentId       String?       @map("external_payment_id")
+  failureReason           String?       @map("failure_reason")
+  managerNotes            String?       @map("manager_notes")
+  confirmedBy             String?       @map("confirmed_by")
+  recurringPaymentId      String?       @map("recurring_payment_id")
 
-  user          User           @relation("UserPayments", fields: [userId], references: [id], onDelete: Cascade)
-  booking       Booking?       @relation(fields: [bookingId], references: [id], onDelete: SetNull)
-  notifications Notification[]
+  user                User                 @relation("UserPayments", fields: [userId], references: [id], onDelete: Cascade)
+  booking             Booking?             @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+  price               Price?               @relation(fields: [priceId], references: [id], onDelete: SetNull)
+  confirmedByUser     User?                @relation("ManagerConfirmedPayments", fields: [confirmedBy], references: [id], onDelete: SetNull)
+  generatedFromRecurring RecurringPayment? @relation("GeneratedFromRecurring", fields: [recurringPaymentId], references: [id], onDelete: SetNull)
+  notifications       Notification[]
+  paymentItems        PaymentItem[]
+  recurringPayment    RecurringPayment?    @relation("OriginalPayment")
+  auditLogs           PaymentAuditLog[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -303,46 +391,96 @@ model Payment {
   @@index([userId])
   @@index([status])
   @@index([dueDate])
+  @@index([paymentType])
+  @@index([bookingId])
   @@map("payments")
 }
 
+model RecurringPayment {
+  id            String              @id @default(uuid())
+  paymentId     String              @unique @map("payment_id")
+  bookingId     String              @map("booking_id")
+  frequency     RecurringFrequency  @default(MONTHLY)
+  startDate     DateTime            @map("start_date")
+  endDate       DateTime?           @map("end_date")
+  dayOfMonth    Int                 @map("day_of_month")
+  isActive      Boolean             @default(true) @map("is_active")
+  lastProcessed DateTime?           @map("last_processed")
+  nextDueDate   DateTime            @map("next_due_date")
+
+  payment           Payment   @relation("OriginalPayment", fields: [paymentId], references: [id], onDelete: Cascade)
+  booking           Booking   @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  generatedPayments Payment[] @relation("GeneratedFromRecurring")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([nextDueDate])
+  @@index([isActive])
+  @@map("recurring_payments")
+}
+
+model PaymentItem {
+  id          String          @id @default(uuid())
+  paymentId   String          @map("payment_id")
+  itemType    PaymentItemType @map("item_type")
+  description String
+  amount      Float
+  period      String?
+
+  payment Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+
+  @@index([paymentId])
+  @@map("payment_items")
+}
+
+model PaymentAuditLog {
+  id        String    @id @default(uuid())
+  paymentId String    @map("payment_id")
+  userId    String    @map("user_id")
+  action    String
+  oldValue  Json?     @map("old_value")
+  newValue  Json?     @map("new_value")
+  ipAddress String?   @map("ip_address")
+  userAgent String?   @map("user_agent")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  payment Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([paymentId])
+  @@index([userId])
+  @@map("payment_audit_logs")
+}
+
 // ==========================================
-// NOTIFICATION MODELS (from schema/notification.prisma)
+// NOTIFICATION MODELS
 // ==========================================
 model Notification {
-  id String @id @default(uuid())
-
-  // Content 
+  id       String               @id @default(uuid())
   type     NotificationType
   title    String
   message  String               @db.Text
   priority NotificationPriority @default(NORMAL)
 
-  // Relationships
   fromUserId String? @map("from_user_id")
   toUserId   String  @map("to_user_id")
-  fromUser   User?   @relation("NotificationSender", fields: [fromUserId], references: [id], onDelete: SetNull)
-  toUser     User    @relation("NotificationReceiver", fields: [toUserId], references: [id], onDelete: Cascade)
+  roomId     String? @map("room_id")
+  bookingId  String? @map("booking_id")
+  paymentId  String? @map("payment_id")
 
-  // Status
   isRead     Boolean   @default(false) @map("is_read")
   isArchived Boolean   @default(false) @map("is_archived")
   readAt     DateTime? @map("read_at")
   archivedAt DateTime? @map("archived_at")
+  metadata   Json?
 
-  // Metadata
-  metadata Json?
+  fromUser User?    @relation("NotificationSender", fields: [fromUserId], references: [id], onDelete: SetNull)
+  toUser   User     @relation("NotificationReceiver", fields: [toUserId], references: [id], onDelete: Cascade)
+  room     Room?    @relation(fields: [roomId], references: [id], onDelete: SetNull)
+  booking  Booking? @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+  payment  Payment? @relation(fields: [paymentId], references: [id], onDelete: SetNull)
 
-  // Related entities
-  roomId    String? @map("room_id")
-  bookingId String? @map("booking_id")
-  paymentId String? @map("payment_id")
-
-  room    Room?    @relation(fields: [roomId], references: [id], onDelete: SetNull)
-  booking Booking? @relation(fields: [bookingId], references: [id], onDelete: SetNull)
-  payment Payment? @relation(fields: [paymentId], references: [id], onDelete: SetNull)
-
-  // Timestamps
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
@@ -355,17 +493,15 @@ model Notification {
 model NotificationSettings {
   id     String @id @default(uuid())
   userId String @unique @map("user_id")
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  // Email preferences
   emailNotifications    Boolean @default(true) @map("email_notifications")
   emailPaymentReminders Boolean @default(true) @map("email_payment_reminders")
   emailBookingUpdates   Boolean @default(true) @map("email_booking_updates")
   emailAnnouncements    Boolean @default(true) @map("email_announcements")
+  inAppNotifications    Boolean @default(true) @map("in_app_notifications")
+  markAsReadOnView      Boolean @default(true) @map("mark_as_read_on_view")
 
-  // In-app preferences
-  inAppNotifications Boolean @default(true) @map("in_app_notifications")
-  markAsReadOnView   Boolean @default(true) @map("mark_as_read_on_view")
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -374,37 +510,50 @@ model NotificationSettings {
 }
 
 // ==========================================
-// ANNOUNCEMENT MODELS (from schema/announcement.prisma)
+// ANNOUNCEMENT MODELS
 // ==========================================
 model Announcement {
-  id          String                  @id @default(uuid())
-  title       String
-  content     String
-  postedAt    DateTime                @default(now())
-  expiresAt   DateTime
-  isHidden    Boolean                 @default(false)
-  authorId    String
-  author      User                    @relation("AnnouncementAuthor", fields: [authorId], references: [id])
+  id        String   @id @default(uuid())
+  title     String
+  content   String   @db.Text
+  authorId  String   @map("author_id")
+  isHidden  Boolean  @default(false) @map("is_hidden")
+  postedAt  DateTime @default(now()) @map("posted_at")
+  expiresAt DateTime @map("expires_at")
+
+  author      User                    @relation("AnnouncementAuthor", fields: [authorId], references: [id], onDelete: Cascade)
   attachments Attachment[]
   recipients  AnnouncementRecipient[]
+
+  @@index([authorId])
+  @@index([postedAt])
+  @@map("announcements")
 }
 
 model Attachment {
-  id             String       @id @default(uuid())
+  id             String @id @default(uuid())
+  announcementId String @map("announcement_id")
   url            String
   filename       String
-  announcementId String
-  announcement   Announcement @relation(fields: [announcementId], references: [id])
+
+  announcement Announcement @relation(fields: [announcementId], references: [id], onDelete: Cascade)
+
+  @@index([announcementId])
+  @@map("attachments")
 }
 
 model AnnouncementRecipient {
-  id             String       @id @default(uuid())
-  announcementId String
-  announcement   Announcement @relation(fields: [announcementId], references: [id])
-  userId         String?
-  user           User?        @relation("AnnouncementRecipientUser", fields: [userId], references: [id])
-  roomId         String?
-  room           Room?        @relation("AnnouncementRecipientRoom", fields: [roomId], references: [id])
+  id             String  @id @default(uuid())
+  announcementId String  @map("announcement_id")
+  userId         String? @map("user_id")
+  roomId         String? @map("room_id")
   floor          Int?
-  forEveryone    Boolean      @default(false)
+  forEveryone    Boolean @default(false) @map("for_everyone")
+
+  announcement Announcement @relation(fields: [announcementId], references: [id], onDelete: Cascade)
+  user         User?        @relation("AnnouncementRecipientUser", fields: [userId], references: [id], onDelete: Cascade)
+  room         Room?        @relation("AnnouncementRecipientRoom", fields: [roomId], references: [id], onDelete: Cascade)
+
+  @@index([announcementId])
+  @@map("announcement_recipients")
 }
