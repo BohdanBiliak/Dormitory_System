@@ -149,14 +149,14 @@ exports.Prisma.DormitoryAdminScalarFieldEnum = {
 
 exports.Prisma.ConfirmationScalarFieldEnum = {
   id: 'id',
+  userId: 'userId',
   type: 'type',
   status: 'status',
-  createdAt: 'createdAt',
-  resolvedAt: 'resolvedAt',
-  userId: 'userId',
   photo: 'photo',
   frontIdUrl: 'frontIdUrl',
-  backIdUrl: 'backIdUrl'
+  backIdUrl: 'backIdUrl',
+  createdAt: 'createdAt',
+  resolvedAt: 'resolvedAt'
 };
 
 exports.Prisma.TokenScalarFieldEnum = {
@@ -179,36 +179,37 @@ exports.Prisma.AuditLogScalarFieldEnum = {
 
 exports.Prisma.DormitoryScalarFieldEnum = {
   id: 'id',
-  createdAt: 'createdAt',
   name: 'name',
   address: 'address',
   groundFloorPhoneNumber: 'groundFloorPhoneNumber',
   status: 'status',
   photos: 'photos',
-  managerId: 'managerId'
+  managerId: 'managerId',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.RoomScalarFieldEnum = {
   id: 'id',
   number: 'number',
   floor: 'floor',
-  createdAt: 'createdAt',
   capacity: 'capacity',
   roomEquipment: 'roomEquipment',
   photos: 'photos',
-  dormitoryId: 'dormitoryId'
+  dormitoryId: 'dormitoryId',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.RoomStatusScalarFieldEnum = {
   id: 'id',
+  roomId: 'roomId',
   dateOfStart: 'dateOfStart',
   dateOfEnd: 'dateOfEnd',
-  description: 'description',
-  roomId: 'roomId'
+  description: 'description'
 };
 
 exports.Prisma.PriceScalarFieldEnum = {
   id: 'id',
+  roomId: 'roomId',
   roomCapacity: 'roomCapacity',
   pricePerMonth: 'pricePerMonth',
   pricePerDay: 'pricePerDay',
@@ -233,15 +234,58 @@ exports.Prisma.PaymentScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   bookingId: 'bookingId',
+  priceId: 'priceId',
   amount: 'amount',
-  status: 'status',
+  currency: 'currency',
+  paymentType: 'paymentType',
   paymentMethod: 'paymentMethod',
-  transactionId: 'transactionId',
+  status: 'status',
   dueDate: 'dueDate',
   paidAt: 'paidAt',
   description: 'description',
+  externalPaymentId: 'externalPaymentId',
+  failureReason: 'failureReason',
+  managerNotes: 'managerNotes',
+  confirmedBy: 'confirmedBy',
+  recurringPaymentId: 'recurringPaymentId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.RecurringPaymentScalarFieldEnum = {
+  id: 'id',
+  paymentId: 'paymentId',
+  bookingId: 'bookingId',
+  frequency: 'frequency',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  dayOfMonth: 'dayOfMonth',
+  isActive: 'isActive',
+  lastProcessed: 'lastProcessed',
+  nextDueDate: 'nextDueDate',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PaymentItemScalarFieldEnum = {
+  id: 'id',
+  paymentId: 'paymentId',
+  itemType: 'itemType',
+  description: 'description',
+  amount: 'amount',
+  period: 'period'
+};
+
+exports.Prisma.PaymentAuditLogScalarFieldEnum = {
+  id: 'id',
+  paymentId: 'paymentId',
+  userId: 'userId',
+  action: 'action',
+  oldValue: 'oldValue',
+  newValue: 'newValue',
+  ipAddress: 'ipAddress',
+  userAgent: 'userAgent',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.NotificationScalarFieldEnum = {
@@ -252,14 +296,14 @@ exports.Prisma.NotificationScalarFieldEnum = {
   priority: 'priority',
   fromUserId: 'fromUserId',
   toUserId: 'toUserId',
+  roomId: 'roomId',
+  bookingId: 'bookingId',
+  paymentId: 'paymentId',
   isRead: 'isRead',
   isArchived: 'isArchived',
   readAt: 'readAt',
   archivedAt: 'archivedAt',
   metadata: 'metadata',
-  roomId: 'roomId',
-  bookingId: 'bookingId',
-  paymentId: 'paymentId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -281,17 +325,17 @@ exports.Prisma.AnnouncementScalarFieldEnum = {
   id: 'id',
   title: 'title',
   content: 'content',
-  postedAt: 'postedAt',
-  expiresAt: 'expiresAt',
+  authorId: 'authorId',
   isHidden: 'isHidden',
-  authorId: 'authorId'
+  postedAt: 'postedAt',
+  expiresAt: 'expiresAt'
 };
 
 exports.Prisma.AttachmentScalarFieldEnum = {
   id: 'id',
+  announcementId: 'announcementId',
   url: 'url',
-  filename: 'filename',
-  announcementId: 'announcementId'
+  filename: 'filename'
 };
 
 exports.Prisma.AnnouncementRecipientScalarFieldEnum = {
@@ -367,12 +411,50 @@ exports.BookingStatus = exports.$Enums.BookingStatus = {
   COMPLETED: 'COMPLETED'
 };
 
+exports.PaymentType = exports.$Enums.PaymentType = {
+  MONTHLY_RENT: 'MONTHLY_RENT',
+  DAILY_RENT: 'DAILY_RENT',
+  SECURITY_DEPOSIT: 'SECURITY_DEPOSIT',
+  UTILITIES: 'UTILITIES',
+  MAINTENANCE_FEE: 'MAINTENANCE_FEE',
+  LATE_FEE: 'LATE_FEE',
+  CLEANING_FEE: 'CLEANING_FEE',
+  OTHER: 'OTHER'
+};
+
+exports.PaymentMethod = exports.$Enums.PaymentMethod = {
+  STRIPE_CARD: 'STRIPE_CARD',
+  CASH_TO_MANAGER: 'CASH_TO_MANAGER',
+  BANK_TRANSFER: 'BANK_TRANSFER',
+  OTHER: 'OTHER'
+};
+
 exports.PaymentStatus = exports.$Enums.PaymentStatus = {
   PENDING: 'PENDING',
+  AWAITING_CONFIRMATION: 'AWAITING_CONFIRMATION',
+  PROCESSING: 'PROCESSING',
   PAID: 'PAID',
+  FAILED: 'FAILED',
   OVERDUE: 'OVERDUE',
   CANCELLED: 'CANCELLED',
-  REFUNDED: 'REFUNDED'
+  REFUNDED: 'REFUNDED',
+  PARTIAL_REFUND: 'PARTIAL_REFUND'
+};
+
+exports.RecurringFrequency = exports.$Enums.RecurringFrequency = {
+  MONTHLY: 'MONTHLY',
+  WEEKLY: 'WEEKLY',
+  CUSTOM: 'CUSTOM'
+};
+
+exports.PaymentItemType = exports.$Enums.PaymentItemType = {
+  RENT: 'RENT',
+  SECURITY_DEPOSIT: 'SECURITY_DEPOSIT',
+  UTILITIES: 'UTILITIES',
+  MAINTENANCE_FEE: 'MAINTENANCE_FEE',
+  LATE_FEE: 'LATE_FEE',
+  CLEANING_FEE: 'CLEANING_FEE',
+  OTHER: 'OTHER'
 };
 
 exports.NotificationType = exports.$Enums.NotificationType = {
@@ -384,10 +466,6 @@ exports.NotificationType = exports.$Enums.NotificationType = {
   ACCOMMODATION_CHANGE_REQUEST: 'ACCOMMODATION_CHANGE_REQUEST',
   ACCOMMODATION_CHANGE_APPROVED: 'ACCOMMODATION_CHANGE_APPROVED',
   ACCOMMODATION_CHANGE_REJECTED: 'ACCOMMODATION_CHANGE_REJECTED',
-  PAYMENT_DUE: 'PAYMENT_DUE',
-  PAYMENT_RECEIVED: 'PAYMENT_RECEIVED',
-  PAYMENT_OVERDUE: 'PAYMENT_OVERDUE',
-  PAYMENT_REMINDER: 'PAYMENT_REMINDER',
   MAINTENANCE_SCHEDULED: 'MAINTENANCE_SCHEDULED',
   MAINTENANCE_COMPLETED: 'MAINTENANCE_COMPLETED',
   MAINTENANCE_URGENT: 'MAINTENANCE_URGENT',
@@ -399,7 +477,15 @@ exports.NotificationType = exports.$Enums.NotificationType = {
   ROOMMATE_APPROVED: 'ROOMMATE_APPROVED',
   ACCOUNT_VERIFIED: 'ACCOUNT_VERIFIED',
   PASSWORD_CHANGED: 'PASSWORD_CHANGED',
-  LOGIN_ALERT: 'LOGIN_ALERT'
+  LOGIN_ALERT: 'LOGIN_ALERT',
+  PAYMENT_DUE: 'PAYMENT_DUE',
+  PAYMENT_RECEIVED: 'PAYMENT_RECEIVED',
+  PAYMENT_OVERDUE: 'PAYMENT_OVERDUE',
+  PAYMENT_FAILED: 'PAYMENT_FAILED',
+  PAYMENT_REMINDER: 'PAYMENT_REMINDER',
+  PAYMENT_CONFIRMATION_REQUIRED: 'PAYMENT_CONFIRMATION_REQUIRED',
+  PAYMENT_CONFIRMED: 'PAYMENT_CONFIRMED',
+  PAYMENT_REFUNDED: 'PAYMENT_REFUNDED'
 };
 
 exports.NotificationPriority = exports.$Enums.NotificationPriority = {
@@ -421,6 +507,9 @@ exports.Prisma.ModelName = {
   Price: 'Price',
   Booking: 'Booking',
   Payment: 'Payment',
+  RecurringPayment: 'RecurringPayment',
+  PaymentItem: 'PaymentItem',
+  PaymentAuditLog: 'PaymentAuditLog',
   Notification: 'Notification',
   NotificationSettings: 'NotificationSettings',
   Announcement: 'Announcement',

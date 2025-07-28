@@ -185,10 +185,10 @@ model User {
   notificationSettings  NotificationSettings?
 
   // Booking and Payment relations
-  bookings              Booking[]           @relation("UserBookings")
-  payments              Payment[]           @relation("UserPayments")
-  confirmedPayments     Payment[]           @relation("ManagerConfirmedPayments")
-  paymentAuditLogs      PaymentAuditLog[]
+  bookings          Booking[]         @relation("UserBookings")
+  payments          Payment[]         @relation("UserPayments")
+  confirmedPayments Payment[]         @relation("ManagerConfirmedPayments")
+  paymentAuditLogs  PaymentAuditLog[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -197,14 +197,14 @@ model User {
 }
 
 model DormitoryAdmin {
-  id          String    @id @default(uuid())
-  userId      String    @map("user_id")
-  dormitoryId String    @map("dormitory_id")
+  id          String   @id @default(uuid())
+  userId      String   @map("user_id")
+  dormitoryId String   @map("dormitory_id")
   role        String
-  createdAt   DateTime  @default(now()) @map("created_at")
-  
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  dormitory   Dormitory @relation(fields: [dormitoryId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  dormitory Dormitory @relation(fields: [dormitoryId], references: [id], onDelete: Cascade)
 
   @@unique([userId, dormitoryId])
   @@map("dormitory_admins")
@@ -244,7 +244,7 @@ model AuditLog {
   entityId  String   @map("entity_id")
   meta      Json?
   createdAt DateTime @default(now()) @map("created_at")
-  
+
   user User @relation("UserAuditLogs", fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
@@ -256,15 +256,15 @@ model AuditLog {
 // DORMITORY MODELS
 // ==========================================
 model Dormitory {
-  id                     String           @id @default(uuid())
+  id                     String   @id @default(uuid())
   name                   String
   address                String
-  groundFloorPhoneNumber String           @map("ground_floor_phone_number")
-  status                 String           @default("Active")
+  groundFloorPhoneNumber String   @map("ground_floor_phone_number")
+  status                 String   @default("Active")
   photos                 String[]
-  managerId              String?          @map("manager_id")
-  createdAt              DateTime         @default(now()) @map("created_at")
-  
+  managerId              String?  @map("manager_id")
+  createdAt              DateTime @default(now()) @map("created_at")
+
   manager   User?            @relation("ManagedDormitories", fields: [managerId], references: [id])
   admins    DormitoryAdmin[]
   residents User[]           @relation("DormitoryResidents")
@@ -338,11 +338,11 @@ model Booking {
   totalAmount  Float         @map("total_amount")
   notes        String?
 
-  user                User                @relation("UserBookings", fields: [userId], references: [id], onDelete: Cascade)
-  room                Room                @relation(fields: [roomId], references: [id], onDelete: Cascade)
-  notifications       Notification[]
-  payments            Payment[]
-  recurringPayments   RecurringPayment[]
+  user              User               @relation("UserBookings", fields: [userId], references: [id], onDelete: Cascade)
+  room              Room               @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  notifications     Notification[]
+  payments          Payment[]
+  recurringPayments RecurringPayment[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -357,33 +357,33 @@ model Booking {
 // PAYMENT MODELS
 // ==========================================
 model Payment {
-  id                      String        @id @default(uuid())
-  userId                  String        @map("user_id")
-  bookingId               String?       @map("booking_id")
-  priceId                 String?       @map("price_id")
-  amount                  Float
-  currency                String        @default("PLN")
-  paymentType             PaymentType   @map("payment_type")
-  paymentMethod           PaymentMethod @map("payment_method")
-  status                  PaymentStatus @default(PENDING)
-  dueDate                 DateTime      @map("due_date")
-  paidAt                  DateTime?     @map("paid_at")
-  description             String?
-  externalPaymentId       String?       @map("external_payment_id")
-  failureReason           String?       @map("failure_reason")
-  managerNotes            String?       @map("manager_notes")
-  confirmedBy             String?       @map("confirmed_by")
-  recurringPaymentId      String?       @map("recurring_payment_id")
+  id                 String        @id @default(uuid())
+  userId             String        @map("user_id")
+  bookingId          String?       @map("booking_id")
+  priceId            String?       @map("price_id")
+  amount             Float
+  currency           String        @default("PLN")
+  paymentType        PaymentType   @map("payment_type")
+  paymentMethod      PaymentMethod @map("payment_method")
+  status             PaymentStatus @default(PENDING)
+  dueDate            DateTime      @map("due_date")
+  paidAt             DateTime?     @map("paid_at")
+  description        String?
+  externalPaymentId  String?       @map("external_payment_id")
+  failureReason      String?       @map("failure_reason")
+  managerNotes       String?       @map("manager_notes")
+  confirmedBy        String?       @map("confirmed_by")
+  recurringPaymentId String?       @map("recurring_payment_id")
 
-  user                User                 @relation("UserPayments", fields: [userId], references: [id], onDelete: Cascade)
-  booking             Booking?             @relation(fields: [bookingId], references: [id], onDelete: SetNull)
-  price               Price?               @relation(fields: [priceId], references: [id], onDelete: SetNull)
-  confirmedByUser     User?                @relation("ManagerConfirmedPayments", fields: [confirmedBy], references: [id], onDelete: SetNull)
+  user                   User              @relation("UserPayments", fields: [userId], references: [id], onDelete: Cascade)
+  booking                Booking?          @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+  price                  Price?            @relation(fields: [priceId], references: [id], onDelete: SetNull)
+  confirmedByUser        User?             @relation("ManagerConfirmedPayments", fields: [confirmedBy], references: [id], onDelete: SetNull)
   generatedFromRecurring RecurringPayment? @relation("GeneratedFromRecurring", fields: [recurringPaymentId], references: [id], onDelete: SetNull)
-  notifications       Notification[]
-  paymentItems        PaymentItem[]
-  recurringPayment    RecurringPayment?    @relation("OriginalPayment")
-  auditLogs           PaymentAuditLog[]
+  notifications          Notification[]
+  paymentItems           PaymentItem[]
+  recurringPayment       RecurringPayment? @relation("OriginalPayment")
+  auditLogs              PaymentAuditLog[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -397,16 +397,16 @@ model Payment {
 }
 
 model RecurringPayment {
-  id            String              @id @default(uuid())
-  paymentId     String              @unique @map("payment_id")
-  bookingId     String              @map("booking_id")
-  frequency     RecurringFrequency  @default(MONTHLY)
-  startDate     DateTime            @map("start_date")
-  endDate       DateTime?           @map("end_date")
-  dayOfMonth    Int                 @map("day_of_month")
-  isActive      Boolean             @default(true) @map("is_active")
-  lastProcessed DateTime?           @map("last_processed")
-  nextDueDate   DateTime            @map("next_due_date")
+  id            String             @id @default(uuid())
+  paymentId     String             @unique @map("payment_id")
+  bookingId     String             @map("booking_id")
+  frequency     RecurringFrequency @default(MONTHLY)
+  startDate     DateTime           @map("start_date")
+  endDate       DateTime?          @map("end_date")
+  dayOfMonth    Int                @map("day_of_month")
+  isActive      Boolean            @default(true) @map("is_active")
+  lastProcessed DateTime?          @map("last_processed")
+  nextDueDate   DateTime           @map("next_due_date")
 
   payment           Payment   @relation("OriginalPayment", fields: [paymentId], references: [id], onDelete: Cascade)
   booking           Booking   @relation(fields: [bookingId], references: [id], onDelete: Cascade)
@@ -435,15 +435,15 @@ model PaymentItem {
 }
 
 model PaymentAuditLog {
-  id        String    @id @default(uuid())
-  paymentId String    @map("payment_id")
-  userId    String    @map("user_id")
+  id        String   @id @default(uuid())
+  paymentId String   @map("payment_id")
+  userId    String   @map("user_id")
   action    String
-  oldValue  Json?     @map("old_value")
-  newValue  Json?     @map("new_value")
-  ipAddress String?   @map("ip_address")
-  userAgent String?   @map("user_agent")
-  createdAt DateTime  @default(now()) @map("created_at")
+  oldValue  Json?    @map("old_value")
+  newValue  Json?    @map("new_value")
+  ipAddress String?  @map("ip_address")
+  userAgent String?  @map("user_agent")
+  createdAt DateTime @default(now()) @map("created_at")
 
   payment Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade)
   user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
