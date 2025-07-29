@@ -17,13 +17,15 @@ import {DormitoryModule} from "@/modules/dormitory/dormitory.module";
 import {SentryGlobalFilter, SentryModule} from "@sentry/nestjs/setup";
 import {APP_FILTER} from "@nestjs/core";
 import {SentryUserMiddleware} from "@libs/common/middleware/sentry-action-logger.middleware";
+import { NotificationsModule } from "./modules/notifications/notifications.module";
+import { PaymentsModule } from "./modules/payments/payments.module";
 
 @Module({
 
   imports: [  UserModule, ConfigModule.forRoot({
     isGlobal: true,
     ignoreEnvFile: !IS_DEV_ENV,
-  }),   SentryModule.forRoot(), PrismaModule, AuthModule, UserModule, MailModule, EmailConfirmationModule, MailModule, EmailConfirmationModule, PasswordRecoveryModule, TwoFactorAuthModule, AdminModule,DormitoryModule, RoomModule,AnnouncementModule],
+  }),   SentryModule.forRoot(), PrismaModule, AuthModule, UserModule, MailModule, EmailConfirmationModule, MailModule, EmailConfirmationModule, PasswordRecoveryModule, TwoFactorAuthModule, AdminModule,DormitoryModule, RoomModule,AnnouncementModule, NotificationsModule, PaymentsModule, ],
   controllers: [],
   providers: [ {
     provide: APP_FILTER,

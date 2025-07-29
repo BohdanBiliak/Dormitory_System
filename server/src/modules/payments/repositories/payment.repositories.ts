@@ -4,6 +4,7 @@ import { IPaymentRepository } from "../interfaces/payments-repository.interfaces
 export class PaymentRepository implements IPaymentRepository {
     constructor(private prisma: PrismaClient) { }
 
+
     async create(data: Prisma.PaymentCreateInput): Promise<Payment> {
         return this.prisma.payment.create({
             data,
@@ -14,6 +15,8 @@ export class PaymentRepository implements IPaymentRepository {
             }
         });
     }
+
+    
 
     async findById(id: string): Promise<Payment | null> {
         return this.prisma.payment.findUnique({
@@ -126,6 +129,16 @@ export class PaymentRepository implements IPaymentRepository {
             orderBy: { updatedAt: 'asc' },
         });
     }
+    async findRecurringPaymentById(id: string) {
+  return this.prisma.recurringPayment.findUnique({ where: { id } });
+}
+
+async updateRecurringPayment(id: string, data: Prisma.RecurringPaymentUpdateInput) {
+  return this.prisma.recurringPayment.update({
+    where: { id },
+    data,
+  });
+}
 
     async findOverduePayments(): Promise<Payment[]> {
         return this.prisma.payment.findMany({
@@ -156,6 +169,10 @@ export class PaymentRepository implements IPaymentRepository {
             },
             orderBy: { dueDate: 'asc' },
         });
+    }
+
+    async find(filters: Prisma.PaymentFindManyArgs): Promise<Payment[]> {
+        return this.prisma.payment.findMany(filters);
     }
 
     async findRecurringPaymentsDue(): Promise<Payment[]> {

@@ -5,6 +5,7 @@ import {
   UploadPaymentProofDto, 
   ConfirmPaymentDto, 
   RejectPaymentDto,
+  CreateBulkPaymentDto,
 } from "../dto/index";
 
 
@@ -28,6 +29,8 @@ export interface IPaymentService {
   getPaymentStats(userId?: string, dormitoryId?: string): Promise<any>;
   
   // Recurring payments
+
+  createBulkPayments(data: CreateBulkPaymentDto): Promise<Payment[]>;
   processRecurringPayments(): Promise<void>;
   createRecurringPayment(paymentId: string, frequency: string): Promise<void>;
 }

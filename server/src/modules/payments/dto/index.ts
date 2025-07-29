@@ -4,6 +4,7 @@ import { ConfirmPaymentDto } from "./confirm-payment.dto";
 import { RejectPaymentDto } from "./reject-payment.dto";
 import {UploadPaymentProofDto} from "./upload-payment-proof.dto";
 import { PaymentFilterDto } from "./payment-filter.dto";
+import { CreateBulkPaymentDto } from "./create-bulk-payment.dto";
 
 export {
 	CreatePaymentDto,
@@ -11,5 +12,6 @@ export {
 	ConfirmPaymentDto,
 	RejectPaymentDto,
 	UploadPaymentProofDto,
-	PaymentFilterDto
+	PaymentFilterDto,
+	CreateBulkPaymentDto
 }

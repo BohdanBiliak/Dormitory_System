@@ -5,9 +5,10 @@ import { NotificationsController } from './notifications.controller';
 import { NotificationGateway } from './NotificationGateway';
 import { MailService } from '../../libs/mail/mail.service';
 import {PrismaModule} from "@/prisma/prisma.module";
+import { UserModule } from '../user/user.module';
 
 @Module({
-  imports: [PrismaModule],
+  imports: [PrismaModule, UserModule],
   controllers: [NotificationsController],
   providers: [
     NotificationsService,
