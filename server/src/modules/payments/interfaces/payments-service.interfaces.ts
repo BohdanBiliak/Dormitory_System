@@ -1,51 +1,12 @@
 import { Payment } from "../../../../__generated__";
+import { 
+  CreatePaymentDto, 
+  PaymentFilterDto, 
+  UploadPaymentProofDto, 
+  ConfirmPaymentDto, 
+  RejectPaymentDto,
+} from "../dto/index";
 
-// DTOs (Data Transfer Objects)
-export interface CreatePaymentDto {
-  userId: string;
-  bookingId?: string;
-  amount: number;
-  paymentType: string;
-  paymentMethod: string;
-  dueDate: Date;
-  description?: string;
-  paymentItems?: CreatePaymentItemDto[];
-}
-
-export interface CreatePaymentItemDto {
-  itemType: string;
-  description: string;
-  amount: number;
-  period?: string;
-}
-
-export interface UploadPaymentProofDto {
-  paymentId: string;
-  userId: string;
-  file: Express.Multer.File;
-}
-
-export interface ConfirmPaymentDto {
-  paymentId: string;
-  confirmedBy: string;
-  managerNotes?: string;
-}
-
-export interface RejectPaymentDto {
-  paymentId: string;
-  rejectedBy: string;
-  rejectionReason: string;
-}
-
-export interface PaymentFilterDto {
-  userId?: string;
-  dormitoryId?: string;
-  status?: string;
-  startDate?: Date;
-  endDate?: Date;
-  limit?: number;
-  offset?: number;
-}
 
 // Service Interface
 export interface IPaymentService {
