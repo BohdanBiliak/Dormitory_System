@@ -243,10 +243,16 @@ exports.Prisma.PaymentScalarFieldEnum = {
   dueDate: 'dueDate',
   paidAt: 'paidAt',
   description: 'description',
+  paymentProofUrl: 'paymentProofUrl',
+  paymentProofFilename: 'paymentProofFilename',
+  paymentProofUploadedAt: 'paymentProofUploadedAt',
   externalPaymentId: 'externalPaymentId',
   failureReason: 'failureReason',
   managerNotes: 'managerNotes',
   confirmedBy: 'confirmedBy',
+  confirmedAt: 'confirmedAt',
+  rejectedAt: 'rejectedAt',
+  rejectionReason: 'rejectionReason',
   recurringPaymentId: 'recurringPaymentId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -438,7 +444,8 @@ exports.PaymentStatus = exports.$Enums.PaymentStatus = {
   OVERDUE: 'OVERDUE',
   CANCELLED: 'CANCELLED',
   REFUNDED: 'REFUNDED',
-  PARTIAL_REFUND: 'PARTIAL_REFUND'
+  PARTIAL_REFUND: 'PARTIAL_REFUND',
+  REJECTED: 'REJECTED'
 };
 
 exports.RecurringFrequency = exports.$Enums.RecurringFrequency = {

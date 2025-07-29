@@ -121,15 +121,16 @@ enum PaymentMethod {
 }
 
 enum PaymentStatus {
-  PENDING
-  AWAITING_CONFIRMATION
-  PROCESSING
-  PAID
-  FAILED
-  OVERDUE
-  CANCELLED
-  REFUNDED
-  PARTIAL_REFUND
+  PENDING // Admin created, waiting for resident payment
+  AWAITING_CONFIRMATION // Resident uploaded proof, waiting for admin review
+  PROCESSING // Admin is reviewing
+  PAID // Admin confirmed payment
+  FAILED // Technical failure
+  OVERDUE // Past due date
+  CANCELLED // Cancelled by admin
+  REFUNDED // Money returned
+  PARTIAL_REFUND // Partial money returned
+  REJECTED // Admin rejected the payment proof
 }
 
 enum RecurringFrequency {
@@ -357,23 +358,31 @@ model Booking {
 // PAYMENT MODELS
 // ==========================================
 model Payment {
-  id                 String        @id @default(uuid())
-  userId             String        @map("user_id")
-  bookingId          String?       @map("booking_id")
-  priceId            String?       @map("price_id")
-  amount             Float
-  currency           String        @default("PLN")
-  paymentType        PaymentType   @map("payment_type")
-  paymentMethod      PaymentMethod @map("payment_method")
-  status             PaymentStatus @default(PENDING)
-  dueDate            DateTime      @map("due_date")
-  paidAt             DateTime?     @map("paid_at")
-  description        String?
-  externalPaymentId  String?       @map("external_payment_id")
-  failureReason      String?       @map("failure_reason")
-  managerNotes       String?       @map("manager_notes")
-  confirmedBy        String?       @map("confirmed_by")
-  recurringPaymentId String?       @map("recurring_payment_id")
+  id            String        @id @default(uuid())
+  userId        String        @map("user_id")
+  bookingId     String?       @map("booking_id")
+  priceId       String?       @map("price_id")
+  amount        Float
+  currency      String        @default("PLN")
+  paymentType   PaymentType   @map("payment_type")
+  paymentMethod PaymentMethod @map("payment_method")
+  status        PaymentStatus @default(PENDING)
+  dueDate       DateTime      @map("due_date")
+  paidAt        DateTime?     @map("paid_at")
+  description   String?
+
+  paymentProofUrl        String?   @map("payment_proof_url")
+  paymentProofFilename   String?   @map("payment_proof_filename")
+  paymentProofUploadedAt DateTime? @map("payment_proof_uploaded_at")
+
+  externalPaymentId  String?   @map("external_payment_id")
+  failureReason      String?   @map("failure_reason")
+  managerNotes       String?   @map("manager_notes")
+  confirmedBy        String?   @map("confirmed_by")
+  confirmedAt        DateTime? @map("confirmed_at")
+  rejectedAt         DateTime? @map("rejected_at")
+  rejectionReason    String?   @map("rejection_reason")
+  recurringPaymentId String?   @map("recurring_payment_id")
 
   user                   User              @relation("UserPayments", fields: [userId], references: [id], onDelete: Cascade)
   booking                Booking?          @relation(fields: [bookingId], references: [id], onDelete: SetNull)

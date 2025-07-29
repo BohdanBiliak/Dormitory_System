@@ -247,7 +247,8 @@ export const PaymentStatus: {
   OVERDUE: 'OVERDUE',
   CANCELLED: 'CANCELLED',
   REFUNDED: 'REFUNDED',
-  PARTIAL_REFUND: 'PARTIAL_REFUND'
+  PARTIAL_REFUND: 'PARTIAL_REFUND',
+  REJECTED: 'REJECTED'
 };
 
 export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
@@ -15051,10 +15052,16 @@ export namespace Prisma {
     dueDate: Date | null
     paidAt: Date | null
     description: string | null
+    paymentProofUrl: string | null
+    paymentProofFilename: string | null
+    paymentProofUploadedAt: Date | null
     externalPaymentId: string | null
     failureReason: string | null
     managerNotes: string | null
     confirmedBy: string | null
+    confirmedAt: Date | null
+    rejectedAt: Date | null
+    rejectionReason: string | null
     recurringPaymentId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -15073,10 +15080,16 @@ export namespace Prisma {
     dueDate: Date | null
     paidAt: Date | null
     description: string | null
+    paymentProofUrl: string | null
+    paymentProofFilename: string | null
+    paymentProofUploadedAt: Date | null
     externalPaymentId: string | null
     failureReason: string | null
     managerNotes: string | null
     confirmedBy: string | null
+    confirmedAt: Date | null
+    rejectedAt: Date | null
+    rejectionReason: string | null
     recurringPaymentId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -15095,10 +15108,16 @@ export namespace Prisma {
     dueDate: number
     paidAt: number
     description: number
+    paymentProofUrl: number
+    paymentProofFilename: number
+    paymentProofUploadedAt: number
     externalPaymentId: number
     failureReason: number
     managerNotes: number
     confirmedBy: number
+    confirmedAt: number
+    rejectedAt: number
+    rejectionReason: number
     recurringPaymentId: number
     createdAt: number
     updatedAt: number
@@ -15127,10 +15146,16 @@ export namespace Prisma {
     dueDate?: true
     paidAt?: true
     description?: true
+    paymentProofUrl?: true
+    paymentProofFilename?: true
+    paymentProofUploadedAt?: true
     externalPaymentId?: true
     failureReason?: true
     managerNotes?: true
     confirmedBy?: true
+    confirmedAt?: true
+    rejectedAt?: true
+    rejectionReason?: true
     recurringPaymentId?: true
     createdAt?: true
     updatedAt?: true
@@ -15149,10 +15174,16 @@ export namespace Prisma {
     dueDate?: true
     paidAt?: true
     description?: true
+    paymentProofUrl?: true
+    paymentProofFilename?: true
+    paymentProofUploadedAt?: true
     externalPaymentId?: true
     failureReason?: true
     managerNotes?: true
     confirmedBy?: true
+    confirmedAt?: true
+    rejectedAt?: true
+    rejectionReason?: true
     recurringPaymentId?: true
     createdAt?: true
     updatedAt?: true
@@ -15171,10 +15202,16 @@ export namespace Prisma {
     dueDate?: true
     paidAt?: true
     description?: true
+    paymentProofUrl?: true
+    paymentProofFilename?: true
+    paymentProofUploadedAt?: true
     externalPaymentId?: true
     failureReason?: true
     managerNotes?: true
     confirmedBy?: true
+    confirmedAt?: true
+    rejectedAt?: true
+    rejectionReason?: true
     recurringPaymentId?: true
     createdAt?: true
     updatedAt?: true
@@ -15280,10 +15317,16 @@ export namespace Prisma {
     dueDate: Date
     paidAt: Date | null
     description: string | null
+    paymentProofUrl: string | null
+    paymentProofFilename: string | null
+    paymentProofUploadedAt: Date | null
     externalPaymentId: string | null
     failureReason: string | null
     managerNotes: string | null
     confirmedBy: string | null
+    confirmedAt: Date | null
+    rejectedAt: Date | null
+    rejectionReason: string | null
     recurringPaymentId: string | null
     createdAt: Date
     updatedAt: Date
@@ -15321,10 +15364,16 @@ export namespace Prisma {
     dueDate?: boolean
     paidAt?: boolean
     description?: boolean
+    paymentProofUrl?: boolean
+    paymentProofFilename?: boolean
+    paymentProofUploadedAt?: boolean
     externalPaymentId?: boolean
     failureReason?: boolean
     managerNotes?: boolean
     confirmedBy?: boolean
+    confirmedAt?: boolean
+    rejectedAt?: boolean
+    rejectionReason?: boolean
     recurringPaymentId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -15353,10 +15402,16 @@ export namespace Prisma {
     dueDate?: boolean
     paidAt?: boolean
     description?: boolean
+    paymentProofUrl?: boolean
+    paymentProofFilename?: boolean
+    paymentProofUploadedAt?: boolean
     externalPaymentId?: boolean
     failureReason?: boolean
     managerNotes?: boolean
     confirmedBy?: boolean
+    confirmedAt?: boolean
+    rejectedAt?: boolean
+    rejectionReason?: boolean
     recurringPaymentId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -15380,10 +15435,16 @@ export namespace Prisma {
     dueDate?: boolean
     paidAt?: boolean
     description?: boolean
+    paymentProofUrl?: boolean
+    paymentProofFilename?: boolean
+    paymentProofUploadedAt?: boolean
     externalPaymentId?: boolean
     failureReason?: boolean
     managerNotes?: boolean
     confirmedBy?: boolean
+    confirmedAt?: boolean
+    rejectedAt?: boolean
+    rejectionReason?: boolean
     recurringPaymentId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -15407,16 +15468,22 @@ export namespace Prisma {
     dueDate?: boolean
     paidAt?: boolean
     description?: boolean
+    paymentProofUrl?: boolean
+    paymentProofFilename?: boolean
+    paymentProofUploadedAt?: boolean
     externalPaymentId?: boolean
     failureReason?: boolean
     managerNotes?: boolean
     confirmedBy?: boolean
+    confirmedAt?: boolean
+    rejectedAt?: boolean
+    rejectionReason?: boolean
     recurringPaymentId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type PaymentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "bookingId" | "priceId" | "amount" | "currency" | "paymentType" | "paymentMethod" | "status" | "dueDate" | "paidAt" | "description" | "externalPaymentId" | "failureReason" | "managerNotes" | "confirmedBy" | "recurringPaymentId" | "createdAt" | "updatedAt", ExtArgs["result"]["payment"]>
+  export type PaymentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "bookingId" | "priceId" | "amount" | "currency" | "paymentType" | "paymentMethod" | "status" | "dueDate" | "paidAt" | "description" | "paymentProofUrl" | "paymentProofFilename" | "paymentProofUploadedAt" | "externalPaymentId" | "failureReason" | "managerNotes" | "confirmedBy" | "confirmedAt" | "rejectedAt" | "rejectionReason" | "recurringPaymentId" | "createdAt" | "updatedAt", ExtArgs["result"]["payment"]>
   export type PaymentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     booking?: boolean | Payment$bookingArgs<ExtArgs>
@@ -15470,10 +15537,16 @@ export namespace Prisma {
       dueDate: Date
       paidAt: Date | null
       description: string | null
+      paymentProofUrl: string | null
+      paymentProofFilename: string | null
+      paymentProofUploadedAt: Date | null
       externalPaymentId: string | null
       failureReason: string | null
       managerNotes: string | null
       confirmedBy: string | null
+      confirmedAt: Date | null
+      rejectedAt: Date | null
+      rejectionReason: string | null
       recurringPaymentId: string | null
       createdAt: Date
       updatedAt: Date
@@ -15921,10 +15994,16 @@ export namespace Prisma {
     readonly dueDate: FieldRef<"Payment", 'DateTime'>
     readonly paidAt: FieldRef<"Payment", 'DateTime'>
     readonly description: FieldRef<"Payment", 'String'>
+    readonly paymentProofUrl: FieldRef<"Payment", 'String'>
+    readonly paymentProofFilename: FieldRef<"Payment", 'String'>
+    readonly paymentProofUploadedAt: FieldRef<"Payment", 'DateTime'>
     readonly externalPaymentId: FieldRef<"Payment", 'String'>
     readonly failureReason: FieldRef<"Payment", 'String'>
     readonly managerNotes: FieldRef<"Payment", 'String'>
     readonly confirmedBy: FieldRef<"Payment", 'String'>
+    readonly confirmedAt: FieldRef<"Payment", 'DateTime'>
+    readonly rejectedAt: FieldRef<"Payment", 'DateTime'>
+    readonly rejectionReason: FieldRef<"Payment", 'String'>
     readonly recurringPaymentId: FieldRef<"Payment", 'String'>
     readonly createdAt: FieldRef<"Payment", 'DateTime'>
     readonly updatedAt: FieldRef<"Payment", 'DateTime'>
@@ -25899,10 +25978,16 @@ export namespace Prisma {
     dueDate: 'dueDate',
     paidAt: 'paidAt',
     description: 'description',
+    paymentProofUrl: 'paymentProofUrl',
+    paymentProofFilename: 'paymentProofFilename',
+    paymentProofUploadedAt: 'paymentProofUploadedAt',
     externalPaymentId: 'externalPaymentId',
     failureReason: 'failureReason',
     managerNotes: 'managerNotes',
     confirmedBy: 'confirmedBy',
+    confirmedAt: 'confirmedAt',
+    rejectedAt: 'rejectedAt',
+    rejectionReason: 'rejectionReason',
     recurringPaymentId: 'recurringPaymentId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -27145,10 +27230,16 @@ export namespace Prisma {
     dueDate?: DateTimeFilter<"Payment"> | Date | string
     paidAt?: DateTimeNullableFilter<"Payment"> | Date | string | null
     description?: StringNullableFilter<"Payment"> | string | null
+    paymentProofUrl?: StringNullableFilter<"Payment"> | string | null
+    paymentProofFilename?: StringNullableFilter<"Payment"> | string | null
+    paymentProofUploadedAt?: DateTimeNullableFilter<"Payment"> | Date | string | null
     externalPaymentId?: StringNullableFilter<"Payment"> | string | null
     failureReason?: StringNullableFilter<"Payment"> | string | null
     managerNotes?: StringNullableFilter<"Payment"> | string | null
     confirmedBy?: StringNullableFilter<"Payment"> | string | null
+    confirmedAt?: DateTimeNullableFilter<"Payment"> | Date | string | null
+    rejectedAt?: DateTimeNullableFilter<"Payment"> | Date | string | null
+    rejectionReason?: StringNullableFilter<"Payment"> | string | null
     recurringPaymentId?: StringNullableFilter<"Payment"> | string | null
     createdAt?: DateTimeFilter<"Payment"> | Date | string
     updatedAt?: DateTimeFilter<"Payment"> | Date | string
@@ -27176,10 +27267,16 @@ export namespace Prisma {
     dueDate?: SortOrder
     paidAt?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
+    paymentProofUrl?: SortOrderInput | SortOrder
+    paymentProofFilename?: SortOrderInput | SortOrder
+    paymentProofUploadedAt?: SortOrderInput | SortOrder
     externalPaymentId?: SortOrderInput | SortOrder
     failureReason?: SortOrderInput | SortOrder
     managerNotes?: SortOrderInput | SortOrder
     confirmedBy?: SortOrderInput | SortOrder
+    confirmedAt?: SortOrderInput | SortOrder
+    rejectedAt?: SortOrderInput | SortOrder
+    rejectionReason?: SortOrderInput | SortOrder
     recurringPaymentId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -27210,10 +27307,16 @@ export namespace Prisma {
     dueDate?: DateTimeFilter<"Payment"> | Date | string
     paidAt?: DateTimeNullableFilter<"Payment"> | Date | string | null
     description?: StringNullableFilter<"Payment"> | string | null
+    paymentProofUrl?: StringNullableFilter<"Payment"> | string | null
+    paymentProofFilename?: StringNullableFilter<"Payment"> | string | null
+    paymentProofUploadedAt?: DateTimeNullableFilter<"Payment"> | Date | string | null
     externalPaymentId?: StringNullableFilter<"Payment"> | string | null
     failureReason?: StringNullableFilter<"Payment"> | string | null
     managerNotes?: StringNullableFilter<"Payment"> | string | null
     confirmedBy?: StringNullableFilter<"Payment"> | string | null
+    confirmedAt?: DateTimeNullableFilter<"Payment"> | Date | string | null
+    rejectedAt?: DateTimeNullableFilter<"Payment"> | Date | string | null
+    rejectionReason?: StringNullableFilter<"Payment"> | string | null
     recurringPaymentId?: StringNullableFilter<"Payment"> | string | null
     createdAt?: DateTimeFilter<"Payment"> | Date | string
     updatedAt?: DateTimeFilter<"Payment"> | Date | string
@@ -27241,10 +27344,16 @@ export namespace Prisma {
     dueDate?: SortOrder
     paidAt?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
+    paymentProofUrl?: SortOrderInput | SortOrder
+    paymentProofFilename?: SortOrderInput | SortOrder
+    paymentProofUploadedAt?: SortOrderInput | SortOrder
     externalPaymentId?: SortOrderInput | SortOrder
     failureReason?: SortOrderInput | SortOrder
     managerNotes?: SortOrderInput | SortOrder
     confirmedBy?: SortOrderInput | SortOrder
+    confirmedAt?: SortOrderInput | SortOrder
+    rejectedAt?: SortOrderInput | SortOrder
+    rejectionReason?: SortOrderInput | SortOrder
     recurringPaymentId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -27271,10 +27380,16 @@ export namespace Prisma {
     dueDate?: DateTimeWithAggregatesFilter<"Payment"> | Date | string
     paidAt?: DateTimeNullableWithAggregatesFilter<"Payment"> | Date | string | null
     description?: StringNullableWithAggregatesFilter<"Payment"> | string | null
+    paymentProofUrl?: StringNullableWithAggregatesFilter<"Payment"> | string | null
+    paymentProofFilename?: StringNullableWithAggregatesFilter<"Payment"> | string | null
+    paymentProofUploadedAt?: DateTimeNullableWithAggregatesFilter<"Payment"> | Date | string | null
     externalPaymentId?: StringNullableWithAggregatesFilter<"Payment"> | string | null
     failureReason?: StringNullableWithAggregatesFilter<"Payment"> | string | null
     managerNotes?: StringNullableWithAggregatesFilter<"Payment"> | string | null
     confirmedBy?: StringNullableWithAggregatesFilter<"Payment"> | string | null
+    confirmedAt?: DateTimeNullableWithAggregatesFilter<"Payment"> | Date | string | null
+    rejectedAt?: DateTimeNullableWithAggregatesFilter<"Payment"> | Date | string | null
+    rejectionReason?: StringNullableWithAggregatesFilter<"Payment"> | string | null
     recurringPaymentId?: StringNullableWithAggregatesFilter<"Payment"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Payment"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Payment"> | Date | string
@@ -28786,9 +28901,15 @@ export namespace Prisma {
     dueDate: Date | string
     paidAt?: Date | string | null
     description?: string | null
+    paymentProofUrl?: string | null
+    paymentProofFilename?: string | null
+    paymentProofUploadedAt?: Date | string | null
     externalPaymentId?: string | null
     failureReason?: string | null
     managerNotes?: string | null
+    confirmedAt?: Date | string | null
+    rejectedAt?: Date | string | null
+    rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutPaymentsInput
@@ -28815,10 +28936,16 @@ export namespace Prisma {
     dueDate: Date | string
     paidAt?: Date | string | null
     description?: string | null
+    paymentProofUrl?: string | null
+    paymentProofFilename?: string | null
+    paymentProofUploadedAt?: Date | string | null
     externalPaymentId?: string | null
     failureReason?: string | null
     managerNotes?: string | null
     confirmedBy?: string | null
+    confirmedAt?: Date | string | null
+    rejectedAt?: Date | string | null
+    rejectionReason?: string | null
     recurringPaymentId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -28838,9 +28965,15 @@ export namespace Prisma {
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     externalPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     failureReason?: NullableStringFieldUpdateOperationsInput | string | null
     managerNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutPaymentsNestedInput
@@ -28867,10 +29000,16 @@ export namespace Prisma {
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     externalPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     failureReason?: NullableStringFieldUpdateOperationsInput | string | null
     managerNotes?: NullableStringFieldUpdateOperationsInput | string | null
     confirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     recurringPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28893,10 +29032,16 @@ export namespace Prisma {
     dueDate: Date | string
     paidAt?: Date | string | null
     description?: string | null
+    paymentProofUrl?: string | null
+    paymentProofFilename?: string | null
+    paymentProofUploadedAt?: Date | string | null
     externalPaymentId?: string | null
     failureReason?: string | null
     managerNotes?: string | null
     confirmedBy?: string | null
+    confirmedAt?: Date | string | null
+    rejectedAt?: Date | string | null
+    rejectionReason?: string | null
     recurringPaymentId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -28912,9 +29057,15 @@ export namespace Prisma {
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     externalPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     failureReason?: NullableStringFieldUpdateOperationsInput | string | null
     managerNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -28932,10 +29083,16 @@ export namespace Prisma {
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     externalPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     failureReason?: NullableStringFieldUpdateOperationsInput | string | null
     managerNotes?: NullableStringFieldUpdateOperationsInput | string | null
     confirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     recurringPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -30550,10 +30707,16 @@ export namespace Prisma {
     dueDate?: SortOrder
     paidAt?: SortOrder
     description?: SortOrder
+    paymentProofUrl?: SortOrder
+    paymentProofFilename?: SortOrder
+    paymentProofUploadedAt?: SortOrder
     externalPaymentId?: SortOrder
     failureReason?: SortOrder
     managerNotes?: SortOrder
     confirmedBy?: SortOrder
+    confirmedAt?: SortOrder
+    rejectedAt?: SortOrder
+    rejectionReason?: SortOrder
     recurringPaymentId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -30576,10 +30739,16 @@ export namespace Prisma {
     dueDate?: SortOrder
     paidAt?: SortOrder
     description?: SortOrder
+    paymentProofUrl?: SortOrder
+    paymentProofFilename?: SortOrder
+    paymentProofUploadedAt?: SortOrder
     externalPaymentId?: SortOrder
     failureReason?: SortOrder
     managerNotes?: SortOrder
     confirmedBy?: SortOrder
+    confirmedAt?: SortOrder
+    rejectedAt?: SortOrder
+    rejectionReason?: SortOrder
     recurringPaymentId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -30598,10 +30767,16 @@ export namespace Prisma {
     dueDate?: SortOrder
     paidAt?: SortOrder
     description?: SortOrder
+    paymentProofUrl?: SortOrder
+    paymentProofFilename?: SortOrder
+    paymentProofUploadedAt?: SortOrder
     externalPaymentId?: SortOrder
     failureReason?: SortOrder
     managerNotes?: SortOrder
     confirmedBy?: SortOrder
+    confirmedAt?: SortOrder
+    rejectedAt?: SortOrder
+    rejectionReason?: SortOrder
     recurringPaymentId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -33930,9 +34105,15 @@ export namespace Prisma {
     dueDate: Date | string
     paidAt?: Date | string | null
     description?: string | null
+    paymentProofUrl?: string | null
+    paymentProofFilename?: string | null
+    paymentProofUploadedAt?: Date | string | null
     externalPaymentId?: string | null
     failureReason?: string | null
     managerNotes?: string | null
+    confirmedAt?: Date | string | null
+    rejectedAt?: Date | string | null
+    rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     booking?: BookingCreateNestedOneWithoutPaymentsInput
@@ -33957,10 +34138,16 @@ export namespace Prisma {
     dueDate: Date | string
     paidAt?: Date | string | null
     description?: string | null
+    paymentProofUrl?: string | null
+    paymentProofFilename?: string | null
+    paymentProofUploadedAt?: Date | string | null
     externalPaymentId?: string | null
     failureReason?: string | null
     managerNotes?: string | null
     confirmedBy?: string | null
+    confirmedAt?: Date | string | null
+    rejectedAt?: Date | string | null
+    rejectionReason?: string | null
     recurringPaymentId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -33990,9 +34177,15 @@ export namespace Prisma {
     dueDate: Date | string
     paidAt?: Date | string | null
     description?: string | null
+    paymentProofUrl?: string | null
+    paymentProofFilename?: string | null
+    paymentProofUploadedAt?: Date | string | null
     externalPaymentId?: string | null
     failureReason?: string | null
     managerNotes?: string | null
+    confirmedAt?: Date | string | null
+    rejectedAt?: Date | string | null
+    rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutPaymentsInput
@@ -34018,9 +34211,15 @@ export namespace Prisma {
     dueDate: Date | string
     paidAt?: Date | string | null
     description?: string | null
+    paymentProofUrl?: string | null
+    paymentProofFilename?: string | null
+    paymentProofUploadedAt?: Date | string | null
     externalPaymentId?: string | null
     failureReason?: string | null
     managerNotes?: string | null
+    confirmedAt?: Date | string | null
+    rejectedAt?: Date | string | null
+    rejectionReason?: string | null
     recurringPaymentId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -34480,10 +34679,16 @@ export namespace Prisma {
     dueDate?: DateTimeFilter<"Payment"> | Date | string
     paidAt?: DateTimeNullableFilter<"Payment"> | Date | string | null
     description?: StringNullableFilter<"Payment"> | string | null
+    paymentProofUrl?: StringNullableFilter<"Payment"> | string | null
+    paymentProofFilename?: StringNullableFilter<"Payment"> | string | null
+    paymentProofUploadedAt?: DateTimeNullableFilter<"Payment"> | Date | string | null
     externalPaymentId?: StringNullableFilter<"Payment"> | string | null
     failureReason?: StringNullableFilter<"Payment"> | string | null
     managerNotes?: StringNullableFilter<"Payment"> | string | null
     confirmedBy?: StringNullableFilter<"Payment"> | string | null
+    confirmedAt?: DateTimeNullableFilter<"Payment"> | Date | string | null
+    rejectedAt?: DateTimeNullableFilter<"Payment"> | Date | string | null
+    rejectionReason?: StringNullableFilter<"Payment"> | string | null
     recurringPaymentId?: StringNullableFilter<"Payment"> | string | null
     createdAt?: DateTimeFilter<"Payment"> | Date | string
     updatedAt?: DateTimeFilter<"Payment"> | Date | string
@@ -35941,9 +36146,15 @@ export namespace Prisma {
     dueDate: Date | string
     paidAt?: Date | string | null
     description?: string | null
+    paymentProofUrl?: string | null
+    paymentProofFilename?: string | null
+    paymentProofUploadedAt?: Date | string | null
     externalPaymentId?: string | null
     failureReason?: string | null
     managerNotes?: string | null
+    confirmedAt?: Date | string | null
+    rejectedAt?: Date | string | null
+    rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutPaymentsInput
@@ -35968,10 +36179,16 @@ export namespace Prisma {
     dueDate: Date | string
     paidAt?: Date | string | null
     description?: string | null
+    paymentProofUrl?: string | null
+    paymentProofFilename?: string | null
+    paymentProofUploadedAt?: Date | string | null
     externalPaymentId?: string | null
     failureReason?: string | null
     managerNotes?: string | null
     confirmedBy?: string | null
+    confirmedAt?: Date | string | null
+    rejectedAt?: Date | string | null
+    rejectionReason?: string | null
     recurringPaymentId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -36212,9 +36429,15 @@ export namespace Prisma {
     dueDate: Date | string
     paidAt?: Date | string | null
     description?: string | null
+    paymentProofUrl?: string | null
+    paymentProofFilename?: string | null
+    paymentProofUploadedAt?: Date | string | null
     externalPaymentId?: string | null
     failureReason?: string | null
     managerNotes?: string | null
+    confirmedAt?: Date | string | null
+    rejectedAt?: Date | string | null
+    rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutPaymentsInput
@@ -36239,10 +36462,16 @@ export namespace Prisma {
     dueDate: Date | string
     paidAt?: Date | string | null
     description?: string | null
+    paymentProofUrl?: string | null
+    paymentProofFilename?: string | null
+    paymentProofUploadedAt?: Date | string | null
     externalPaymentId?: string | null
     failureReason?: string | null
     managerNotes?: string | null
     confirmedBy?: string | null
+    confirmedAt?: Date | string | null
+    rejectedAt?: Date | string | null
+    rejectionReason?: string | null
     recurringPaymentId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -37224,9 +37453,15 @@ export namespace Prisma {
     dueDate: Date | string
     paidAt?: Date | string | null
     description?: string | null
+    paymentProofUrl?: string | null
+    paymentProofFilename?: string | null
+    paymentProofUploadedAt?: Date | string | null
     externalPaymentId?: string | null
     failureReason?: string | null
     managerNotes?: string | null
+    confirmedAt?: Date | string | null
+    rejectedAt?: Date | string | null
+    rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutPaymentsInput
@@ -37252,10 +37487,16 @@ export namespace Prisma {
     dueDate: Date | string
     paidAt?: Date | string | null
     description?: string | null
+    paymentProofUrl?: string | null
+    paymentProofFilename?: string | null
+    paymentProofUploadedAt?: Date | string | null
     externalPaymentId?: string | null
     failureReason?: string | null
     managerNotes?: string | null
     confirmedBy?: string | null
+    confirmedAt?: Date | string | null
+    rejectedAt?: Date | string | null
+    rejectionReason?: string | null
     recurringPaymentId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -37314,9 +37555,15 @@ export namespace Prisma {
     dueDate: Date | string
     paidAt?: Date | string | null
     description?: string | null
+    paymentProofUrl?: string | null
+    paymentProofFilename?: string | null
+    paymentProofUploadedAt?: Date | string | null
     externalPaymentId?: string | null
     failureReason?: string | null
     managerNotes?: string | null
+    confirmedAt?: Date | string | null
+    rejectedAt?: Date | string | null
+    rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutPaymentsInput
@@ -37342,10 +37589,16 @@ export namespace Prisma {
     dueDate: Date | string
     paidAt?: Date | string | null
     description?: string | null
+    paymentProofUrl?: string | null
+    paymentProofFilename?: string | null
+    paymentProofUploadedAt?: Date | string | null
     externalPaymentId?: string | null
     failureReason?: string | null
     managerNotes?: string | null
     confirmedBy?: string | null
+    confirmedAt?: Date | string | null
+    rejectedAt?: Date | string | null
+    rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     notifications?: NotificationUncheckedCreateNestedManyWithoutPaymentInput
@@ -37385,9 +37638,15 @@ export namespace Prisma {
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     externalPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     failureReason?: NullableStringFieldUpdateOperationsInput | string | null
     managerNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutPaymentsNestedInput
@@ -37413,10 +37672,16 @@ export namespace Prisma {
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     externalPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     failureReason?: NullableStringFieldUpdateOperationsInput | string | null
     managerNotes?: NullableStringFieldUpdateOperationsInput | string | null
     confirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     recurringPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37492,9 +37757,15 @@ export namespace Prisma {
     dueDate: Date | string
     paidAt?: Date | string | null
     description?: string | null
+    paymentProofUrl?: string | null
+    paymentProofFilename?: string | null
+    paymentProofUploadedAt?: Date | string | null
     externalPaymentId?: string | null
     failureReason?: string | null
     managerNotes?: string | null
+    confirmedAt?: Date | string | null
+    rejectedAt?: Date | string | null
+    rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutPaymentsInput
@@ -37520,10 +37791,16 @@ export namespace Prisma {
     dueDate: Date | string
     paidAt?: Date | string | null
     description?: string | null
+    paymentProofUrl?: string | null
+    paymentProofFilename?: string | null
+    paymentProofUploadedAt?: Date | string | null
     externalPaymentId?: string | null
     failureReason?: string | null
     managerNotes?: string | null
     confirmedBy?: string | null
+    confirmedAt?: Date | string | null
+    rejectedAt?: Date | string | null
+    rejectionReason?: string | null
     recurringPaymentId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -37558,9 +37835,15 @@ export namespace Prisma {
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     externalPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     failureReason?: NullableStringFieldUpdateOperationsInput | string | null
     managerNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutPaymentsNestedInput
@@ -37586,10 +37869,16 @@ export namespace Prisma {
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     externalPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     failureReason?: NullableStringFieldUpdateOperationsInput | string | null
     managerNotes?: NullableStringFieldUpdateOperationsInput | string | null
     confirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     recurringPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37608,9 +37897,15 @@ export namespace Prisma {
     dueDate: Date | string
     paidAt?: Date | string | null
     description?: string | null
+    paymentProofUrl?: string | null
+    paymentProofFilename?: string | null
+    paymentProofUploadedAt?: Date | string | null
     externalPaymentId?: string | null
     failureReason?: string | null
     managerNotes?: string | null
+    confirmedAt?: Date | string | null
+    rejectedAt?: Date | string | null
+    rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutPaymentsInput
@@ -37636,10 +37931,16 @@ export namespace Prisma {
     dueDate: Date | string
     paidAt?: Date | string | null
     description?: string | null
+    paymentProofUrl?: string | null
+    paymentProofFilename?: string | null
+    paymentProofUploadedAt?: Date | string | null
     externalPaymentId?: string | null
     failureReason?: string | null
     managerNotes?: string | null
     confirmedBy?: string | null
+    confirmedAt?: Date | string | null
+    rejectedAt?: Date | string | null
+    rejectionReason?: string | null
     recurringPaymentId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -37741,9 +38042,15 @@ export namespace Prisma {
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     externalPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     failureReason?: NullableStringFieldUpdateOperationsInput | string | null
     managerNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutPaymentsNestedInput
@@ -37769,10 +38076,16 @@ export namespace Prisma {
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     externalPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     failureReason?: NullableStringFieldUpdateOperationsInput | string | null
     managerNotes?: NullableStringFieldUpdateOperationsInput | string | null
     confirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     recurringPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -38070,9 +38383,15 @@ export namespace Prisma {
     dueDate: Date | string
     paidAt?: Date | string | null
     description?: string | null
+    paymentProofUrl?: string | null
+    paymentProofFilename?: string | null
+    paymentProofUploadedAt?: Date | string | null
     externalPaymentId?: string | null
     failureReason?: string | null
     managerNotes?: string | null
+    confirmedAt?: Date | string | null
+    rejectedAt?: Date | string | null
+    rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutPaymentsInput
@@ -38098,10 +38417,16 @@ export namespace Prisma {
     dueDate: Date | string
     paidAt?: Date | string | null
     description?: string | null
+    paymentProofUrl?: string | null
+    paymentProofFilename?: string | null
+    paymentProofUploadedAt?: Date | string | null
     externalPaymentId?: string | null
     failureReason?: string | null
     managerNotes?: string | null
     confirmedBy?: string | null
+    confirmedAt?: Date | string | null
+    rejectedAt?: Date | string | null
+    rejectionReason?: string | null
     recurringPaymentId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -38366,9 +38691,15 @@ export namespace Prisma {
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     externalPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     failureReason?: NullableStringFieldUpdateOperationsInput | string | null
     managerNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutPaymentsNestedInput
@@ -38394,10 +38725,16 @@ export namespace Prisma {
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     externalPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     failureReason?: NullableStringFieldUpdateOperationsInput | string | null
     managerNotes?: NullableStringFieldUpdateOperationsInput | string | null
     confirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     recurringPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -39232,10 +39569,16 @@ export namespace Prisma {
     dueDate: Date | string
     paidAt?: Date | string | null
     description?: string | null
+    paymentProofUrl?: string | null
+    paymentProofFilename?: string | null
+    paymentProofUploadedAt?: Date | string | null
     externalPaymentId?: string | null
     failureReason?: string | null
     managerNotes?: string | null
     confirmedBy?: string | null
+    confirmedAt?: Date | string | null
+    rejectedAt?: Date | string | null
+    rejectionReason?: string | null
     recurringPaymentId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -39254,9 +39597,15 @@ export namespace Prisma {
     dueDate: Date | string
     paidAt?: Date | string | null
     description?: string | null
+    paymentProofUrl?: string | null
+    paymentProofFilename?: string | null
+    paymentProofUploadedAt?: Date | string | null
     externalPaymentId?: string | null
     failureReason?: string | null
     managerNotes?: string | null
+    confirmedAt?: Date | string | null
+    rejectedAt?: Date | string | null
+    rejectionReason?: string | null
     recurringPaymentId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -39611,9 +39960,15 @@ export namespace Prisma {
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     externalPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     failureReason?: NullableStringFieldUpdateOperationsInput | string | null
     managerNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     booking?: BookingUpdateOneWithoutPaymentsNestedInput
@@ -39638,10 +39993,16 @@ export namespace Prisma {
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     externalPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     failureReason?: NullableStringFieldUpdateOperationsInput | string | null
     managerNotes?: NullableStringFieldUpdateOperationsInput | string | null
     confirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     recurringPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -39663,10 +40024,16 @@ export namespace Prisma {
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     externalPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     failureReason?: NullableStringFieldUpdateOperationsInput | string | null
     managerNotes?: NullableStringFieldUpdateOperationsInput | string | null
     confirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     recurringPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -39682,9 +40049,15 @@ export namespace Prisma {
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     externalPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     failureReason?: NullableStringFieldUpdateOperationsInput | string | null
     managerNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutPaymentsNestedInput
@@ -39710,9 +40083,15 @@ export namespace Prisma {
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     externalPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     failureReason?: NullableStringFieldUpdateOperationsInput | string | null
     managerNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     recurringPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -39735,9 +40114,15 @@ export namespace Prisma {
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     externalPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     failureReason?: NullableStringFieldUpdateOperationsInput | string | null
     managerNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     recurringPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -40292,10 +40677,16 @@ export namespace Prisma {
     dueDate: Date | string
     paidAt?: Date | string | null
     description?: string | null
+    paymentProofUrl?: string | null
+    paymentProofFilename?: string | null
+    paymentProofUploadedAt?: Date | string | null
     externalPaymentId?: string | null
     failureReason?: string | null
     managerNotes?: string | null
     confirmedBy?: string | null
+    confirmedAt?: Date | string | null
+    rejectedAt?: Date | string | null
+    rejectionReason?: string | null
     recurringPaymentId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -40311,9 +40702,15 @@ export namespace Prisma {
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     externalPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     failureReason?: NullableStringFieldUpdateOperationsInput | string | null
     managerNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutPaymentsNestedInput
@@ -40338,10 +40735,16 @@ export namespace Prisma {
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     externalPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     failureReason?: NullableStringFieldUpdateOperationsInput | string | null
     managerNotes?: NullableStringFieldUpdateOperationsInput | string | null
     confirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     recurringPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -40363,10 +40766,16 @@ export namespace Prisma {
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     externalPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     failureReason?: NullableStringFieldUpdateOperationsInput | string | null
     managerNotes?: NullableStringFieldUpdateOperationsInput | string | null
     confirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     recurringPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -40403,10 +40812,16 @@ export namespace Prisma {
     dueDate: Date | string
     paidAt?: Date | string | null
     description?: string | null
+    paymentProofUrl?: string | null
+    paymentProofFilename?: string | null
+    paymentProofUploadedAt?: Date | string | null
     externalPaymentId?: string | null
     failureReason?: string | null
     managerNotes?: string | null
     confirmedBy?: string | null
+    confirmedAt?: Date | string | null
+    rejectedAt?: Date | string | null
+    rejectionReason?: string | null
     recurringPaymentId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -40493,9 +40908,15 @@ export namespace Prisma {
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     externalPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     failureReason?: NullableStringFieldUpdateOperationsInput | string | null
     managerNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutPaymentsNestedInput
@@ -40520,10 +40941,16 @@ export namespace Prisma {
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     externalPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     failureReason?: NullableStringFieldUpdateOperationsInput | string | null
     managerNotes?: NullableStringFieldUpdateOperationsInput | string | null
     confirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     recurringPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -40545,10 +40972,16 @@ export namespace Prisma {
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     externalPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     failureReason?: NullableStringFieldUpdateOperationsInput | string | null
     managerNotes?: NullableStringFieldUpdateOperationsInput | string | null
     confirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     recurringPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -40763,10 +41196,16 @@ export namespace Prisma {
     dueDate: Date | string
     paidAt?: Date | string | null
     description?: string | null
+    paymentProofUrl?: string | null
+    paymentProofFilename?: string | null
+    paymentProofUploadedAt?: Date | string | null
     externalPaymentId?: string | null
     failureReason?: string | null
     managerNotes?: string | null
     confirmedBy?: string | null
+    confirmedAt?: Date | string | null
+    rejectedAt?: Date | string | null
+    rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -40781,9 +41220,15 @@ export namespace Prisma {
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     externalPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     failureReason?: NullableStringFieldUpdateOperationsInput | string | null
     managerNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutPaymentsNestedInput
@@ -40809,10 +41254,16 @@ export namespace Prisma {
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     externalPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     failureReason?: NullableStringFieldUpdateOperationsInput | string | null
     managerNotes?: NullableStringFieldUpdateOperationsInput | string | null
     confirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     notifications?: NotificationUncheckedUpdateManyWithoutPaymentNestedInput
@@ -40834,10 +41285,16 @@ export namespace Prisma {
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     externalPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     failureReason?: NullableStringFieldUpdateOperationsInput | string | null
     managerNotes?: NullableStringFieldUpdateOperationsInput | string | null
     confirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
