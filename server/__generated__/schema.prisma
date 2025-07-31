@@ -22,6 +22,7 @@ enum UserRole {
 enum AuthMethod {
   CREDENTIALS
   GOOGLE
+  LOCAL
 }
 
 enum TokenType {
@@ -82,6 +83,8 @@ enum NotificationType {
   ACCOUNT_VERIFIED
   PASSWORD_CHANGED
   LOGIN_ALERT
+  ACCOUNT_SUSPENDED
+  ACCOUNT_CREATED
 
   // Payment events
   PAYMENT_REJECTED
@@ -167,6 +170,7 @@ model User {
   secondName         String     @map("second_name")
   studentIdFront     String     @map("student_id_front")
   studentIdBack      String?    @map("student_id_back")
+  isActive           Boolean    @default(true) @map("is_active")
 
   // Foreign Keys
   dormitoryId String? @map("dormitory_id")

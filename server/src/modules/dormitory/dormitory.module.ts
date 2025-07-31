@@ -9,5 +9,6 @@ import {UserModule} from "@/modules/user/user.module";
   imports: [UserModule, UserModule],
   controllers: [DormitoryController],
   providers: [DormitoryService, PrismaService, S3Service],
+  exports: [DormitoryService],
 })
 export class DormitoryModule {}

@@ -133,6 +133,7 @@ exports.Prisma.UserScalarFieldEnum = {
   secondName: 'secondName',
   studentIdFront: 'studentIdFront',
   studentIdBack: 'studentIdBack',
+  isActive: 'isActive',
   dormitoryId: 'dormitoryId',
   roomId: 'roomId',
   createdAt: 'createdAt',
@@ -380,7 +381,8 @@ exports.Prisma.JsonNullValueFilter = {
 };
 exports.AuthMethod = exports.$Enums.AuthMethod = {
   CREDENTIALS: 'CREDENTIALS',
-  GOOGLE: 'GOOGLE'
+  GOOGLE: 'GOOGLE',
+  LOCAL: 'LOCAL'
 };
 
 exports.UserRole = exports.$Enums.UserRole = {
@@ -485,6 +487,8 @@ exports.NotificationType = exports.$Enums.NotificationType = {
   ACCOUNT_VERIFIED: 'ACCOUNT_VERIFIED',
   PASSWORD_CHANGED: 'PASSWORD_CHANGED',
   LOGIN_ALERT: 'LOGIN_ALERT',
+  ACCOUNT_SUSPENDED: 'ACCOUNT_SUSPENDED',
+  ACCOUNT_CREATED: 'ACCOUNT_CREATED',
   PAYMENT_REJECTED: 'PAYMENT_REJECTED',
   PAYMENT_CREATED: 'PAYMENT_CREATED',
   PAYMENT_DUE: 'PAYMENT_DUE',

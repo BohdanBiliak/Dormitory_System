@@ -25,7 +25,7 @@ import { PaymentsModule } from "./modules/payments/payments.module";
   imports: [  UserModule, ConfigModule.forRoot({
     isGlobal: true,
     ignoreEnvFile: !IS_DEV_ENV,
-  }),   SentryModule.forRoot(), PrismaModule, AuthModule, UserModule, MailModule, EmailConfirmationModule, MailModule, EmailConfirmationModule, PasswordRecoveryModule, TwoFactorAuthModule, AdminModule,DormitoryModule, RoomModule,AnnouncementModule, NotificationsModule, PaymentsModule, ],
+  }),   SentryModule.forRoot(), PrismaModule, AuthModule, UserModule, MailModule, EmailConfirmationModule, MailModule, EmailConfirmationModule, PasswordRecoveryModule, TwoFactorAuthModule, AdminModule,DormitoryModule, RoomModule,AnnouncementModule, NotificationsModule, PaymentsModule],
   controllers: [],
   providers: [ {
     provide: APP_FILTER,
