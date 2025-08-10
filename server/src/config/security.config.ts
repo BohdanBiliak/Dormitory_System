@@ -29,6 +29,7 @@ export class SecurityConfig {
       },
     };
   }
+  
 
   private parseTime(timeStr: string): number {
     const units = {

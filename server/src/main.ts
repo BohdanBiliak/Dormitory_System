@@ -95,6 +95,9 @@ async function bootstrap() {
         origin: config.getOrThrow<string>('ALLOWED_ORIGIN'),
         credentials: true,
         exposeHeaders: ['set-cookie'],
+        exposedHeaders: ['set-cookie'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     });
 
     // Swagger

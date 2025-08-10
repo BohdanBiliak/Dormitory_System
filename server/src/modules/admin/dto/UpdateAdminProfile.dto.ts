@@ -5,17 +5,12 @@ export class UpdateAdminProfileDto {
     @ApiPropertyOptional({ example: 'Joanna' })
     @IsOptional()
     @IsString()
-    name?: string;
-
-    @ApiPropertyOptional({ example: 'Ewa' })
-    @IsOptional()
-    @IsString()
-    middleName?: string;
+    displayName?: string;  // Changed from 'name' to 'displayName'
 
     @ApiPropertyOptional({ example: 'Goździk' })
     @IsOptional()
     @IsString()
-    lastName?: string;
+    secondName?: string;   // Changed from 'lastName' to 'secondName'
 
     @ApiPropertyOptional({ example: 'j.gozdzik@pollub.com' })
     @IsOptional()
@@ -25,5 +20,5 @@ export class UpdateAdminProfileDto {
     @ApiPropertyOptional({ example: 'https://example.com/photo.png' })
     @IsOptional()
     @IsUrl()
-    photoUrl?: string;
+    picture?: string;      // Changed from 'photoUrl' to 'picture'
 }
