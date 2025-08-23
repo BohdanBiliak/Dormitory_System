@@ -7,14 +7,16 @@ import { useAuth } from '@/hooks/auth.hook'
 import { toast } from 'sonner'
 
 export function LoginForm() {
+  //???, GET attributes?
   const searchParams = useSearchParams()
+  //data verification, don't know how to use
   const verified = searchParams.get('verified')
   const { login, isLoggingIn } = useAuth()
   
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  // Show success message if user was redirected after verification
+  // Show a success message if user was redirected after verification
   useEffect(() => {
     if (verified === 'true') {
       toast.success('Email verified successfully! You can now sign in.')
