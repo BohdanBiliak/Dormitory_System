@@ -9,24 +9,37 @@ export const useAuth = () => {
   const router = useRouter()
 
   // Get current user query
-  const {
-    data: user,
-    isLoading: isLoadingUser,
-    error: userError
-  } = useQuery({
-    queryKey: ['auth', 'currentUser'],
-    queryFn: authApi.getCurrentUser,
-    retry: 1,
-    staleTime: 5 * 60 * 1000, // 5 minutes
-  })
+  // const {
+  //   data: user,
+  //   isLoading: isLoadingUser,
+  //   error: userError
+  // } = useQuery({
+  //   queryKey: ['auth', 'currentUser'],
+  //   queryFn: authApi.getCurrentUser,
+  //   retry: 1,
+  //   staleTime: 5 * 60 * 1000, // 5 minutes
+  // })
 
   // Login mutation
   const loginMutation = useMutation({
     mutationFn: (data: LoginRequest) => authApi.login(data),
     onSuccess: (response) => {
-      queryClient.invalidateQueries({ queryKey: ['auth', 'currentUser'] })
+      const {data} =
+
+      if(data==undefined){
+        throw Error('No currentUser in query')
+      }
+
       toast.success('Login successful!')
-      router.push('/admin/profile')
+      queryClient.invalidateQueries({ queryKey: ['auth', 'currentUser'] })
+      console.log(data.role)
+      switch (data.role){
+        case 'SuperAdmin': router.push('/admin/profile'); break;
+        case 'Admin': router.push('/admin/login'); break;
+        case 'Regular': break;
+        case 'SignedInUser': break;
+        default: throw Error('Unidentified user role');
+      }
     },
     onError: (error: any) => {
       console.error('Login error:', error)
@@ -103,10 +116,10 @@ export const useAuth = () => {
 
   return {
     // User data
-    user,
-    isLoadingUser,
-    userError,
-    isAuthenticated: !!user,
+    // user,
+    // isLoadingUser,
+    // userError,
+    // isAuthenticated: !!user,
 
     // Actions
     login: loginMutation.mutate,

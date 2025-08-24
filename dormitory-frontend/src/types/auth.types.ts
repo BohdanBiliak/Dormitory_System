@@ -15,7 +15,6 @@ export interface RegisterRequest {
   studentIdBack?: File
 }
 
-
 export interface AuthResponse {
   user?: User
   newUser?: User
