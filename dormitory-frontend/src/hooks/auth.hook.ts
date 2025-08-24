@@ -24,7 +24,7 @@ export const useAuth = () => {
   const loginMutation = useMutation({
     mutationFn: (data: LoginRequest) => authApi.login(data),
     onSuccess: (response) => {
-      const data = queryClient.getQueryData<User>(['currentUser'])
+      const {data} =
 
       if(data==undefined){
         throw Error('No currentUser in query')
