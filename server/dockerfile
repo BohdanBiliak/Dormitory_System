@@ -1,0 +1,15 @@
+# --- production stage ---
+FROM node:20 AS prod
+WORKDIR /app
+
+# Copy package.json first for installing dependencies
+COPY package*.json ./
+COPY __generated__ ./__generated__
+# Install only production dependencies
+RUN npm install --omit=dev
+
+# Copy pre-built dist folder
+COPY dist ./dist
+
+# Set default command
+CMD ["node", "dist/main.js"]
