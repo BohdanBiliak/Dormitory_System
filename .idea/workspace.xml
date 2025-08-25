@@ -4,258 +4,99 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6c6d9874-ce38-4928-a4e0-b0076c34fe6f" name="Changes" comment="">
+    <list default="true" id="a2609a67-42b3-4399-bbcc-46f7339b9fb9" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/prettier.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/edge.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/edge.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/index-browser.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/index-browser.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/index.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/libquery_engine-debian-openssl-3.0.x.so.node" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/libquery_engine-debian-openssl-3.0.x.so.node" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/runtime/index-browser.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/runtime/index-browser.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/runtime/library.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/runtime/library.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/wasm.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/wasm.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FormatOnSaveOptions">
-    <option name="myRunOnSave" value="false" />
-    <option name="myAllFileTypesSelected" value="true" />
-    <option name="mySelectedFileTypes">
-      <set />
-    </option>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;BohdanBiliak&quot;
-  }
-}</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/BohdanBiliak/Dormitory_System.git&quot;,
-    &quot;accountId&quot;: &quot;a8f1508c-894f-4137-a4c9-0ab8e2290f9b&quot;
-  }
-}</component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="DEPENDENCY_CHECKER_PROBLEMS_TAB" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 5
 }</component>
-  <component name="ProjectId" id="2zN73KzCFWegfav5I5K6bXPONsG" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectId" id="31arymRRFelHQUagT1jLHtxMo45" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
-    &quot;Jest.Dormitory endpoints.executor&quot;: &quot;Run&quot;,
-    &quot;Jest.DormitoryService.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Detrox/WebstormProjects/Dormitory/server/test/fixtures&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/vladyslav/WebstormProjects/Dormitory_System/dormitory-frontend/public&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs.jest.jest_package&quot;: &quot;C:/Users/Detrox/WebstormProjects/Dormitory/server/node_modules/jest&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;C:\\Users\\Detrox\\WebstormProjects\\Dormitory\\server\\node_modules\\prettier&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\Detrox\\WebstormProjects\\Dormitory\\server\\node_modules\\typescript\\lib&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/home/vladyslav/WebstormProjects/Dormitory_System/server/node_modules/typescript/lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="ReactDesignerToolWindowState">
-    <option name="myId2Visible">
-      <map>
-        <entry key="com.intellij.reactbuddy.reactComponents" value="false" />
-        <entry key="com.intellij.reactbuddy.reactInspector" value="false" />
-        <entry key="com.intellij.reactbuddy.storybook" value="false" />
-      </map>
-    </option>
-  </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Detrox\WebstormProjects\Dormitory\server\test\fixtures" />
+      <recent name="$PROJECT_DIR$/dormitory-frontend/public" />
     </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Detrox\WebstormProjects\Dormitory\server\src\modules\announcement\services" />
-      <recent name="C:\Users\Detrox\WebstormProjects\Dormitory\server\src\modules\announcement\controllers" />
-      <recent name="C:\Users\Detrox\WebstormProjects\Dormitory\server\src\modules\announcement" />
-      <recent name="C:\Users\Detrox\WebstormProjects\Dormitory\server\test\fixtures" />
-      <recent name="C:\Users\Detrox\WebstormProjects\Dormitory\server\src\modules" />
-    </key>
-  </component>
-  <component name="RunManager" selected="Jest.Dormitory endpoints">
-    <configuration name="Dormitory endpoints" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <jest-package value="$PROJECT_DIR$/server/node_modules/jest" />
-      <working-dir value="$PROJECT_DIR$/server" />
-      <envs />
-      <scope-kind value="SUITE" />
-      <test-file value="$PROJECT_DIR$/server/test/dormitory.test.ts" />
-      <test-names>
-        <test-name value="Dormitory endpoints" />
-      </test-names>
-      <method v="2" />
-    </configuration>
-    <configuration name="DormitoryService" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <jest-package value="$PROJECT_DIR$/server/node_modules/jest" />
-      <working-dir value="$PROJECT_DIR$/server" />
-      <envs />
-      <scope-kind value="SUITE" />
-      <test-file value="$PROJECT_DIR$/server/src/modules/dormitory/dormitory.service.spec.ts" />
-      <test-names>
-        <test-name value="DormitoryService" />
-      </test-names>
-      <method v="2" />
-    </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Jest.Dormitory endpoints" />
-        <item itemvalue="Jest.DormitoryService" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-WS-243.22562.222" />
+        <option value="bundled-js-predefined-d6986cc7102b-09060db00ec0-JavaScript-WS-251.26927.40" />
       </set>
     </attachedChunks>
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="6c6d9874-ce38-4928-a4e0-b0076c34fe6f" name="Changes" comment="" />
-      <created>1751559476235</created>
+      <changelist id="a2609a67-42b3-4399-bbcc-46f7339b9fb9" name="Changes" comment="" />
+      <created>1755773281129</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1751559476235</updated>
-      <workItem from="1751559477298" duration="2187000" />
-      <workItem from="1751561691346" duration="2941000" />
-      <workItem from="1751706021992" duration="3637000" />
-      <workItem from="1751735491897" duration="29000" />
-      <workItem from="1751796085018" duration="3574000" />
-      <workItem from="1751811739603" duration="636000" />
-      <workItem from="1751812390951" duration="5812000" />
-      <workItem from="1751823384907" duration="2050000" />
-      <workItem from="1751879095899" duration="8516000" />
-      <workItem from="1751910502835" duration="1506000" />
-      <workItem from="1751960332751" duration="1106000" />
-      <workItem from="1751961548227" duration="7748000" />
-      <workItem from="1752045292692" duration="12570000" />
-      <workItem from="1752085300089" duration="4501000" />
-      <workItem from="1752137706928" duration="380000" />
-      <workItem from="1752138097370" duration="846000" />
-      <workItem from="1752139244091" duration="1929000" />
-      <workItem from="1752156975325" duration="2798000" />
-      <workItem from="1752232655629" duration="17000" />
-      <workItem from="1752232772133" duration="1662000" />
-      <workItem from="1752237558566" duration="4780000" />
-      <workItem from="1752338487735" duration="6197000" />
-      <workItem from="1752396358963" duration="4801000" />
-      <workItem from="1752404266331" duration="1827000" />
-      <workItem from="1752408924898" duration="3165000" />
-      <workItem from="1752417354062" duration="8252000" />
-      <workItem from="1752426055534" duration="345000" />
-      <workItem from="1752426415247" duration="1601000" />
-      <workItem from="1752428196386" duration="3776000" />
-      <workItem from="1752480697364" duration="7684000" />
-      <workItem from="1752493423551" duration="3095000" />
-      <workItem from="1752504178884" duration="2553000" />
-      <workItem from="1752507224847" duration="442000" />
-      <workItem from="1752570241556" duration="5040000" />
-      <workItem from="1752582982262" duration="2769000" />
-      <workItem from="1752650979642" duration="8984000" />
-      <workItem from="1752664077670" duration="122000" />
-      <workItem from="1752664206860" duration="118000" />
-      <workItem from="1752664331633" duration="126000" />
-      <workItem from="1752664463451" duration="155000" />
-      <workItem from="1752664626449" duration="525000" />
-      <workItem from="1752665164726" duration="163000" />
-      <workItem from="1752665334869" duration="311000" />
-      <workItem from="1752665656446" duration="838000" />
-      <workItem from="1752666511179" duration="703000" />
-      <workItem from="1752667228747" duration="1139000" />
-      <workItem from="1752668395188" duration="5824000" />
-      <workItem from="1752674292468" duration="5539000" />
-      <workItem from="1752735013573" duration="11606000" />
-      <workItem from="1752779490230" duration="2636000" />
-      <workItem from="1752782514555" duration="259000" />
-      <workItem from="1752819194154" duration="5853000" />
-      <workItem from="1752840160530" duration="2964000" />
-      <workItem from="1752843267586" duration="202000" />
-      <workItem from="1752843482311" duration="3291000" />
-      <workItem from="1752997292483" duration="322000" />
+      <updated>1755773281129</updated>
+      <workItem from="1755773282844" duration="4728000" />
+      <workItem from="1755791695216" duration="9055000" />
+      <workItem from="1755844501467" duration="1149000" />
+      <workItem from="1755846331887" duration="1325000" />
+      <workItem from="1755879805542" duration="5832000" />
+      <workItem from="1755886216232" duration="262000" />
+      <workItem from="1755931586603" duration="2912000" />
+      <workItem from="1756023022950" duration="7517000" />
+      <workItem from="1756057784319" duration="3123000" />
+      <workItem from="1756060995595" duration="4067000" />
+      <workItem from="1756066241663" duration="4309000" />
+      <workItem from="1756103324647" duration="295000" />
+      <workItem from="1756103899029" duration="1124000" />
+      <workItem from="1756106275888" duration="714000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/server/src/app.module.ts</url>
-          <line>3</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/server/src/modules/auth/controllers/auth.controller.ts</url>
-          <line>11</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/server/src/libs/mail/mail.module.ts</url>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/client/src/shared/components/ui/index.ts</url>
-          <line>2</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/client/src/features/auth/components/NewVerificationForm.tsx</url>
-          <line>2</line>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/client/src/features/auth/components/ResetPasswordForm.tsx</url>
-          <line>2</line>
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/client/src/app/layout.tsx</url>
-          <line>2</line>
-          <option name="timeStamp" value="22" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/server/src/libs/swagger/swagger.service.ts</url>
-          <option name="timeStamp" value="23" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/server/src/modules/dormitory/dormitory.controller.ts</url>
-          <option name="timeStamp" value="24" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/server/src/modules/auth/submodules/email-confirmation/services/email-confirmation.service.ts</url>
-          <option name="timeStamp" value="25" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/server/src/modules/dormitory/dormitory.controller.ts</url>
-          <line>24</line>
-          <option name="timeStamp" value="26" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/server/src/libs/common/middleware/sentry-action-logger.middleware.ts</url>
-          <line>10</line>
-          <option name="timeStamp" value="27" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
