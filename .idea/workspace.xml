@@ -5,19 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a2609a67-42b3-4399-bbcc-46f7339b9fb9" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/prettier.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/ui/SideMenu.component.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/edge.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/edge.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/index-browser.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/index-browser.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/index.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/libquery_engine-debian-openssl-3.0.x.so.node" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/libquery_engine-debian-openssl-3.0.x.so.node" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/runtime/index-browser.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/runtime/index-browser.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/runtime/edge-esm.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/runtime/edge-esm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/runtime/edge.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/runtime/edge.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/__generated__/runtime/library.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/runtime/library.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/wasm.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/wasm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/runtime/library.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/runtime/library.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/runtime/react-native.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/runtime/react-native.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/runtime/wasm-compiler-edge.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/runtime/wasm-compiler-edge.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/runtime/wasm-engine-edge.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/runtime/wasm-engine-edge.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,6 +90,8 @@
       <workItem from="1756103324647" duration="295000" />
       <workItem from="1756103899029" duration="1124000" />
       <workItem from="1756106275888" duration="714000" />
+      <workItem from="1756109368523" duration="3187000" />
+      <workItem from="1756112684611" duration="1125000" />
     </task>
     <servers />
   </component>
