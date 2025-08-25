@@ -3,11 +3,15 @@ import { authApi } from '@/app/lib/auth.api'
 import { LoginRequest, RegisterRequest, User } from '@/types/auth.types'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
+import {useState} from "react";
 
 export const useAuth = () => {
   const queryClient = useQueryClient()
   const router = useRouter()
+  const [user, setUser] = useState<User | null>(null)
 
+  const isLoadingUser = false
+  const userError = null;
   // Get current user query
   // const {
   //   data: user,
@@ -24,20 +28,21 @@ export const useAuth = () => {
   const loginMutation = useMutation({
     mutationFn: (data: LoginRequest) => authApi.login(data),
     onSuccess: (response) => {
-      const {data} =
-
-      if(data==undefined){
-        throw Error('No currentUser in query')
+      const { newUser } = response
+      if(!newUser) {
+        throw Error('Bad credentials')
       }
+
+      setUser(newUser)
 
       toast.success('Login successful!')
       queryClient.invalidateQueries({ queryKey: ['auth', 'currentUser'] })
-      console.log(data.role)
-      switch (data.role){
+      console.log(user?.role)
+      switch (user?.role){
         case 'SuperAdmin': router.push('/admin/profile'); break;
-        case 'Admin': router.push('/admin/login'); break;
-        case 'Regular': break;
-        case 'SignedInUser': break;
+        case 'Admin': router.push('/admin/profile'); break;
+        case 'Regular': router.push('/admin/profile');break;
+        case 'SignedInUser': router.push('/admin/profile'); break;
         default: throw Error('Unidentified user role');
       }
     },
@@ -116,10 +121,10 @@ export const useAuth = () => {
 
   return {
     // User data
-    // user,
-    // isLoadingUser,
-    // userError,
-    // isAuthenticated: !!user,
+    user,
+    isLoadingUser,
+    userError,
+    isAuthenticated: !!user,
 
     // Actions
     login: loginMutation.mutate,

@@ -40,7 +40,7 @@ export function LoginForm() {
 
   return (
     <div className="w-full max-w-md mx-auto">
-      <div className="text-center mb-8">
+      <div className="text-center">
         <h2 className="text-3xl font-bold text-gray-900">Welcome Back</h2>
         <p className="text-gray-600 mt-2">
           Don't have an account?{' '}

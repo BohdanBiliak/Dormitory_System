@@ -18,10 +18,10 @@ export function AdminProfileForm() {
   useEffect(() => {
     if (user) {
       setProfileData({
-        displayName: user.displayName || '',
-        secondName: user.secondName || '',
-        email: user.email || '',
-        photo: null
+        displayName: user?.displayName || '',
+        secondName: user?.secondName || '',
+        email: user?.email || '',
+        photo: null,
       })
     }
   }, [user])
@@ -64,15 +64,12 @@ export function AdminProfileForm() {
   }
 
   const handleCancel = () => {
-    // Reset form data
-    if (user) {
-      setProfileData({
-        displayName: user.displayName || '',
-        secondName: user.secondName || '',
-        email: user.email || '',
+    setProfileData({
+        displayName: user?.displayName || '',
+        secondName: user?.secondName || '',
+        email: user?.email || '',
         photo: null
-      })
-    }
+    })
     setIsEditing(false)
   }
 
