@@ -13,20 +13,23 @@ export function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) 
   const { user, isLoading } = useAuth()
   const router = useRouter()
 
+  const publicRoutes = ['/auth/login', '/auth/register', '/auth/password-recovery']
+  const currentPath = typeof window !== 'undefined' ? window.location.pathname : ''
+
+  // Redirect logic
   useEffect(() => {
     if (!isLoading) {
-      if (!user) {
+      if (!user && !publicRoutes.includes(currentPath)) {
         router.push('/auth/login')
-        return
       }
 
-      if (requiredRole && !requiredRole.includes(user.role)) {
+      if (requiredRole && user && !requiredRole.includes(user.role)) {
         router.push('/unauthorized')
-        return
       }
     }
-  }, [user, isLoading, router, requiredRole])
+  }, [user, isLoading, router, requiredRole, currentPath])
 
+  // Покажемо спінер лише поки завантажується user
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -35,13 +38,21 @@ export function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) 
     )
   }
 
-  if (!user) {
+  // Якщо сторінка публічна — рендеримо навіть без user
+  if (!user && publicRoutes.includes(currentPath)) {
+    return <>{children}</>
+  }
+
+  // Якщо user є, але не має потрібної ролі — нічого не показуємо
+  if (user && requiredRole && !requiredRole.includes(user.role)) {
     return null
   }
 
-  if (requiredRole && !requiredRole.includes(user.role)) {
-    return null
+  // Якщо user є і все ок — рендеримо
+  if (user) {
+    return <>{children}</>
   }
 
-  return <>{children}</>
+  // Для всіх інших випадків (неавторизовані непублічні сторінки) — спочатку нічого не рендеримо
+  return null
 }

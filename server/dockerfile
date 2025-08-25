@@ -1,15 +1,47 @@
-# --- production stage ---
-FROM node:20 AS prod
+FROM node:20-bullseye AS build
+
 WORKDIR /app
 
-# Copy package.json first for installing dependencies
+# Install dependencies for sharp and prisma
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libcairo2-dev \
+    libjpeg-dev \
+    libpango1.0-dev \
+    libgif-dev \
+    librsvg2-dev \
+    python3 \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY package*.json ./
-COPY __generated__ ./__generated__
-# Install only production dependencies
-RUN npm install --omit=dev
 
-# Copy pre-built dist folder
-COPY dist ./dist
+RUN npm install --include=optional
+RUN npm rebuild sharp --force
 
-# Set default command
+COPY . .
+
+# Generate prisma client for debian and native
+RUN npx prisma generate
+
+# ----------------------
+# Production image
+# ----------------------
+FROM node:20-bullseye AS prod
+
+WORKDIR /app
+
+# Copy node_modules first to cache better
+COPY --from=build /app/node_modules ./node_modules
+
+# Copy built app
+COPY --from=build /app/dist ./dist
+
+# Copy prisma schema files
+COPY --from=build /app/prisma ./prisma
+
+# Copy prisma client (__generated__)
+COPY --from=build /app/__generated__ ./__generated__
+
+EXPOSE 4000
+
 CMD ["node", "dist/main.js"]
