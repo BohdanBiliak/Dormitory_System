@@ -131,7 +131,7 @@ export class ManagerController {
   }
 
   @Delete(':id/deactivate')
-  @Authorization($Enums.UserRole.SuperAdmin)
+  @Authorization($Enums.UserRole.SuperAdmin, $Enums.UserRole.Admin)
   @ApiOperation({ 
     summary: 'Deactivate manager',
     description: 'Deactivates a manager account (soft delete)'
@@ -152,7 +152,7 @@ export class ManagerController {
   }
 
   @Post(':id/activate')
-  @Authorization($Enums.UserRole.SuperAdmin)
+  @Authorization($Enums.UserRole.SuperAdmin, $Enums.UserRole.Admin)
   @ApiOperation({ 
     summary: 'Activate manager',
     description: 'Reactivates a deactivated manager account'
