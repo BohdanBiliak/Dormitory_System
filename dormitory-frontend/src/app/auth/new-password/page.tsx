@@ -1,11 +1,35 @@
 import { NewPasswordForm } from '@/components/auth/NewPasswordForm.component'
-import { AuthSidebar } from '@/components/auth/AuthSidebar.component'
-import {AuthLayout} from "@/app/layouts/auth.layout";
+import {MenuItem} from "@/types/ui.types";
+import {SideMenu} from "@/components/ui/SideMenu.component";
 
 export default function NewPasswordPage() {
-  return (
-    <AuthLayout activeItem="signin">
-        <NewPasswordForm />
-    </AuthLayout>
+    const menuItems:MenuItem[] = [
+        {
+            id: 'dormitories',
+            image: '/workplace.svg',
+            label: 'Dormitories Information'
+        },
+        {
+            id: 'announcements',
+            image: '/clipboard-check.svg',
+            label: 'Announcements'
+        },
+        {
+            id: 'rooms',
+            image: '/home.svg',
+            label: 'Available rooms'
+        },
+        {
+            id: 'signin',
+            image: '/user.svg',
+            label: 'Sign in',
+            href: "/auth/login",
+        }
+    ]
+
+    return (
+        <SideMenu menuItems={menuItems} activeItem={''}>
+            <NewPasswordForm />
+        </SideMenu>
   )
 }
