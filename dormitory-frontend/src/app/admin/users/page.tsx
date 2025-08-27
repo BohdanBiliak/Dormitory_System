@@ -1,12 +1,10 @@
 'use client'
 
-import { AdminProfileForm } from '@/components/admin/AdminProfileForm.component'
-import { SideMenu } from "@/components/ui/SideMenu.component";
-import { MenuItem } from '@/types/ui.types';
-//import { ProtectedRoute } from '@/app/lib/route/ProtectedRouteforAdmin'
+import {MenuItem} from "@/types/ui.types";
+import {SideMenu} from "@/components/ui/SideMenu.component";
+import {AdminUserList} from "@/components/admin/AdminUserList.component";
 
-export default function AdminProfilePage() {
-
+export default function UserListPage() {
     const menuItems:MenuItem[] = [
         {
             id: 'profile',
@@ -118,16 +116,10 @@ export default function AdminProfilePage() {
             label:'Logout',
         }
     ]
-  return (
-    //<ProtectedRoute requiredRole={['Admin', 'SuperAdmin']}>
-      <SideMenu menuItems={menuItems} activeItem={'profile'}>
-        <div className="p-8">
-          <h1 className="text-4xl font-bold text-center mb-8 text-gray-900">
-            Admin Profile
-          </h1>
-          <AdminProfileForm />
-        </div>
-      </SideMenu>
-    //</ProtectedRoute>
-  )
+
+    return(
+        <SideMenu menuItems={menuItems} activeItem={'users'}>
+            <AdminUserList/>
+        </SideMenu>
+    )
 }

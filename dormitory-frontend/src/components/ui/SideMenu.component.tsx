@@ -72,7 +72,10 @@ export function SideMenu ({children, menuItems, activeItem}:SideMenuProps){
                                                     href={subItem.href || '#'}
                                                     className="block px-3 py-2 text-sm text-blue-200 hover:text-white hover:bg-blue-800 rounded transition-colors"
                                                 >
-                                                    {subItem.label}
+                                                    <div className="flex items-center space-x-3">
+                                                        <img src={subItem.image} alt={subItem.label} className="w-8 h-8 filter brightness-0 invert"/>
+                                                        {subItem.label}
+                                                    </div>
                                                 </Link>
                                             ))}
                                         </div>
