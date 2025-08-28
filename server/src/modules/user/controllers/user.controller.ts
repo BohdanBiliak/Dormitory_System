@@ -183,24 +183,32 @@ export class UserController {
       example: {
         data: [
           {
-            id: 'uuid1',
-            email: 'user1@example.com',
-            displayName: 'Alice',
-            isTwoFactorEnabled: false,
-            createdAt: '2024-07-01T12:00:00.000Z'
-          },
-          {
-            id: 'uuid2',
-            email: 'user2@example.com',
-            displayName: 'Bob',
-            isTwoFactorEnabled: true,
-            createdAt: '2024-07-02T12:00:00.000Z'
+            "data": [
+              {
+                "id": "eddccfd0-040c-4e44-9e5d-0f1cbde840fc",
+                "email": "arheroha@gmail.com",
+                "password": "$argon2id$v=19$m=65536,t=3,p=4$JTW1v6RX5oLxgMmolWMEYA$X2KgCJZss8AV/4TmSpmGT9jzLXF0REbkCtJUmKrAwMQ",
+                "displayName": "Bohdan",
+                "picture": "",
+                "isVerified": true,
+                "isTwoFactorEnabled": false,
+                "method": "CREDENTIALS",
+                "role": "Admin",
+                "secondName": "Bilak",
+                "studentIdFront": "",
+                "studentIdBack": "",
+                "isActive": true,
+                "dormitoryId": null,
+                "roomId": null,
+                "createdAt": "2025-08-28T12:32:14.349Z",
+                "updatedAt": "2025-08-28T12:32:14.349Z"
+              }
+            ],
+            "total": 1,
+            "page": 1,
+            "last_page": 1
           }
-        ],
-        total: 20,
-        page: 1,
-        limit: 10,
-        totalPages: 2
+        ]
       }
     }
   })
