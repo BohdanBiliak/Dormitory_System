@@ -97,4 +97,44 @@ export class UserService {
     }
   }
 
+  async deactivateUser(id: string, deactivateBy: string){
+    const user = await this.findById(id);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    if (!user.isActive) {
+      throw new NotFoundException('User is already deactivated');
+    }
+
+    const deactivatedUser = await this.prismaService.user.update({
+      where: { id },
+      data: { isActive: false }
+    });
+
+    return {
+      ...deactivatedUser,
+      deactivateBy
+    };
+  } 
+
+  async activateUser(id: string, activateBy: string){
+    const user = await this.findById(id);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    if (user.isActive) {
+      throw new NotFoundException('User is already active');
+    }
+
+    const activatedUser = await this.prismaService.user.update({
+      where: { id },
+      data: { isActive: true }
+    });
+
+    return {
+      ...activatedUser,
+      activateBy
+    };
+  }
+
 }

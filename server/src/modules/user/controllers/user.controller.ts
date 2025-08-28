@@ -3,6 +3,7 @@ import {
   Controller,
   ForbiddenException,
   Get,
+  Delete,
   HttpCode,
   HttpStatus,
   Patch,
@@ -19,6 +20,7 @@ import {
   ApiBearerAuth,
   ApiBody,
   ApiOperation,
+  ApiResponse,
   ApiParam,
   ApiOkResponse,
   ApiTags,
@@ -27,7 +29,7 @@ import {
   ApiNotFoundResponse
 } from "@nestjs/swagger";
 import { Roles } from "@libs/common/decorators/roles.decorator";
-
+import { CurrentUser } from '@/libs/common/decorators/current-user.decorator';
 @ApiTags('Users')
 @ApiBearerAuth()
 @Controller('users')
@@ -228,4 +230,43 @@ export class UserController {
 
     return this.userService.findAll(filters, Number(page), Number(limit));
   }
+
+  @Delete(':id/deactivate')
+  @Authorization($Enums.UserRole.SuperAdmin, $Enums.UserRole.Admin)
+  @ApiOperation({ 
+    summary: 'Deactivate user',
+    description: 'Deactivates a user account (soft delete)'
+  })
+  @ApiParam({ name: 'id', type: String, description: 'User ID' })
+  @ApiOkResponse({ 
+    description: 'User deactivated successfully'
+  })
+  @ApiResponse({ status: 404, description: 'Manager not found' })
+  @ApiResponse({ status: 400, description: 'Manager is already deactivated' })
+  async deactivateUser(
+    @Param('id') id: string,
+    @CurrentUser('id') currentUserId: string,
+  ){
+    return this.userService.deactivateUser(id, currentUserId);
+  }
+
+  @Patch(':id/activate')
+  @Authorization($Enums.UserRole.SuperAdmin, $Enums.UserRole.Admin)
+  @ApiOperation({ 
+    summary: 'Activate user',
+    description: 'Activates a previously deactivated user account'
+  })
+  @ApiParam({ name: 'id', type: String, description: 'User ID' })
+  @ApiOkResponse({ 
+    description: 'User activated successfully'
+  })
+  @ApiResponse({ status: 404, description: 'User not found' })
+  async activateUser(
+    @Param('id') id: string,
+    @CurrentUser('id') currentUserId: string,
+  ){
+    return this.userService.activateUser(id, currentUserId);
+  }
+
+
 }
