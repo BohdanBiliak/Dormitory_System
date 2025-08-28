@@ -34,7 +34,7 @@ export class DormitoryController {
 
 
   @Post()
-  @Authorization(UserRole.Admin)
+  @Authorization(UserRole.Admin, UserRole.SuperAdmin)
   @UseInterceptors(FilesInterceptor("photos"))
   @ApiConsumes("multipart/form-data")
   @ApiOperation({

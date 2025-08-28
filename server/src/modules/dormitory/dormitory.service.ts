@@ -16,36 +16,49 @@ export class DormitoryService {
       files.map((file) => this.s3Service.uploadFile(file, "dormitories")),
     );
 
-    // !!! Парсимо поле
     const roomGeneration = JSON.parse(dto.roomGeneration);
-
     const { roomGeneration: _removed, ...rest } = dto;
 
-    const dormitory = await this.prismaService.dormitory.create({
-      data: {
-        ...rest,
-        photos: photoUrls,
-      },
-    });
+    return this.prismaService.$transaction(async (tx) => {
+      const dormitory = await tx.dormitory.create({
+        data: {
+          ...rest,
+          photos: photoUrls,
+        },
+      });
 
-    const rooms: Prisma.RoomCreateManyInput[] = [];
-
-    for (let floor = 1; floor <= roomGeneration.numberOfFloors; floor++) {
-      for (let i = 1; i <= roomGeneration.roomsPerFloor; i++) {
-        rooms.push({
-          number: `${floor}${i.toString().padStart(2, "0")}`,
-          floor,
-          capacity: 2,
-          dormitoryId: dormitory.id,
-          roomEquipment: [],
-          photos: [],
-        });
+      const rooms: Prisma.RoomCreateManyInput[] = [];
+      for (let floor = 1; floor <= roomGeneration.numberOfFloors; floor++) {
+        for (let i = 1; i <= roomGeneration.roomsPerFloor; i++) {
+          rooms.push({
+            number: `${floor}${i.toString().padStart(2, "0")}`,
+            floor,
+            capacity: 2,
+            dormitoryId: dormitory.id,
+            roomEquipment: [],
+            photos: [],
+          });
+        }
       }
-    }
 
-    await this.prismaService.room.createMany({ data: rooms });
+      await tx.room.createMany({ data: rooms });
 
-    return dormitory;
+      const savedRooms = await tx.room.findMany({
+        where: { dormitoryId: dormitory.id },
+      });
+
+      const prices: Prisma.PriceCreateManyInput[] = savedRooms.map((room) => ({
+        roomId: null,
+        roomCapacity: room.capacity,
+        pricePerMonth: roomGeneration.pricePerMonth,
+        pricePerDay: roomGeneration.pricePerDay,
+        dateFrom: new Date(),
+      }));
+
+      await tx.price.createMany({ data: prices });
+
+      return dormitory;
+    });
   }
 
   async findAll(page = 1, limit = 10) {
