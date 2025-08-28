@@ -1,8 +1,13 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 import { adminApi, UpdateProfileRequest } from '@/app/lib/admin.api'
 import { toast } from 'sonner'
+import {userListApi} from "@/app/lib/userList.api";
+
+
+
 
 export const useAdminProfile = () => {
+
   const queryClient = useQueryClient()
 
   const updateProfile = useMutation({
@@ -39,5 +44,52 @@ export const useAdminProfile = () => {
     uploadAvatar: uploadAvatar.mutate,
     isUpdatingProfile: updateProfile.isPending,
     isUploadingAvatar: uploadAvatar.isPending,
+  }
+}
+
+export const useUserList = () => {
+  const queryClient = useQueryClient()
+
+  const {data: users, isLoading, error } = useQuery({
+    queryKey: ['users'],
+    queryFn: () => userListApi.getUsers(),
+    staleTime: 30 * 1000,
+  })
+
+  const getUserList=(filters:{
+    role?: 'Regular'|'All'|'SignedInUser',
+    paymentStatus?: 'Paid' | 'Awaiting' |'Overdue'|'All',
+    roomFlor?: string[],
+    sortBy?: 'Name'|'Id'|'Room',
+    page: number,
+    limit: number,
+  }) => {
+    return useQuery({
+    queryKey:['profiles', 'filtered', filters],
+    queryFn: () => userListApi.getUsers(filters),
+    enabled: !!filters,
+    staleTime: 30 * 1000,
+  })}
+
+  const getUserProfile=(id:string)=>{
+    return useQuery({
+      queryKey:['user','profile', 'id', id],
+      queryFn: ()=>userListApi.getUserData(id),
+      enabled: !!id,
+      staleTime: 30 * 1000,
+    })
+  }
+
+  // const updateProfile=useMutation({
+  //   mutationFn: (id: string)=>userListApi.updateUser(id)
+  //   onSuccess:
+  // })
+
+  return {
+    users,
+    isLoading,
+    error,
+    getUserList,
+    getUserProfile,
   }
 }

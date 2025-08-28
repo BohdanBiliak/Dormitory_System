@@ -76,7 +76,7 @@ export function AdminProfileForm() {
   const isLoading = isUpdatingProfile || isUploadingAvatar
 
   return (
-    <div className="max-w-6xl mx-auto bg-white border border-gray-300 rounded-lg">
+    <div className="max-w-6xl mx-auto bg-white border border-gray-300 rounded-lg flex-1">
       {/* Header */}
       <div className="bg-gray-100 px-6 py-4 border-b border-gray-300">
         <h2 className="text-lg font-semibold text-gray-900">Your Profile</h2>

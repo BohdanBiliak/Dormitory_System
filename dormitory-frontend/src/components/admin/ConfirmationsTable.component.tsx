@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { IdentityVerificationModal } from './IdentityVerificationModal.componet'
+import { IdentityVerificationModal } from './IdentityVerificationModal.component'
 import { useConfirmations } from '@/hooks/confirmations.hook'
 import type { Confirmation } from '@/app/lib/confirmations.api'
 

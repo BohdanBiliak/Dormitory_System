@@ -1,11 +1,11 @@
 'use client'
 
-import { ConfirmationsTable } from '@/components/admin/ConfirmationsTable.component'
 import {SideMenu} from "@/components/ui/SideMenu.component";
 import {MenuItem} from "@/types/ui.types";
-//import { ProtectedRoute } from '@/app/lib/route/ProtectedRouteforAdmin'
+import {UserProfileForm} from "@/components/admin/UserProfileForm.component";
+import {useParams} from "next/navigation";
 
-export default function ConfirmationsPage() {
+export default function UserProfile({params}:{params:Promise<{id:string}>}){
     const menuItems:MenuItem[] = [
         {
             id: 'profile',
@@ -16,26 +16,32 @@ export default function ConfirmationsPage() {
         {
             id: 'dormitories',
             image: '/workplace.svg',
-            label: 'Dormitories',
+            label: 'Dormitory management',
             subMenu: [
                 {
-                    id: '',
-                    label: 'All Dormitories',
-                    image: '',
-                    href: '/admin/dormitories',
+                    id: 'rooms',
+                    label: 'Available rooms',
+                    image: '/home.svg',
+                    href: '#',
                 },
                 {
-                    id: '',
-                    label: 'Add Dormitory',
-                    image: '',
-                    href: '/admin/dormitories/create',
+                    id: 'users',
+                    label: 'User profiles',
+                    image: '/users.svg',
+                    href: '/admin/users',
                 },
                 {
-                    id:'',
-                    label: 'Manage Rooms',
-                    image:'',
-                    href: '/admin/rooms',
+                    id:'confirmations',
+                    label: 'Confirmations',
+                    image:'/clipboard-check.svg',
+                    href: '#',
                 },
+                {
+                    id:'payments',
+                    label: 'Payments',
+                    image: '/cash.svg',
+                    href: '#'
+                }
             ]
         },
         {
@@ -44,28 +50,16 @@ export default function ConfirmationsPage() {
             label: 'Communication',
             subMenu: [
                 {
-                    id: '',
+                    id: 'announcements',
                     label: 'Announcements',
-                    image:'',
-                    href: '/admin/announcements'
+                    image:'/comments.svg',
+                    href: '#'
                 },
                 {
-                    id:'',
+                    id:'messages',
                     label: 'Messages',
-                    image:'',
-                    href: '/admin/messages'
-                },
-                {
-                    id:'',
-                    label: 'Confirmations',
-                    image:'',
-                    href: '/admin/confirmations'
-                },
-                {
-                    id:'',
-                    label: 'Notifications',
-                    image:'',
-                    href: '/admin/notifications'
+                    image:'/envelope.svg',
+                    href: '#'
                 }
             ]
         },
@@ -117,24 +111,19 @@ export default function ConfirmationsPage() {
                     href: '/admin/payments/overdue'
                 }
             ]
-        },
-        {
-            id: 'logout',
-            label: 'Logout',
-            image: '',
-            href: '/admin/logout'
+        },{
+            id:'logout',
+            image:'/sign-out.svg',
+            label:'Logout',
         }
     ]
-    return (
-   // <ProtectedRoute requiredRole={['Admin', 'SuperAdmin']}>
-      <SideMenu menuItems={menuItems} activeItem={''}>
-        <div className="p-8">
-          <h1 className="text-4xl font-bold text-center mb-8 text-gray-900">
-            Confirmations
-          </h1>
-          <ConfirmationsTable />
-        </div>
-      </SideMenu>
-    //</ProtectedRoute>
-  )
+
+    const {id} = useParams();
+
+    return(
+        <SideMenu menuItems={menuItems} activeItem={''}>
+            <UserProfileForm userId={id?.toString()!}/>
+        </SideMenu>
+    )
+
 }

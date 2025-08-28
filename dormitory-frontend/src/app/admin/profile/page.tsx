@@ -1,20 +1,133 @@
 'use client'
 
-import { AdminLayout } from '@/components/admin/AdminLayout-component'
-import { AdminProfileForm } from '@/components/admin/AdminProfileForm.components'
+import { AdminProfileForm } from '@/components/admin/AdminProfileForm.component'
+import { SideMenu } from "@/components/ui/SideMenu.component";
+import { MenuItem } from '@/types/ui.types';
 //import { ProtectedRoute } from '@/app/lib/route/ProtectedRouteforAdmin'
 
 export default function AdminProfilePage() {
+
+    const menuItems:MenuItem[] = [
+        {
+            id: 'profile',
+            image: '/user.svg',
+            label: 'My profile',
+            href: '/admin/profile'
+        },
+        {
+            id: 'dormitories',
+            image: '/workplace.svg',
+            label: 'Dormitory management',
+            subMenu: [
+                {
+                    id: 'rooms',
+                    label: 'Available rooms',
+                    image: '/home.svg',
+                    href: '#',
+                },
+                {
+                    id: 'users',
+                    label: 'User profiles',
+                    image: '/users.svg',
+                    href: '/admin/users',
+                },
+                {
+                    id:'confirmations',
+                    label: 'Confirmations',
+                    image:'/clipboard-check.svg',
+                    href: '#',
+                },
+                {
+                    id:'payments',
+                    label: 'Payments',
+                    image: '/cash.svg',
+                    href: '#'
+                }
+            ]
+        },
+        {
+            id: 'communication',
+            image: '/comments.svg',
+            label: 'Communication',
+            subMenu: [
+                {
+                    id: 'announcements',
+                    label: 'Announcements',
+                    image:'/comments.svg',
+                    href: '#'
+                },
+                {
+                    id:'messages',
+                    label: 'Messages',
+                    image:'/envelope.svg',
+                    href: '#'
+                }
+            ]
+        },
+        {
+            id: 'users',
+            image: '/users.svg',
+            label: 'Users',
+            subMenu: [
+                {
+                    id:'',
+                    label: 'All Users',
+                    image:'',
+                    href: '/admin/users'
+                },
+                {
+                    id: '',
+                    label: 'Managers',
+                    image:'',
+                    href: '/admin/managers'
+                },
+                {
+                    id:'',
+                    label: 'Students', image:'',
+                    href: '/admin/students'
+                }
+            ]
+        },
+        {
+            id: 'payments',
+            image: '/cash.svg',
+            label: 'Payments',
+            subMenu: [
+                {
+                    id:'',
+                    label: 'All Payments',
+                    image:'',
+                    href: '/admin/payments'
+                },
+                {
+                    id:'',
+                    label: 'Pending',
+                    image: '',
+                    href: '/admin/payments/pending'
+                },
+                {
+                    id:'',
+                    label: 'Overdue',
+                    image:'',
+                    href: '/admin/payments/overdue'
+                }
+            ]
+        },{
+            id:'logout',
+            image:'/sign-out.svg',
+            label:'Logout',
+        }
+    ]
   return (
     //<ProtectedRoute requiredRole={['Admin', 'SuperAdmin']}>
-      <AdminLayout activeItem="profile">
+      <SideMenu menuItems={menuItems} activeItem={'profile'}>
         <div className="p-8">
           <h1 className="text-4xl font-bold text-center mb-8 text-gray-900">
             Admin Profile
           </h1>
           <AdminProfileForm />
         </div>
-      </AdminLayout>
+      </SideMenu>
     //</ProtectedRoute>
   )
 }

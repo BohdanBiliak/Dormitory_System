@@ -65,7 +65,7 @@ export function ResetPasswordForm() {
             </button>
           </p>
           <Link
-            href="/auth/login"
+            href="/dormitory-frontend/src/app/(guest)/auth/login"
             className="inline-block bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
           >
             Back to Sign In
@@ -115,7 +115,7 @@ export function ResetPasswordForm() {
         </button>
 
         <div className="text-center">
-          <Link href="/auth/login" className="text-sm text-blue-600 hover:text-blue-500 font-medium">
+          <Link href="/dormitory-frontend/src/app/(guest)/auth/login" className="text-sm text-blue-600 hover:text-blue-500 font-medium">
             ← Back to Sign In
           </Link>
         </div>
