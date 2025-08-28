@@ -6,8 +6,13 @@ export class UpdateUserDto {
     @ApiProperty({ example: 'Bohdan', description: 'User\'s name' })
     @IsString()
     @IsNotEmpty()
-    name?: string;
-
+    displayName?: string;
+    
+    @ApiProperty({ example: 'Doe', description: 'User\'s second name' })
+    @IsString()
+    @IsNotEmpty()
+    secondName?: string;
+    
     @ApiProperty({ example: 'user@example.com', description: 'User\'s email' })
     @IsString()
     @IsEmail()

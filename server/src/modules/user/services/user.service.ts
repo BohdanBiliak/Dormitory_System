@@ -70,8 +70,9 @@ export class UserService {
       },
       data: {
         email: dto.email,
-        displayName: dto.name,
-        isTwoFactorEnabled: dto.isTwoFactorEnabled
+        displayName: dto.displayName,
+        isTwoFactorEnabled: dto.isTwoFactorEnabled,
+        secondName: dto.secondName
       }
     })
 

@@ -133,6 +133,7 @@ export class UserController {
         id: 'uuid',
         email: 'updated@example.com',
         displayName: 'Updated Name',
+        secondName: 'Updated Second Name',
         isTwoFactorEnabled: true,
         updatedAt: '2025-08-26T12:00:00.000Z'
       }
