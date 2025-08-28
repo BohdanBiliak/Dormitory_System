@@ -1,28 +1,53 @@
 import { api } from './api.api'
 import {User} from "@/types/auth.types";
-export interface UserListRequest {
-    userRole?: string[]
-    roomFloor?: string[]
-    paymentStatus?: string[]
+
+export interface UserListResponse {
+    data?: User[]
+    total: number,
+    page: number,
+    pageCount: number,
 }
+
+
 
 export const userListApi = {
     //Get all users
-    async getUsers(data:UserListRequest): Promise<User[]> {
-        console.log('Getting user list...')
+    async getUsers(filters?:{
+        role?: 'All'|'Regular'|'SignedInUser',
+        paymentStatus?: 'All'|'Paid' | 'Awaiting' |'Overdue',
+        roomFlor?: string[],
+        page?: number,
+        limit?: number,
+    }):Promise<UserListResponse>{
+        const params = new URLSearchParams()
 
-        const formData = new FormData()
-
-        try{
-            const response = await api.get('/users')
-            return response.data
-        }catch (error: any) {
-            console.log('User list error:', {
-                status: error.response?.status,
-                data: error.response?.data,
-                message: error.message
-            })
-            throw error
+        if (filters?.role && filters.role !== 'All') {
+            params.append('role', filters.role)
         }
+
+        if (filters?.paymentStatus && filters.paymentStatus !== 'All') {
+            params.append('paymentStatus', filters.paymentStatus)
+        }
+
+        if (filters?.page){
+            params.append('page', filters.page.toString())
+        }
+
+        if(filters?.limit){
+            params.append('limit', filters.limit.toString())
+        }
+
+        const responce = await api.get(`/users?${params}`)
+        return responce.data
+    },
+
+    async getUserData(id: string):Promise<User> {
+        const response = await api.get(`/users/${id}`)
+        return response.data
+    },
+
+    async updateUser(id: string, patch: {"name": string, "email": string, "isTwoFactorEnabled":true}):Promise<User> {
+        const response = await api.patch(`/users/profile`, patch)
+        return response.data
     }
 }

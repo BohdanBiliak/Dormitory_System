@@ -6,22 +6,47 @@ import MultipleSelectDropdown from "@/components/ui/MultipleSelectDropdown.compo
 import {useUserList} from "@/hooks/admin-hook-file";
 
 export function AdminUserList(){
-    const [sortBy, setSortBy] = useState('name');
-    const [roleFilter, setRoleFilter] = useState('');
+    const [sortBy, setSortBy] = useState<'Name'|'Id'|'Room'>('Name');
+    const [roleFilter, setRoleFilter] = useState<'All'|'Regular'|'SignedInUser'>('All');
     const [selectedRoomFloors, setSelectedRoomFloors] = useState(['']);
-    const [selectedPaymentsStatuses, setSelectedPaymentsStatuses] = useState(['']);
+    const [selectedPaymentsStatuses, setSelectedPaymentsStatuses] = useState<'Paid'|'Awaiting'|'All'|'Overdue'>('All');
     const roomFloors = ["1","2","3","4","5","6","7","8","9"];
     const paymentsStatuses = ["Paid","Awaiting","Overdue"];
-    const {getUserList} = useUserList();
-    const [userList, setUserList] = useState()
+    const [page, setPage] = useState(1);
+    const limit = 10;
 
-    // const loadUserList = async () => {
-    //     try{
-    //         setUserList(getUserList({}))
-    //     }catch(e){
-    //         console.log(e)
-    //     }
-    // }
+    const {getUserList} = useUserList();
+
+    const {data: userList, isLoading, error} = getUserList({
+        role: roleFilter,
+        paymentStatus: selectedPaymentsStatuses,
+        page:page,
+        limit:limit
+    });
+
+    if (isLoading) {
+        return (
+            <div className="bg-white border border-gray-300 rounded-lg p-8">
+                <div className="flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-900"></div>
+                    <span className="ml-2">Loading user list...</span>
+                </div>
+            </div>
+        )
+    }
+
+    if (error) {
+        return (
+            <div className="bg-white border border-gray-300 rounded-lg p-8">
+                <div className="text-center text-red-600">
+                    <p>Error loading user list. Please try again.</p>
+                </div>
+            </div>
+        )
+    }
+
+    const users = userList?.data || []
+    const totalPages = userList?.pageCount || 1
 
     return (
         <div className="mx-auto min-w-full bg-white border-2 border-blue-300 flex-1 align-top ">
@@ -36,20 +61,20 @@ export function AdminUserList(){
                     <div className="mx-2 text-2xl font-normal">Sort by:</div>
                     <select className="px-2 text-2xl font-normal bg-gray-300 text-center"
                         value={sortBy}
-                        onChange={(a)=>setSortBy(a.target.value)}
+                        onChange={(a)=>setSortBy(a.target.value as 'Name'|'Id'|'Room')}
                     >
-                        <option value='name'>Name</option>
-                        <option value='id'>Id</option>
-                        <option value='room'>Room</option>
+                        <option value='Name'>Name</option>
+                        <option value='Id'>Id</option>
+                        <option value='Room'>Room</option>
                     </select>
                 </div>
                 <div className="flex border-black border-2 p-1 rounded-md bg-gray-300 ml-4 divide-black divide-x-2">
                     <div className="mx-2 text-2xl font-normal">Show:</div>
                     <select className="px-2 text-2xl font-normal bg-gray-300 text-center"
                             value={roleFilter}
-                            onChange={(a)=>setRoleFilter(a.target.value)}
+                            onChange={(a)=>setRoleFilter(a.target.value as 'All'|'SignedInUser' | 'Regular')}
                     >
-                        <option value=''>All</option>
+                        <option value='All'>All</option>
                         <option value='SignedInUser'>Non-residents</option>
                         <option value='Regular'>Residents</option>
                     </select>
@@ -66,17 +91,61 @@ export function AdminUserList(){
                 <div className="flex border-black border-2 p-1 rounded-md bg-gray-300 ml-4 divide-black divide-x-2">
                     <div className="mx-2 text-2xl font-normal">Payment status:</div>
                     <div className="px-2 text-2xl font-normal">
-                        <MultipleSelectDropdown dropdownHeader="+" formFieldName="payments" options={paymentsStatuses} onChange={(statuses)=>{
-                            setSelectedPaymentsStatuses(statuses);
-                            console.log(selectedPaymentsStatuses);
-                        }} />
+                        <select className="px-2 text-2xl font-normal bg-gray-300 text-center"
+                                value={selectedPaymentsStatuses}
+                                onChange={(a)=>setSelectedPaymentsStatuses(a.target.value as 'Paid'|'Awaiting'|'All'|'Overdue')}
+                        >
+                            <option value='All'>All</option>
+                            <option value='Paid'>Paid</option>
+                            <option value='Awaiting'>Awaiting</option>
+                            <option value='Overdue'>Overdue</option>
+                        </select>
                     </div>
                 </div>
             </div>
 
-            {/*User list*/}
-            <div>
+            {/*User table*/}
+            <div className="overflow-x-auto">
+                <tbody>
+                {users.map((user, index) => (
+                    <tr key={user.id}>
+                        <td>
+                            {(page-1)*limit+index+1}
+                        </td>
+                        <td>
+                            {user.displayName}
+                        </td>
+                        <td>
+                            {'Id'+user.id}
+                        </td>
+                        <td>
+                            {(user?.roomId && user.roomId) || 'User is not a resident'}
+                        </td>
+                        <td>
+                            {'Payments'}
+                        </td>
+                    </tr>
+                ))}
+                </tbody>
+            </div>
 
+            {/* Pagination */}
+            <div className="px-6 py-4 border-t border-gray-200 flex justify-center">
+                <div className="flex space-x-2">
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                        <button
+                            key={pageNum}
+                            onClick={() => setPage(pageNum)}
+                            className={`px-3 py-1 border rounded text-sm transition-colors ${
+                                page === pageNum
+                                    ? 'bg-blue-600 text-white border-blue-600'
+                                    : 'border-gray-300 hover:bg-gray-50'
+                            }`}
+                        >
+                            {pageNum}
+                        </button>
+                    ))}
+                </div>
             </div>
         </div>
     )

@@ -5,6 +5,7 @@ import {SideMenu} from "@/components/ui/SideMenu.component";
 import {AdminUserList} from "@/components/admin/AdminUserList.component";
 
 export default function UserListPage() {
+
     const menuItems:MenuItem[] = [
         {
             id: 'profile',
