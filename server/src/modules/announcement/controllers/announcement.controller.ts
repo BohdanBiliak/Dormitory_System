@@ -151,8 +151,40 @@ export class AnnouncementController {
   @Get('public')
   @Authorization(UserRole.Admin, UserRole.SuperAdmin)
   @ApiOperation({ summary: 'Get all public announcements (for everyone)' })
-  @ApiResponse({ status: 200, description: 'List of public announcements', type: [AnnouncementResponseDto] })
-  findPublic() {
-    return this.getPublicAnnouncementsUseCase.execute();
+  @ApiQuery({ name: 'showHidden', required: false, type: Boolean, description: 'Include hidden announcements' })
+  @ApiQuery({ name: 'showExpired', required: false, type: Boolean, description: 'Include expired announcements' })
+  @ApiQuery({ name: 'page', required: false, type: Number, description: 'Page number (pagination)' })
+  @ApiQuery({ name: 'limit', required: false, type: Number, description: 'Items per page (pagination)' })
+  @ApiResponse({
+    status: 200,
+    description: 'List of public announcements with pagination',
+    schema: {
+      type: 'object',
+      properties: {
+        data: { type: 'array', items: { $ref: '#/components/schemas/AnnouncementResponseDto' } },
+        pagination: {
+          type: 'object',
+          properties: {
+            total: { type: 'number', example: 100 },
+            page: { type: 'number', example: 1 },
+            limit: { type: 'number', example: 20 },
+            totalPages: { type: 'number', example: 5 },
+          },
+        },
+      },
+    },
+  })
+  findPublic(
+    @Query('showHidden') showHidden: string,
+    @Query('showExpired') showExpired: string,
+    @Query('page') page: string,
+    @Query('limit') limit: string,
+  ) {
+    return this.getPublicAnnouncementsUseCase.execute(  {
+      showHidden: showHidden === 'true',
+      showExpired: showExpired === 'true',
+      page: page ? parseInt(page, 10) : undefined,
+      limit: limit ? parseInt(limit, 10) : undefined,});
+
   }
 }

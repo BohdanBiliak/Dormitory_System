@@ -76,5 +76,7 @@ export class AnnouncementResponseDto {
     @ApiProperty({ type: [RecipientDto] })
     @IsArray()
     recipients: RecipientDto[];
+
+    
 }
 
