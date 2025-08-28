@@ -15,37 +15,37 @@ import {
   ApiTags, ApiBearerAuth, ApiOperation, ApiResponse, ApiBody, ApiConsumes, ApiParam, ApiQuery
 } from '@nestjs/swagger';
 import { CreateAnnouncementDto } from "../dto/create-announcement.dto";
-import {CreateAnnouncementUseCase} from "@modules/announcement/use-cases/create-announcement.use-case";
-import {GetAnnouncementsUseCase} from "@modules/announcement/use-cases/get-announcements.use-case";
-import {UpdateAnnouncementUseCase} from "@modules/announcement/use-cases/update-announcement.use-case";
-import {DeleteAnnouncementUseCase} from "@modules/announcement/use-cases/delete-announcement.use-case";
+import { CreateAnnouncementUseCase } from "@modules/announcement/use-cases/create-announcement.use-case";
+import { GetAnnouncementsUseCase } from "@modules/announcement/use-cases/get-announcements.use-case";
+import { UpdateAnnouncementUseCase } from "@modules/announcement/use-cases/update-announcement.use-case";
+import { DeleteAnnouncementUseCase } from "@modules/announcement/use-cases/delete-announcement.use-case";
 import {
   UploadAnnouncementAttachmentsUseCase
 } from "@modules/announcement/use-cases/upload-announcement-attachments.use-case";
-import {GetAnnouncementByIdUseCase} from "@modules/announcement/use-cases/get-announcement-by-id.use-case";
-import {UpdateAnnouncementDto} from "@modules/announcement/dto/update-announcement.dto";
-import {FilesInterceptor} from "@nestjs/platform-express";
-import {AnnouncementResponseDto} from "@modules/announcement/dto/announcement-response.dto";
-import {RolesGuard} from "@libs/common/guards/roles.guard";
-import {Roles} from "@libs/common/decorators/roles.decorator";
-import {$Enums} from "../../../../__generated__";
+import { GetAnnouncementByIdUseCase } from "@modules/announcement/use-cases/get-announcement-by-id.use-case";
+import { UpdateAnnouncementDto } from "@modules/announcement/dto/update-announcement.dto";
+import { FilesInterceptor } from "@nestjs/platform-express";
+import { AnnouncementResponseDto } from "@modules/announcement/dto/announcement-response.dto";
+import { RolesGuard } from "@libs/common/guards/roles.guard";
+import { Roles } from "@libs/common/decorators/roles.decorator";
+import { $Enums } from "../../../../__generated__";
 import UserRole = $Enums.UserRole;
-import {GetPublicAnnouncementsUseCase} from "@modules/announcement/use-cases/get-public-announcements.use-case";
-import {Authorization} from "@libs/common/decorators/auth.decorator";
+import { GetPublicAnnouncementsUseCase } from "@modules/announcement/use-cases/get-public-announcements.use-case";
+import { Authorization } from "@libs/common/decorators/auth.decorator";
 
 @ApiTags('Announcements')
 @ApiBearerAuth()
 @Controller('announcements')
 export class AnnouncementController {
   constructor(
-      private readonly createUseCase: CreateAnnouncementUseCase,
-      private readonly getAllUseCase: GetAnnouncementsUseCase,
-      private readonly updateUseCase: UpdateAnnouncementUseCase,
-      private readonly deleteUseCase: DeleteAnnouncementUseCase,
-      private readonly uploadUseCase: UploadAnnouncementAttachmentsUseCase,
-      private readonly getAnnouncementByIdUseCase: GetAnnouncementByIdUseCase,
-      private readonly getPublicAnnouncementsUseCase: GetPublicAnnouncementsUseCase
-  ){}
+    private readonly createUseCase: CreateAnnouncementUseCase,
+    private readonly getAllUseCase: GetAnnouncementsUseCase,
+    private readonly updateUseCase: UpdateAnnouncementUseCase,
+    private readonly deleteUseCase: DeleteAnnouncementUseCase,
+    private readonly uploadUseCase: UploadAnnouncementAttachmentsUseCase,
+    private readonly getAnnouncementByIdUseCase: GetAnnouncementByIdUseCase,
+    private readonly getPublicAnnouncementsUseCase: GetPublicAnnouncementsUseCase
+  ) { }
 
   @Post()
   @Authorization(UserRole.Admin, UserRole.SuperAdmin)
@@ -61,16 +61,41 @@ export class AnnouncementController {
   @ApiOperation({ summary: 'Get all announcements' })
   @ApiQuery({ name: 'showHidden', required: false, type: Boolean })
   @ApiQuery({ name: 'showExpired', required: false, type: Boolean })
-  @ApiResponse({ status: 200, description: 'List of announcements', type: [AnnouncementResponseDto] })
+  @ApiQuery({ name: 'page', required: false, type: Number, example: 1 })
+  @ApiQuery({ name: 'limit', required: false, type: Number, example: 20 })
+  @ApiResponse({
+    status: 200,
+    description: 'List of announcements with pagination',
+    schema: {
+      type: 'object',
+      properties: {
+        data: { type: 'array' },
+        pagination: {
+          type: 'object',
+          properties: {
+            total: { type: 'number', example: 100 },
+            page: { type: 'number', example: 1 },
+            limit: { type: 'number', example: 20 },
+            totalPages: { type: 'number', example: 5 },
+          },
+        },
+      },
+    },
+  })
   findAll(
-      @Query('showHidden') showHidden: string,
-      @Query('showExpired') showExpired: string
+    @Query('showHidden') showHidden: string,
+    @Query('showExpired') showExpired: string,
+    @Query('page') page: string,
+    @Query('limit') limit: string,
   ) {
     return this.getAllUseCase.execute({
       showHidden: showHidden === 'true',
-      showExpired: showExpired === 'true'
+      showExpired: showExpired === 'true',
+      page: page ? parseInt(page, 10) : undefined,
+      limit: limit ? parseInt(limit, 10) : undefined,
     });
   }
+
 
   @Get(':id')
   @Authorization()

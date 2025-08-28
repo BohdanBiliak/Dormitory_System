@@ -16,6 +16,24 @@ export class AnnouncementRepository {
       include: { attachments: true, recipients: true },
     });
   }
+  async findAndCount(
+    filters: any,
+    options: { skip: number; take: number } = { skip: 0, take: 20 }
+  ): Promise<[Prisma.AnnouncementGetPayload<any>[], number]> {
+    const [data, total] = await Promise.all([
+      this.prisma.announcement.findMany({
+        where: { ...filters },
+        include: { attachments: true, recipients: true },
+        orderBy: { postedAt: "desc" },
+        skip: options.skip,
+        take: options.take,
+      }),
+      this.prisma.announcement.count({ where: { ...filters } }),
+    ]);
+
+    return [data, total];
+  }
+
 
   findAll(filters: any) {
     return this.prisma.announcement.findMany({
