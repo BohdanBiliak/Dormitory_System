@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Param,
+  Query,
   Patch,
   Post,
   UploadedFiles,
@@ -23,13 +24,13 @@ import { CreateDormitoryDto } from "@/modules/dormitory/dto/create-dormitory.dto
 import { UpdateDormitoryDto } from "@/modules/dormitory/dto/update-dormitory.dto";
 import { FilesInterceptor } from "@nestjs/platform-express";
 import { DormitoryService } from "./dormitory.service";
-import {Authorization} from "@libs/common/decorators/auth.decorator";
+import { Authorization } from "@libs/common/decorators/auth.decorator";
 
 @ApiTags("Dormitories")
 @ApiBearerAuth()
 @Controller("dormitories")
 export class DormitoryController {
-  constructor(private readonly dormitoryService: DormitoryService) {}
+  constructor(private readonly dormitoryService: DormitoryService) { }
 
 
   @Post()
@@ -65,8 +66,8 @@ export class DormitoryController {
   })
   @ApiResponse({ status: 201, description: "Dormitory successfully created." })
   create(
-      @Body() dto: CreateDormitoryDto,
-      @UploadedFiles() files: Express.Multer.File[],
+    @Body() dto: CreateDormitoryDto,
+    @UploadedFiles() files: Express.Multer.File[],
   ) {
     return this.dormitoryService.create(dto, files);
   }
@@ -76,23 +77,33 @@ export class DormitoryController {
   @ApiOperation({ summary: "List all active dormitories" })
   @ApiResponse({
     status: 200,
-    description: "Returns list of active dormitories.",
+    description: "Returns paginated list of active dormitories.",
     schema: {
-      example: [
-        {
-          id: "uuid",
-          name: "Dorm 1",
-          address: "123 Main St",
-          groundFloorPhoneNumber: "+380123456789",
-          photos: ["https://s3.example.com/photo1.jpg"],
-          status: "Active",
-          createdAt: "2024-07-16T10:00:00.000Z",
-        },
-      ],
-    },
+      example: {
+        data: [
+          {
+            id: "uuid",
+            name: "Dorm 1",
+            address: "123 Main St",
+            groundFloorPhoneNumber: "+380123456789",
+            photos: ["https://s3.example.com/photo1.jpg"],
+            status: "Active",
+            createdAt: "2024-07-16T10:00:00.000Z",
+          }
+        ],
+        total: 1,
+        page: 1,
+        last_page: 1
+      }
+    }
   })
-  findAll() {
-    return this.dormitoryService.findAll();
+  @ApiParam({ name: "page", required: false, description: "Page number", example: 1 })
+  @ApiParam({ name: "limit", required: false, description: "Items per page", example: 10 })
+  findAll(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
+  ) {
+    return this.dormitoryService.findAll(Number(page), Number(limit));
   }
 
   @Get(":id")
@@ -147,5 +158,40 @@ export class DormitoryController {
   })
   deactivate(@Param("id") id: string) {
     return this.dormitoryService.deactivate(id);
+  }
+
+  @Get("deactivated")
+  @Authorization(UserRole.Admin, UserRole.SuperAdmin)
+  @ApiOperation({ summary: "List all deactivated dormitories" })
+  @ApiResponse({
+    status: 200,
+    description: "Returns paginated list of deactivated dormitories.",
+    schema: {
+      example: {
+        data: [
+          {
+            id: "uuid",
+            name: "Dorm 2",
+            address: "456 Side St",
+            groundFloorPhoneNumber: "+380987654321",
+            photos: ["https://s3.example.com/photo2.jpg"],
+            status: "Deactivated",
+            createdAt: "2024-07-20T10:00:00.000Z",
+            deactivatedAt: "2024-08-01T12:00:00.000Z"
+          }
+        ],
+        total: 1,
+        page: 1,
+        last_page: 1
+      }
+    }
+  })
+  @ApiParam({ name: "page", required: false, description: "Page number", example: 1 })
+  @ApiParam({ name: "limit", required: false, description: "Items per page", example: 10 })
+  findDeactivated(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
+  ) {
+    return this.dormitoryService.findDeactivated(Number(page), Number(limit));
   }
 }

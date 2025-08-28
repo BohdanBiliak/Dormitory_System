@@ -10,10 +10,10 @@ export class DormitoryService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly s3Service: S3Service,
-  ) {}
+  ) { }
   async create(dto: CreateDormitoryDto, files: Express.Multer.File[]) {
     const photoUrls = await Promise.all(
-        files.map((file) => this.s3Service.uploadFile(file, "dormitories")),
+      files.map((file) => this.s3Service.uploadFile(file, "dormitories")),
     );
 
     // !!! Парсимо поле
@@ -48,11 +48,44 @@ export class DormitoryService {
     return dormitory;
   }
 
-  findAll() {
-    return this.prismaService.dormitory.findMany({
-      where: { status: 'Active' },
-      orderBy: { name: "asc" },
-    });
+  async findAll(page = 1, limit = 10) {
+    const [data, total] = await this.prismaService.$transaction([
+      this.prismaService.dormitory.findMany({
+        where: { status: 'Active' },
+        orderBy: { name: "asc" },
+        skip: (page - 1) * limit,
+        take: limit,
+      }),
+      this.prismaService.dormitory.count({
+        where: { status: 'Active' },
+      }),
+    ]);
+    return {
+      data,
+      total,
+      page,
+      last_page: Math.ceil(total / limit),
+    };
+  }
+
+  async findDeactivated(page = 1, limit = 10) {
+    const [data, total] = await this.prismaService.$transaction([
+      this.prismaService.dormitory.findMany({
+        where: { status: 'NotActive' },
+        orderBy: { name: "asc" },
+        skip: (page - 1) * limit,
+        take: limit,
+      }),
+      this.prismaService.dormitory.count({
+        where: { status: 'NotActive' },
+      }),
+    ]);
+    return {
+      data,
+      total,
+      page,
+      last_page: Math.ceil(total / limit),
+    };
   }
 
   findOne(id: string) {
