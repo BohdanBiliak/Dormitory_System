@@ -28,7 +28,6 @@ export class DormitoryService {
       },
     });
 
-    // Далі як і було
     const rooms: Prisma.RoomCreateManyInput[] = [];
 
     for (let floor = 1; floor <= roomGeneration.numberOfFloors; floor++) {

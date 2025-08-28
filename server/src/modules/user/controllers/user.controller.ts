@@ -151,7 +151,7 @@ export class UserController {
 
   @ApiOperation({
     summary: 'Get all users',
-    description: 'Returns a list of users. Can be filtered by query parameters. Admin/SuperAdmin only.'
+    description: 'Returns a list of users with pagination. Can be filtered by query parameters. Admin/SuperAdmin only.'
   })
   @ApiQuery({
     name: 'email',
@@ -165,32 +165,59 @@ export class UserController {
     description: 'Filter users by display name',
     example: 'Bohdan'
   })
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    description: 'Page number (default: 1)',
+    example: 2
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    description: 'Items per page (default: 10)',
+    example: 5
+  })
   @ApiOkResponse({
-    description: 'List of users',
+    description: 'Paginated list of users',
     schema: {
-      example: [
-        {
-          id: 'uuid1',
-          email: 'user1@example.com',
-          displayName: 'Alice',
-          isTwoFactorEnabled: false,
-          createdAt: '2024-07-01T12:00:00.000Z'
-        },
-        {
-          id: 'uuid2',
-          email: 'user2@example.com',
-          displayName: 'Bob',
-          isTwoFactorEnabled: true,
-          createdAt: '2024-07-02T12:00:00.000Z'
-        }
-      ]
+      example: {
+        data: [
+          {
+            id: 'uuid1',
+            email: 'user1@example.com',
+            displayName: 'Alice',
+            isTwoFactorEnabled: false,
+            createdAt: '2024-07-01T12:00:00.000Z'
+          },
+          {
+            id: 'uuid2',
+            email: 'user2@example.com',
+            displayName: 'Bob',
+            isTwoFactorEnabled: true,
+            createdAt: '2024-07-02T12:00:00.000Z'
+          }
+        ],
+        total: 20,
+        page: 1,
+        limit: 10,
+        totalPages: 2
+      }
     }
   })
   @ApiForbiddenResponse({ description: 'Unauthorized or insufficient role' })
   @HttpCode(HttpStatus.OK)
   @Get()
   @Authorization(UserRole.Admin, UserRole.SuperAdmin)
-  async findAll(@Query() filters: any) {
-    return this.userService.findAll(filters);
+  async findAll(
+    @Query('email') email?: string,
+    @Query('displayName') displayName?: string,
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
+  ) {
+    const filters: any = {};
+    if (email) filters.email = { contains: email, mode: 'insensitive' };
+    if (displayName) filters.displayName = { contains: displayName, mode: 'insensitive' };
+
+    return this.userService.findAll(filters, Number(page), Number(limit));
   }
 }

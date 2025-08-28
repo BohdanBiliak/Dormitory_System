@@ -78,14 +78,23 @@ export class UserService {
     return updatedUser
   }
 
-  async findAll(filters: any = {}) {
-   
-    return this.prismaService.user.findMany({
-      where: {
-        ...filters,
-      },
-      orderBy: { displayName: 'asc' },
-    });
+  async findAll(filters: any = {}, page: number = 1, limit: number = 12) {
+    const skip = (page - 1) * limit;
+    const [data, total] = await this.prismaService.$transaction([
+      this.prismaService.user.findMany({
+        where:{ ...filters },
+        orderBy: { displayName: 'asc' },
+        skip,
+        take: limit
+      }),
+      this.prismaService.user.count({ where: { ...filters } })
+    ])
+    return {
+      data,
+      total,
+      page,
+      last_page: Math.ceil(total / limit)
+    }
   }
 
 }
