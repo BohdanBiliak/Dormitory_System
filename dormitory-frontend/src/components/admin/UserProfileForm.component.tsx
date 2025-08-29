@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react"
 import {useUserList} from "@/hooks/admin-hook-file";
+import Link from "next/link";
 
 interface UserProfileFormProps {
     userId:string;
@@ -7,11 +8,11 @@ interface UserProfileFormProps {
 
 export function UserProfileForm({userId}:UserProfileFormProps){
 
-    const {getUserProfile} = useUserList();
+    const {getUserProfile, deactivateUser, activateUser} = useUserList();
 
     const [profileData, setProfileData] = useState({
         displayName: '',
-        //lastName: '',
+        lastName: '',
         //studentId: '',
         email: '',
         photo: null as File | null,
@@ -26,12 +27,25 @@ export function UserProfileForm({userId}:UserProfileFormProps){
         if(userProfileData){
             setProfileData({
                 displayName: userProfileData.displayName,
+                lastName: userProfileData.secondName,
                 email: userProfileData.email,
                 role: userProfileData.role,
                 photo: null as File | null,
             })
         }
-    }, [profileData]);
+    }, [userProfileData]);
+
+    const handleUserDeactivation = () => {
+        console.log("Deactivating user ", profileData)
+        deactivateUser({id:userId});
+
+    }
+
+    const handleUserActivation = () => {
+        console.log("Activating user ", profileData)
+        activateUser({id:userId});
+    }
+
 
     if(isLoading){
         return (
@@ -106,7 +120,8 @@ export function UserProfileForm({userId}:UserProfileFormProps){
                         <input
                             type="text"
                             name="secondName"
-                            disabled={isLoading}
+                            value={profileData.lastName}
+                            disabled={true}
                             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-50"
                         />
                     </div>
@@ -126,7 +141,7 @@ export function UserProfileForm({userId}:UserProfileFormProps){
 
                     <div className="pt-4">
                         <p className="text-sm font-medium text-gray-700">
-                            Role: {profileData.role || 'Admin'}
+                            Role: {profileData.role}
                         </p>
                     </div>
                 </div>
@@ -165,6 +180,34 @@ export function UserProfileForm({userId}:UserProfileFormProps){
             {/*        </button>*/}
             {/*    )}*/}
             </div>
+
+            {/*Links*/}
+            <div className="flex flex-row flex-nowrap space-x-4">
+                <label>Links:</label>
+                <Link href="#">
+                    <div className="border-black border rounded bg-gray-500 underline">Messages</div>
+                </Link>
+                <Link href="#">
+                    <div className="border-black border rounded bg-gray-500 underline">Payments</div>
+                </Link>
+                <Link href="#">
+                    <div className="border-black border rounded bg-gray-500 underline">Room page</div>
+                </Link>
+            </div>
+
+            {/*Control buttons*/}
+            <div className="flex flex-row flex-nowrap">
+            {userProfileData?.isActive ? (
+                <div>
+                    <button className="bg-red-800 text-white" onClick={handleUserDeactivation}>Deactivate Profile</button>
+                </div>
+            ):(
+                <div>
+                    <button className="bg-green-800 text-black" onClick={handleUserActivation}>Activate Profile</button>
+                </div>
+            )}
+            </div>
+
         </div>
     </div>
     )

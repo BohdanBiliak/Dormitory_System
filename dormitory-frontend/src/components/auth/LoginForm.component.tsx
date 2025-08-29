@@ -32,11 +32,14 @@ export function LoginForm() {
     }
 
     try {
-      await login({ email, password })
+      await Promise.all([login({ email, password })])
     } catch (error) {
       // Error is handled by the hook
     }
   }
+
+
+
 
   return (
     <div className="w-full max-w-md mx-auto">

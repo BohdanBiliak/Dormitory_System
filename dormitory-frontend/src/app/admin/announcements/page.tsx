@@ -1,11 +1,9 @@
 'use client'
 
-import {SideMenu} from "@/components/ui/SideMenu.component";
 import {MenuItem} from "@/types/ui.types";
-import {UserProfileForm} from "@/components/admin/UserProfileForm.component";
-import {useParams} from "next/navigation";
+import {SideMenu} from "@/components/ui/SideMenu.component";
 
-export default function UserProfile({params}:{params:Promise<{id:string}>}){
+export default function AnnouncementListPage(){
     const menuItems:MenuItem[] = [
         {
             id: 'profile',
@@ -53,7 +51,7 @@ export default function UserProfile({params}:{params:Promise<{id:string}>}){
                     id: 'announcements',
                     label: 'Announcements',
                     image:'/comments.svg',
-                    href: '/admin/announcements'
+                    href: '/admin/announcements',
                 },
                 {
                     id:'messages',
@@ -118,13 +116,9 @@ export default function UserProfile({params}:{params:Promise<{id:string}>}){
             label:'Logout',
         }
     ]
-
-    const {id} = useParams();
-
     return(
-        <SideMenu menuItems={menuItems} activeItem={''}>
-            <UserProfileForm userId={id?.toString()!}/>
+        <SideMenu menuItems={menuItems} activeItem={'announcements'}>
+            <AnnouncementListPage />
         </SideMenu>
     )
-
 }

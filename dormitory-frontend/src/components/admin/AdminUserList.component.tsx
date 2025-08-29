@@ -4,6 +4,7 @@ import {User} from "../../types/auth.types";
 import {useState} from "react";
 import MultipleSelectDropdown from "@/components/ui/MultipleSelectDropdown.component";
 import {useUserList} from "@/hooks/admin-hook-file";
+import Link from "next/link";
 
 export function AdminUserList(){
     const [sortBy, setSortBy] = useState<'Name'|'Id'|'Room'>('Name');
@@ -105,28 +106,17 @@ export function AdminUserList(){
             </div>
 
             {/*User table*/}
-            <div className="overflow-x-auto">
-                <tbody>
+            <div className="overflow-x-auto flex flex-col flex-nowrap bg-white">
                 {users.map((user, index) => (
-                    <tr key={user.id}>
-                        <td>
-                            {(page-1)*limit+index+1}
-                        </td>
-                        <td>
-                            {user.displayName}
-                        </td>
-                        <td>
-                            {'Id'+user.id}
-                        </td>
-                        <td>
-                            {(user?.roomId && user.roomId) || 'User is not a resident'}
-                        </td>
-                        <td>
-                            {'Payments'}
-                        </td>
-                    </tr>
+                    <div key={user.id}>
+                        <Link href={`/admin/users/${user.id}`}>
+                            <div className="border-black border-2 rounded bg-gray-300 p-1.5 mx-2 my-1">
+                                {user.displayName+" "+user.secondName+" "+user.email}
+                            </div>
+                        </Link>
+                    </div>
+
                 ))}
-                </tbody>
             </div>
 
             {/* Pagination */}

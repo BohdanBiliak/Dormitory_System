@@ -80,6 +80,28 @@ export const useUserList = () => {
     })
   }
 
+  const deactivateUserProfile=useMutation({
+    mutationFn: ({id}:{id: string}) =>userListApi.deactivateUser(id),
+    onSuccess: ()=> {
+      queryClient.invalidateQueries({ queryKey: ['user', 'profile'] })
+      toast.success('User deactivated successfully!')
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message||'Failed to deactivate user')
+    }
+  })
+
+  const activateUserProfile=useMutation({
+    mutationFn: ({id}:{id: string}) =>userListApi.activateUser(id),
+    onSuccess: ()=> {
+      queryClient.invalidateQueries({ queryKey: ['user', 'profile'] })
+      toast.success('User activated successfully!')
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || 'Failed to activate user')
+    }
+  })
+
   // const updateProfile=useMutation({
   //   mutationFn: (id: string)=>userListApi.updateUser(id)
   //   onSuccess:
@@ -91,5 +113,9 @@ export const useUserList = () => {
     error,
     getUserList,
     getUserProfile,
+    deactivateUser: deactivateUserProfile.mutate,
+    isDeactivating: deactivateUserProfile.isPending,
+    activateUser: activateUserProfile.mutate,
+    isActivating: activateUserProfile.isPending,
   }
 }
