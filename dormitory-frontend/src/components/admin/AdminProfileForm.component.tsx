@@ -76,14 +76,20 @@ export function AdminProfileForm() {
   const isLoading = isUpdatingProfile || isUploadingAvatar
 
   return (
-    <div className="max-w-6xl mx-auto bg-white border border-gray-300 rounded-lg flex-1">
+      <div className="flex flex-col w-5/6 my-auto mx-auto">
+        <div className="text-5xl my-2 font-semibold">
+          Admin profile
+        </div>
+      <div className="w-full mx-auto bg-white border border-gray-300 rounded-lg flex flex-col">
       {/* Header */}
+
+
       <div className="bg-gray-100 px-6 py-4 border-b border-gray-300">
         <h2 className="text-lg font-semibold text-gray-900">Your Profile</h2>
       </div>
 
       {/* Content */}
-      <div className="p-6">
+      <div className="w-full p-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Form Fields */}
           <div className="md:col-span-2 space-y-4">
@@ -214,5 +220,6 @@ export function AdminProfileForm() {
         </div>
       </div>
     </div>
+      </div>
   )
 }

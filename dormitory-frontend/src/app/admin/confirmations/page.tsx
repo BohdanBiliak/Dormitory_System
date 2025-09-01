@@ -16,26 +16,38 @@ export default function ConfirmationsPage() {
         {
             id: 'dormitories',
             image: '/workplace.svg',
-            label: 'Dormitories',
+            label: 'Dormitory management',
             subMenu: [
                 {
-                    id: '',
-                    label: 'All Dormitories',
-                    image: '',
-                    href: '/admin/dormitories',
+                    id: 'dormsInfo',
+                    label: 'Information',
+                    image: '/clipboard-text.svg',
+                    href: '/admin/dormitories'
                 },
                 {
-                    id: '',
-                    label: 'Add Dormitory',
-                    image: '',
-                    href: '/admin/dormitories/create',
+                    id: 'rooms',
+                    label: 'Available rooms',
+                    image: '/home.svg',
+                    href: '#',
                 },
                 {
-                    id:'',
-                    label: 'Manage Rooms',
-                    image:'',
-                    href: '/admin/rooms',
+                    id: 'users',
+                    label: 'User profiles',
+                    image: '/users.svg',
+                    href: '/admin/users',
                 },
+                {
+                    id:'confirmations',
+                    label: 'Confirmations',
+                    image:'/clipboard-check.svg',
+                    href: '#',
+                },
+                {
+                    id:'payments',
+                    label: 'Payments',
+                    image: '/cash.svg',
+                    href: '#'
+                }
             ]
         },
         {
@@ -44,85 +56,23 @@ export default function ConfirmationsPage() {
             label: 'Communication',
             subMenu: [
                 {
-                    id: '',
+                    id: 'announcements',
                     label: 'Announcements',
-                    image:'',
+                    image:'/comments.svg',
                     href: '/admin/announcements'
                 },
                 {
-                    id:'',
+                    id:'messages',
                     label: 'Messages',
-                    image:'',
-                    href: '/admin/messages'
-                },
-                {
-                    id:'',
-                    label: 'Confirmations',
-                    image:'',
-                    href: '/admin/confirmations'
-                },
-                {
-                    id:'',
-                    label: 'Notifications',
-                    image:'',
-                    href: '/admin/notifications'
+                    image:'/envelope.svg',
+                    href: '#'
                 }
             ]
         },
-        // {
-        //     id: 'users',
-        //     image: '/users.svg',
-        //     label: 'Users',
-        //     subMenu: [
-        //         {
-        //             id:'',
-        //             label: 'All Users',
-        //             image:'',
-        //             href: '/admin/users'
-        //         },
-        //         {
-        //             id: '',
-        //             label: 'Managers',
-        //             image:'',
-        //             href: '/admin/managers'
-        //         },
-        //         {
-        //             id:'',
-        //             label: 'Students', image:'',
-        //             href: '/admin/students'
-        //         }
-        //     ]
-        // },
-        // {
-        //     id: 'payments',
-        //     image: '/cash.svg',
-        //     label: 'Payments',
-        //     subMenu: [
-        //         {
-        //             id:'',
-        //             label: 'All Payments',
-        //             image:'',
-        //             href: '/admin/payments'
-        //         },
-        //         {
-        //             id:'',
-        //             label: 'Pending',
-        //             image: '',
-        //             href: '/admin/payments/pending'
-        //         },
-        //         {
-        //             id:'',
-        //             label: 'Overdue',
-        //             image:'',
-        //             href: '/admin/payments/overdue'
-        //         }
-        //     ]
-        // },
         {
-            id: 'logout',
-            label: 'Logout',
-            image: '',
-            href: '/admin/logout'
+            id:'logout',
+            image:'/sign-out.svg',
+            label:'Logout',
         }
     ]
     return (

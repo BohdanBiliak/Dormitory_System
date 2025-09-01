@@ -2,10 +2,9 @@
 
 import {MenuItem} from "@/types/ui.types";
 import {SideMenu} from "@/components/ui/SideMenu.component";
-import {AdminUserList} from "@/components/admin/AdminUserList.component";
+import {AdminNewAnnouncement} from "@/components/admin/AdminNewAnnouncement.component";
 
-export default function UserListPage() {
-
+export default  function AdminAnnouncementDetailsPage(){
     const menuItems:MenuItem[] = [
         {
             id: 'profile',
@@ -22,7 +21,7 @@ export default function UserListPage() {
                     id: 'dormsInfo',
                     label: 'Information',
                     image: '/clipboard-text.svg',
-                    href: '#'
+                    href: '/admin/dormitories'
                 },
                 {
                     id: 'rooms',
@@ -69,55 +68,6 @@ export default function UserListPage() {
                 }
             ]
         },
-        // {
-        //     id: 'users',
-        //     image: '/users.svg',
-        //     label: 'Users',
-        //     subMenu: [
-        //         {
-        //             id:'',
-        //             label: 'All Users',
-        //             image:'',
-        //             href: '/admin/users'
-        //         },
-        //         {
-        //             id: '',
-        //             label: 'Managers',
-        //             image:'',
-        //             href: '/admin/managers'
-        //         },
-        //         {
-        //             id:'',
-        //             label: 'Students', image:'',
-        //             href: '/admin/students'
-        //         }
-        //     ]
-        // },
-        // {
-        //     id: 'payments',
-        //     image: '/cash.svg',
-        //     label: 'Payments',
-        //     subMenu: [
-        //         {
-        //             id:'',
-        //             label: 'All Payments',
-        //             image:'',
-        //             href: '/admin/payments'
-        //         },
-        //         {
-        //             id:'',
-        //             label: 'Pending',
-        //             image: '',
-        //             href: '/admin/payments/pending'
-        //         },
-        //         {
-        //             id:'',
-        //             label: 'Overdue',
-        //             image:'',
-        //             href: '/admin/payments/overdue'
-        //         }
-        //     ]
-        // },
         {
             id:'logout',
             image:'/sign-out.svg',
@@ -126,8 +76,8 @@ export default function UserListPage() {
     ]
 
     return(
-        <SideMenu menuItems={menuItems} activeItem={'users'}>
-            <AdminUserList/>
+        <SideMenu menuItems={menuItems} activeItem={''}>
+            <AdminNewAnnouncement />
         </SideMenu>
     )
 }

@@ -2,6 +2,7 @@
 
 import {MenuItem} from "@/types/ui.types";
 import {SideMenu} from "@/components/ui/SideMenu.component";
+import {AdminAnnouncementList} from "@/components/admin/AdminAnnouncementsList.component";
 
 export default function AnnouncementListPage(){
     const menuItems:MenuItem[] = [
@@ -16,6 +17,12 @@ export default function AnnouncementListPage(){
             image: '/workplace.svg',
             label: 'Dormitory management',
             subMenu: [
+                {
+                    id: 'dormsInfo',
+                    label: 'Information',
+                    image: '/clipboard-text.svg',
+                    href: '/admin/dormitories'
+                },
                 {
                     id: 'rooms',
                     label: 'Available rooms',
@@ -51,7 +58,7 @@ export default function AnnouncementListPage(){
                     id: 'announcements',
                     label: 'Announcements',
                     image:'/comments.svg',
-                    href: '/admin/announcements',
+                    href: '/admin/announcements'
                 },
                 {
                     id:'messages',
@@ -61,55 +68,6 @@ export default function AnnouncementListPage(){
                 }
             ]
         },
-        // {
-        //     id: 'users',
-        //     image: '/users.svg',
-        //     label: 'Users',
-        //     subMenu: [
-        //         {
-        //             id:'',
-        //             label: 'All Users',
-        //             image:'',
-        //             href: '/admin/users'
-        //         },
-        //         {
-        //             id: '',
-        //             label: 'Managers',
-        //             image:'',
-        //             href: '/admin/managers'
-        //         },
-        //         {
-        //             id:'',
-        //             label: 'Students', image:'',
-        //             href: '/admin/students'
-        //         }
-        //     ]
-        // },
-        // {
-        //     id: 'payments',
-        //     image: '/cash.svg',
-        //     label: 'Payments',
-        //     subMenu: [
-        //         {
-        //             id:'',
-        //             label: 'All Payments',
-        //             image:'',
-        //             href: '/admin/payments'
-        //         },
-        //         {
-        //             id:'',
-        //             label: 'Pending',
-        //             image: '',
-        //             href: '/admin/payments/pending'
-        //         },
-        //         {
-        //             id:'',
-        //             label: 'Overdue',
-        //             image:'',
-        //             href: '/admin/payments/overdue'
-        //         }
-        //     ]
-        // },
         {
             id:'logout',
             image:'/sign-out.svg',
@@ -118,7 +76,7 @@ export default function AnnouncementListPage(){
     ]
     return(
         <SideMenu menuItems={menuItems} activeItem={'announcements'}>
-            <AnnouncementListPage />
+            <AdminAnnouncementList />
         </SideMenu>
     )
 }

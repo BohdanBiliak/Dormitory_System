@@ -19,6 +19,12 @@ export default function UserProfile({params}:{params:Promise<{id:string}>}){
             label: 'Dormitory management',
             subMenu: [
                 {
+                    id: 'dormsInfo',
+                    label: 'Information',
+                    image: '/clipboard-text.svg',
+                    href: '#'
+                },
+                {
                     id: 'rooms',
                     label: 'Available rooms',
                     image: '/home.svg',

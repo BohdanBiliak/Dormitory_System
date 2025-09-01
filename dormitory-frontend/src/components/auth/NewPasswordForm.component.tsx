@@ -82,7 +82,7 @@ export function NewPasswordForm() {
 
   if (isSuccess) {
     return (
-      <div className="w-full max-w-md mx-auto">
+      <div className="w-full max-w-md mx-auto my-auto">
         <div className="text-center">
           <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -112,7 +112,7 @@ export function NewPasswordForm() {
   }
 
   return (
-    <div className="w-full max-w-md mx-auto">
+    <div className="w-full max-w-md my-auto mx-auto">
       <div className="text-center mb-8">
         <h2 className="text-3xl font-bold text-gray-900">Create New Password</h2>
         <p className="text-gray-600 mt-2">

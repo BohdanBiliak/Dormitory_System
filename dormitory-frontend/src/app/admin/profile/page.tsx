@@ -20,6 +20,12 @@ export default function AdminProfilePage() {
             label: 'Dormitory management',
             subMenu: [
                 {
+                    id: 'dormsInfo',
+                    label: 'Information',
+                    image: '/clipboard-text.svg',
+                    href: '/admin/dormitories'
+                },
+                {
                     id: 'rooms',
                     label: 'Available rooms',
                     image: '/home.svg',
@@ -64,55 +70,6 @@ export default function AdminProfilePage() {
                 }
             ]
         },
-        // {
-        //     id: 'users',
-        //     image: '/users.svg',
-        //     label: 'Users',
-        //     subMenu: [
-        //         {
-        //             id:'',
-        //             label: 'All Users',
-        //             image:'',
-        //             href: '/admin/users'
-        //         },
-        //         {
-        //             id: '',
-        //             label: 'Managers',
-        //             image:'',
-        //             href: '/admin/managers'
-        //         },
-        //         {
-        //             id:'',
-        //             label: 'Students', image:'',
-        //             href: '/admin/students'
-        //         }
-        //     ]
-        // },
-        // {
-        //     id: 'payments',
-        //     image: '/cash.svg',
-        //     label: 'Payments',
-        //     subMenu: [
-        //         {
-        //             id:'',
-        //             label: 'All Payments',
-        //             image:'',
-        //             href: '/admin/payments'
-        //         },
-        //         {
-        //             id:'',
-        //             label: 'Pending',
-        //             image: '',
-        //             href: '/admin/payments/pending'
-        //         },
-        //         {
-        //             id:'',
-        //             label: 'Overdue',
-        //             image:'',
-        //             href: '/admin/payments/overdue'
-        //         }
-        //     ]
-        // },
         {
             id:'logout',
             image:'/sign-out.svg',
@@ -122,12 +79,7 @@ export default function AdminProfilePage() {
   return (
     //<ProtectedRoute requiredRole={['Admin', 'SuperAdmin']}>
       <SideMenu menuItems={menuItems} activeItem={'profile'}>
-        <div className="p-8">
-          <h1 className="text-4xl font-bold text-center mb-8 text-gray-900">
-            Admin Profile
-          </h1>
           <AdminProfileForm />
-        </div>
       </SideMenu>
     //</ProtectedRoute>
   )

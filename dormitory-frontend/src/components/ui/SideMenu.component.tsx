@@ -1,6 +1,5 @@
 'use client'
 
-import {AuthSidebar} from "@/components/auth/AuthSidebar.component";
 import {MenuItem} from "@/types/ui.types";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
@@ -118,7 +117,7 @@ export function SideMenu ({children, menuItems, activeItem}:SideMenuProps){
                 </div>
             </div>
             <div className="flex-1 p-12 flex flex-col justify-center">
-                <div className="mx-auto w-full">
+                <div className="mx-auto w-full h-full flex">
                     {children}
                 </div>
             </div>

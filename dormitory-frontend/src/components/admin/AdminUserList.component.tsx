@@ -50,7 +50,7 @@ export function AdminUserList(){
     const totalPages = userList?.pageCount || 1
 
     return (
-        <div className="mx-auto min-w-full bg-white border-2 border-blue-300 flex-1 align-top ">
+        <div className="mx-auto min-w-full bg-white border-2 border-blue-300 flex flex-col align-top ">
             {/*Header*/}
             <div className="w-full border-4 p-2 border-blue-800 drop-shadow">
                 <h1 className="text-center text-4xl font-extrabold">Profiles</h1>
@@ -106,7 +106,7 @@ export function AdminUserList(){
             </div>
 
             {/*User table*/}
-            <div className="overflow-x-auto flex flex-col flex-nowrap bg-white">
+            <div className="overflow-x-auto flex flex-col flex-nowrap grow bg-white">
                 {users.map((user, index) => (
                     <div key={user.id}>
                         <Link href={`/admin/users/${user.id}`}>
@@ -120,7 +120,7 @@ export function AdminUserList(){
             </div>
 
             {/* Pagination */}
-            <div className="px-6 py-4 border-t border-gray-200 flex justify-center">
+            <div className="px-6 py-4 border-t border-gray-200 flex grow-0 justify-center">
                 <div className="flex space-x-2">
                     {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
                         <button
