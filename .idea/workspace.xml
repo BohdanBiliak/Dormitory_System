@@ -5,34 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a2609a67-42b3-4399-bbcc-46f7339b9fb9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/dormitory-frontend/public/clipboard-text.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dormitory-frontend/public/paperclip.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dormitory-frontend/public/plus.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/admin/announcements/new-announcement/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/admin/dormitories/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/lib/dorms.api.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/AdminAnnouncement.component.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/AdminDormitories.component.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/AdminNewAnnouncement.component.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/hooks/dormitories.hook.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/admin/announcements/[id]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/admin/announcements/[id]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/admin/announcements/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/admin/announcements/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/admin/confirmations/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/admin/confirmations/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/admin/profile/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/admin/profile/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/admin/users/[id]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/admin/users/[id]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/admin/users/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/admin/users/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/AdminAnnouncementsList.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/AdminAnnouncementsList.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/AdminProfileForm.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/AdminProfileForm.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/AdminUserList.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/AdminUserList.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/auth/AuthSidebar.component.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/auth/EmailVerification.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/auth/EmailVerification.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/auth/LoginForm.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/auth/LoginForm.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/auth/NewPasswordForm.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/auth/NewPasswordForm.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/auth/PasswordReset.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/auth/PasswordReset.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/auth/RegisterForm.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/auth/RegisterForm.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/auth/ResetPassword.component.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/ui/SideMenu.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/ui/SideMenu.component.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -129,7 +102,9 @@
       <workItem from="1756621483858" duration="8551000" />
       <workItem from="1756687007280" duration="8649000" />
       <workItem from="1756725408005" duration="14336000" />
-      <workItem from="1756746705721" duration="4376000" />
+      <workItem from="1756746705721" duration="4587000" />
+      <workItem from="1756795336000" duration="1657000" />
+      <workItem from="1756819308673" duration="5255000" />
     </task>
     <servers />
   </component>
