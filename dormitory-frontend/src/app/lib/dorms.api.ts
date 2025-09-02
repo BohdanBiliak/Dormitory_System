@@ -12,10 +12,7 @@ export interface Dormitory {
 }
 
 export interface AllDormitoriesResponse {
-    "data":{
-        "active": Dormitory[];
-        //"deactivated"?: Dormitory[];
-    }
+    "data": Dormitory[];
 }
 
 export interface DormitoriesResponse {
@@ -74,7 +71,7 @@ export const dormitoryApi = {
     async getAllDormitories(): Promise<AllDormitoriesResponse>{
         const activeDormitories = await api.get('/dormitories');
         //const deactivatedDormitories = await api.get('/dormitories/deactivated');
-        return activeDormitories.data
+        return activeDormitories.data;
     },
 
 }

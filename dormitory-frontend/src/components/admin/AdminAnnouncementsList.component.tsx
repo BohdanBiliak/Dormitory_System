@@ -5,6 +5,7 @@ import {useAnnouncements} from "@/hooks/announcements.hook";
 import Link from "next/link";
 import {router} from "next/client";
 import {Announcement} from "@/types/announcements.types";
+import {announcementsApi} from "@/app/lib/announcements.api";
 
 
 
@@ -15,10 +16,12 @@ export function AdminAnnouncementList(){
     const [announcements, setAnnouncements] = useState<Announcement[]>([]);
     const limit = 10;
 
+    const {getAnnouncements} = useAnnouncements();
+
     const handleChangeShowExpired = (): void => {setShowExpired(!showExpired); updateAnnouncementList()};
     const handleChangeShowHidden = (): void => {setShowHidden(!showHidden); updateAnnouncementList()};
 
-    const {getAnnouncements} = useAnnouncements();
+
 
     const updateAnnouncementList = ()=>{
         const announcements = getAnnouncements({showHidden:showHidden, showExpired:showExpired,page:page,limit:limit});
@@ -33,6 +36,13 @@ export function AdminAnnouncementList(){
          page,
          limit
     })
+
+    // useEffect(() => {
+    //     const newAnnouncementsList = getAnnouncements({showHidden:showHidden, showExpired:showExpired,page:page,limit:limit})
+    //     if(newAnnouncementsList.data){
+    //         setAnnouncements(newAnnouncementsList.data.data);
+    //     }
+    // }, [showHidden, showExpired]);
 
     console.log("showExpired ", showExpired);
     console.log("showHidden:", showHidden);

@@ -13,8 +13,8 @@ export function AdminDormitoriesList(){
             if(!dormitories){
                 return;
             }else{
-                if(dormitories.data.active.length !== 0){
-                    return dormitories.data.active.at(0)
+                if(dormitories.data.length !== 0){
+                    return dormitories.data.at(0)
                 }else{
                     /*if(dormitories.deactivated.length !== 0){
                         return dormitories.deactivated.at(0)
@@ -24,7 +24,7 @@ export function AdminDormitoriesList(){
         }
     );
 
-    const activeDormitories = dormitories?.data.active;
+    const activeDormitories = dormitories?.data;
     console.log(typeof dormitories?.data);
     console.log(dormitories?.data);
 
@@ -32,8 +32,8 @@ export function AdminDormitoriesList(){
         if(!dormitories){
             setChosenDormitory(undefined)
         }
-        if(dormitories?.data.active.length !==0){
-            setChosenDormitory(dormitories?.data.active.at(0))
+        if(dormitories?.data.length !==0){
+            setChosenDormitory(dormitories?.data.at(0))
         }else{
             /*if(dormitories.deactivated.length !==0){
                 setChosenDormitory(dormitories?.deactivated.at(0))
