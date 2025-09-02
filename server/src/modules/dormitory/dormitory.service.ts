@@ -115,7 +115,7 @@ export class DormitoryService {
     }
     return this.prismaService.dormitory.update({
       where: { id },
-      data: { status: 'NotActive' },
+      data: { status: 'Deactivated' },
     });
   }
 }
