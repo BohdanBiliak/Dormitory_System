@@ -61,45 +61,40 @@ export class DormitoryService {
     });
   }
 
-  async findAll(page = 1, limit = 10) {
-    const [data, total] = await this.prismaService.$transaction([
-      this.prismaService.dormitory.findMany({
-        where: { status: 'Active' },
-        orderBy: { name: "asc" },
-        skip: (page - 1) * limit,
-        take: limit,
-      }),
-      this.prismaService.dormitory.count({
-        where: { status: 'Active' },
-      }),
-    ]);
-    return {
-      data,
-      total,
-      page,
-      last_page: Math.ceil(total / limit),
-    };
-  }
+  async findAll() {
+  const [data, total] = await this.prismaService.$transaction([
+    this.prismaService.dormitory.findMany({
+      where: { status: 'Active' },
+      orderBy: { name: "asc" },
+    }),
+    this.prismaService.dormitory.count({
+      where: { status: 'Active' },
+    }),
+  ]);
 
-  async findDeactivated(page = 1, limit = 10) {
-    const [data, total] = await this.prismaService.$transaction([
-      this.prismaService.dormitory.findMany({
-        where: { status: 'NotActive' },
-        orderBy: { name: "asc" },
-        skip: (page - 1) * limit,
-        take: limit,
-      }),
-      this.prismaService.dormitory.count({
-        where: { status: 'NotActive' },
-      }),
-    ]);
-    return {
-      data,
-      total,
-      page,
-      last_page: Math.ceil(total / limit),
-    };
-  }
+  return {
+    data,
+    total,
+  };
+}
+
+  async findDeactivated() {
+  const [data, total] = await this.prismaService.$transaction([
+    this.prismaService.dormitory.findMany({
+      where: { status: 'Deactivated' },
+      orderBy: { name: "asc" },
+    }),
+    this.prismaService.dormitory.count({
+      where: { status: 'Deactivated' },
+    }),
+  ]);
+
+  return {
+    data,
+    total,
+  };
+}
+
 
   findOne(id: string) {
     return this.prismaService.dormitory.findUniqueOrThrow({ where: { id } });

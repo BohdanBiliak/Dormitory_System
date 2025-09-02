@@ -91,19 +91,11 @@ export class DormitoryController {
             createdAt: "2024-07-16T10:00:00.000Z",
           }
         ],
-        total: 1,
-        page: 1,
-        last_page: 1
       }
     }
   })
-  @ApiParam({ name: "page", required: false, description: "Page number", example: 1 })
-  @ApiParam({ name: "limit", required: false, description: "Items per page", example: 10 })
-  findAll(
-    @Query('page') page: number = 1,
-    @Query('limit') limit: number = 10,
-  ) {
-    return this.dormitoryService.findAll(Number(page), Number(limit));
+  findAll() {
+    return this.dormitoryService.findAll();
   }
 
   @Get(":id")
@@ -179,19 +171,12 @@ export class DormitoryController {
             createdAt: "2024-07-20T10:00:00.000Z",
             deactivatedAt: "2024-08-01T12:00:00.000Z"
           }
-        ],
-        total: 1,
-        page: 1,
-        last_page: 1
+        ]
       }
     }
   })
-  @ApiParam({ name: "page", required: false, description: "Page number", example: 1 })
-  @ApiParam({ name: "limit", required: false, description: "Items per page", example: 10 })
   findDeactivated(
-    @Query('page') page: number = 1,
-    @Query('limit') limit: number = 10,
   ) {
-    return this.dormitoryService.findDeactivated(Number(page), Number(limit));
+    return this.dormitoryService.findDeactivated();
   }
 }
