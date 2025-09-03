@@ -1,0 +1,140 @@
+import { Injectable, NotFoundException } from "@nestjs/common";
+
+import { PrismaService } from "@/prisma/prisma.service";
+import { $Enums } from "../../../../__generated__";
+import AuthMethod = $Enums.AuthMethod;
+import { hash } from "argon2";
+import {UpdateUserDto} from "@/modules/user/dto/update-user.dto";
+
+@Injectable()
+export class UserService {
+  public constructor(private readonly prismaService: PrismaService) {}
+
+  public async findById(id: string) {
+    console.log('Looking up user by ID:', id);
+
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        id,
+      },
+    });
+    if (!user) {
+      throw new NotFoundException("User not found");
+    }
+    console.log('User found:', user);
+    return user;
+  }
+
+  public async findByEmail(email: string) {
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        email,
+      },
+    });
+    return user;
+  }
+
+  public async create(
+      email: string,
+      password: string,
+      displayName: string,
+      secondName: string,
+      method: AuthMethod,
+      isVerified: boolean,
+      avatarUrl: string,
+      frontUrl: string,
+      backUrl: string
+  ) {
+    const user = await this.prismaService.user.create({
+      data: {
+        email,
+        password: await hash(password),
+        displayName,
+        secondName,
+        picture: avatarUrl,
+        studentIdFront: frontUrl,
+        studentIdBack: backUrl,
+        method,
+        isVerified,
+      },
+    });
+    return user;
+  }
+
+  public async update(userId: string, dto: UpdateUserDto) {
+    const user = await this.findById(userId)
+
+    const updatedUser = await this.prismaService.user.update({
+      where: {
+        id: user.id
+      },
+      data: {
+        email: dto.email,
+        displayName: dto.displayName,
+        isTwoFactorEnabled: dto.isTwoFactorEnabled
+      }
+    })
+
+    return updatedUser
+  }
+
+  async findAll(filters: any = {}, page: number = 1, limit: number = 12) {
+    const skip = (page - 1) * limit;
+    const [data, total] = await this.prismaService.$transaction([
+      this.prismaService.user.findMany({
+        where:{ ...filters },
+        orderBy: { displayName: 'asc' },
+        skip,
+        take: limit
+      }),
+      this.prismaService.user.count({ where: { ...filters } })
+    ])
+    return {
+      data,
+      total,
+      page,
+      last_page: Math.ceil(total / limit)
+    }
+  }
+
+  async deactivateUser(id: string, deactivateBy: string){
+    const user = await this.findById(id);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    if (!user.isActive) {
+      throw new NotFoundException('User is already deactivated');
+    }
+
+    const deactivatedUser = await this.prismaService.user.update({
+      where: { id },
+      data: { isActive: false }
+    });
+
+    return {
+      ...deactivatedUser,
+      deactivateBy
+    };
+  } 
+
+  async activateUser(id: string, activateBy: string){
+    const user = await this.findById(id);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    if (user.isActive) {
+      throw new NotFoundException('User is already active');
+    }
+
+    const activatedUser = await this.prismaService.user.update({
+      where: { id },
+      data: { isActive: true }
+    });
+
+    return {
+      ...activatedUser,
+      activateBy
+    };
+  }
+
+}
