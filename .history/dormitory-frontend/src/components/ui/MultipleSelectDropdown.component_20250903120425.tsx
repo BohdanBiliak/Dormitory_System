@@ -1,4 +1,4 @@
-
+Users\Detrox\WebstormProjects\Dormitory\dormitory-frontend\src\components\ui\MultipleSelectDropdown.component.tsx
 'use client'
 
 import { useState, useRef, useEffect } from "react";
