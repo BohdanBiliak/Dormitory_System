@@ -77,7 +77,7 @@ export function AdminProfileForm() {
         {/* Header Section */}
         <div className="mb-8">
           <div className="flex items-center space-x-3 mb-2">
-            <div className="p-2 bg-blue-800 rounded-lg">
+            <div className="p-2 bg-blue-600 rounded-lg">
               <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
@@ -96,7 +96,7 @@ export function AdminProfileForm() {
         {/* Main Content Card */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
           {/* Card Header */}
-          <div className="bg-gradient-to-r from-blue-800 to-blue-700 px-6 py-4 md:px-8 md:py-6">
+          <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4 md:px-8 md:py-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center space-x-3">
                 <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
@@ -141,7 +141,7 @@ export function AdminProfileForm() {
                             className="w-full h-full object-cover"
                           />
                         ) : (
-                          <svg className="w-12 h-12 md:w-16 md:h-16 text-blue-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-12 h-12 md:w-16 md:h-16 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                           </svg>
                         )}
@@ -200,7 +200,7 @@ export function AdminProfileForm() {
                     <div className="space-y-2">
                       <label className="block text-sm font-medium text-gray-700">
                         Display Name
-                        {isEditing && <span className="text-blue-800 ml-1">*</span>}
+                        {isEditing && <span className="text-blue-600 ml-1">*</span>}
                       </label>
                       <div className="relative">
                         <input
@@ -214,7 +214,7 @@ export function AdminProfileForm() {
                         />
                         {isEditing && (
                           <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                            <svg className="w-4 h-4 text-blue-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                             </svg>
                           </div>
@@ -225,7 +225,7 @@ export function AdminProfileForm() {
                     <div className="space-y-2">
                       <label className="block text-sm font-medium text-gray-700">
                         Last Name
-                        {isEditing && <span className="text-blue-800 ml-1">*</span>}
+                        {isEditing && <span className="text-blue-600 ml-1">*</span>}
                       </label>
                       <div className="relative">
                         <input
@@ -239,7 +239,7 @@ export function AdminProfileForm() {
                         />
                         {isEditing && (
                           <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                            <svg className="w-4 h-4 text-blue-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                             </svg>
                           </div>
@@ -251,7 +251,7 @@ export function AdminProfileForm() {
                   <div className="space-y-2">
                     <label className="block text-sm font-medium text-gray-700">
                       Email Address
-                      {isEditing && <span className="text-blue-800 ml-1">*</span>}
+                      {isEditing && <span className="text-blue-600 ml-1">*</span>}
                     </label>
                     <div className="relative">
                       <input
@@ -270,7 +270,7 @@ export function AdminProfileForm() {
                       </div>
                       {isEditing && (
                         <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                          <svg className="w-4 h-4 text-blue-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                           </svg>
                         </div>
@@ -292,7 +292,7 @@ export function AdminProfileForm() {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-3">
                         <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                          <svg className="w-5 h-5 text-blue-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                           </svg>
                         </div>
@@ -324,7 +324,7 @@ export function AdminProfileForm() {
                   <button
                     onClick={handleSave}
                     disabled={isLoading}
-                    className="w-full sm:w-auto px-6 py-3 bg-blue-800 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+                    className="w-full sm:w-auto px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
                   >
                     {isLoading && (
                       <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
@@ -335,7 +335,7 @@ export function AdminProfileForm() {
               ) : (
                 <button
                   onClick={() => setIsEditing(true)}
-                  className="w-full sm:w-auto px-6 py-3 bg-blue-800 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors flex items-center justify-center space-x-2"
+                  className="w-full sm:w-auto px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors flex items-center justify-center space-x-2"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />

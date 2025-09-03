@@ -1,4 +1,4 @@
-
+trox\WebstormProjects\Dormitory\dormitory-frontend\src\components\admin\AdminDormitoriesList.component.tsx
 'use client'
 
 import {useDormitories} from "@/hooks/dormitories.hook";
