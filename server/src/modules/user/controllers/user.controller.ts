@@ -220,16 +220,33 @@ export class UserController {
   @Get()
   @Authorization(UserRole.Admin, UserRole.SuperAdmin)
   async findAll(
-    @Query('email') email?: string,
-    @Query('displayName') displayName?: string,
-    @Query('page') page: number = 1,
-    @Query('limit') limit: number = 10,
+   @Query('email') email?: string,
+  @Query('displayName') displayName?: string,
+  @Query('secondName') secondName?: string,
+  @Query('role') role?: string,
+  @Query('method') method?: string,
+  @Query('isVerified') isVerified?: string,
+  @Query('isTwoFactorEnabled') isTwoFactorEnabled?: string,
+  @Query('isActive') isActive?: string,
+  @Query('dormitoryId') dormitoryId?: string,
+  @Query('roomId') roomId?: string,
+  @Query('page') page: number = 1,
+  @Query('limit') limit: number = 10,
   ) {
-    const filters: any = {};
-    if (email) filters.email = { contains: email, mode: 'insensitive' };
-    if (displayName) filters.displayName = { contains: displayName, mode: 'insensitive' };
+      const queryParams = {
+    email,
+    displayName,
+    secondName,
+    role,
+    method,
+    isVerified,
+    isTwoFactorEnabled,
+    isActive,
+    dormitoryId,
+    roomId
+  };
 
-    return this.userService.findAll(filters, Number(page), Number(limit));
+    return this.userService.findAll(queryParams, Number(page), Number(limit));
   }
 
   @Delete(':id/deactivate')

@@ -79,24 +79,67 @@ export class UserService {
     return updatedUser
   }
 
-  async findAll(filters: any = {}, page: number = 1, limit: number = 12) {
-    const skip = (page - 1) * limit;
-    const [data, total] = await this.prismaService.$transaction([
-      this.prismaService.user.findMany({
-        where:{ ...filters },
-        orderBy: { displayName: 'asc' },
-        skip,
-        take: limit
-      }),
-      this.prismaService.user.count({ where: { ...filters } })
-    ])
-    return {
-      data,
-      total,
-      page,
-      last_page: Math.ceil(total / limit)
-    }
+  async findAll(queryParams: any = {}, page: number = 1, limit: number = 12) {
+  const skip = (page - 1) * limit;
+  
+  // Build filters object
+  const filters: any = {};
+  
+  // String filters with case-insensitive search
+  if (queryParams.email) {
+    filters.email = { contains: queryParams.email, mode: 'insensitive' };
   }
+  if (queryParams.displayName) {
+    filters.displayName = { contains: queryParams.displayName, mode: 'insensitive' };
+  }
+  if (queryParams.secondName) {
+    filters.secondName = { contains: queryParams.secondName, mode: 'insensitive' };
+  }
+  
+  // Enum filters
+  if (queryParams.role) {
+    filters.role = queryParams.role;
+  }
+  if (queryParams.method) {
+    filters.method = queryParams.method;
+  }
+  
+  // Boolean filters
+  if (queryParams.isVerified !== undefined) {
+    filters.isVerified = queryParams.isVerified === 'true';
+  }
+  if (queryParams.isTwoFactorEnabled !== undefined) {
+    filters.isTwoFactorEnabled = queryParams.isTwoFactorEnabled === 'true';
+  }
+  if (queryParams.isActive !== undefined) {
+    filters.isActive = queryParams.isActive === 'true';
+  }
+  
+  // UUID filters
+  if (queryParams.dormitoryId) {
+    filters.dormitoryId = queryParams.dormitoryId;
+  }
+  if (queryParams.roomId) {
+    filters.roomId = queryParams.roomId;
+  }
+
+  const [data, total] = await this.prismaService.$transaction([
+    this.prismaService.user.findMany({
+      where: filters,
+      orderBy: { displayName: 'asc' },
+      skip,
+      take: limit
+    }),
+    this.prismaService.user.count({ where: filters })
+  ]);
+
+  return {
+    data,
+    total,
+    page,
+    last_page: Math.ceil(total / limit)
+  };
+}
 
   async deactivateUser(id: string, deactivateBy: string){
     const user = await this.findById(id);
