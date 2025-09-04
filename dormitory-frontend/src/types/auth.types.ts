@@ -16,7 +16,6 @@ export interface RegisterRequest {
 }
 
 export interface AuthResponse {
-  user?: User
   newUser?: User
   message?: string
   token?: string
