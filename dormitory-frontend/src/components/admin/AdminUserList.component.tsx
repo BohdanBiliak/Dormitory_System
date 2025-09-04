@@ -1,31 +1,48 @@
 'use client'
 
 import {User} from "../../types/auth.types";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import MultipleSelectDropdown from "@/components/ui/MultipleSelectDropdown.component";
-import {useUserList} from "@/hooks/admin-hook-file";
 import Link from "next/link";
+import {useQuery} from "@tanstack/react-query";
+import {userListApi} from "@/app/lib/userList.api";
+import {UserListRequest} from "@/types/users.types";
+import {useUserListQuery} from "@/hooks/userList.queries";
+
 
 export function AdminUserList(){
+
+    const roomFloors = ["1","2","3","4","5","6","7","8","9"];
+
+
+    const [error, setError] = useState<Error|null>();
+    const [loading, setLoading] = useState(true);
+    const [users, setUsers] = useState<User[]>([]);
     const [sortBy, setSortBy] = useState<'Name'|'Id'|'Room'>('Name');
     const [roleFilter, setRoleFilter] = useState<'All'|'Regular'|'SignedInUser'>('All');
-    const [selectedRoomFloors, setSelectedRoomFloors] = useState(['']);
+    const [selectedRoomFloors, setSelectedRoomFloors] = useState<string[]>(roomFloors);
     const [selectedPaymentsStatuses, setSelectedPaymentsStatuses] = useState<'Paid'|'Awaiting'|'All'|'Overdue'>('All');
-    const roomFloors = ["1","2","3","4","5","6","7","8","9"];
-    const paymentsStatuses = ["Paid","Awaiting","Overdue"];
+    const [pagesCount, setPagesCount] = useState(1);
     const [page, setPage] = useState(1);
     const limit = 10;
 
-    const {getUserList} = useUserList();
 
-    const {data: userList, isLoading, error} = getUserList({
+    const { data: userList, isLoading } = useUserListQuery({
+        page,
+        limit,
         role: roleFilter,
         paymentStatus: selectedPaymentsStatuses,
-        page:page,
-        limit:limit
-    });
+        roomFlor: selectedRoomFloors,
+        sortBy
+    })
 
-    if (isLoading) {
+    useEffect(() => {
+        setUsers(userList?.data || []);
+        setPagesCount(userList?.pageCount || 1);
+        setLoading(isLoading)
+    }, [userList]);
+
+    if (loading) {
         return (
             <div className="min-h-screen w-full flex items-center justify-center bg-gray-50">
                 <div className="bg-white shadow-lg rounded-lg p-8 max-w-md mx-4">
@@ -54,9 +71,6 @@ export function AdminUserList(){
             </div>
         )
     }
-
-    const users = userList?.data || []
-    const totalPages = userList?.pageCount || 1
 
     return (
         <div className="min-h-screen w-full bg-gray-50">
@@ -107,7 +121,7 @@ export function AdminUserList(){
                             >
                                 <option value='All'>All Users</option>
                                 <option value='SignedInUser'>Non-residents</option>
-                                <option value='Regular'>Residents</option>
+                                <option value='Regular'>Regular</option>
                             </select>
                         </div>
 
@@ -209,12 +223,12 @@ export function AdminUserList(){
             </div>
 
             {/* Pagination */}
-            {totalPages > 1 && (
+            {pagesCount > 1 && (
                 <div className="bg-white border-t border-gray-200">
                     <div className="px-4 py-4 md:px-6">
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                             <div className="text-sm text-gray-700 mb-4 sm:mb-0">
-                                Page {page} of {totalPages}
+                                Page {page} of {pagesCount}
                             </div>
                             <div className="flex flex-wrap justify-center sm:justify-end gap-1">
                                 <button
@@ -225,14 +239,14 @@ export function AdminUserList(){
                                     Previous
                                 </button>
                                 
-                                {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
+                                {Array.from({ length: Math.min(pagesCount, 5) }, (_, i) => {
                                     let pageNum;
-                                    if (totalPages <= 5) {
+                                    if (pagesCount <= 5) {
                                         pageNum = i + 1;
                                     } else if (page <= 3) {
                                         pageNum = i + 1;
-                                    } else if (page >= totalPages - 2) {
-                                        pageNum = totalPages - 4 + i;
+                                    } else if (page >= pagesCount - 2) {
+                                        pageNum = pagesCount - 4 + i;
                                     } else {
                                         pageNum = page - 2 + i;
                                     }
@@ -253,8 +267,8 @@ export function AdminUserList(){
                                 })}
                                 
                                 <button
-                                    onClick={() => setPage(Math.min(totalPages, page + 1))}
-                                    disabled={page === totalPages}
+                                    onClick={() => setPage(Math.min(pagesCount, page + 1))}
+                                    disabled={page === pagesCount}
                                     className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                                 >
                                     Next

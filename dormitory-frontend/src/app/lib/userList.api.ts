@@ -1,5 +1,6 @@
 import { api } from './api.api'
 import { User } from "@/types/auth.types";
+import {UserListRequest} from "@/types/users.types";
 
 export interface UserListResponse {
     data?: User[]
@@ -12,13 +13,7 @@ export interface UserListResponse {
 
 export const userListApi = {
     //Get all users
-    async getUsers(filters?:{
-        role?: 'All'|'Regular'|'SignedInUser',
-        paymentStatus?: 'All'|'Paid' | 'Awaiting' |'Overdue',
-        roomFlor?: string[],
-        page?: number,
-        limit?: number,
-    }):Promise<UserListResponse>{
+    async getUsers(filters?:UserListRequest):Promise<UserListResponse>{
         const params = new URLSearchParams()
 
         if (filters?.role && filters.role !== 'All') {
@@ -42,6 +37,7 @@ export const userListApi = {
         }
 
         const response = await api.get(`/users?${params}`)
+        console.log("query link: ", `/users?${params}`)
         return response.data
     },
 

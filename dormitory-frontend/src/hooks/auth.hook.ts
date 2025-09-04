@@ -28,12 +28,13 @@ export const useAuth = () => {
   const loginMutation = useMutation({
     mutationFn: (data: LoginRequest) => authApi.login(data),
     onSuccess: (response) => {
-      const { newUser } = response
-      if(!newUser) {
+
+      console.log("Loggining user",response.newUser)
+      if(!response.newUser) {
         throw Error('Bad credentials')
       }
-
-      setUser(newUser)
+      const user = response.newUser
+      setUser(user)
 
       toast.success('Login successful!')
       queryClient.invalidateQueries({ queryKey: ['auth', 'currentUser'] })

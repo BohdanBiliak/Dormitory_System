@@ -5,11 +5,7 @@ import {userListApi} from "@/app/lib/userList.api";
 
 
 
-
-export const useAdminProfile = () => {
-
-  const queryClient = useQueryClient()
-
+export const useAdminProfile =()=>{
   const updateProfile = useMutation({
     mutationFn: (data: UpdateProfileRequest) => adminApi.updateProfile(data),
     onSuccess: (updatedUser) => {
@@ -44,78 +40,5 @@ export const useAdminProfile = () => {
     uploadAvatar: uploadAvatar.mutate,
     isUpdatingProfile: updateProfile.isPending,
     isUploadingAvatar: uploadAvatar.isPending,
-  }
-}
-
-export const useUserList = () => {
-  const queryClient = useQueryClient()
-
-  const {data: users, isLoading, error } = useQuery({
-    queryKey: ['users'],
-    queryFn: () => userListApi.getUsers(),
-    staleTime: 30 * 1000,
-  })
-
-  const getUserList=(filters:{
-    role?: 'Regular'|'All'|'SignedInUser',
-    paymentStatus?: 'Paid' | 'Awaiting' |'Overdue'|'All',
-    roomFlor?: string[],
-    sortBy?: 'Name'|'Id'|'Room',
-    page: number,
-    limit: number,
-  }) => {
-    return useQuery({
-    queryKey:['profiles', 'filtered', filters],
-    queryFn: () => userListApi.getUsers(filters),
-    enabled: !!filters,
-    staleTime: 30 * 1000,
-  })}
-
-  const getUserProfile=(id:string)=>{
-    return useQuery({
-      queryKey:['user','profile', 'id', id],
-      queryFn: ()=>userListApi.getUserData(id),
-      enabled: !!id,
-      staleTime: 30 * 1000,
-    })
-  }
-
-  const deactivateUserProfile=useMutation({
-    mutationFn: ({id}:{id: string}) =>userListApi.deactivateUser(id),
-    onSuccess: ()=> {
-      queryClient.invalidateQueries({ queryKey: ['user', 'profile'] })
-      toast.success('User deactivated successfully!')
-    },
-    onError: (error: any) => {
-      toast.error(error.response?.data?.message||'Failed to deactivate user')
-    }
-  })
-
-  const activateUserProfile=useMutation({
-    mutationFn: ({id}:{id: string}) =>userListApi.activateUser(id),
-    onSuccess: ()=> {
-      queryClient.invalidateQueries({ queryKey: ['user', 'profile'] })
-      toast.success('User activated successfully!')
-    },
-    onError: (error: any) => {
-      toast.error(error.response?.data?.message || 'Failed to activate user')
-    }
-  })
-
-  // const updateProfile=useMutation({
-  //   mutationFn: (id: string)=>userListApi.updateUser(id)
-  //   onSuccess:
-  // })
-
-  return {
-    users,
-    isLoading,
-    error,
-    getUserList,
-    getUserProfile,
-    deactivateUser: deactivateUserProfile.mutate,
-    isDeactivating: deactivateUserProfile.isPending,
-    activateUser: activateUserProfile.mutate,
-    isActivating: activateUserProfile.isPending,
   }
 }
