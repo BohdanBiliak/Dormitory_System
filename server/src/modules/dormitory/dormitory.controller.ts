@@ -97,6 +97,33 @@ export class DormitoryController {
   findAll() {
     return this.dormitoryService.findAll();
   }
+    @Get("deactivated")
+  @Authorization(UserRole.Admin, UserRole.SuperAdmin)
+  @ApiOperation({ summary: "List all deactivated dormitories" })
+  @ApiResponse({
+    status: 200,
+    description: "Returns paginated list of deactivated dormitories.",
+    schema: {
+      example: {
+        data: [
+          {
+            id: "uuid",
+            name: "Dorm 2",
+            address: "456 Side St",
+            groundFloorPhoneNumber: "+380987654321",
+            photos: ["https://s3.example.com/photo2.jpg"],
+            status: "Deactivated",
+            createdAt: "2024-07-20T10:00:00.000Z",
+            deactivatedAt: "2024-08-01T12:00:00.000Z"
+          }
+        ]
+      }
+    }
+  })
+  findDeactivated(
+  ) {
+    return this.dormitoryService.findDeactivated();
+  }
 
   @Get(":id")
   @Authorization()
@@ -152,31 +179,4 @@ export class DormitoryController {
     return this.dormitoryService.deactivate(id);
   }
 
-  @Get("deactivated")
-  @Authorization(UserRole.Admin, UserRole.SuperAdmin)
-  @ApiOperation({ summary: "List all deactivated dormitories" })
-  @ApiResponse({
-    status: 200,
-    description: "Returns paginated list of deactivated dormitories.",
-    schema: {
-      example: {
-        data: [
-          {
-            id: "uuid",
-            name: "Dorm 2",
-            address: "456 Side St",
-            groundFloorPhoneNumber: "+380987654321",
-            photos: ["https://s3.example.com/photo2.jpg"],
-            status: "Deactivated",
-            createdAt: "2024-07-20T10:00:00.000Z",
-            deactivatedAt: "2024-08-01T12:00:00.000Z"
-          }
-        ]
-      }
-    }
-  })
-  findDeactivated(
-  ) {
-    return this.dormitoryService.findDeactivated();
-  }
 }

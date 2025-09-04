@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { PrismaService } from "@/prisma/prisma.service";
 import { CreateDormitoryDto } from "@/modules/dormitory/dto/create-dormitory.dto";
 import { UpdateDormitoryDto } from "@/modules/dormitory/dto/update-dormitory.dto";
@@ -71,6 +71,9 @@ export class DormitoryService {
       where: { status: 'Active' },
     }),
   ]);
+  if (total === 0) {
+    throw new BadRequestException('No active dormitories found.');
+  }
 
   return {
     data,
@@ -88,6 +91,9 @@ export class DormitoryService {
       where: { status: 'Deactivated' },
     }),
   ]);
+  if (total === 0) {
+    throw new BadRequestException('No deactivated dormitories found.');
+  }
 
   return {
     data,
@@ -96,11 +102,25 @@ export class DormitoryService {
 }
 
 
-  findOne(id: string) {
-    return this.prismaService.dormitory.findUniqueOrThrow({ where: { id } });
+  async findOne(id: string) {
+  const dormitory = await this.prismaService.dormitory.findUnique({ 
+    where: { id },
+    include: {
+      rooms: true,
+    }
+  });
+
+  
+  if (!dormitory) {
+    throw new NotFoundException(`Dormitory with ID ${id} not found`);
   }
+  
+  
+  return dormitory;
+}
 
   async update(id: string, dto: UpdateDormitoryDto) {
+
     return this.prismaService.dormitory.update({ where: { id }, data: dto });
   }
 

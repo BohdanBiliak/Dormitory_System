@@ -196,7 +196,14 @@ model User {
   payments              Payment[]           @relation("UserPayments")
   confirmedPayments     Payment[]           @relation("ManagerConfirmedPayments")
   paymentAuditLogs      PaymentAuditLog[]
-
+  
+  @@index([email]) // Unique constraint already creates index, but explicit for clarity
+  @@index([role, isActive]) // Filter active users by role
+  @@index([dormitoryId, isActive]) // Find active residents of a dormitory
+  @@index([roomId]) // Find roommates
+  @@index([isVerified, role]) // Auth queries
+  @@index([createdAt]) // Chronological queries
+  @@index([method, isVerified]) // Auth method filtering
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
@@ -214,6 +221,8 @@ model DormitoryAdmin {
   dormitory   Dormitory @relation(fields: [dormitoryId], references: [id], onDelete: Cascade)
 
   @@unique([userId, dormitoryId])
+  @@index([role, createdAt]) // Admin role analysis
+  @@index([dormitoryId, role]) // Dormitory admin hierarchy
   @@map("dormitory_admins")
 }
 
@@ -229,7 +238,10 @@ model Confirmation {
   resolvedAt DateTime?          @map("resolved_at")
 
   requester User @relation("UserConfirmations", fields: [userId], references: [id], onDelete: Cascade)
-
+  @@index([status, createdAt]) // Pending confirmations queue
+  @@index([type, status]) // Confirmation type filtering
+  @@index([userId, type, status]) // User confirmation history
+  @@index([resolvedAt]) // Resolved confirmations timeline
   @@map("confirmations")
 }
 
@@ -239,7 +251,9 @@ model Token {
   token     String    @unique
   type      TokenType
   expiresIn DateTime  @map("expires_in")
-
+  @@index([email, type]) // Token lookup by email and type
+  @@index([expiresIn]) // Cleanup expired tokens
+  @@index([type, expiresIn]) // Active tokens by type
   @@map("tokens")
 }
 
@@ -256,6 +270,10 @@ model AuditLog {
 
   @@index([userId])
   @@index([entity, entityId])
+  @@index([createdAt]) // Chronological audit trail
+  @@index([action, entity]) // Audit queries by action type
+  @@index([userId, createdAt]) // User activity timeline
+  @@index([entity, entityId, createdAt]) // Entity change history
   @@map("audit_logs")
 }
 
@@ -276,7 +294,11 @@ model Dormitory {
   admins    DormitoryAdmin[]
   residents User[]           @relation("DormitoryResidents")
   rooms     Room[]
-
+  
+  @@index([status, name]) // List active/inactive dormitories alphabetically
+  @@index([managerId]) // Find dormitories by manager
+  @@index([createdAt]) // Chronological ordering
+  @@index([status, createdAt]) // Status with time-based filtering
   @@map("dormitories")
 }
 
@@ -297,7 +319,11 @@ model Room {
   notifications          Notification[]
   bookings               Booking[]
   prices                 Price[]
-
+  @@index([dormitoryId, floor]) // Rooms by dormitory and floor
+  @@index([dormitoryId, capacity]) // Rooms by dormitory and capacity
+  @@index([number, dormitoryId]) // Unique room identification
+  @@index([floor, capacity]) // Cross-dormitory room search
+  @@index([createdAt]) // Chronological queries
   @@index([dormitoryId])
   @@map("rooms")
 }
@@ -312,6 +338,9 @@ model RoomStatus {
   room Room @relation(fields: [roomId], references: [id], onDelete: Cascade)
 
   @@index([roomId])
+  @@index([dateOfStart, dateOfEnd]) // Status date ranges
+  @@index([roomId, dateOfStart]) // Room status history
+  @@index([dateOfEnd]) // Active statuses (NULL dateOfEnd)
   @@map("room_statuses")
 }
 
@@ -329,6 +358,10 @@ model Price {
 
   @@index([roomId])
   @@index([dateFrom, dateTo])
+  @@index([roomCapacity, dateFrom, dateTo]) // Price lookups by capacity and date range
+  @@index([pricePerMonth, roomCapacity]) // Price comparison queries
+  @@index([dateTo]) // Find expired prices
+  @@index([roomId, dateFrom]) // Room-specific price history
   @@map("prices")
 }
 
@@ -357,6 +390,12 @@ model Booking {
   @@index([userId])
   @@index([roomId])
   @@index([status])
+  @@index([checkInDate, checkOutDate]) // Date range queries
+  @@index([status, checkInDate]) // Active bookings by date
+  @@index([userId, status, checkInDate]) // User's booking history
+  @@index([roomId, checkInDate, checkOutDate]) // Room availability checks
+  @@index([totalAmount]) // Financial reporting
+  @@index([createdAt, status]) // Recent bookings by status
   @@map("bookings")
 }
 
@@ -410,6 +449,15 @@ model Payment {
   @@index([dueDate])
   @@index([paymentType])
   @@index([bookingId])
+  @@index([status, dueDate]) // Overdue payments, payment processing
+  @@index([userId, status, dueDate]) // User payment dashboard
+  @@index([paymentMethod, status]) // Payment method analysis
+  @@index([currency, amount]) // Financial reporting
+  @@index([confirmedBy, confirmedAt]) // Manager activity tracking
+  @@index([createdAt, paymentType]) // Payment history by type
+  @@index([paidAt]) // Payment completion tracking
+  @@index([bookingId, paymentType]) // Booking-related payments
+  @@index([recurringPaymentId]) // Recurring payment tracking
   @@map("payments")
 }
 
@@ -434,6 +482,11 @@ model RecurringPayment {
 
   @@index([nextDueDate])
   @@index([isActive])
+  @@index([startDate, endDate]) // Active recurring payments
+  @@index([dayOfMonth, isActive]) // Monthly processing
+  @@index([bookingId, isActive]) // Booking recurring payments
+  @@index([lastProcessed]) // Processing optimization
+  @@index([frequency, nextDueDate]) // Scheduling queries
   @@map("recurring_payments")
 }
 
@@ -448,6 +501,8 @@ model PaymentItem {
   payment Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade)
 
   @@index([paymentId])
+  @@index([itemType, amount]) // Payment item analysis
+  @@index([paymentId, itemType]) // Payment breakdown
   @@map("payment_items")
 }
 
@@ -464,7 +519,10 @@ model PaymentAuditLog {
 
   payment Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade)
   user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+  @@index([createdAt]) // Chronological payment audit
+  @@index([action, createdAt]) // Payment action timeline
+  @@index([paymentId, createdAt]) // Payment change history
+  @@index([userId, action, createdAt]) // User payment actions
   @@index([paymentId])
   @@index([userId])
   @@map("payment_audit_logs")
@@ -500,7 +558,13 @@ model Notification {
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-
+  @@index([toUserId, isRead, priority, createdAt]) // User notification feed
+  @@index([type, createdAt, isArchived]) // Notification type analytics
+  @@index([fromUserId, createdAt]) // Sent notifications
+  @@index([roomId, type, createdAt]) // Room-specific notifications
+  @@index([bookingId, type]) // Booking-related notifications
+  @@index([paymentId, type]) // Payment-related notifications
+  @@index([priority, isRead, createdAt]) // Urgent unread notifications
   @@index([toUserId, isArchived, createdAt])
   @@index([type, createdAt])
   @@index([isRead, toUserId])
@@ -522,6 +586,8 @@ model NotificationSettings {
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+  @@index([emailNotifications]) // Users with email enabled
+  @@index([inAppNotifications]) // Users with in-app enabled
 
   @@map("notification_settings")
 }
@@ -541,7 +607,10 @@ model Announcement {
   author      User                    @relation("AnnouncementAuthor", fields: [authorId], references: [id], onDelete: Cascade)
   attachments Attachment[]
   recipients  AnnouncementRecipient[]
-
+  @@index([isHidden, postedAt]) // Active announcements chronologically
+  @@index([expiresAt, isHidden]) // Expiring announcements
+  @@index([authorId, postedAt]) // Author's announcements
+  @@index([postedAt, expiresAt]) // Date range queries
   @@index([authorId])
   @@index([postedAt])
   @@map("announcements")
@@ -556,6 +625,7 @@ model Attachment {
   announcement Announcement @relation(fields: [announcementId], references: [id], onDelete: Cascade)
 
   @@index([announcementId])
+  @@index([filename])
   @@map("attachments")
 }
 
@@ -570,7 +640,10 @@ model AnnouncementRecipient {
   announcement Announcement @relation(fields: [announcementId], references: [id], onDelete: Cascade)
   user         User?        @relation("AnnouncementRecipientUser", fields: [userId], references: [id], onDelete: Cascade)
   room         Room?        @relation("AnnouncementRecipientRoom", fields: [roomId], references: [id], onDelete: Cascade)
-
+  @@index([userId, announcementId]) // User-specific announcements
+  @@index([roomId, announcementId]) // Room-specific announcements
+  @@index([floor, announcementId]) // Floor-specific announcements
+  @@index([forEveryone]) // Global announcements
   @@index([announcementId])
   @@map("announcement_recipients")
 }
