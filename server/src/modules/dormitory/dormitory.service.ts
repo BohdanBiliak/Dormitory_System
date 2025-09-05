@@ -71,9 +71,6 @@ export class DormitoryService {
       where: { status: 'Active' },
     }),
   ]);
-  if (total === 0) {
-    throw new BadRequestException('No active dormitories found.');
-  }
 
   return {
     data,
@@ -91,9 +88,6 @@ export class DormitoryService {
       where: { status: 'Deactivated' },
     }),
   ]);
-  if (total === 0) {
-    throw new BadRequestException('No deactivated dormitories found.');
-  }
 
   return {
     data,
