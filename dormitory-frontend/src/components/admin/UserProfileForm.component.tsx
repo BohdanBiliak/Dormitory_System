@@ -1,7 +1,7 @@
 'use client'
 
 import {useEffect, useState} from "react"
-import {useUserList} from "@/hooks/admin-hook-file";
+import {useUserList} from "@/hooks/profile.hook";
 import Link from "next/link";
 
 interface UserProfileFormProps {

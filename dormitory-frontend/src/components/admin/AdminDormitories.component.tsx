@@ -1,41 +1,79 @@
 
 'use client'
 
-import {useDormitories} from "@/hooks/dormitories.hook";
+import {useDormitories, useGetActiveDormitories, useGetDeactivatedDormitories} from "@/hooks/dormitories.hook";
 import {useEffect, useState} from "react";
+import {Dormitory} from "@/app/lib/dorms.api";
+import Popup from "reactjs-popup";
 
 export function AdminDormitoriesList(){
-    const{getAllDormitories, getActiveDormitories, getDeactivatedDormitories, getDormitory, createDormitory, deactivateDormitory, updateDormitory} = useDormitories();
+    const{createDormitory, deactivateDormitory, updateDormitory} = useDormitories();
 
-    const {data: dormitories, isLoading, error}=getAllDormitories();
+    const {data: activeDorms, isLoading: isLoadingActiveDormitories, error: activeDormsError}=useGetActiveDormitories();
+    const {data: deactivatedDorms, isLoading: isLoadingDeactivatedDormitories, error: deactivatedDormsError}=useGetDeactivatedDormitories();
 
-    const [chosenDormitory, setChosenDormitory] = useState(() => {
-            if(!dormitories){
-                return;
-            }else{
-                if(dormitories.data.length !== 0){
-                    return dormitories.data.at(0)
+
+    const[activeDormitories, setActiveDormitories] = useState<Dormitory[]|undefined>(undefined)
+    const[deactivatedDormitories, setdeactivatedDormitories] = useState<Dormitory[]|undefined>(undefined)
+    const[chosenDormitory, setChosenDormitory] = useState<Dormitory|undefined>(() => {
+            if(!activeDorms){
+                if(!deactivatedDorms){
+                    return;
                 }else{
-                    return
+                    if(deactivatedDorms.data && deactivatedDorms.data.length !== 0){
+                        return deactivatedDorms.data.at(0)
+                    }
+                }
+            }else{
+                if(activeDorms.data && activeDorms.data.length !== 0){
+                    return activeDorms.data.at(0)
                 }
             }
+
+            return;
         }
     );
+    const[dormitoryFormVisible, setDormitoryFormVisible] = useState<boolean>(false);
 
-    const activeDormitories = dormitories?.data;
 
     useEffect(() => {
-        if(!dormitories){
-            setChosenDormitory(undefined)
-        }
-        if(dormitories?.data.length !==0){
-            setChosenDormitory(dormitories?.data.at(0))
-        }else{
-            setChosenDormitory(undefined)
-        }
-    }, [dormitories]);
+        setActiveDormitories(activeDorms?.data);
+        setdeactivatedDormitories(deactivatedDorms?.data);
 
-    if (isLoading) {
+        setChosenDormitory(()=>{
+            if(!activeDorms){
+                if(!deactivatedDorms){
+                    return;
+                }else{
+                    if(deactivatedDorms.data && deactivatedDorms.data.length !== 0){
+                        return deactivatedDorms.data.at(0)
+                    }
+                }
+            }else{
+                if(activeDorms.data && activeDorms.data.length !== 0){
+                    return activeDorms.data.at(0)
+                }
+            }
+
+            return;
+        })
+    }, [activeDorms,deactivatedDorms]);
+
+    const handleDeactivate = () => {
+        if(chosenDormitory){
+            deactivateDormitory({id:chosenDormitory.id});
+        }
+    }
+
+    const handleCreateDormitory = () => {
+        setDormitoryFormVisible(true);
+    }
+
+    const handleCancelCreate = () => {
+        setDormitoryFormVisible(false);
+    }
+
+    if (isLoadingActiveDormitories || isLoadingDeactivatedDormitories) {
         return (
             <div className="min-h-screen w-full flex items-center justify-center bg-gray-50">
                 <div className="bg-white shadow-lg rounded-lg p-8 max-w-md mx-4">
@@ -48,7 +86,7 @@ export function AdminDormitoriesList(){
         )
     }
 
-    if (error) {
+    if (activeDormsError || deactivatedDormsError) {
         return (
             <div className="min-h-screen w-full flex items-center justify-center bg-gray-50">
                 <div className="bg-white shadow-lg rounded-lg p-8 max-w-md mx-4">
@@ -69,7 +107,7 @@ export function AdminDormitoriesList(){
         <div className="min-h-screen w-full bg-gradient-to-br from-gray-50 to-gray-100">
             {/* Header */}
             <div className="bg-white shadow-sm border-b border-gray-200">
-                <div className="px-4 py-6 md:px-6 md:py-8">
+                <div className="px-4 py-6 md:px-6 md:py-8 flex flex-row">
                     <div className="flex items-center space-x-3">
                         <div className="p-3 bg-blue-600 rounded-xl shadow-lg">
                             <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -84,6 +122,12 @@ export function AdminDormitoriesList(){
                                 Manage and configure dormitory facilities
                             </p>
                         </div>
+                    </div>
+                    <div className="justify-self-end ml-auto">
+                        <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex flex-row items-baseline space-x-2">
+                            <span >+</span>
+                            <span> Create new dormitory</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -110,9 +154,12 @@ export function AdminDormitoriesList(){
                                     </div>
                                 </div>
 
-                                <div className="p-6">
+                                <div className="p-6 flex flex-col overflow-scroll max-h-">
                                     {activeDormitories && Array.isArray(activeDormitories) && activeDormitories.length > 0 ? (
                                         <div className="space-y-3">
+                                            <div>
+                                                <h3>Active dormitories:</h3>
+                                            </div>
                                             {activeDormitories.map((dormitory, index) => (
                                                 <button
                                                     key={dormitory.id || index}
@@ -157,6 +204,40 @@ export function AdminDormitoriesList(){
                                                 Add Dormitory
                                             </button>
                                         </div>
+                                    )}
+                                    {deactivatedDormitories && Array.isArray(deactivatedDormitories) && deactivatedDormitories.length > 0 ? (
+                                        <div  className="space-y-3 pt-3">
+                                            <div>
+                                                <h3>Deactivated dormitories:</h3>
+                                            </div>
+                                            {deactivatedDormitories.map((dormitory, index) => (
+                                                <button
+                                                    key={dormitory.id || index}
+                                                    onClick={() => setChosenDormitory(dormitory)}
+                                                    className={`w-full text-left p-4 rounded-lg border-2 transition-all duration-200 ${
+                                                        (chosenDormitory && chosenDormitory.id) === dormitory.id
+                                                            ? 'border-blue-500 bg-blue-50 text-blue-900 shadow-md'
+                                                            : 'border-gray-200 bg-gray-50 text-gray-700 hover:border-blue-300 hover:bg-blue-25'
+                                                    }`}
+                                                >
+                                                    <div className="flex items-center justify-between">
+                                                        <div>
+                                                            <h3 className="font-medium text-lg">{dormitory.name}</h3>
+                                                            <p className="text-sm opacity-75 mt-1">
+                                                                ID: {dormitory.id}
+                                                            </p>
+                                                        </div>
+                                                        <div className={`w-3 h-3 rounded-full ${
+                                                            (chosenDormitory && chosenDormitory.id) === dormitory.id
+                                                                ? 'bg-blue-500'
+                                                                : 'bg-gray-300'
+                                                        }`}></div>
+                                                    </div>
+                                                </button>
+                                            ))}
+                                        </div>
+                                    ):(
+                                        <></>
                                     )}
                                 </div>
                             </div>
@@ -203,10 +284,18 @@ export function AdminDormitoriesList(){
                                                     </div>
                                                     <div>
                                                         <label className="block text-sm font-medium text-gray-500">Status</label>
-                                                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                            <div className="w-2 h-2 bg-green-400 rounded-full mr-2"></div>
-                                                            Active
-                                                        </span>
+                                                        {chosenDormitory.status==="Active" ? (
+                                                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                                <div className="w-2 h-2 bg-green-400 rounded-full mr-2"></div>
+                                                                Active
+                                                            </span>
+                                                        ):(
+                                                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-700">
+                                                                <div className="w-2 h-2 bg-red-600 rounded-full mr-2"></div>
+                                                                Deactivated
+                                                            </span>
+                                                        )
+                                                        }
                                                     </div>
                                                 </div>
                                             </div>
@@ -258,7 +347,7 @@ export function AdminDormitoriesList(){
                                                     </svg>
                                                     <span>Settings</span>
                                                 </button>
-                                                <button className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center space-x-2">
+                                                <button className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center space-x-2" onClick={handleDeactivate}>
                                                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                     </svg>
@@ -285,6 +374,12 @@ export function AdminDormitoriesList(){
                     </div>
                 </div>
             </div>
+
+            <Popup trigger={dormitoryFormVisible} position={"center center"} modal={true} nested={true}>
+                <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+                    <button onClick={handleCancelCreate}>Close popup</button>
+                </div>
+            </Popup>
         </div>
     )
 }

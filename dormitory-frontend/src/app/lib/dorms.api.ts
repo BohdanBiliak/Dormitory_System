@@ -16,7 +16,7 @@ export interface AllDormitoriesResponse {
 }
 
 export interface DormitoriesResponse {
-    "data": Dormitory[];
+    "data"?: Dormitory[];
     "total": number;
     "page": number;
     "last_page": number;
@@ -66,12 +66,6 @@ export const dormitoryApi = {
     async getDeactivatedDormitories(): Promise<DormitoriesResponse> {
         const response = await api.get(`/dormitories/deactivated`);
         return response.data;
-    },
-
-    async getAllDormitories(): Promise<AllDormitoriesResponse>{
-        const activeDormitories = await api.get('/dormitories');
-        //const deactivatedDormitories = await api.get('/dormitories/deactivated');
-        return activeDormitories.data;
     },
 
 }

@@ -1,12 +1,12 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { useAuth } from '@/hooks/auth.hook'
-import { useAdminProfile } from '@/hooks/admin-hook-file'
+import React, { useState, useEffect } from 'react'
+import {useGetAdminProfile, useMutateAdminProfile} from '@/hooks/profile.hook'
 
 export function AdminProfileForm() {
-  const { user } = useAuth()
-  const { updateProfile, uploadAvatar, isUpdatingProfile, isUploadingAvatar } = useAdminProfile()
+
+  const{updateProfile, uploadAvatar, isUpdatingProfile, isUploadingAvatar} = useMutateAdminProfile()
+
   const [isEditing, setIsEditing] = useState(false)
   const [profileData, setProfileData] = useState({
     displayName: '',
@@ -14,6 +14,8 @@ export function AdminProfileForm() {
     email: '',
     photo: null as File | null
   })
+
+  const {data: user, isLoading, error} = useGetAdminProfile()
 
   useEffect(() => {
     if (user) {
@@ -69,7 +71,35 @@ export function AdminProfileForm() {
     setIsEditing(false)
   }
 
-  const isLoading = isUpdatingProfile || isUploadingAvatar
+  if(isLoading){
+    return (
+        <div className="min-h-screen w-full flex items-center justify-center bg-gray-50">
+          <div className="bg-white shadow-lg rounded-lg p-8 max-w-md mx-4">
+            <div className="flex items-center justify-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+              <span className="ml-3 text-gray-700 font-medium">Loading announcements...</span>
+            </div>
+          </div>
+        </div>
+    )
+  }
+
+  if(error){
+    return (
+        <div className="min-h-screen w-full flex items-center justify-center bg-gray-50">
+          <div className="bg-white shadow-lg rounded-lg p-8 max-w-md mx-4">
+            <div className="text-center">
+              <div className="text-red-500 mb-3">
+                <svg className="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                </svg>
+              </div>
+              <p className="text-gray-700 font-medium">Error loading announcements. Please try again.</p>
+            </div>
+          </div>
+        </div>
+    )
+  }
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-gray-50 to-gray-100 p-4 md:p-6 lg:p-8">
@@ -263,11 +293,11 @@ export function AdminProfileForm() {
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500 transition-colors"
                         placeholder="Enter your email address"
                       />
-                      <div className="absolute inset-y-0 left-0 flex items-center pl-3">
-                        <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
-                        </svg>
-                      </div>
+                      {/*<div className="absolute inset-y-0 left-0 flex items-center pl-3">*/}
+                      {/*  <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">*/}
+                      {/*    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />*/}
+                      {/*  </svg>*/}
+                      {/*</div>*/}
                       {isEditing && (
                         <div className="absolute inset-y-0 right-0 flex items-center pr-3">
                           <svg className="w-4 h-4 text-blue-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">

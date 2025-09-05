@@ -27,7 +27,7 @@ export function useUserProfile(id: string) {
 export function useUserList() {
     const queryClient = useQueryClient()
 
-    const dectivateUser= useMutation({
+    const deactivateUser= useMutation({
         mutationFn: ({ id }: { id: string }) => userListApi.deactivateUser(id),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['user', 'profile'] })
@@ -51,9 +51,9 @@ export function useUserList() {
 
     return {
         activateUser: activateUser.mutate,
-        dectivateUser: dectivateUser.mutate,
+        dectivateUser: deactivateUser.mutate,
 
         activatingUser: activateUser.isPending,
-        deactivatingUser: dectivateUser.isPending
+        deactivatingUser: deactivateUser.isPending
     }
 }
