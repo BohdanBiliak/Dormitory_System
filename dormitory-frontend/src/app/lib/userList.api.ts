@@ -24,10 +24,6 @@ export const userListApi = {
             params.append('paymentStatus', filters.paymentStatus)
         }
 
-        if(filters?.role && filters.role !== 'All'){
-            params.append('role', filters.role)
-        }
-
         if (filters?.page){
             params.append('page', filters.page.toString())
         }

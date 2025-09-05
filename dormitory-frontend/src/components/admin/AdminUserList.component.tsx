@@ -7,7 +7,7 @@ import Link from "next/link";
 import {useQuery} from "@tanstack/react-query";
 import {userListApi} from "@/app/lib/userList.api";
 import {UserListRequest} from "@/types/users.types";
-import {useUserListQuery} from "@/hooks/userList.queries";
+import {useUserListQuery} from "@/hooks/userList.hook";
 
 
 export function AdminUserList(){

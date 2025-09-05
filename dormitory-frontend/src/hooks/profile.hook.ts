@@ -1,11 +1,21 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 import { adminApi, UpdateProfileRequest } from '@/app/lib/admin.api'
 import { toast } from 'sonner'
-import {userListApi} from "@/app/lib/userList.api";
 
 
 
-export const useAdminProfile =()=>{
+export function useGetAdminProfile(){
+  const {data, isLoading, error} = useQuery({
+    queryFn: ()=>adminApi.getProfile(),
+    queryKey: ['admin', 'profile'],
+    staleTime: 3 * 1000,
+  })
+  return {data, isLoading, error}
+}
+
+export function useMutateAdminProfile (){
+  const queryClient = useQueryClient()
+
   const updateProfile = useMutation({
     mutationFn: (data: UpdateProfileRequest) => adminApi.updateProfile(data),
     onSuccess: (updatedUser) => {
