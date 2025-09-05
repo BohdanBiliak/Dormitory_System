@@ -162,6 +162,22 @@ export class DormitoryController {
   update(@Param("id") id: string, @Body() dto: UpdateDormitoryDto) {
     return this.dormitoryService.update(id, dto);
   }
+  @Patch(":id/activate")
+  @Authorization(UserRole.Admin, UserRole.SuperAdmin)
+  @ApiOperation({ summary: "activate dormitory" })
+  @ApiParam({ name: "id", description: "Dormitory UUID" })
+  @ApiResponse({
+    status: 200,
+    description: "Dormitory activated successfully.",
+  })
+  @ApiResponse({
+    status: 400,
+    description: "Cannot activate dormitory that no exists ",
+  })
+  activate(@Param("id") id: string) {
+    return this.dormitoryService.activate(id);
+  }
+
 
   @Patch(":id/deactivate")
   @Authorization(UserRole.Admin)

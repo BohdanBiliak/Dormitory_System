@@ -112,6 +112,20 @@ export class DormitoryService {
   
   return dormitory;
 }
+async activate(id: string) {
+  const dormitory = await this.prismaService.dormitory.findUnique({
+    where: { id },
+  });
+
+  if (!dormitory) {
+    throw new NotFoundException(`Dormitory with ID ${id} not found`);
+  }
+
+  return this.prismaService.dormitory.update({
+    where: { id },
+    data: { status: 'Active' },
+  });
+}
 
   async update(id: string, dto: UpdateDormitoryDto) {
 
