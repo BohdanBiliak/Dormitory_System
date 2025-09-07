@@ -1,23 +1,24 @@
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {Dormitory, dormitoryApi, DormitoryRequest} from "@/app/lib/dorms.api";
+import {dormitoryApi, DormitoryRequest, DormitoryUpdateRequest} from "@/app/lib/dorms.api";
 import {toast} from "sonner";
+import { Dormitory } from "@/types/dormitories.types";
 
 export function useGetActiveDormitories() {
-    const {data, isLoading, error} = useQuery({
+    const {data, isLoading, error, refetch} = useQuery({
         queryFn:()=>dormitoryApi.getDormitories(),
         queryKey:['dormitories', 'active'],
         staleTime: 30 * 1000
     });
-    return {data, isLoading, error};
+    return {data, isLoading, error,refetch};
 }
 
 export function useGetDeactivatedDormitories() {
-    const {data, isLoading, error} = useQuery({
+    const {data, isLoading, error, refetch} = useQuery({
         queryFn:()=>dormitoryApi.getDeactivatedDormitories(),
         queryKey:['dormitories', 'deactivated'],
         staleTime: 30 * 1000
     })
-    return {data, isLoading, error};
+    return {data, isLoading, error, refetch};
 }
 
 export  function useGetDormitoryById(id:string){
@@ -44,7 +45,7 @@ export function useDormitories() {
     })
 
     const updateDormitory = useMutation({
-        mutationFn: ({updatedInformation, id}:{updatedInformation:DormitoryRequest, id:string})=>dormitoryApi.updateDormitory(id,updatedInformation),
+        mutationFn: ({updatedInformation, id}:{updatedInformation:DormitoryUpdateRequest, id:string})=>dormitoryApi.updateDormitory(id,updatedInformation),
         onSuccess: (result:Dormitory) => {
             queryClient.invalidateQueries({queryKey: ['dormitory']})
             toast.success("Dormitory has been updated!")
@@ -65,6 +66,17 @@ export function useDormitories() {
         }
     })
 
+    const activateDormitory=useMutation({
+        mutationFn: ({id}:{id:string})=>dormitoryApi.activateDormitory(id),
+        onSuccess: (result:Dormitory) => {
+            queryClient.invalidateQueries({queryKey: ['dormitory']})
+            toast.success("Dormitory has been activated!")
+        },
+        onError: (error:any)=> {
+            toast.error(error?.response?.data?.message || "Failed to activate dormitory");
+        }
+    })
+
     return{
         createDormitory: createDormitory.mutate,
         isCreatingDormitory: createDormitory.isPending,
@@ -72,5 +84,7 @@ export function useDormitories() {
         isUpdatingDormitory: updateDormitory.isPending,
         deactivateDormitory: deactivateDormitory.mutate,
         isDeactivatingDormitory: deactivateDormitory.isPending,
+        activateDormitory: activateDormitory.mutate,
+        activatingDormitory: activateDormitory.isPending,
     }
 }

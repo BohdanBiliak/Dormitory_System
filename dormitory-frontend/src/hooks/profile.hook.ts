@@ -20,8 +20,8 @@ export function useMutateAdminProfile (){
     mutationFn: (data: UpdateProfileRequest) => adminApi.updateProfile(data),
     onSuccess: (updatedUser) => {
       // Update the cached user data
-      queryClient.setQueryData(['auth', 'currentUser'], updatedUser)
-      queryClient.invalidateQueries({ queryKey: ['auth', 'currentUser'] })
+      queryClient.setQueryData(['admin', 'currentUser'], updatedUser)
+      queryClient.invalidateQueries({ queryKey: ['admin', 'currentUser'] })
       toast.success('Profile updated successfully!')
     },
     onError: (error: any) => {
@@ -34,7 +34,7 @@ export function useMutateAdminProfile (){
   const uploadAvatar = useMutation({
     mutationFn: ({ file, userLastName }: { file: File; userLastName: string }) => {
       // Return a rejected promise for now
-      return Promise.reject(new Error('Avatar upload temporarily disabled'))
+      return adminApi.uploadAvatar(file)
     },
     onSuccess: (response) => {
       toast.success('Avatar updated successfully!')

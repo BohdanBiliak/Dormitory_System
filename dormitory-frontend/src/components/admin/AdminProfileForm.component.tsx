@@ -8,12 +8,18 @@ export function AdminProfileForm() {
   const{updateProfile, uploadAvatar, isUpdatingProfile, isUploadingAvatar} = useMutateAdminProfile()
 
   const [isEditing, setIsEditing] = useState(false)
-  const [profileData, setProfileData] = useState({
+  const [profileData, setProfileData] = useState<{
+    displayName: string,
+    secondName: string,
+    email: string,
+    photo: string,
+  }>({
     displayName: '',
     secondName: '',
     email: '',
-    photo: null as File | null
+    photo: ''
   })
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
 
   const {data: user, isLoading, error} = useGetAdminProfile()
 
@@ -23,39 +29,46 @@ export function AdminProfileForm() {
         displayName: user?.displayName || '',
         secondName: user?.secondName || '',
         email: user?.email || '',
-        photo: null,
+        photo: user?.picture || '',
       })
     }
-  }, [user])
+  }, [user, isEditing, selectedFile])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, files } = e.target
-    if (files && name === 'photo') {
-      setProfileData(prev => ({ ...prev, photo: files[0] }))
-    } else {
-      setProfileData(prev => ({ ...prev, [name]: value }))
+
+    if(name === 'photo' && files && files[0]) {
+      setSelectedFile(files[0])
+      const previewUrl = URL.createObjectURL(files[0])
+      setProfileData(prev=>({...prev, photo: previewUrl}))
     }
+    setProfileData(prev => ({ ...prev, [name]: value }))
   }
 
   const handleSave = async () => {
     try {
-      if (profileData.displayName || profileData.secondName || profileData.email) {
-        await updateProfile({
-          displayName: profileData.displayName,
-          secondName: profileData.secondName,
-          email: profileData.email,
-        })
-      }
-
-      if (profileData.photo) {
+      if (selectedFile){
         await uploadAvatar({
-          file: profileData.photo,
+          file: selectedFile,
           userLastName: profileData.secondName
         })
       }
 
+      if (profileData.displayName || profileData.secondName || profileData.email || profileData.photo) {
+        await updateProfile({
+          displayName: profileData.displayName,
+          secondName: profileData.secondName,
+          email: profileData.email,
+          picture: profileData.photo,
+        })
+      }
+
+
+
+
+      setSelectedFile(null)
+      setProfileData(prev => ({ ...prev, photo: user?.picture || '' }))
       setIsEditing(false)
-      setProfileData(prev => ({ ...prev, photo: null }))
     } catch (error) {
       console.error('Save error:', error)
     }
@@ -66,7 +79,7 @@ export function AdminProfileForm() {
         displayName: user?.displayName || '',
         secondName: user?.secondName || '',
         email: user?.email || '',
-        photo: null
+        photo: user?.picture || ''
     })
     setIsEditing(false)
   }
@@ -201,13 +214,6 @@ export function AdminProfileForm() {
                             className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 disabled:opacity-50"
                           />
                         </label>
-                        {profileData.photo && (
-                          <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-                            <p className="text-xs text-green-700 font-medium">
-                              ✓ {profileData.photo.name}
-                            </p>
-                          </div>
-                        )}
                       </div>
                     )}
                   </div>

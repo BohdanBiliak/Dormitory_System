@@ -95,15 +95,6 @@ export function LoginForm() {
           <span>{isLoggingIn ? 'Signing in...' : 'Login'}</span>
         </button>
       </form>
-
-      <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-blue-50 border border-blue-200 rounded-md">
-        <p className="text-xs sm:text-sm text-blue-800 text-center">
-          Haven't verified your email yet?{' '}
-          <Link href="/auth/new-verification" className="text-blue-600 hover:text-blue-500 font-medium underline">
-            Check your email
-          </Link>
-        </p>
-      </div>
     </div>
   )
 }

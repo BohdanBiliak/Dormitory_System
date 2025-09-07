@@ -1,19 +1,7 @@
 import {api} from "@/app/lib/api.api";
+import {Dormitory, RoomGenerationShema} from "@/types/dormitories.types";
 
-export interface Dormitory {
-    id: string;
-    name: string;
-    address: string;
-    groundFloorPhoneNumber: string;
-    status: 'Active' | 'Deactivated';
-    photos: string[];
-    managerId?: string[];
-    createdAt: string;
-}
 
-export interface AllDormitoriesResponse {
-    "data": Dormitory[];
-}
 
 export interface DormitoriesResponse {
     "data"?: Dormitory[];
@@ -26,7 +14,13 @@ export interface DormitoryRequest {
     "name": string;
     "address": string;
     "groundFloorPhoneNumber": string;
-    "roomGeneration": string;
+    "roomGeneration": RoomGenerationShema;
+}
+
+export interface DormitoryUpdateRequest {
+    "name": string;
+    "address": string;
+    "groundFloorPhoneNumber": string;
 }
 
 
@@ -51,7 +45,7 @@ export const dormitoryApi = {
     },
 
     // patch/update dormitory
-    async updateDormitory(id: string, newDormitory:DormitoryRequest): Promise<Dormitory> {
+    async updateDormitory(id: string, newDormitory:DormitoryUpdateRequest): Promise<Dormitory> {
         const response = await api.patch(`/dormitories/${id}`, newDormitory);
         return response.data;
     },
@@ -67,5 +61,10 @@ export const dormitoryApi = {
         const response = await api.get(`/dormitories/deactivated`);
         return response.data;
     },
+
+    async activateDormitory(id:string): Promise<Dormitory> {
+        const response = await api.patch(`/dormitories/${id}/activate`);
+        return response.data;
+    }
 
 }
