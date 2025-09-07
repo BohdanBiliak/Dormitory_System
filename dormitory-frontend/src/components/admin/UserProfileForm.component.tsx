@@ -1,7 +1,7 @@
 'use client'
 
 import {useEffect, useState} from "react"
-import {useUserList} from "@/hooks/profile.hook";
+import {useUserList, useUserProfile} from "@/hooks/userList.hook";
 import Link from "next/link";
 
 interface UserProfileFormProps {
@@ -9,7 +9,7 @@ interface UserProfileFormProps {
 }
 
 export function UserProfileForm({userId}:UserProfileFormProps){
-    const {getUserProfile, deactivateUser, activateUser} = useUserList();
+    const {activateUser, dectivateUser: deactivateUser, activatingUser, deactivatingUser} = useUserList();
 
     const [profileData, setProfileData] = useState({
         displayName: '',
@@ -19,7 +19,7 @@ export function UserProfileForm({userId}:UserProfileFormProps){
         role: 'user'
     })
 
-    const {data: userProfileData, isLoading, error} = getUserProfile(userId);
+        const {data: userProfileData, isLoading, error} = useUserProfile(userId);
 
     useEffect(() => {
         if(userProfileData){

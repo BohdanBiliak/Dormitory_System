@@ -13,13 +13,25 @@ export function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) 
   const { user, isLoading } = useAuth()
   const router = useRouter()
 
-  const publicRoutes = ['/auth/login', '/auth/register', '/auth/password-recovery']
+  const publicRoutes = [
+    '/auth/login', 
+    '/auth/register', 
+    '/auth/password-recovery',
+    '/dormitories',           // Add this
+    '/announcements',         // Add this if you have public announcements
+    '/'                       // Add home page if it should be public
+  ]
   const currentPath = typeof window !== 'undefined' ? window.location.pathname : ''
+
+  // Check if current path starts with any public route (for dynamic routes like /dormitories/[id])
+  const isPublicRoute = publicRoutes.some(route => 
+    currentPath === route || currentPath.startsWith(route + '/')
+  )
 
   // Redirect logic
   useEffect(() => {
     if (!isLoading) {
-      if (!user && !publicRoutes.includes(currentPath)) {
+      if (!user && !isPublicRoute) {
         router.push('/auth/login')
       }
 
@@ -27,9 +39,9 @@ export function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) 
         router.push('/unauthorized')
       }
     }
-  }, [user, isLoading, router, requiredRole, currentPath])
+  }, [user, isLoading, router, requiredRole, currentPath, isPublicRoute])
 
-  // Покажемо спінер лише поки завантажується user
+  // Show spinner only while user is loading
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -38,21 +50,21 @@ export function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) 
     )
   }
 
-  // Якщо сторінка публічна — рендеримо навіть без user
-  if (!user && publicRoutes.includes(currentPath)) {
+  // If page is public — render even without user
+  if (!user && isPublicRoute) {
     return <>{children}</>
   }
 
-  // Якщо user є, але не має потрібної ролі — нічого не показуємо
+  // If user exists but doesn't have required role — show nothing
   if (user && requiredRole && !requiredRole.includes(user.role)) {
     return null
   }
 
-  // Якщо user є і все ок — рендеримо
+  // If user exists and everything is ok — render
   if (user) {
     return <>{children}</>
   }
 
-  // Для всіх інших випадків (неавторизовані непублічні сторінки) — спочатку нічого не рендеримо
+  // For all other cases (unauthorized non-public pages) — render nothing initially
   return null
 }

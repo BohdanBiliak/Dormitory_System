@@ -1,10 +1,9 @@
 import { SideMenu } from "@/components/ui/SideMenu.component";
-import { LoginForm } from '@/components/auth/LoginForm.component'
+import { GuestDormitoriesPage } from '@/components/guest/GuestDormitoriesPage'
 import { MenuItem } from "@/types/ui.types";
 import { Suspense } from "react";
 
-
-export default function LoginPage() {
+export default function DormitoriesPage() {
     const menuItems: MenuItem[] = [
         {
             id: 'dormitories',
@@ -32,11 +31,9 @@ export default function LoginPage() {
 
     return (
         <Suspense fallback={<div>Loading...</div>}>
-
-            <SideMenu menuItems={menuItems} activeItem={'signin'}>
-                <LoginForm />
+            <SideMenu menuItems={menuItems} activeItem={'dormitories'}>
+                <GuestDormitoriesPage/>
             </SideMenu>
         </Suspense>
-
     )
 }
