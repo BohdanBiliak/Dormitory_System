@@ -1,4 +1,3 @@
-
 'use client'
 
 import {useDormitories, useGetActiveDormitories, useGetDeactivatedDormitories} from "@/hooks/dormitories.hook";
@@ -26,8 +25,6 @@ export function AdminDormitoriesList(){
         groundFloorPhoneNumber: '',
         roomGeneration: roomGeneration,
     });
-
-
 
     const[activeDormitories, setActiveDormitories] = useState<Dormitory[]|undefined>(undefined)
     const[deactivatedDormitories, setDeactivatedDormitories] = useState<Dormitory[]|undefined>(undefined)
@@ -121,22 +118,38 @@ export function AdminDormitoriesList(){
 
     const handleCloseDormitoryCreationForm = () => {
         setDormitoryFormVisible(false);
+        // Reset form
+        setNewDormitory({
+            name: '',
+            address: '',
+            groundFloorPhoneNumber: '',
+            roomGeneration: {
+                numberOfFloors: 1,
+                roomsPerFloor: 4,
+                pricePerDay: 50,
+                pricePerMonth: 700,
+            },
+        });
+        setRoomGeneration({
+            numberOfFloors: 1,
+            roomsPerFloor: 4,
+            pricePerDay: 50,
+            pricePerMonth: 700,
+        });
     };
 
     const handleCreateDormitory = () => {
-
         setNewDormitory(prev=>({
             ...prev,
             roomGeneration: roomGeneration
         }));
         console.log('Creating dormitory: ',newDormitory);
         createDormitory({newDormitory})
-
+        handleCloseDormitoryCreationForm();
     }
 
     const handleNewDormInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-
 
         if(name=="name" || name=="address" || name=="groundFloorPhoneNumber") {
             setNewDormitory(prev => ({
@@ -161,7 +174,6 @@ export function AdminDormitoriesList(){
                 [name]: value
             };
         })
-
     }
 
     const handleBeginEditing = () => {
@@ -211,164 +223,191 @@ export function AdminDormitoriesList(){
     return(
         <div className="min-h-screen w-full bg-gradient-to-br from-gray-50 to-gray-100">
             {/* Header */}
-            <div className="bg-white shadow-sm border-b border-gray-200">
-                <div className="px-4 py-6 md:px-6 md:py-8 flex flex-row">
-                    <div className="flex items-center space-x-3">
-                        <div className="p-3 bg-blue-600 rounded-xl shadow-lg">
-                            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                            </svg>
+            <div className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-10">
+                <div className="px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                        <div className="flex items-center space-x-3">
+                            <div className="p-2 sm:p-3 bg-blue-600 rounded-xl shadow-lg">
+                                <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">
+                                    Dormitories Management
+                                </h1>
+                                <p className="text-gray-600 text-xs sm:text-sm mt-1">
+                                    Manage and configure dormitory facilities
+                                </p>
+                            </div>
                         </div>
-                        <div>
-                            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900">
-                                Dormitories Management
-                            </h1>
-                            <p className="text-gray-600 text-sm md:text-base mt-1">
-                                Manage and configure dormitory facilities
-                            </p>
-                        </div>
-                    </div>
-                    <div className="justify-self-end ml-auto">
-                        <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex flex-row items-baseline space-x-2" onClick={handleOpenDormitoryCreationForm}>
-                            <span >+</span>
-                            <span> Create new dormitory</span>
+                        <button 
+                            className="px-3 py-2 sm:px-4 sm:py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2 text-sm sm:text-base"
+                            onClick={handleOpenDormitoryCreationForm}
+                        >
+                            <span className="text-lg">+</span>
+                            <span className="hidden sm:inline">Create new dormitory</span>
+                            <span className="sm:hidden">Create</span>
                         </button>
                     </div>
                 </div>
             </div>
 
             {/* Main Content */}
-            <div className="p-4 md:p-6 lg:p-8">
+            <div className="p-4 sm:p-6 lg:p-8">
                 <div className="max-w-7xl mx-auto">
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
                         
                         {/* Dormitory Selection */}
-                        <div className="lg:col-span-1">
-                            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                                <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
+                        <div className="xl:col-span-1">
+                            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden h-fit max-h-[calc(100vh-200px)]">
+                                <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-4 sm:px-6 py-3 sm:py-4">
                                     <div className="flex items-center justify-between">
-                                        <div className="flex items-center space-x-3">
-                                            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <div className="flex items-center space-x-2 sm:space-x-3">
+                                            <svg className="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M10.5 3L12 2l1.5 1H21l-1 6H4l-1-6h7.5z" />
                                             </svg>
-                                            <h2 className="text-lg font-semibold text-white">Select Dormitory</h2>
+                                            <h2 className="text-sm sm:text-lg font-semibold text-white">Select Dormitory</h2>
                                         </div>
                                         <span className="bg-white/20 text-white text-xs px-2 py-1 rounded-full">
-                                            {activeDormitories?.length || 0}
+                                            {((activeDormitories?.length || 0) + (deactivatedDormitories?.length || 0))}
                                         </span>
                                     </div>
                                 </div>
 
-                                <div className="p-6 flex flex-col overflow-scroll max-h-">
-                                    {activeDormitories && Array.isArray(activeDormitories) && activeDormitories.length > 0 ? (
-                                        <div className="space-y-3">
-                                            <div>
-                                                <h3>Active dormitories:</h3>
+                                <div className="overflow-y-auto max-h-[calc(100vh-280px)]">
+                                    <div className="p-4 sm:p-6 space-y-4">
+                                        {/* Active Dormitories */}
+                                        {activeDormitories && Array.isArray(activeDormitories) && activeDormitories.length > 0 && (
+                                            <div className="space-y-3">
+                                                <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider">Active Dormitories</h3>
+                                                <div className="space-y-2">
+                                                    {activeDormitories.map((dormitory, index) => (
+                                                        <button
+                                                            key={dormitory.id || index}
+                                                            onClick={() => {setChosenDormitory(dormitory); setTemporaryStatus(dormitory.status)}}
+                                                            className={`w-full text-left p-3 sm:p-4 rounded-lg border-2 transition-all duration-200 ${
+                                                                (chosenDormitory && chosenDormitory.id) === dormitory.id
+                                                                    ? 'border-blue-500 bg-blue-50 text-blue-900 shadow-md'
+                                                                    : 'border-gray-200 bg-gray-50 text-gray-700 hover:border-blue-300 hover:bg-blue-25'
+                                                            }`}
+                                                        >
+                                                            <div className="flex items-center justify-between">
+                                                                <div className="min-w-0 flex-1">
+                                                                    <h3 className="font-medium text-sm sm:text-base truncate">{dormitory.name}</h3>
+                                                                    <p className="text-xs opacity-75 mt-1 truncate">
+                                                                        ID: {dormitory.id}
+                                                                    </p>
+                                                                </div>
+                                                                <div className="flex items-center space-x-2 ml-2">
+                                                                    <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                                        <div className="w-1.5 h-1.5 bg-green-400 rounded-full mr-1"></div>
+                                                                        Active
+                                                                    </span>
+                                                                    <div className={`w-3 h-3 rounded-full flex-shrink-0 ${
+                                                                        (chosenDormitory && chosenDormitory.id) === dormitory.id
+                                                                            ? 'bg-blue-500'
+                                                                            : 'bg-gray-300'
+                                                                    }`}></div>
+                                                                </div>
+                                                            </div>
+                                                        </button>
+                                                    ))}
+                                                </div>
                                             </div>
-                                            {activeDormitories.map((dormitory, index) => (
-                                                <button
-                                                    key={dormitory.id || index}
-                                                    onClick={() => {setChosenDormitory(dormitory); if(chosenDormitory){setTemporaryStatus(chosenDormitory?.status)}}}
-                                                    className={`w-full text-left p-4 rounded-lg border-2 transition-all duration-200 ${
-                                                        (chosenDormitory && chosenDormitory.id) === dormitory.id
-                                                            ? 'border-blue-500 bg-blue-50 text-blue-900 shadow-md'
-                                                            : 'border-gray-200 bg-gray-50 text-gray-700 hover:border-blue-300 hover:bg-blue-25'
-                                                    }`}
-                                                >
-                                                    <div className="flex items-center justify-between">
-                                                        <div>
-                                                            <h3 className="font-medium text-lg">{dormitory.name}</h3>
-                                                            <p className="text-sm opacity-75 mt-1">
-                                                                ID: {dormitory.id}
-                                                            </p>
-                                                        </div>
-                                                        <div className={`w-3 h-3 rounded-full ${
-                                                            (chosenDormitory && chosenDormitory.id) === dormitory.id
-                                                                ? 'bg-blue-500'
-                                                                : 'bg-gray-300'
-                                                        }`}></div>
-                                                    </div>
-                                                </button>
-                                            ))}
-                                        </div>
-                                    ) : (
-                                        <div className="text-center py-8">
-                                            <div className="text-gray-400 mb-4">
-                                                <svg className="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                                                </svg>
+                                        )}
+
+                                        {/* Deactivated Dormitories */}
+                                        {deactivatedDormitories && Array.isArray(deactivatedDormitories) && deactivatedDormitories.length > 0 && (
+                                            <div className="space-y-3">
+                                                <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider">Deactivated Dormitories</h3>
+                                                <div className="space-y-2">
+                                                    {deactivatedDormitories.map((dormitory, index) => (
+                                                        <button
+                                                            key={dormitory.id || index}
+                                                            onClick={() => {setChosenDormitory(dormitory); setTemporaryStatus(dormitory.status)}}
+                                                            className={`w-full text-left p-3 sm:p-4 rounded-lg border-2 transition-all duration-200 ${
+                                                                (chosenDormitory && chosenDormitory.id) === dormitory.id
+                                                                    ? 'border-blue-500 bg-blue-50 text-blue-900 shadow-md'
+                                                                    : 'border-gray-200 bg-gray-50 text-gray-700 hover:border-blue-300 hover:bg-blue-25'
+                                                            }`}
+                                                        >
+                                                            <div className="flex items-center justify-between">
+                                                                <div className="min-w-0 flex-1">
+                                                                    <h3 className="font-medium text-sm sm:text-base truncate">{dormitory.name}</h3>
+                                                                    <p className="text-xs opacity-75 mt-1 truncate">
+                                                                        ID: {dormitory.id}
+                                                                    </p>
+                                                                </div>
+                                                                <div className="flex items-center space-x-2 ml-2">
+                                                                    <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-700">
+                                                                        <div className="w-1.5 h-1.5 bg-red-600 rounded-full mr-1"></div>
+                                                                        Inactive
+                                                                    </span>
+                                                                    <div className={`w-3 h-3 rounded-full flex-shrink-0 ${
+                                                                        (chosenDormitory && chosenDormitory.id) === dormitory.id
+                                                                            ? 'bg-blue-500'
+                                                                            : 'bg-gray-300'
+                                                                    }`}></div>
+                                                                </div>
+                                                            </div>
+                                                        </button>
+                                                    ))}
+                                                </div>
                                             </div>
-                                            <h3 className="text-lg font-medium text-gray-900 mb-2">No Active Dormitories</h3>
-                                            <p className="text-gray-600 text-sm mb-4">
-                                                There are currently no active dormitories available.
-                                            </p>
-                                        </div>
-                                    )}
-                                    {deactivatedDormitories && Array.isArray(deactivatedDormitories) && deactivatedDormitories.length > 0 ? (
-                                        <div  className="space-y-3 pt-3">
-                                            <div>
-                                                <h3>Deactivated dormitories:</h3>
+                                        )}
+
+                                        {/* No Dormitories */}
+                                        {(!activeDormitories || activeDormitories.length === 0) && 
+                                         (!deactivatedDormitories || deactivatedDormitories.length === 0) && (
+                                            <div className="text-center py-8">
+                                                <div className="text-gray-400 mb-4">
+                                                    <svg className="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                                    </svg>
+                                                </div>
+                                                <h3 className="text-lg font-medium text-gray-900 mb-2">No Dormitories</h3>
+                                                <p className="text-gray-600 text-sm mb-4">
+                                                    Create your first dormitory to get started.
+                                                </p>
                                             </div>
-                                            {deactivatedDormitories.map((dormitory, index) => (
-                                                <button
-                                                    key={dormitory.id || index}
-                                                    onClick={() => setChosenDormitory(dormitory)}
-                                                    className={`w-full text-left p-4 rounded-lg border-2 transition-all duration-200 ${
-                                                        (chosenDormitory && chosenDormitory.id) === dormitory.id
-                                                            ? 'border-blue-500 bg-blue-50 text-blue-900 shadow-md'
-                                                            : 'border-gray-200 bg-gray-50 text-gray-700 hover:border-blue-300 hover:bg-blue-25'
-                                                    }`}
-                                                >
-                                                    <div className="flex items-center justify-between">
-                                                        <div>
-                                                            <h3 className="font-medium text-lg">{dormitory.name}</h3>
-                                                            <p className="text-sm opacity-75 mt-1">
-                                                                ID: {dormitory.id}
-                                                            </p>
-                                                        </div>
-                                                        <div className={`w-3 h-3 rounded-full ${
-                                                            (chosenDormitory && chosenDormitory.id) === dormitory.id
-                                                                ? 'bg-blue-500'
-                                                                : 'bg-gray-300'
-                                                        }`}></div>
-                                                    </div>
-                                                </button>
-                                            ))}
-                                        </div>
-                                    ):(
-                                        <></>
-                                    )}
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         {/* Dormitory Details */}
-                        <div className="lg:col-span-2">
+                        <div className="xl:col-span-2">
                             {chosenDormitory ? (
                                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                                    <div className="bg-gradient-to-r from-green-600 to-green-700 px-6 py-4">
+                                    <div className="bg-gradient-to-r from-green-600 to-green-700 px-4 sm:px-6 py-3 sm:py-4">
                                         <div className="flex items-center justify-between">
-                                            <div className="flex items-center space-x-3">
-                                                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <div className="flex items-center space-x-2 sm:space-x-3">
+                                                <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                                 </svg>
-                                                <h2 className="text-xl font-semibold text-white">Dormitory Details</h2>
+                                                <h2 className="text-lg sm:text-xl font-semibold text-white">Dormitory Details</h2>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div className="p-6">
-                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                    <div className="p-4 sm:p-6">
+                                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
                                             {/* Basic Information */}
-                                            <div className="space-y-4 col-span-2">
-                                                <h3 className="text-lg font-semibold text-gray-900 border-b pb-2">
+                                            <div className="space-y-4 lg:col-span-2">
+                                                <h3 className="text-base sm:text-lg font-semibold text-gray-900 border-b pb-2">
                                                     Basic Information
                                                 </h3>
-                                                <div className="space-y-3">
+                                                <div className="space-y-3 sm:space-y-4">
                                                     <div>
-                                                        <label className="block text-sm font-medium text-gray-500">Name</label>
+                                                        <label className="block text-xs sm:text-sm font-medium text-gray-500 mb-1">Name</label>
                                                         <input
-                                                            className="text-gray-900 font-semibold"
+                                                            className={`w-full px-3 py-2 text-sm sm:text-base font-semibold border rounded-lg transition-colors ${
+                                                                isEditing 
+                                                                    ? 'border-gray-300 bg-white text-gray-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500' 
+                                                                    : 'border-transparent bg-gray-50 text-gray-900'
+                                                            }`}
                                                             type="text"
                                                             disabled={!isEditing}
                                                             value={chosenDormitory.name}
@@ -377,9 +416,13 @@ export function AdminDormitoriesList(){
                                                         />
                                                     </div>
                                                     <div>
-                                                        <label className="block text-sm font-medium text-gray-500">Address</label>
+                                                        <label className="block text-xs sm:text-sm font-medium text-gray-500 mb-1">Address</label>
                                                         <input
-                                                            className="text-gray-900 font-semibold"
+                                                            className={`w-full px-3 py-2 text-sm sm:text-base font-semibold border rounded-lg transition-colors ${
+                                                                isEditing 
+                                                                    ? 'border-gray-300 bg-white text-gray-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500' 
+                                                                    : 'border-transparent bg-gray-50 text-gray-900'
+                                                            }`}
                                                             type="text"
                                                             disabled={!isEditing}
                                                             value={chosenDormitory.address}
@@ -388,9 +431,13 @@ export function AdminDormitoriesList(){
                                                         />
                                                     </div>
                                                     <div>
-                                                        <label className="block text-sm font-medium text-gray-500">Ground floor number</label>
+                                                        <label className="block text-xs sm:text-sm font-medium text-gray-500 mb-1">Ground floor number</label>
                                                         <input
-                                                            className="text-gray-900 font-semibold"
+                                                            className={`w-full px-3 py-2 text-sm sm:text-base font-semibold border rounded-lg transition-colors ${
+                                                                isEditing 
+                                                                    ? 'border-gray-300 bg-white text-gray-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500' 
+                                                                    : 'border-transparent bg-gray-50 text-gray-900'
+                                                            }`}
                                                             type="text"
                                                             disabled={!isEditing}
                                                             value={chosenDormitory.groundFloorPhoneNumber}
@@ -399,76 +446,75 @@ export function AdminDormitoriesList(){
                                                         />
                                                     </div>
                                                     <div>
-                                                        <label className="block text-sm font-medium text-gray-500">Status</label>
+                                                        <label className="block text-xs sm:text-sm font-medium text-gray-500 mb-1">Status</label>
                                                         {chosenDormitory.status==="Active" ? (
-                                                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
                                                                 <div className="w-2 h-2 bg-green-400 rounded-full mr-2"></div>
                                                                 Active
                                                             </span>
                                                         ):(
-                                                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-700">
+                                                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-700">
                                                                 <div className="w-2 h-2 bg-red-600 rounded-full mr-2"></div>
                                                                 Deactivated
                                                             </span>
-                                                        )
-                                                        }
+                                                        )}
                                                     </div>
                                                 </div>
                                             </div>
 
                                             {/* Statistics */}
                                             <div className="space-y-4">
-                                                <h3 className="text-lg font-semibold text-gray-900 border-b pb-2">
+                                                <h3 className="text-base sm:text-lg font-semibold text-gray-900 border-b pb-2">
                                                     Statistics
                                                 </h3>
-                                                <div className="grid grid-cols-1 gap-4">
-                                                    <div className="bg-blue-50 p-4 rounded-lg">
-                                                        <div className="text-2xl font-bold text-blue-900">0</div>
-                                                        <div className="text-sm text-blue-600">Total Rooms</div>
+                                                <div className="grid grid-cols-2 lg:grid-cols-1 gap-3 sm:gap-4">
+                                                    <div className="bg-blue-50 p-3 sm:p-4 rounded-lg">
+                                                        <div className="text-xl sm:text-2xl font-bold text-blue-900">0</div>
+                                                        <div className="text-xs sm:text-sm text-blue-600">Total Rooms</div>
                                                     </div>
-                                                    <div className="bg-green-50 p-4 rounded-lg">
-                                                        <div className="text-2xl font-bold text-green-900">0</div>
-                                                        <div className="text-sm text-green-600">Occupied</div>
+                                                    <div className="bg-green-50 p-3 sm:p-4 rounded-lg">
+                                                        <div className="text-xl sm:text-2xl font-bold text-green-900">0</div>
+                                                        <div className="text-xs sm:text-sm text-green-600">Occupied</div>
                                                     </div>
-                                                    <div className="bg-yellow-50 p-4 rounded-lg">
-                                                        <div className="text-2xl font-bold text-yellow-900">0</div>
-                                                        <div className="text-sm text-yellow-600">Available</div>
+                                                    <div className="bg-yellow-50 p-3 sm:p-4 rounded-lg">
+                                                        <div className="text-xl sm:text-2xl font-bold text-yellow-900">0</div>
+                                                        <div className="text-xs sm:text-sm text-yellow-600">Available</div>
                                                     </div>
-                                                    <div className="bg-purple-50 p-4 rounded-lg">
-                                                        <div className="text-2xl font-bold text-purple-900">0</div>
-                                                        <div className="text-sm text-purple-600">Residents</div>
+                                                    <div className="bg-purple-50 p-3 sm:p-4 rounded-lg">
+                                                        <div className="text-xl sm:text-2xl font-bold text-purple-900">0</div>
+                                                        <div className="text-xs sm:text-sm text-purple-600">Residents</div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
                                         {/* Action Buttons */}
-                                        <div className="mt-8 pt-6 border-t border-gray-200">
-                                            <div className="flex flex-wrap gap-3">
+                                        <div className="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-gray-200">
+                                            <div className="flex flex-wrap gap-2 sm:gap-3">
                                                 {!isEditing ? (
-                                                    <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2" onClick={handleBeginEditing}>
+                                                    <button className="px-3 py-2 sm:px-4 sm:py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2 text-sm" onClick={handleBeginEditing}>
                                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                                         </svg>
                                                         <span>Edit Details</span>
                                                     </button>
                                                 ):(
-                                                    <button className="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors flex items-center space-x-2" onClick={handleSaveEditingChanges}>
+                                                    <button className="px-3 py-2 sm:px-4 sm:py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors flex items-center space-x-2 text-sm" onClick={handleSaveEditingChanges}>
                                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                                         </svg>
                                                         <span>Save Changes</span>
                                                     </button>
                                                 )}
                                                 {isEditing ? (
-                                                    <button className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors flex items-center space-x-2" onClick={handleCancelEditing}>
+                                                    <button className="px-3 py-2 sm:px-4 sm:py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors flex items-center space-x-2 text-sm" onClick={handleCancelEditing}>
                                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                                                         </svg>
                                                         <span>Cancel</span>
                                                     </button>
                                                 ):(
-                                                    <button className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2">
+                                                    <button className="px-3 py-2 sm:px-4 sm:py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2 text-sm">
                                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V9a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                                                         </svg>
@@ -476,7 +522,7 @@ export function AdminDormitoriesList(){
                                                     </button>
                                                 )}
                                                 {isEditing && temporaryStatus=="Active" ? (
-                                                    <button className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center space-x-2" onClick={handleDeactivate}>
+                                                    <button className="px-3 py-2 sm:px-4 sm:py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center space-x-2 text-sm" onClick={handleDeactivate}>
                                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                         </svg>
@@ -484,9 +530,9 @@ export function AdminDormitoriesList(){
                                                     </button>
                                                 ):(
                                                     (isEditing && temporaryStatus=="Deactivated" ? (
-                                                        <button className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2" onClick={handleActivate}>
+                                                        <button className="px-3 py-2 sm:px-4 sm:py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2 text-sm" onClick={handleActivate}>
                                                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 16l9-9 9 9m-9-9v14" />
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                                             </svg>
                                                             <span>Activate</span>
                                                         </button>
@@ -497,9 +543,9 @@ export function AdminDormitoriesList(){
                                     </div>
                                 </div>
                             ) : (
-                                <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center">
+                                <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 sm:p-12 text-center">
                                     <div className="text-gray-400 mb-4">
-                                        <svg className="mx-auto h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <svg className="mx-auto h-12 w-12 sm:h-16 sm:w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                                         </svg>
                                     </div>
@@ -513,100 +559,200 @@ export function AdminDormitoriesList(){
                     </div>
                 </div>
             </div>
-            <Dialog open={dormitoryFormVisible} onClose={()=>handleCloseDormitoryCreationForm()} className={`relative z-50`}>
-                <DialogBackdrop className={`fixed inset-0 bg-black/30`}/>
-                <div className="fixed inset-0 flex items-center justify-center p-4 w-screen">
-                    <DialogPanel className={`bg-gray-200`}>
-                        <DialogTitle title="New Dormitory" className={`bg-gray-600`}/>
-                        <Description className={`bg-gray-400 text-3xl font-bold px-4 py-1`}>New Dormitory</Description>
-                        <form className={`flex flex-col items-left p-4 font-semibold text-2xl`}
-                              onSubmit={(e)=>{e.preventDefault(); handleCreateDormitory()}}>
-                            <div className={`flex flex-row w-full space-x-4 py-1`}>
-                                <label>Dormitory name:</label>
-                                <input
-                                    className='grow'
-                                    type="text"
-                                    name="name"
-                                    placeholder="Enter new dormitory name"
-                                    value={newDormitory.name}
-                                    disabled={!dormitoryFormVisible}
-                                    onChange={handleNewDormInputChange}
-                                />
-                            </div>
-                            <div className={`flex flex-row w-full space-x-4 py-1`}>
-                                <label>Dormitory address:</label>
-                                <input
-                                    className="grow"
-                                    type="text"
-                                    name="address"
-                                    placeholder="Enter address"
-                                    value={newDormitory.address}
-                                    disabled={!dormitoryFormVisible}
-                                    onChange={handleNewDormInputChange}
-                                />
-                            </div>
-                            <div className={`flex flex-row w-full space-x-4 py-1`}>
-                                <label>Dormitory ground floor number:</label>
-                                <input
-                                    className="grow"
-                                    type="text"
-                                    name="groundFloorPhoneNumber"
-                                    placeholder="Enter ground floor number"
-                                    value={newDormitory.groundFloorPhoneNumber}
-                                    disabled={!dormitoryFormVisible}
-                                    onChange={handleNewDormInputChange}
-                                />
-                            </div>
-                            <div className={`border-black border flex flex-col`}>
-                                <div className="flex flex-row w-full space-x-4 py-1">
-                                    <label>Number of floors:</label>
-                                    <input
-                                        className="grow"
-                                        type="number"
-                                        name="numberOfFloors"
-                                        value={roomGeneration.numberOfFloors}
-                                        disabled={!dormitoryFormVisible}
-                                        onChange={handleNewDormInputChange}
-                                    />
-                                </div>
-                                <div className="flex flex-row w-full space-x-4 py-1">
-                                    <label>Number of rooms per floor:</label>
-                                    <input
-                                        className="grow"
-                                        type="number"
-                                        name="roomsPerFloor"
-                                        value={roomGeneration.roomsPerFloor}
-                                        disabled={!dormitoryFormVisible}
-                                        onChange={handleNewDormInputChange}
-                                    />
-                                </div>
-                                <div className="flex flex-row w-full space-x-4 py-1">
-                                    <label>Price per day:</label>
-                                    <input
-                                        className="grow"
-                                        type="number"
-                                        name="pricePerDay"
-                                        value={roomGeneration.pricePerDay}
-                                        disabled={!dormitoryFormVisible}
-                                        onChange={handleNewDormInputChange}
-                                    />
-                                </div>
-                                <div className="flex flex-row w-full space-x-4 py-1">
-                                    <label>Price per month:</label>
-                                    <input
-                                        className="grow"
-                                        type="number"
-                                        name="pricePerMonth"
-                                        value={roomGeneration.pricePerMonth}
-                                        disabled={!dormitoryFormVisible}
-                                        onChange={handleNewDormInputChange}
-                                    />
-                                </div>
-                            </div>
 
-                            <button type="submit">Create</button>
-                            <button onClick={handleCloseDormitoryCreationForm}>Cancel</button>
-                        </form>
+            {/* Enhanced Dialog */}
+            <Dialog open={dormitoryFormVisible} onClose={handleCloseDormitoryCreationForm} className="relative z-50">
+                <DialogBackdrop className="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity" />
+                <div className="fixed inset-0 flex items-center justify-center p-4">
+                    <DialogPanel className="w-full max-w-2xl max-h-[90vh] bg-white rounded-2xl shadow-2xl overflow-hidden">
+                        {/* Dialog Header */}
+                        <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center space-x-3">
+                                    <div className="p-2 bg-white/20 rounded-lg">
+                                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <DialogTitle className="text-xl font-semibold text-white">
+                                            Create New Dormitory
+                                        </DialogTitle>
+                                        <Description className="text-blue-100 text-sm mt-1">
+                                            Add a new dormitory to the system with room configuration
+                                        </Description>
+                                    </div>
+                                </div>
+                                <button
+                                    onClick={handleCloseDormitoryCreationForm}
+                                    className="p-1 hover:bg-white/20 rounded-lg transition-colors"
+                                >
+                                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Dialog Content */}
+                        <div className="overflow-y-auto max-h-[calc(90vh-120px)]">
+                            <form className="p-6 space-y-6" onSubmit={(e)=>{e.preventDefault(); handleCreateDormitory()}}>
+                                {/* Basic Information */}
+                                <div className="space-y-4">
+                                    <h3 className="text-lg font-semibold text-gray-900 border-b pb-2">Basic Information</h3>
+                                    
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                Dormitory Name <span className="text-red-500">*</span>
+                                            </label>
+                                            <input
+                                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                                type="text"
+                                                name="name"
+                                                placeholder="Enter dormitory name"
+                                                value={newDormitory.name}
+                                                onChange={handleNewDormInputChange}
+                                                required
+                                            />
+                                        </div>
+                                        
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                Ground Floor Phone <span className="text-red-500">*</span>
+                                            </label>
+                                            <input
+                                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                                type="tel"
+                                                name="groundFloorPhoneNumber"
+                                                placeholder="Enter phone number"
+                                                value={newDormitory.groundFloorPhoneNumber}
+                                                onChange={handleNewDormInputChange}
+                                                required
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Address <span className="text-red-500">*</span>
+                                        </label>
+                                        <input
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                            type="text"
+                                            name="address"
+                                            placeholder="Enter full address"
+                                            value={newDormitory.address}
+                                            onChange={handleNewDormInputChange}
+                                            required
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* Room Configuration */}
+                                <div className="space-y-4">
+                                    <h3 className="text-lg font-semibold text-gray-900 border-b pb-2">Room Configuration</h3>
+                                    
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                Number of Floors <span className="text-red-500">*</span>
+                                            </label>
+                                            <input
+                                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                                type="number"
+                                                name="numberOfFloors"
+                                                min="1"
+                                                max="50"
+                                                value={roomGeneration.numberOfFloors}
+                                                onChange={handleNewDormInputChange}
+                                                required
+                                            />
+                                        </div>
+                                        
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                Rooms per Floor <span className="text-red-500">*</span>
+                                            </label>
+                                            <input
+                                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                                type="number"
+                                                name="roomsPerFloor"
+                                                min="1"
+                                                max="100"
+                                                value={roomGeneration.roomsPerFloor}
+                                                onChange={handleNewDormInputChange}
+                                                required
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                Price per Day ($) <span className="text-red-500">*</span>
+                                            </label>
+                                            <input
+                                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                                type="number"
+                                                name="pricePerDay"
+                                                min="0"
+                                                step="0.01"
+                                                value={roomGeneration.pricePerDay}
+                                                onChange={handleNewDormInputChange}
+                                                required
+                                            />
+                                        </div>
+                                        
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                Price per Month ($) <span className="text-red-500">*</span>
+                                            </label>
+                                            <input
+                                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                                type="number"
+                                                name="pricePerMonth"
+                                                min="0"
+                                                step="0.01"
+                                                value={roomGeneration.pricePerMonth}
+                                                onChange={handleNewDormInputChange}
+                                                required
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {/* Preview */}
+                                    <div className="bg-blue-50 p-4 rounded-lg">
+                                        <h4 className="font-medium text-blue-900 mb-2">Configuration Preview</h4>
+                                        <div className="text-sm text-blue-700 space-y-1">
+                                            <p>Total Rooms: <span className="font-medium">{roomGeneration.numberOfFloors * roomGeneration.roomsPerFloor}</span></p>
+                                            <p>Floors: <span className="font-medium">{roomGeneration.numberOfFloors}</span></p>
+                                            <p>Rooms per Floor: <span className="font-medium">{roomGeneration.roomsPerFloor}</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Action Buttons */}
+                                <div className="flex flex-col-reverse sm:flex-row gap-3 pt-4 border-t">
+                                    <button
+                                        type="button"
+                                        onClick={handleCloseDormitoryCreationForm}
+                                        className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center justify-center space-x-2"
+                                    >
+                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                        </svg>
+                                         <button type="submit">Create</button>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </DialogPanel>
                 </div>
             </Dialog>
