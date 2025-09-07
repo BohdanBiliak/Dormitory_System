@@ -12,13 +12,20 @@ export class DormitoryService {
     private readonly s3Service: S3Service,
   ) { }
   async create(dto: CreateDormitoryDto, files: Express.Multer.File[]) {
+      const existingDormitory = await this.prismaService.dormitory.findFirst({
+      where: { name: dto.name },
+    });
+
+    if (existingDormitory) {
+      throw new BadRequestException(`Dormitory with name "${dto.name}" already exists`);
+    }
     const photoUrls = await Promise.all(
       files.map((file) => this.s3Service.uploadFile(file, "dormitories")),
     );
 
     const roomGeneration = JSON.parse(dto.roomGeneration);
     const { roomGeneration: _removed, ...rest } = dto;
-
+  
     return this.prismaService.$transaction(async (tx) => {
       const dormitory = await tx.dormitory.create({
         data: {
