@@ -40,8 +40,31 @@ export const dormitoryApi = {
 
     //post/create dormitory
     async createDormitory(newDormitory:DormitoryRequest): Promise<Dormitory> {
-        const response = await api.post('/dormitories', newDormitory);
-        return response.data;
+        const formData = new FormData();
+
+        const roomGenerationString = '{"numberOfFloors":'+newDormitory.roomGeneration.numberOfFloors+',"roomsPerFloor":'+newDormitory.roomGeneration.roomsPerFloor+',"pricePerDay":'+newDormitory.roomGeneration.pricePerDay+',"pricePerMonth":'+newDormitory.roomGeneration.pricePerMonth+'}'
+
+        formData.append('name', newDormitory.name);
+        formData.append('address', newDormitory.address);
+        formData.append('groundFloorPhoneNumber', newDormitory.groundFloorPhoneNumber);
+        formData.append('roomGeneration', roomGenerationString);
+
+        try {
+            const response = await api.post('/dormitories', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            })
+            console.log('Dormitories responce:', response.data)
+            return response.data
+        } catch (error: any) {
+            console.error('Dormitory error:', {
+                status: error.response?.status,
+                data: error.response?.data,
+                message: error.message
+            })
+            throw error
+        }
     },
 
     // patch/update dormitory

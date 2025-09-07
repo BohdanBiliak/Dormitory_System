@@ -13,19 +13,21 @@ export function AdminDormitoriesList(){
     const {data: activeDorms, isLoading: isLoadingActiveDormitories, error: activeDormsError, refetch:refetchActiveDormitories}=useGetActiveDormitories();
     const {data: deactivatedDorms, isLoading: isLoadingDeactivatedDormitories, error: deactivatedDormsError, refetch: refetchDeactivatedDormitories}=useGetDeactivatedDormitories();
 
-    const [newDormitory, setNewDormitory] = useState<DormitoryRequest>({
-        name: '',
-        address: '',
-        groundFloorPhoneNumber: '',
-        roomGeneration: {numberOfFloors:3,roomsPerFloor:4,pricePerDay:30,pricePerMonth:600},
-    });
-
     const [roomGeneration, setRoomGeneration] = useState<RoomGenerationShema>({
         numberOfFloors: 1,
         roomsPerFloor: 4,
         pricePerDay: 50,
         pricePerMonth: 700,
     });
+
+    const [newDormitory, setNewDormitory] = useState<DormitoryRequest>({
+        name: '',
+        address: '',
+        groundFloorPhoneNumber: '',
+        roomGeneration: roomGeneration,
+    });
+
+
 
     const[activeDormitories, setActiveDormitories] = useState<Dormitory[]|undefined>(undefined)
     const[deactivatedDormitories, setDeactivatedDormitories] = useState<Dormitory[]|undefined>(undefined)
@@ -47,9 +49,10 @@ export function AdminDormitoriesList(){
             return;
         }
     );
-    const[dormitoryFormVisible, setDormitoryFormVisible] = useState<boolean>(false);
-    const[isEditing, setIsEditing] = useState<boolean>(false);
-    const[temporaryStatus, setTemporaryStatus] = useState<'Active'|'Deactivated'>('Active');
+
+    const[dormitoryFormVisible, setDormitoryFormVisible] = useState<boolean>(false); //shows new dormitory popup if true
+    const[isEditing, setIsEditing] = useState<boolean>(false); //allows changes in chosen (to the right) dormitory if true
+    const[temporaryStatus, setTemporaryStatus] = useState<'Active'|'Deactivated'>('Active'); //for dynamically changing status marker, doesn't work
 
     useEffect(() => {
         setActiveDormitories(activeDorms?.data);
@@ -92,11 +95,11 @@ export function AdminDormitoriesList(){
     }, [activeDorms, deactivatedDorms]);
 
     useEffect(() => {
-        if (!isEditing) {
+        if (!isEditing && !dormitoryFormVisible) {
             refetchActiveDormitories()
             refetchDeactivatedDormitories()
         }
-    }, [isEditing]);
+    }, [isEditing, dormitoryFormVisible]);
 
     const handleDeactivate = () => {
         if(chosenDormitory){
@@ -141,10 +144,10 @@ export function AdminDormitoriesList(){
                 [name]: value
             }))
         }else{
-            setRoomGeneration(prev => ({
-                ...prev,
-                [name]: value
-            }))
+             setRoomGeneration(prev => ({
+                 ...prev,
+                 [name]: value
+             }))
         }
     }
 

@@ -32,7 +32,7 @@ export function AdminProfileForm() {
         photo: user?.picture || '',
       })
     }
-  }, [user, isEditing, selectedFile])
+  }, [user, isEditing])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, files } = e.target
@@ -62,10 +62,6 @@ export function AdminProfileForm() {
           picture: profileData.photo,
         })
       }
-
-
-
-
       setSelectedFile(null)
       setProfileData(prev => ({ ...prev, photo: user?.picture || '' }))
       setIsEditing(false)
