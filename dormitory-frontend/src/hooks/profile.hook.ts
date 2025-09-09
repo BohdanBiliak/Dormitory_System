@@ -30,12 +30,9 @@ export function useMutateAdminProfile (){
     },
   })
 
-  // Temporarily disable avatar upload until we fix the endpoint
   const uploadAvatar = useMutation({
-    mutationFn: ({ file, userLastName }: { file: File; userLastName: string }) => {
-      // Return a rejected promise for now
-      return adminApi.uploadAvatar(file)
-    },
+    mutationFn: ({ file, userLastName }: { file: File; userLastName: string }) => {return adminApi.uploadAvatar(file)}
+    ,
     onSuccess: (response) => {
       toast.success('Avatar updated successfully!')
     },

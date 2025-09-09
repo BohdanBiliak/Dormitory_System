@@ -56,13 +56,13 @@ api.interceptors.response.use(
     })
     
     // Only redirect to login on 401 if we're not already on the login page
-    if (error.response?.status === 401 && typeof window !== 'undefined') {
-      const currentPath = window.location.pathname
-      if (!currentPath.includes('/auth/login')) {
-        console.log('🔒 Session expired, redirecting to login')
-        window.location.href = '/auth/login'
-      }
-    }
+    // if (error.response?.status === 401 && typeof window !== 'undefined') {
+    //   const currentPath = window.location.pathname
+    //   if (!currentPath.includes('/auth/login')) {
+    //     console.log('🔒 Session expired, redirecting to login')
+    //     window.location.href = '/auth/login'
+    //   }
+    // }
     return Promise.reject(error)
   }
 )

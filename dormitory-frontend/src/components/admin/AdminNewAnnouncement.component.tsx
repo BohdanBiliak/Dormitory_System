@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import {useMutateAnnouncement} from "@/hooks/announcements.hook";
 
 export function AdminNewAnnouncement(){
     const [title, setTitle] = useState('')
@@ -8,6 +9,8 @@ export function AdminNewAnnouncement(){
     const [expirationDate, setExpirationDate] = useState('')
     const [attachedFiles, setAttachedFiles] = useState<File[]>([])
     const [addresses, setAddresses] = useState<string[]>([])
+
+    const {createAnnouncement, uploadAnnouncementAttachment} = useMutateAnnouncement()
 
     const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
@@ -29,6 +32,11 @@ export function AdminNewAnnouncement(){
 
     const removeAddress = (index: number) => {
         setAddresses(prev => prev.filter((_, i) => i !== index))
+    }
+
+    const handleSublit = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const attachments = uploadAnnouncementAttachment(attachedFiles)
+        createAnnouncement({title: title, content: description, expiresAt: expirationDate,attachmentUrls: attachments})
     }
 
     return(
@@ -223,7 +231,7 @@ export function AdminNewAnnouncement(){
                                             Expiration Date *
                                         </label>
                                         <input
-                                            type="datetime-local"
+                                            type="date"
                                             value={expirationDate}
                                             onChange={(e) => setExpirationDate(e.target.value)}
                                             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm"
@@ -237,9 +245,6 @@ export function AdminNewAnnouncement(){
                     {/* Action Buttons */}
                     <div className="mt-8 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                         <div className="flex flex-col sm:flex-row sm:justify-end space-y-3 sm:space-y-0 sm:space-x-4">
-                            <button className="w-full sm:w-auto px-6 py-3 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors">
-                                Save as Draft
-                            </button>
                             <button className="w-full sm:w-auto px-6 py-3 bg-gray-500 text-white font-medium rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors">
                                 Cancel
                             </button>

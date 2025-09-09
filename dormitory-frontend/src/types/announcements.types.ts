@@ -25,3 +25,25 @@ export interface Recipient {
     floorId?: string;
     forEveryone?: boolean;
 }
+
+export interface AnnouncementCreateRequest {
+    title: string;
+    content: string;
+    expiresAt: string;
+    attachmentUrls: string[];
+    forEveryone: boolean;
+    userIds?: string[];
+    roomIds?: string[];
+    floorNumbers?: number[];
+}
+
+export interface AnnouncementUpdateRequest {
+    title?: string;
+    content?: string;
+    expiresAt?: string;
+    attachmentUrls?: string[];
+    forEveryone?: boolean;
+    userIds?: string[];
+    roomIds?: string[];
+    floorNumbers?: number[];
+}

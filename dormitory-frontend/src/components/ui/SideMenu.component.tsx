@@ -188,7 +188,7 @@ export function SideMenu ({children, menuItems, activeItem}:SideMenuProps){
             )}
 
             {/* Main Content */}
-            <div className="flex-1 p-4 sm:p-6 md:p-8 lg:p-12 flex flex-col justify-center">
+            <div className="flex-1 sm:p-6 md:p-8 lg:p-12 flex flex-col justify-center">
                 <div className="mx-auto w-full h-full flex">
                     {children}
                 </div>
