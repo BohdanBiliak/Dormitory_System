@@ -32,9 +32,9 @@ export interface AnnouncementCreateRequest {
     expiresAt: string;
     attachmentUrls: string[];
     forEveryone: boolean;
-    userIds?: string[];
-    roomIds?: string[];
-    floorNumbers?: number[];
+    userIds: string[];
+    roomIds: string[];
+    floorNumbers: number[];
 }
 
 export interface AnnouncementUpdateRequest {
@@ -46,4 +46,8 @@ export interface AnnouncementUpdateRequest {
     userIds?: string[];
     roomIds?: string[];
     floorNumbers?: number[];
+}
+
+export interface AddressesTypes {
+    type: 'Regular' | 'Room' | 'Floor';
 }

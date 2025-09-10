@@ -217,7 +217,7 @@ export function AdminAnnouncementList(){
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <Link 
-                                                        href={`/admin/announcement/${announcement.id}`}
+                                                        href={`/admin/announcements/${announcement.id}`}
                                                         className="text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline"
                                                     >
                                                         {announcement.title}
@@ -237,7 +237,7 @@ export function AdminAnnouncementList(){
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                     <Link 
-                                                        href={`/admin/announcement/${announcement.id}`}
+                                                        href={`/admin/announcements/${announcement.id}`}
                                                         className="text-blue-600 hover:text-blue-800"
                                                     >
                                                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

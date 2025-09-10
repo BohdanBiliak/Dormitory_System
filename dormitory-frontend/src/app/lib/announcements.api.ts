@@ -40,7 +40,7 @@ export const announcementsApi = {
         return response.data
     },
 
-    async getAnnouncementById(id: string){
+    async getAnnouncementById(id: string):Promise<Announcement>{
         const response = await api.get(`/announcements/${id}`);
         return response.data
     },
@@ -85,10 +85,14 @@ export const announcementsApi = {
 
     async postAnnouncement(newAnnouncement: AnnouncementCreateRequest){
         try {
-            const response = await api.post(`/announcements`, {newAnnouncement});
+            const response = await api.post(`/announcements`, newAnnouncement);
             return response.data;
-        }catch(error){
-            console.error('Api error: ', error);
+        }catch(error:any){
+            console.error('Api error:',{
+                status: error.response?.status,
+                message: error.message,
+                data: error.response?.data,
+            });
             throw error;
         }
     },

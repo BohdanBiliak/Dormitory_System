@@ -35,7 +35,7 @@ export function useGetPublicAnnouncements (filters:{
         page:number,
         limit:number }){
     const {data, isLoading, error} = useQuery({
-        queryKey: [`announcements`, `public`],
+        queryKey: [`announcements`, `public`, filters],
         queryFn: () => announcementsApi.getPublicAnnouncements(filters),
         enabled: !!filters,
         staleTime: 30 * 1000,

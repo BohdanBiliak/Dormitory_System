@@ -1,14 +1,25 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import {useMutateAnnouncement} from "@/hooks/announcements.hook";
+import {AddressesTypes, AnnouncementCreateRequest} from "@/types/announcements.types";
+import Link from "next/link";
+import {toast} from "sonner";
 
 export function AdminNewAnnouncement(){
-    const [title, setTitle] = useState('')
-    const [description, setDescription] = useState('')
-    const [expirationDate, setExpirationDate] = useState('')
     const [attachedFiles, setAttachedFiles] = useState<File[]>([])
-    const [addresses, setAddresses] = useState<string[]>([])
+    const [addresses, setAddresses] = useState<{id: string, label: string, type: AddressesTypes}[]>([])
+
+    const [newAnnouncement, setNewAnnouncement] = useState<AnnouncementCreateRequest>({
+        title: '',
+        content: '',
+        expiresAt: '',
+        attachmentUrls: [],
+        forEveryone: false,
+        floorNumbers: [],
+        roomIds: [],
+        userIds: []
+    })
 
     const {createAnnouncement, uploadAnnouncementAttachment} = useMutateAnnouncement()
 
@@ -22,21 +33,51 @@ export function AdminNewAnnouncement(){
         setAttachedFiles(prev => prev.filter((_, i) => i !== index))
     }
 
-    const addAddress = () => {
-        setAddresses(prev => [...prev, ''])
+    const addAddresses = (id: string, label:string, type: AddressesTypes) => {
+        setAddresses(prev => [...prev, {id, label, type}])
     }
 
-    const updateAddress = (index: number, value: string) => {
+    const updateAddresses = (index: number, value: {id: string, label:string, type: AddressesTypes}) => {
         setAddresses(prev => prev.map((addr, i) => i === index ? value : addr))
     }
 
-    const removeAddress = (index: number) => {
+    const removeAddresses = (index: number) => {
         setAddresses(prev => prev.filter((_, i) => i !== index))
     }
 
-    const handleSublit = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const attachments = uploadAnnouncementAttachment(attachedFiles)
-        createAnnouncement({title: title, content: description, expiresAt: expirationDate,attachmentUrls: attachments})
+    const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
+        try{
+            if(attachedFiles && attachedFiles.length !== 0){
+                uploadAnnouncementAttachment(attachedFiles)
+                attachedFiles.forEach((elem, i) => {
+                    setNewAnnouncement(prev => ({...prev, attachmentUrls: [...prev.attachmentUrls, URL.createObjectURL(elem)]}))
+                })
+            }
+            createAnnouncement(newAnnouncement)
+        }catch(e){
+            console.log(e)
+            //toast.error(e.message? || 'Failed to create announcement')
+        }
+    }
+
+    const handleInputChange = (e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const {name, value} = e.target
+
+        // if(name === "expiresAt"){
+        //     setNewAnnouncement(prev =>({...prev, expiresAt: new Date(value).toISOString()}))
+        // }else
+            if(name !== "attachmentUrls"){
+            setNewAnnouncement(prev =>({...prev, [name]:value}))
+        }
+
+    }
+
+    const handleCheckboxChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+        const {name, checked} = e.target
+
+        if(name === "forEveryone"){
+            setNewAnnouncement(prev =>({...prev, [name]: checked}))
+        }
     }
 
     return(
@@ -89,8 +130,9 @@ export function AdminNewAnnouncement(){
                                         </label>
                                         <input
                                             type="text"
-                                            value={title}
-                                            onChange={(e) => setTitle(e.target.value)}
+                                            value={newAnnouncement.title}
+                                            name="title"
+                                            onChange={handleInputChange}
                                             placeholder="Enter announcement title..."
                                             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors text-lg"
                                         />
@@ -102,14 +144,15 @@ export function AdminNewAnnouncement(){
                                             Description *
                                         </label>
                                         <textarea
-                                            value={description}
-                                            onChange={(e) => setDescription(e.target.value)}
+                                            value={newAnnouncement.content}
+                                            name="content"
+                                            onChange={handleInputChange}
                                             placeholder="Write your announcement content here..."
                                             rows={12}
                                             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors resize-none"
                                         />
                                         <p className="text-sm text-gray-500">
-                                            {description.length} characters
+                                            {newAnnouncement.content.length} characters
                                         </p>
                                     </div>
 
@@ -170,27 +213,42 @@ export function AdminNewAnnouncement(){
                             {/* Recipients Section */}
                             <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                                 <div className="bg-gradient-to-r from-green-600 to-green-700 px-6 py-4">
-                                    <div className="flex items-center space-x-3">
+                                    <label className="flex items-center space-x-3">
                                         <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                                         </svg>
                                         <h3 className="text-lg font-semibold text-white">Recipients</h3>
-                                    </div>
+                                    </label>
+                                    <label className="flex items-center space-x-3">
+                                        <h4 className="text-sm text-white">
+                                            General announcement:
+                                        </h4>
+                                        <input
+                                            type="checkbox"
+                                            name="forEveryone"
+                                            checked={newAnnouncement.forEveryone}
+                                            onChange={handleCheckboxChange}
+                                            className={`sr-only`}
+                                        />
+                                        <div className={`relative w-11 h-6 rounded-full transition-colors duration-200 ${
+                                            newAnnouncement.forEveryone ? 'bg-blue-600' : 'bg-gray-300'
+                                        }`}>
+                                            <div className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform duration-200 ${
+                                                newAnnouncement.forEveryone ? 'translate-x-5' : 'translate-x-0'
+                                            }`}/>
+                                        </div>
+                                    </label>
                                 </div>
 
                                 <div className="p-6">
                                     <div className="space-y-4">
                                         {addresses.map((address, index) => (
                                             <div key={index} className="flex items-center space-x-2">
-                                                <input
-                                                    type="text"
-                                                    value={address}
-                                                    onChange={(e) => updateAddress(index, e.target.value)}
-                                                    placeholder="Enter email or room number"
-                                                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-sm"
-                                                />
+                                                <div className="flex items-center space-x-2">
+                                                    <label>address</label>
+                                                </div>
                                                 <button
-                                                    onClick={() => removeAddress(index)}
+                                                    onClick={() => removeAddresses(index)}
                                                     className="text-red-500 hover:text-red-700 transition-colors"
                                                 >
                                                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -201,7 +259,7 @@ export function AdminNewAnnouncement(){
                                         ))}
 
                                         <button
-                                            onClick={addAddress}
+                                            //onClick={addAddresses}
                                             className="w-full flex items-center justify-center px-4 py-2 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-green-400 hover:text-green-600 transition-colors"
                                         >
                                             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -231,9 +289,10 @@ export function AdminNewAnnouncement(){
                                             Expiration Date *
                                         </label>
                                         <input
+                                            name="expiresAt"
                                             type="date"
-                                            value={expirationDate}
-                                            onChange={(e) => setExpirationDate(e.target.value)}
+                                            //value={newAnnouncement.expiresAt}
+                                            onChange={handleInputChange}
                                             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm"
                                         />
                                     </div>
@@ -245,10 +304,10 @@ export function AdminNewAnnouncement(){
                     {/* Action Buttons */}
                     <div className="mt-8 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                         <div className="flex flex-col sm:flex-row sm:justify-end space-y-3 sm:space-y-0 sm:space-x-4">
-                            <button className="w-full sm:w-auto px-6 py-3 bg-gray-500 text-white font-medium rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors">
+                            <Link className="w-full sm:w-auto px-6 py-3 bg-gray-500 text-white font-medium rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors" href={`/admin/announcements`}>
                                 Cancel
-                            </button>
-                            <button className="w-full sm:w-auto px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors flex items-center justify-center space-x-2">
+                            </Link>
+                            <button className="w-full sm:w-auto px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors flex items-center justify-center space-x-2" onClick={handleSubmit}>
                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                                 </svg>
