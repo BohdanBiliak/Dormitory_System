@@ -1,13 +1,39 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
+import {useMutateAnnouncement} from "@/hooks/announcements.hook";
+import {AddressesTypes, AnnouncementCreateRequest} from "@/types/announcements.types";
+import Link from "next/link";
+import {toast} from "sonner";
+import {Description, Dialog, DialogBackdrop, DialogPanel, DialogTitle} from "@headlessui/react";
+import {ChevronDown, ChevronUp, Plus, X} from "lucide-react";
+
+interface AddresseeItem {
+    id: string;
+    label: string;
+    type: AddressesTypes
+}
 
 export function AdminNewAnnouncement(){
-    const [title, setTitle] = useState('')
-    const [description, setDescription] = useState('')
-    const [expirationDate, setExpirationDate] = useState('')
     const [attachedFiles, setAttachedFiles] = useState<File[]>([])
-    const [addresses, setAddresses] = useState<string[]>([])
+    const [addresses, setAddresses] = useState<{id: string, label: string, type: AddressesTypes}[]>([])
+    const [showAddressesDialog, setShowAddressesDialog] = useState<boolean>(false)
+
+    const [chosenAddresses, setChosenAddresses] = useState<{id: string, label: string, type: AddressesTypes}[]>([])
+    const [expandedAddresses, setExpandedAddresses] = useState<{id: string, label: string, type: AddressesTypes}[]>([])
+
+    const [newAnnouncement, setNewAnnouncement] = useState<AnnouncementCreateRequest>({
+        title: '',
+        content: '',
+        expiresAt: '',
+        attachmentUrls: [],
+        forEveryone: false,
+        floorNumbers: [],
+        roomIds: [],
+        userIds: []
+    })
+
+    const {createAnnouncement, uploadAnnouncementAttachment} = useMutateAnnouncement()
 
     const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
@@ -19,20 +45,90 @@ export function AdminNewAnnouncement(){
         setAttachedFiles(prev => prev.filter((_, i) => i !== index))
     }
 
-    const addAddress = () => {
-        setAddresses(prev => [...prev, ''])
-    }
-
-    const updateAddress = (index: number, value: string) => {
+    const updateAddresses = (index: number, value: {id: string, label:string, type: AddressesTypes}) => {
         setAddresses(prev => prev.map((addr, i) => i === index ? value : addr))
     }
 
-    const removeAddress = (index: number) => {
+    const removeAddresses = (index: number) => {
         setAddresses(prev => prev.filter((_, i) => i !== index))
     }
 
+    const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
+        try{
+            if(attachedFiles && attachedFiles.length !== 0){
+                uploadAnnouncementAttachment(attachedFiles)
+                attachedFiles.forEach((elem, i) => {
+                    setNewAnnouncement(prev => ({...prev, attachmentUrls: [...prev.attachmentUrls, URL.createObjectURL(elem)]}))
+                })
+            }
+            createAnnouncement(newAnnouncement)
+        }catch(e){
+            console.log(e)
+        }
+    }
+
+    const handleInputChange = (e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const {name, value} = e.target
+
+            if(name !== "attachmentUrls"){
+            setNewAnnouncement(prev =>({...prev, [name]:value}))
+        }
+
+    }
+
+    const handleCheckboxChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+        const {name, checked} = e.target
+
+        if(name === "forEveryone"){
+            setNewAnnouncement(prev =>({...prev, [name]: checked}))
+        }
+    }
+
+    const handleCloseAddressesDialog = () => {
+        setShowAddressesDialog(false);
+    }
+
+    const handleToggleAddresses = (expandAddresse:AddresseeItem) => {
+        const searchResult = expandedAddresses.find((elem) => {elem.id === expandAddresse.id && elem.type === expandAddresse.type})
+        if(searchResult){
+            setExpandedAddresses(prev => prev.filter(addresse => addresse !== expandAddresse))
+        }else{
+            setExpandedAddresses(prev => [...prev,expandAddresse])
+        }
+    }
+
+    const handleAddAddress = (address:AddresseeItem) => {
+        if(!chosenAddresses.find((addr) => {addr.id ===address.id && addr.type === address.type})){
+            setChosenAddresses(prev=>[...prev, address])
+        }
+    }
+
+    const handleRemoveAddress = (address:AddresseeItem) => {
+        if(chosenAddresses.find((addr) => {addr.id === address.id && addr.type === address.type})){
+            setChosenAddresses(prev => prev.filter(addr => addr !== address))
+        }
+    }
+    const AddresseeItem = ({
+        item,
+        level,
+        isExpanded = false,
+
+    }:{
+        item:AddresseeItem,
+        level:number,
+        isExpanded:boolean,
+    }) => {
+        <div className={`flex items-center justify-between py-1 px-2 hover:bg-gray-50 ${
+            level === 0 ? 'bg-gray-100 font-semibold' : ''
+        } ${level === 1 ? 'bg-gray-50' : ''}`}>
+            <div className="flex items-center gap-2">
+
+            </div>
+        </div>
+    }
+
     return(
-        <div className="min-h-screen w-full bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className="w-full bg-gradient-to-br from-gray-50 to-gray-100">
             {/* Header */}
             <div className="bg-white shadow-sm border-b border-gray-200">
                 <div className="px-4 py-6 md:px-6 md:py-8">
@@ -81,8 +177,9 @@ export function AdminNewAnnouncement(){
                                         </label>
                                         <input
                                             type="text"
-                                            value={title}
-                                            onChange={(e) => setTitle(e.target.value)}
+                                            value={newAnnouncement.title}
+                                            name="title"
+                                            onChange={handleInputChange}
                                             placeholder="Enter announcement title..."
                                             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors text-lg"
                                         />
@@ -94,14 +191,15 @@ export function AdminNewAnnouncement(){
                                             Description *
                                         </label>
                                         <textarea
-                                            value={description}
-                                            onChange={(e) => setDescription(e.target.value)}
+                                            value={newAnnouncement.content}
+                                            name="content"
+                                            onChange={handleInputChange}
                                             placeholder="Write your announcement content here..."
                                             rows={12}
                                             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors resize-none"
                                         />
                                         <p className="text-sm text-gray-500">
-                                            {description.length} characters
+                                            {newAnnouncement.content.length} characters
                                         </p>
                                     </div>
 
@@ -162,27 +260,42 @@ export function AdminNewAnnouncement(){
                             {/* Recipients Section */}
                             <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                                 <div className="bg-gradient-to-r from-green-600 to-green-700 px-6 py-4">
-                                    <div className="flex items-center space-x-3">
+                                    <label className="flex items-center space-x-3">
                                         <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                                         </svg>
                                         <h3 className="text-lg font-semibold text-white">Recipients</h3>
-                                    </div>
+                                    </label>
+                                    <label className="flex items-center space-x-3">
+                                        <h4 className="text-sm text-white">
+                                            General announcement:
+                                        </h4>
+                                        <input
+                                            type="checkbox"
+                                            name="forEveryone"
+                                            checked={newAnnouncement.forEveryone}
+                                            onChange={handleCheckboxChange}
+                                            className={`sr-only`}
+                                        />
+                                        <div className={`relative w-11 h-6 rounded-full transition-colors duration-200 ${
+                                            newAnnouncement.forEveryone ? 'bg-blue-600' : 'bg-gray-300'
+                                        }`}>
+                                            <div className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform duration-200 ${
+                                                newAnnouncement.forEveryone ? 'translate-x-5' : 'translate-x-0'
+                                            }`}/>
+                                        </div>
+                                    </label>
                                 </div>
 
                                 <div className="p-6">
                                     <div className="space-y-4">
                                         {addresses.map((address, index) => (
                                             <div key={index} className="flex items-center space-x-2">
-                                                <input
-                                                    type="text"
-                                                    value={address}
-                                                    onChange={(e) => updateAddress(index, e.target.value)}
-                                                    placeholder="Enter email or room number"
-                                                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-sm"
-                                                />
+                                                <div className="flex items-center space-x-2">
+                                                    <label>address</label>
+                                                </div>
                                                 <button
-                                                    onClick={() => removeAddress(index)}
+                                                    onClick={() => removeAddresses(index)}
                                                     className="text-red-500 hover:text-red-700 transition-colors"
                                                 >
                                                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -193,7 +306,7 @@ export function AdminNewAnnouncement(){
                                         ))}
 
                                         <button
-                                            onClick={addAddress}
+                                            onClick={()=>setShowAddressesDialog(true)}
                                             className="w-full flex items-center justify-center px-4 py-2 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-green-400 hover:text-green-600 transition-colors"
                                         >
                                             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -223,9 +336,10 @@ export function AdminNewAnnouncement(){
                                             Expiration Date *
                                         </label>
                                         <input
-                                            type="datetime-local"
-                                            value={expirationDate}
-                                            onChange={(e) => setExpirationDate(e.target.value)}
+                                            name="expiresAt"
+                                            type="date"
+                                            //value={newAnnouncement.expiresAt}
+                                            onChange={handleInputChange}
                                             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm"
                                         />
                                     </div>
@@ -237,13 +351,10 @@ export function AdminNewAnnouncement(){
                     {/* Action Buttons */}
                     <div className="mt-8 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                         <div className="flex flex-col sm:flex-row sm:justify-end space-y-3 sm:space-y-0 sm:space-x-4">
-                            <button className="w-full sm:w-auto px-6 py-3 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors">
-                                Save as Draft
-                            </button>
-                            <button className="w-full sm:w-auto px-6 py-3 bg-gray-500 text-white font-medium rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors">
+                            <Link className="w-full sm:w-auto px-6 py-3 bg-gray-500 text-white font-medium rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors" href={`/admin/announcements`}>
                                 Cancel
-                            </button>
-                            <button className="w-full sm:w-auto px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors flex items-center justify-center space-x-2">
+                            </Link>
+                            <button className="w-full sm:w-auto px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors flex items-center justify-center space-x-2" onClick={handleSubmit}>
                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                                 </svg>
@@ -253,6 +364,46 @@ export function AdminNewAnnouncement(){
                     </div>
                 </div>
             </div>
+            <Dialog onClose={handleCloseAddressesDialog} open={showAddressesDialog} className="relative z-50">
+                <DialogBackdrop className="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity" />
+                <div className="fixed inset-0 flex items-center justify-center p-4">
+                    <DialogPanel className="w-full max-w-2xl max-h-[90vh] bg-white rounded-2xl shadow-2xl overflow-hidden">
+
+                        {/*header*/}
+                        <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center space-x-3">
+                                    <div className="p-2 bg-white/20 rounded-lg">
+                                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <DialogTitle className="text-xl font-semibold text-white">
+                                            Create New Dormitory
+                                        </DialogTitle>
+                                        <Description className="text-blue-100 text-sm mt-1">
+                                            Add a new dormitory to the system with room configuration
+                                        </Description>
+                                    </div>
+                                </div>
+                                <button
+                                    onClick={handleCloseAddressesDialog}
+                                    className="p-1 hover:bg-white/20 rounded-lg transition-colors"
+                                >
+                                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className="overflow-y-auto max-h-[calc(90vh-120px)]">
+
+                        </div>
+                    </DialogPanel>
+                </div>
+            </Dialog>
         </div>
     )
 }

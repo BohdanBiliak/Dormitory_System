@@ -15,6 +15,7 @@ export interface DormitoryRequest {
     "address": string;
     "groundFloorPhoneNumber": string;
     "roomGeneration": RoomGenerationShema;
+    "photos"?: File[];
 }
 
 export interface DormitoryUpdateRequest {
@@ -48,6 +49,11 @@ export const dormitoryApi = {
         formData.append('address', newDormitory.address);
         formData.append('groundFloorPhoneNumber', newDormitory.groundFloorPhoneNumber);
         formData.append('roomGeneration', roomGenerationString);
+        if(newDormitory.photos){
+            newDormitory.photos.forEach(photo => {
+                formData.append('photos', photo);
+            })
+        }
 
         try {
             const response = await api.post('/dormitories', formData, {

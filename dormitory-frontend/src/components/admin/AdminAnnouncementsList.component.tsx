@@ -1,11 +1,10 @@
 'use client'
 
 import React, {useEffect, useState} from "react";
-import {useAnnouncements} from "@/hooks/announcements.hook";
 import Link from "next/link";
-import {router} from "next/client";
 import {Announcement} from "@/types/announcements.types";
 import {announcementsApi} from "@/app/lib/announcements.api";
+import {useGetAnnouncements} from "@/hooks/announcements.hook";
 
 export function AdminAnnouncementList(){
     const [showHidden, setShowHidden] = React.useState(false);
@@ -14,23 +13,14 @@ export function AdminAnnouncementList(){
     const [announcements, setAnnouncements] = useState<Announcement[]>([]);
     const limit = 10;
 
-    const {getAnnouncements} = useAnnouncements();
+    const handleChangeShowExpired = (): void =>setShowExpired(!showExpired);
+    const handleChangeShowHidden = (): void => setShowHidden(!showHidden);
 
-    const handleChangeShowExpired = (): void => {setShowExpired(!showExpired); updateAnnouncementList()};
-    const handleChangeShowHidden = (): void => {setShowHidden(!showHidden); updateAnnouncementList()};
-
-    const updateAnnouncementList = ()=>{
-        const announcements = getAnnouncements({showHidden:showHidden, showExpired:showExpired,page:page,limit:limit});
-        if(!announcements.isLoading && !announcements.isError && announcements){
-            setAnnouncements(announcements.data?.data || [])
-        }
-    }
-
-    const {data: announcementsList, isLoading, error} = getAnnouncements({
-         showHidden,
-         showExpired,
-         page,
-         limit
+    const {data: announcementsList, isLoading, error} = useGetAnnouncements({
+         showHidden:showHidden,
+         showExpired:showExpired,
+         page:page,
+         limit:limit
     })
 
     console.log("showExpired ", showExpired);
@@ -38,6 +28,10 @@ export function AdminAnnouncementList(){
     console.log("announcements:", announcements);
 
     const totalPages = announcementsList?.pagination?.totalPages || 1
+
+    useEffect(() => {
+        setAnnouncements(announcementsList?.data || []);
+    }, [announcementsList]);
 
     if (isLoading) {
         return (
@@ -68,8 +62,6 @@ export function AdminAnnouncementList(){
             </div>
         )
     }
-
-    const announcementsData = announcementsList?.data || announcements || []
 
     return(
         <div className="min-h-screen w-full bg-gradient-to-br from-gray-50 to-gray-100">
@@ -168,11 +160,11 @@ export function AdminAnnouncementList(){
             <div className="flex-1 bg-white">
                 <div className="px-4 py-4 md:px-6 border-b border-gray-200">
                     <h2 className="text-lg font-semibold text-gray-900">
-                        Announcements ({announcementsData.length} found)
+                        Announcements ({announcements.length} found)
                     </h2>
                 </div>
 
-                {announcementsData.length === 0 ? (
+                {announcements.length === 0 ? (
                     <div className="p-12 text-center">
                         <div className="text-gray-400 mb-4">
                             <svg className="mx-auto h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -216,7 +208,7 @@ export function AdminAnnouncementList(){
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-200">
-                                    {announcementsData.map((announcement, index) => {
+                                    {announcements.map((announcement, index) => {
                                         const isExpired = new Date(announcement.expiresAt) < new Date()
                                         return (
                                             <tr key={announcement.id || index} className="hover:bg-gray-50 transition-colors">
@@ -225,7 +217,7 @@ export function AdminAnnouncementList(){
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <Link 
-                                                        href={`/admin/announcement/${announcement.id}`}
+                                                        href={`/admin/announcements/${announcement.id}`}
                                                         className="text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline"
                                                     >
                                                         {announcement.title}
@@ -245,7 +237,7 @@ export function AdminAnnouncementList(){
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                     <Link 
-                                                        href={`/admin/announcement/${announcement.id}`}
+                                                        href={`/admin/announcements/${announcement.id}`}
                                                         className="text-blue-600 hover:text-blue-800"
                                                     >
                                                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -262,7 +254,7 @@ export function AdminAnnouncementList(){
 
                         {/* Mobile Card View */}
                         <div className="md:hidden divide-y divide-gray-200">
-                            {announcementsData.map((announcement, index) => {
+                            {announcements.map((announcement, index) => {
                                 const isExpired = new Date(announcement.expiresAt) < new Date()
                                 return (
                                     <Link 

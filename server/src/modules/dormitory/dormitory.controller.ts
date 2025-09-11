@@ -73,7 +73,7 @@ export class DormitoryController {
   }
 
   @Get()
-  @Authorization()
+  //@Authorization()
   @ApiOperation({ summary: "List all active dormitories" })
   @ApiResponse({
     status: 200,
@@ -126,7 +126,7 @@ export class DormitoryController {
   }
 
   @Get(":id")
-  @Authorization()
+  //@Authorization()
   @ApiOperation({ summary: "Get dormitory by ID" })
   @ApiParam({ name: "id", description: "Dormitory UUID" })
   @ApiResponse({

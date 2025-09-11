@@ -1,5 +1,5 @@
 import {api} from "@/app/lib/api.api";
-import {Announcement, Attachment, Recipient} from "@/types/announcements.types";
+import {Announcement, Attachment, Recipient, AnnouncementCreateRequest, AnnouncementUpdateRequest} from "@/types/announcements.types";
 
 export interface AnnouncementsResponse {
     data: Announcement[];
@@ -12,7 +12,7 @@ export interface AnnouncementsResponse {
 }
 
 export const announcementsApi = {
-    async getAnnouncements(filters?:{
+    async getAnnouncements(filters:{
         showHidden?: boolean,
         showExpired?: boolean,
         page:number,
@@ -40,17 +40,22 @@ export const announcementsApi = {
         return response.data
     },
 
-    async getAnnouncementById(id: string){
+    async getAnnouncementById(id: string):Promise<Announcement>{
         const response = await api.get(`/announcements/${id}`);
         return response.data
     },
 
     async deactivateAnnouncement(id:string){
-        const response = await api.delete(`/announcements/${id}`);
-        return response.data
+        try{
+            const response = await api.delete(`/announcements/${id}`);
+            return response.data
+        }catch(error){
+            console.error('Api error:',error);
+            throw error;
+        }
     },
 
-    async getPublicAnnouncements (filters?:{
+    async getPublicAnnouncements (filters:{
         showHidden?: boolean,
         showExpired?: boolean,
         page:number,
@@ -76,5 +81,50 @@ export const announcementsApi = {
 
         const response = await api.get(`/announcements/public?${params}`)
         return response.data
+    },
+
+    async postAnnouncement(newAnnouncement: AnnouncementCreateRequest){
+        try {
+            const response = await api.post(`/announcements`, newAnnouncement);
+            return response.data;
+        }catch(error:any){
+            console.error('Api error:',{
+                status: error.response?.status,
+                message: error.message,
+                data: error.response?.data,
+            });
+            throw error;
+        }
+    },
+
+    async updateAnnouncement(id:string, changes:AnnouncementUpdateRequest){
+        try {
+            const response = await api.post(`/announcements/${id}`, changes);
+            return response.data;
+        }catch (error){
+            console.error('Api error: ', error);
+            throw error;
+        }
+    },
+
+    async uploadAnnouncementAttachment(files:File[]):Promise<{urls:string[]}>{
+        console.log('Uploading file...');
+        const formData = new FormData();
+        files.forEach(file => {
+            formData.append('files', file);
+        })
+
+        try{
+            const response = await api.post(`/announcements/upload`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            console.log('Announcement attachments uploaded successfully.');
+            return response.data;
+        }catch (error){
+            console.error('Attachments upload error:', error)
+            throw error
+        }
     }
 }

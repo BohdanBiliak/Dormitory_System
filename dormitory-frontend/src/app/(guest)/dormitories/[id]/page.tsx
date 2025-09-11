@@ -1,13 +1,11 @@
 import { SideMenu } from "@/components/ui/SideMenu.component";
 import { GuestDormitoryDetailsPage } from '@/components/guest/GuestDormitoryDetailsPage'
 import { MenuItem } from "@/types/ui.types";
-import { Suspense } from "react";
+import {Suspense, use} from "react";
 
-interface PageProps {
-    params: { id: string }
-}
 
-export default function DormitoryDetailsPage({ params }: PageProps) {
+export default function GuestDormitories({params}:{params:Promise<{ id: string }>}){
+    const {id} = use(params);
     const menuItems: MenuItem[] = [
         {
             id: 'dormitories',
@@ -36,7 +34,7 @@ export default function DormitoryDetailsPage({ params }: PageProps) {
     return (
         <Suspense fallback={<div>Loading...</div>}>
             <SideMenu menuItems={menuItems} activeItem={'dormitories'}>
-                <GuestDormitoryDetailsPage params={params} />
+                <GuestDormitoryDetailsPage id={id} />
             </SideMenu>
         </Suspense>
     )

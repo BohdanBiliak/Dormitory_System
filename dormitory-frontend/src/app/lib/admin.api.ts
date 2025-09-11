@@ -45,7 +45,6 @@ export const adminApi = {
   // Upload avatar - simplified
   async uploadAvatar(file: File): Promise<{ url: string }> {
     console.log('📤 Uploading avatar...')
-    
     const formData = new FormData()
     formData.append('file', file)
 

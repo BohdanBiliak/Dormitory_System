@@ -12,17 +12,6 @@ export const useAuth = () => {
 
   const isLoadingUser = false
   const userError = null;
-  // Get current user query
-  // const {
-  //   data: user,
-  //   isLoading: isLoadingUser,
-  //   error: userError
-  // } = useQuery({
-  //   queryKey: ['auth', 'currentUser'],
-  //   queryFn: authApi.getCurrentUser,
-  //   retry: 1,
-  //   staleTime: 5 * 60 * 1000, // 5 minutes
-  // })
 
   // Login mutation
   const loginMutation = useMutation({
