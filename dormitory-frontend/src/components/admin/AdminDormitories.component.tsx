@@ -5,6 +5,7 @@ import {useEffect, useState} from "react";
 import {DormitoryRequest} from "@/app/lib/dorms.api";
 import {Description, Dialog, DialogBackdrop, DialogPanel, DialogTitle} from "@headlessui/react";
 import {Dormitory, RoomGenerationShema} from "@/types/dormitories.types";
+import {ChevronLeft, ChevronRight} from "lucide-react";
 
 export function AdminDormitoriesList(){
     const{createDormitory, deactivateDormitory, updateDormitory, activateDormitory} = useDormitories();
@@ -24,6 +25,7 @@ export function AdminDormitoriesList(){
         address: '',
         groundFloorPhoneNumber: '',
         roomGeneration: roomGeneration,
+        photos: [],
     });
 
     const[activeDormitories, setActiveDormitories] = useState<Dormitory[]|undefined>(undefined)
@@ -123,6 +125,7 @@ export function AdminDormitoriesList(){
             name: '',
             address: '',
             groundFloorPhoneNumber: '',
+            photos: [],
             roomGeneration: {
                 numberOfFloors: 1,
                 roomsPerFloor: 4,
@@ -190,6 +193,20 @@ export function AdminDormitoriesList(){
         setIsEditing(false);
     }
 
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    useEffect(() => {
+        setCurrentIndex(0);
+    }, [chosenDormitory]);
+
+    const goToPrevious = () => {
+        setCurrentIndex(prev => (prev === 0 && chosenDormitory?.photos && chosenDormitory.photos? chosenDormitory.photos.length - 1 : prev - 1));
+    };
+
+    const goToNext = () => {
+        setCurrentIndex(prev => (chosenDormitory?.photos && prev === chosenDormitory.photos.length - 1? 0 : prev + 1));
+    };
+
     if (isLoadingActiveDormitories || isLoadingDeactivatedDormitories) {
         return (
             <div className="min-h-screen w-full flex items-center justify-center bg-gray-50">
@@ -202,6 +219,16 @@ export function AdminDormitoriesList(){
             </div>
         )
     }
+
+    const handleNewDormPhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const {name, value, files} = e.target;
+        const photos = files ? Array.from(files) : []
+
+        if(name === "photos"){
+            setNewDormitory(prev=>({...prev, photos: photos}));
+        }
+    }
+
 
     if (activeDormsError || deactivatedDormsError) {
         return (
@@ -459,6 +486,58 @@ export function AdminDormitoriesList(){
                                                             </span>
                                                         )}
                                                     </div>
+                                                    {chosenDormitory.photos.length > 0 ? (
+                                                        <div>
+                                                            <label className="block text-xs sm:text-sm font-medium text-gray-500 mb-1">Photos</label>
+                                                            <div className="relative h-64 md:h-96 rounded-lg overflow-hidden">
+                                                                <img
+                                                                    src={chosenDormitory.photos[currentIndex]}
+                                                                    alt={`Photo ${currentIndex + 1}`}
+                                                                    className="w-full h-full object-cover"
+                                                                />
+
+                                                                {/* Navigation arrows */}
+                                                                {chosenDormitory.photos.length > 1 && (
+                                                                    <>
+                                                                        <button
+                                                                            onClick={goToPrevious}
+                                                                            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75"
+                                                                        >
+                                                                            <ChevronLeft size={24} />
+                                                                        </button>
+                                                                        <button
+                                                                            onClick={goToNext}
+                                                                            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75"
+                                                                        >
+                                                                            <ChevronRight size={24} />
+                                                                        </button>
+                                                                    </>
+                                                                )}
+
+                                                                {/* Image counter */}
+                                                                <div className="absolute bottom-2 right-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded text-sm">
+                                                                    {currentIndex + 1} / {chosenDormitory.photos.length}
+                                                                </div>
+                                                            </div>
+
+                                                            {/* Dots indicator */}
+                                                            {chosenDormitory.photos.length > 1 && (
+                                                                <div className="flex justify-center mt-4 gap-2">
+                                                                    {chosenDormitory.photos.map((_, index) => (
+                                                                        <button
+                                                                            key={index}
+                                                                            onClick={() => setCurrentIndex(index)}
+                                                                            className={`w-3 h-3 rounded-full transition-colors ${
+                                                                                index === currentIndex
+                                                                                    ? 'bg-blue-600'
+                                                                                    : 'bg-gray-300 hover:bg-gray-400'
+                                                                            }`}
+                                                                        />
+                                                                    ))}
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    ) : (<></>)}
                                                 </div>
                                             </div>
 
@@ -645,6 +724,18 @@ export function AdminDormitoriesList(){
                                             value={newDormitory.address}
                                             onChange={handleNewDormInputChange}
                                             required
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Photos
+                                        </label>
+                                        <input
+                                            type="file"
+                                            name="photos"
+                                            multiple={true}
+                                            onChange={handleNewDormPhotoChange}
                                         />
                                     </div>
                                 </div>

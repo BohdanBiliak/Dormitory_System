@@ -41,7 +41,7 @@ export default function AdminProfilePage() {
                     id:'confirmations',
                     label: 'Confirmations',
                     image:'/clipboard-check.svg',
-                    href: '#',
+                    href: '/admin/confirmations',
                 },
                 {
                     id:'payments',

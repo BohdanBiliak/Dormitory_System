@@ -2,6 +2,8 @@
 
 import { usePublicDormitoryDetails } from '@/hooks/public-dormitories.hook'
 import Link from 'next/link'
+import {useState} from "react";
+import {ChevronLeft, ChevronRight} from "lucide-react";
 
 export interface GuestDormitoryDetailsPageProps{
   id:string;
@@ -9,6 +11,17 @@ export interface GuestDormitoryDetailsPageProps{
 
 export function GuestDormitoryDetailsPage({ id }:GuestDormitoryDetailsPageProps) {
   const { data: dormitory, isLoading, error } = usePublicDormitoryDetails(id)
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const goToPrevious = () => {
+    setCurrentIndex(prev => (prev === 0 && dormitory?.photos && dormitory.photos? dormitory.photos.length - 1 : prev - 1));
+  };
+
+  const goToNext = () => {
+    setCurrentIndex(prev => (dormitory?.photos && prev === dormitory.photos.length - 1? 0 : prev + 1));
+  };
+
 
   if (isLoading) {
     return (
@@ -104,6 +117,7 @@ export function GuestDormitoryDetailsPage({ id }:GuestDormitoryDetailsPageProps)
                   {dormitory.status}
                 </span>
               </div>
+
             </div>
           </div>
 
@@ -150,6 +164,58 @@ export function GuestDormitoryDetailsPage({ id }:GuestDormitoryDetailsPageProps)
                         {dormitory.status}
                       </span>
                     </div>
+                    {dormitory.photos.length > 0 ? (
+                        <div>
+                          <label className="block text-xs sm:text-sm font-medium text-gray-500 mb-1">Photos</label>
+                          <div className="relative h-64 md:h-96 rounded-lg overflow-hidden">
+                            <img
+                                src={dormitory.photos[currentIndex]}
+                                alt={`Photo ${currentIndex + 1}`}
+                                className="w-full h-full object-cover"
+                            />
+
+                            {/* Navigation arrows */}
+                            {dormitory.photos.length > 1 && (
+                                <>
+                                  <button
+                                      onClick={goToPrevious}
+                                      className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75"
+                                  >
+                                    <ChevronLeft size={24} />
+                                  </button>
+                                  <button
+                                      onClick={goToNext}
+                                      className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75"
+                                  >
+                                    <ChevronRight size={24} />
+                                  </button>
+                                </>
+                            )}
+
+                            {/* Image counter */}
+                            <div className="absolute bottom-2 right-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded text-sm">
+                              {currentIndex + 1} / {dormitory.photos.length}
+                            </div>
+                          </div>
+
+                          {/* Dots indicator */}
+                          {dormitory.photos.length > 1 && (
+                              <div className="flex justify-center mt-4 gap-2">
+                                {dormitory.photos.map((_, index) => (
+                                    <button
+                                        key={index}
+                                        onClick={() => setCurrentIndex(index)}
+                                        className={`w-3 h-3 rounded-full transition-colors ${
+                                            index === currentIndex
+                                                ? 'bg-blue-600'
+                                                : 'bg-gray-300 hover:bg-gray-400'
+                                        }`}
+                                    />
+                                ))}
+                              </div>
+                          )}
+                        </div>
+                    ) : (<></>)}
                   </div>
                 </div>
               </div>
