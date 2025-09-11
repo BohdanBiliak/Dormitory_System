@@ -5879,8 +5879,18 @@ export namespace Prisma {
 
   export type AggregateConfirmation = {
     _count: ConfirmationCountAggregateOutputType | null
+    _avg: ConfirmationAvgAggregateOutputType | null
+    _sum: ConfirmationSumAggregateOutputType | null
     _min: ConfirmationMinAggregateOutputType | null
     _max: ConfirmationMaxAggregateOutputType | null
+  }
+
+  export type ConfirmationAvgAggregateOutputType = {
+    numberOfPeople: number | null
+  }
+
+  export type ConfirmationSumAggregateOutputType = {
+    numberOfPeople: number | null
   }
 
   export type ConfirmationMinAggregateOutputType = {
@@ -5893,6 +5903,10 @@ export namespace Prisma {
     backIdUrl: string | null
     createdAt: Date | null
     resolvedAt: Date | null
+    roomId: string | null
+    from: Date | null
+    to: Date | null
+    numberOfPeople: number | null
   }
 
   export type ConfirmationMaxAggregateOutputType = {
@@ -5905,6 +5919,10 @@ export namespace Prisma {
     backIdUrl: string | null
     createdAt: Date | null
     resolvedAt: Date | null
+    roomId: string | null
+    from: Date | null
+    to: Date | null
+    numberOfPeople: number | null
   }
 
   export type ConfirmationCountAggregateOutputType = {
@@ -5917,9 +5935,23 @@ export namespace Prisma {
     backIdUrl: number
     createdAt: number
     resolvedAt: number
+    roomId: number
+    from: number
+    to: number
+    roommateIds: number
+    numberOfPeople: number
+    metadata: number
     _all: number
   }
 
+
+  export type ConfirmationAvgAggregateInputType = {
+    numberOfPeople?: true
+  }
+
+  export type ConfirmationSumAggregateInputType = {
+    numberOfPeople?: true
+  }
 
   export type ConfirmationMinAggregateInputType = {
     id?: true
@@ -5931,6 +5963,10 @@ export namespace Prisma {
     backIdUrl?: true
     createdAt?: true
     resolvedAt?: true
+    roomId?: true
+    from?: true
+    to?: true
+    numberOfPeople?: true
   }
 
   export type ConfirmationMaxAggregateInputType = {
@@ -5943,6 +5979,10 @@ export namespace Prisma {
     backIdUrl?: true
     createdAt?: true
     resolvedAt?: true
+    roomId?: true
+    from?: true
+    to?: true
+    numberOfPeople?: true
   }
 
   export type ConfirmationCountAggregateInputType = {
@@ -5955,6 +5995,12 @@ export namespace Prisma {
     backIdUrl?: true
     createdAt?: true
     resolvedAt?: true
+    roomId?: true
+    from?: true
+    to?: true
+    roommateIds?: true
+    numberOfPeople?: true
+    metadata?: true
     _all?: true
   }
 
@@ -5996,6 +6042,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: ConfirmationAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ConfirmationSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: ConfirmationMinAggregateInputType
@@ -6026,6 +6084,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: ConfirmationCountAggregateInputType | true
+    _avg?: ConfirmationAvgAggregateInputType
+    _sum?: ConfirmationSumAggregateInputType
     _min?: ConfirmationMinAggregateInputType
     _max?: ConfirmationMaxAggregateInputType
   }
@@ -6040,7 +6100,15 @@ export namespace Prisma {
     backIdUrl: string | null
     createdAt: Date
     resolvedAt: Date | null
+    roomId: string | null
+    from: Date | null
+    to: Date | null
+    roommateIds: string[]
+    numberOfPeople: number | null
+    metadata: JsonValue | null
     _count: ConfirmationCountAggregateOutputType | null
+    _avg: ConfirmationAvgAggregateOutputType | null
+    _sum: ConfirmationSumAggregateOutputType | null
     _min: ConfirmationMinAggregateOutputType | null
     _max: ConfirmationMaxAggregateOutputType | null
   }
@@ -6069,6 +6137,12 @@ export namespace Prisma {
     backIdUrl?: boolean
     createdAt?: boolean
     resolvedAt?: boolean
+    roomId?: boolean
+    from?: boolean
+    to?: boolean
+    roommateIds?: boolean
+    numberOfPeople?: boolean
+    metadata?: boolean
     requester?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["confirmation"]>
 
@@ -6082,6 +6156,12 @@ export namespace Prisma {
     backIdUrl?: boolean
     createdAt?: boolean
     resolvedAt?: boolean
+    roomId?: boolean
+    from?: boolean
+    to?: boolean
+    roommateIds?: boolean
+    numberOfPeople?: boolean
+    metadata?: boolean
     requester?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["confirmation"]>
 
@@ -6095,6 +6175,12 @@ export namespace Prisma {
     backIdUrl?: boolean
     createdAt?: boolean
     resolvedAt?: boolean
+    roomId?: boolean
+    from?: boolean
+    to?: boolean
+    roommateIds?: boolean
+    numberOfPeople?: boolean
+    metadata?: boolean
     requester?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["confirmation"]>
 
@@ -6108,9 +6194,15 @@ export namespace Prisma {
     backIdUrl?: boolean
     createdAt?: boolean
     resolvedAt?: boolean
+    roomId?: boolean
+    from?: boolean
+    to?: boolean
+    roommateIds?: boolean
+    numberOfPeople?: boolean
+    metadata?: boolean
   }
 
-  export type ConfirmationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "type" | "status" | "photo" | "frontIdUrl" | "backIdUrl" | "createdAt" | "resolvedAt", ExtArgs["result"]["confirmation"]>
+  export type ConfirmationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "type" | "status" | "photo" | "frontIdUrl" | "backIdUrl" | "createdAt" | "resolvedAt" | "roomId" | "from" | "to" | "roommateIds" | "numberOfPeople" | "metadata", ExtArgs["result"]["confirmation"]>
   export type ConfirmationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     requester?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -6136,6 +6228,12 @@ export namespace Prisma {
       backIdUrl: string | null
       createdAt: Date
       resolvedAt: Date | null
+      roomId: string | null
+      from: Date | null
+      to: Date | null
+      roommateIds: string[]
+      numberOfPeople: number | null
+      metadata: Prisma.JsonValue | null
     }, ExtArgs["result"]["confirmation"]>
     composites: {}
   }
@@ -6569,6 +6667,12 @@ export namespace Prisma {
     readonly backIdUrl: FieldRef<"Confirmation", 'String'>
     readonly createdAt: FieldRef<"Confirmation", 'DateTime'>
     readonly resolvedAt: FieldRef<"Confirmation", 'DateTime'>
+    readonly roomId: FieldRef<"Confirmation", 'String'>
+    readonly from: FieldRef<"Confirmation", 'DateTime'>
+    readonly to: FieldRef<"Confirmation", 'DateTime'>
+    readonly roommateIds: FieldRef<"Confirmation", 'String[]'>
+    readonly numberOfPeople: FieldRef<"Confirmation", 'Int'>
+    readonly metadata: FieldRef<"Confirmation", 'Json'>
   }
     
 
@@ -25886,7 +25990,13 @@ export namespace Prisma {
     frontIdUrl: 'frontIdUrl',
     backIdUrl: 'backIdUrl',
     createdAt: 'createdAt',
-    resolvedAt: 'resolvedAt'
+    resolvedAt: 'resolvedAt',
+    roomId: 'roomId',
+    from: 'from',
+    to: 'to',
+    roommateIds: 'roommateIds',
+    numberOfPeople: 'numberOfPeople',
+    metadata: 'metadata'
   };
 
   export type ConfirmationScalarFieldEnum = (typeof ConfirmationScalarFieldEnum)[keyof typeof ConfirmationScalarFieldEnum]
@@ -26272,16 +26382,16 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'TokenType'
+   * Reference to a field of type 'Int'
    */
-  export type EnumTokenTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TokenType'>
+  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
     
 
 
   /**
-   * Reference to a field of type 'TokenType[]'
+   * Reference to a field of type 'Int[]'
    */
-  export type ListEnumTokenTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TokenType[]'>
+  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
 
 
@@ -26300,16 +26410,16 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Int'
+   * Reference to a field of type 'TokenType'
    */
-  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+  export type EnumTokenTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TokenType'>
     
 
 
   /**
-   * Reference to a field of type 'Int[]'
+   * Reference to a field of type 'TokenType[]'
    */
-  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+  export type ListEnumTokenTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TokenType[]'>
     
 
 
@@ -26671,6 +26781,12 @@ export namespace Prisma {
     backIdUrl?: StringNullableFilter<"Confirmation"> | string | null
     createdAt?: DateTimeFilter<"Confirmation"> | Date | string
     resolvedAt?: DateTimeNullableFilter<"Confirmation"> | Date | string | null
+    roomId?: StringNullableFilter<"Confirmation"> | string | null
+    from?: DateTimeNullableFilter<"Confirmation"> | Date | string | null
+    to?: DateTimeNullableFilter<"Confirmation"> | Date | string | null
+    roommateIds?: StringNullableListFilter<"Confirmation">
+    numberOfPeople?: IntNullableFilter<"Confirmation"> | number | null
+    metadata?: JsonNullableFilter<"Confirmation">
     requester?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
@@ -26684,6 +26800,12 @@ export namespace Prisma {
     backIdUrl?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     resolvedAt?: SortOrderInput | SortOrder
+    roomId?: SortOrderInput | SortOrder
+    from?: SortOrderInput | SortOrder
+    to?: SortOrderInput | SortOrder
+    roommateIds?: SortOrder
+    numberOfPeople?: SortOrderInput | SortOrder
+    metadata?: SortOrderInput | SortOrder
     requester?: UserOrderByWithRelationInput
   }
 
@@ -26700,6 +26822,12 @@ export namespace Prisma {
     backIdUrl?: StringNullableFilter<"Confirmation"> | string | null
     createdAt?: DateTimeFilter<"Confirmation"> | Date | string
     resolvedAt?: DateTimeNullableFilter<"Confirmation"> | Date | string | null
+    roomId?: StringNullableFilter<"Confirmation"> | string | null
+    from?: DateTimeNullableFilter<"Confirmation"> | Date | string | null
+    to?: DateTimeNullableFilter<"Confirmation"> | Date | string | null
+    roommateIds?: StringNullableListFilter<"Confirmation">
+    numberOfPeople?: IntNullableFilter<"Confirmation"> | number | null
+    metadata?: JsonNullableFilter<"Confirmation">
     requester?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
@@ -26713,9 +26841,17 @@ export namespace Prisma {
     backIdUrl?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     resolvedAt?: SortOrderInput | SortOrder
+    roomId?: SortOrderInput | SortOrder
+    from?: SortOrderInput | SortOrder
+    to?: SortOrderInput | SortOrder
+    roommateIds?: SortOrder
+    numberOfPeople?: SortOrderInput | SortOrder
+    metadata?: SortOrderInput | SortOrder
     _count?: ConfirmationCountOrderByAggregateInput
+    _avg?: ConfirmationAvgOrderByAggregateInput
     _max?: ConfirmationMaxOrderByAggregateInput
     _min?: ConfirmationMinOrderByAggregateInput
+    _sum?: ConfirmationSumOrderByAggregateInput
   }
 
   export type ConfirmationScalarWhereWithAggregatesInput = {
@@ -26731,6 +26867,12 @@ export namespace Prisma {
     backIdUrl?: StringNullableWithAggregatesFilter<"Confirmation"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Confirmation"> | Date | string
     resolvedAt?: DateTimeNullableWithAggregatesFilter<"Confirmation"> | Date | string | null
+    roomId?: StringNullableWithAggregatesFilter<"Confirmation"> | string | null
+    from?: DateTimeNullableWithAggregatesFilter<"Confirmation"> | Date | string | null
+    to?: DateTimeNullableWithAggregatesFilter<"Confirmation"> | Date | string | null
+    roommateIds?: StringNullableListFilter<"Confirmation">
+    numberOfPeople?: IntNullableWithAggregatesFilter<"Confirmation"> | number | null
+    metadata?: JsonNullableWithAggregatesFilter<"Confirmation">
   }
 
   export type TokenWhereInput = {
@@ -28306,6 +28448,12 @@ export namespace Prisma {
     backIdUrl?: string | null
     createdAt?: Date | string
     resolvedAt?: Date | string | null
+    roomId?: string | null
+    from?: Date | string | null
+    to?: Date | string | null
+    roommateIds?: ConfirmationCreateroommateIdsInput | string[]
+    numberOfPeople?: number | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     requester: UserCreateNestedOneWithoutConfirmationsInput
   }
 
@@ -28319,6 +28467,12 @@ export namespace Prisma {
     backIdUrl?: string | null
     createdAt?: Date | string
     resolvedAt?: Date | string | null
+    roomId?: string | null
+    from?: Date | string | null
+    to?: Date | string | null
+    roommateIds?: ConfirmationCreateroommateIdsInput | string[]
+    numberOfPeople?: number | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type ConfirmationUpdateInput = {
@@ -28330,6 +28484,12 @@ export namespace Prisma {
     backIdUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    from?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    to?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    roommateIds?: ConfirmationUpdateroommateIdsInput | string[]
+    numberOfPeople?: NullableIntFieldUpdateOperationsInput | number | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     requester?: UserUpdateOneRequiredWithoutConfirmationsNestedInput
   }
 
@@ -28343,6 +28503,12 @@ export namespace Prisma {
     backIdUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    from?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    to?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    roommateIds?: ConfirmationUpdateroommateIdsInput | string[]
+    numberOfPeople?: NullableIntFieldUpdateOperationsInput | number | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type ConfirmationCreateManyInput = {
@@ -28355,6 +28521,12 @@ export namespace Prisma {
     backIdUrl?: string | null
     createdAt?: Date | string
     resolvedAt?: Date | string | null
+    roomId?: string | null
+    from?: Date | string | null
+    to?: Date | string | null
+    roommateIds?: ConfirmationCreateroommateIdsInput | string[]
+    numberOfPeople?: number | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type ConfirmationUpdateManyMutationInput = {
@@ -28366,6 +28538,12 @@ export namespace Prisma {
     backIdUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    from?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    to?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    roommateIds?: ConfirmationUpdateroommateIdsInput | string[]
+    numberOfPeople?: NullableIntFieldUpdateOperationsInput | number | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type ConfirmationUncheckedUpdateManyInput = {
@@ -28378,6 +28556,12 @@ export namespace Prisma {
     backIdUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    from?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    to?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    roommateIds?: ConfirmationUpdateroommateIdsInput | string[]
+    numberOfPeople?: NullableIntFieldUpdateOperationsInput | number | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type TokenCreateInput = {
@@ -30172,6 +30356,48 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+  export type JsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
   export type ConfirmationCountOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
@@ -30182,6 +30408,16 @@ export namespace Prisma {
     backIdUrl?: SortOrder
     createdAt?: SortOrder
     resolvedAt?: SortOrder
+    roomId?: SortOrder
+    from?: SortOrder
+    to?: SortOrder
+    roommateIds?: SortOrder
+    numberOfPeople?: SortOrder
+    metadata?: SortOrder
+  }
+
+  export type ConfirmationAvgOrderByAggregateInput = {
+    numberOfPeople?: SortOrder
   }
 
   export type ConfirmationMaxOrderByAggregateInput = {
@@ -30194,6 +30430,10 @@ export namespace Prisma {
     backIdUrl?: SortOrder
     createdAt?: SortOrder
     resolvedAt?: SortOrder
+    roomId?: SortOrder
+    from?: SortOrder
+    to?: SortOrder
+    numberOfPeople?: SortOrder
   }
 
   export type ConfirmationMinOrderByAggregateInput = {
@@ -30206,6 +30446,14 @@ export namespace Prisma {
     backIdUrl?: SortOrder
     createdAt?: SortOrder
     resolvedAt?: SortOrder
+    roomId?: SortOrder
+    from?: SortOrder
+    to?: SortOrder
+    numberOfPeople?: SortOrder
+  }
+
+  export type ConfirmationSumOrderByAggregateInput = {
+    numberOfPeople?: SortOrder
   }
 
   export type EnumConfirmationTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -30240,6 +30488,48 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedDateTimeNullableFilter<$PrismaModel>
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
   export type EnumTokenTypeFilter<$PrismaModel = never> = {
@@ -30282,29 +30572,6 @@ export namespace Prisma {
     _min?: NestedEnumTokenTypeFilter<$PrismaModel>
     _max?: NestedEnumTokenTypeFilter<$PrismaModel>
   }
-  export type JsonNullableFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonNullableFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-  }
 
   export type AuditLogCountOrderByAggregateInput = {
     id?: SortOrder
@@ -30332,40 +30599,6 @@ export namespace Prisma {
     entity?: SortOrder
     entityId?: SortOrder
     createdAt?: SortOrder
-  }
-  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedJsonNullableFilter<$PrismaModel>
-    _max?: NestedJsonNullableFilter<$PrismaModel>
-  }
-
-  export type StringNullableListFilter<$PrismaModel = never> = {
-    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    has?: string | StringFieldRefInput<$PrismaModel> | null
-    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
-    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
-    isEmpty?: boolean
   }
 
   export type UserNullableScalarRelationFilter = {
@@ -31216,17 +31449,6 @@ export namespace Prisma {
     filename?: SortOrder
   }
 
-  export type IntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
   export type AnnouncementRecipientCountOrderByAggregateInput = {
     id?: SortOrder
     announcementId?: SortOrder
@@ -31260,22 +31482,6 @@ export namespace Prisma {
 
   export type AnnouncementRecipientSumOrderByAggregateInput = {
     floor?: SortOrder
-  }
-
-  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type ConfirmationCreateNestedManyWithoutRequesterInput = {
@@ -31898,6 +32104,10 @@ export namespace Prisma {
     update?: XOR<XOR<DormitoryUpdateToOneWithWhereWithoutAdminsInput, DormitoryUpdateWithoutAdminsInput>, DormitoryUncheckedUpdateWithoutAdminsInput>
   }
 
+  export type ConfirmationCreateroommateIdsInput = {
+    set: string[]
+  }
+
   export type UserCreateNestedOneWithoutConfirmationsInput = {
     create?: XOR<UserCreateWithoutConfirmationsInput, UserUncheckedCreateWithoutConfirmationsInput>
     connectOrCreate?: UserCreateOrConnectWithoutConfirmationsInput
@@ -31914,6 +32124,19 @@ export namespace Prisma {
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null
+  }
+
+  export type ConfirmationUpdateroommateIdsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type UserUpdateOneRequiredWithoutConfirmationsNestedInput = {
@@ -33221,14 +33444,6 @@ export namespace Prisma {
     connect?: RoomWhereUniqueInput
   }
 
-  export type NullableIntFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
   export type AnnouncementUpdateOneRequiredWithoutRecipientsNestedInput = {
     create?: XOR<AnnouncementCreateWithoutRecipientsInput, AnnouncementUncheckedCreateWithoutRecipientsInput>
     connectOrCreate?: AnnouncementCreateOrConnectWithoutRecipientsInput
@@ -33472,21 +33687,31 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
-  export type NestedEnumTokenTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.TokenType | EnumTokenTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.TokenType[] | ListEnumTokenTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.TokenType[] | ListEnumTokenTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumTokenTypeFilter<$PrismaModel> | $Enums.TokenType
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
-  export type NestedEnumTokenTypeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.TokenType | EnumTokenTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.TokenType[] | ListEnumTokenTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.TokenType[] | ListEnumTokenTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumTokenTypeWithAggregatesFilter<$PrismaModel> | $Enums.TokenType
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumTokenTypeFilter<$PrismaModel>
-    _max?: NestedEnumTokenTypeFilter<$PrismaModel>
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
   export type NestedJsonNullableFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -33510,6 +33735,23 @@ export namespace Prisma {
     gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type NestedEnumTokenTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.TokenType | EnumTokenTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.TokenType[] | ListEnumTokenTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TokenType[] | ListEnumTokenTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumTokenTypeFilter<$PrismaModel> | $Enums.TokenType
+  }
+
+  export type NestedEnumTokenTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TokenType | EnumTokenTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.TokenType[] | ListEnumTokenTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TokenType[] | ListEnumTokenTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumTokenTypeWithAggregatesFilter<$PrismaModel> | $Enums.TokenType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTokenTypeFilter<$PrismaModel>
+    _max?: NestedEnumTokenTypeFilter<$PrismaModel>
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -33691,33 +33933,6 @@ export namespace Prisma {
     _max?: NestedEnumNotificationPriorityFilter<$PrismaModel>
   }
 
-  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
-  }
-
-  export type NestedFloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
-  }
-
   export type ConfirmationCreateWithoutRequesterInput = {
     id?: string
     type: $Enums.ConfirmationType
@@ -33727,6 +33942,12 @@ export namespace Prisma {
     backIdUrl?: string | null
     createdAt?: Date | string
     resolvedAt?: Date | string | null
+    roomId?: string | null
+    from?: Date | string | null
+    to?: Date | string | null
+    roommateIds?: ConfirmationCreateroommateIdsInput | string[]
+    numberOfPeople?: number | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type ConfirmationUncheckedCreateWithoutRequesterInput = {
@@ -33738,6 +33959,12 @@ export namespace Prisma {
     backIdUrl?: string | null
     createdAt?: Date | string
     resolvedAt?: Date | string | null
+    roomId?: string | null
+    from?: Date | string | null
+    to?: Date | string | null
+    roommateIds?: ConfirmationCreateroommateIdsInput | string[]
+    numberOfPeople?: number | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type ConfirmationCreateOrConnectWithoutRequesterInput = {
@@ -34334,6 +34561,12 @@ export namespace Prisma {
     backIdUrl?: StringNullableFilter<"Confirmation"> | string | null
     createdAt?: DateTimeFilter<"Confirmation"> | Date | string
     resolvedAt?: DateTimeNullableFilter<"Confirmation"> | Date | string | null
+    roomId?: StringNullableFilter<"Confirmation"> | string | null
+    from?: DateTimeNullableFilter<"Confirmation"> | Date | string | null
+    to?: DateTimeNullableFilter<"Confirmation"> | Date | string | null
+    roommateIds?: StringNullableListFilter<"Confirmation">
+    numberOfPeople?: IntNullableFilter<"Confirmation"> | number | null
+    metadata?: JsonNullableFilter<"Confirmation">
   }
 
   export type DormitoryAdminUpsertWithWhereUniqueWithoutUserInput = {
@@ -39553,6 +39786,12 @@ export namespace Prisma {
     backIdUrl?: string | null
     createdAt?: Date | string
     resolvedAt?: Date | string | null
+    roomId?: string | null
+    from?: Date | string | null
+    to?: Date | string | null
+    roommateIds?: ConfirmationCreateroommateIdsInput | string[]
+    numberOfPeople?: number | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type DormitoryAdminCreateManyUserInput = {
@@ -39722,6 +39961,12 @@ export namespace Prisma {
     backIdUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    from?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    to?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    roommateIds?: ConfirmationUpdateroommateIdsInput | string[]
+    numberOfPeople?: NullableIntFieldUpdateOperationsInput | number | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type ConfirmationUncheckedUpdateWithoutRequesterInput = {
@@ -39733,6 +39978,12 @@ export namespace Prisma {
     backIdUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    from?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    to?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    roommateIds?: ConfirmationUpdateroommateIdsInput | string[]
+    numberOfPeople?: NullableIntFieldUpdateOperationsInput | number | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type ConfirmationUncheckedUpdateManyWithoutRequesterInput = {
@@ -39744,6 +39995,12 @@ export namespace Prisma {
     backIdUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    from?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    to?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    roommateIds?: ConfirmationUpdateroommateIdsInput | string[]
+    numberOfPeople?: NullableIntFieldUpdateOperationsInput | number | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type DormitoryAdminUpdateWithoutUserInput = {

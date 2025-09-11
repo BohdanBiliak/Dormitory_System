@@ -237,6 +237,12 @@ model Confirmation {
   createdAt  DateTime           @default(now()) @map("created_at")
   resolvedAt DateTime?          @map("resolved_at")
 
+  roomId        String?            @map("room_id")
+  from          DateTime?
+  to            DateTime?
+  roommateIds   String[]           @map("roommate_ids")
+  numberOfPeople Int?              @map("number_of_people")
+  metadata      Json?              // For flexible data storage
   requester User @relation("UserConfirmations", fields: [userId], references: [id], onDelete: Cascade)
   @@index([status, createdAt]) // Pending confirmations queue
   @@index([type, status]) // Confirmation type filtering

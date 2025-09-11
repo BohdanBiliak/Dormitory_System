@@ -157,7 +157,13 @@ exports.Prisma.ConfirmationScalarFieldEnum = {
   frontIdUrl: 'frontIdUrl',
   backIdUrl: 'backIdUrl',
   createdAt: 'createdAt',
-  resolvedAt: 'resolvedAt'
+  resolvedAt: 'resolvedAt',
+  roomId: 'roomId',
+  from: 'from',
+  to: 'to',
+  roommateIds: 'roommateIds',
+  numberOfPeople: 'numberOfPeople',
+  metadata: 'metadata'
 };
 
 exports.Prisma.TokenScalarFieldEnum = {
