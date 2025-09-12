@@ -12,7 +12,8 @@ export default function RegisterPage() {
         {
             id: 'announcements',
             image: '/clipboard-check.svg',
-            label: 'Announcements'
+            label: 'Announcements',
+            href: '/announcements-public',
         },
         {
             id: 'rooms',

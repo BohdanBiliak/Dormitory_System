@@ -3,9 +3,10 @@
 import { usePublicDormitories } from '@/hooks/public-dormitories.hook'
 import Link from 'next/link'
 
-export function GuestDormitoriesPage() {
+export function UserDormitoriesPageComponent() {
   const { data: dormitoriesResponse, isLoading, error } = usePublicDormitories()
-  
+
+
   const dormitories = dormitoriesResponse?.data
 
   if (isLoading) {

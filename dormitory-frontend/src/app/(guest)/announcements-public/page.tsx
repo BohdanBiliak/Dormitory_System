@@ -1,9 +1,8 @@
-import { SideMenu } from "@/components/ui/SideMenu.component";
-import { UserDormitoriesPageComponent } from '@/components/guest/UserDormitoriesPage.component'
-import { MenuItem } from "@/types/ui.types";
-import { Suspense } from "react";
+import {MenuItem} from "@/types/ui.types";
+import {SideMenu} from "@/components/ui/SideMenu.component";
+import {UserPublicAnnouncements} from "@/components/guest/UserPublicAnnouncements.component";
 
-export default function DormitoriesPage() {
+export default function PublicAnnouncements(){
     const menuItems: MenuItem[] = [
         {
             id: 'dormitories',
@@ -29,12 +28,9 @@ export default function DormitoriesPage() {
             href: "/auth/login",
         }
     ]
-
-    return (
-        <Suspense fallback={<div>Loading...</div>}>
-            <SideMenu menuItems={menuItems} activeItem={'dormitories'}>
-                <UserDormitoriesPageComponent/>
-            </SideMenu>
-        </Suspense>
+    return(
+        <SideMenu menuItems={menuItems} activeItem={'announcements'}>
+            <UserPublicAnnouncements/>
+        </SideMenu>
     )
 }

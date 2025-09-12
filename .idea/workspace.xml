@@ -5,9 +5,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a2609a67-42b3-4399-bbcc-46f7339b9fb9" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/dormitory-frontend/public/bell.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/announcements-public/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/(signiedInUser)/profile/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/lib/rooms.api.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/lib/user.api.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/guest/UserPublicAnnouncements.component.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/signedIn/Profile.component.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/hooks/rooms.hook.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/hooks/user.hook.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/types/rooms.types.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/modules/room/controllers/room.controller.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/modules/room/controllers/room.controller.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/modules/room/services/room.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/modules/room/services/room.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/auth/login/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/auth/login/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/auth/new-password/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/auth/new-password/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/auth/new-verification/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/auth/new-verification/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/auth/register/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/auth/register/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/auth/reset-password/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/auth/reset-password/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/dormitories/[id]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/dormitories/[id]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/dormitories/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/dormitories/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/AdminAnnouncement.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/AdminAnnouncement.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/AdminNewAnnouncement.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/AdminNewAnnouncement.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/guest/GuestDormitoriesPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/guest/UserDormitoriesPage.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/guest/GuestDormitoryDetailsPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/guest/UsersDormitoryDetailsPage.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/hooks/auth.hook.ts" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/hooks/auth.hook.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,7 +46,7 @@
     <dismissed value="$PROJECT_DIR$/dormitory-frontend/package.json" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
@@ -42,7 +62,7 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
-    &quot;JavaScript Debug.localhost:4000.executor&quot;: &quot;Run&quot;,
+    &quot;JavaScript Debug.localhost:4000.executor&quot;: &quot;Debug&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
@@ -145,7 +165,9 @@
       <workItem from="1757488989339" duration="30000" />
       <workItem from="1757559479010" duration="12372000" />
       <workItem from="1757573823523" duration="2540000" />
-      <workItem from="1757649557710" duration="2968000" />
+      <workItem from="1757649557710" duration="3299000" />
+      <workItem from="1757680760954" duration="2775000" />
+      <workItem from="1757684051036" duration="8376000" />
     </task>
     <servers />
   </component>

@@ -7,6 +7,8 @@ import Link from "next/link";
 import {toast} from "sonner";
 import {Description, Dialog, DialogBackdrop, DialogPanel, DialogTitle} from "@headlessui/react";
 import {ChevronDown, ChevronUp, Plus, X} from "lucide-react";
+import {useGetActiveDormitories} from "@/hooks/dormitories.hook";
+import {useGetRooms} from "@/hooks/rooms.hook";
 
 interface AddresseeItem {
     id: string;
@@ -34,6 +36,8 @@ export function AdminNewAnnouncement(){
     })
 
     const {createAnnouncement, uploadAnnouncementAttachment} = useMutateAnnouncement()
+    const {data: activeDormitories, isLoading: loadingDormitories, error: dormsErrors} = useGetActiveDormitories()
+    const {data: rooms, isLoading: loadingRooms, error: roomsErros} = useGetRooms()
 
     const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {

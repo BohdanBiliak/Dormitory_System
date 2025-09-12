@@ -4,6 +4,8 @@ import Link from "next/link";
 import React, {useEffect, useState} from "react";
 import {AddressesTypes, Announcement, AnnouncementCreateRequest} from "@/types/announcements.types";
 import {useGetAnnouncementDetails, useMutateAnnouncement} from "@/hooks/announcements.hook";
+import {Dialog} from "@headlessui/react";
+import {useGetActiveDormitories} from "@/hooks/dormitories.hook";
 
 export interface AdminAnnouncementProps {
     id: string
@@ -12,6 +14,7 @@ export interface AdminAnnouncementProps {
 export default function AdminAnnouncement({id}:AdminAnnouncementProps){
     const [attachedFiles, setAttachedFiles] = useState<File[]>([])
     const [addresses, setAddresses] = useState<{id: string, label: string, type: AddressesTypes}[]>([])
+    const [addingAddresses, setAddingAddresses] = useState<boolean>(false)
 
     const [announcementDetalis, setAnnouncementDetalis] = useState<Announcement>({
         id: '',
@@ -45,6 +48,10 @@ export default function AdminAnnouncement({id}:AdminAnnouncementProps){
         if(name === "forEveryone"){
             setAnnouncementDetalis(prev =>({...prev, [name]: checked}))
         }
+    }
+
+    const handleCancelAddAddresses = () => {
+        setAddingAddresses(false)
     }
 
     useEffect(() => {
@@ -237,6 +244,9 @@ export default function AdminAnnouncement({id}:AdminAnnouncementProps){
                     </div>
                 </div>
             </div>
+            <Dialog onClose={handleCancelAddAddresses} open={addingAddresses}>
+
+            </Dialog>
         </div>
     )
 }
