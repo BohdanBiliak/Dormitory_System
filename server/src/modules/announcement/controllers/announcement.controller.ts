@@ -4,11 +4,9 @@ import {
   Delete,
   Get,
   Param,
-  Patch,
   Post,
   Query,
   Req, UploadedFiles,
-  UseGuards,
   UseInterceptors
 } from "@nestjs/common";
 import {
@@ -17,17 +15,11 @@ import {
 import { CreateAnnouncementDto } from "../dto/create-announcement.dto";
 import { CreateAnnouncementUseCase } from "@modules/announcement/use-cases/create-announcement.use-case";
 import { GetAnnouncementsUseCase } from "@modules/announcement/use-cases/get-announcements.use-case";
-import { UpdateAnnouncementUseCase } from "@modules/announcement/use-cases/update-announcement.use-case";
 import { DeleteAnnouncementUseCase } from "@modules/announcement/use-cases/delete-announcement.use-case";
-import {
-  UploadAnnouncementAttachmentsUseCase
-} from "@modules/announcement/use-cases/upload-announcement-attachments.use-case";
+import {UploadAnnouncementAttachmentsUseCase} from "@modules/announcement/use-cases/upload-announcement-attachments.use-case";
 import { GetAnnouncementByIdUseCase } from "@modules/announcement/use-cases/get-announcement-by-id.use-case";
-import { UpdateAnnouncementDto } from "@modules/announcement/dto/update-announcement.dto";
 import { FilesInterceptor } from "@nestjs/platform-express";
 import { AnnouncementResponseDto } from "@modules/announcement/dto/announcement-response.dto";
-import { RolesGuard } from "@libs/common/guards/roles.guard";
-import { Roles } from "@libs/common/decorators/roles.decorator";
 import { $Enums } from "../../../../__generated__";
 import UserRole = $Enums.UserRole;
 import { GetPublicAnnouncementsUseCase } from "@modules/announcement/use-cases/get-public-announcements.use-case";
@@ -40,7 +32,6 @@ export class AnnouncementController {
   constructor(
     private readonly createUseCase: CreateAnnouncementUseCase,
     private readonly getAllUseCase: GetAnnouncementsUseCase,
-    private readonly updateUseCase: UpdateAnnouncementUseCase,
     private readonly deleteUseCase: DeleteAnnouncementUseCase,
     private readonly uploadUseCase: UploadAnnouncementAttachmentsUseCase,
     private readonly getAnnouncementByIdUseCase: GetAnnouncementByIdUseCase,
@@ -54,6 +45,43 @@ export class AnnouncementController {
   @ApiBody({ type: CreateAnnouncementDto })
   create(@Body() dto: CreateAnnouncementDto, @Req() req) {
     return this.createUseCase.execute(dto, req.user.id);
+  }
+@Get('public')
+  @ApiOperation({ summary: 'Get all public announcements (for everyone)' })
+  @ApiQuery({ name: 'showHidden', required: false, type: Boolean, description: 'Include hidden announcements' })
+  @ApiQuery({ name: 'showExpired', required: false, type: Boolean, description: 'Include expired announcements' })
+  @ApiQuery({ name: 'page', required: false, type: Number, description: 'Page number (pagination)' })
+  @ApiQuery({ name: 'limit', required: false, type: Number, description: 'Items per page (pagination)' })
+  @ApiResponse({
+    status: 200,
+    description: 'List of public announcements with pagination',
+    schema: {
+      type: 'object',
+      properties: {
+        data: { type: 'array', items: { $ref: '#/components/schemas/AnnouncementResponseDto' } },
+        pagination: {
+          type: 'object',
+          properties: {
+            total: { type: 'number', example: 100 },
+            page: { type: 'number', example: 1 },
+            limit: { type: 'number', example: 20 },
+            totalPages: { type: 'number', example: 5 },
+          },
+        },
+      },
+    },
+  })
+  findPublic(
+    @Query('showHidden') showHidden: string,
+    @Query('showExpired') showExpired: string,
+    @Query('page') page: string,
+    @Query('limit') limit: string,
+  ) {
+    return this.getPublicAnnouncementsUseCase.execute(  {
+      showHidden: showHidden === 'true',
+      showExpired: showExpired === 'true',
+      page: page ? parseInt(page, 10) : undefined,
+      limit: limit ? parseInt(limit, 10) : undefined,})
   }
 
   @Get()
@@ -96,7 +124,6 @@ export class AnnouncementController {
     });
   }
 
-
   @Get(':id')
   @Authorization()
   @ApiOperation({ summary: 'Get announcement by ID' })
@@ -104,16 +131,6 @@ export class AnnouncementController {
   @ApiResponse({ status: 200, description: 'Announcement', type: AnnouncementResponseDto })
   async getById(@Param('id') id: string) {
     return this.getAnnouncementByIdUseCase.execute(id);
-  }
-
-  @Patch(':id')
-  @Authorization(UserRole.Admin, UserRole.SuperAdmin)
-  @ApiOperation({ summary: 'Update announcement' })
-  @ApiParam({ name: 'id', type: String })
-  @ApiBody({ type: UpdateAnnouncementDto })
-  @ApiResponse({ status: 200, description: 'Announcement updated', type: AnnouncementResponseDto })
-  update(@Param('id') id: string, @Body() dto: UpdateAnnouncementDto) {
-    return this.updateUseCase.execute(id, dto);
   }
 
   @Delete(':id')
@@ -148,43 +165,4 @@ export class AnnouncementController {
   }
 
 
-  @Get('public')
-  @Authorization(UserRole.Admin, UserRole.SuperAdmin)
-  @ApiOperation({ summary: 'Get all public announcements (for everyone)' })
-  @ApiQuery({ name: 'showHidden', required: false, type: Boolean, description: 'Include hidden announcements' })
-  @ApiQuery({ name: 'showExpired', required: false, type: Boolean, description: 'Include expired announcements' })
-  @ApiQuery({ name: 'page', required: false, type: Number, description: 'Page number (pagination)' })
-  @ApiQuery({ name: 'limit', required: false, type: Number, description: 'Items per page (pagination)' })
-  @ApiResponse({
-    status: 200,
-    description: 'List of public announcements with pagination',
-    schema: {
-      type: 'object',
-      properties: {
-        data: { type: 'array', items: { $ref: '#/components/schemas/AnnouncementResponseDto' } },
-        pagination: {
-          type: 'object',
-          properties: {
-            total: { type: 'number', example: 100 },
-            page: { type: 'number', example: 1 },
-            limit: { type: 'number', example: 20 },
-            totalPages: { type: 'number', example: 5 },
-          },
-        },
-      },
-    },
-  })
-  findPublic(
-    @Query('showHidden') showHidden: string,
-    @Query('showExpired') showExpired: string,
-    @Query('page') page: string,
-    @Query('limit') limit: string,
-  ) {
-    return this.getPublicAnnouncementsUseCase.execute(  {
-      showHidden: showHidden === 'true',
-      showExpired: showExpired === 'true',
-      page: page ? parseInt(page, 10) : undefined,
-      limit: limit ? parseInt(limit, 10) : undefined,});
-
-  }
 }

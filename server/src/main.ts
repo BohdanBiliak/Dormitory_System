@@ -61,9 +61,7 @@ async function bootstrap() {
     // req.user ← з req.session.user (remove in production)
     if (config.get('NODE_ENV') === 'development') {
         app.use((req, res, next) => {
-            console.log('Current session:', req.session);
             if (req.session?.user) {
-                console.log('Assigning req.user from session...');
                 req.user = req.session.user;
             } else {
                 console.log('No user in session.');

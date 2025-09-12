@@ -3,7 +3,6 @@ import { AnnouncementController } from './controllers/announcement.controller';
 
 import { CreateAnnouncementUseCase } from './use-cases/create-announcement.use-case';
 import { GetAnnouncementsUseCase } from './use-cases/get-announcements.use-case';
-import { UpdateAnnouncementUseCase } from './use-cases/update-announcement.use-case';
 import { DeleteAnnouncementUseCase } from './use-cases/delete-announcement.use-case';
 import {AnnouncementRepository} from "@modules/announcement/repositories/announcement.repository";
 import {PrismaModule} from "@/prisma/prisma.module";
@@ -22,18 +21,20 @@ import {UserModule} from "@modules/user/user.module";
     AnnouncementRepository,
     CreateAnnouncementUseCase,
     GetAnnouncementsUseCase,
-    UpdateAnnouncementUseCase,
     DeleteAnnouncementUseCase,
     UploadAnnouncementAttachmentsUseCase,
     GetAnnouncementByIdUseCase,
-      GetPublicAnnouncementsUseCase
+    GetPublicAnnouncementsUseCase
 
   ],
   exports: [
+    AnnouncementRepository,
     CreateAnnouncementUseCase,
     GetAnnouncementsUseCase,
-    UpdateAnnouncementUseCase,
-    DeleteAnnouncementUseCase
+    DeleteAnnouncementUseCase,
+    UploadAnnouncementAttachmentsUseCase,
+    GetAnnouncementByIdUseCase,
+    GetPublicAnnouncementsUseCase
   ],
 })
 export class AnnouncementModule {}
