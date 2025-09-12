@@ -7,9 +7,9 @@ import {
 } from "@nestjs/common";
 import { PrismaService } from "@/prisma/prisma.service";
 import { $Enums, User } from "../../../../__generated__";
-import { AvailableRoomsDto } from "@/modules/room/dto/availableRooms.dto";
+import { AvailableRoomsDto } from "../dto/AvailableRooms.dto";
 import { BookRoomDto } from "@modules/room/dto/book-room.dto";
-import { RequestAccommmodationDto } from "@/modules/room/dto/requestAccommmodation.dto";
+import { RequestAccommmodationDto } from "../dto/RequestAccommmodation.dto";
 import { RequestMoveOutDto } from "@modules/room/dto/request-moveout.dto";
 import { CreateRoomStatusDto } from "@modules/room/dto/create-room-status.dto";
 import { SetPriceDto } from "@modules/room/dto/set-price.dto";

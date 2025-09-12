@@ -4,10 +4,10 @@ import {ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse, A
 import { Authorized } from "@/libs/common/decorators/authtorized.decorator";
 import {$Enums, User} from "../../../../__generated__";
 import {Authorization} from "@/libs/common/decorators/auth.decorator";
-import {AvailableRoomsDto} from "@/modules/room/dto/availableRooms.dto";
+import {AvailableRoomsDto} from "../dto/AvailableRooms.dto"
 import {BookRoomDto} from "@modules/room/dto/book-room.dto";
 import {RequestMoveOutDto} from "@modules/room/dto/request-moveout.dto";
-import {RequestAccommmodationDto} from "@/modules/room/dto/requestAccommmodation.dto";
+import {RequestAccommmodationDto} from "../dto/RequestAccommmodation.dto";
 import {CreateRoomStatusDto} from "@modules/room/dto/create-room-status.dto";
 import {AssignUserToRoomDto} from "@/modules/room/dto/assign-user.dto";
 import {SetPriceDto} from "@modules/room/dto/set-price.dto";
