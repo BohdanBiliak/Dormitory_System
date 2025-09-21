@@ -31,7 +31,7 @@ export const useAuth = () => {
       switch (user?.role){
         case 'SuperAdmin': router.push('/admin/profile'); break;
         case 'Admin': router.push('/admin/profile'); break;
-        case 'Regular': router.push('/admin/profile');break;
+        case 'Regular': router.push('/profile');break;
         case 'SignedInUser': router.push('/admin/profile'); break;
         default: throw Error('Unidentified user role');
       }

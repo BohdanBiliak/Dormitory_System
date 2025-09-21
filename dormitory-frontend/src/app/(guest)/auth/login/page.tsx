@@ -16,7 +16,7 @@ export default function LoginPage() {
             id: 'announcements',
             image: '/clipboard-check.svg',
             label: 'Announcements',
-            href: "/announcements"
+            href: '/announcements-public',
         },
         {
             id: 'rooms',

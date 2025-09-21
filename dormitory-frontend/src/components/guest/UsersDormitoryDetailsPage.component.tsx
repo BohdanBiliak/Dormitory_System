@@ -4,13 +4,15 @@ import { usePublicDormitoryDetails } from '@/hooks/public-dormitories.hook'
 import Link from 'next/link'
 import {useState} from "react";
 import {ChevronLeft, ChevronRight} from "lucide-react";
+import {useCurrentUserProfile} from "@/hooks/user.hook";
 
 export interface GuestDormitoryDetailsPageProps{
   id:string;
 }
 
-export function GuestDormitoryDetailsPage({ id }:GuestDormitoryDetailsPageProps) {
+export function UsersDormitoryDetailsPageComponent({ id }:GuestDormitoryDetailsPageProps) {
   const { data: dormitory, isLoading, error } = usePublicDormitoryDetails(id)
+  const {data:user, isLoading: isLoadingUserData} = useCurrentUserProfile()
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -23,7 +25,7 @@ export function GuestDormitoryDetailsPage({ id }:GuestDormitoryDetailsPageProps)
   };
 
 
-  if (isLoading) {
+  if (isLoading || isLoadingUserData) {
     return (
       <div className="w-full flex items-center justify-center bg-gray-50">
         <div className="bg-white shadow-lg rounded-lg p-8 max-w-md mx-4">
@@ -239,6 +241,15 @@ export function GuestDormitoryDetailsPage({ id }:GuestDormitoryDetailsPageProps)
                     <div className="text-sm text-gray-600">For more information about room availability and booking, please contact the administration.</div>
                   </div>
                 </div>
+
+                {user && user?.role && user?.role === 'Regular' ? (
+                    <div className="flex flex-col items-center space-y-2">
+                      <button className="w-full sm:w-auto px-6 py-3 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" >Write to dormitory manager</button>
+                      <button className="w-full sm:w-auto px-6 py-3 bg-blue-800 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2">View dormitory rooms</button>
+                    </div>
+                ):(
+                    <></>
+                )}
               </div>
             </div>
 
