@@ -1,14 +1,15 @@
-import { NewPasswordForm } from '@/components/auth/NewPasswordForm.component'
-import { MenuItem } from "@/types/ui.types";
 import { SideMenu } from "@/components/ui/SideMenu.component";
+import { GuestAnnouncementList } from '@/components/guest/GuestAnnouncementList.component'
+import { MenuItem } from "@/types/ui.types";
 import { Suspense } from "react";
-export default function NewPasswordPage() {
+
+export default function DormitoriesPage() {
     const menuItems: MenuItem[] = [
         {
             id: 'dormitories',
             image: '/workplace.svg',
             label: 'Dormitories Information',
-            href: "/dormitories"
+            href: "/dormitories",
         },
         {
             id: 'announcements',
@@ -31,12 +32,9 @@ export default function NewPasswordPage() {
 
     return (
         <Suspense fallback={<div>Loading...</div>}>
-              <SideMenu menuItems={menuItems} activeItem={''}>
-            <NewPasswordForm />
-        </SideMenu>
+            <SideMenu menuItems={menuItems} activeItem={'announcements'}>
+                <GuestAnnouncementList/>
+            </SideMenu>
         </Suspense>
-
-
-
     )
 }

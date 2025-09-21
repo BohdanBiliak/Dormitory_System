@@ -395,7 +395,8 @@ exports.UserRole = exports.$Enums.UserRole = {
   Regular: 'Regular',
   Admin: 'Admin',
   SignedInUser: 'SignedInUser',
-  SuperAdmin: 'SuperAdmin'
+  SuperAdmin: 'SuperAdmin',
+  Resident: 'Resident'
 };
 
 exports.ConfirmationType = exports.$Enums.ConfirmationType = {

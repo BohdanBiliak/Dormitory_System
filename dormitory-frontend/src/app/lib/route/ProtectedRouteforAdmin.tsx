@@ -44,7 +44,7 @@ export function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) 
   // Show spinner only while user is loading
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className=" flex items-center justify-center">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-900"></div>
       </div>
     )

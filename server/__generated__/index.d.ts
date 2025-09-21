@@ -117,7 +117,8 @@ export namespace $Enums {
   Regular: 'Regular',
   Admin: 'Admin',
   SignedInUser: 'SignedInUser',
-  SuperAdmin: 'SuperAdmin'
+  SuperAdmin: 'SuperAdmin',
+  Resident: 'Resident'
 };
 
 export type UserRole = (typeof UserRole)[keyof typeof UserRole]

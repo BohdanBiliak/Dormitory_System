@@ -16,7 +16,8 @@ export default function GuestDormitories({params}:{params:Promise<{ id: string }
         {
             id: 'announcements',
             image: '/clipboard-check.svg',
-            label: 'Announcements'
+            label: 'Announcements',
+            href: "/announcements"
         },
         {
             id: 'rooms',

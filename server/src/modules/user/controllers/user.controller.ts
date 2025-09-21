@@ -28,8 +28,8 @@ import {
   ApiForbiddenResponse,
   ApiNotFoundResponse
 } from "@nestjs/swagger";
-import { Roles } from "@libs/common/decorators/roles.decorator";
 import { CurrentUser } from '@/libs/common/decorators/current-user.decorator';
+
 @ApiTags('Users')
 @ApiBearerAuth()
 @Controller('users')
@@ -217,46 +217,82 @@ export class UserController {
   })
   @ApiForbiddenResponse({ description: 'Unauthorized or insufficient role' })
   @HttpCode(HttpStatus.OK)
+
   @Get()
   @Authorization(UserRole.Admin, UserRole.SuperAdmin)
   async findAll(
-   @Query('email') email?: string,
-  @Query('displayName') displayName?: string,
-  @Query('secondName') secondName?: string,
-  @Query('role') role?: string,
-  @Query('method') method?: string,
-  @Query('isVerified') isVerified?: string,
-  @Query('isTwoFactorEnabled') isTwoFactorEnabled?: string,
-  @Query('isActive') isActive?: string,
-  @Query('dormitoryId') dormitoryId?: string,
-  @Query('roomId') roomId?: string,
-  @Query('page') page: number = 1,
-  @Query('limit') limit: number = 10,
+    @Query('email') email?: string,
+    @Query('displayName') displayName?: string,
+    @Query('secondName') secondName?: string,
+    @Query('role') role?: string,
+    @Query('method') method?: string,
+    @Query('isVerified') isVerified?: string,
+    @Query('isTwoFactorEnabled') isTwoFactorEnabled?: string,
+    @Query('isActive') isActive?: string,
+    @Query('dormitoryId') dormitoryId?: string,
+    @Query('roomId') roomId?: string,
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
   ) {
-      const queryParams = {
-    email,
-    displayName,
-    secondName,
-    role,
-    method,
-    isVerified,
-    isTwoFactorEnabled,
-    isActive,
-    dormitoryId,
-    roomId
-  };
+    const queryParams = {
+      email,
+      displayName,
+      secondName,
+      role,
+      method,
+      isVerified,
+      isTwoFactorEnabled,
+      isActive,
+      dormitoryId,
+      roomId
+    };
 
     return this.userService.findAll(queryParams, Number(page), Number(limit));
   }
 
+  @Get('residents')
+  @ApiOperation({
+    summary: 'Get all active residents',
+    description: 'Retrieves a list of all users with the role of Resident who are currently active'
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Successfully retrieved all active residents',
+    schema: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          id: { type: 'string', format: 'uuid' },
+          email: { type: 'string', format: 'email' },
+          displayName: { type: 'string' },
+          secondName: { type: 'string' },
+          role: { type: 'string', enum: ['Admin', 'Resident'] },
+          isActive: { type: 'boolean' },
+          isVerified: { type: 'boolean' },
+          isTwoFactorEnabled: { type: 'boolean' },
+          picture: { type: 'string', nullable: true },
+          dormitoryId: { type: 'string', format: 'uuid', nullable: true },
+          roomId: { type: 'string', format: 'uuid', nullable: true },
+          createdAt: { type: 'string', format: 'date-time' },
+          updatedAt: { type: 'string', format: 'date-time' }
+        }
+      }
+    }
+  })
+  async getAllResidents() {
+    return this.userService.getAllResidents();
+  }
+
+
   @Delete(':id/deactivate')
   @Authorization($Enums.UserRole.SuperAdmin, $Enums.UserRole.Admin)
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Deactivate user',
     description: 'Deactivates a user account (soft delete)'
   })
   @ApiParam({ name: 'id', type: String, description: 'User ID' })
-  @ApiOkResponse({ 
+  @ApiOkResponse({
     description: 'User deactivated successfully'
   })
   @ApiResponse({ status: 404, description: 'Manager not found' })
@@ -264,25 +300,25 @@ export class UserController {
   async deactivateUser(
     @Param('id') id: string,
     @CurrentUser('id') currentUserId: string,
-  ){
+  ) {
     return this.userService.deactivateUser(id, currentUserId);
   }
 
   @Patch(':id/activate')
   @Authorization($Enums.UserRole.SuperAdmin, $Enums.UserRole.Admin)
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Activate user',
     description: 'Activates a previously deactivated user account'
   })
   @ApiParam({ name: 'id', type: String, description: 'User ID' })
-  @ApiOkResponse({ 
+  @ApiOkResponse({
     description: 'User activated successfully'
   })
   @ApiResponse({ status: 404, description: 'User not found' })
   async activateUser(
     @Param('id') id: string,
     @CurrentUser('id') currentUserId: string,
-  ){
+  ) {
     return this.userService.activateUser(id, currentUserId);
   }
 

@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 
 import { PrismaService } from "@/prisma/prisma.service";
-import { $Enums } from "../../../../__generated__";
+import { $Enums, UserRole } from "../../../../__generated__";
 import AuthMethod = $Enums.AuthMethod;
 import { hash } from "argon2";
 import {UpdateUserDto} from "@/modules/user/dto/update-user.dto";
@@ -181,4 +181,13 @@ export class UserService {
     };
   }
 
+  async getAllResidents(){
+    const residents = await this.prismaService.user.findMany({
+      where: {
+        role: UserRole.Resident,
+        isActive: true
+      },
+  });
+    return residents;
+  }
 }

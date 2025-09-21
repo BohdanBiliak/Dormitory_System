@@ -125,7 +125,6 @@ export class AnnouncementController {
   }
 
   @Get(':id')
-  @Authorization()
   @ApiOperation({ summary: 'Get announcement by ID' })
   @ApiParam({ name: 'id', type: String })
   @ApiResponse({ status: 200, description: 'Announcement', type: AnnouncementResponseDto })

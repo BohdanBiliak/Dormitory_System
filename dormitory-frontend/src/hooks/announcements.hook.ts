@@ -37,7 +37,7 @@ export function useGetPublicAnnouncements (filters:{
     const {data, isLoading, error} = useQuery({
         queryKey: [`announcements`, `public`, filters],
         queryFn: () => announcementsApi.getPublicAnnouncements(filters),
-        enabled: !!filters,
+        enabled: filters.page > 0 && filters.limit > 0,
         staleTime: 30 * 1000,
     })
     return {data, isLoading, error}
@@ -101,4 +101,6 @@ export function useMutateAnnouncement(){
         uploadAnnouncementAttachment: uploadAnnouncementAttachment.mutate,
         uploadingAnnouncementAttachment: uploadAnnouncementAttachment.isPending,
     }
+
+    
 }

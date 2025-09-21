@@ -7,12 +7,15 @@ export default function PasswordRecoveryPage() {
         {
             id: 'dormitories',
             image: '/workplace.svg',
-            label: 'Dormitories Information'
+            label: 'Dormitories Information',
+            href: "/dormitories"
+
         },
         {
             id: 'announcements',
             image: '/clipboard-check.svg',
-            label: 'Announcements'
+            label: 'Announcements',
+            href: "/announcements"
         },
         {
             id: 'rooms',

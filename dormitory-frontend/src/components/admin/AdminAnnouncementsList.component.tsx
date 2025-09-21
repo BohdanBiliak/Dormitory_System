@@ -35,7 +35,7 @@ export function AdminAnnouncementList(){
 
     if (isLoading) {
         return (
-            <div className="min-h-screen w-full flex items-center justify-center bg-gray-50">
+            <div className=" w-full flex items-center justify-center bg-gray-50">
                 <div className="bg-white shadow-lg rounded-lg p-8 max-w-md mx-4">
                     <div className="flex items-center justify-center">
                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
@@ -48,7 +48,7 @@ export function AdminAnnouncementList(){
 
     if (error) {
         return (
-            <div className="min-h-screen w-full flex items-center justify-center bg-gray-50">
+            <div className=" w-full flex items-center justify-center bg-gray-50">
                 <div className="bg-white shadow-lg rounded-lg p-8 max-w-md mx-4">
                     <div className="text-center">
                         <div className="text-red-500 mb-3">
@@ -64,7 +64,7 @@ export function AdminAnnouncementList(){
     }
 
     return(
-        <div className="min-h-screen w-full bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className=" w-full bg-gradient-to-br from-gray-50 to-gray-100">
             {/* Header Section */}
             <div className="bg-white shadow-sm border-b border-gray-200">
                 <div className="px-4 py-6 md:px-6 md:py-8">

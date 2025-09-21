@@ -10,7 +10,7 @@ export function GuestDormitoriesPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen w-full flex items-center justify-center bg-gray-50">
+      <div className=" w-full flex items-center justify-center bg-gray-50">
         <div className="bg-white shadow-lg rounded-lg p-8 max-w-md mx-4">
           <div className="flex items-center justify-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
@@ -23,7 +23,7 @@ export function GuestDormitoriesPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen w-full flex items-center justify-center bg-gray-50">
+      <div className=" w-full flex items-center justify-center bg-gray-50">
         <div className="bg-white shadow-lg rounded-lg p-8 max-w-md mx-4">
           <div className="text-center">
             <div className="text-red-500 mb-3">
