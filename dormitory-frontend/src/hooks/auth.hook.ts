@@ -98,8 +98,8 @@ export const useAuth = () => {
   const logoutMutation = useMutation({
     mutationFn: authApi.logout,
     onSuccess: () => {
-      queryClient.setQueryData(['auth', 'currentUser'], null)
-      queryClient.removeQueries({ queryKey: ['auth'] })
+      queryClient.setQueryData(['user', 'current'], null)
+      queryClient.removeQueries({ queryKey: ['user', 'current'] })
       toast.success('Logged out successfully!')
       router.push('/auth/login')
     },

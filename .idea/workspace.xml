@@ -5,29 +5,55 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a2609a67-42b3-4399-bbcc-46f7339b9fb9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/dormitory-frontend/public/bell.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/announcements-public/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/(signiedInUser)/profile/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/lib/rooms.api.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/lib/user.api.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/guest/UserPublicAnnouncements.component.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/signedIn/Profile.component.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/hooks/rooms.hook.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/hooks/user.hook.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/types/rooms.types.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dormitory-frontend/public/eye-slash.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dormitory-frontend/public/eye.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/(user)/layout.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/ui/UserSideMenu.component.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/auth/login/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/auth/login/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/auth/new-password/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/auth/new-password/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/auth/new-verification/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/auth/new-verification/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/auth/register/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/auth/register/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/auth/reset-password/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/auth/reset-password/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/dormitories/[id]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/dormitories/[id]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/dormitories/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/dormitories/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/AdminAnnouncement.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/AdminAnnouncement.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/announcements-public/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/(user)/announcements-public/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/announcements/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/(user)/announcements/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/auth/login/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/(user)/auth/login/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/auth/new-password/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/(user)/auth/new-password/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/auth/new-verification/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/(user)/auth/new-verification/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/auth/register/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/(user)/auth/register/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/auth/reset-password/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/(user)/auth/reset-password/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/dormitories/[id]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/(user)/dormitories/[id]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/dormitories/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/(user)/dormitories/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/(signiedInUser)/profile/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/(user)/profile/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/AdminNewAnnouncement.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/AdminNewAnnouncement.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/guest/GuestDormitoriesPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/guest/UserDormitoriesPage.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/guest/GuestDormitoryDetailsPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/guest/UsersDormitoryDetailsPage.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/auth/LoginForm.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/auth/LoginForm.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/ui/SideMenu.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/ui/SideMenu.component.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/hooks/auth.hook.ts" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/hooks/auth.hook.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/client.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/client.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/default.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/default.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/edge.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/edge.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/index-browser.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/index.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/libquery_engine-debian-openssl-3.0.x.so.node" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/query_engine-windows.dll.node" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/query_engine-windows.dll.node.tmp12748" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/query_engine-windows.dll.node.tmp13272" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/query_engine-windows.dll.node.tmp17540" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/query_engine-windows.dll.node.tmp17592" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/query_engine-windows.dll.node.tmp19596" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/query_engine-windows.dll.node.tmp22192" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/runtime/edge-esm.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/runtime/edge.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/runtime/index-browser.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/runtime/index-browser.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/runtime/library.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/runtime/library.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/runtime/react-native.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/runtime/wasm-compiler-edge.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/runtime/wasm-engine-edge.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/schema.prisma" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/wasm.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/wasm.js" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,7 +72,7 @@
     <dismissed value="$PROJECT_DIR$/dormitory-frontend/package.json" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="ProjectErrors" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
@@ -69,7 +95,7 @@
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/vladyslav/WebstormProjects/Dormitory_System/dormitory-frontend/public&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/vladyslav/WebstormProjects/Dormitory_System/dormitory-frontend/src/app/(user)&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -82,6 +108,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/dormitory-frontend/src/app/(user)" />
       <recent name="$PROJECT_DIR$/dormitory-frontend/public" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -167,7 +194,11 @@
       <workItem from="1757573823523" duration="2540000" />
       <workItem from="1757649557710" duration="3299000" />
       <workItem from="1757680760954" duration="2775000" />
-      <workItem from="1757684051036" duration="8376000" />
+      <workItem from="1757684051036" duration="8729000" />
+      <workItem from="1758461631713" duration="2693000" />
+      <workItem from="1758514686830" duration="1922000" />
+      <workItem from="1758518278688" duration="318000" />
+      <workItem from="1758519247974" duration="6855000" />
     </task>
     <servers />
   </component>

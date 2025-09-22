@@ -13,8 +13,7 @@ interface SideMenuProps {
 }
 
 export function SideMenu ({children, menuItems, activeItem}:SideMenuProps){
-    const { user, logout, isLoggingOut } = useAuth()
-    const router = useRouter()
+    const { logout, isLoggingOut } = useAuth()
     const [openMenu, setOpenMenu] = useState<string>()
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
