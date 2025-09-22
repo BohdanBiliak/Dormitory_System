@@ -15,6 +15,7 @@ import { CreateRoomStatusDto } from "@modules/room/dto/create-room-status.dto";
 import { SetPriceDto } from "@modules/room/dto/set-price.dto";
 import { AuditService } from "@modules/audit/audit.service";
 import { NotificationsService } from "@modules/notifications/notifications.service";
+import { NotificationType } from './../../../../__generated__/index.d';
 
 @Injectable()
 export class RoomService {
@@ -327,6 +328,54 @@ export class RoomService {
 
     return updatedUser;
   }
+
+async evictUserFromRoom(roomId: string, userId: string) {
+    const room = await this.roomRepository.findById(roomId);
+    if (!room) throw new NotFoundException("Room not found");
+
+    const user = await this.roomRepository.findUserById(userId);
+    if (!user) throw new NotFoundException("User not found");
+
+    // Check if user is actually in the specified room
+    if (user.roomId !== roomId) {
+        throw new BadRequestException("User is not assigned to this room");
+    }
+
+    // Remove user from room (set roomId to null)
+    const updatedUser = await this.roomRepository.updateUserRoom(userId, null);
+
+    // End any active room statuses for this user
+    await this.roomRepository.endUserRoomStatuses(userId, roomId);
+
+    // Send notification to the evicted user
+    try {
+        await this.notificationService.createNotification({
+            toUserId: userId,
+            type: $Enums.NotificationType.ACCOMMODATION_CHANGE_REJECTED,
+            title: 'Room Assignment Changed',
+            message: `You have been removed from room ${room.number}`,
+            roomId: roomId,
+        });
+    } catch (notificationError) {
+        console.error('❌ Error sending eviction notification:', notificationError);
+        // Don't throw - eviction was successful, notifications are optional
+    }
+
+    await this.auditService.log({
+        userId,
+        action: 'EVICT_USER_FROM_ROOM',
+        entity: 'User',
+        entityId: userId,
+        meta: {
+            roomId,
+            previousRoomId: user.roomId,
+            roomNumber: room.number,
+            dormitoryId: room.dormitoryId
+        },
+    });
+
+    return updatedUser;
+}
 
   async setRoomPrice(dto: SetPriceDto) {
     return this.roomRepository.createPrice({

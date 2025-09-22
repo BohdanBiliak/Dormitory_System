@@ -317,4 +317,18 @@ export class RoomRepository {
       where: { id: userId }
     });
   }
+  async endUserRoomStatuses(userId: string, roomId: string) {
+    return this.prisma.roomStatus.updateMany({
+        where: {
+            roomId,
+            description: {
+                contains: userId
+            },
+            dateOfEnd: null
+        },
+        data: {
+            dateOfEnd: new Date()
+        }
+    });
+}
 }

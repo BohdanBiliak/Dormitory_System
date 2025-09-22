@@ -520,7 +520,7 @@ export class RoomController {
     return this.roomService.createRoomStatus(roomId, dto);
   }
 
-  @Delete(":id/statuses/:sid")
+  @Delete(":id/statuses/:id")
   @Authorization(UserRole.Admin)
   @ApiOperation({ 
     summary: "Delete room status (Admin only)",
@@ -592,6 +592,87 @@ export class RoomController {
   ) {
     return this.roomService.assignUserToRoom(roomId, dto.userId);
   }
+
+  @Patch(":id/evict-user")
+@Authorization(UserRole.Admin)
+@ApiOperation({ 
+  summary: "Evict user from a room (Admin only)",
+  description: "Removes a user from their assigned room and ends any active room statuses. Sends notification to the evicted user."
+})
+@ApiParam({ 
+  name: "id", 
+  type: String, 
+  description: 'Room ID (UUID)',
+  example: '123e4567-e89b-12d3-a456-426614174000'
+})
+@ApiBody({ 
+  type: AssignUserToRoomDto, // Reusing the DTO since it has the same structure
+  description: 'User eviction details',
+  examples: {
+    example1: {
+      summary: 'Evict user from room',
+      value: {
+        userId: '123e4567-e89b-12d3-a456-426614174001'
+      }
+    }
+  }
+})
+@ApiResponse({ 
+  status: 200, 
+  description: 'User evicted from room successfully',
+  schema: {
+    type: 'object',
+    properties: {
+      id: { type: 'string', format: 'uuid', example: '123e4567-e89b-12d3-a456-426614174001' },
+      email: { type: 'string', format: 'email', example: 'john.doe@university.edu' },
+      firstName: { type: 'string', example: 'John' },
+      lastName: { type: 'string', example: 'Doe' },
+      roomId: { type: 'string', nullable: true, example: null, description: 'Will be null after eviction' },
+      displayName: { type: 'string', example: 'John Doe' },
+      role: { type: 'string', enum: ['Admin', 'SignedInUser'], example: 'SignedInUser' }
+    }
+  }
+})
+@ApiResponse({ 
+  status: 400, 
+  description: 'Bad Request - User is not assigned to the specified room',
+  schema: {
+    type: 'object',
+    properties: {
+      statusCode: { type: 'number', example: 400 },
+      message: { type: 'string', example: 'User is not assigned to this room' },
+      error: { type: 'string', example: 'Bad Request' }
+    }
+  }
+})
+@ApiResponse({ status: 401, description: 'Unauthorized - Invalid or missing authentication token' })
+@ApiResponse({ status: 403, description: 'Forbidden - User does not have admin privileges' })
+@ApiResponse({ 
+  status: 404, 
+  description: 'Not Found - Room or user with specified ID does not exist',
+  schema: {
+    type: 'object',
+    properties: {
+      statusCode: { type: 'number', example: 404 },
+      message: { 
+        oneOf: [
+          { type: 'string', example: 'Room not found' },
+          { type: 'string', example: 'User not found' }
+        ]
+      },
+      error: { type: 'string', example: 'Not Found' }
+    }
+  }
+})
+async evictUser(
+    @Param("id") roomId: string,
+    @Body() dto: AssignUserToRoomDto,
+) {
+  return this.roomService.evictUserFromRoom(roomId, dto.userId);
+}
+
+
+
 
   @Post("/prices")
   @Authorization(UserRole.Admin)
