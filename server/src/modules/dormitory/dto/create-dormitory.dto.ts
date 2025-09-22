@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsString, ValidateNested, IsInt, IsNumber } from 'class-validator';
-import { Type } from 'class-transformer';
+import { IsArray, IsString, ValidateNested, IsInt, IsNumber, IsOptional } from 'class-validator';
 
 class RoomGenerationDto {
     @ApiProperty()
@@ -18,6 +17,16 @@ class RoomGenerationDto {
     @ApiProperty()
     @IsNumber()
     pricePerMonth: number;
+
+    @ApiProperty({ 
+        type: [String], 
+        description: "Equipment to be added to each room",
+        example: ["Bed", "Desk", "Chair", "Wardrobe", "Air Conditioner"]
+    })
+    @IsOptional()
+    @IsArray()
+    @IsString({ each: true })
+    roomEquipment?: string[];
 }
 
 export class CreateDormitoryDto {

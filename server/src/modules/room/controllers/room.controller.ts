@@ -4,13 +4,14 @@ import {ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse, A
 import { Authorized } from "@/libs/common/decorators/authtorized.decorator";
 import {$Enums, User} from "../../../../__generated__";
 import {Authorization} from "@/libs/common/decorators/auth.decorator";
-import {AvailableRoomsDto} from "../dto/AvailableRooms.dto"
+import {AvailableRoomsDto} from "../dto/availableRooms.dto"
 import {BookRoomDto} from "@modules/room/dto/book-room.dto";
 import {RequestMoveOutDto} from "@modules/room/dto/request-moveout.dto";
-import {RequestAccommmodationDto} from "../dto/RequestAccommmodation.dto";
+import {RequestAccommmodationDto} from "../dto/requestAccommmodation.dto";
 import {CreateRoomStatusDto} from "@modules/room/dto/create-room-status.dto";
 import {AssignUserToRoomDto} from "@/modules/room/dto/assign-user.dto";
 import {SetPriceDto} from "@modules/room/dto/set-price.dto";
+import {UpdateRoomDto} from "@modules/room/dto/update-room.dto";
 import UserRole = $Enums.UserRole;
 
 @ApiTags("Rooms")
@@ -161,6 +162,169 @@ export class RoomController {
   @ApiResponse({ status: 404, description: 'Not Found - Room with specified ID does not exist' })
   async getRoom(@Param("id") id: string) {
     return this.roomService.findOne(id);
+  }
+
+  @Patch(":id")
+  @Authorization(UserRole.Admin)
+  @ApiOperation({ 
+    summary: "Update room details (Admin only)",
+    description: "Updates room information including number, floor, capacity, equipment, and photos. Validates business rules and prevents conflicts."
+  })
+  @ApiParam({ 
+    name: 'id', 
+    type: String, 
+    description: 'Room ID (UUID)',
+    example: '123e4567-e89b-12d3-a456-426614174000'
+  })
+  @ApiBody({ 
+    type: UpdateRoomDto,
+    description: 'Room update data. All fields are optional.',
+    examples: {
+      updateBasicInfo: {
+        summary: 'Update basic room information',
+        value: {
+          number: 'A301',
+          floor: 3,
+          capacity: 4
+        }
+      },
+      updateEquipment: {
+        summary: 'Update room equipment',
+        value: {
+          roomEquipment: ['Bed', 'Desk', 'Chair', 'Wardrobe', 'AC']
+        }
+      },
+      updatePhotos: {
+        summary: 'Update room photos',
+        value: {
+          photos: [
+            'https://imgur.com/room1.jpg',
+            'https://cloudinary.com/room2.jpg'
+          ]
+        }
+      },
+      fullUpdate: {
+        summary: 'Complete room update',
+        value: {
+          number: 'B205',
+          floor: 2,
+          capacity: 2,
+          roomEquipment: ['Bed', 'Desk', 'Chair', 'Wardrobe', 'Mini Fridge'],
+          photos: [
+            'https://imgur.com/updated-room1.jpg',
+            'https://cloudinary.com/updated-room2.jpg'
+          ]
+        }
+      }
+    }
+  })
+  @ApiResponse({ 
+    status: 200, 
+    description: 'Room updated successfully',
+    schema: {
+      type: 'object',
+      properties: {
+        id: { type: 'string', format: 'uuid', example: '123e4567-e89b-12d3-a456-426614174000' },
+        number: { type: 'string', example: 'A301' },
+        floor: { type: 'integer', example: 3 },
+        capacity: { type: 'integer', example: 4 },
+        dormitoryId: { type: 'string', format: 'uuid' },
+        roomEquipment: { 
+          type: 'array', 
+          items: { type: 'string' }, 
+          example: ['Bed', 'Desk', 'Chair', 'Wardrobe', 'AC'] 
+        },
+        photos: { 
+          type: 'array', 
+          items: { type: 'string' }, 
+          example: ['https://imgur.com/room1.jpg', 'https://cloudinary.com/room2.jpg'] 
+        },
+        createdAt: { type: 'string', format: 'date-time' },
+        dormitory: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', format: 'uuid' },
+            name: { type: 'string', example: 'East Wing Dormitory' },
+            address: { type: 'string', example: '123 University Ave' }
+          }
+        },
+        residents: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              id: { type: 'string', format: 'uuid' },
+              displayName: { type: 'string', example: 'John Doe' },
+              secondName: { type: 'string', example: 'Doe' },
+              email: { type: 'string', format: 'email', example: 'john.doe@university.edu' }
+            }
+          }
+        },
+        statuses: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              id: { type: 'string', format: 'uuid' },
+              description: { type: 'string' },
+              dateOfStart: { type: 'string', format: 'date-time' },
+              dateOfEnd: { type: 'string', format: 'date-time', nullable: true }
+            }
+          }
+        }
+      }
+    }
+  })
+  @ApiResponse({ 
+    status: 400, 
+    description: 'Bad Request - Validation failed or business rule violation',
+    schema: {
+      type: 'object',
+      properties: {
+        statusCode: { type: 'number', example: 400 },
+        message: { 
+          oneOf: [
+            { type: 'string', example: 'Cannot reduce capacity to 2. Room currently has 3 occupants' },
+            { type: 'string', example: 'Rooms above floor 10 cannot have more than 6 people for safety reasons' },
+            { type: 'string', example: 'Room number must contain only letters and numbers' }
+          ]
+        },
+        error: { type: 'string', example: 'Bad Request' }
+      }
+    }
+  })
+  @ApiResponse({ status: 401, description: 'Unauthorized - Invalid or missing authentication token' })
+  @ApiResponse({ status: 403, description: 'Forbidden - User does not have admin privileges' })
+  @ApiResponse({ 
+    status: 404, 
+    description: 'Not Found - Room with specified ID does not exist',
+    schema: {
+      type: 'object',
+      properties: {
+        statusCode: { type: 'number', example: 404 },
+        message: { type: 'string', example: 'Room with ID 123e4567-e89b-12d3-a456-426614174000 not found' },
+        error: { type: 'string', example: 'Not Found' }
+      }
+    }
+  })
+  @ApiResponse({ 
+    status: 409, 
+    description: 'Conflict - Room number already exists',
+    schema: {
+      type: 'object',
+      properties: {
+        statusCode: { type: 'number', example: 409 },
+        message: { type: 'string', example: 'Room number A301 already exists' },
+        error: { type: 'string', example: 'Conflict' }
+      }
+    }
+  })
+  async updateRoom(
+    @Param("id") id: string,
+    @Body() updateRoomDto: UpdateRoomDto,
+    @Authorized() user: User
+  ) {
+    return this.roomService.updateRoom(id, updateRoomDto, user.id);
   }
 
   @Post("book")

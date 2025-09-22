@@ -1,78 +1,72 @@
 import {
   BadRequestException,
-  Body,
   ConflictException,
   Injectable,
   NotFoundException,
 } from "@nestjs/common";
-import { PrismaService } from "@/prisma/prisma.service";
 import { $Enums, User } from "../../../../__generated__";
-import { AvailableRoomsDto } from "../dto/AvailableRooms.dto";
+import { RoomRepository, RoomWithRelations, UpdateRoomData } from "../repositories/room.repository";
+import { UpdateRoomDto } from "../dto/update-room.dto";
+import { AvailableRoomsDto } from "../dto/availableRooms.dto";
 import { BookRoomDto } from "@modules/room/dto/book-room.dto";
-import { RequestAccommmodationDto } from "../dto/RequestAccommmodation.dto";
+import { RequestAccommmodationDto } from "../dto/requestAccommmodation.dto";
 import { RequestMoveOutDto } from "@modules/room/dto/request-moveout.dto";
 import { CreateRoomStatusDto } from "@modules/room/dto/create-room-status.dto";
 import { SetPriceDto } from "@modules/room/dto/set-price.dto";
 import { AuditService } from "@modules/audit/audit.service";
-import { NotificationsService } from "@modules/notifications/notifications.service"
+import { NotificationsService } from "@modules/notifications/notifications.service";
 
 @Injectable()
 export class RoomService {
   constructor(
-    private readonly prismaService: PrismaService,
+    private readonly roomRepository: RoomRepository,
     private readonly auditService: AuditService,
     private readonly notificationService: NotificationsService,
   ) {}
 
+  async updateRoom(id: string, updateRoomDto: UpdateRoomDto, userId: string): Promise<RoomWithRelations> {
+    // Validate room exists
+    await this.validateRoomExists(id);
+
+    // Validate business rules
+    await this.validateUpdateRules(id, updateRoomDto);
+
+    // Prepare update data
+    const updateData: UpdateRoomData = this.prepareUpdateData(updateRoomDto);
+
+    try {
+      const updatedRoom = await this.roomRepository.update(id, updateData);
+
+      // Log the update action
+      await this.auditService.log({
+        userId,
+        action: 'UPDATE_ROOM',
+        entity: 'Room',
+        entityId: id,
+        meta: {
+          updatedFields: Object.keys(updateData),
+          changes: updateData
+        },
+      });
+
+      return updatedRoom;
+    } catch (error) {
+      if (error && typeof error === 'object' && 'code' in error && error.code === 'P2002') {
+        throw new ConflictException('Room number already exists');
+      }
+      throw error;
+    }
+  }
+
   async findAll(user: User) {
-    let rooms;
+    let rooms: RoomWithRelations[];
 
     if (user.role === $Enums.UserRole.Admin) {
-      rooms = await this.prismaService.room.findMany({
-        include: {
-          residents: {
-            select: {
-              id: true,
-              displayName: true,
-              secondName: true,
-              email: true
-            }
-          },
-          dormitory: {
-            select: {
-              id: true,
-              name: true
-            }
-          }
-        }
-      });
+      rooms = await this.roomRepository.findAll();
     } else {
-      const assignments = await this.prismaService.dormitoryAdmin.findMany({
-        where: { userId: user.id },
-        select: { dormitoryId: true },
-      });
-
-      rooms = await this.prismaService.room.findMany({
-        where: {
-          dormitoryId: { in: assignments.map((a) => a.dormitoryId) },
-        },
-        include: {
-          residents: {
-            select: {
-              id: true,
-              displayName: true,
-              secondName: true,
-              email: true
-            }
-          },
-          dormitory: {
-            select: {
-              id: true,
-              name: true
-            }
-          }
-        }
-      });
+      const assignments = await this.roomRepository.findDormitoryAdmins(user.id);
+      const dormitoryIds = assignments.map((a) => a.dormitoryId);
+      rooms = await this.roomRepository.findAll(dormitoryIds);
     }
     
     // Add price information to each room
@@ -86,29 +80,7 @@ export class RoomService {
   }
 
   async findOne(id: string) {
-    const room = await this.prismaService.room.findUniqueOrThrow({ 
-      where: { id },
-      include: {
-        statuses: true,
-        dormitory: {
-          select: {
-            id: true,
-            name: true,
-            address: true
-          }
-        },
-        residents: {
-          select: {
-            id: true,
-            displayName: true,
-            secondName: true,
-            email: true
-          }
-        }
-      }
-    });
-
-    // Add price information
+    const room = await this.roomRepository.findByIdOrThrow(id);
     const price = await this.getRoomPriceByCapacity(room.capacity);
     
     return {
@@ -117,42 +89,31 @@ export class RoomService {
     };
   }
 
+  async getRoomWithOccupancy(id: string) {
+    const room = await this.roomRepository.findById(id);
+    if (!room) {
+      throw new NotFoundException(`Room with ID ${id} not found`);
+    }
+
+    const statistics = await this.roomRepository.getRoomStatistics(id);
+    const price = await this.getRoomPriceByCapacity(room.capacity);
+    
+    return {
+      ...room,
+      ...statistics,
+      price
+    };
+  }
+
   async findAvailableRooms(dto: AvailableRoomsDto) {
     const from = new Date(dto.from);
     const to = new Date(dto.to);
 
-    const rooms = await this.prismaService.room.findMany({
-      where: dto.dormitoryId ? { dormitoryId: dto.dormitoryId } : {},
-      include: {
-        statuses: true,
-        dormitory: true,
-        residents: {
-          select: {
-            id: true,
-            displayName: true,
-            secondName: true,
-            email: true
-          }
-        }
-      },
-    });
+    const rooms = await this.roomRepository.findAvailableRooms(dto.dormitoryId);
 
     // Get current prices for each room capacity
     const capacityPriceMap = new Map();
-    const prices = await this.prismaService.price.findMany({
-      where: {
-        OR: [
-          {
-            dateFrom: { lte: to },
-            dateTo: { gte: from }
-          },
-          {
-            dateFrom: { lte: to },
-            dateTo: null
-          }
-        ]
-      }
-    });
+    const prices = await this.roomRepository.findPrices({ from, to });
 
     // Create a map of capacity to price
     prices.forEach(price => {
@@ -184,29 +145,8 @@ export class RoomService {
   }
 
   async getRoomPriceByCapacity(capacity: number) {
-    const now = new Date();
-    
-    // Find the most recent price for this capacity
-    const price = await this.prismaService.price.findFirst({
-      where: {
-        roomCapacity: capacity,
-        OR: [
-          {
-            dateFrom: { lte: now },
-            dateTo: { gte: now }
-          },
-          {
-            dateFrom: { lte: now },
-            dateTo: null
-          }
-        ]
-      },
-      orderBy: {
-        dateFrom: 'desc'
-      }
-    });
+    const price = await this.roomRepository.findPriceByCapacity(capacity);
 
-    // If no specific price for this capacity, return the default price
     if (!price) {
       return {
         pricePerDay: 0,
@@ -222,15 +162,7 @@ export class RoomService {
   }
 
   async bookRoom(dto: BookRoomDto, userId: string) {
-    const room = await this.prismaService.room.findUnique({
-      where: { id: dto.roomId },
-      include: { 
-        statuses: true, 
-        dormitory: true,
-        residents: true 
-      },
-    });
-
+    const room = await this.roomRepository.findById(dto.roomId);
     if (!room) throw new NotFoundException("Room not found");
     
     // Check if room has capacity
@@ -265,74 +197,26 @@ export class RoomService {
       ? diffDays * price.pricePerDay 
       : price.pricePerMonth * (diffDays / 30);
 
-    const booking = await this.prismaService.booking.create({
-      data: {
-        userId,
-        roomId: room.id,
-        status: 'PENDING',
-        checkInDate: from,
-        checkOutDate: to,
-        totalAmount,
-        notes: `Direct booking by user`,
-      },
+    const booking = await this.roomRepository.createBooking({
+      userId,
+      roomId: room.id,
+      status: 'PENDING',
+      checkInDate: from,
+      checkOutDate: to,
+      totalAmount,
+      notes: `Direct booking by user`,
     });
 
-    const roomStatus = await this.prismaService.roomStatus.create({
-      data: {
-        roomId: room.id,
-        dateOfStart: from,
-        dateOfEnd: to,
-        description: `Booking by user ${userId}`,
-      },
+    const roomStatus = await this.roomRepository.createRoomStatus(room.id, {
+      dateOfStart: from,
+      dateOfEnd: to,
+      description: `Booking by user ${userId}`,
     });
 
-    await this.prismaService.user.update({
-      where: { id: userId },
-      data: { roomId: room.id },
-    });
+    await this.roomRepository.updateUserRoom(userId, room.id);
 
     try {
-      await this.notificationService.createNotification({
-        toUserId: String(userId),
-        type: $Enums.NotificationType.ROOM_BOOKING_APPROVED,
-        title: 'Room Booking Confirmed',
-        message: `Your booking for room ${room.number} in ${room.dormitory?.name || 'Unknown Dormitory'} has been confirmed for ${from.toDateString()} to ${to.toDateString()}`,
-        bookingId: String(booking.id), 
-        roomId: String(room.id),
-      });
-
-      // Notify dormitory admins
-      const dormitoryAdmins = await this.prismaService.dormitoryAdmin.findMany({
-        where: { dormitoryId: room.dormitoryId },
-        include: { user: true },
-      });
-
-      for (const admin of dormitoryAdmins) {
-        await this.notificationService.createNotification({
-          toUserId: admin.userId, 
-          fromUserId: userId, 
-          type: $Enums.NotificationType.ROOM_BOOKING_REQUEST,
-          title: 'New Room Booking',
-          message: `Room ${room.number} has been booked by a student for ${from.toDateString()} to ${to.toDateString()}`,
-          bookingId: booking.id, 
-          roomId: room.id,
-        });
-      }
-
-      // Send email notification
-      await this.notificationService.sendEmailNotification({
-        to: userId,
-        subject: 'Room Booking Confirmation',
-        template: 'room-booking-confirmation',
-        data: {
-          roomNumber: room.number,
-          dormitoryName: room.dormitory?.name || 'Unknown Dormitory',
-          checkIn: from.toDateString(),
-          checkOut: to.toDateString(),
-          bookingId: booking.id,
-          totalAmount,
-        },
-      });
+      await this.sendBookingNotifications(booking, room, from, to, userId, totalAmount);
     } catch (notificationError) {
       console.error('❌ Error sending notifications:', notificationError);
       // Don't throw - booking was successful, notifications are optional
@@ -361,11 +245,7 @@ export class RoomService {
   async requestAccommodation(user: User, dto: RequestAccommmodationDto) {
     const { from, to, roomId, roommateIds, numberOfPeople } = dto;
 
-    const room = await this.prismaService.room.findUnique({
-      where: { id: roomId },
-      include: { residents: true },
-    });
-
+    const room = await this.roomRepository.findById(roomId);
     if (!room) throw new NotFoundException("Room not found");
     if (room.residents.length >= room.capacity)
       throw new ConflictException("Room already full");
@@ -373,25 +253,13 @@ export class RoomService {
     const fromDate = new Date(from);
     const toDate = new Date(to);
 
-    const overlapping = await this.prismaService.roomStatus.findFirst({
-      where: {
-        roomId,
-        OR: [
-          {
-            dateOfStart: { lte: toDate },
-            dateOfEnd: { gte: fromDate },
-          },
-        ],
-      },
-    });
+    const overlapping = await this.roomRepository.findRoomStatus(roomId, fromDate, toDate);
 
     if (overlapping) {
       throw new ConflictException("Room not available on selected dates");
     }
 
-    // Confirmation request → for admin
-    return this.prismaService.confirmation.create({
-     data: {
+    return this.roomRepository.createConfirmation({
       userId: user.id,
       type: "ACCOMMODATION",
       status: "PENDING",
@@ -400,8 +268,7 @@ export class RoomService {
       to: toDate,
       roommateIds: roommateIds || [],
       numberOfPeople: numberOfPeople || 1
-    },
-      });
+    });
   }
 
   async requestMoveOut(user: User, dto: RequestMoveOutDto) {
@@ -411,56 +278,41 @@ export class RoomService {
 
     const date = new Date(dto.moveOutDate);
 
-    return this.prismaService.confirmation.create({
-      data: {
-        userId: user.id,
-        type: "ROOM_VACATION",
-        status: "PENDING",
-        metadata: {
-          moveOutDate: date.toISOString(),
-          currentRoomId: user.roomId
-        }
-      },
+    return this.roomRepository.createConfirmation({
+      userId: user.id,
+      type: "ROOM_VACATION",
+      status: "PENDING",
+      metadata: {
+        moveOutDate: date.toISOString(),
+        currentRoomId: user.roomId
+      }
     });
   }
 
   async createRoomStatus(roomId: string, dto: CreateRoomStatusDto) {
-    return this.prismaService.roomStatus.create({
-      data: {
-        roomId,
-        description: dto.description,
-        dateOfStart: new Date(dto.dateOfStart),
-        dateOfEnd: dto.dateOfEnd ? new Date(dto.dateOfEnd) : null,
-      },
+    return this.roomRepository.createRoomStatus(roomId, {
+      description: dto.description,
+      dateOfStart: new Date(dto.dateOfStart),
+      dateOfEnd: dto.dateOfEnd ? new Date(dto.dateOfEnd) : null,
     });
   }
 
   async deleteRoomStatus(statusId: string) {
-    return this.prismaService.roomStatus.delete({ where: { id: statusId } });
+    return this.roomRepository.deleteRoomStatus(statusId);
   }
 
   async assignUserToRoom(roomId: string, userId: string) {
-    const room = await this.prismaService.room.findUnique({
-      where: { id: roomId },
-      include: { residents: true }
-    });
-
+    const room = await this.roomRepository.findById(roomId);
     if (!room) throw new NotFoundException("Room not found");
     
     if (room.residents.length >= room.capacity) {
       throw new ConflictException("Room is already at full capacity");
     }
 
-    const user = await this.prismaService.user.findUnique({
-      where: { id: userId },
-    });
-
+    const user = await this.roomRepository.findUserById(userId);
     if (!user) throw new NotFoundException("User not found");
 
-    const updatedUser = await this.prismaService.user.update({
-      where: { id: userId },
-      data: { roomId },
-    });
+    const updatedUser = await this.roomRepository.updateUserRoom(userId, roomId);
 
     await this.auditService.log({
       userId,
@@ -477,13 +329,182 @@ export class RoomService {
   }
 
   async setRoomPrice(dto: SetPriceDto) {
-    return this.prismaService.price.create({
+    return this.roomRepository.createPrice({
+      roomCapacity: dto.roomCapacity,
+      pricePerDay: dto.pricePerDay,
+      pricePerMonth: dto.pricePerMonth,
+      dateFrom: new Date(dto.dateFrom),
+      dateTo: dto.dateTo ? new Date(dto.dateTo) : null,
+    });
+  }
+
+  // Private helper methods
+  private async validateRoomExists(id: string): Promise<void> {
+    const exists = await this.roomRepository.exists(id);
+    if (!exists) {
+      throw new NotFoundException(`Room with ID ${id} not found`);
+    }
+  }
+
+  private async validateUpdateRules(id: string, updateRoomDto: UpdateRoomDto): Promise<void> {
+    // Check room number uniqueness
+    if (updateRoomDto.number) {
+      const isUnique = await this.roomRepository.isRoomNumberUnique(updateRoomDto.number, id);
+      if (!isUnique) {
+        throw new ConflictException(`Room number ${updateRoomDto.number} already exists`);
+      }
+    }
+
+    // Validate capacity doesn't exceed current occupancy
+    if (updateRoomDto.capacity !== undefined) {
+      await this.validateCapacityNotBelowOccupancy(id, updateRoomDto.capacity);
+    }
+
+    // Validate floor and capacity combination
+    if (updateRoomDto.floor !== undefined && updateRoomDto.capacity !== undefined) {
+      this.validateFloorCapacityLogic(updateRoomDto.floor, updateRoomDto.capacity);
+    }
+  }
+
+  private async validateCapacityNotBelowOccupancy(roomId: string, newCapacity: number): Promise<void> {
+    const currentOccupancy = await this.roomRepository.countOccupants(roomId);
+    if (newCapacity < currentOccupancy) {
+      throw new BadRequestException(
+        `Cannot reduce capacity to ${newCapacity}. Room currently has ${currentOccupancy} occupants`
+      );
+    }
+  }
+
+  private validateFloorCapacityLogic(floor: number, capacity: number): void {
+    // Business logic: Higher floors might have capacity restrictions
+    if (floor > 10 && capacity > 6) {
+      throw new BadRequestException(
+        'Rooms above floor 10 cannot have more than 6 people for safety reasons'
+      );
+    }
+
+    // Ground floor might have different restrictions
+    if (floor === 1 && capacity > 8) {
+      throw new BadRequestException(
+        'Ground floor rooms cannot exceed 8 people capacity'
+      );
+    }
+
+    // Emergency exit requirements for high capacity rooms
+    if (capacity > 4 && floor > 5) {
+      throw new BadRequestException(
+        'Rooms with more than 4 people cannot be above floor 5 for emergency evacuation'
+      );
+    }
+  }
+
+  private prepareUpdateData(updateRoomDto: UpdateRoomDto): UpdateRoomData {
+    const updateData: UpdateRoomData = {};
+
+    if (updateRoomDto.number !== undefined) {
+      updateData.number = this.sanitizeRoomNumber(updateRoomDto.number);
+    }
+
+    if (updateRoomDto.floor !== undefined) {
+      updateData.floor = updateRoomDto.floor;
+    }
+
+    if (updateRoomDto.capacity !== undefined) {
+      updateData.capacity = updateRoomDto.capacity;
+    }
+
+    if (updateRoomDto.roomEquipment) {
+      updateData.roomEquipment = this.sanitizeEquipment(updateRoomDto.roomEquipment);
+    }
+
+    if (updateRoomDto.photos) {
+      updateData.photos = this.sanitizePhotoUrls(updateRoomDto.photos);
+    }
+
+    return updateData;
+  }
+
+  private sanitizeRoomNumber(roomNumber: string): string {
+    return roomNumber.trim().toUpperCase();
+  }
+
+  private sanitizeEquipment(equipment: string[]): string[] {
+    const allowedEquipment = [
+      'Bed', 'Desk', 'Chair', 'Wardrobe', 'Bookshelf', 'Mirror', 
+      'Lamp', 'Fan', 'AC', 'Heater', 'Window', 'Curtains',
+      'Safe', 'Mini Fridge', 'Microwave', 'TV', 'WiFi Router'
+    ];
+
+    return equipment
+      .filter(item => item && item.trim().length > 0)
+      .map(item => item.trim())
+      .filter(item => allowedEquipment.some(allowed => 
+        allowed.toLowerCase() === item.toLowerCase()
+      ))
+      .slice(0, 20);
+  }
+
+  private sanitizePhotoUrls(photos: string[]): string[] {
+    const maxPhotos = 10;
+    const allowedDomains = [
+      'imgur.com', 
+      'cloudinary.com', 
+      'amazonaws.com', 
+      's3.amazonaws.com',
+      'storage.googleapis.com'
+    ];
+    
+    return photos
+      .filter(url => {
+        try {
+          const urlObj = new URL(url);
+          return urlObj.protocol === 'https:' && 
+                 allowedDomains.some(domain => urlObj.hostname.includes(domain)) &&
+                 /\.(jpg|jpeg|png|webp)$/i.test(urlObj.pathname);
+        } catch {
+          return false;
+        }
+      })
+      .slice(0, maxPhotos);
+  }
+
+  private async sendBookingNotifications(booking: any, room: any, from: Date, to: Date, userId: string, totalAmount: number) {
+    await this.notificationService.createNotification({
+      toUserId: String(userId),
+      type: $Enums.NotificationType.ROOM_BOOKING_APPROVED,
+      title: 'Room Booking Confirmed',
+      message: `Your booking for room ${room.number} in ${room.dormitory?.name || 'Unknown Dormitory'} has been confirmed for ${from.toDateString()} to ${to.toDateString()}`,
+      bookingId: String(booking.id), 
+      roomId: String(room.id),
+    });
+
+    // Notify dormitory admins
+    const dormitoryAdmins = await this.roomRepository.findDormitoryAdmins(room.dormitoryId);
+
+    for (const admin of dormitoryAdmins) {
+      await this.notificationService.createNotification({
+        toUserId: admin.userId, 
+        fromUserId: userId, 
+        type: $Enums.NotificationType.ROOM_BOOKING_REQUEST,
+        title: 'New Room Booking',
+        message: `Room ${room.number} has been booked by a student for ${from.toDateString()} to ${to.toDateString()}`,
+        bookingId: booking.id, 
+        roomId: room.id,
+      });
+    }
+
+    // Send email notification
+    await this.notificationService.sendEmailNotification({
+      to: userId,
+      subject: 'Room Booking Confirmation',
+      template: 'room-booking-confirmation',
       data: {
-        roomCapacity: dto.roomCapacity,
-        pricePerDay: dto.pricePerDay,
-        pricePerMonth: dto.pricePerMonth,
-        dateFrom: new Date(dto.dateFrom),
-        dateTo: dto.dateTo ? new Date(dto.dateTo) : null,
+        roomNumber: room.number,
+        dormitoryName: room.dormitory?.name || 'Unknown Dormitory',
+        checkIn: from.toDateString(),
+        checkOut: to.toDateString(),
+        bookingId: booking.id,
+        totalAmount,
       },
     });
   }

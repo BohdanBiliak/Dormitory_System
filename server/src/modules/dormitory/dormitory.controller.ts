@@ -22,7 +22,7 @@ import {
 } from "@nestjs/swagger";
 import { CreateDormitoryDto } from "@/modules/dormitory/dto/create-dormitory.dto";
 import { UpdateDormitoryDto } from "@/modules/dormitory/dto/update-dormitory.dto";
-import { FilesInterceptor } from "@nestjs/platform-express";
+import { FileFieldsInterceptor } from "@nestjs/platform-express";
 import { DormitoryService } from "./dormitory.service";
 import { Authorization } from "@libs/common/decorators/auth.decorator";
 
@@ -35,11 +35,16 @@ export class DormitoryController {
 
   @Post()
   @Authorization(UserRole.Admin, UserRole.SuperAdmin)
-  @UseInterceptors(FilesInterceptor("photos"))
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: "photos", maxCount: 10 },
+      { name: "roomPhotos", maxCount: 50 },
+    ])
+  )
   @ApiConsumes("multipart/form-data")
   @ApiOperation({
     summary: "Create new dormitory",
-    description: "Creates a new dormitory with optional photo uploads and auto-generated rooms.",
+    description: "Creates a new dormitory with optional photo uploads and auto-generated rooms with equipment.",
   })
   @ApiBody({
     schema: {
@@ -55,11 +60,18 @@ export class DormitoryController {
             roomsPerFloor: 4,
             pricePerDay: 30,
             pricePerMonth: 600,
+            roomEquipment: ["Bed", "Desk", "Chair", "Wardrobe", "Air Conditioner"],
           }),
         },
         photos: {
           type: "array",
           items: { type: "string", format: "binary" },
+          description: "Dormitory photos",
+        },
+        roomPhotos: {
+          type: "array",
+          items: { type: "string", format: "binary" },
+          description: "Photos to be assigned to rooms during generation",
         },
       },
     },
@@ -67,10 +79,11 @@ export class DormitoryController {
   @ApiResponse({ status: 201, description: "Dormitory successfully created." })
   create(
     @Body() dto: CreateDormitoryDto,
-    @UploadedFiles() files: Express.Multer.File[],
+    @UploadedFiles() files: { photos?: Express.Multer.File[], roomPhotos?: Express.Multer.File[] },
   ) {
     return this.dormitoryService.create(dto, files);
   }
+
 
   @Get()
   //@Authorization()
@@ -97,7 +110,7 @@ export class DormitoryController {
   findAll() {
     return this.dormitoryService.findAll();
   }
-    @Get("deactivated")
+  @Get("deactivated")
   @Authorization(UserRole.Admin, UserRole.SuperAdmin)
   @ApiOperation({ summary: "List all deactivated dormitories" })
   @ApiResponse({
