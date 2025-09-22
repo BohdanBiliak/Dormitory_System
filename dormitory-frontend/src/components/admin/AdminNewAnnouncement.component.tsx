@@ -16,6 +16,36 @@ interface AddresseeItem {
     type: AddressesTypes
 }
 
+interface ResidentItem{
+    id: string;
+    label: string;
+    isChosen: boolean;
+}
+
+interface RoomItem {
+    id: string;
+    label: string;
+    isChosen: boolean;
+    showChildren: boolean;
+    residents: ResidentItem[];
+}
+
+interface FloorItem {
+    id: string;
+    label: number;
+    isChosen: boolean;
+    showChildren: boolean;
+    rooms: RoomItem[];
+}
+
+interface DormitoryItem {
+    id: string;
+    label: string;
+    isChosen: boolean;
+    showChildren: boolean;
+    floors: FloorItem[];
+}
+
 export function AdminNewAnnouncement(){
     const [attachedFiles, setAttachedFiles] = useState<File[]>([])
     const [addresses, setAddresses] = useState<{id: string, label: string, type: AddressesTypes}[]>([])

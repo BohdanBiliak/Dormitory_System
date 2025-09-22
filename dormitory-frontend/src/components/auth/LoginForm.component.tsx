@@ -13,6 +13,7 @@ export function LoginForm() {
   
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
 
   useEffect(() => {
     if (verified === 'true') {
@@ -33,6 +34,10 @@ export function LoginForm() {
     } catch (error) {
       // Error is handled by the hook
     }
+  }
+
+  const hanldeChangePasswordVisibility = () => {
+    setShowPassword(!showPassword)
   }
 
   return (
@@ -67,15 +72,18 @@ export function LoginForm() {
           />
         </div>
 
-        <div>
+        <div className='relative'>
           <input
-            type="password"
+            type= {showPassword ? 'text' : 'password'}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
+            className="relative z-0 w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
             placeholder="Password"
             required
           />
+          <span className="absolute z-10 top-2 right-2" onClick={hanldeChangePasswordVisibility} >
+            <img src={showPassword ? '/eye.svg' : '/eye-slash.svg'} alt={showPassword ? 'show password' : 'hide password'} className='h-8 w-8 right-0'/>
+          </span>
         </div>
 
         <div className="text-right">
