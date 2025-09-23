@@ -11,13 +11,13 @@ export class UpdateRoomDto {
     @MinLength(1)
     @MaxLength(10)
     @IsOptional()
-    @IsInt() floor?: number;
+    @IsString() floor?: number;
 
     @ApiPropertyOptional()
     @MinLength(1)
     @MaxLength(2)
     @IsOptional()
-    @IsInt() capacity?: number;
+    @IsString() capacity?: number;
 
     @ApiPropertyOptional({ type: [String], description: "Equipment in the room" })
     @IsArray() 
