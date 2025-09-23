@@ -19,7 +19,7 @@ export function UserProfileForm({userId}:UserProfileFormProps){
         role: 'user'
     })
 
-        const {data: userProfileData, isLoading, error} = useUserProfile(userId);
+    const {data: userProfileData, isLoading, error} = useUserProfile(userId);
 
     useEffect(() => {
         if(userProfileData){

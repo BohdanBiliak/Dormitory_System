@@ -7,7 +7,7 @@ export interface Room{
     "photos": string[],
     "dormitoryId": string,
     "createdAt": string,
-    "statuses": string[],
+    "statuses": RoomStatus[],
     "dormitory": {
         "id": string,
         "name": string,
@@ -24,4 +24,21 @@ export interface AvailableRoomsRequest {
     roomId: string,
     from: string,
     to: string,
+}
+
+export interface RoomStatus{
+    id: string,
+    roomId: string,
+    dateOfStart: string,
+    dateOfEnd: string,
+    description: string,
+}
+
+export interface UpdateRoomData {
+    number?: string,
+    floor?: string,
+    capacity?: number,
+    roomEquipment?: string[],
+    photos?: string[],
+
 }
