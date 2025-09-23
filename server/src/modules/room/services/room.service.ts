@@ -415,32 +415,32 @@ async evictUserFromRoom(roomId: string, userId: string) {
     }
   }
 
-  private async validateCapacityNotBelowOccupancy(roomId: string, newCapacity: number): Promise<void> {
+  private async validateCapacityNotBelowOccupancy(roomId: string, newCapacity: string): Promise<void> {
     const currentOccupancy = await this.roomRepository.countOccupants(roomId);
-    if (newCapacity < currentOccupancy) {
+    if (Number(newCapacity) < currentOccupancy) {
       throw new BadRequestException(
         `Cannot reduce capacity to ${newCapacity}. Room currently has ${currentOccupancy} occupants`
       );
     }
   }
 
-  private validateFloorCapacityLogic(floor: number, capacity: number): void {
+  private validateFloorCapacityLogic(floor: string, capacity: string): void {
     // Business logic: Higher floors might have capacity restrictions
-    if (floor > 10 && capacity > 6) {
+    if (Number(floor) > 10 && Number(capacity) > 6) {
       throw new BadRequestException(
         'Rooms above floor 10 cannot have more than 6 people for safety reasons'
       );
     }
 
     // Ground floor might have different restrictions
-    if (floor === 1 && capacity > 8) {
+    if (Number(floor) === 1 && Number(capacity) > 8) {
       throw new BadRequestException(
         'Ground floor rooms cannot exceed 8 people capacity'
       );
     }
 
     // Emergency exit requirements for high capacity rooms
-    if (capacity > 4 && floor > 5) {
+    if (Number(capacity) > 4 && Number(floor) > 5) {
       throw new BadRequestException(
         'Rooms with more than 4 people cannot be above floor 5 for emergency evacuation'
       );
@@ -455,11 +455,11 @@ async evictUserFromRoom(roomId: string, userId: string) {
     }
 
     if (updateRoomDto.floor !== undefined) {
-      updateData.floor = updateRoomDto.floor;
+      updateData.floor = Number(updateRoomDto.floor);
     }
 
     if (updateRoomDto.capacity !== undefined) {
-      updateData.capacity = updateRoomDto.capacity;
+      updateData.capacity = Number(updateRoomDto.capacity);
     }
 
     if (updateRoomDto.roomEquipment) {
