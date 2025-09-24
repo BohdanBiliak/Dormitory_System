@@ -13,7 +13,12 @@ export interface Room{
         "name": string,
         "address": string
     },
-    "residents": string[],
+    "residents": [{
+        "id": string,
+        "displayName": string,
+        "secondName": string,
+        "email": string,
+    }],
     "price": {
         "pricePerDay": number,
         "pricePerMonth": number,

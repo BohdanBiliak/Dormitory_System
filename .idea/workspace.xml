@@ -5,43 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a2609a67-42b3-4399-bbcc-46f7339b9fb9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/admin/rooms/[id]/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/admin/rooms/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/RoomPage.component.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/ui/CalendarOfAvailability.component.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)/dormitories/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/lib/rooms.api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/lib/rooms.api.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/UserProfileForm.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/UserProfileForm.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/hooks/rooms.hook.ts" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/hooks/rooms.hook.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/AdminAnnouncement.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/AdminAnnouncement.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/RoomPage.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/RoomPage.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/ui/CalendarOfAvailability.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/ui/CalendarOfAvailability.component.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/types/rooms.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/types/rooms.types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/client.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/client.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/default.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/default.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/edge.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/edge.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/index-browser.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/index.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/libquery_engine-debian-openssl-3.0.x.so.node" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/runtime/edge-esm.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/runtime/edge.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/runtime/index-browser.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/runtime/index-browser.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/runtime/library.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/runtime/library.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/runtime/react-native.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/runtime/wasm-compiler-edge.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/runtime/wasm-engine-edge.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/schema.prisma" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/wasm.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/wasm.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/modules/room/dto/AvailableRooms.dto.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/modules/room/dto/availableRooms.dto.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/modules/room/dto/CreateRoom.dto.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/modules/room/dto/createRoom.dto.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/modules/room/dto/RequestAccommmodation.dto.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/modules/room/dto/requestAccommmodation.dto.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/modules/room/module/room.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/modules/room/module/room.module.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -191,7 +159,9 @@
       <workItem from="1758600054100" duration="1628000" />
       <workItem from="1758601700168" duration="2793000" />
       <workItem from="1758604624394" duration="7630000" />
-      <workItem from="1758613377668" duration="721000" />
+      <workItem from="1758613377668" duration="1416000" />
+      <workItem from="1758686326849" duration="10939000" />
+      <workItem from="1758698860918" duration="7356000" />
     </task>
     <servers />
   </component>

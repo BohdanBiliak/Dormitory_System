@@ -1,4 +1,6 @@
-import React, { useState, useMemo } from 'react';
+'use client'
+
+import React, {useState, useMemo, useEffect} from 'react';
 import { ChevronLeft, ChevronRight, Edit3, Save, X } from 'lucide-react';
 import {RoomStatus} from "@/types/rooms.types";
 
@@ -6,10 +8,10 @@ interface CalendarOfAvailabilityProps {
     statuses: RoomStatus[]
 }
 
-const CalendarOfAvailabilityComponent = ({statuses}:CalendarOfAvailabilityProps) => {
+export function CalendarOfAvailabilityComponent ({statuses}:CalendarOfAvailabilityProps){
     const [currentDate, setCurrentDate] = useState(new Date());
-    const [isEditMode, setIsEditMode] = useState(false);
-    const [tempUnavailableRanges, setTempUnavailableRanges] = useState(statuses);
+    const [chosenDate, setChosenDate] = useState(new Date());
+    const [statusTitle, setStatusTitle] = useState('');
     const [unavailableDateRanges, setUnavailableDateRanges] = useState(statuses);
 
     // Get the first day of the current month
@@ -36,14 +38,18 @@ const CalendarOfAvailabilityComponent = ({statuses}:CalendarOfAvailabilityProps)
 
     // Format date as YYYY-MM-DD
     const formatDate = (year:number, month:number, day:number) => {
-        return ${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')};
+        return new Date(year, month, day);
+        //return {'${{year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}}'};
     };
 
+    const isInRange = (date:Date, rangeStart:Date, rangeEnd:Date) => {
+        return date>=rangeStart && date<=rangeEnd;
+    }
+
     // Check if a date is unavailable based on date ranges
-    const isDateUnavailable = (dateStr:string) => {
-        const ranges = isEditMode ? tempUnavailableRanges : unavailableDateRanges;
-        return ranges.some(range => {
-            return dateStr >= range.dateOfStart && dateStr <= range.dateOfEnd;
+    const isDateUnavailable = (date:Date) => {
+        return unavailableDateRanges.some(range => {
+            return isInRange(date, new Date(range.dateOfStart), new Date(range.dateOfEnd));
         });
     };
 
@@ -56,42 +62,27 @@ const CalendarOfAvailabilityComponent = ({statuses}:CalendarOfAvailabilityProps)
         setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
     };
 
-    // Edit mode functions
-    const handleEditToggle = () => {
-        if (isEditMode) {
-            setTempUnavailableRanges(unavailableDateRanges); // Reset to original
-        }
-        setIsEditMode(!isEditMode);
-    };
+    const statusReview = (event: React.MouseEvent<HTMLButtonElement>)=>{
+        const {name} = event.currentTarget;
+        const date = new Date(name);
+        setChosenDate(date);
+        setStatusTitle('Available')
+        unavailableDateRanges.forEach(range => {
+            if(isInRange(date, new Date(range.dateOfStart), new Date(range.dateOfEnd))){
+                setStatusTitle(range.description)
 
-    // const handleSave = () => {
-    //     if (onDateRangesChange) {
-    //         onDateRangesChange(tempUnavailableRanges);
-    //     }
-    //     setIsEditMode(false);
-    // };
+            }
+        })
 
-    // const handleDateClick = (dateStr) => {
-    //     if (!isEditMode) return;
-    //
-    //     const isCurrentlyUnavailable = tempUnavailableRanges.some(range =>
-    //         dateStr >= range.fromDate && dateStr <= range.endDate
-    //     );
-    //
-    //     if (isCurrentlyUnavailable) {
-    //         // Remove this date from ranges
-    //         const newRanges = tempUnavailableRanges.filter(range =>
-    //             !(dateStr >= range.fromDate && dateStr <= range.endDate)
-    //         );
-    //         setTempUnavailableRanges(newRanges);
-    //     } else {
-    //         // Add this date as a single-day range
-    //         setTempUnavailableRanges([...tempUnavailableRanges, {
-    //             fromDate: dateStr,
-    //             endDate: dateStr
-    //         }]);
-    //     }
-    // };
+    }
+
+    useEffect(() => {
+        setUnavailableDateRanges(statuses);
+        statuses.map((status, index)=>(
+            console.log(`status ${index} use effect: ${status}`)
+        ))
+    },[statuses])
+
 
     const monthNames = [
         'January', 'February', 'March', 'April', 'May', 'June',
@@ -122,31 +113,6 @@ const CalendarOfAvailabilityComponent = ({statuses}:CalendarOfAvailabilityProps)
                     </button>
                 </div>
 
-                <div className="flex items-center space-x-2">
-                    {isEditMode ? (
-                        <>
-                            <button
-                                //onClick={handleSave}
-                                className="p-2 rounded-lg bg-green-100 hover:bg-green-200 text-green-700 transition-colors"
-                            >
-                                <Save className="w-4 h-4" />
-                            </button>
-                            <button
-                                onClick={handleEditToggle}
-                                className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors"
-                            >
-                                <X className="w-4 h-4" />
-                            </button>
-                        </>
-                    ) : (
-                        <button
-                            onClick={handleEditToggle}
-                            className="p-2 rounded-lg bg-blue-100 hover:bg-blue-200 text-blue-700 transition-colors"
-                        >
-                            <Edit3 className="w-4 h-4" />
-                        </button>
-                    )}
-                </div>
             </div>
 
             {/* Days of week header */}
@@ -169,27 +135,24 @@ const CalendarOfAvailabilityComponent = ({statuses}:CalendarOfAvailabilityProps)
 
                 {/* Current month days */}
                 {currentMonthDays.map(day => {
-                    const dateStr = formatDate(
+                    const date = formatDate(
                         currentDate.getFullYear(),
                         currentDate.getMonth() + 1,
                         day
                     );
-                    const isUnavailable = isDateUnavailable(dateStr);
+                    const isUnavailable = isDateUnavailable(date);
 
                     return (
                         <button
                             key={day}
-                            //onClick={() => handleDateClick(dateStr)}
+                            name = {date.toISOString()}
+                            onClick={statusReview}
                             className={`h-10 flex items-center justify-center text-sm rounded-lg transition-all duration-200 ${
                                 isUnavailable
-                                ? 'bg-red-200 text-red-800 hover:bg-red-300'
-                                : 'bg-green-200 text-green-800 hover:bg-green-300'
-                            } ${
-                                isEditMode
-                                ? 'cursor-pointer transform hover:scale-105'
-                                : 'cursor-default'
+                                ? 'bg-red-200 text-red-800 hover:bg-red-300 '
+                                : `bg-green-200 text-green-800 hover:bg-green-300`
                             }`}
-                            disabled={!isEditMode}
+
                         >
                             {day}
                         </button>
@@ -198,7 +161,7 @@ const CalendarOfAvailabilityComponent = ({statuses}:CalendarOfAvailabilityProps)
 
                 {/* Next month days */}
                 {nextMonthDays.map((day, index) => (
-                    <div key={next-${index}} className="h-10 flex items-center justify-center">
+                    <div key={`next-${index}`} className="h-10 flex items-center justify-center">
                         <span className="text-gray-300 text-sm">{day}</span>
                     </div>
                 ))}
@@ -216,13 +179,16 @@ const CalendarOfAvailabilityComponent = ({statuses}:CalendarOfAvailabilityProps)
                 </div>
             </div>
 
-            {isEditMode && (
-                <div className="mt-4 p-3 bg-blue-50 rounded-lg text-center">
-                    <p className="text-sm text-blue-700">
-                        Edit mode: Click on dates to toggle availability
-                    </p>
-                </div>
-            )}
+            {/*Status*/}
+            <div className="flex items-center justify-center space-x-6 mt-6 text-sm">
+                {chosenDate && statusTitle !== '' ? (
+                    <div>
+                        <p>{chosenDate.getDate()} {monthNames[chosenDate.getMonth()-1]} {chosenDate.getFullYear()}: {statusTitle}</p>
+                    </div>
+                ):(
+                    <></>
+                )}
+            </div>
         </div>
     );
 };

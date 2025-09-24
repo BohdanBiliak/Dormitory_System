@@ -5,7 +5,9 @@ import React, {useEffect, useState} from "react";
 import {AddressesTypes, Announcement, AnnouncementCreateRequest} from "@/types/announcements.types";
 import {useGetAnnouncementDetails, useMutateAnnouncement} from "@/hooks/announcements.hook";
 import {Dialog} from "@headlessui/react";
+import {useGetRooms} from "@/hooks/rooms.hook";
 import {useGetActiveDormitories} from "@/hooks/dormitories.hook";
+import {Room} from "@/types/rooms.types";
 
 export interface AdminAnnouncementProps {
     id: string
@@ -16,7 +18,7 @@ export default function AdminAnnouncement({id}:AdminAnnouncementProps){
     const [addresses, setAddresses] = useState<{id: string, label: string, type: AddressesTypes}[]>([])
     const [addingAddresses, setAddingAddresses] = useState<boolean>(false)
 
-    const [announcementDetalis, setAnnouncementDetalis] = useState<Announcement>({
+    const [announcementDetails, setAnnouncementDetails] = useState<Announcement>({
         id: '',
         title: '',
         content: '',
@@ -37,7 +39,7 @@ export default function AdminAnnouncement({id}:AdminAnnouncementProps){
         //     setNewAnnouncement(prev =>({...prev, expiresAt: new Date(value).toISOString()}))
         // }else
         if(name !== "attachmentUrls"){
-            setAnnouncementDetalis(prev =>({...prev, [name]:value}))
+            setAnnouncementDetails(prev =>({...prev, [name]:value}))
         }
 
     }
@@ -46,7 +48,7 @@ export default function AdminAnnouncement({id}:AdminAnnouncementProps){
         const {name, checked} = e.target
 
         if(name === "forEveryone"){
-            setAnnouncementDetalis(prev =>({...prev, [name]: checked}))
+            setAnnouncementDetails(prev =>({...prev, [name]: checked}))
         }
     }
 
@@ -56,9 +58,27 @@ export default function AdminAnnouncement({id}:AdminAnnouncementProps){
 
     useEffect(() => {
         if(announcement){
-            setAnnouncementDetalis(announcement)
+            setAnnouncementDetails(announcement)
         }
     }, [announcement]);
+
+
+    {/*Dialog logic*/}
+    const {data: rooms, isLoading: loadingRooms, error: roomsError} = useGetRooms()
+    const {data: activeDorms, isLoading: loadingDormitories, error: dormsError} = useGetActiveDormitories()
+
+    const activeDormsIds: string[] = []
+
+    activeDorms?.data?.map((dorm) => {
+        activeDormsIds.push(dorm.id)
+    })
+
+    const activeRooms = rooms?.filter(room => activeDormsIds.includes(room.dormitoryId))
+
+    const multiLevelDropDownTree = {
+
+    }
+
 
     return (
         <div className=" w-full bg-gradient-to-br from-gray-50 to-gray-100">
@@ -112,7 +132,7 @@ export default function AdminAnnouncement({id}:AdminAnnouncementProps){
                                         </label>
                                         <input
                                             type="text"
-                                            value={announcementDetalis.title}
+                                            value={announcementDetails.title}
                                             name="title"
                                             disabled={true}
                                             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors text-lg"
@@ -125,14 +145,14 @@ export default function AdminAnnouncement({id}:AdminAnnouncementProps){
                                             Description
                                         </label>
                                         <textarea
-                                            value={announcementDetalis.content}
+                                            value={announcementDetails.content}
                                             name="content"
                                             disabled={ true}
                                             rows={12}
                                             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors resize-none"
                                         />
                                         <p className="text-sm text-gray-500">
-                                            {announcementDetalis.content.length} characters
+                                            {announcementDetails.content.length} characters
                                         </p>
                                     </div>
 
@@ -182,10 +202,10 @@ export default function AdminAnnouncement({id}:AdminAnnouncementProps){
                                             className={`sr-only`}
                                         />
                                         <div className={`relative w-11 h-6 rounded-full transition-colors duration-200 ${
-                                            announcementDetalis.isHidden ? 'bg-blue-600' : 'bg-gray-300'
+                                            announcementDetails.isHidden ? 'bg-blue-600' : 'bg-gray-300'
                                         }`}>
                                             <div className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform duration-200 ${
-                                                announcementDetalis.isHidden ? 'translate-x-5' : 'translate-x-0'
+                                                announcementDetails.isHidden ? 'translate-x-5' : 'translate-x-0'
                                             }`}/>
                                         </div>
                                     </label>
@@ -234,7 +254,7 @@ export default function AdminAnnouncement({id}:AdminAnnouncementProps){
                                             name="expiresAt"
                                             type="date"
                                             disabled={true}
-                                            value={announcementDetalis.expiresAt}
+                                            value={announcementDetails.expiresAt}
                                             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm"
                                         />
                                     </div>
