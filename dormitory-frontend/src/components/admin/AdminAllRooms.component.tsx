@@ -1,0 +1,606 @@
+'use client'
+
+import { useState, useEffect } from "react";
+import { Calendar, Users, Filter, X, Plus, ChevronUp, ChevronDown, Search, Building, MapPin, Menu } from "lucide-react";
+import Link from "next/link";
+import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from "@headlessui/react";
+
+interface Room {
+    id: string;
+    number: string;
+    capacity: number;
+    residents: {
+        id: string;
+        displayName: string;
+        secondName: string;
+        albumNumber: string;
+        payments: 'current' | 'overdue' | 'pending';
+    }[];
+    statuses: {
+        date: string;
+        status: 'available' | 'occupied' | 'maintenance' | 'reserved';
+    }[];
+    dormitoryId: string;
+    floor: number;
+}
+
+interface Dormitory {
+    id: string;
+    name: string;
+    floors: number;
+}
+
+interface Filters {
+    dateFrom: string;
+    dateTo: string;
+    roommates: 'none' | 'some' | 'full';
+    roomSize: number[];
+    groupSize: number;
+    selectedDormitory: string;
+    selectedFloor: number | null;
+}
+
+export function AllRoomsPage() {
+    // Mock data - replace with actual API calls
+    const [dormitories] = useState<Dormitory[]>([
+        { id: '1', name: 'Dom studenta Nr. 2', floors: 9 },
+        { id: '2', name: 'Dom studenta Nr. 1', floors: 8 },
+        { id: '3', name: 'Dom studenta Nr. 3', floors: 10 },
+    ]);
+
+    const [rooms, setRooms] = useState<Room[]>([
+        {
+            id: '901',
+            number: '901',
+            capacity: 2,
+            residents: [
+                {
+                    id: '1',
+                    displayName: 'Kacper',
+                    secondName: 'Nowak',
+                    albumNumber: '002789',
+                    payments: 'current'
+                }
+            ],
+            statuses: [
+                { date: '2025-04-24', status: 'occupied' },
+                { date: '2025-04-25', status: 'occupied' },
+                { date: '2025-04-26', status: 'occupied' },
+                { date: '2025-04-27', status: 'occupied' },
+                { date: '2025-04-28', status: 'available' },
+                { date: '2025-04-29', status: 'available' },
+                { date: '2025-04-30', status: 'available' },
+            ],
+            dormitoryId: '1',
+            floor: 9
+        },
+        // Add more mock rooms...
+    ]);
+
+    const [filters, setFilters] = useState<Filters>({
+        dateFrom: '2025-04-04',
+        dateTo: '2025-04-07',
+        roommates: 'none',
+        roomSize: [],
+        groupSize: 2,
+        selectedDormitory: '1',
+        selectedFloor: 9,
+    });
+
+    const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
+    const [showFilters, setShowFilters] = useState(true);
+    const [showMobileRoomDetails, setShowMobileRoomDetails] = useState(false);
+    const [searchTerm, setSearchTerm] = useState('');
+
+    // Generate rooms for display
+    const generateRoomsForFloor = (floor: number): Room[] => {
+        const roomNumbers = Array.from({ length: 18 }, (_, i) => `${floor}${String(i + 1).padStart(2, '0')}`);
+        return roomNumbers.map(number => ({
+            id: number,
+            number,
+            capacity: Math.random() > 0.5 ? 2 : 1,
+            residents: Math.random() > 0.3 ? [
+                {
+                    id: Math.random().toString(),
+                    displayName: 'Student',
+                    secondName: 'Name',
+                    albumNumber: Math.floor(Math.random() * 999999).toString().padStart(6, '0'),
+                    payments: Math.random() > 0.8 ? 'overdue' : 'current' as 'current' | 'overdue'
+                }
+            ] : [],
+            statuses: [],
+            dormitoryId: filters.selectedDormitory,
+            floor
+        }));
+    };
+
+    const currentDormitory = dormitories.find(d => d.id === filters.selectedDormitory);
+    const displayRooms = filters.selectedFloor ? generateRoomsForFloor(filters.selectedFloor) : [];
+
+    const getRoomColor = (room: Room) => {
+        const hasResidents = room.residents.length > 0;
+        const isAvailable = room.residents.length < room.capacity;
+        
+        if (!hasResidents) return 'bg-green-500'; // Available
+        if (hasResidents && isAvailable) return 'bg-blue-500'; // Partially occupied
+        if (room.residents.length >= room.capacity) return 'bg-red-500'; // Full
+        return 'bg-gray-400'; // Maintenance or other
+    };
+
+    const getStatusText = (room: Room) => {
+        if (room.residents.length === 0) return 'Available';
+        if (room.residents.length < room.capacity) return 'Partially occupied';
+        return 'Fully occupied';
+    };
+
+    const meetsSearchRequirements = (room: Room) => {
+        // Mock logic for meeting search requirements
+        return room.residents.length < room.capacity;
+    };
+
+    const handleFilterChange = (key: keyof Filters, value: any) => {
+        setFilters(prev => ({ ...prev, [key]: value }));
+    };
+
+    const clearFilter = (key: keyof Filters) => {
+        setFilters(prev => ({
+            ...prev,
+            [key]: key === 'roomSize' ? [] : key === 'selectedFloor' ? null : key === 'roommates' ? 'none' : ''
+        }));
+    };
+
+    const getNext14Days = () => {
+        const days = [];
+        const today = new Date();
+        for (let i = 0; i < 14; i++) {
+            const date = new Date(today);
+            date.setDate(today.getDate() + i);
+            days.push({
+                date: date.toISOString().split('T')[0],
+                dayName: date.toLocaleDateString('en', { weekday: 'short' }),
+                dayNumber: date.getDate(),
+                month: date.toLocaleDateString('en', { month: '2-digit' }),
+            });
+        }
+        return days;
+    };
+
+    const next14Days = getNext14Days();
+
+    const handleRoomSelect = (room: Room) => {
+        setSelectedRoom(room);
+        setShowMobileRoomDetails(true);
+    };
+
+    return (
+        <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+            {/* Header */}
+            <div className="bg-white border-b border-slate-200 shadow-sm animate-in slide-in-from-top-4 duration-500">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-6">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div className="animate-in fade-in-0 slide-in-from-left-4 duration-500">
+                            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 flex items-center">
+                                <Building className="w-6 h-6 sm:w-8 sm:h-8 mr-2 sm:mr-3 text-blue-600 flex-shrink-0" />
+                                <span className="truncate">Available Rooms</span>
+                            </h1>
+                            <p className="text-slate-600 mt-1 text-sm sm:text-base">Manage and view all dormitory rooms</p>
+                        </div>
+                        <div className="flex items-center space-x-3 animate-in fade-in-0 slide-in-from-right-4 duration-500 w-full sm:w-auto">
+                            <button
+                                onClick={() => setShowFilters(!showFilters)}
+                                className="flex-1 sm:flex-none inline-flex items-center justify-center px-3 sm:px-4 py-2 bg-slate-200 text-slate-700 text-sm font-medium rounded-lg hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transition-all duration-200 hover:scale-105 active:scale-95"
+                            >
+                                <Filter className="w-4 h-4 mr-2" />
+                                <span className="hidden sm:inline">{showFilters ? 'Hide Filters' : 'Show Filters'}</span>
+                                <span className="sm:hidden">Filters</span>
+                                {showFilters ? <ChevronUp className="w-4 h-4 ml-2" /> : <ChevronDown className="w-4 h-4 ml-2" />}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Filters Section */}
+            {showFilters && (
+                <div className="bg-white border-b border-slate-200 shadow-sm animate-in slide-in-from-top-2 duration-300">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+                        <div className="space-y-4">
+                            <span className="text-sm font-medium text-slate-700">Filters:</span>
+                            
+                            {/* Mobile: Stack filters vertically */}
+                            <div className="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3 sm:gap-4">
+                                {/* Date Range */}
+                                <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-2 bg-slate-100 rounded-lg p-3 sm:px-3 sm:py-2 animate-in fade-in-0 slide-in-from-left-2 duration-300">
+                                    <div className="flex items-center space-x-2">
+                                        <Calendar className="w-4 h-4 text-slate-500 flex-shrink-0" />
+                                        <span className="text-sm text-slate-700">Date:</span>
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                        <input
+                                            type="date"
+                                            value={filters.dateFrom}
+                                            onChange={(e) => handleFilterChange('dateFrom', e.target.value)}
+                                            className="text-sm border-none bg-white rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 flex-1 sm:flex-none"
+                                        />
+                                        <span className="text-slate-500">-</span>
+                                        <input
+                                            type="date"
+                                            value={filters.dateTo}
+                                            onChange={(e) => handleFilterChange('dateTo', e.target.value)}
+                                            className="text-sm border-none bg-white rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 flex-1 sm:flex-none"
+                                        />
+                                        <button
+                                            onClick={() => {
+                                                clearFilter('dateFrom');
+                                                clearFilter('dateTo');
+                                            }}
+                                            className="text-slate-500 hover:text-slate-700 transition-colors p-1"
+                                        >
+                                            <X className="w-4 h-4" />
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {/* Roommates Filter */}
+                                <div className="flex items-center justify-between sm:justify-start space-x-2 bg-slate-100 rounded-lg px-3 py-2 animate-in fade-in-0 slide-in-from-left-2 duration-300 delay-75">
+                                    <div className="flex items-center space-x-2">
+                                        <Users className="w-4 h-4 text-slate-500" />
+                                        <span className="text-sm text-slate-700">Roommates:</span>
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                        <select
+                                            value={filters.roommates}
+                                            onChange={(e) => handleFilterChange('roommates', e.target.value)}
+                                            className="text-sm border-none bg-white rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        >
+                                            <option value="none">None</option>
+                                            <option value="some">Some</option>
+                                            <option value="full">Full</option>
+                                        </select>
+                                        <button
+                                            onClick={() => clearFilter('roommates')}
+                                            className="text-slate-500 hover:text-slate-700 transition-colors p-1"
+                                        >
+                                            <X className="w-4 h-4" />
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {/* Room Size */}
+                                <div className="flex items-center justify-between sm:justify-start space-x-2 bg-slate-100 rounded-lg px-3 py-2 animate-in fade-in-0 slide-in-from-left-2 duration-300 delay-150">
+                                    <span className="text-sm text-slate-700">Room size:</span>
+                                    <div className="flex items-center space-x-2">
+                                        <button className="w-6 h-6 bg-white rounded border hover:bg-slate-50 transition-colors flex items-center justify-center">
+                                            <Plus className="w-4 h-4" />
+                                        </button>
+                                        <button className="w-6 h-6 bg-slate-200 rounded hover:bg-slate-300 transition-colors flex items-center justify-center">
+                                            <ChevronUp className="w-4 h-4" />
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {/* Group Booking */}
+                                <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-2 bg-slate-100 rounded-lg p-3 sm:px-3 sm:py-2 animate-in fade-in-0 slide-in-from-left-2 duration-300 delay-225">
+                                    <span className="text-sm text-slate-700">Book a room for group:</span>
+                                    <div className="flex items-center space-x-2">
+                                        <input
+                                            type="number"
+                                            value={filters.groupSize}
+                                            onChange={(e) => handleFilterChange('groupSize', parseInt(e.target.value))}
+                                            className="w-16 text-sm text-center border-none bg-white rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        />
+                                        <span className="text-sm text-slate-700">people</span>
+                                        <button
+                                            onClick={() => clearFilter('groupSize')}
+                                            className="text-slate-500 hover:text-slate-700 transition-colors p-1"
+                                        >
+                                            <X className="w-4 h-4" />
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Main Content */}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-8">
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-8">
+                    
+                    {/* Left Column - Dormitory and Floor Selection */}
+                    <div className="lg:col-span-3 space-y-4 lg:space-y-6">
+                        
+                        {/* Dormitory Selection */}
+                        <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden animate-in fade-in-0 slide-in-from-bottom-4 duration-500">
+                            <div className="px-4 sm:px-6 py-3 sm:py-4 bg-slate-50 border-b border-slate-200">
+                                <h2 className="text-base sm:text-lg font-semibold text-slate-900 flex items-center">
+                                    <MapPin className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-blue-600 flex-shrink-0" />
+                                    <span className="truncate">Dormitory: {currentDormitory?.name}</span>
+                                </h2>
+                            </div>
+                            <div className="p-4 sm:p-6">
+                                <div className="space-y-3">
+                                    <span className="text-sm font-medium text-slate-700">Floor:</span>
+                                    <div className="grid grid-cols-3 sm:grid-cols-5 lg:grid-cols-9 gap-2">
+                                        {Array.from({ length: currentDormitory?.floors || 9 }, (_, i) => i + 1).map((floor) => (
+                                            <button
+                                                key={floor}
+                                                onClick={() => handleFilterChange('selectedFloor', floor)}
+                                                className={`px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 hover:scale-105 active:scale-95 ${
+                                                    filters.selectedFloor === floor
+                                                        ? 'bg-blue-600 text-white shadow-md'
+                                                        : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                                                }`}
+                                            >
+                                                {floor}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Rooms Grid */}
+                        <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden animate-in fade-in-0 slide-in-from-bottom-4 duration-500 delay-100">
+                            <div className="px-4 sm:px-6 py-3 sm:py-4 bg-slate-50 border-b border-slate-200">
+                                <h2 className="text-base sm:text-lg font-semibold text-slate-900">
+                                    Rooms:
+                                </h2>
+                            </div>
+                            <div className="p-4 sm:p-6">
+                                {/* Mobile: 6 columns, Tablet: 9 columns, Desktop: 9 columns */}
+                                <div className="grid grid-cols-6 sm:grid-cols-9 gap-2 sm:gap-3">
+                                    {displayRooms.map((room, index) => (
+                                        <div key={room.id} className="flex flex-col items-center space-y-1 sm:space-y-2">
+                                            <div
+                                                className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center text-white text-xs font-medium cursor-pointer transition-all duration-200 hover:scale-110 active:scale-95 hover:shadow-md animate-in zoom-in-50 duration-300`}
+                                                style={{ animationDelay: `${index * 20}ms` }}
+                                                onClick={() => handleRoomSelect(room)}
+                                            >
+                                                <div className={`w-full h-full rounded-lg flex items-center justify-center ${getRoomColor(room)}`}>
+                                                    {room.number.slice(-2)}
+                                                </div>
+                                            </div>
+                                            <span className="text-xs text-slate-600 text-center">{room.number}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                                
+                                {/* Legend */}
+                                <div className="mt-4 sm:mt-6 grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 text-sm animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-300">
+                                    <div className="flex items-center space-x-2">
+                                        <div className="w-4 h-4 bg-green-500 rounded flex-shrink-0"></div>
+                                        <span className="text-slate-700">Available</span>
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                        <div className="w-4 h-4 bg-blue-500 rounded flex-shrink-0"></div>
+                                        <span className="text-slate-700">Partially occupied</span>
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                        <div className="w-4 h-4 bg-red-500 rounded flex-shrink-0"></div>
+                                        <span className="text-slate-700">Fully occupied</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Right Column - Room Details (Desktop) */}
+                    <div className="hidden lg:block lg:col-span-1 animate-in fade-in-0 slide-in-from-right-4 duration-500 delay-200">
+                        <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden sticky top-8">
+                            {selectedRoom ? (
+                                <>
+                                    <div className="px-6 py-4 bg-slate-50 border-b border-slate-200">
+                                        <div className="space-y-2">
+                                            <h3 className="text-lg font-semibold text-slate-900">
+                                                Room {selectedRoom.number}:
+                                            </h3>
+                                            {meetsSearchRequirements(selectedRoom) && (
+                                                <span className="inline-block text-xs text-green-600 bg-green-100 px-2 py-1 rounded-full">
+                                                    Room meets the search requirements
+                                                </span>
+                                            )}
+                                            <Link
+                                                href={`/admin/rooms/${selectedRoom.id}`}
+                                                className="inline-flex items-center mt-2 px-3 py-1 bg-blue-600 text-white text-xs font-medium rounded-md hover:bg-blue-700 transition-colors"
+                                            >
+                                                To room page →
+                                            </Link>
+                                        </div>
+                                    </div>
+                                    
+                                    {/* Availability Calendar */}
+                                    <div className="px-6 py-4 border-b border-slate-200">
+                                        <h4 className="text-sm font-medium text-slate-900 mb-3">
+                                            Availability during next 2 weeks:
+                                        </h4>
+                                        <div className="grid grid-cols-7 gap-1 text-xs">
+                                            {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, index) => (
+                                                <div key={day} className="text-center font-medium text-slate-600 py-1">
+                                                    {day}
+                                                </div>
+                                            ))}
+                                            {next14Days.map((day, index) => (
+                                                <div
+                                                    key={day.date}
+                                                    className={`text-center py-1 sm:py-2 rounded text-xs font-medium transition-all duration-200 hover:scale-110 cursor-pointer animate-in zoom-in-50 duration-300`}
+                                                    style={{ animationDelay: `${index * 30}ms` }}
+                                                >
+                                                    <div className={`w-full py-1 rounded ${
+                                                        index < 4 ? 'bg-red-200 text-red-800' : 'bg-green-200 text-green-800'
+                                                    }`}>
+                                                        <div>{day.dayNumber}.{day.month}</div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* Residents */}
+                                    <div className="px-6 py-4">
+                                        <h4 className="text-sm font-medium text-slate-900 mb-3">
+                                            Residents, {selectedRoom.residents.length}/{selectedRoom.capacity}:
+                                        </h4>
+                                        <div className="space-y-2">
+                                            {selectedRoom.residents.map((resident, index) => (
+                                                <div 
+                                                    key={resident.id} 
+                                                    className="bg-slate-100 rounded-lg p-3 animate-in fade-in-0 slide-in-from-left-2 duration-300"
+                                                    style={{ animationDelay: `${index * 100}ms` }}
+                                                >
+                                                    <div className="space-y-2">
+                                                        <div>
+                                                            <div className="font-medium text-slate-900 text-sm">
+                                                                {resident.displayName} {resident.secondName}
+                                                            </div>
+                                                            <div className="text-xs text-slate-500">
+                                                                Album number: {resident.albumNumber}
+                                                            </div>
+                                                        </div>
+                                                        <div className="flex items-center justify-between">
+                                                            <div className="flex items-center space-x-2">
+                                                                <div className={`w-2 h-2 rounded-full ${
+                                                                    resident.payments === 'current' ? 'bg-green-500' : 'bg-red-500'
+                                                                }`}></div>
+                                                                <span className="text-xs">Payments</span>
+                                                            </div>
+                                                            <button className="px-2 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700 transition-colors">
+                                                                Evict
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                            {Array.from({ length: selectedRoom.capacity - selectedRoom.residents.length }, (_, i) => (
+                                                <div key={`empty-${i}`} className="bg-slate-50 border-2 border-dashed border-slate-300 rounded-lg p-3 text-center text-slate-500 text-sm animate-in fade-in-0 zoom-in-95 duration-300">
+                                                    Available for accommodation
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </>
+                            ) : (
+                                <div className="px-6 py-12 text-center animate-in fade-in-0 zoom-in-50 duration-500">
+                                    <Building className="mx-auto h-12 w-12 text-slate-300 animate-pulse" />
+                                    <p className="mt-2 text-slate-500">Select a room to view details</p>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Mobile Room Details Modal */}
+            <Dialog open={showMobileRoomDetails} onClose={() => setShowMobileRoomDetails(false)} className="lg:hidden relative z-50">
+                <DialogBackdrop className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-all duration-300" />
+                <div className="fixed inset-0 flex items-end justify-center p-4">
+                    <DialogPanel className="w-full max-w-lg bg-white rounded-t-2xl shadow-2xl animate-in slide-in-from-bottom-4 duration-300 max-h-[90vh] overflow-hidden">
+                        {selectedRoom && (
+                            <>
+                                <div className="px-6 py-4 bg-slate-50 border-b border-slate-200">
+                                    <div className="flex items-center justify-between">
+                                        <div className="space-y-2 flex-1">
+                                            <h3 className="text-lg font-semibold text-slate-900">
+                                                Room {selectedRoom.number}
+                                            </h3>
+                                            {meetsSearchRequirements(selectedRoom) && (
+                                                <span className="inline-block text-xs text-green-600 bg-green-100 px-2 py-1 rounded-full">
+                                                    Meets search requirements
+                                                </span>
+                                            )}
+                                        </div>
+                                        <button
+                                            onClick={() => setShowMobileRoomDetails(false)}
+                                            className="p-2 hover:bg-slate-200 rounded-lg transition-colors"
+                                        >
+                                            <X className="w-5 h-5 text-slate-500" />
+                                        </button>
+                                    </div>
+                                    <Link
+                                        href={`/admin/rooms/${selectedRoom.id}`}
+                                        className="inline-flex items-center mt-3 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors w-full justify-center"
+                                    >
+                                        To room page →
+                                    </Link>
+                                </div>
+                                
+                                <div className="overflow-y-auto max-h-[70vh]">
+                                    {/* Availability Calendar */}
+                                    <div className="px-6 py-4 border-b border-slate-200">
+                                        <h4 className="text-sm font-medium text-slate-900 mb-3">
+                                            Availability during next 2 weeks:
+                                        </h4>
+                                        <div className="grid grid-cols-7 gap-1 text-xs">
+                                            {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, index) => (
+                                                <div key={day} className="text-center font-medium text-slate-600 py-1">
+                                                    {day}
+                                                </div>
+                                            ))}
+                                            {next14Days.map((day, index) => (
+                                                <div
+                                                    key={day.date}
+                                                    className={`text-center py-2 rounded text-xs font-medium transition-all duration-200 hover:scale-110 cursor-pointer animate-in zoom-in-50 duration-300`}
+                                                    style={{ animationDelay: `${index * 30}ms` }}
+                                                >
+                                                    <div className={`w-full py-1 rounded ${
+                                                        index < 4 ? 'bg-red-200 text-red-800' : 'bg-green-200 text-green-800'
+                                                    }`}>
+                                                        <div>{day.dayNumber}.{day.month}</div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* Residents */}
+                                    <div className="px-6 py-4">
+                                        <h4 className="text-sm font-medium text-slate-900 mb-3">
+                                            Residents, {selectedRoom.residents.length}/{selectedRoom.capacity}:
+                                        </h4>
+                                        <div className="space-y-3">
+                                            {selectedRoom.residents.map((resident, index) => (
+                                                <div 
+                                                    key={resident.id} 
+                                                    className="bg-slate-100 rounded-lg p-4 animate-in fade-in-0 slide-in-from-left-2 duration-300"
+                                                    style={{ animationDelay: `${index * 100}ms` }}
+                                                >
+                                                    <div className="space-y-3">
+                                                        <div>
+                                                            <div className="font-medium text-slate-900">
+                                                                {resident.displayName} {resident.secondName}
+                                                            </div>
+                                                            <div className="text-sm text-slate-500">
+                                                                Album number: {resident.albumNumber}
+                                                            </div>
+                                                        </div>
+                                                        <div className="flex items-center justify-between">
+                                                            <div className="flex items-center space-x-2">
+                                                                <div className={`w-3 h-3 rounded-full ${
+                                                                    resident.payments === 'current' ? 'bg-green-500' : 'bg-red-500'
+                                                                }`}></div>
+                                                                <span className="text-sm">Payments</span>
+                                                            </div>
+                                                            <button className="px-3 py-2 bg-red-600 text-white text-sm rounded-lg hover:bg-red-700 transition-colors">
+                                                                Evict
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                            {Array.from({ length: selectedRoom.capacity - selectedRoom.residents.length }, (_, i) => (
+                                                <div key={`empty-${i}`} className="bg-slate-50 border-2 border-dashed border-slate-300 rounded-lg p-4 text-center text-slate-500 animate-in fade-in-0 zoom-in-95 duration-300">
+                                                    Available for accommodation
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            </>
+                        )}
+                    </DialogPanel>
+                </div>
+            </Dialog>
+        </div>
+    );
+}

@@ -593,7 +593,7 @@ export class RoomController {
     return this.roomService.assignUserToRoom(roomId, dto.userId);
   }
 
-  @Patch(":id/evict-user")
+@Patch(":id/evict-user")
 @Authorization(UserRole.Admin)
 @ApiOperation({ 
   summary: "Evict user from a room (Admin only)",
