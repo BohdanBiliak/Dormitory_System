@@ -27,7 +27,7 @@ export function useUpdateRoom(){
     const updateRoom = useMutation({
         mutationFn: ({id, data}:{id:string, data:UpdateRoomData})=>roomsApi.updateRoom(id,data),
         onSuccess : () => {
-            queryClient.invalidateQueries({ queryKey: ['room'] })
+            queryClient.invalidateQueries({ queryKey: ["rooms"] })
             toast.success('Room updated successfully!')
         },
         onError: (err) => {

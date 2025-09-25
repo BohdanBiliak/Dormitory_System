@@ -4,31 +4,10 @@ import { useState, useEffect } from "react";
 import { Calendar, Users, Filter, X, Plus, ChevronUp, ChevronDown, Search, Building, MapPin, Menu } from "lucide-react";
 import Link from "next/link";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from "@headlessui/react";
-
-interface Room {
-    id: string;
-    number: string;
-    capacity: number;
-    residents: {
-        id: string;
-        displayName: string;
-        secondName: string;
-        albumNumber: string;
-        payments: 'current' | 'overdue' | 'pending';
-    }[];
-    statuses: {
-        date: string;
-        status: 'available' | 'occupied' | 'maintenance' | 'reserved';
-    }[];
-    dormitoryId: string;
-    floor: number;
-}
-
-interface Dormitory {
-    id: string;
-    name: string;
-    floors: number;
-}
+import {Dormitory} from "@/types/dormitories.types";
+import {useGetActiveDormitories} from "@/hooks/dormitories.hook";
+import {useGetRooms} from "@/hooks/rooms.hook";
+import { Room } from "@/types/rooms.types";
 
 interface Filters {
     dateFrom: string;
@@ -40,42 +19,93 @@ interface Filters {
     selectedFloor: number | null;
 }
 
-export function AllRoomsPage() {
-    // Mock data - replace with actual API calls
-    const [dormitories] = useState<Dormitory[]>([
-        { id: '1', name: 'Dom studenta Nr. 2', floors: 9 },
-        { id: '2', name: 'Dom studenta Nr. 1', floors: 8 },
-        { id: '3', name: 'Dom studenta Nr. 3', floors: 10 },
-    ]);
+export default function AllRoomsPage() {
+    // Dormitories, floors and rooms
+    const [dormitoriesList, setDormitoriesList] = useState<Dormitory[]>([]);
+    const [currentDormitory, setCurrentDormitory] = useState<Dormitory|null>(null);
+    const [roomList, setRoomList] = useState<Room[]>([]);
+    const [floorList, setFloorList] = useState<number[]>([]);
+    const [currentFloor, setCurrentFloor] = useState<number | null>(null);
+    const [roomsOnCurrentFloor, setRoomsOnCurrentFloor] = useState<Room[]>([]);
+    const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
 
-    const [rooms, setRooms] = useState<Room[]>([
-        {
-            id: '901',
-            number: '901',
-            capacity: 2,
-            residents: [
-                {
-                    id: '1',
-                    displayName: 'Kacper',
-                    secondName: 'Nowak',
-                    albumNumber: '002789',
-                    payments: 'current'
-                }
-            ],
-            statuses: [
-                { date: '2025-04-24', status: 'occupied' },
-                { date: '2025-04-25', status: 'occupied' },
-                { date: '2025-04-26', status: 'occupied' },
-                { date: '2025-04-27', status: 'occupied' },
-                { date: '2025-04-28', status: 'available' },
-                { date: '2025-04-29', status: 'available' },
-                { date: '2025-04-30', status: 'available' },
-            ],
-            dormitoryId: '1',
-            floor: 9
-        },
-        // Add more mock rooms...
-    ]);
+    const {data:dormitories, isLoading: loadingDormitories, error: dormitoriesError} = useGetActiveDormitories();
+    const {data:rooms, isLoading: loadingRooms, error: roomsError} = useGetRooms();
+
+
+    useEffect(() => {
+        if(dormitories && dormitories?.data){
+            setDormitoriesList(dormitories.data)
+            if(dormitoriesList.length > 0){
+                setCurrentDormitory(dormitoriesList[0])
+                console.log(currentDormitory)
+            }else{
+                setCurrentDormitory(null)
+            }
+        }
+    }, [dormitories]);
+
+    useEffect(() => {
+        if(rooms){
+            setRoomList(rooms)
+        }
+    }, [rooms]);
+
+    useEffect(() => {
+        if(currentDormitory){
+            setFloorList(generateFloorsForDormitory(currentDormitory?.id, roomList))
+        }
+
+        if(floorList && floorList.length > 0){
+            setCurrentFloor(floorList[0])
+        }else{
+            setCurrentFloor(null)
+        }
+    }, [currentDormitory]);
+
+    useEffect(() => {
+        if(currentDormitory?.id && currentFloor !== null) {
+            setRoomsOnCurrentFloor(generateRoomsForFloorOnDormitory(currentDormitory?.id, currentFloor, roomList));
+        }
+    }, [currentFloor, currentDormitory]);
+
+    useEffect(() => {
+        if(roomsOnCurrentFloor && roomsOnCurrentFloor.length > 0) {
+            setSelectedRoom(null)
+        }
+    }, [roomsOnCurrentFloor]);
+
+
+    //room generation
+    const generateFloorsForDormitory = (dormitoryId: string, onRooms: Room[]) => {
+        const floors = new Set<number>([])
+
+        onRooms.forEach(room => {
+            if(room.dormitoryId === dormitoryId){
+                floors.add(room.floor)
+            }
+        })
+
+        const floorArray = Array.from(floors);
+
+        floorArray.sort()
+
+        return floorArray
+    }
+
+    const generateRoomsForFloorOnDormitory = (dormitoryId: string, floor:number, onRooms: Room[]) => {
+        const roomsOnThisFloor:Room[] = []
+
+        onRooms.forEach(room => {
+            if(room.dormitoryId === dormitoryId && room.floor === floor){
+                roomsOnThisFloor.push(room)
+            }
+        })
+
+        return roomsOnThisFloor
+    }
+
+
 
     const [filters, setFilters] = useState<Filters>({
         dateFrom: '2025-04-04',
@@ -87,35 +117,11 @@ export function AllRoomsPage() {
         selectedFloor: 9,
     });
 
-    const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
+
     const [showFilters, setShowFilters] = useState(true);
     const [showMobileRoomDetails, setShowMobileRoomDetails] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
 
-    // Generate rooms for display
-    const generateRoomsForFloor = (floor: number): Room[] => {
-        const roomNumbers = Array.from({ length: 18 }, (_, i) => `${floor}${String(i + 1).padStart(2, '0')}`);
-        return roomNumbers.map(number => ({
-            id: number,
-            number,
-            capacity: Math.random() > 0.5 ? 2 : 1,
-            residents: Math.random() > 0.3 ? [
-                {
-                    id: Math.random().toString(),
-                    displayName: 'Student',
-                    secondName: 'Name',
-                    albumNumber: Math.floor(Math.random() * 999999).toString().padStart(6, '0'),
-                    payments: Math.random() > 0.8 ? 'overdue' : 'current' as 'current' | 'overdue'
-                }
-            ] : [],
-            statuses: [],
-            dormitoryId: filters.selectedDormitory,
-            floor
-        }));
-    };
-
-    const currentDormitory = dormitories.find(d => d.id === filters.selectedDormitory);
-    const displayRooms = filters.selectedFloor ? generateRoomsForFloor(filters.selectedFloor) : [];
 
     const getRoomColor = (room: Room) => {
         const hasResidents = room.residents.length > 0;
@@ -127,11 +133,6 @@ export function AllRoomsPage() {
         return 'bg-gray-400'; // Maintenance or other
     };
 
-    const getStatusText = (room: Room) => {
-        if (room.residents.length === 0) return 'Available';
-        if (room.residents.length < room.capacity) return 'Partially occupied';
-        return 'Fully occupied';
-    };
 
     const meetsSearchRequirements = (room: Room) => {
         // Mock logic for meeting search requirements
@@ -167,10 +168,41 @@ export function AllRoomsPage() {
 
     const next14Days = getNext14Days();
 
+    const handleDormitoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const { value } = event.target;
+
+        if(value === "") {
+            setCurrentDormitory(null);
+        }else{
+            const foundDorm = dormitoriesList.find((dorm) => dorm.id === value);
+            if(foundDorm){
+                setCurrentDormitory(foundDorm)
+            }else{
+                setCurrentDormitory(null)
+            }
+            console.log("Dormitory: ", currentDormitory?.name)
+        }
+    }
+
+    const handleFloorChange = (event: React.MouseEvent<HTMLButtonElement>)=>{
+        const {value} = event.currentTarget;
+
+        try{
+            const floor_number = Number(value);
+            if(floorList.includes(floor_number)){
+                setCurrentFloor(floor_number);
+            }
+        }catch (e) {
+            console.error("Parsing error? :",e);
+        }
+
+    }
+
     const handleRoomSelect = (room: Room) => {
         setSelectedRoom(room);
         setShowMobileRoomDetails(true);
     };
+
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
@@ -316,26 +348,38 @@ export function AllRoomsPage() {
                             <div className="px-4 sm:px-6 py-3 sm:py-4 bg-slate-50 border-b border-slate-200">
                                 <h2 className="text-base sm:text-lg font-semibold text-slate-900 flex items-center">
                                     <MapPin className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-blue-600 flex-shrink-0" />
-                                    <span className="truncate">Dormitory: {currentDormitory?.name}</span>
+                                    <span className="truncate">Dormitory:
+                                        <select name="currentDormitory" id="dormitory-select" onChange={handleDormitoryChange}>
+                                            {dormitoriesList ? (
+                                                dormitoriesList.map((dormitory) => (
+                                                    <option key={dormitory.id} value={dormitory.id}>{dormitory.name}</option>
+                                                ))
+                                            ):(
+                                                <option value={""}>No dormitories avalible</option>
+                                            )}
+                                        </select>
+                                    </span>
                                 </h2>
                             </div>
                             <div className="p-4 sm:p-6">
                                 <div className="space-y-3">
                                     <span className="text-sm font-medium text-slate-700">Floor:</span>
                                     <div className="grid grid-cols-3 sm:grid-cols-5 lg:grid-cols-9 gap-2">
-                                        {Array.from({ length: currentDormitory?.floors || 9 }, (_, i) => i + 1).map((floor) => (
-                                            <button
-                                                key={floor}
-                                                onClick={() => handleFilterChange('selectedFloor', floor)}
-                                                className={`px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 hover:scale-105 active:scale-95 ${
-                                                    filters.selectedFloor === floor
-                                                        ? 'bg-blue-600 text-white shadow-md'
-                                                        : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                                                }`}
-                                            >
-                                                {floor}
-                                            </button>
-                                        ))}
+                                        {floorList && floorList.length>0 ?(
+                                            floorList.map((floor) => (
+                                                <button
+                                                    key={floor}
+                                                    value={floor}
+                                                    onClick={ handleFloorChange}
+                                                    className={`px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 hover:scale-105 active:scale-95 ${
+                                                        filters.selectedFloor === floor
+                                                            ? 'bg-blue-600 text-white shadow-md'
+                                                            : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                                                    }`}
+                                                >
+                                                    {floor}
+                                                </button>))
+                                        ):(<></>)}
                                     </div>
                                 </div>
                             </div>
@@ -351,7 +395,7 @@ export function AllRoomsPage() {
                             <div className="p-4 sm:p-6">
                                 {/* Mobile: 6 columns, Tablet: 9 columns, Desktop: 9 columns */}
                                 <div className="grid grid-cols-6 sm:grid-cols-9 gap-2 sm:gap-3">
-                                    {displayRooms.map((room, index) => (
+                                    {roomsOnCurrentFloor.map((room, index) => (
                                         <div key={room.id} className="flex flex-col items-center space-y-1 sm:space-y-2">
                                             <div
                                                 className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center text-white text-xs font-medium cursor-pointer transition-all duration-200 hover:scale-110 active:scale-95 hover:shadow-md animate-in zoom-in-50 duration-300`}
@@ -454,15 +498,9 @@ export function AllRoomsPage() {
                                                             <div className="font-medium text-slate-900 text-sm">
                                                                 {resident.displayName} {resident.secondName}
                                                             </div>
-                                                            <div className="text-xs text-slate-500">
-                                                                Album number: {resident.albumNumber}
-                                                            </div>
                                                         </div>
                                                         <div className="flex items-center justify-between">
                                                             <div className="flex items-center space-x-2">
-                                                                <div className={`w-2 h-2 rounded-full ${
-                                                                    resident.payments === 'current' ? 'bg-green-500' : 'bg-red-500'
-                                                                }`}></div>
                                                                 <span className="text-xs">Payments</span>
                                                             </div>
                                                             <button className="px-2 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700 transition-colors">
@@ -570,15 +608,9 @@ export function AllRoomsPage() {
                                                             <div className="font-medium text-slate-900">
                                                                 {resident.displayName} {resident.secondName}
                                                             </div>
-                                                            <div className="text-sm text-slate-500">
-                                                                Album number: {resident.albumNumber}
-                                                            </div>
                                                         </div>
                                                         <div className="flex items-center justify-between">
                                                             <div className="flex items-center space-x-2">
-                                                                <div className={`w-3 h-3 rounded-full ${
-                                                                    resident.payments === 'current' ? 'bg-green-500' : 'bg-red-500'
-                                                                }`}></div>
                                                                 <span className="text-sm">Payments</span>
                                                             </div>
                                                             <button className="px-3 py-2 bg-red-600 text-white text-sm rounded-lg hover:bg-red-700 transition-colors">
