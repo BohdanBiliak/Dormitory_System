@@ -1,8 +1,8 @@
 'use client'
 
 import {useGetRoom, useUpdateRoom} from "@/hooks/rooms.hook";
-import {useEffect, useState} from "react";
-import {RoomStatus, UpdateRoomData} from "@/types/rooms.types";
+import React, {useEffect, useState} from "react";
+import {CreateRoomStatusRequest, RoomStatus, UpdateRoomData} from "@/types/rooms.types";
 import {CalendarOfAvailabilityComponent} from "@/components/ui/CalendarOfAvailability.component";
 import {ChevronLeft, ChevronRight, Edit3, Users, DollarSign, Camera, Settings, AlertTriangle, X, Check} from "lucide-react";
 import Link from "next/link";
@@ -13,7 +13,7 @@ interface RoomPageProps {
 }
 
 export function RoomPage({roomId}: RoomPageProps) {
-    const {updateRoom} = useUpdateRoom();
+    const {updateRoom, postRoomStatus, removeRoomStatus} = useUpdateRoom();
 
     {/*Initial values*/}
 
@@ -79,6 +79,14 @@ export function RoomPage({roomId}: RoomPageProps) {
             roomEquipment: false,
             [editingField]: true,
         })
+
+        if(isEditing.statuses){
+            setShowStatusesDialog(true)
+        }
+
+        if(isEditing.photos){
+            setShowPhotosDialog(true)
+        }
     }
 
     const handleFieldChange = (event:React.ChangeEvent<HTMLInputElement>) => {
@@ -92,7 +100,7 @@ export function RoomPage({roomId}: RoomPageProps) {
 
     {/*Rooms CRUD Logic*/}
 
-    const handleRoomUpdate = (event:React.MouseEvent<HTMLButtonElement>) => {
+    const handleRoomUpdate = () => {
         const dataToUpdate: UpdateRoomData = {
             number: roomInfo.name,
             capacity: roomInfo.capacity,
@@ -115,7 +123,7 @@ export function RoomPage({roomId}: RoomPageProps) {
         })
     }
 
-    const handleCancelRoomUpdate = (event:React.MouseEvent<HTMLButtonElement>) => {
+    const handleCancelRoomUpdate = () => {
         if(room){
             setRoomInfo({
                 name: room?.number || "",
@@ -166,7 +174,7 @@ export function RoomPage({roomId}: RoomPageProps) {
     }
 
     const handleEvictResidents = (event:React.MouseEvent<HTMLButtonElement>) => {
-        const {name, value} = event.currentTarget;
+        const {value} = event.currentTarget;
 
         roomInfo.residents.map((resident, index) => {
             if(index.toString() === value){
@@ -265,6 +273,62 @@ export function RoomPage({roomId}: RoomPageProps) {
         })
     }
 
+    //Room statuses dialog
+    const[dateStatuses, setDateStatuses] = useState<RoomStatus[]>([]);
+    const[showStatusesDialog, setShowStatusesDialog] = useState(false)
+
+    const closeStatusesDialog = () => {
+        setShowStatusesDialog(false)
+    }
+
+    const handleDeleteStatus = (event:React.MouseEvent<HTMLButtonElement>) => {
+        const {value} = event.currentTarget;
+
+        if(room){
+            removeRoomStatus({roomId: room.id, statusId: value})
+        }
+    }
+
+    //Post room status
+    const [newStatusData,setNewStatusData] = useState<CreateRoomStatusRequest>({
+        dateOfStart: '',
+        dateOfEnd: '',
+        description: '',
+    });
+
+    const onNewStatusDataChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const {name, value} = event.target;
+
+        if(name==='dateOfStart' || name==='dateOfEnd' || name==='description') {
+            setNewStatusData(prevState => {
+                if (!prevState) return prevState;
+                return {...prevState, [name]: value}
+            })
+        }
+    }
+
+    const handlePostStatus = () => {
+        if(room && newStatusData && newStatusData.dateOfStart !== '' && newStatusData.dateOfEnd !== '' && newStatusData.description !== '') {
+          postRoomStatus({roomId: room.id, statusData: newStatusData})
+        }
+    }
+
+    const handleClearNewStatus = () => {
+        setNewStatusData({
+            dateOfStart: '',
+            dateOfEnd: '',
+            description: ''
+        })
+    }
+
+    //Photos Dialog
+    const [showPhotosDialog, setShowPhotosDialog] = useState(false)
+
+    const closePhotosDialog = () => {
+        setShowPhotosDialog(false)
+    }
+
+
     if(isLoading){
         return (
             <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100">
@@ -338,7 +402,7 @@ export function RoomPage({roomId}: RoomPageProps) {
                     <div className="lg:col-span-2 space-y-6">
                         
                         {/* Basic Information Card */}
-                        <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden animate-in fade-in-0 slide-in-from-bottom-4 duration-500 hover:shadow-md transition-all duration-300">
+                        <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden animate-in fade-in-0 slide-in-from-bottom-4 duration-500 hover:shadow-md transition-all">
                             <div className="px-6 py-4 bg-slate-50 border-b border-slate-200">
                                 <h2 className="text-lg font-semibold text-slate-900 flex items-center">
                                     <Settings className="w-5 h-5 mr-2 text-blue-600 animate-in spin-in-180 duration-700 delay-200" />
@@ -473,7 +537,7 @@ export function RoomPage({roomId}: RoomPageProps) {
                                     <div className="space-y-3">
                                         {roomInfo.residents.map((resident, index) => (
                                             <div key={index} 
-                                                className="flex items-center justify-between p-4 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 transition-all duration-200 hover:scale-[1.02] hover:shadow-sm animate-in fade-in-0 slide-in-from-left-2 duration-300"
+                                                className="flex items-center justify-between p-4 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 transition-all hover:scale-[1.02] hover:shadow-sm animate-in fade-in-0 slide-in-from-left-2 duration-300"
                                                 style={{ animationDelay: `${index * 50}ms` }}
                                             >
                                                 <Link 
@@ -524,7 +588,7 @@ export function RoomPage({roomId}: RoomPageProps) {
                             <div className="p-6">
                                 {roomInfo.roomEquipment && roomInfo.roomEquipment.length > 0 ? (
                                     <div className="space-y-3">
-                                        {roomInfo.roomEquipment.map((equipment, index) => (
+                                        {roomInfo.roomEquipment.map((_, index) => (
                                             <div key={index} 
                                                 className="relative animate-in fade-in-0 slide-in-from-left-2 duration-300"
                                                 style={{ animationDelay: `${index * 50}ms` }}
@@ -556,11 +620,18 @@ export function RoomPage({roomId}: RoomPageProps) {
 
                         {/* Calendar Card */}
                         <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden animate-in fade-in-0 slide-in-from-bottom-4 duration-500 delay-300 hover:shadow-md transition-all">
-                            <div className="px-6 py-4 bg-slate-50 border-b border-slate-200">
+                            <div className="px-6 py-4 bg-slate-50 border-b border-slate-200 flex flex-row space-x-6">
                                 <h2 className="text-lg font-semibold text-slate-900 animate-in fade-in-0 slide-in-from-left-2 duration-300 delay-500">Availability Calendar</h2>
+                                <button
+                                    name="statuses"
+                                    onClick={handleEditField}
+                                    className="p-1 text-slate-400 hover:text-blue-600 transition-all duration-200 hover:scale-110 active:scale-95"
+                                >
+                                    <Edit3 className="w-4 h-4 transition-transform duration-200 hover:rotate-12" />
+                                </button>
                             </div>
                             <div className="p-6 animate-in fade-in-0 zoom-in-95 duration-500 delay-600">
-                                <CalendarOfAvailabilityComponent statuses={roomInfo.statuses}/>
+                                <CalendarOfAvailabilityComponent statuses={roomInfo.statuses} showLegend={true}/>
                             </div>
                         </div>
                     </div>
@@ -577,6 +648,7 @@ export function RoomPage({roomId}: RoomPageProps) {
                                     <button 
                                         name="photos" 
                                         className="p-1 text-slate-400 hover:text-blue-600 transition-all duration-200 hover:scale-110 active:scale-95"
+                                        onClick={handleEditField}
                                     >
                                         <Edit3 className="w-4 h-4 transition-transform duration-200 hover:rotate-12" />
                                     </button>
@@ -693,7 +765,7 @@ export function RoomPage({roomId}: RoomPageProps) {
                                 Provide eviction details for {userToEvict.displayName} {userToEvict.secondName}
                             </Description>
                         </div>
-                        
+
                         <div className="p-6 space-y-4">
                             <div className="animate-in fade-in-0 slide-in-from-left-2 duration-300 delay-150">
                                 <label className="block text-sm font-medium text-slate-700 mb-2">
@@ -708,7 +780,7 @@ export function RoomPage({roomId}: RoomPageProps) {
                                     placeholder="Enter reason for eviction..."
                                 />
                             </div>
-                            
+
                             <div className="animate-in fade-in-0 slide-in-from-left-2 duration-300 delay-200">
                                 <label className="block text-sm font-medium text-slate-700 mb-2">
                                     Eviction date
@@ -722,15 +794,15 @@ export function RoomPage({roomId}: RoomPageProps) {
                                 />
                             </div>
                         </div>
-                        
+
                         <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex space-x-3 animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-250">
-                            <button 
+                            <button
                                 className="flex-1 bg-red-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200 hover:scale-105 active:scale-95 hover:shadow-lg"
                                 /* onClick={handleEvict} */
                             >
                                 Confirm Eviction
                             </button>
-                            <button 
+                            <button
                                 className="flex-1 bg-slate-200 text-slate-700 py-2 px-4 rounded-lg font-medium hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transition-all duration-200 hover:scale-105 active:scale-95"
                                 onClick={closeEvictionMenu}
                             >
@@ -740,6 +812,174 @@ export function RoomPage({roomId}: RoomPageProps) {
                     </DialogPanel>
                 </div>
             </Dialog>
+
+            {/*Statuses dialog*/}
+            <Dialog onClose={closeStatusesDialog} open={showStatusesDialog} className="relative z-50">
+                <DialogBackdrop className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-all duration-300" />
+                <div className="fixed inset-0 flex items-center justify-center p-4">
+                    <DialogPanel className="w-full max-w-lg bg-white rounded-2xl shadow-2xl animate-in zoom-in-95 fade-in-0 duration-300 slide-in-from-bottom-4">
+                        <div className="px-6 py-4 bg-red-50 border-b border-red-200 animate-in fade-in-0 slide-in-from-top-2 duration-300">
+                            <DialogTitle className="text-lg font-semibold text-red-900">
+                                Room Statuses
+                            </DialogTitle>
+                            <Description className="text-red-700 text-sm mt-1">
+                                This menu allows to modify statuses of the room
+                            </Description>
+                        </div>
+
+                        <div className={`flex flex-row space-x-6`}>
+                            <CalendarOfAvailabilityComponent statuses={roomInfo.statuses} showLegend={false} setDateStatuses={setDateStatuses} />
+                            <div className={`flex flex-col space-y-4 bg-gray-400`}>
+                                <p>Number of residents: {roomInfo.residents.length}/{roomInfo.capacity}</p>
+                                <p>???</p>
+                                <div className={`flex flex-col`}>
+                                    <p>Statuses:</p>
+                                    {dateStatuses.length > 0 ? (
+                                        <div className={`flex flex-col`}>
+                                            {dateStatuses.map(status => (
+                                                    <div key={status.id} className={`flex flex-row bg-gray-300`}>
+                                                        <p>{new Date(status.dateOfStart).toLocaleDateString()} - {new Date(status.dateOfEnd).toLocaleDateString()}: {status.description}</p>
+                                                        <button className={`bg-red-500 border-black border px-1`} value={status.id} onClick={handleDeleteStatus}>X</button>
+                                                    </div>
+                                                ))}
+                                        </div>
+                                    ):(<></>)}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className={`flex flex-col space-y-4 bg-gray-200`}>
+                            <h2>New announcement details</h2>
+                            <div className={`flex flex-row space-x-4`}>
+                                <p>Description:</p>
+                                <input
+                                    type='text'
+                                    name='description'
+                                    value={newStatusData.description}
+                                    onChange={onNewStatusDataChange}
+                                />
+                            </div>
+                            <div className={`flex flex-row space-x-4`}>
+                                <p>Date of start:</p>
+                                <input
+                                    type='date'
+                                    name='dateOfStart'
+                                    value={newStatusData.dateOfStart}
+                                    onChange={onNewStatusDataChange}
+                                />
+                            </div>
+                            <div className={`flex flex-row space-x-4`}>
+                                <p>Date of end:</p>
+                                <input
+                                    type='date'
+                                    name='dateOfEnd'
+                                    min={newStatusData.dateOfStart}
+                                    value={newStatusData.dateOfEnd}
+                                    onChange={onNewStatusDataChange}
+                                />
+                            </div>
+                            <div className={`flex flex-row space-x-4`}>
+                                <button onClick={handleClearNewStatus}>Cancel</button>
+                                <button onClick={handlePostStatus}>Create Status</button>
+                            </div>
+                        </div>
+                    </DialogPanel>
+                </div>
+            </Dialog>
+
+            {/*Edit photos dialog*/}
+            <Dialog onClose={closePhotosDialog} open={showPhotosDialog} className="relative z-50">
+                <DialogBackdrop className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-all duration-300" />
+                <div className="fixed inset-0 flex items-center justify-center p-4">
+                    <DialogPanel className="w-full max-w-lg bg-white rounded-2xl shadow-2xl animate-in zoom-in-95 fade-in-0 duration-300 slide-in-from-bottom-4">
+                        <div className="px-6 py-4 bg-red-50 border-b border-red-200 animate-in fade-in-0 slide-in-from-top-2 duration-300">
+                            <DialogTitle className="text-lg font-semibold text-red-900">
+                                Room Photos
+                            </DialogTitle>
+                            <Description className="text-red-700 text-sm mt-1">
+                                This menu allows to modify photos of the room
+                            </Description>
+                        </div>
+
+                        <div className={`flex flex-row space-x-4`}>
+                            <div className={`flex flex-col space-y-4 bg-gray-400`}>
+                                <h2 className="text-lg font-semibold text-slate-900 flex items-center">
+                                    <Camera className="w-5 h-5 mr-2 text-blue-600 animate-in spin-in-180 duration-700 delay-500" />
+                                    Photos
+                                </h2>
+                                <div className="p-6">
+                                    {roomInfo.photos.length > 0 ? (
+                                        <div className="space-y-4">
+                                            <div className="relative aspect-video rounded-lg overflow-hidden bg-slate-100 group">
+                                                <img
+                                                    key={currentIndex}
+                                                    src={roomInfo.photos[currentIndex]}
+                                                    alt={`Room photo ${currentIndex + 1}`}
+                                                    className="w-full h-full object-cover transition-all duration-500 ease-out animate-in fade-in-0 zoom-in-95"
+                                                />
+
+                                                {/* Navigation arrows */}
+                                                {roomInfo.photos.length > 1 && (
+                                                    <>
+                                                        <button
+                                                            onClick={goToPrevious}
+                                                            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-all duration-200 opacity-0 group-hover:opacity-100 hover:scale-110 active:scale-95"
+                                                        >
+                                                            <ChevronLeft size={20} className="transition-transform duration-200 hover:-translate-x-0.5" />
+                                                        </button>
+                                                        <button
+                                                            onClick={goToNext}
+                                                            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-all duration-200 opacity-0 group-hover:opacity-100 hover:scale-110 active:scale-95"
+                                                        >
+                                                            <ChevronRight size={20} className="transition-transform duration-200 hover:translate-x-0.5" />
+                                                        </button>
+                                                    </>
+                                                )}
+
+                                                {/* Image counter */}
+                                                <div className="absolute bottom-2 right-2 bg-black/70 text-white px-2 py-1 rounded text-xs font-medium transition-all duration-200 opacity-0 group-hover:opacity-100">
+                                                    {currentIndex + 1} / {roomInfo.photos.length}
+                                                </div>
+                                            </div>
+
+                                            {/* Dots indicator */}
+                                            {roomInfo.photos.length > 1 && (
+                                                <div className="flex justify-center gap-2 animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-300">
+                                                    {roomInfo.photos.map((_, index) => (
+                                                        <button
+                                                            key={index}
+                                                            onClick={() => setCurrentIndex(index)}
+                                                            className={`w-2 h-2 rounded-full transition-all duration-300 hover:scale-125 ${
+                                                                index === currentIndex
+                                                                    ? 'bg-blue-600 scale-110'
+                                                                    : 'bg-slate-300 hover:bg-slate-400'
+                                                            }`}
+                                                        />
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+                                    ) : (
+                                        <div className="text-center py-12 animate-in fade-in-0 zoom-in-50 duration-500">
+                                            <Camera className="mx-auto h-12 w-12 text-slate-300 animate-pulse" />
+                                            <p className="mt-2 text-slate-500">No photos available</p>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className={`flex flex-col`}>
+                                {roomInfo.photos.map((photo, index) => (
+                                    <button name={`photo`} value={index} key={`photo-${index}`} onClick={() => setCurrentIndex(index)}>
+                                        <img src={photo} alt={`Room photo${index}`} className={`w-120 h-40`}/>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    </DialogPanel>
+                </div>
+            </Dialog>
+
         </div>
     )
 }

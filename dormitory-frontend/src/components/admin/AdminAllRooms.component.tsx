@@ -6,8 +6,9 @@ import Link from "next/link";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from "@headlessui/react";
 import {Dormitory} from "@/types/dormitories.types";
 import {useGetActiveDormitories} from "@/hooks/dormitories.hook";
-import {useGetRooms} from "@/hooks/rooms.hook";
-import { Room } from "@/types/rooms.types";
+import {useGetAvailableRoom, useGetRooms, useUpdateRoom} from "@/hooks/rooms.hook";
+import {AvailableRoomsRequest, Room} from "@/types/rooms.types";
+import {CalendarOfAvailability2WVerComponent} from "@/components/ui/CalendarOfAvailability2WVer.component";
 
 interface Filters {
     dateFrom: string;
@@ -15,11 +16,10 @@ interface Filters {
     roommates: 'none' | 'some' | 'full';
     roomSize: number[];
     groupSize: number;
-    selectedDormitory: string;
-    selectedFloor: number | null;
 }
 
 export default function AllRoomsPage() {
+
     // Dormitories, floors and rooms
     const [dormitoriesList, setDormitoriesList] = useState<Dormitory[]>([]);
     const [currentDormitory, setCurrentDormitory] = useState<Dormitory|null>(null);
@@ -105,17 +105,34 @@ export default function AllRoomsPage() {
         return roomsOnThisFloor
     }
 
-
-
     const [filters, setFilters] = useState<Filters>({
-        dateFrom: '2025-04-04',
-        dateTo: '2025-04-07',
+        dateFrom: '',
+        dateTo: '',
         roommates: 'none',
         roomSize: [],
-        groupSize: 2,
-        selectedDormitory: '1',
-        selectedFloor: 9,
+        groupSize: 2
     });
+
+    //available rooms
+    const [availableRoomsIds, setAvailableRoomsIds] = useState<string[]>([])
+    const [availableRoomsRequest, setAvailableRoomRequest] = useState<AvailableRoomsRequest>({from: '', to: ''})
+
+    useEffect(() => {
+        if(filters.dateFrom !== '' && filters.dateTo !== ''){
+            const request:AvailableRoomsRequest = {to: filters.dateTo, from: filters.dateFrom}
+            setAvailableRoomRequest(request)
+        }
+    }, [filters.dateFrom, filters.dateTo]);
+
+    const {data: availableRooms, isLoading: loadingAvailableRooms, error: availableRoomsError} = useGetAvailableRoom(availableRoomsRequest)
+
+    useEffect(() => {
+        if(availableRooms && availableRooms.length > 0) {
+            const ids = availableRooms.map(room => room.id)
+            setAvailableRoomsIds(ids)
+
+        }
+    }, [availableRooms]);
 
 
     const [showFilters, setShowFilters] = useState(true);
@@ -129,7 +146,7 @@ export default function AllRoomsPage() {
         
         if (!hasResidents) return 'bg-green-500'; // Available
         if (hasResidents && isAvailable) return 'bg-blue-500'; // Partially occupied
-        if (room.residents.length >= room.capacity) return 'bg-red-500'; // Full
+        if (room.residents.length >= room.capacity || !availableRoomsIds.includes(room.id)) return 'bg-red-500'; // Full
         return 'bg-gray-400'; // Maintenance or other
     };
 
@@ -146,7 +163,7 @@ export default function AllRoomsPage() {
     const clearFilter = (key: keyof Filters) => {
         setFilters(prev => ({
             ...prev,
-            [key]: key === 'roomSize' ? [] : key === 'selectedFloor' ? null : key === 'roommates' ? 'none' : ''
+            [key]: key === 'roomSize' ? [] : key === 'roommates' ? 'none' : ''
         }));
     };
 
@@ -355,7 +372,7 @@ export default function AllRoomsPage() {
                                                     <option key={dormitory.id} value={dormitory.id}>{dormitory.name}</option>
                                                 ))
                                             ):(
-                                                <option value={""}>No dormitories avalible</option>
+                                                <option value={""}>No dormitories available</option>
                                             )}
                                         </select>
                                     </span>
@@ -372,7 +389,7 @@ export default function AllRoomsPage() {
                                                     value={floor}
                                                     onClick={ handleFloorChange}
                                                     className={`px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 hover:scale-105 active:scale-95 ${
-                                                        filters.selectedFloor === floor
+                                                        currentFloor === floor
                                                             ? 'bg-blue-600 text-white shadow-md'
                                                             : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                                                     }`}
@@ -455,31 +472,7 @@ export default function AllRoomsPage() {
                                     </div>
                                     
                                     {/* Availability Calendar */}
-                                    <div className="px-6 py-4 border-b border-slate-200">
-                                        <h4 className="text-sm font-medium text-slate-900 mb-3">
-                                            Availability during next 2 weeks:
-                                        </h4>
-                                        <div className="grid grid-cols-7 gap-1 text-xs">
-                                            {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, index) => (
-                                                <div key={day} className="text-center font-medium text-slate-600 py-1">
-                                                    {day}
-                                                </div>
-                                            ))}
-                                            {next14Days.map((day, index) => (
-                                                <div
-                                                    key={day.date}
-                                                    className={`text-center py-1 sm:py-2 rounded text-xs font-medium transition-all duration-200 hover:scale-110 cursor-pointer animate-in zoom-in-50 duration-300`}
-                                                    style={{ animationDelay: `${index * 30}ms` }}
-                                                >
-                                                    <div className={`w-full py-1 rounded ${
-                                                        index < 4 ? 'bg-red-200 text-red-800' : 'bg-green-200 text-green-800'
-                                                    }`}>
-                                                        <div>{day.dayNumber}.{day.month}</div>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
+                                    <CalendarOfAvailability2WVerComponent  statuses={selectedRoom.statuses} showLegend={false}/>
 
                                     {/* Residents */}
                                     <div className="px-6 py-4">

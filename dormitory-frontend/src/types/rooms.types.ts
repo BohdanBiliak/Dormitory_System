@@ -25,12 +25,6 @@ export interface Room{
     }
 }
 
-export interface AvailableRoomsRequest {
-    roomId: string,
-    from: string,
-    to: string,
-}
-
 export interface RoomStatus{
     id: string,
     roomId: string,
@@ -41,9 +35,19 @@ export interface RoomStatus{
 
 export interface UpdateRoomData {
     number?: string,
-    floor?: string,
+    floor?: number,
     capacity?: number,
     roomEquipment?: string[],
     photos?: string[],
+}
 
+export interface AvailableRoomsRequest {
+    from: string,
+    to: string,
+}
+
+export interface CreateRoomStatusRequest {
+    dateOfStart: string,
+    dateOfEnd: string,
+    description: string,
 }

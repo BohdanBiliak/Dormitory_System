@@ -3,46 +3,27 @@
 import React, {useState, useEffect} from 'react';
 import {ChevronLeft, ChevronRight} from 'lucide-react';
 import {RoomStatus} from "@/types/rooms.types";
+import {max, min} from "@floating-ui/utils";
 
-interface CalendarOfAvailabilityProps {
+interface CalendarOfAvailability2WVerProps {
     statuses: RoomStatus[],
     showLegend: boolean,
-    setDateStatuses?: (statuses: RoomStatus[]) => void,
 }
 
-export function CalendarOfAvailabilityComponent ({statuses, showLegend, setDateStatuses}:CalendarOfAvailabilityProps) {
-
-    const [currentDate, setCurrentDate] = useState(new Date());
+export function CalendarOfAvailability2WVerComponent ({statuses, showLegend}:CalendarOfAvailability2WVerProps) {
+    const currentDate = new Date();
     const [chosenDate, setChosenDate] = useState(new Date());
     const [chosenDateStatuses, setChosenDateStatuses] = useState<RoomStatus[]>([]);
     const [unavailableDateRanges, setUnavailableDateRanges] = useState(statuses);
 
-    // Get the first day of the current month
-    const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-    const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
-
-    // Get the day of week for the first day (0 = Sunday, 1 = Monday, etc.)
-    const startingDayOfWeek = firstDayOfMonth.getDay();
-
-    // Calculate days to show from previous month
-    const daysInPrevMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0).getDate();
-    const prevMonthDays = Array.from(
-        { length: startingDayOfWeek },
-        (_, i) => daysInPrevMonth - startingDayOfWeek + i + 1
-    );
-
-    // Days in current month
-    const daysInCurrentMonth = lastDayOfMonth.getDate();
-    const currentMonthDays = Array.from({ length: daysInCurrentMonth }, (_, i) => i+1);
-
-    // Days to show from next month
-    const remainingCells = 42 - (prevMonthDays.length + currentMonthDays.length);
-    const nextMonthDays = Array.from({ length: remainingCells }, (_, i) => i + 1);
+    const daysArray = Array.from(
+        { length: 14 },
+        (_,i)=>currentDate.getDate()-currentDate.getDay()+i
+    )
 
     // Format date as YYYY-MM-DD
     const formatDate = (year:number, month:number, day:number) => {
         return new Date(year, month, day);
-        //return {'${{year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}}'};
     };
 
     const isInRange = (date:Date, rangeStart:Date, rangeEnd:Date) => {
@@ -56,14 +37,6 @@ export function CalendarOfAvailabilityComponent ({statuses, showLegend, setDateS
         });
     };
 
-    // Navigation functions
-    const goToPreviousMonth = () => {
-        setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
-    };
-
-    const goToNextMonth = () => {
-        setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
-    };
 
     const statusReview = (event: React.MouseEvent<HTMLButtonElement>)=>{
         const {name} = event.currentTarget;
@@ -84,15 +57,6 @@ export function CalendarOfAvailabilityComponent ({statuses, showLegend, setDateS
         ))
     },[statuses])
 
-    useEffect(() => {
-        if(setDateStatuses){
-            setDateStatuses(chosenDateStatuses)
-        }
-    }, [chosenDateStatuses]);
-
-
-
-
     const monthNames = [
         'January', 'February', 'March', 'April', 'May', 'June',
         'July', 'August', 'September', 'October', 'November', 'December'
@@ -100,29 +64,6 @@ export function CalendarOfAvailabilityComponent ({statuses, showLegend, setDateS
 
     return (
         <div className="bg-white rounded-lg shadow-lg p-6 max-w-md mx-auto">
-
-            {/* Header */}
-            <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center space-x-4">
-                    <button
-                        onClick={goToPreviousMonth}
-                        className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
-                    >
-                        <ChevronLeft className="w-5 h-5" />
-                    </button>
-
-                    <h2 className="text-xl font-semibold text-gray-800">
-                        {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
-                    </h2>
-
-                    <button
-                        onClick={goToNextMonth}
-                        className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
-                    >
-                        <ChevronRight className="w-5 h-5" />
-                    </button>
-                </div>
-            </div>
 
             {/* Days of week header */}
             <div className="grid grid-cols-7 gap-1 mb-2">
@@ -136,44 +77,30 @@ export function CalendarOfAvailabilityComponent ({statuses, showLegend, setDateS
             {/* Calendar grid */}
             <div className="grid grid-cols-7 gap-1">
                 {/* Previous month days */}
-                {prevMonthDays.map((day, index) => (
-                    <div key={`prev-${index}`} className="h-10 flex items-center justify-center">
-                        <span className="text-gray-300 text-sm">{day}</span>
-                    </div>
-                ))}
-
-                {/* Current month days */}
-                {currentMonthDays.map(day => {
+                {daysArray.map((day,index) => {
                     const date = formatDate(
                         currentDate.getFullYear(),
                         currentDate.getMonth(),
-                        day+1
+                        day
                     );
                     const isUnavailable = isDateUnavailable(date);
 
                     return (
                         <button
-                            key={day}
-                            name = {date.toISOString()}
+                            key={index}
+                            name={date.toISOString()}
                             onClick={statusReview}
                             className={`h-10 flex items-center justify-center text-sm rounded-lg transition-all duration-200 ${
                                 isUnavailable
-                                ? 'bg-red-200 text-red-800 hover:bg-red-300 '
-                                : `bg-green-200 text-green-800 hover:bg-green-300`
+                                    ? 'bg-red-200 text-red-800 hover:bg-red-300 '
+                                    : `bg-green-200 text-green-800 hover:bg-green-300`
                             }`}
 
                         >
-                            {day}
+                            {`${date.getDate().toString().padStart(2,"0")}.${(date.getMonth()+1).toString().padStart(2,"0")}`}
                         </button>
                     );
                 })}
-
-                {/* Next month days */}
-                {nextMonthDays.map((day, index) => (
-                    <div key={`next-${index}`} className="h-10 flex items-center justify-center">
-                        <span className="text-gray-300 text-sm">{day}</span>
-                    </div>
-                ))}
             </div>
 
             {/* Legend */}

@@ -1,6 +1,6 @@
 import {roomsApi} from "@/app/lib/rooms.api";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {UpdateRoomData} from "@/types/rooms.types";
+import {AvailableRoomsRequest, CreateRoomStatusRequest, UpdateRoomData} from "@/types/rooms.types";
 import {toast} from "sonner";
 
 export function useGetRooms(){
@@ -21,6 +21,15 @@ export function useGetRoom(id: string){
     return {data, isLoading, error};
 }
 
+export function useGetAvailableRoom(request: AvailableRoomsRequest){
+    const {data, isLoading, error} = useQuery({
+        queryKey: ["rooms", "available"],
+        queryFn: () => roomsApi.getAvailableRooms(request),
+        staleTime: 30 * 1000
+    })
+    return {data, isLoading, error};
+}
+
 export function useUpdateRoom(){
     const queryClient = useQueryClient()
 
@@ -35,8 +44,34 @@ export function useUpdateRoom(){
         }
     })
 
+    const postRoomStatus = useMutation({
+        mutationFn: ({roomId, statusData}:{roomId:string, statusData:CreateRoomStatusRequest})=>roomsApi.postRoomStatus(roomId, statusData),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["room"] })
+            toast.success('Room status created successfully!')
+        },
+        onError: (err) => {
+            toast.error(err.message)
+        }
+    })
+
+    const removeRoomStatus = useMutation({
+        mutationFn: ({roomId, statusId}:{roomId: string, statusId:string})=>roomsApi.removeRoomStatus(roomId, statusId),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["room"] })
+            toast.success('Room status removed successfully!')
+        },
+        onError: (err) => {
+            toast.error(err.message)
+        }
+    })
+
     return({
         updateRoom: updateRoom.mutate,
         updatingRoom: updateRoom.isPending,
+        postRoomStatus: postRoomStatus.mutate,
+        postingRoomStatus: postRoomStatus.isPending,
+        removeRoomStatus: removeRoomStatus.mutate,
+        removingRoomStatus: removeRoomStatus.isPending
     })
 }

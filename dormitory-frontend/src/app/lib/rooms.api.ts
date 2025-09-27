@@ -1,5 +1,5 @@
 import {api} from "@/app/lib/api.api";
-import {Room, UpdateRoomData} from "@/types/rooms.types";
+import {AvailableRoomsRequest, CreateRoomStatusRequest, Room, RoomStatus, UpdateRoomData} from "@/types/rooms.types";
 
 export const roomsApi= {
     async getRooms(): Promise<Room[]>{
@@ -17,5 +17,34 @@ export const roomsApi= {
         return response.data;
     },
 
+    async getAvailableRooms(filters:AvailableRoomsRequest):Promise<Room[]>{
+        const params = new URLSearchParams()
 
+        if(filters.from !==''){
+            params.append('from', filters.from)
+        }
+
+        if(filters.to !==''){
+            params.append('to', filters.to)
+        }
+
+        if(filters.to !=='' && filters.from !==''){
+            const response = await api.get(`/rooms/available?${params}`);
+            return response.data;
+        }else{
+            const response = await api.get(`/rooms`);
+            return response.data;
+        }
+
+    },
+
+    async removeRoomStatus(roomId:string, statusId:string):Promise<RoomStatus>{
+        const response = await api.delete(`/rooms/${roomId}/statuses/${statusId}`);
+        return response.data;
+    },
+
+    async postRoomStatus(roomId:string, data:CreateRoomStatusRequest):Promise<RoomStatus>{
+        const response = await api.post(`/rooms/${roomId}/statuses`, data);
+        return response.data;
+    }
 }
