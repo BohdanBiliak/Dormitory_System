@@ -154,32 +154,26 @@ export class RoomRepository {
     });
   }
 
-  async update(id: string, data: UpdateRoomData): Promise<RoomWithRelations> {
-    return this.prisma.room.update({
-      where: { id },
-      data: {
-        ...data
+async update(id: string, data: UpdateRoomData): Promise<RoomWithRelations> {
+  return this.prisma.room.update({
+    where: { id },
+    data: {
+      ...(data.number && { number: data.number }),
+      ...(data.floor && { floor: data.floor }),
+      ...(data.capacity && { capacity: data.capacity }),
+      ...(data.roomEquipment && { roomEquipment: { set: data.roomEquipment } }),
+      ...(data.photos && { photos: { set: data.photos } })
+    },
+    include: {
+      residents: {
+        select: { id: true, displayName: true, secondName: true, email: true }
       },
-      include: {
-        residents: {
-          select: {
-            id: true,
-            displayName: true,
-            secondName: true,
-            email: true
-          }
-        },
-        dormitory: {
-          select: {
-            id: true,
-            name: true,
-            address: true
-          }
-        },
-        statuses: true
-      }
-    });
-  }
+      dormitory: { select: { id: true, name: true, address: true } },
+      statuses: true
+    }
+  });
+}
+
 
   async exists(id: string): Promise<boolean> {
     const count = await this.prisma.room.count({
