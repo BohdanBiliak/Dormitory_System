@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '@/prisma/prisma.service';
 import { Room, Prisma, $Enums } from '../../../../__generated__';
-
+import { AvailableRoomsDto } from '../dto/availableRooms.dto';
 export type RoomWithRelations = Prisma.RoomGetPayload<{
   include: {
     residents: {
@@ -34,7 +34,7 @@ export interface UpdateRoomData {
 
 @Injectable()
 export class RoomRepository {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
   async findAll(dormitoryIds?: string[]): Promise<RoomWithRelations[]> {
     return this.prisma.room.findMany({
@@ -119,31 +119,74 @@ export class RoomRepository {
     });
   }
 
-  async findAvailableRooms(dormitoryId?: string): Promise<RoomWithRelations[]> {
-    return this.prisma.room.findMany({
-      where: {
-        ...(dormitoryId && { dormitoryId })
-      },
-      include: {
-        residents: {
-          select: {
-            id: true,
-            displayName: true,
-            secondName: true,
-            email: true
-          }
-        },
-        dormitory: {
-          select: {
-            id: true,
-            name: true,
-            address: true
-          }
-        },
-        statuses: true
+  async findAvailableRooms(dto: AvailableRoomsDto) {
+  // Парсимо дати і підганяємо кінець дня для 'to'
+  const fromDate = new Date(dto.from);
+  const toDate = new Date(dto.to);
+  toDate.setHours(23, 59, 59, 999);
+
+  // Отримуємо всі кімнати (з фільтром по гуртожитку, якщо є)
+  const rooms = await this.prisma.room.findMany({
+    where: {
+      ...(dto.dormitoryId && { dormitoryId: dto.dormitoryId }),
+      statuses: {
+        none: {
+          AND: [
+            { dateOfStart: { lt: toDate } },
+            {
+              OR: [
+                { dateOfEnd: { gt: fromDate } },
+                { dateOfEnd: null }
+              ]
+            }
+          ]
+        }
       }
+    },
+    include: {
+      residents: {
+        select: {
+          id: true,
+          displayName: true,
+          secondName: true,
+          email: true
+        }
+      },
+      dormitory: {
+        select: {
+          id: true,
+          name: true,
+          address: true
+        }
+      },
+      statuses: true
+    }
+  });
+
+  const availableRooms = rooms.filter(room => room.residents.length < room.capacity);
+
+  const capacityPriceMap = new Map<string, { pricePerDay: number; pricePerMonth: number }>();
+  const prices = await this.findPrices({ from: fromDate, to: toDate });
+  prices.forEach(price => {
+    capacityPriceMap.set(String(price.roomCapacity), {
+      pricePerDay: price.pricePerDay,
+      pricePerMonth: price.pricePerMonth
     });
-  }
+  });
+
+  return Promise.all(
+    availableRooms.map(async room => {
+      const price = capacityPriceMap.get(String(room.capacity)) || await this.findPriceByCapacity(room.capacity);
+      return {
+        ...room,
+        isAvailable: true,
+        price
+      };
+    })
+  );
+}
+
+
 
   async countOccupants(roomId: string): Promise<number> {
     return this.prisma.user.count({
@@ -154,25 +197,25 @@ export class RoomRepository {
     });
   }
 
-async update(id: string, data: UpdateRoomData): Promise<RoomWithRelations> {
-  return this.prisma.room.update({
-    where: { id },
-    data: {
-      ...(data.number && { number: data.number }),
-      ...(data.floor && { floor: data.floor }),
-      ...(data.capacity && { capacity: data.capacity }),
-      ...(data.roomEquipment && { roomEquipment: { set: data.roomEquipment } }),
-      ...(data.photos && { photos: { set: data.photos } })
-    },
-    include: {
-      residents: {
-        select: { id: true, displayName: true, secondName: true, email: true }
+  async update(id: string, data: UpdateRoomData): Promise<RoomWithRelations> {
+    return this.prisma.room.update({
+      where: { id },
+      data: {
+        ...(data.number && { number: data.number }),
+        ...(data.floor && { floor: data.floor }),
+        ...(data.capacity && { capacity: data.capacity }),
+        ...(data.roomEquipment && { roomEquipment: { set: data.roomEquipment } }),
+        ...(data.photos && { photos: { set: data.photos } })
       },
-      dormitory: { select: { id: true, name: true, address: true } },
-      statuses: true
-    }
-  });
-}
+      include: {
+        residents: {
+          select: { id: true, displayName: true, secondName: true, email: true }
+        },
+        dormitory: { select: { id: true, name: true, address: true } },
+        statuses: true
+      }
+    });
+  }
 
 
   async exists(id: string): Promise<boolean> {
@@ -222,18 +265,18 @@ async update(id: string, data: UpdateRoomData): Promise<RoomWithRelations> {
     });
   }
 
-async deleteRoomStatus(roomId: string, statusId: string) {
+  async deleteRoomStatus(roomId: string, statusId: string) {
     const status = await this.prisma.roomStatus.findUnique({
-        where: { id: statusId },
+      where: { id: statusId },
     });
     if (!status || status.roomId !== roomId) {
-        throw new NotFoundException('RoomStatus not found for this room');
+      throw new NotFoundException('RoomStatus not found for this room');
     }
 
     return this.prisma.roomStatus.delete({
-        where: { id: statusId },
+      where: { id: statusId },
     });
-}
+  }
 
 
 
@@ -322,16 +365,16 @@ async deleteRoomStatus(roomId: string, statusId: string) {
   }
   async endUserRoomStatuses(userId: string, roomId: string) {
     return this.prisma.roomStatus.updateMany({
-        where: {
-            roomId,
-            description: {
-                contains: userId
-            },
-            dateOfEnd: null
+      where: {
+        roomId,
+        description: {
+          contains: userId
         },
-        data: {
-            dateOfEnd: new Date()
-        }
+        dateOfEnd: null
+      },
+      data: {
+        dateOfEnd: new Date()
+      }
     });
-}
+  }
 }

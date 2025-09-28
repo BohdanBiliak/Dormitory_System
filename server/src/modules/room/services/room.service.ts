@@ -112,7 +112,7 @@ export class RoomService {
     const from = new Date(dto.from);
     const to = new Date(dto.to);
 
-    const rooms = await this.roomRepository.findAvailableRooms(dto.dormitoryId);
+    const rooms = await this.roomRepository.findAvailableRooms(dto);
 
     // Get current prices for each room capacity
     const capacityPriceMap = new Map();
