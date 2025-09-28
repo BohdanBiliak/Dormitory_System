@@ -521,14 +521,14 @@ export class RoomController {
     return this.roomService.createRoomStatus(roomId, dto);
   }
 
-  @Delete(":id/statuses/:id")
+  @Delete(":roomId/statuses/:statusId")
   @Authorization(UserRole.Admin)
   @ApiOperation({ 
     summary: "Delete room status (Admin only)",
     description: "Removes a room status record"
   })
-  @ApiParam({ name: "id", type: String, description: 'Room ID (UUID)' })
-  @ApiParam({ name: "sid", type: String, description: 'Status ID (UUID) to delete' })
+  @ApiParam({ name: "roomId", type: String, description: 'Room ID (UUID)' })
+  @ApiParam({ name: "statusId", type: String, description: 'Status ID (UUID) to delete' })
   @ApiResponse({ 
     status: 200, 
     description: 'Room status deleted successfully',
@@ -547,10 +547,10 @@ export class RoomController {
   @ApiResponse({ status: 403, description: 'Forbidden - User does not have admin privileges' })
   @ApiResponse({ status: 404, description: 'Not Found - Status with specified ID does not exist' })
   async deleteRoomStatus(
-      @Param("id") roomId: string,
-      @Param("sid") statusId: string,
+      @Param("roomId") roomId: string,
+      @Param("statusId") statusId: string,
   ) {
-    return this.roomService.deleteRoomStatus(statusId);
+    return this.roomService.deleteRoomStatus(roomId, statusId);
   }
 
   @Patch(":id/assign-user")

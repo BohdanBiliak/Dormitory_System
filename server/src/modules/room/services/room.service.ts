@@ -300,8 +300,8 @@ export class RoomService {
     });
   }
 
-  async deleteRoomStatus(statusId: string) {
-    return this.roomRepository.deleteRoomStatus(statusId);
+  async deleteRoomStatus(roomId: string, statusId: string) {
+    return this.roomRepository.deleteRoomStatus(roomId, statusId);
   }
 
   async assignUserToRoom(roomId: string, userId: string) {

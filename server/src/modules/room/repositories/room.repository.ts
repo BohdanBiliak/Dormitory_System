@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '@/prisma/prisma.service';
 import { Room, Prisma, $Enums } from '../../../../__generated__';
 
@@ -222,11 +222,20 @@ async update(id: string, data: UpdateRoomData): Promise<RoomWithRelations> {
     });
   }
 
-  async deleteRoomStatus(statusId: string) {
-    return this.prisma.roomStatus.delete({
-      where: { id: statusId }
+async deleteRoomStatus(roomId: string, statusId: string) {
+    const status = await this.prisma.roomStatus.findUnique({
+        where: { id: statusId },
     });
-  }
+    if (!status || status.roomId !== roomId) {
+        throw new NotFoundException('RoomStatus not found for this room');
+    }
+
+    return this.prisma.roomStatus.delete({
+        where: { id: statusId },
+    });
+}
+
+
 
   async updateUserRoom(userId: string, roomId: string | null) {
     return this.prisma.user.update({
