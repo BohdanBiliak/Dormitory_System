@@ -35,12 +35,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.14.0
- * Query Engine version: 717184b7b35ea05dfa71a3236b7af656013e1e49
+ * Prisma Client JS version: 6.16.2
+ * Query Engine version: 1c57fdcd7e44b29b9313256c76699e91c3ac3c43
  */
 Prisma.prismaVersion = {
-  client: "6.14.0",
-  engine: "717184b7b35ea05dfa71a3236b7af656013e1e49"
+  client: "6.16.2",
+  engine: "1c57fdcd7e44b29b9313256c76699e91c3ac3c43"
 }
 
 Prisma.PrismaClientKnownRequestError = PrismaClientKnownRequestError;
@@ -520,7 +520,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/home/vladyslav/WebstormProjects/Dormitory_System/server/__generated__",
+      "value": "/home/bohdan/work/dormitory_system/server/__generated__",
       "fromEnvVar": null
     },
     "config": {
@@ -538,16 +538,16 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/home/vladyslav/WebstormProjects/Dormitory_System/server/prisma/schema.prisma",
+    "sourceFilePath": "/home/bohdan/work/dormitory_system/server/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": "../.env",
+    "rootEnvPath": null,
     "schemaEnvPath": "../.env"
   },
   "relativePath": "../prisma",
-  "clientVersion": "6.14.0",
-  "engineVersion": "717184b7b35ea05dfa71a3236b7af656013e1e49",
+  "clientVersion": "6.16.2",
+  "engineVersion": "1c57fdcd7e44b29b9313256c76699e91c3ac3c43",
   "datasourceNames": [
     "db"
   ],

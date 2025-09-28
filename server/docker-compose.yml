@@ -4,6 +4,7 @@ services:
     container_name: backend
     ports:
       - 4000:4000
+      - 5555:5555
     env_file:
       - .env
     environment:
@@ -17,7 +18,7 @@ services:
       - backend
 
   db:
-    container_name: postgres
+    container_name: postgres1
     image: postgres:15.2
     restart: always
     environment:

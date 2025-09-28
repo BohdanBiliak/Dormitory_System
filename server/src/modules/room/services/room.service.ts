@@ -15,7 +15,8 @@ import { CreateRoomStatusDto } from "@modules/room/dto/create-room-status.dto";
 import { SetPriceDto } from "@modules/room/dto/set-price.dto";
 import { AuditService } from "@modules/audit/audit.service";
 import { NotificationsService } from "@modules/notifications/notifications.service";
-import { NotificationType } from './../../../../__generated__/index.d';
+import { MailService } from "@libs/mail/mail.service";
+import { EvictUserFromRoomDto } from "../dto/evict-user.dto";
 
 @Injectable()
 export class RoomService {
@@ -23,6 +24,7 @@ export class RoomService {
     private readonly roomRepository: RoomRepository,
     private readonly auditService: AuditService,
     private readonly notificationService: NotificationsService,
+    private readonly emailService: MailService,
   ) {}
 
   async updateRoom(id: string, updateRoomDto: UpdateRoomDto, userId: string): Promise<RoomWithRelations> {
@@ -329,11 +331,11 @@ export class RoomService {
     return updatedUser;
   }
 
-async evictUserFromRoom(roomId: string, userId: string) {
+async evictUserFromRoom(roomId: string, dto: EvictUserFromRoomDto) {
     const room = await this.roomRepository.findById(roomId);
     if (!room) throw new NotFoundException("Room not found");
 
-    const user = await this.roomRepository.findUserById(userId);
+    const user = await this.roomRepository.findUserById(dto.userId);
     if (!user) throw new NotFoundException("User not found");
 
     // Check if user is actually in the specified room
@@ -342,15 +344,15 @@ async evictUserFromRoom(roomId: string, userId: string) {
     }
 
     // Remove user from room (set roomId to null)
-    const updatedUser = await this.roomRepository.updateUserRoom(userId, null);
+    const updatedUser = await this.roomRepository.updateUserRoom(dto.userId, null);
 
     // End any active room statuses for this user
-    await this.roomRepository.endUserRoomStatuses(userId, roomId);
+    await this.roomRepository.endUserRoomStatuses(dto.userId, roomId);
 
     // Send notification to the evicted user
     try {
         await this.notificationService.createNotification({
-            toUserId: userId,
+            toUserId: dto.userId,
             type: $Enums.NotificationType.ACCOMMODATION_CHANGE_REJECTED,
             title: 'Room Assignment Changed',
             message: `You have been removed from room ${room.number}`,
@@ -362,10 +364,10 @@ async evictUserFromRoom(roomId: string, userId: string) {
     }
 
     await this.auditService.log({
-        userId,
+        userId: dto.userId,
         action: 'EVICT_USER_FROM_ROOM',
         entity: 'User',
-        entityId: userId,
+        entityId: dto.userId,
         meta: {
             roomId,
             previousRoomId: user.roomId,
@@ -373,6 +375,15 @@ async evictUserFromRoom(roomId: string, userId: string) {
             dormitoryId: room.dormitoryId
         },
     });
+    if(dto.description){
+      this.emailService.sendEvictionEmail(user.email, `You have been evicted from room ${room.number} in ${room.dormitory?.name || 'the dormitory'} because ${dto.description}. Please contact administration for more details.`)
+    }else{
+      this.emailService.sendEvictionEmail(user.email, `You have been evicted from room ${room.number} in ${room.dormitory?.name || 'the dormitory'}. Please contact administration for more details.`)
+    }
+
+    
+
+
 
     return updatedUser;
 }

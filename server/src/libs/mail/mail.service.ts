@@ -9,6 +9,7 @@ import {BookingNotificationTemplate} from "@/libs/mail/templates/booking-notific
 import { PaymentReminderTemplate} from "@/libs/mail/templates/payment-reminder";
 import {TwoFactorAuthTemplate} from "@/libs/mail/templates/two-factor-auth.template";
 import {AnnouncementTemplate} from "@/libs/mail/templates/announcement-template";
+import { EvictionTemplate } from "./templates/eviction-template";
 
 @Injectable()
 export class MailService {
@@ -26,6 +27,17 @@ export class MailService {
       })
     );
     return this.sendMail(email, 'Email Verification', html);
+  }
+
+  public async sendEvictionEmail(email: string, description?: string) {
+    const domain = this.configService.getOrThrow<string>("ALLOWED_ORIGIN");
+    const html = await render(
+      EvictionTemplate({
+        domain,
+        description,
+      })
+    );
+    return this.sendMail(email, 'Room Eviction Notice', html);
   }
   public async sendPasswordResetEmail(email: string, token: string) {
     const domain = this.configService.getOrThrow<string>("ALLOWED_ORIGIN");

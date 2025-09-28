@@ -13,6 +13,7 @@ import {AssignUserToRoomDto} from "@/modules/room/dto/assign-user.dto";
 import {SetPriceDto} from "@modules/room/dto/set-price.dto";
 import {UpdateRoomDto} from "@modules/room/dto/update-room.dto";
 import UserRole = $Enums.UserRole;
+import { EvictUserFromRoomDto } from "../dto/evict-user.dto";
 
 @ApiTags("Rooms")
 @ApiBearerAuth()
@@ -606,13 +607,14 @@ export class RoomController {
   example: '123e4567-e89b-12d3-a456-426614174000'
 })
 @ApiBody({ 
-  type: AssignUserToRoomDto, // Reusing the DTO since it has the same structure
+  type: EvictUserFromRoomDto, // Reusing the DTO since it has the same structure
   description: 'User eviction details',
   examples: {
     example1: {
       summary: 'Evict user from room',
       value: {
-        userId: '123e4567-e89b-12d3-a456-426614174001'
+        userId: '123e4567-e89b-12d3-a456-426614174001',
+        description: 'Violation of dormitory rules'
       }
     }
   }
@@ -666,9 +668,9 @@ export class RoomController {
 })
 async evictUser(
     @Param("id") roomId: string,
-    @Body() dto: AssignUserToRoomDto,
+    @Body() dto: EvictUserFromRoomDto,
 ) {
-  return this.roomService.evictUserFromRoom(roomId, dto.userId);
+  return this.roomService.evictUserFromRoom(roomId, dto);
 }
 
 
@@ -682,7 +684,7 @@ async evictUser(
   })
   @ApiBody({ 
     type: SetPriceDto,
-    examples: {
+    examples: { 
       example1: {
         value: {
           roomCapacity: 2,
