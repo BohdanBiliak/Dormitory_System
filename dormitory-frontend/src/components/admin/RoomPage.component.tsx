@@ -80,11 +80,11 @@ export function RoomPage({roomId}: RoomPageProps) {
             [editingField]: true,
         })
 
-        if(isEditing.statuses){
+        if(editingField==="statuses"){
             setShowStatusesDialog(true)
         }
 
-        if(isEditing.photos){
+        if(editingField==="photos"){
             setShowPhotosDialog(true)
         }
     }

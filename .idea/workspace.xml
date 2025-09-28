@@ -5,14 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a2609a67-42b3-4399-bbcc-46f7339b9fb9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/ui/CalendarOfAvailability2WVer.component.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/lib/rooms.api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/lib/rooms.api.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/AdminAllRooms.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/AdminAllRooms.component.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/RoomPage.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/RoomPage.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/ui/CalendarOfAvailability.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/ui/CalendarOfAvailability.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/hooks/rooms.hook.ts" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/hooks/rooms.hook.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/types/rooms.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/types/rooms.types.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -170,7 +165,9 @@
       <workItem from="1758785050207" duration="7585000" />
       <workItem from="1758862018537" duration="5532000" />
       <workItem from="1758947196461" duration="18731000" />
-      <workItem from="1758975713050" duration="2869000" />
+      <workItem from="1758975713050" duration="3221000" />
+      <workItem from="1759053406591" duration="3903000" />
+      <workItem from="1759073830438" duration="3881000" />
     </task>
     <servers />
   </component>

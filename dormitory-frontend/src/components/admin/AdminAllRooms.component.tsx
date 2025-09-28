@@ -36,14 +36,14 @@ export default function AllRoomsPage() {
     useEffect(() => {
         if(dormitories && dormitories?.data){
             setDormitoriesList(dormitories.data)
-            if(dormitoriesList.length > 0){
-                setCurrentDormitory(dormitoriesList[0])
-                console.log(currentDormitory)
-            }else{
-                setCurrentDormitory(null)
-            }
         }
     }, [dormitories]);
+
+    useEffect(() => {
+        if(dormitoriesList.length > 0){
+            setCurrentDormitory(dormitoriesList[0])
+        }
+    }, [dormitoriesList]);
 
     useEffect(() => {
         if(rooms){
@@ -55,13 +55,16 @@ export default function AllRoomsPage() {
         if(currentDormitory){
             setFloorList(generateFloorsForDormitory(currentDormitory?.id, roomList))
         }
+    }, [currentDormitory, roomList]);
 
+    useEffect(() => {
         if(floorList && floorList.length > 0){
             setCurrentFloor(floorList[0])
+            console.log("Floor set")
         }else{
             setCurrentFloor(null)
         }
-    }, [currentDormitory]);
+    }, [floorList]);
 
     useEffect(() => {
         if(currentDormitory?.id && currentFloor !== null) {
@@ -121,6 +124,7 @@ export default function AllRoomsPage() {
         if(filters.dateFrom !== '' && filters.dateTo !== ''){
             const request:AvailableRoomsRequest = {to: filters.dateTo, from: filters.dateFrom}
             setAvailableRoomRequest(request)
+            console.log("Available rooms:")
         }
     }, [filters.dateFrom, filters.dateTo]);
 
@@ -130,7 +134,6 @@ export default function AllRoomsPage() {
         if(availableRooms && availableRooms.length > 0) {
             const ids = availableRooms.map(room => room.id)
             setAvailableRoomsIds(ids)
-
         }
     }, [availableRooms]);
 
@@ -143,7 +146,8 @@ export default function AllRoomsPage() {
     const getRoomColor = (room: Room) => {
         const hasResidents = room.residents.length > 0;
         const isAvailable = room.residents.length < room.capacity;
-        
+
+        if (!meetsSearchRequirements(room)) return 'bg-gray-400'
         if (!hasResidents) return 'bg-green-500'; // Available
         if (hasResidents && isAvailable) return 'bg-blue-500'; // Partially occupied
         if (room.residents.length >= room.capacity || !availableRoomsIds.includes(room.id)) return 'bg-red-500'; // Full
@@ -152,8 +156,11 @@ export default function AllRoomsPage() {
 
 
     const meetsSearchRequirements = (room: Room) => {
-        // Mock logic for meeting search requirements
-        return room.residents.length < room.capacity;
+        const availableSpace = room.capacity - room.residents.length;
+
+        //const roomatesReq = filters.roommates==="none" ? room.residents.length===0 : true
+
+        return !availableRoomsIds.includes(room.id) || filters.groupSize<=availableSpace;
     };
 
     const handleFilterChange = (key: keyof Filters, value: any) => {
@@ -275,6 +282,7 @@ export default function AllRoomsPage() {
                                         <input
                                             type="date"
                                             value={filters.dateTo}
+                                            min={filters.dateFrom}
                                             onChange={(e) => handleFilterChange('dateTo', e.target.value)}
                                             className="text-sm border-none bg-white rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 flex-1 sm:flex-none"
                                         />
@@ -457,9 +465,13 @@ export default function AllRoomsPage() {
                                             <h3 className="text-lg font-semibold text-slate-900">
                                                 Room {selectedRoom.number}:
                                             </h3>
-                                            {meetsSearchRequirements(selectedRoom) && (
+                                            {meetsSearchRequirements(selectedRoom) ? (
                                                 <span className="inline-block text-xs text-green-600 bg-green-100 px-2 py-1 rounded-full">
                                                     Room meets the search requirements
+                                                </span>
+                                            ):(
+                                                <span className="inline-block text-xs text-red-600 bg-red-100 px-2 py-1 rounded-full">
+                                                    Room doesn't meet the search requirements
                                                 </span>
                                             )}
                                             <Link
