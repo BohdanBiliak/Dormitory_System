@@ -1,23 +1,23 @@
 'use client'
 
-import {useGetRoom, useUpdateRoom} from "@/hooks/rooms.hook";
-import React, {useEffect, useState} from "react";
-import {CreateRoomStatusRequest, RoomStatus, UpdateRoomData} from "@/types/rooms.types";
-import {CalendarOfAvailabilityComponent} from "@/components/ui/CalendarOfAvailability.component";
-import {ChevronLeft, ChevronRight, Edit3, Users, DollarSign, Camera, Settings, AlertTriangle, X, Check} from "lucide-react";
+import { useGetRoom, useUpdateRoom } from "@/hooks/rooms.hook";
+import React, { useEffect, useState } from "react";
+import { CreateRoomStatusRequest, RoomStatus, UpdateRoomData } from "@/types/rooms.types";
+import { CalendarOfAvailabilityComponent } from "@/components/ui/CalendarOfAvailability.component";
+import { ChevronLeft, ChevronRight, Edit3, Users, DollarSign, Camera, Settings, AlertTriangle, X, Check } from "lucide-react";
 import Link from "next/link";
-import {Description, Dialog, DialogBackdrop, DialogPanel, DialogTitle} from "@headlessui/react";
+import { Description, Dialog, DialogBackdrop, DialogPanel, DialogTitle } from "@headlessui/react";
 
 interface RoomPageProps {
     roomId: string
 }
 
-export function RoomPage({roomId}: RoomPageProps) {
-    const {updateRoom, postRoomStatus, removeRoomStatus} = useUpdateRoom();
+export function RoomPage({ roomId }: RoomPageProps) {
+    const { updateRoom, postRoomStatus, removeRoomStatus } = useUpdateRoom();
 
-    {/*Initial values*/}
+    {/*Initial values*/ }
 
-    const {data: room, isLoading, error} = useGetRoom(roomId)
+    const { data: room, isLoading, error } = useGetRoom(roomId)
     const [isEditing, setIsEditing] = useState<{
         name: boolean,
         capacity: boolean,
@@ -63,9 +63,9 @@ export function RoomPage({roomId}: RoomPageProps) {
         roomEquipment: []
     })
 
-    {/*Fields update*/}
+    {/*Fields update*/ }
 
-    const handleEditField = (event:React.MouseEvent<HTMLButtonElement>) => {
+    const handleEditField = (event: React.MouseEvent<HTMLButtonElement>) => {
         const editingField = event.currentTarget.name;
 
         setIsEditing({
@@ -80,25 +80,25 @@ export function RoomPage({roomId}: RoomPageProps) {
             [editingField]: true,
         })
 
-        if(editingField==="statuses"){
+        if (editingField === "statuses") {
             setShowStatusesDialog(true)
         }
 
-        if(editingField==="photos"){
+        if (editingField === "photos") {
             setShowPhotosDialog(true)
         }
     }
 
-    const handleFieldChange = (event:React.ChangeEvent<HTMLInputElement>) => {
-        const {name, value} = event.target;
+    const handleFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = event.target;
 
         setRoomInfo(prevState => {
-            if(!prevState) return prevState;
-            return {...prevState, [name]: value}
+            if (!prevState) return prevState;
+            return { ...prevState, [name]: value }
         })
     }
 
-    {/*Rooms CRUD Logic*/}
+    {/*Rooms CRUD Logic*/ }
 
     const handleRoomUpdate = () => {
         const dataToUpdate: UpdateRoomData = {
@@ -108,7 +108,7 @@ export function RoomPage({roomId}: RoomPageProps) {
         }
 
         if (room) {
-            updateRoom({id: room?.id, data: dataToUpdate})
+            updateRoom({ id: room?.id, data: dataToUpdate })
         }
 
         setIsEditing({
@@ -124,7 +124,7 @@ export function RoomPage({roomId}: RoomPageProps) {
     }
 
     const handleCancelRoomUpdate = () => {
-        if(room){
+        if (room) {
             setRoomInfo({
                 name: room?.number || "",
                 capacity: room?.capacity || 0,
@@ -149,35 +149,35 @@ export function RoomPage({roomId}: RoomPageProps) {
         })
     }
 
-    const handleEquipmentChange = (event:React.ChangeEvent<HTMLInputElement>) => {
-        const {name, value} = event.target;
-        const indexToUpdate = name.substring(name.lastIndexOf("-")+1);
+    const handleEquipmentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = event.target;
+        const indexToUpdate = name.substring(name.lastIndexOf("-") + 1);
         console.log(indexToUpdate)
 
         const newRoomEquipment: string[] = []
 
         roomInfo.roomEquipment.map((item, index) => {
-            if(indexToUpdate === index.toString()){
+            if (indexToUpdate === index.toString()) {
                 newRoomEquipment.push(value)
 
-            }else{
+            } else {
                 newRoomEquipment.push(item)
             }
         })
 
         setRoomInfo(
             prevState => {
-                if(!prevState) return prevState;
-                return {...prevState, roomEquipment: newRoomEquipment}
+                if (!prevState) return prevState;
+                return { ...prevState, roomEquipment: newRoomEquipment }
             }
         )
     }
 
-    const handleEvictResidents = (event:React.MouseEvent<HTMLButtonElement>) => {
-        const {value} = event.currentTarget;
+    const handleEvictResidents = (event: React.MouseEvent<HTMLButtonElement>) => {
+        const { value } = event.currentTarget;
 
         roomInfo.residents.map((resident, index) => {
-            if(index.toString() === value){
+            if (index.toString() === value) {
                 setUserToEvict(resident)
                 setShowEvictionConfirmation(true)
             }
@@ -186,10 +186,10 @@ export function RoomPage({roomId}: RoomPageProps) {
     }
 
 
-    {/*room update use effect*/}
+    {/*room update use effect*/ }
 
     useEffect(() => {
-        if(room){
+        if (room) {
             setRoomInfo({
                 name: room?.number || "",
                 capacity: room?.capacity || 0,
@@ -198,7 +198,7 @@ export function RoomPage({roomId}: RoomPageProps) {
                 pricePerMonth: room?.price.pricePerMonth || 0,
                 statuses: room?.statuses || [],
                 //photos: room?.photos || [],
-                photos: ["https://dormitoryfiles-bucket.s3.eu-north-1.amazonaws.com/dormitories/74713efb-5a5e-48f7-8f65-81e60d8f1fd6-Dr_dorm.jpg","https://dormitoryfiles-bucket.s3.eu-north-1.amazonaws.com/dormitories/74713efb-5a5e-48f7-8f65-81e60d8f1fd6-Dr_dorm.jpg"],
+                photos: ["https://dormitoryfiles-bucket.s3.eu-north-1.amazonaws.com/dormitories/74713efb-5a5e-48f7-8f65-81e60d8f1fd6-Dr_dorm.jpg", "https://dormitoryfiles-bucket.s3.eu-north-1.amazonaws.com/dormitories/74713efb-5a5e-48f7-8f65-81e60d8f1fd6-Dr_dorm.jpg"],
                 roomEquipment: room?.roomEquipment || [],
             })
         }
@@ -216,20 +216,20 @@ export function RoomPage({roomId}: RoomPageProps) {
             roomEquipment: false,
         })
 
-    },[room])
+    }, [room])
 
-    {/*Photo logic*/}
+    {/*Photo logic*/ }
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const goToPrevious = () => {
-        setCurrentIndex(prev => (prev === 0 && roomInfo?.photos && roomInfo.photos? roomInfo.photos.length - 1 : prev - 1));
+        setCurrentIndex(prev => (prev === 0 && roomInfo?.photos && roomInfo.photos ? roomInfo.photos.length - 1 : prev - 1));
     };
 
     const goToNext = () => {
-        setCurrentIndex(prev => (roomInfo?.photos && prev === roomInfo.photos.length - 1? 0 : prev + 1));
+        setCurrentIndex(prev => (roomInfo?.photos && prev === roomInfo.photos.length - 1 ? 0 : prev + 1));
     };
 
-    {/*Eviction confirmation(1st) dialog logic*/}
+    {/*Eviction confirmation(1st) dialog logic*/ }
 
     const [showEvictionConfirmation, setShowEvictionConfirmation] = useState(false)
     const [userToEvict, setUserToEvict] = useState({
@@ -248,7 +248,7 @@ export function RoomPage({roomId}: RoomPageProps) {
         setShowEvictionMenu(true)
     }
 
-    {/*Eviction menu(2nd) dialog logic*/}
+    {/*Eviction menu(2nd) dialog logic*/ }
 
     const [showEvictionMenu, setShowEvictionMenu] = useState(false)
     const [evictionInformation, setEvictionInformation] = useState({
@@ -265,51 +265,51 @@ export function RoomPage({roomId}: RoomPageProps) {
     }
 
     const handleEvictionInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const {name, value} = event.target;
+        const { name, value } = event.target;
 
         setEvictionInformation(prev => {
-            if(!prev) return prev;
-            return{...prev, [name]:value}
+            if (!prev) return prev;
+            return { ...prev, [name]: value }
         })
     }
 
     //Room statuses dialog
-    const[dateStatuses, setDateStatuses] = useState<RoomStatus[]>([]);
-    const[showStatusesDialog, setShowStatusesDialog] = useState(false)
+    const [dateStatuses, setDateStatuses] = useState<RoomStatus[]>([]);
+    const [showStatusesDialog, setShowStatusesDialog] = useState(false)
 
     const closeStatusesDialog = () => {
         setShowStatusesDialog(false)
     }
 
-    const handleDeleteStatus = (event:React.MouseEvent<HTMLButtonElement>) => {
-        const {value} = event.currentTarget;
+    const handleDeleteStatus = (event: React.MouseEvent<HTMLButtonElement>) => {
+        const { value } = event.currentTarget;
 
-        if(room){
-            removeRoomStatus({roomId: room.id, statusId: value})
+        if (room) {
+            removeRoomStatus({ roomId: room.id, statusId: value })
         }
     }
 
     //Post room status
-    const [newStatusData,setNewStatusData] = useState<CreateRoomStatusRequest>({
+    const [newStatusData, setNewStatusData] = useState<CreateRoomStatusRequest>({
         dateOfStart: '',
         dateOfEnd: '',
         description: '',
     });
 
     const onNewStatusDataChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const {name, value} = event.target;
+        const { name, value } = event.target;
 
-        if(name==='dateOfStart' || name==='dateOfEnd' || name==='description') {
+        if (name === 'dateOfStart' || name === 'dateOfEnd' || name === 'description') {
             setNewStatusData(prevState => {
                 if (!prevState) return prevState;
-                return {...prevState, [name]: value}
+                return { ...prevState, [name]: value }
             })
         }
     }
 
     const handlePostStatus = () => {
-        if(room && newStatusData && newStatusData.dateOfStart !== '' && newStatusData.dateOfEnd !== '' && newStatusData.description !== '') {
-          postRoomStatus({roomId: room.id, statusData: newStatusData})
+        if (room && newStatusData && newStatusData.dateOfStart !== '' && newStatusData.dateOfEnd !== '' && newStatusData.description !== '') {
+            postRoomStatus({ roomId: room.id, statusData: newStatusData })
         }
     }
 
@@ -329,7 +329,7 @@ export function RoomPage({roomId}: RoomPageProps) {
     }
 
 
-    if(isLoading){
+    if (isLoading) {
         return (
             <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100">
                 <div className="bg-white shadow-xl rounded-2xl p-8 max-w-md mx-4 border border-slate-200 animate-pulse">
@@ -373,14 +373,14 @@ export function RoomPage({roomId}: RoomPageProps) {
                         <div className="flex items-center space-x-3 animate-in fade-in-0 slide-in-from-right-4 duration-500">
                             {hasChanges && (
                                 <div className="flex items-center space-x-3 animate-in slide-in-from-right-2 fade-in-0 duration-300">
-                                    <button 
+                                    <button
                                         onClick={handleRoomUpdate}
                                         className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 hover:scale-105 active:scale-95 transform hover:shadow-lg"
                                     >
                                         <Check className="w-4 h-4 mr-2 transition-transform duration-200 group-hover:rotate-12" />
                                         Save Changes
                                     </button>
-                                    <button 
+                                    <button
                                         onClick={handleCancelRoomUpdate}
                                         className="inline-flex items-center px-4 py-2 bg-slate-200 text-slate-700 text-sm font-medium rounded-lg hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transition-all duration-200 hover:scale-105 active:scale-95 transform"
                                     >
@@ -397,10 +397,10 @@ export function RoomPage({roomId}: RoomPageProps) {
             {/* Main Content */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    
+
                     {/* Left Column - Room Details */}
                     <div className="lg:col-span-2 space-y-6">
-                        
+
                         {/* Basic Information Card */}
                         <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden animate-in fade-in-0 slide-in-from-bottom-4 duration-500 hover:shadow-md transition-all">
                             <div className="px-6 py-4 bg-slate-50 border-b border-slate-200">
@@ -414,8 +414,8 @@ export function RoomPage({roomId}: RoomPageProps) {
                                 <div className="group animate-in fade-in-0 slide-in-from-left-2 duration-300 delay-100">
                                     <div className="flex items-center justify-between mb-2">
                                         <label className="text-sm font-medium text-slate-700">Room Number</label>
-                                        <button 
-                                            name="name" 
+                                        <button
+                                            name="name"
                                             onClick={handleEditField}
                                             className="p-1 text-slate-400 hover:text-blue-600 transition-all duration-200 hover:scale-110 active:scale-95"
                                         >
@@ -428,11 +428,10 @@ export function RoomPage({roomId}: RoomPageProps) {
                                         disabled={!isEditing.name}
                                         onChange={handleFieldChange}
                                         name="name"
-                                        className={`w-full px-3 py-2 border rounded-lg text-sm font-medium transition-all duration-300 ${
-                                            isEditing.name 
-                                                ? 'border-blue-500 ring-2 ring-blue-100 bg-white animate-pulse' 
-                                                : 'border-slate-200 bg-slate-50'
-                                        } focus:outline-none focus:ring-2 focus:ring-blue-500 hover:shadow-sm`}
+                                        className={`w-full px-3 py-2 border rounded-lg text-sm font-medium transition-all duration-300 ${isEditing.name
+                                            ? 'border-blue-500 ring-2 ring-blue-100 bg-white animate-pulse'
+                                            : 'border-slate-200 bg-slate-50'
+                                            } focus:outline-none focus:ring-2 focus:ring-blue-500 hover:shadow-sm`}
                                     />
                                 </div>
 
@@ -442,8 +441,8 @@ export function RoomPage({roomId}: RoomPageProps) {
                                         <label className="text-sm font-medium text-slate-700">
                                             Room Capacity ({roomInfo.residents.length} / {roomInfo.capacity})
                                         </label>
-                                        <button 
-                                            name="capacity" 
+                                        <button
+                                            name="capacity"
                                             onClick={handleEditField}
                                             className="p-1 text-slate-400 hover:text-blue-600 transition-all duration-200 hover:scale-110 active:scale-95"
                                         >
@@ -456,11 +455,10 @@ export function RoomPage({roomId}: RoomPageProps) {
                                         disabled={!isEditing.capacity}
                                         onChange={handleFieldChange}
                                         name="capacity"
-                                        className={`w-full px-3 py-2 border rounded-lg text-sm font-medium transition-all duration-300 ${
-                                            isEditing.capacity 
-                                                ? 'border-blue-500 ring-2 ring-blue-100 bg-white animate-pulse' 
-                                                : 'border-slate-200 bg-slate-50'
-                                        } focus:outline-none focus:ring-2 focus:ring-blue-500 hover:shadow-sm`}
+                                        className={`w-full px-3 py-2 border rounded-lg text-sm font-medium transition-all duration-300 ${isEditing.capacity
+                                            ? 'border-blue-500 ring-2 ring-blue-100 bg-white animate-pulse'
+                                            : 'border-slate-200 bg-slate-50'
+                                            } focus:outline-none focus:ring-2 focus:ring-blue-500 hover:shadow-sm`}
                                     />
                                 </div>
 
@@ -469,8 +467,8 @@ export function RoomPage({roomId}: RoomPageProps) {
                                     <div className="group">
                                         <div className="flex items-center justify-between mb-2">
                                             <label className="text-sm font-medium text-slate-700">Price per Day</label>
-                                            <button 
-                                                name="pricePerDay" 
+                                            <button
+                                                name="pricePerDay"
                                                 onClick={handleEditField}
                                                 className="p-1 text-slate-400 hover:text-blue-600 transition-all duration-200 hover:scale-110 active:scale-95"
                                             >
@@ -485,19 +483,18 @@ export function RoomPage({roomId}: RoomPageProps) {
                                                 disabled={!isEditing.pricePerDay}
                                                 onChange={handleFieldChange}
                                                 name="pricePerDay"
-                                                className={`w-full pl-10 pr-3 py-2 border rounded-lg text-sm font-medium transition-all duration-300 ${
-                                                    isEditing.pricePerDay 
-                                                        ? 'border-blue-500 ring-2 ring-blue-100 bg-white animate-pulse' 
-                                                        : 'border-slate-200 bg-slate-50'
-                                                } focus:outline-none focus:ring-2 focus:ring-blue-500 hover:shadow-sm`}
+                                                className={`w-full pl-10 pr-3 py-2 border rounded-lg text-sm font-medium transition-all duration-300 ${isEditing.pricePerDay
+                                                    ? 'border-blue-500 ring-2 ring-blue-100 bg-white animate-pulse'
+                                                    : 'border-slate-200 bg-slate-50'
+                                                    } focus:outline-none focus:ring-2 focus:ring-blue-500 hover:shadow-sm`}
                                             />
                                         </div>
                                     </div>
                                     <div className="group">
                                         <div className="flex items-center justify-between mb-2">
                                             <label className="text-sm font-medium text-slate-700">Price per Month</label>
-                                            <button 
-                                                name="pricePerMonth" 
+                                            <button
+                                                name="pricePerMonth"
                                                 onClick={handleEditField}
                                                 className="p-1 text-slate-400 hover:text-blue-600 transition-all duration-200 hover:scale-110 active:scale-95"
                                             >
@@ -512,11 +509,10 @@ export function RoomPage({roomId}: RoomPageProps) {
                                                 disabled={!isEditing.pricePerMonth}
                                                 onChange={handleFieldChange}
                                                 name="pricePerMonth"
-                                                className={`w-full pl-10 pr-3 py-2 border rounded-lg text-sm font-medium transition-all duration-300 ${
-                                                    isEditing.pricePerMonth 
-                                                        ? 'border-blue-500 ring-2 ring-blue-100 bg-white animate-pulse' 
-                                                        : 'border-slate-200 bg-slate-50'
-                                                } focus:outline-none focus:ring-2 focus:ring-blue-500 hover:shadow-sm`}
+                                                className={`w-full pl-10 pr-3 py-2 border rounded-lg text-sm font-medium transition-all duration-300 ${isEditing.pricePerMonth
+                                                    ? 'border-blue-500 ring-2 ring-blue-100 bg-white animate-pulse'
+                                                    : 'border-slate-200 bg-slate-50'
+                                                    } focus:outline-none focus:ring-2 focus:ring-blue-500 hover:shadow-sm`}
                                             />
                                         </div>
                                     </div>
@@ -536,11 +532,11 @@ export function RoomPage({roomId}: RoomPageProps) {
                                 {roomInfo.residents.length > 0 ? (
                                     <div className="space-y-3">
                                         {roomInfo.residents.map((resident, index) => (
-                                            <div key={index} 
+                                            <div key={index}
                                                 className="flex items-center justify-between p-4 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 transition-all hover:scale-[1.02] hover:shadow-sm animate-in fade-in-0 slide-in-from-left-2 duration-300"
                                                 style={{ animationDelay: `${index * 50}ms` }}
                                             >
-                                                <Link 
+                                                <Link
                                                     href={`/admin/users/${resident.id}`}
                                                     className="flex-1 hover:text-blue-600 transition-colors duration-200"
                                                 >
@@ -549,9 +545,9 @@ export function RoomPage({roomId}: RoomPageProps) {
                                                     </div>
                                                     <div className="text-sm text-slate-500">{resident.email}</div>
                                                 </Link>
-                                                <button 
+                                                <button
                                                     className="ml-4 px-3 py-1 bg-red-100 text-red-700 text-sm font-medium rounded-md hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200 hover:scale-105 active:scale-95 hover:shadow-md"
-                                                    value={index.toString()} 
+                                                    value={index.toString()}
                                                     onClick={handleEvictResidents}
                                                 >
                                                     Evict
@@ -576,8 +572,8 @@ export function RoomPage({roomId}: RoomPageProps) {
                                         <Settings className="w-5 h-5 mr-2 text-blue-600 animate-in spin-in-180 duration-700 delay-400" />
                                         Room Equipment
                                     </h2>
-                                    <button 
-                                        name="roomEquipment" 
+                                    <button
+                                        name="roomEquipment"
                                         onClick={handleEditField}
                                         className="p-1 text-slate-400 hover:text-blue-600 transition-all duration-200 hover:scale-110 active:scale-95"
                                     >
@@ -589,7 +585,7 @@ export function RoomPage({roomId}: RoomPageProps) {
                                 {roomInfo.roomEquipment && roomInfo.roomEquipment.length > 0 ? (
                                     <div className="space-y-3">
                                         {roomInfo.roomEquipment.map((_, index) => (
-                                            <div key={index} 
+                                            <div key={index}
                                                 className="relative animate-in fade-in-0 slide-in-from-left-2 duration-300"
                                                 style={{ animationDelay: `${index * 50}ms` }}
                                             >
@@ -599,11 +595,10 @@ export function RoomPage({roomId}: RoomPageProps) {
                                                     onChange={handleEquipmentChange}
                                                     value={roomInfo.roomEquipment[index]}
                                                     disabled={!isEditing.roomEquipment}
-                                                    className={`w-full px-3 py-2 border rounded-lg text-sm transition-all duration-300 hover:shadow-sm ${
-                                                        isEditing.roomEquipment 
-                                                            ? 'border-blue-500 ring-2 ring-blue-100 bg-white animate-pulse' 
-                                                            : 'border-slate-200 bg-slate-50'
-                                                    } focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                                                    className={`w-full px-3 py-2 border rounded-lg text-sm transition-all duration-300 hover:shadow-sm ${isEditing.roomEquipment
+                                                        ? 'border-blue-500 ring-2 ring-blue-100 bg-white animate-pulse'
+                                                        : 'border-slate-200 bg-slate-50'
+                                                        } focus:outline-none focus:ring-2 focus:ring-blue-500`}
                                                     placeholder={`Equipment item ${index + 1}`}
                                                 />
                                             </div>
@@ -631,7 +626,7 @@ export function RoomPage({roomId}: RoomPageProps) {
                                 </button>
                             </div>
                             <div className="p-6 animate-in fade-in-0 zoom-in-95 duration-500 delay-600">
-                                <CalendarOfAvailabilityComponent statuses={roomInfo.statuses} showLegend={true}/>
+                                <CalendarOfAvailabilityComponent statuses={roomInfo.statuses} showLegend={true} />
                             </div>
                         </div>
                     </div>
@@ -645,8 +640,8 @@ export function RoomPage({roomId}: RoomPageProps) {
                                         <Camera className="w-5 h-5 mr-2 text-blue-600 animate-in spin-in-180 duration-700 delay-500" />
                                         Photos
                                     </h2>
-                                    <button 
-                                        name="photos" 
+                                    <button
+                                        name="photos"
                                         className="p-1 text-slate-400 hover:text-blue-600 transition-all duration-200 hover:scale-110 active:scale-95"
                                         onClick={handleEditField}
                                     >
@@ -696,11 +691,10 @@ export function RoomPage({roomId}: RoomPageProps) {
                                                     <button
                                                         key={index}
                                                         onClick={() => setCurrentIndex(index)}
-                                                        className={`w-2 h-2 rounded-full transition-all duration-300 hover:scale-125 ${
-                                                            index === currentIndex
-                                                                ? 'bg-blue-600 scale-110'
-                                                                : 'bg-slate-300 hover:bg-slate-400'
-                                                        }`}
+                                                        className={`w-2 h-2 rounded-full transition-all duration-300 hover:scale-125 ${index === currentIndex
+                                                            ? 'bg-blue-600 scale-110'
+                                                            : 'bg-slate-300 hover:bg-slate-400'
+                                                            }`}
                                                     />
                                                 ))}
                                             </div>
@@ -734,13 +728,13 @@ export function RoomPage({roomId}: RoomPageProps) {
                                 Are you sure you want to evict <strong>{userToEvict.displayName} {userToEvict.secondName}</strong> from room <strong>{roomInfo.name}</strong>?
                             </Description>
                             <div className="flex space-x-3 animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-300">
-                                <button 
+                                <button
                                     className="flex-1 bg-red-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200 hover:scale-105 active:scale-95 hover:shadow-lg"
                                     onClick={openEvictionMenu}
                                 >
                                     Yes, Continue
                                 </button>
-                                <button 
+                                <button
                                     className="flex-1 bg-slate-200 text-slate-700 py-2 px-4 rounded-lg font-medium hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transition-all duration-200 hover:scale-105 active:scale-95"
                                     onClick={closeEvictionConfirmation}
                                 >
@@ -798,7 +792,7 @@ export function RoomPage({roomId}: RoomPageProps) {
                         <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex space-x-3 animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-250">
                             <button
                                 className="flex-1 bg-red-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200 hover:scale-105 active:scale-95 hover:shadow-lg"
-                                /* onClick={handleEvict} */
+                            /* onClick={handleEvict} */
                             >
                                 Confirm Eviction
                             </button>
@@ -817,70 +811,104 @@ export function RoomPage({roomId}: RoomPageProps) {
             <Dialog onClose={closeStatusesDialog} open={showStatusesDialog} className="relative z-50">
                 <DialogBackdrop className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-all duration-300" />
                 <div className="fixed inset-0 flex items-center justify-center p-4">
-                    <DialogPanel className="w-full max-w-lg bg-white rounded-2xl shadow-2xl animate-in zoom-in-95 fade-in-0 duration-300 slide-in-from-bottom-4">
-                        <div className="px-6 py-4 bg-red-50 border-b border-red-200 animate-in fade-in-0 slide-in-from-top-2 duration-300">
-                            <DialogTitle className="text-lg font-semibold text-red-900">
+                    <DialogPanel className="w-full max-w-2xl bg-white rounded-2xl shadow-2xl animate-in zoom-in-95 fade-in-0 duration-300 slide-in-from-bottom-4">
+                        <div className="px-6 py-4 bg-blue-50 border-b border-blue-200">
+                            <DialogTitle className="text-lg font-semibold text-blue-900">
                                 Room Statuses
                             </DialogTitle>
-                            <Description className="text-red-700 text-sm mt-1">
-                                This menu allows to modify statuses of the room
+                            <Description className="text-blue-700 text-sm mt-1">
+                                Manage the statuses of the room.
                             </Description>
                         </div>
 
-                        <div className={`flex flex-row space-x-6`}>
-                            <CalendarOfAvailabilityComponent statuses={roomInfo.statuses} showLegend={false} setDateStatuses={setDateStatuses} />
-                            <div className={`flex flex-col space-y-4 bg-gray-400`}>
-                                <p>Number of residents: {roomInfo.residents.length}/{roomInfo.capacity}</p>
-                                <p>???</p>
-                                <div className={`flex flex-col`}>
-                                    <p>Statuses:</p>
-                                    {dateStatuses.length > 0 ? (
-                                        <div className={`flex flex-col`}>
-                                            {dateStatuses.map(status => (
-                                                    <div key={status.id} className={`flex flex-row bg-gray-300`}>
-                                                        <p>{new Date(status.dateOfStart).toLocaleDateString()} - {new Date(status.dateOfEnd).toLocaleDateString()}: {status.description}</p>
-                                                        <button className={`bg-red-500 border-black border px-1`} value={status.id} onClick={handleDeleteStatus}>X</button>
+                        <div className="p-6 space-y-6">
+                            {/* Calendar and Statuses */}
+                            <div className="flex flex-col lg:flex-row space-y-6 lg:space-y-0 lg:space-x-6">
+                                {/* Calendar */}
+                                <div className="flex-1">
+                                    <CalendarOfAvailabilityComponent
+                                        statuses={roomInfo.statuses}
+                                        showLegend={true}
+                                        setDateStatuses={setDateStatuses}
+                                    />
+                                </div>
+
+                                {/* Statuses List */}
+                                <div className="flex-1 space-y-6">
+                                    <div>
+                                        <h3 className="text-sm font-medium text-slate-700 mb-2">Current Statuses</h3>
+                                        {dateStatuses.length > 0 ? (
+                                            <div className="space-y-3">
+                                                {dateStatuses.map((status) => (
+                                                    <div
+                                                        key={status.id}
+                                                        className="flex items-center justify-between p-3 bg-gray-100 rounded-lg border border-gray-200"
+                                                    >
+                                                        <p className="text-sm text-slate-700">
+                                                            {new Date(status.dateOfStart).toLocaleDateString()} -{" "}
+                                                            {new Date(status.dateOfEnd).toLocaleDateString()}: {status.description}
+                                                        </p>
+                                                        <button
+                                                            className="text-red-600 hover:text-red-800 transition-colors"
+                                                            value={status.id}
+                                                            onClick={handleDeleteStatus}
+                                                        >
+                                                            Delete
+                                                        </button>
                                                     </div>
                                                 ))}
-                                        </div>
-                                    ):(<></>)}
-                                </div>
-                            </div>
-                        </div>
+                                            </div>
+                                        ) : (
+                                            <p className="text-sm text-slate-500">No statuses available.</p>
+                                        )}
+                                    </div>
 
-                        <div className={`flex flex-col space-y-4 bg-gray-200`}>
-                            <h2>New announcement details</h2>
-                            <div className={`flex flex-row space-x-4`}>
-                                <p>Description:</p>
-                                <input
-                                    type='text'
-                                    name='description'
-                                    value={newStatusData.description}
-                                    onChange={onNewStatusDataChange}
-                                />
-                            </div>
-                            <div className={`flex flex-row space-x-4`}>
-                                <p>Date of start:</p>
-                                <input
-                                    type='date'
-                                    name='dateOfStart'
-                                    value={newStatusData.dateOfStart}
-                                    onChange={onNewStatusDataChange}
-                                />
-                            </div>
-                            <div className={`flex flex-row space-x-4`}>
-                                <p>Date of end:</p>
-                                <input
-                                    type='date'
-                                    name='dateOfEnd'
-                                    min={newStatusData.dateOfStart}
-                                    value={newStatusData.dateOfEnd}
-                                    onChange={onNewStatusDataChange}
-                                />
-                            </div>
-                            <div className={`flex flex-row space-x-4`}>
-                                <button onClick={handleClearNewStatus}>Cancel</button>
-                                <button onClick={handlePostStatus}>Create Status</button>
+                                    {/* Add New Status */}
+                                    <div>
+                                        <h3 className="text-sm font-medium text-slate-700 mb-2">Add New Status</h3>
+                                        <div className="space-y-4">
+                                            <input
+                                                type="text"
+                                                name="description"
+                                                value={newStatusData.description}
+                                                onChange={onNewStatusDataChange}
+                                                placeholder="Description"
+                                                className="w-full px-3 py-2 border rounded-lg text-sm"
+                                            />
+                                            <div className="flex space-x-4">
+                                                <input
+                                                    type="date"
+                                                    name="dateOfStart"
+                                                    value={newStatusData.dateOfStart}
+                                                    onChange={onNewStatusDataChange}
+                                                    className="w-full px-3 py-2 border rounded-lg text-sm"
+                                                />
+                                                <input
+                                                    type="date"
+                                                    name="dateOfEnd"
+                                                    value={newStatusData.dateOfEnd}
+                                                    onChange={onNewStatusDataChange}
+                                                    min={newStatusData.dateOfStart}
+                                                    className="w-full px-3 py-2 border rounded-lg text-sm"
+                                                />
+                                            </div>
+                                            <div className="flex justify-end space-x-3">
+                                                <button
+                                                    onClick={handleClearNewStatus}
+                                                    className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+                                                >
+                                                    Cancel
+                                                </button>
+                                                <button
+                                                    onClick={handlePostStatus}
+                                                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                                                >
+                                                    Add Status
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </DialogPanel>
@@ -892,88 +920,75 @@ export function RoomPage({roomId}: RoomPageProps) {
                 <DialogBackdrop className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-all duration-300" />
                 <div className="fixed inset-0 flex items-center justify-center p-4">
                     <DialogPanel className="w-full max-w-lg bg-white rounded-2xl shadow-2xl animate-in zoom-in-95 fade-in-0 duration-300 slide-in-from-bottom-4">
-                        <div className="px-6 py-4 bg-red-50 border-b border-red-200 animate-in fade-in-0 slide-in-from-top-2 duration-300">
-                            <DialogTitle className="text-lg font-semibold text-red-900">
+                        <div className="px-6 py-4 bg-blue-50 border-b border-blue-200">
+                            <DialogTitle className="text-lg font-semibold text-blue-900">
                                 Room Photos
                             </DialogTitle>
-                            <Description className="text-red-700 text-sm mt-1">
-                                This menu allows to modify photos of the room
+                            <Description className="text-blue-700 text-sm mt-1">
+                                Manage the photos of the room.
                             </Description>
                         </div>
 
-                        <div className={`flex flex-row space-x-4`}>
-                            <div className={`flex flex-col space-y-4 bg-gray-400`}>
-                                <h2 className="text-lg font-semibold text-slate-900 flex items-center">
-                                    <Camera className="w-5 h-5 mr-2 text-blue-600 animate-in spin-in-180 duration-700 delay-500" />
-                                    Photos
-                                </h2>
-                                <div className="p-6">
-                                    {roomInfo.photos.length > 0 ? (
-                                        <div className="space-y-4">
-                                            <div className="relative aspect-video rounded-lg overflow-hidden bg-slate-100 group">
+                        <div className="p-6 space-y-6">
+                            {/* Photo Viewer */}
+                            {roomInfo.photos.length > 0 ? (
+                                <div className="space-y-4">
+                                    <div className="relative aspect-video rounded-lg overflow-hidden bg-gray-100">
+                                        <img
+                                            src={roomInfo.photos[currentIndex]}
+                                            alt={`Room photo ${currentIndex + 1}`}
+                                            className="w-full h-full object-cover"
+                                        />
+                                        {/* Navigation */}
+                                        {roomInfo.photos.length > 1 && (
+                                            <>
+                                                <button
+                                                    onClick={goToPrevious}
+                                                    className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full"
+                                                >
+                                                    <ChevronLeft size={20} />
+                                                </button>
+                                                <button
+                                                    onClick={goToNext}
+                                                    className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full"
+                                                >
+                                                    <ChevronRight size={20} />
+                                                </button>
+                                            </>
+                                        )}
+                                    </div>
+                                    {/* Thumbnails */}
+                                    <div className="flex space-x-2">
+                                        {roomInfo.photos.map((photo, index) => (
+                                            <button key={index} onClick={() => setCurrentIndex(index)}>
                                                 <img
-                                                    key={currentIndex}
-                                                    src={roomInfo.photos[currentIndex]}
-                                                    alt={`Room photo ${currentIndex + 1}`}
-                                                    className="w-full h-full object-cover transition-all duration-500 ease-out animate-in fade-in-0 zoom-in-95"
+                                                    src={photo}
+                                                    alt={`Thumbnail ${index + 1}`}
+                                                    className={`w-16 h-16 object-cover rounded-lg border ${index === currentIndex ? 'border-blue-500' : 'border-gray-300'
+                                                        }`}
                                                 />
-
-                                                {/* Navigation arrows */}
-                                                {roomInfo.photos.length > 1 && (
-                                                    <>
-                                                        <button
-                                                            onClick={goToPrevious}
-                                                            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-all duration-200 opacity-0 group-hover:opacity-100 hover:scale-110 active:scale-95"
-                                                        >
-                                                            <ChevronLeft size={20} className="transition-transform duration-200 hover:-translate-x-0.5" />
-                                                        </button>
-                                                        <button
-                                                            onClick={goToNext}
-                                                            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-all duration-200 opacity-0 group-hover:opacity-100 hover:scale-110 active:scale-95"
-                                                        >
-                                                            <ChevronRight size={20} className="transition-transform duration-200 hover:translate-x-0.5" />
-                                                        </button>
-                                                    </>
-                                                )}
-
-                                                {/* Image counter */}
-                                                <div className="absolute bottom-2 right-2 bg-black/70 text-white px-2 py-1 rounded text-xs font-medium transition-all duration-200 opacity-0 group-hover:opacity-100">
-                                                    {currentIndex + 1} / {roomInfo.photos.length}
-                                                </div>
-                                            </div>
-
-                                            {/* Dots indicator */}
-                                            {roomInfo.photos.length > 1 && (
-                                                <div className="flex justify-center gap-2 animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-300">
-                                                    {roomInfo.photos.map((_, index) => (
-                                                        <button
-                                                            key={index}
-                                                            onClick={() => setCurrentIndex(index)}
-                                                            className={`w-2 h-2 rounded-full transition-all duration-300 hover:scale-125 ${
-                                                                index === currentIndex
-                                                                    ? 'bg-blue-600 scale-110'
-                                                                    : 'bg-slate-300 hover:bg-slate-400'
-                                                            }`}
-                                                        />
-                                                    ))}
-                                                </div>
-                                            )}
-                                        </div>
-                                    ) : (
-                                        <div className="text-center py-12 animate-in fade-in-0 zoom-in-50 duration-500">
-                                            <Camera className="mx-auto h-12 w-12 text-slate-300 animate-pulse" />
-                                            <p className="mt-2 text-slate-500">No photos available</p>
-                                        </div>
-                                    )}
+                                            </button>
+                                        ))}
+                                    </div>
                                 </div>
-                            </div>
+                            ) : (
+                                <p className="text-sm text-gray-500">No photos available.</p>
+                            )}
 
-                            <div className={`flex flex-col`}>
-                                {roomInfo.photos.map((photo, index) => (
-                                    <button name={`photo`} value={index} key={`photo-${index}`} onClick={() => setCurrentIndex(index)}>
-                                        <img src={photo} alt={`Room photo${index}`} className={`w-120 h-40`}/>
-                                    </button>
-                                ))}
+                            {/* Upload and Delete */}
+                            <div className="space-y-4">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700">Upload New Photo</label>
+                                    <input type="file" className="mt-1 block w-full text-sm text-gray-500" />
+                                </div>
+                                <button
+                                    className="w-full px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                                    onClick={() => {
+                                        // Add delete logic here
+                                    }}
+                                >
+                                    Delete Current Photo
+                                </button>
                             </div>
                         </div>
                     </DialogPanel>
