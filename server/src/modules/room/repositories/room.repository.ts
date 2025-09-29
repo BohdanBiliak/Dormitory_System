@@ -120,71 +120,71 @@ export class RoomRepository {
   }
 
   async findAvailableRooms(dto: AvailableRoomsDto) {
-  // Парсимо дати і підганяємо кінець дня для 'to'
-  const fromDate = new Date(dto.from);
-  const toDate = new Date(dto.to);
-  toDate.setHours(23, 59, 59, 999);
+    // Парсимо дати і підганяємо кінець дня для 'to'
+    const fromDate = new Date(dto.from);
+    const toDate = new Date(dto.to);
+    toDate.setHours(23, 59, 59, 999);
 
-  // Отримуємо всі кімнати (з фільтром по гуртожитку, якщо є)
-  const rooms = await this.prisma.room.findMany({
-    where: {
-      ...(dto.dormitoryId && { dormitoryId: dto.dormitoryId }),
-      statuses: {
-        none: {
-          AND: [
-            { dateOfStart: { lt: toDate } },
-            {
-              OR: [
-                { dateOfEnd: { gt: fromDate } },
-                { dateOfEnd: null }
-              ]
-            }
-          ]
+    // Отримуємо всі кімнати (з фільтром по гуртожитку, якщо є)
+    const rooms = await this.prisma.room.findMany({
+      where: {
+        ...(dto.dormitoryId && { dormitoryId: dto.dormitoryId }),
+        statuses: {
+          none: {
+            AND: [
+              { dateOfStart: { lt: toDate } },
+              {
+                OR: [
+                  { dateOfEnd: { gt: fromDate } },
+                  { dateOfEnd: null }
+                ]
+              }
+            ]
+          }
         }
+      },
+      include: {
+        residents: {
+          select: {
+            id: true,
+            displayName: true,
+            secondName: true,
+            email: true
+          }
+        },
+        dormitory: {
+          select: {
+            id: true,
+            name: true,
+            address: true
+          }
+        },
+        statuses: true
       }
-    },
-    include: {
-      residents: {
-        select: {
-          id: true,
-          displayName: true,
-          secondName: true,
-          email: true
-        }
-      },
-      dormitory: {
-        select: {
-          id: true,
-          name: true,
-          address: true
-        }
-      },
-      statuses: true
-    }
-  });
-
-  const availableRooms = rooms.filter(room => room.residents.length < room.capacity);
-
-  const capacityPriceMap = new Map<string, { pricePerDay: number; pricePerMonth: number }>();
-  const prices = await this.findPrices({ from: fromDate, to: toDate });
-  prices.forEach(price => {
-    capacityPriceMap.set(String(price.roomCapacity), {
-      pricePerDay: price.pricePerDay,
-      pricePerMonth: price.pricePerMonth
     });
-  });
 
-  return Promise.all(
-    availableRooms.map(async room => {
-      const price = capacityPriceMap.get(String(room.capacity)) || await this.findPriceByCapacity(room.capacity);
-      return {
-        ...room,
-        isAvailable: true,
-        price
-      };
-    })
-  );
-}
+    const availableRooms = rooms.filter(room => room.residents.length < room.capacity);
+
+    const capacityPriceMap = new Map<string, { pricePerDay: number; pricePerMonth: number }>();
+    const prices = await this.findPrices({ from: fromDate, to: toDate });
+    prices.forEach(price => {
+      capacityPriceMap.set(String(price.roomCapacity), {
+        pricePerDay: price.pricePerDay,
+        pricePerMonth: price.pricePerMonth
+      });
+    });
+
+    return Promise.all(
+      availableRooms.map(async room => {
+        const price = capacityPriceMap.get(String(room.capacity)) || await this.findPriceByCapacity(room.capacity);
+        return {
+          ...room,
+          isAvailable: true,
+          price
+        };
+      })
+    );
+  }
 
 
 
@@ -278,12 +278,20 @@ export class RoomRepository {
     });
   }
 
+  async updateUserRoom(
+    userId: string,
+    roomId: string | null,
+    data: { startDate?: Date; endDate?: Date } = {},
+  ) {
+    const updatePayload: Prisma.UserUpdateInput = {
+      room: roomId ? { connect: { id: roomId } } : { disconnect: true },
+      ...(data.startDate !== undefined ? { startReservationDate: data.startDate } : {}),
+      ...(data.endDate !== undefined ? { endReservationDate: data.endDate } : {}),
+    };
 
-
-  async updateUserRoom(userId: string, roomId: string | null) {
     return this.prisma.user.update({
       where: { id: userId },
-      data: { roomId }
+      data: updatePayload,
     });
   }
 

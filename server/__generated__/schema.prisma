@@ -172,10 +172,10 @@ model User {
   studentIdFront     String     @map("student_id_front")
   studentIdBack      String?    @map("student_id_back")
   isActive           Boolean    @default(true) @map("is_active")
-
+  reservationDate    DateTime?  @map("reservation_date")
   // Foreign Keys
-  dormitoryId String? @map("dormitory_id")
-  roomId      String? @map("room_id")
+  dormitoryId        String?    @map("dormitory_id")
+  roomId             String?    @map("room_id")
 
   // Relations
   confirmations             Confirmation[]          @relation("UserConfirmations")

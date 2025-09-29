@@ -25,7 +25,7 @@ export class RoomService {
     private readonly auditService: AuditService,
     private readonly notificationService: NotificationsService,
     private readonly emailService: MailService,
-  ) {}
+  ) { }
 
   async updateRoom(id: string, updateRoomDto: UpdateRoomDto, userId: string): Promise<RoomWithRelations> {
     // Validate room exists
@@ -71,7 +71,7 @@ export class RoomService {
       const dormitoryIds = assignments.map((a) => a.dormitoryId);
       rooms = await this.roomRepository.findAll(dormitoryIds);
     }
-    
+
     // Add price information to each room
     return await Promise.all(rooms.map(async (room) => {
       const price = await this.getRoomPriceByCapacity(room.capacity);
@@ -85,7 +85,7 @@ export class RoomService {
   async findOne(id: string) {
     const room = await this.roomRepository.findByIdOrThrow(id);
     const price = await this.getRoomPriceByCapacity(room.capacity);
-    
+
     return {
       ...room,
       price
@@ -100,7 +100,7 @@ export class RoomService {
 
     const statistics = await this.roomRepository.getRoomStatistics(id);
     const price = await this.getRoomPriceByCapacity(room.capacity);
-    
+
     return {
       ...room,
       ...statistics,
@@ -136,7 +136,7 @@ export class RoomService {
       ) && room.residents.length < room.capacity;
 
       // Get price for this room capacity
-      const price = capacityPriceMap.get(room.capacity) || 
+      const price = capacityPriceMap.get(room.capacity) ||
         await this.getRoomPriceByCapacity(room.capacity);
 
       return {
@@ -167,7 +167,7 @@ export class RoomService {
   async bookRoom(dto: BookRoomDto, userId: string) {
     const room = await this.roomRepository.findById(dto.roomId);
     if (!room) throw new NotFoundException("Room not found");
-    
+
     // Check if room has capacity
     if (room.residents.length >= room.capacity) {
       throw new ConflictException("Room is already at full capacity");
@@ -196,8 +196,8 @@ export class RoomService {
 
     // Get price for this room
     const price = await this.getRoomPriceByCapacity(room.capacity);
-    const totalAmount = diffDays <= 30 
-      ? diffDays * price.pricePerDay 
+    const totalAmount = diffDays <= 30
+      ? diffDays * price.pricePerDay
       : price.pricePerMonth * (diffDays / 30);
 
     const booking = await this.roomRepository.createBooking({
@@ -304,10 +304,10 @@ export class RoomService {
     return this.roomRepository.deleteRoomStatus(roomId, statusId);
   }
 
-  async assignUserToRoom(roomId: string, userId: string) {
+  async assignUserToRoom(roomId: string, userId: string, startDate?: string, endDate?: string) {
     const room = await this.roomRepository.findById(roomId);
     if (!room) throw new NotFoundException("Room not found");
-    
+
     if (room.residents.length >= room.capacity) {
       throw new ConflictException("Room is already at full capacity");
     }
@@ -315,7 +315,19 @@ export class RoomService {
     const user = await this.roomRepository.findUserById(userId);
     if (!user) throw new NotFoundException("User not found");
 
-    const updatedUser = await this.roomRepository.updateUserRoom(userId, roomId);
+    const updatedUser = await this.roomRepository.updateUserRoom(userId, roomId, {
+      startDate: startDate ? new Date(startDate) : new Date(), 
+      endDate: endDate ? new Date(endDate) : undefined,     
+    });
+
+    this.createRoomStatus(roomId, {
+      description: `Assigned user ${userId} to room`,
+      dateOfStart: startDate ? new Date(startDate).toISOString() : new Date().toISOString(),
+      dateOfEnd: endDate ? new Date(endDate).toISOString() : undefined,
+    }).catch(err => {
+      console.error('❌ Error creating room status for user assignment:', err);
+    });
+  
 
     await this.auditService.log({
       userId,
@@ -324,14 +336,16 @@ export class RoomService {
       entityId: userId,
       meta: {
         roomId,
-        previousRoomId: user.roomId
+        previousRoomId: user.roomId,
+        startDate: (startDate ? new Date(startDate) : new Date()).toISOString(),
+        endDate: endDate ? new Date(endDate).toISOString() : null,
       },
     });
 
     return updatedUser;
   }
 
-async evictUserFromRoom(roomId: string, dto: EvictUserFromRoomDto) {
+  async evictUserFromRoom(roomId: string, dto: EvictUserFromRoomDto) {
     const room = await this.roomRepository.findById(roomId);
     if (!room) throw new NotFoundException("Room not found");
 
@@ -340,53 +354,53 @@ async evictUserFromRoom(roomId: string, dto: EvictUserFromRoomDto) {
 
     // Check if user is actually in the specified room
     if (user.roomId !== roomId) {
-        throw new BadRequestException("User is not assigned to this room");
+      throw new BadRequestException("User is not assigned to this room");
     }
 
-    // Remove user from room (set roomId to null)
-    const updatedUser = await this.roomRepository.updateUserRoom(dto.userId, null);
+    // Set endDate for the user
+    const updatedUser = await this.roomRepository.updateUserRoom(dto.userId, null, {
+      endDate: new Date(), // Set the end date
+    });
 
     // End any active room statuses for this user
     await this.roomRepository.endUserRoomStatuses(dto.userId, roomId);
 
     // Send notification to the evicted user
     try {
-        await this.notificationService.createNotification({
-            toUserId: dto.userId,
-            type: $Enums.NotificationType.ACCOMMODATION_CHANGE_REJECTED,
-            title: 'Room Assignment Changed',
-            message: `You have been removed from room ${room.number}`,
-            roomId: roomId,
-        });
+      await this.notificationService.createNotification({
+        toUserId: dto.userId,
+        type: $Enums.NotificationType.ACCOMMODATION_CHANGE_REJECTED,
+        title: 'Room Assignment Changed',
+        message: `You have been removed from room ${room.number}`,
+        roomId: roomId,
+      });
     } catch (notificationError) {
-        console.error('❌ Error sending eviction notification:', notificationError);
-        // Don't throw - eviction was successful, notifications are optional
+      console.error('❌ Error sending eviction notification:', notificationError);
+      // Don't throw - eviction was successful, notifications are optional
     }
 
     await this.auditService.log({
-        userId: dto.userId,
-        action: 'EVICT_USER_FROM_ROOM',
-        entity: 'User',
-        entityId: dto.userId,
-        meta: {
-            roomId,
-            previousRoomId: user.roomId,
-            roomNumber: room.number,
-            dormitoryId: room.dormitoryId
-        },
+      userId: dto.userId,
+      action: 'EVICT_USER_FROM_ROOM',
+      entity: 'User',
+      entityId: dto.userId,
+      meta: {
+        roomId,
+        previousRoomId: user.roomId,
+        roomNumber: room.number,
+        dormitoryId: room.dormitoryId,
+        endDate: new Date().toISOString(),
+      },
     });
-    if(dto.description){
-      this.emailService.sendEvictionEmail(user.email, `You have been evicted from room ${room.number} in ${room.dormitory?.name || 'the dormitory'} because ${dto.description}. Please contact administration for more details.`)
-    }else{
-      this.emailService.sendEvictionEmail(user.email, `You have been evicted from room ${room.number} in ${room.dormitory?.name || 'the dormitory'}. Please contact administration for more details.`)
+
+    if (dto.description) {
+      this.emailService.sendEvictionEmail(user.email, `You have been evicted from room ${room.number} in ${room.dormitory?.name || 'the dormitory'} because ${dto.description}. Please contact administration for more details.`);
+    } else {
+      this.emailService.sendEvictionEmail(user.email, `You have been evicted from room ${room.number} in ${room.dormitory?.name || 'the dormitory'}. Please contact administration for more details.`);
     }
 
-    
-
-
-
     return updatedUser;
-}
+  }
 
   async setRoomPrice(dto: SetPriceDto) {
     return this.roomRepository.createPrice({
@@ -490,7 +504,7 @@ async evictUserFromRoom(roomId: string, dto: EvictUserFromRoomDto) {
 
   private sanitizeEquipment(equipment: string[]): string[] {
     const allowedEquipment = [
-      'Bed', 'Desk', 'Chair', 'Wardrobe', 'Bookshelf', 'Mirror', 
+      'Bed', 'Desk', 'Chair', 'Wardrobe', 'Bookshelf', 'Mirror',
       'Lamp', 'Fan', 'AC', 'Heater', 'Window', 'Curtains',
       'Safe', 'Mini Fridge', 'Microwave', 'TV', 'WiFi Router'
     ];
@@ -498,7 +512,7 @@ async evictUserFromRoom(roomId: string, dto: EvictUserFromRoomDto) {
     return equipment
       .filter(item => item && item.trim().length > 0)
       .map(item => item.trim())
-      .filter(item => allowedEquipment.some(allowed => 
+      .filter(item => allowedEquipment.some(allowed =>
         allowed.toLowerCase() === item.toLowerCase()
       ))
       .slice(0, 20);
@@ -507,20 +521,20 @@ async evictUserFromRoom(roomId: string, dto: EvictUserFromRoomDto) {
   private sanitizePhotoUrls(photos: string[]): string[] {
     const maxPhotos = 10;
     const allowedDomains = [
-      'imgur.com', 
-      'cloudinary.com', 
-      'amazonaws.com', 
+      'imgur.com',
+      'cloudinary.com',
+      'amazonaws.com',
       's3.amazonaws.com',
       'storage.googleapis.com'
     ];
-    
+
     return photos
       .filter(url => {
         try {
           const urlObj = new URL(url);
-          return urlObj.protocol === 'https:' && 
-                 allowedDomains.some(domain => urlObj.hostname.includes(domain)) &&
-                 /\.(jpg|jpeg|png|webp)$/i.test(urlObj.pathname);
+          return urlObj.protocol === 'https:' &&
+            allowedDomains.some(domain => urlObj.hostname.includes(domain)) &&
+            /\.(jpg|jpeg|png|webp)$/i.test(urlObj.pathname);
         } catch {
           return false;
         }
@@ -534,7 +548,7 @@ async evictUserFromRoom(roomId: string, dto: EvictUserFromRoomDto) {
       type: $Enums.NotificationType.ROOM_BOOKING_APPROVED,
       title: 'Room Booking Confirmed',
       message: `Your booking for room ${room.number} in ${room.dormitory?.name || 'Unknown Dormitory'} has been confirmed for ${from.toDateString()} to ${to.toDateString()}`,
-      bookingId: String(booking.id), 
+      bookingId: String(booking.id),
       roomId: String(room.id),
     });
 
@@ -543,12 +557,12 @@ async evictUserFromRoom(roomId: string, dto: EvictUserFromRoomDto) {
 
     for (const admin of dormitoryAdmins) {
       await this.notificationService.createNotification({
-        toUserId: admin.userId, 
-        fromUserId: userId, 
+        toUserId: admin.userId,
+        fromUserId: userId,
         type: $Enums.NotificationType.ROOM_BOOKING_REQUEST,
         title: 'New Room Booking',
         message: `Room ${room.number} has been booked by a student for ${from.toDateString()} to ${to.toDateString()}`,
-        bookingId: booking.id, 
+        bookingId: booking.id,
         roomId: room.id,
       });
     }

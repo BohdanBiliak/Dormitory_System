@@ -3202,6 +3202,7 @@ export namespace Prisma {
     studentIdFront: string | null
     studentIdBack: string | null
     isActive: boolean | null
+    reservationDate: Date | null
     dormitoryId: string | null
     roomId: string | null
     createdAt: Date | null
@@ -3222,6 +3223,7 @@ export namespace Prisma {
     studentIdFront: string | null
     studentIdBack: string | null
     isActive: boolean | null
+    reservationDate: Date | null
     dormitoryId: string | null
     roomId: string | null
     createdAt: Date | null
@@ -3242,6 +3244,7 @@ export namespace Prisma {
     studentIdFront: number
     studentIdBack: number
     isActive: number
+    reservationDate: number
     dormitoryId: number
     roomId: number
     createdAt: number
@@ -3264,6 +3267,7 @@ export namespace Prisma {
     studentIdFront?: true
     studentIdBack?: true
     isActive?: true
+    reservationDate?: true
     dormitoryId?: true
     roomId?: true
     createdAt?: true
@@ -3284,6 +3288,7 @@ export namespace Prisma {
     studentIdFront?: true
     studentIdBack?: true
     isActive?: true
+    reservationDate?: true
     dormitoryId?: true
     roomId?: true
     createdAt?: true
@@ -3304,6 +3309,7 @@ export namespace Prisma {
     studentIdFront?: true
     studentIdBack?: true
     isActive?: true
+    reservationDate?: true
     dormitoryId?: true
     roomId?: true
     createdAt?: true
@@ -3397,6 +3403,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack: string | null
     isActive: boolean
+    reservationDate: Date | null
     dormitoryId: string | null
     roomId: string | null
     createdAt: Date
@@ -3434,6 +3441,7 @@ export namespace Prisma {
     studentIdFront?: boolean
     studentIdBack?: boolean
     isActive?: boolean
+    reservationDate?: boolean
     dormitoryId?: boolean
     roomId?: boolean
     createdAt?: boolean
@@ -3470,6 +3478,7 @@ export namespace Prisma {
     studentIdFront?: boolean
     studentIdBack?: boolean
     isActive?: boolean
+    reservationDate?: boolean
     dormitoryId?: boolean
     roomId?: boolean
     createdAt?: boolean
@@ -3492,6 +3501,7 @@ export namespace Prisma {
     studentIdFront?: boolean
     studentIdBack?: boolean
     isActive?: boolean
+    reservationDate?: boolean
     dormitoryId?: boolean
     roomId?: boolean
     createdAt?: boolean
@@ -3514,13 +3524,14 @@ export namespace Prisma {
     studentIdFront?: boolean
     studentIdBack?: boolean
     isActive?: boolean
+    reservationDate?: boolean
     dormitoryId?: boolean
     roomId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "displayName" | "picture" | "isVerified" | "isTwoFactorEnabled" | "method" | "role" | "secondName" | "studentIdFront" | "studentIdBack" | "isActive" | "dormitoryId" | "roomId" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "displayName" | "picture" | "isVerified" | "isTwoFactorEnabled" | "method" | "role" | "secondName" | "studentIdFront" | "studentIdBack" | "isActive" | "reservationDate" | "dormitoryId" | "roomId" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     confirmations?: boolean | User$confirmationsArgs<ExtArgs>
     dormitoryAdminAssignments?: boolean | User$dormitoryAdminAssignmentsArgs<ExtArgs>
@@ -3581,6 +3592,7 @@ export namespace Prisma {
       studentIdFront: string
       studentIdBack: string | null
       isActive: boolean
+      reservationDate: Date | null
       dormitoryId: string | null
       roomId: string | null
       createdAt: Date
@@ -4036,6 +4048,7 @@ export namespace Prisma {
     readonly studentIdFront: FieldRef<"User", 'String'>
     readonly studentIdBack: FieldRef<"User", 'String'>
     readonly isActive: FieldRef<"User", 'Boolean'>
+    readonly reservationDate: FieldRef<"User", 'DateTime'>
     readonly dormitoryId: FieldRef<"User", 'String'>
     readonly roomId: FieldRef<"User", 'String'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
@@ -25953,6 +25966,7 @@ export namespace Prisma {
     studentIdFront: 'studentIdFront',
     studentIdBack: 'studentIdBack',
     isActive: 'isActive',
+    reservationDate: 'reservationDate',
     dormitoryId: 'dormitoryId',
     roomId: 'roomId',
     createdAt: 'createdAt',
@@ -26561,6 +26575,7 @@ export namespace Prisma {
     studentIdFront?: StringFilter<"User"> | string
     studentIdBack?: StringNullableFilter<"User"> | string | null
     isActive?: BoolFilter<"User"> | boolean
+    reservationDate?: DateTimeNullableFilter<"User"> | Date | string | null
     dormitoryId?: StringNullableFilter<"User"> | string | null
     roomId?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
@@ -26596,6 +26611,7 @@ export namespace Prisma {
     studentIdFront?: SortOrder
     studentIdBack?: SortOrderInput | SortOrder
     isActive?: SortOrder
+    reservationDate?: SortOrderInput | SortOrder
     dormitoryId?: SortOrderInput | SortOrder
     roomId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -26634,6 +26650,7 @@ export namespace Prisma {
     studentIdFront?: StringFilter<"User"> | string
     studentIdBack?: StringNullableFilter<"User"> | string | null
     isActive?: BoolFilter<"User"> | boolean
+    reservationDate?: DateTimeNullableFilter<"User"> | Date | string | null
     dormitoryId?: StringNullableFilter<"User"> | string | null
     roomId?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
@@ -26669,6 +26686,7 @@ export namespace Prisma {
     studentIdFront?: SortOrder
     studentIdBack?: SortOrderInput | SortOrder
     isActive?: SortOrder
+    reservationDate?: SortOrderInput | SortOrder
     dormitoryId?: SortOrderInput | SortOrder
     roomId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -26695,6 +26713,7 @@ export namespace Prisma {
     studentIdFront?: StringWithAggregatesFilter<"User"> | string
     studentIdBack?: StringNullableWithAggregatesFilter<"User"> | string | null
     isActive?: BoolWithAggregatesFilter<"User"> | boolean
+    reservationDate?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     dormitoryId?: StringNullableWithAggregatesFilter<"User"> | string | null
     roomId?: StringNullableWithAggregatesFilter<"User"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
@@ -28201,6 +28220,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    reservationDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
@@ -28234,6 +28254,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    reservationDate?: Date | string | null
     dormitoryId?: string | null
     roomId?: string | null
     createdAt?: Date | string
@@ -28267,6 +28288,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
@@ -28300,6 +28322,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28333,6 +28356,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    reservationDate?: Date | string | null
     dormitoryId?: string | null
     roomId?: string | null
     createdAt?: Date | string
@@ -28353,6 +28377,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -28371,6 +28396,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -30015,6 +30041,17 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -30160,6 +30197,7 @@ export namespace Prisma {
     studentIdFront?: SortOrder
     studentIdBack?: SortOrder
     isActive?: SortOrder
+    reservationDate?: SortOrder
     dormitoryId?: SortOrder
     roomId?: SortOrder
     createdAt?: SortOrder
@@ -30180,6 +30218,7 @@ export namespace Prisma {
     studentIdFront?: SortOrder
     studentIdBack?: SortOrder
     isActive?: SortOrder
+    reservationDate?: SortOrder
     dormitoryId?: SortOrder
     roomId?: SortOrder
     createdAt?: SortOrder
@@ -30200,6 +30239,7 @@ export namespace Prisma {
     studentIdFront?: SortOrder
     studentIdBack?: SortOrder
     isActive?: SortOrder
+    reservationDate?: SortOrder
     dormitoryId?: SortOrder
     roomId?: SortOrder
     createdAt?: SortOrder
@@ -30270,6 +30310,20 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -30335,17 +30389,6 @@ export namespace Prisma {
     in?: $Enums.ConfirmationStatus[] | ListEnumConfirmationStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.ConfirmationStatus[] | ListEnumConfirmationStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumConfirmationStatusFilter<$PrismaModel> | $Enums.ConfirmationStatus
-  }
-
-  export type DateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
   export type StringNullableListFilter<$PrismaModel = never> = {
@@ -30466,20 +30509,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumConfirmationStatusFilter<$PrismaModel>
     _max?: NestedEnumConfirmationStatusFilter<$PrismaModel>
-  }
-
-  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -31688,6 +31717,10 @@ export namespace Prisma {
     set?: string | null
   }
 
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
   }
@@ -32112,10 +32145,6 @@ export namespace Prisma {
 
   export type EnumConfirmationStatusFieldUpdateOperationsInput = {
     set?: $Enums.ConfirmationStatus
-  }
-
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
   }
 
   export type ConfirmationUpdateroommateIdsInput = {
@@ -33511,6 +33540,17 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -33606,6 +33646,20 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -33634,17 +33688,6 @@ export namespace Prisma {
     not?: NestedEnumConfirmationStatusFilter<$PrismaModel> | $Enums.ConfirmationStatus
   }
 
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
   export type NestedEnumConfirmationTypeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.ConfirmationType | EnumConfirmationTypeFieldRefInput<$PrismaModel>
     in?: $Enums.ConfirmationType[] | ListEnumConfirmationTypeFieldRefInput<$PrismaModel>
@@ -33663,20 +33706,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumConfirmationStatusFilter<$PrismaModel>
     _max?: NestedEnumConfirmationStatusFilter<$PrismaModel>
-  }
-
-  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -35014,6 +35043,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    reservationDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
@@ -35046,6 +35076,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    reservationDate?: Date | string | null
     dormitoryId?: string | null
     roomId?: string | null
     createdAt?: Date | string
@@ -35125,6 +35156,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
@@ -35157,6 +35189,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -35226,6 +35259,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    reservationDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     dormitoryAdminAssignments?: DormitoryAdminCreateNestedManyWithoutUserInput
@@ -35258,6 +35292,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    reservationDate?: Date | string | null
     dormitoryId?: string | null
     roomId?: string | null
     createdAt?: Date | string
@@ -35306,6 +35341,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dormitoryAdminAssignments?: DormitoryAdminUpdateManyWithoutUserNestedInput
@@ -35338,6 +35374,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -35370,6 +35407,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    reservationDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
@@ -35402,6 +35440,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    reservationDate?: Date | string | null
     dormitoryId?: string | null
     roomId?: string | null
     createdAt?: Date | string
@@ -35450,6 +35489,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
@@ -35482,6 +35522,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -35514,6 +35555,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    reservationDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
@@ -35546,6 +35588,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    reservationDate?: Date | string | null
     dormitoryId?: string | null
     roomId?: string | null
     createdAt?: Date | string
@@ -35607,6 +35650,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    reservationDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
@@ -35639,6 +35683,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    reservationDate?: Date | string | null
     roomId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -35734,6 +35779,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
@@ -35766,6 +35812,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -35833,6 +35880,7 @@ export namespace Prisma {
     studentIdFront?: StringFilter<"User"> | string
     studentIdBack?: StringNullableFilter<"User"> | string | null
     isActive?: BoolFilter<"User"> | boolean
+    reservationDate?: DateTimeNullableFilter<"User"> | Date | string | null
     dormitoryId?: StringNullableFilter<"User"> | string | null
     roomId?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
@@ -35938,6 +35986,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    reservationDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
@@ -35970,6 +36019,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    reservationDate?: Date | string | null
     dormitoryId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -36561,6 +36611,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    reservationDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
@@ -36593,6 +36644,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    reservationDate?: Date | string | null
     dormitoryId?: string | null
     roomId?: string | null
     createdAt?: Date | string
@@ -36838,6 +36890,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
@@ -36870,6 +36923,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37011,6 +37065,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    reservationDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
@@ -37043,6 +37098,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    reservationDate?: Date | string | null
     dormitoryId?: string | null
     roomId?: string | null
     createdAt?: Date | string
@@ -37140,6 +37196,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    reservationDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
@@ -37172,6 +37229,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    reservationDate?: Date | string | null
     dormitoryId?: string | null
     roomId?: string | null
     createdAt?: Date | string
@@ -37396,6 +37454,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
@@ -37428,6 +37487,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37543,6 +37603,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
@@ -37575,6 +37636,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -38260,6 +38322,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    reservationDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
@@ -38292,6 +38355,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    reservationDate?: Date | string | null
     dormitoryId?: string | null
     roomId?: string | null
     createdAt?: Date | string
@@ -38413,6 +38477,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
@@ -38445,6 +38510,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -38477,6 +38543,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    reservationDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
@@ -38509,6 +38576,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    reservationDate?: Date | string | null
     dormitoryId?: string | null
     roomId?: string | null
     createdAt?: Date | string
@@ -38546,6 +38614,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    reservationDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
@@ -38578,6 +38647,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    reservationDate?: Date | string | null
     dormitoryId?: string | null
     roomId?: string | null
     createdAt?: Date | string
@@ -38765,6 +38835,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
@@ -38797,6 +38868,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -38840,6 +38912,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
@@ -38872,6 +38945,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -39061,6 +39135,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    reservationDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
@@ -39093,6 +39168,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    reservationDate?: Date | string | null
     dormitoryId?: string | null
     roomId?: string | null
     createdAt?: Date | string
@@ -39141,6 +39217,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
@@ -39173,6 +39250,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -39205,6 +39283,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    reservationDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
@@ -39237,6 +39316,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    reservationDate?: Date | string | null
     dormitoryId?: string | null
     roomId?: string | null
     createdAt?: Date | string
@@ -39333,6 +39413,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
@@ -39365,6 +39446,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -39526,6 +39608,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    reservationDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
@@ -39558,6 +39641,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    reservationDate?: Date | string | null
     dormitoryId?: string | null
     roomId?: string | null
     createdAt?: Date | string
@@ -39676,6 +39760,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
@@ -39708,6 +39793,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -40522,6 +40608,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    reservationDate?: Date | string | null
     roomId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -40572,6 +40659,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
@@ -40604,6 +40692,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -40636,6 +40725,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -40704,6 +40794,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    reservationDate?: Date | string | null
     dormitoryId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -40792,6 +40883,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
@@ -40824,6 +40916,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -40856,6 +40949,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
