@@ -113,7 +113,7 @@ export default function AllRoomsPage() {
         dateTo: '',
         roommates: 'none',
         roomSize: [],
-        groupSize: 2
+        groupSize: 1
     });
 
     //available rooms
@@ -124,7 +124,6 @@ export default function AllRoomsPage() {
         if(filters.dateFrom !== '' && filters.dateTo !== ''){
             const request:AvailableRoomsRequest = {to: filters.dateTo, from: filters.dateFrom}
             setAvailableRoomRequest(request)
-            console.log("Available rooms:")
         }
     }, [filters.dateFrom, filters.dateTo]);
 
@@ -134,6 +133,7 @@ export default function AllRoomsPage() {
         if(availableRooms && availableRooms.length > 0) {
             const ids = availableRooms.map(room => room.id)
             setAvailableRoomsIds(ids)
+            console.log("Available rooms:", availableRooms)
         }
     }, [availableRooms]);
 
@@ -160,7 +160,7 @@ export default function AllRoomsPage() {
 
         //const roomatesReq = filters.roommates==="none" ? room.residents.length===0 : true
 
-        return !availableRoomsIds.includes(room.id) || filters.groupSize<=availableSpace;
+        return availableRoomsIds.includes(room.id) && filters.groupSize<=availableSpace;
     };
 
     const handleFilterChange = (key: keyof Filters, value: any) => {
@@ -343,6 +343,7 @@ export default function AllRoomsPage() {
                                         <input
                                             type="number"
                                             value={filters.groupSize}
+                                            min={1}
                                             onChange={(e) => handleFilterChange('groupSize', parseInt(e.target.value))}
                                             className="w-16 text-sm text-center border-none bg-white rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                         />

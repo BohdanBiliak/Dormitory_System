@@ -32,8 +32,11 @@ export function CalendarOfAvailability2WVerComponent ({statuses, showLegend}:Cal
 
     // Check if a date is unavailable based on date ranges
     const isDateUnavailable = (date:Date) => {
+
         return unavailableDateRanges.some(range => {
-            return isInRange(date, new Date(range.dateOfStart), new Date(range.dateOfEnd));
+            const startDate = new Date(range.dateOfStart)
+            const endDate = new Date(range.dateOfEnd)
+            return isInRange(date, new Date(startDate).setDate(startDate.getDate() - 1), new Date(endDate).setDate(endDate.getDate() - 1));
         });
     };
 

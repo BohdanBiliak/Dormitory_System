@@ -23,7 +23,7 @@ export function useGetRoom(id: string){
 
 export function useGetAvailableRoom(request: AvailableRoomsRequest){
     const {data, isLoading, error} = useQuery({
-        queryKey: ["rooms", "available"],
+        queryKey: ["rooms", "available", `from: ${request.from}`, `to: ${request.to}`],
         queryFn: () => roomsApi.getAvailableRooms(request),
         staleTime: 30 * 1000
     })
