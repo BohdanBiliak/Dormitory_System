@@ -141,6 +141,16 @@ export function AdminDormitoriesList(){
         });
     };
 
+    useEffect(() => {
+        setNewDormitory(prevState => {
+            if(!prevState) return prevState;
+            return {
+                ...prevState,
+                roomGeneration: roomGeneration
+            }
+        })
+    }, [roomGeneration]);
+
     const handleCreateDormitory = () => {
         setNewDormitory(prev=>({
             ...prev,

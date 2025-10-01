@@ -44,6 +44,7 @@ export const dormitoryApi = {
         const formData = new FormData();
 
         const roomGenerationString = '{"numberOfFloors":'+newDormitory.roomGeneration.numberOfFloors+',"roomsPerFloor":'+newDormitory.roomGeneration.roomsPerFloor+',"pricePerDay":'+newDormitory.roomGeneration.pricePerDay+',"pricePerMonth":'+newDormitory.roomGeneration.pricePerMonth+'}'
+        console.log("RoomGeneration: ", roomGenerationString);
 
         formData.append('name', newDormitory.name);
         formData.append('address', newDormitory.address);

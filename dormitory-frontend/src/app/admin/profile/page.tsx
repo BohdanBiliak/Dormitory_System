@@ -7,80 +7,10 @@ import { MenuItem } from '@/types/ui.types';
 
 export default function AdminProfilePage() {
 
-    const menuItems:MenuItem[] = [
-        {
-            id: 'profile',
-            image: '/user.svg',
-            label: 'My profile',
-            href: '/admin/profile'
-        },
-        {
-            id: 'dormitories',
-            image: '/workplace.svg',
-            label: 'Dormitory management',
-            subMenu: [
-                {
-                    id: 'dormsInfo',
-                    label: 'Information',
-                    image: '/clipboard-text.svg',
-                    href: '/admin/dormitories'
-                },
-                {
-                    id: 'rooms',
-                    label: 'Available rooms',
-                    image: '/home.svg',
-                    href: '#',
-                },
-                {
-                    id: 'users',
-                    label: 'User profiles',
-                    image: '/users.svg',
-                    href: '/admin/users',
-                },
-                {
-                    id:'confirmations',
-                    label: 'Confirmations',
-                    image:'/clipboard-check.svg',
-                    href: '/admin/confirmations',
-                },
-                {
-                    id:'payments',
-                    label: 'Payments',
-                    image: '/cash.svg',
-                    href: '#'
-                }
-            ]
-        },
-        {
-            id: 'communication',
-            image: '/comments.svg',
-            label: 'Communication',
-            subMenu: [
-                {
-                    id: 'announcements',
-                    label: 'Announcements',
-                    image:'/comments.svg',
-                    href: '/admin/announcements'
-                },
-                {
-                    id:'messages',
-                    label: 'Messages',
-                    image:'/envelope.svg',
-                    href: '#'
-                }
-            ]
-        },
-        {
-            id:'logout',
-            image:'/sign-out.svg',
-            label:'Logout',
-        }
-    ]
+
   return (
     //<ProtectedRoute requiredRole={['Admin', 'SuperAdmin']}>
-      <SideMenu menuItems={menuItems} activeItem={'profile'}>
           <AdminProfileForm />
-      </SideMenu>
     //</ProtectedRoute>
   )
 }

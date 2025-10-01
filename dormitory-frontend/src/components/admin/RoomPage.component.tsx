@@ -833,19 +833,6 @@ export function RoomPage({roomId}: RoomPageProps) {
                                     placeholder="Enter reason for eviction..."
                                 />
                             </div>
-
-                            <div className="animate-in fade-in-0 slide-in-from-left-2 duration-300 delay-200">
-                                <label className="block text-sm font-medium text-slate-700 mb-2">
-                                    Eviction date
-                                </label>
-                                <input
-                                    name="date"
-                                    type="date"
-                                    //value={evictionInformation.date}
-                                    //onChange={handleEvictionInputChange}
-                                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-200 hover:shadow-sm"
-                                />
-                            </div>
                         </div>
 
                         <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex space-x-3 animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-250">
