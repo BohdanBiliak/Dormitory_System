@@ -1,6 +1,6 @@
 import {roomsApi} from "@/app/lib/rooms.api";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {AvailableRoomsRequest, CreateRoomStatusRequest, UpdateRoomData} from "@/types/rooms.types";
+import {AvailableRoomsRequest, CreateRoomStatusRequest, EvictRequest, UpdateRoomData} from "@/types/rooms.types";
 import {toast} from "sonner";
 
 export function useGetRooms(){
@@ -66,12 +66,25 @@ export function useUpdateRoom(){
         }
     })
 
+    const evictUser = useMutation({
+        mutationFn: ({roomId, message}:{roomId:string, message:EvictRequest})=>roomsApi.evictUser(roomId, message),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["room"] })
+            toast.success('User evicted successfully!')
+        },
+        onError: (err) => {
+            toast.error(err.message)
+        }
+    })
+
     return({
         updateRoom: updateRoom.mutate,
         updatingRoom: updateRoom.isPending,
         postRoomStatus: postRoomStatus.mutate,
         postingRoomStatus: postRoomStatus.isPending,
         removeRoomStatus: removeRoomStatus.mutate,
-        removingRoomStatus: removeRoomStatus.isPending
+        removingRoomStatus: removeRoomStatus.isPending,
+        evictUser: evictUser.mutate,
+        evictingUser: evictUser.isPending,
     })
 }

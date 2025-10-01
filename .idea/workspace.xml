@@ -4,7 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a2609a67-42b3-4399-bbcc-46f7339b9fb9" name="Changes" comment="" />
+    <list default="true" id="a2609a67-42b3-4399-bbcc-46f7339b9fb9" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/lib/rooms.api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/lib/rooms.api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/RoomPage.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/RoomPage.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/hooks/rooms.hook.ts" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/hooks/rooms.hook.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/types/rooms.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/types/rooms.types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/default.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/default.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/edge.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/edge.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/index-browser.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/index-browser.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/index.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/libquery_engine-debian-openssl-3.0.x.so.node" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/libquery_engine-debian-openssl-3.0.x.so.node" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/schema.prisma" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/schema.prisma" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/wasm.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/wasm.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/wasm.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/wasm.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -167,6 +183,9 @@
       <workItem from="1759133789934" duration="3125000" />
       <workItem from="1759137464362" duration="662000" />
       <workItem from="1759244460511" duration="360000" />
+      <workItem from="1759246718056" duration="17000" />
+      <workItem from="1759302236862" duration="7472000" />
+      <workItem from="1759310224590" duration="530000" />
     </task>
     <servers />
   </component>

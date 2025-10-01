@@ -51,3 +51,8 @@ export interface CreateRoomStatusRequest {
     dateOfEnd: string,
     description: string,
 }
+
+export interface EvictRequest {
+    userId: string,
+    description: string,
+}

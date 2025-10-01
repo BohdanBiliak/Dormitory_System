@@ -1,8 +1,8 @@
 'use client'
 
 import {useGetRoom, useUpdateRoom} from "@/hooks/rooms.hook";
-import React, {useEffect, useState} from "react";
-import {CreateRoomStatusRequest, RoomStatus, UpdateRoomData} from "@/types/rooms.types";
+import React, {useEffect, useRef, useState} from "react";
+import {CreateRoomStatusRequest, EvictRequest, RoomStatus, UpdateRoomData} from "@/types/rooms.types";
 import {CalendarOfAvailabilityComponent} from "@/components/ui/CalendarOfAvailability.component";
 import {ChevronLeft, ChevronRight, Edit3, Users, DollarSign, Camera, Settings, AlertTriangle, X, Check} from "lucide-react";
 import Link from "next/link";
@@ -13,7 +13,7 @@ interface RoomPageProps {
 }
 
 export function RoomPage({roomId}: RoomPageProps) {
-    const {updateRoom, postRoomStatus, removeRoomStatus} = useUpdateRoom();
+    const {updateRoom, postRoomStatus, removeRoomStatus, evictUser} = useUpdateRoom();
 
     {/*Initial values*/}
 
@@ -62,6 +62,9 @@ export function RoomPage({roomId}: RoomPageProps) {
         photos: [],
         roomEquipment: []
     })
+
+    const lastChangedIndexRef = useRef<number | null>(null);
+    const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
     {/*Fields update*/}
 
@@ -149,46 +152,53 @@ export function RoomPage({roomId}: RoomPageProps) {
         })
     }
 
-    const handleEquipmentChange = (event:React.ChangeEvent<HTMLInputElement>) => {
+    const handleEquipmentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const {name, value} = event.target;
-        const indexToUpdate = name.substring(name.lastIndexOf("-")+1);
-        console.log(indexToUpdate)
+        const indexToUpdate = parseInt(name.substring(name.lastIndexOf("-") + 1));
 
-        const newRoomEquipment: string[] = []
+        const newRoomEquipment: string[] = [...roomInfo.roomEquipment];
 
-        roomInfo.roomEquipment.map((item, index) => {
-            if(indexToUpdate === index.toString()){
-                newRoomEquipment.push(value)
+        if (indexToUpdate < newRoomEquipment.length) {
+            newRoomEquipment[indexToUpdate] = value;
+        } else {
+            newRoomEquipment.push(value);
+            lastChangedIndexRef.current = indexToUpdate;
+        }
 
-            }else{
-                newRoomEquipment.push(item)
-            }
-        })
-
-        setRoomInfo(
-            prevState => {
-                if(!prevState) return prevState;
-                return {...prevState, roomEquipment: newRoomEquipment}
-            }
-        )
+        setRoomInfo(prevState => {
+            if (!prevState) return prevState;
+            return {...prevState, roomEquipment: newRoomEquipment}
+        });
     }
 
-    const handleEvictResidents = (event:React.MouseEvent<HTMLButtonElement>) => { //for eviction menu
+    useEffect(() => {
+        if (lastChangedIndexRef.current !== null) {
+            const targetInput = inputRefs.current[lastChangedIndexRef.current];
+            if (targetInput) {
+                targetInput.focus();
+                lastChangedIndexRef.current = null;
+            }
+        }
+    }, [roomInfo.roomEquipment.length]);
+
+    const handleChoseResidentToEvict = (event:React.MouseEvent<HTMLButtonElement>) => { //for eviction menu
         const {value} = event.currentTarget;
 
         roomInfo.residents.map((resident, index) => {
             if(index.toString() === value){
                 setUserToEvict(resident)
+                setEvictionInformation(prevState => {
+                    if(!prevState) return prevState
+                    return {
+                        ...prevState,
+                        userId:resident.id
+                    }
+                })
                 setShowEvictionConfirmation(true)
             }
         })
 
     }
-
-    const handleEvict = (evnet: React.MouseEvent<HTMLButtonElement>) => {
-
-    }
-
 
     {/*room update use effect*/}
 
@@ -255,15 +265,17 @@ export function RoomPage({roomId}: RoomPageProps) {
     {/*Eviction menu(2nd) dialog logic*/}
 
     const [showEvictionMenu, setShowEvictionMenu] = useState(false)
-    const [evictionInformation, setEvictionInformation] = useState({
-        message: '',
-        date: '',
+    const [evictionInformation, setEvictionInformation] = useState<EvictRequest>({
+        userId: '',
+        description: '',
+        //date: '',
     })
 
     const closeEvictionMenu = () => {
         setEvictionInformation({
-            message: '',
-            date: '',
+            userId: '',
+            description: '',
+            //date: '',
         })
         setShowEvictionMenu(false)
     }
@@ -276,6 +288,11 @@ export function RoomPage({roomId}: RoomPageProps) {
             return{...prev, [name]:value}
         })
     }
+
+    const handleEvictResident = (evet: React.MouseEvent<HTMLButtonElement>) => {
+        evictUser({roomId: roomId,message: evictionInformation})
+    }
+
 
     //Room statuses dialog
     const[dateStatuses, setDateStatuses] = useState<RoomStatus[]>([]);
@@ -330,6 +347,20 @@ export function RoomPage({roomId}: RoomPageProps) {
 
     const closePhotosDialog = () => {
         setShowPhotosDialog(false)
+    }
+
+    const handleDeleteRoomPhoto = (event: React.MouseEvent<HTMLButtonElement>) => {
+        const {name, value} = event.currentTarget;
+
+        if(name !== ""){
+            const indexToDelete = Number.parseInt(value)
+            setRoomInfo(prevState => {
+                if(!prevState) return prevState;
+                return {
+                    ...prevState,
+                    photos: roomInfo.photos.splice(indexToDelete, 1)}
+            })
+        }
     }
 
 
@@ -556,7 +587,7 @@ export function RoomPage({roomId}: RoomPageProps) {
                                                 <button 
                                                     className="ml-4 px-3 py-1 bg-red-100 text-red-700 text-sm font-medium rounded-md hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200 hover:scale-105 active:scale-95 hover:shadow-md"
                                                     value={index.toString()} 
-                                                    onClick={handleEvictResidents}
+                                                    onClick={handleChoseResidentToEvict}
                                                 >
                                                     Evict
                                                 </button>
@@ -598,22 +629,40 @@ export function RoomPage({roomId}: RoomPageProps) {
                                                 style={{ animationDelay: `${index * 50}ms` }}
                                             >
                                                 <input
+                                                    ref={(el) => {inputRefs.current[index] = el}}
                                                     type="text"
                                                     name={`eq-${index}`}
                                                     onChange={handleEquipmentChange}
                                                     value={roomInfo.roomEquipment[index]}
                                                     disabled={!isEditing.roomEquipment}
                                                     className={`w-full px-3 py-2 border rounded-lg text-sm transition-all duration-300 hover:shadow-sm ${
-                                                        isEditing.roomEquipment 
-                                                            ? 'border-blue-500 ring-2 ring-blue-100 bg-white animate-pulse' 
+                                                        isEditing.roomEquipment
+                                                            ? 'border-blue-500 ring-2 ring-blue-100 bg-white'
                                                             : 'border-slate-200 bg-slate-50'
                                                     } focus:outline-none focus:ring-2 focus:ring-blue-500`}
                                                     placeholder={`Equipment item ${index + 1}`}
                                                 />
                                             </div>
                                         ))}
+                                        {isEditing.roomEquipment ? (
+                                            <div key={roomInfo.roomEquipment.length}
+                                                 className="relative animate-in fade-in-0 slide-in-from-left-2 duration-300"
+                                                 style={{ animationDelay: `${roomInfo.roomEquipment.length * 50}ms` }}>
+                                                <input
+                                                    ref={(el) => {inputRefs.current[roomInfo.roomEquipment.length] = el}}
+                                                    type="text"
+                                                    name={`eq-${roomInfo.roomEquipment.length }`}
+                                                    onChange={handleEquipmentChange}
+                                                    value={""}
+                                                    disabled={!isEditing.roomEquipment}
+                                                    className="w-full px-3 py-2 border rounded-lg text-sm transition-all duration-300 hover:shadow-sm border-blue-500 ring-2 ring-blue-100 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                    placeholder={`Equipment item ${roomInfo.roomEquipment.length  + 1}`}
+                                                />
+                                            </div>
+                                        ):(<></>)}
                                     </div>
                                 ) : (
+
                                     <div className="text-center py-8 animate-in fade-in-0 zoom-in-50 duration-500">
                                         <Settings className="mx-auto h-12 w-12 text-slate-300 animate-pulse" />
                                         <p className="mt-2 text-slate-500">No equipment listed</p>
@@ -776,9 +825,9 @@ export function RoomPage({roomId}: RoomPageProps) {
                                     Reason for eviction
                                 </label>
                                 <input
-                                    name="message"
+                                    name="description"
                                     type="text"
-                                    value={evictionInformation.message}
+                                    value={evictionInformation.description}
                                     onChange={handleEvictionInputChange}
                                     className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-200 hover:shadow-sm"
                                     placeholder="Enter reason for eviction..."
@@ -792,8 +841,8 @@ export function RoomPage({roomId}: RoomPageProps) {
                                 <input
                                     name="date"
                                     type="date"
-                                    value={evictionInformation.date}
-                                    onChange={handleEvictionInputChange}
+                                    //value={evictionInformation.date}
+                                    //onChange={handleEvictionInputChange}
                                     className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-200 hover:shadow-sm"
                                 />
                             </div>
@@ -802,7 +851,7 @@ export function RoomPage({roomId}: RoomPageProps) {
                         <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex space-x-3 animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-250">
                             <button
                                 className= "flex-1 bg-red-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200 hover:scale-105 active:scale-95 hover:shadow-lg"
-                                /*onClick={handleEvict}*/
+                                onClick={handleEvictResident}
                             >
                                 Confirm Eviction
                             </button>
@@ -970,6 +1019,10 @@ export function RoomPage({roomId}: RoomPageProps) {
                                         </div>
                                     )}
                                 </div>
+
+                                <div className={`flex flex-row`}>
+                                    <button name={`deletePhoto`} value={currentIndex} onClick={handleDeleteRoomPhoto}>Delete this photo</button>
+                                </div>
                             </div>
 
                             <div className={`flex flex-col`}>
@@ -978,6 +1031,15 @@ export function RoomPage({roomId}: RoomPageProps) {
                                         <img src={photo} alt={`Room photo${index}`} className={`w-120 h-40`}/>
                                     </button>
                                 ))}
+                                <button
+                                    className="w-120 h-40 bg-gray-300 border-2 border-black rounded flex flex-col items-center justify-center gap-0.5 hover:bg-gray-400 active:bg-gray-500 transition-colors"
+                                >
+                                    <div className="w-5 h-5 border-2 border-black rounded-full relative flex items-center justify-center">
+                                        <div className="absolute w-2.5 h-0.5 bg-black"></div>
+                                        <div className="absolute w-0.5 h-2.5 bg-black"></div>
+                                    </div>
+                                    <span className="text-[13px] text-black">Add image</span>
+                                </button>
                             </div>
                         </div>
                     </DialogPanel>
