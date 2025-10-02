@@ -33,7 +33,7 @@ export function CalendarOfAvailability2WVerComponent({ statuses, showLegend }: C
         return unavailableDateRanges.some(range => {
             const startDate = new Date(range.dateOfStart)
             const endDate = new Date(range.dateOfEnd)
-            return isInRange(date, new Date(startDate).setDate(startDate.getDate() - 1), new Date(endDate).setDate(endDate.getDate() - 1));
+            return isInRange(date, new Date(new Date(startDate).setDate(startDate.getDate() - 1)), new Date(new Date(endDate).setDate(endDate.getDate() - 1)));
         });
     };
 
