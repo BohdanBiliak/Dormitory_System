@@ -4,7 +4,7 @@ import {
   Injectable,
   NotFoundException,
 } from "@nestjs/common";
-import { $Enums, User } from "../../../../__generated__";
+import { $Enums, PrismaClient, User } from "../../../../__generated__";
 import { RoomRepository, RoomWithRelations, UpdateRoomData } from "../repositories/room.repository";
 import { UpdateRoomDto } from "../dto/update-room.dto";
 import { AvailableRoomsDto } from "../dto/availableRooms.dto";
@@ -25,6 +25,7 @@ export class RoomService {
     private readonly auditService: AuditService,
     private readonly notificationService: NotificationsService,
     private readonly emailService: MailService,
+    private readonly prisma: PrismaClient,
   ) { }
 
   async updateRoom(id: string, updateRoomDto: UpdateRoomDto, userId: string): Promise<RoomWithRelations> {
@@ -316,8 +317,8 @@ export class RoomService {
     if (!user) throw new NotFoundException("User not found");
 
     const updatedUser = await this.roomRepository.updateUserRoom(userId, roomId, {
-      startDate: startDate ? new Date(startDate) : new Date(), 
-      endDate: endDate ? new Date(endDate) : undefined,     
+      startDate: startDate ? new Date(startDate) : new Date(),
+      endDate: endDate ? new Date(endDate) : undefined,
     });
 
     this.createRoomStatus(roomId, {
@@ -327,7 +328,7 @@ export class RoomService {
     }).catch(err => {
       console.error('❌ Error creating room status for user assignment:', err);
     });
-  
+
 
     await this.auditService.log({
       userId,
@@ -344,6 +345,7 @@ export class RoomService {
 
     return updatedUser;
   }
+
 
   async evictUserFromRoom(roomId: string, dto: EvictUserFromRoomDto) {
     const room = await this.roomRepository.findById(roomId);
@@ -364,6 +366,18 @@ export class RoomService {
 
     // End any active room statuses for this user
     await this.roomRepository.endUserRoomStatuses(dto.userId, roomId);
+
+    // Find and delete all statuses associated with this user in this room
+    try {
+      const userStatuses = await this.roomRepository.findStatusesByUserAndRoom(dto.userId, roomId);
+
+      for (const status of userStatuses) {
+        await this.deleteRoomStatus(roomId, status.id);
+      }
+    } catch (statusError) {
+      console.error('❌ Error deleting user statuses:', statusError);
+      // Don't throw - eviction was successful, status deletion is cleanup
+    }
 
     // Send notification to the evicted user
     try {

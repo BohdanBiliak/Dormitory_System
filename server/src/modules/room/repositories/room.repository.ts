@@ -61,6 +61,13 @@ export class RoomRepository {
       }
     });
   }
+  async findStatusesByUserAndRoom(userId: string, roomId: string) {
+    return this.prisma.roomStatus.findMany({
+      where: {
+        roomId: roomId,
+      }
+    });
+  }
 
   async findById(id: string): Promise<RoomWithRelations | null> {
     return this.prisma.room.findUnique({
