@@ -517,18 +517,9 @@ export class RoomService {
   }
 
   private sanitizeEquipment(equipment: string[]): string[] {
-    const allowedEquipment = [
-      'Bed', 'Desk', 'Chair', 'Wardrobe', 'Bookshelf', 'Mirror',
-      'Lamp', 'Fan', 'AC', 'Heater', 'Window', 'Curtains',
-      'Safe', 'Mini Fridge', 'Microwave', 'TV', 'WiFi Router'
-    ];
-
     return equipment
       .filter(item => item && item.trim().length > 0)
       .map(item => item.trim())
-      .filter(item => allowedEquipment.some(allowed =>
-        allowed.toLowerCase() === item.toLowerCase()
-      ))
       .slice(0, 20);
   }
 

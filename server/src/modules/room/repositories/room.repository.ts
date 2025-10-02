@@ -211,8 +211,8 @@ export class RoomRepository {
         ...(data.number && { number: data.number }),
         ...(data.floor && { floor: data.floor }),
         ...(data.capacity && { capacity: data.capacity }),
-        ...(data.roomEquipment && { roomEquipment: { set: data.roomEquipment } }),
-        ...(data.photos && { photos: { set: data.photos } })
+        ...(data.roomEquipment && { roomEquipment: data.roomEquipment }),
+        ...(data.photos && { photos: data.photos })
       },
       include: {
         residents: {
