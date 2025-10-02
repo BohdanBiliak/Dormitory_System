@@ -4,11 +4,11 @@ import { useState, useEffect } from "react";
 import { Calendar, Users, Filter, X, Plus, ChevronUp, ChevronDown, Search, Building, MapPin, Menu } from "lucide-react";
 import Link from "next/link";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from "@headlessui/react";
-import {Dormitory} from "@/types/dormitories.types";
-import {useGetActiveDormitories} from "@/hooks/dormitories.hook";
-import {useGetAvailableRoom, useGetRooms, useUpdateRoom} from "@/hooks/rooms.hook";
-import {AvailableRoomsRequest, Room} from "@/types/rooms.types";
-import {CalendarOfAvailability2WVerComponent} from "@/components/ui/CalendarOfAvailability2WVer.component";
+import { Dormitory } from "@/types/dormitories.types";
+import { useGetActiveDormitories } from "@/hooks/dormitories.hook";
+import { useGetAvailableRoom, useGetRooms, useUpdateRoom } from "@/hooks/rooms.hook";
+import { AvailableRoomsRequest, Room } from "@/types/rooms.types";
+import { CalendarOfAvailability2WVerComponent } from "@/components/ui/CalendarOfAvailability2WVer.component";
 
 interface Filters {
     dateFrom: string;
@@ -22,58 +22,58 @@ export default function AllRoomsPage() {
 
     // Dormitories, floors and rooms
     const [dormitoriesList, setDormitoriesList] = useState<Dormitory[]>([]);
-    const [currentDormitory, setCurrentDormitory] = useState<Dormitory|null>(null);
+    const [currentDormitory, setCurrentDormitory] = useState<Dormitory | null>(null);
     const [roomList, setRoomList] = useState<Room[]>([]);
     const [floorList, setFloorList] = useState<number[]>([]);
     const [currentFloor, setCurrentFloor] = useState<number | null>(null);
     const [roomsOnCurrentFloor, setRoomsOnCurrentFloor] = useState<Room[]>([]);
     const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
 
-    const {data:dormitories, isLoading: loadingDormitories, error: dormitoriesError} = useGetActiveDormitories();
-    const {data:rooms, isLoading: loadingRooms, error: roomsError} = useGetRooms();
+    const { data: dormitories, isLoading: loadingDormitories, error: dormitoriesError } = useGetActiveDormitories();
+    const { data: rooms, isLoading: loadingRooms, error: roomsError } = useGetRooms();
 
 
     useEffect(() => {
-        if(dormitories && dormitories?.data){
+        if (dormitories && dormitories?.data) {
             setDormitoriesList(dormitories.data)
         }
     }, [dormitories]);
 
     useEffect(() => {
-        if(dormitoriesList.length > 0){
+        if (dormitoriesList.length > 0) {
             setCurrentDormitory(dormitoriesList[0])
         }
     }, [dormitoriesList]);
 
     useEffect(() => {
-        if(rooms){
+        if (rooms) {
             setRoomList(rooms)
         }
     }, [rooms]);
 
     useEffect(() => {
-        if(currentDormitory){
+        if (currentDormitory) {
             setFloorList(generateFloorsForDormitory(currentDormitory?.id, roomList))
         }
     }, [currentDormitory, roomList]);
 
     useEffect(() => {
-        if(floorList && floorList.length > 0){
+        if (floorList && floorList.length > 0) {
             setCurrentFloor(floorList[0])
             console.log("Floor set")
-        }else{
+        } else {
             setCurrentFloor(null)
         }
     }, [floorList]);
 
     useEffect(() => {
-        if(currentDormitory?.id && currentFloor !== null) {
+        if (currentDormitory?.id && currentFloor !== null) {
             setRoomsOnCurrentFloor(generateRoomsForFloorOnDormitory(currentDormitory?.id, currentFloor, roomList));
         }
     }, [currentFloor, currentDormitory]);
 
     useEffect(() => {
-        if(roomsOnCurrentFloor && roomsOnCurrentFloor.length > 0) {
+        if (roomsOnCurrentFloor && roomsOnCurrentFloor.length > 0) {
             setSelectedRoom(null)
         }
     }, [roomsOnCurrentFloor]);
@@ -84,7 +84,7 @@ export default function AllRoomsPage() {
         const floors = new Set<number>([])
 
         onRooms.forEach(room => {
-            if(room.dormitoryId === dormitoryId){
+            if (room.dormitoryId === dormitoryId) {
                 floors.add(room.floor)
             }
         })
@@ -96,11 +96,11 @@ export default function AllRoomsPage() {
         return floorArray
     }
 
-    const generateRoomsForFloorOnDormitory = (dormitoryId: string, floor:number, onRooms: Room[]) => {
-        const roomsOnThisFloor:Room[] = []
+    const generateRoomsForFloorOnDormitory = (dormitoryId: string, floor: number, onRooms: Room[]) => {
+        const roomsOnThisFloor: Room[] = []
 
         onRooms.forEach(room => {
-            if(room.dormitoryId === dormitoryId && room.floor === floor){
+            if (room.dormitoryId === dormitoryId && room.floor === floor) {
                 roomsOnThisFloor.push(room)
             }
         })
@@ -118,20 +118,20 @@ export default function AllRoomsPage() {
 
     //available rooms
     const [availableRoomsIds, setAvailableRoomsIds] = useState<string[]>([])
-    const [availableRoomsRequest, setAvailableRoomRequest] = useState<AvailableRoomsRequest>({from: '', to: ''})
+    const [availableRoomsRequest, setAvailableRoomRequest] = useState<AvailableRoomsRequest>({ from: '', to: '' })
 
     useEffect(() => {
-        if(filters.dateFrom !== '' && filters.dateTo !== ''){
-            const request:AvailableRoomsRequest = {to: filters.dateTo, from: filters.dateFrom}
+        if (filters.dateFrom !== '' && filters.dateTo !== '') {
+            const request: AvailableRoomsRequest = { to: filters.dateTo, from: filters.dateFrom }
             setAvailableRoomRequest(request)
             console.log("Available rooms:")
         }
     }, [filters.dateFrom, filters.dateTo]);
 
-    const {data: availableRooms, isLoading: loadingAvailableRooms, error: availableRoomsError} = useGetAvailableRoom(availableRoomsRequest)
+    const { data: availableRooms, isLoading: loadingAvailableRooms, error: availableRoomsError } = useGetAvailableRoom(availableRoomsRequest)
 
     useEffect(() => {
-        if(availableRooms && availableRooms.length > 0) {
+        if (availableRooms && availableRooms.length > 0) {
             const ids = availableRooms.map(room => room.id)
             setAvailableRoomsIds(ids)
         }
@@ -160,7 +160,7 @@ export default function AllRoomsPage() {
 
         //const roomatesReq = filters.roommates==="none" ? room.residents.length===0 : true
 
-        return !availableRoomsIds.includes(room.id) || filters.groupSize<=availableSpace;
+        return !availableRoomsIds.includes(room.id) || filters.groupSize <= availableSpace;
     };
 
     const handleFilterChange = (key: keyof Filters, value: any) => {
@@ -195,29 +195,29 @@ export default function AllRoomsPage() {
     const handleDormitoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const { value } = event.target;
 
-        if(value === "") {
+        if (value === "") {
             setCurrentDormitory(null);
-        }else{
+        } else {
             const foundDorm = dormitoriesList.find((dorm) => dorm.id === value);
-            if(foundDorm){
+            if (foundDorm) {
                 setCurrentDormitory(foundDorm)
-            }else{
+            } else {
                 setCurrentDormitory(null)
             }
             console.log("Dormitory: ", currentDormitory?.name)
         }
     }
 
-    const handleFloorChange = (event: React.MouseEvent<HTMLButtonElement>)=>{
-        const {value} = event.currentTarget;
+    const handleFloorChange = (event: React.MouseEvent<HTMLButtonElement>) => {
+        const { value } = event.currentTarget;
 
-        try{
+        try {
             const floor_number = Number(value);
-            if(floorList.includes(floor_number)){
+            if (floorList.includes(floor_number)) {
                 setCurrentFloor(floor_number);
             }
-        }catch (e) {
-            console.error("Parsing error? :",e);
+        } catch (e) {
+            console.error("Parsing error? :", e);
         }
 
     }
@@ -262,7 +262,7 @@ export default function AllRoomsPage() {
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
                         <div className="space-y-4">
                             <span className="text-sm font-medium text-slate-700">Filters:</span>
-                            
+
                             {/* Mobile: Stack filters vertically */}
                             <div className="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3 sm:gap-4">
                                 {/* Date Range */}
@@ -362,68 +362,70 @@ export default function AllRoomsPage() {
             )}
 
             {/* Main Content */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-8">
-                <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-8">
-                    
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-6">
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-6">
+
                     {/* Left Column - Dormitory and Floor Selection */}
-                    <div className="lg:col-span-3 space-y-4 lg:space-y-6">
-                        
+                    <div className="lg:col-span-3 space-y-3 lg:space-y-4">
+
                         {/* Dormitory Selection */}
-                        <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden animate-in fade-in-0 slide-in-from-bottom-4 duration-500">
-                            <div className="px-4 sm:px-6 py-3 sm:py-4 bg-slate-50 border-b border-slate-200">
-                                <h2 className="text-base sm:text-lg font-semibold text-slate-900 flex items-center">
+                        <div className="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden animate-in fade-in-0 slide-in-from-bottom-4 duration-500">
+                            <div className="px-3 sm:px-4 py-2 sm:py-3 bg-slate-50 border-b border-slate-200">
+                                <h2 className="text-sm sm:text-base font-semibold text-slate-900 flex items-center">
                                     <MapPin className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-blue-600 flex-shrink-0" />
                                     <span className="truncate">Dormitory:
-                                        <select name="currentDormitory" id="dormitory-select" onChange={handleDormitoryChange}>
+                                        <select name="currentDormitory" id="dormitory-select" onChange={handleDormitoryChange} className="ml-2 text-sm border rounded px-2 py-1">
                                             {dormitoriesList ? (
                                                 dormitoriesList.map((dormitory) => (
                                                     <option key={dormitory.id} value={dormitory.id}>{dormitory.name}</option>
                                                 ))
-                                            ):(
+                                            ) : (
                                                 <option value={""}>No dormitories available</option>
                                             )}
                                         </select>
                                     </span>
                                 </h2>
                             </div>
-                            <div className="p-4 sm:p-6">
-                                <div className="space-y-3">
+                            <div className="p-3 sm:p-4">
+                                <div className="space-y-2">
                                     <span className="text-sm font-medium text-slate-700">Floor:</span>
-                                    <div className="grid grid-cols-3 sm:grid-cols-5 lg:grid-cols-9 gap-2">
-                                        {floorList && floorList.length>0 ?(
+                                    <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-2">
+                                        {floorList && floorList.length > 0 ? (
                                             floorList.map((floor) => (
                                                 <button
                                                     key={floor}
                                                     value={floor}
-                                                    onClick={ handleFloorChange}
-                                                    className={`px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 hover:scale-105 active:scale-95 ${
-                                                        currentFloor === floor
+                                                    onClick={handleFloorChange}
+                                                    className={`px-2 py-1 text-xs sm:text-sm font-medium rounded-lg transition-all duration-200 hover:scale-105 active:scale-95 ${currentFloor === floor
                                                             ? 'bg-blue-600 text-white shadow-md'
                                                             : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                                                    }`}
+                                                        }`}
                                                 >
                                                     {floor}
-                                                </button>))
-                                        ):(<></>)}
+                                                </button>
+                                            ))
+                                        ) : (
+                                            <></>
+                                        )}
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         {/* Rooms Grid */}
-                        <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden animate-in fade-in-0 slide-in-from-bottom-4 duration-500 delay-100">
-                            <div className="px-4 sm:px-6 py-3 sm:py-4 bg-slate-50 border-b border-slate-200">
-                                <h2 className="text-base sm:text-lg font-semibold text-slate-900">
+                        <div className="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden animate-in fade-in-0 slide-in-from-bottom-4 duration-500 delay-100">
+                            <div className="px-3 sm:px-4 py-2 sm:py-3 bg-slate-50 border-b border-slate-200">
+                                <h2 className="text-sm sm:text-base font-semibold text-slate-900">
                                     Rooms:
                                 </h2>
                             </div>
-                            <div className="p-4 sm:p-6">
-                                {/* Mobile: 6 columns, Tablet: 9 columns, Desktop: 9 columns */}
-                                <div className="grid grid-cols-6 sm:grid-cols-9 gap-2 sm:gap-3">
+                            <div className="p-3 sm:p-4">
+                                {/* Compact Grid */}
+                                <div className="grid grid-cols-5 sm:grid-cols-8 gap-2 sm:gap-3">
                                     {roomsOnCurrentFloor.map((room, index) => (
-                                        <div key={room.id} className="flex flex-col items-center space-y-1 sm:space-y-2">
+                                        <div key={room.id} className="flex flex-col items-center space-y-1">
                                             <div
-                                                className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center text-white text-xs font-medium cursor-pointer transition-all duration-200 hover:scale-110 active:scale-95 hover:shadow-md animate-in zoom-in-50 duration-300`}
+                                                className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center text-white text-xs font-medium cursor-pointer transition-all duration-200 hover:scale-110 active:scale-95 hover:shadow-md animate-in zoom-in-50 duration-300`}
                                                 style={{ animationDelay: `${index * 20}ms` }}
                                                 onClick={() => handleRoomSelect(room)}
                                             >
@@ -435,19 +437,19 @@ export default function AllRoomsPage() {
                                         </div>
                                     ))}
                                 </div>
-                                
+
                                 {/* Legend */}
-                                <div className="mt-4 sm:mt-6 grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 text-sm animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-300">
+                                <div className="mt-3 sm:mt-4 grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 text-xs sm:text-sm animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-300">
                                     <div className="flex items-center space-x-2">
-                                        <div className="w-4 h-4 bg-green-500 rounded flex-shrink-0"></div>
+                                        <div className="w-3 h-3 bg-green-500 rounded flex-shrink-0"></div>
                                         <span className="text-slate-700">Available</span>
                                     </div>
                                     <div className="flex items-center space-x-2">
-                                        <div className="w-4 h-4 bg-blue-500 rounded flex-shrink-0"></div>
+                                        <div className="w-3 h-3 bg-blue-500 rounded flex-shrink-0"></div>
                                         <span className="text-slate-700">Partially occupied</span>
                                     </div>
                                     <div className="flex items-center space-x-2">
-                                        <div className="w-4 h-4 bg-red-500 rounded flex-shrink-0"></div>
+                                        <div className="w-3 h-3 bg-red-500 rounded flex-shrink-0"></div>
                                         <span className="text-slate-700">Fully occupied</span>
                                     </div>
                                 </div>
@@ -457,19 +459,19 @@ export default function AllRoomsPage() {
 
                     {/* Right Column - Room Details (Desktop) */}
                     <div className="hidden lg:block lg:col-span-1 animate-in fade-in-0 slide-in-from-right-4 duration-500 delay-200">
-                        <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden sticky top-8">
+                        <div className="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden sticky top-8">
                             {selectedRoom ? (
                                 <>
-                                    <div className="px-6 py-4 bg-slate-50 border-b border-slate-200">
+                                    <div className="px-4 py-3 bg-slate-50 border-b border-slate-200">
                                         <div className="space-y-2">
-                                            <h3 className="text-lg font-semibold text-slate-900">
+                                            <h3 className="text-sm font-semibold text-slate-900">
                                                 Room {selectedRoom.number}:
                                             </h3>
                                             {meetsSearchRequirements(selectedRoom) ? (
                                                 <span className="inline-block text-xs text-green-600 bg-green-100 px-2 py-1 rounded-full">
                                                     Room meets the search requirements
                                                 </span>
-                                            ):(
+                                            ) : (
                                                 <span className="inline-block text-xs text-red-600 bg-red-100 px-2 py-1 rounded-full">
                                                     Room doesn't meet the search requirements
                                                 </span>
@@ -482,30 +484,30 @@ export default function AllRoomsPage() {
                                             </Link>
                                         </div>
                                     </div>
-                                    
+
                                     {/* Availability Calendar */}
-                                    <CalendarOfAvailability2WVerComponent  statuses={selectedRoom.statuses} showLegend={false}/>
+                                    <CalendarOfAvailability2WVerComponent statuses={selectedRoom.statuses} showLegend={false} />
 
                                     {/* Residents */}
-                                    <div className="px-6 py-4">
-                                        <h4 className="text-sm font-medium text-slate-900 mb-3">
+                                    <div className="px-4 py-3">
+                                        <h4 className="text-sm font-medium text-slate-900 mb-2">
                                             Residents, {selectedRoom.residents.length}/{selectedRoom.capacity}:
                                         </h4>
                                         <div className="space-y-2">
                                             {selectedRoom.residents.map((resident, index) => (
-                                                <div 
-                                                    key={resident.id} 
-                                                    className="bg-slate-100 rounded-lg p-3 animate-in fade-in-0 slide-in-from-left-2 duration-300"
+                                                <div
+                                                    key={resident.id}
+                                                    className="bg-slate-100 rounded-lg p-2 animate-in fade-in-0 slide-in-from-left-2 duration-300"
                                                     style={{ animationDelay: `${index * 100}ms` }}
                                                 >
-                                                    <div className="space-y-2">
+                                                    <div className="space-y-1">
                                                         <div>
-                                                            <div className="font-medium text-slate-900 text-sm">
+                                                            <div className="font-medium text-slate-900 text-xs">
                                                                 {resident.displayName} {resident.secondName}
                                                             </div>
                                                         </div>
                                                         <div className="flex items-center justify-between">
-                                                            <div className="flex items-center space-x-2">
+                                                            <div className="flex items-center space-x-1">
                                                                 <span className="text-xs">Payments</span>
                                                             </div>
                                                             <button className="px-2 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700 transition-colors">
@@ -516,7 +518,7 @@ export default function AllRoomsPage() {
                                                 </div>
                                             ))}
                                             {Array.from({ length: selectedRoom.capacity - selectedRoom.residents.length }, (_, i) => (
-                                                <div key={`empty-${i}`} className="bg-slate-50 border-2 border-dashed border-slate-300 rounded-lg p-3 text-center text-slate-500 text-sm animate-in fade-in-0 zoom-in-95 duration-300">
+                                                <div key={`empty-${i}`} className="bg-slate-50 border-2 border-dashed border-slate-300 rounded-lg p-2 text-center text-slate-500 text-xs animate-in fade-in-0 zoom-in-95 duration-300">
                                                     Available for accommodation
                                                 </div>
                                             ))}
@@ -524,9 +526,9 @@ export default function AllRoomsPage() {
                                     </div>
                                 </>
                             ) : (
-                                <div className="px-6 py-12 text-center animate-in fade-in-0 zoom-in-50 duration-500">
-                                    <Building className="mx-auto h-12 w-12 text-slate-300 animate-pulse" />
-                                    <p className="mt-2 text-slate-500">Select a room to view details</p>
+                                <div className="px-4 py-8 text-center animate-in fade-in-0 zoom-in-50 duration-500">
+                                    <Building className="mx-auto h-10 w-10 text-slate-300 animate-pulse" />
+                                    <p className="mt-2 text-slate-500 text-sm">Select a room to view details</p>
                                 </div>
                             )}
                         </div>
@@ -567,7 +569,7 @@ export default function AllRoomsPage() {
                                         To room page →
                                     </Link>
                                 </div>
-                                
+
                                 <div className="overflow-y-auto max-h-[70vh]">
                                     {/* Availability Calendar */}
                                     <div className="px-6 py-4 border-b border-slate-200">
@@ -586,9 +588,8 @@ export default function AllRoomsPage() {
                                                     className={`text-center py-2 rounded text-xs font-medium transition-all duration-200 hover:scale-110 cursor-pointer animate-in zoom-in-50 duration-300`}
                                                     style={{ animationDelay: `${index * 30}ms` }}
                                                 >
-                                                    <div className={`w-full py-1 rounded ${
-                                                        index < 4 ? 'bg-red-200 text-red-800' : 'bg-green-200 text-green-800'
-                                                    }`}>
+                                                    <div className={`w-full py-1 rounded ${index < 4 ? 'bg-red-200 text-red-800' : 'bg-green-200 text-green-800'
+                                                        }`}>
                                                         <div>{day.dayNumber}.{day.month}</div>
                                                     </div>
                                                 </div>
@@ -603,8 +604,8 @@ export default function AllRoomsPage() {
                                         </h4>
                                         <div className="space-y-3">
                                             {selectedRoom.residents.map((resident, index) => (
-                                                <div 
-                                                    key={resident.id} 
+                                                <div
+                                                    key={resident.id}
                                                     className="bg-slate-100 rounded-lg p-4 animate-in fade-in-0 slide-in-from-left-2 duration-300"
                                                     style={{ animationDelay: `${index * 100}ms` }}
                                                 >
