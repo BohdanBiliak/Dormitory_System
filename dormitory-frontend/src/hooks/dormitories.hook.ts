@@ -36,7 +36,7 @@ export function useDormitories() {
     const createDormitory = useMutation({
         mutationFn: ({newDormitory}:{newDormitory:DormitoryRequest})=>dormitoryApi.createDormitory(newDormitory),
         onSuccess: (result:Dormitory) => {
-            queryClient.invalidateQueries({queryKey: ['dormitory']})
+            queryClient.invalidateQueries({queryKey: ['dormitories']})
             toast.success("Dormitory has been created!")
         },
         onError: (error:any)=> {

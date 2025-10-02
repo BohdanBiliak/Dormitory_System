@@ -1,5 +1,13 @@
 import {api} from "@/app/lib/api.api";
-import {AvailableRoomsRequest, CreateRoomStatusRequest, Room, RoomStatus, UpdateRoomData} from "@/types/rooms.types";
+import {
+    AvailableRoomsRequest,
+    CreateRoomStatusRequest,
+    EvictRequest,
+    Room,
+    RoomStatus,
+    UpdateRoomData
+} from "@/types/rooms.types";
+import {User} from "@/types/auth.types";
 
 export const roomsApi= {
     async getRooms(): Promise<Room[]>{
@@ -45,6 +53,11 @@ export const roomsApi= {
 
     async postRoomStatus(roomId:string, data:CreateRoomStatusRequest):Promise<RoomStatus>{
         const response = await api.post(`/rooms/${roomId}/statuses`, data);
+        return response.data;
+    },
+
+    async evictUser(roomId:string, data:EvictRequest):Promise<User>{
+        const response = await api.patch(`/rooms/${roomId}/evict-user`, data);
         return response.data;
     }
 }

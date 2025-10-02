@@ -34,6 +34,7 @@ export function useMutateAdminProfile (){
     mutationFn: ({ file, userLastName }: { file: File; userLastName: string }) => {return adminApi.uploadAvatar(file)}
     ,
     onSuccess: (response) => {
+      //queryClient.invalidateQueries({ queryKey: ['currentUser'] })
       toast.success('Avatar updated successfully!')
     },
     onError: (error: any) => {

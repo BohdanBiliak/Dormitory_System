@@ -1,17 +1,17 @@
 'use client'
 
 import {MenuItem} from "@/types/ui.types";
+import {useAuth} from "@/hooks/auth.hook";
+import React, {useEffect, useState} from "react";
+import {useCurrentUserProfile} from "@/hooks/user.hook";
 import Link from "next/link";
-import {useState} from "react";
-import { useAuth } from '@/hooks/auth.hook'
 
-interface SideMenuProps {
+interface AdminSideMenuProps {
     children: React.ReactNode;
-    menuItems: MenuItem[];
-    activeItem: string;
+    /*activeItem: string;*/
 }
 
-export function SideMenu ({children, menuItems, activeItem}:SideMenuProps){
+export function AdminSideMenu ({children}:AdminSideMenuProps){
     const { logout, isLoggingOut } = useAuth()
     const [openMenu, setOpenMenu] = useState<string>()
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -29,6 +29,117 @@ export function SideMenu ({children, menuItems, activeItem}:SideMenuProps){
     const toggleMobileMenu = () => {
         setIsMobileMenuOpen(!isMobileMenuOpen)
     }
+
+    const {data: user, isLoading, error} = useCurrentUserProfile()
+
+    const AdminMenuItems:MenuItem[] = [
+        {
+            id: 'profile',
+            image: '/user.svg',
+            label: 'My profile',
+            href: '/admin/profile'
+        },
+        {
+            id: 'dormitories',
+            image: '/workplace.svg',
+            label: 'Dormitory management',
+            subMenu: [
+                {
+                    id: 'dormsInfo',
+                    label: 'Information',
+                    image: '/clipboard-text.svg',
+                    href: '/admin/dormitories'
+                },
+                {
+                    id: 'rooms',
+                    label: 'Available rooms',
+                    image: '/home.svg',
+                    href: '/admin/rooms',
+                },
+                {
+                    id: 'users',
+                    label: 'User profiles',
+                    image: '/users.svg',
+                    href: '/admin/users',
+                },
+                {
+                    id:'confirmations',
+                    label: 'Confirmations',
+                    image:'/clipboard-check.svg',
+                    href: '/admin/confirmations',
+                },
+                {
+                    id:'payments',
+                    label: 'Payments',
+                    image: '/cash.svg',
+                    href: '#'
+                }
+            ]
+        },
+        {
+            id: 'communication',
+            image: '/comments.svg',
+            label: 'Communication',
+            subMenu: [
+                {
+                    id: 'announcements',
+                    label: 'Announcements',
+                    image:'/comments.svg',
+                    href: '/admin/announcements'
+                },
+                {
+                    id:'messages',
+                    label: 'Messages',
+                    image:'/envelope.svg',
+                    href: '#'
+                }
+            ]
+        },
+        {
+            id:'logout',
+            image:'/sign-out.svg',
+            label:'Logout',
+        }
+    ]
+
+    const GuestMenuItems: MenuItem[] = [
+        {
+            id: 'dormitories',
+            image: '/workplace.svg',
+            label: 'Dormitories Information',
+            href: "/dormitories",
+        },
+        {
+            id: 'announcements',
+            image: '/clipboard-check.svg',
+            label: 'Announcements',
+            href: "/announcements-public"
+        },
+        {
+            id: 'rooms',
+            image: '/home.svg',
+            label: 'Available rooms'
+        },
+        {
+            id: 'signin',
+            image: '/user.svg',
+            label: 'Sign in',
+            href: "/auth/login",
+        }
+    ]
+
+    const [currentMenuItems, setCurrentMenuItems] = useState<MenuItem[]>(GuestMenuItems)
+
+    useEffect(() => {
+        if(user){
+            switch (user.role){
+                case "Admin": setCurrentMenuItems(AdminMenuItems); break;
+                default: setCurrentMenuItems(GuestMenuItems);
+            }
+        }else{
+            setCurrentMenuItems(GuestMenuItems);
+        }
+    },[user])
 
     return(
         <div className="min-h-screen bg-white flex flex-col md:flex-row">
@@ -62,7 +173,7 @@ export function SideMenu ({children, menuItems, activeItem}:SideMenuProps){
                 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
                 md:mt-0 ${isMobileMenuOpen ? 'mt-0' : ''}
             `} style={{ backgroundColor: '#013366' }}>
-                
+
                 {/* Desktop Header */}
                 <div className="hidden md:flex items-center space-x-3 mb-4 p-6">
                     <div className="mr-6 lg:mr-10">
@@ -94,7 +205,7 @@ export function SideMenu ({children, menuItems, activeItem}:SideMenuProps){
                 </div>
 
                 <nav className="space-y-2 md:space-y-4 flex-1 p-4 md:px-0">
-                    {menuItems.map((item) => (
+                    {currentMenuItems.map((item) => (
                         <div key={item.id} className="mb-2">
                             {item.subMenu? (
                                 <>
@@ -149,11 +260,9 @@ export function SideMenu ({children, menuItems, activeItem}:SideMenuProps){
                                             </button>
                                         )
                                     }else return(
-                                        <Link 
-                                            href={item.href || '#'} 
-                                            className={`flex items-center space-x-3 px-3 py-2 md:py-3 rounded hover:bg-blue-800 transition-colors ${
-                                                activeItem === item.id ? 'bg-blue-800 font-semibold' : ''
-                                            }`}
+                                        <Link
+                                            href={item.href || '#'}
+                                            className={`flex items-center space-x-3 px-3 py-2 md:py-3 rounded hover:bg-blue-800 transition-colors`}
                                             onClick={() => setIsMobileMenuOpen(false)}
                                         >
                                             <img src={item.image} alt={item.label} className="w-8 h-8 md:w-10 md:h-10 filter brightness-0 invert"/>
@@ -179,7 +288,7 @@ export function SideMenu ({children, menuItems, activeItem}:SideMenuProps){
 
             {/* Overlay for mobile */}
             {isMobileMenuOpen && (
-                <div 
+                <div
                     className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
                     onClick={() => setIsMobileMenuOpen(false)}
                 ></div>
@@ -192,5 +301,5 @@ export function SideMenu ({children, menuItems, activeItem}:SideMenuProps){
                 </div>
             </div>
         </div>
-    );
+    )
 }

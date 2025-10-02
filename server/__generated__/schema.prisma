@@ -159,23 +159,24 @@ enum PaymentItemType {
 // USER MODELS
 // ==========================================
 model User {
-  id                 String     @id @default(uuid())
-  email              String     @unique
-  password           String
-  displayName        String
-  picture            String
-  isVerified         Boolean    @default(false) @map("is_verified")
-  isTwoFactorEnabled Boolean    @default(false) @map("is_two_factor_enabled")
-  method             AuthMethod
-  role               UserRole   @default(Regular)
-  secondName         String     @map("second_name")
-  studentIdFront     String     @map("student_id_front")
-  studentIdBack      String?    @map("student_id_back")
-  isActive           Boolean    @default(true) @map("is_active")
-  reservationDate    DateTime?  @map("reservation_date")
+  id                   String     @id @default(uuid())
+  email                String     @unique
+  password             String
+  displayName          String
+  picture              String
+  isVerified           Boolean    @default(false) @map("is_verified")
+  isTwoFactorEnabled   Boolean    @default(false) @map("is_two_factor_enabled")
+  method               AuthMethod
+  role                 UserRole   @default(Regular)
+  secondName           String     @map("second_name")
+  studentIdFront       String     @map("student_id_front")
+  studentIdBack        String?    @map("student_id_back")
+  isActive             Boolean    @default(true) @map("is_active")
+  startReservationDate DateTime?  @map("start_date")
+  endReservationDate   DateTime?  @map("end_date")
   // Foreign Keys
-  dormitoryId        String?    @map("dormitory_id")
-  roomId             String?    @map("room_id")
+  dormitoryId          String?    @map("dormitory_id")
+  roomId               String?    @map("room_id")
 
   // Relations
   confirmations             Confirmation[]          @relation("UserConfirmations")

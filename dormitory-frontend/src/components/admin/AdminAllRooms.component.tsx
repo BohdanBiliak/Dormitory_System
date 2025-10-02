@@ -13,8 +13,7 @@ import { CalendarOfAvailability2WVerComponent } from "@/components/ui/CalendarOf
 interface Filters {
     dateFrom: string;
     dateTo: string;
-    roommates: 'none' | 'some' | 'full';
-    roomSize: number[];
+    residents: 'either' | 'empty' | 'occupied';
     groupSize: number;
 }
 
@@ -111,9 +110,8 @@ export default function AllRoomsPage() {
     const [filters, setFilters] = useState<Filters>({
         dateFrom: '',
         dateTo: '',
-        roommates: 'none',
-        roomSize: [],
-        groupSize: 2
+        residents: 'either',
+        groupSize: 1
     });
 
     //available rooms
@@ -124,7 +122,6 @@ export default function AllRoomsPage() {
         if (filters.dateFrom !== '' && filters.dateTo !== '') {
             const request: AvailableRoomsRequest = { to: filters.dateTo, from: filters.dateFrom }
             setAvailableRoomRequest(request)
-            console.log("Available rooms:")
         }
     }, [filters.dateFrom, filters.dateTo]);
 
@@ -134,6 +131,7 @@ export default function AllRoomsPage() {
         if (availableRooms && availableRooms.length > 0) {
             const ids = availableRooms.map(room => room.id)
             setAvailableRoomsIds(ids)
+            console.log("Available rooms:", availableRooms)
         }
     }, [availableRooms]);
 
@@ -157,10 +155,9 @@ export default function AllRoomsPage() {
 
     const meetsSearchRequirements = (room: Room) => {
         const availableSpace = room.capacity - room.residents.length;
+        const roommatesRequirement = filters.residents === "either" ? true : filters.residents === "occupied" ? room.residents.length > 0 : room.residents.length < 1;
 
-        //const roomatesReq = filters.roommates==="none" ? room.residents.length===0 : true
-
-        return !availableRoomsIds.includes(room.id) || filters.groupSize <= availableSpace;
+        return availableRoomsIds.includes(room.id) && filters.groupSize<=availableSpace && roommatesRequirement;
     };
 
     const handleFilterChange = (key: keyof Filters, value: any) => {
@@ -170,7 +167,7 @@ export default function AllRoomsPage() {
     const clearFilter = (key: keyof Filters) => {
         setFilters(prev => ({
             ...prev,
-            [key]: key === 'roomSize' ? [] : key === 'roommates' ? 'none' : ''
+            [key]: key === 'residents' ? 'either' : ''
         }));
     };
 
@@ -302,36 +299,23 @@ export default function AllRoomsPage() {
                                 <div className="flex items-center justify-between sm:justify-start space-x-2 bg-slate-100 rounded-lg px-3 py-2 animate-in fade-in-0 slide-in-from-left-2 duration-300 delay-75">
                                     <div className="flex items-center space-x-2">
                                         <Users className="w-4 h-4 text-slate-500" />
-                                        <span className="text-sm text-slate-700">Roommates:</span>
+                                        <span className="text-sm text-slate-700">Empty room:</span>
                                     </div>
                                     <div className="flex items-center space-x-2">
                                         <select
-                                            value={filters.roommates}
-                                            onChange={(e) => handleFilterChange('roommates', e.target.value)}
+                                            value={filters.residents}
+                                            onChange={(e) => handleFilterChange('residents', e.target.value)}
                                             className="text-sm border-none bg-white rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                         >
-                                            <option value="none">None</option>
-                                            <option value="some">Some</option>
-                                            <option value="full">Full</option>
+                                            <option value="empty">Yes</option>
+                                            <option value="occupied">No</option>
+                                            <option value="either">Doesn't matter</option>
                                         </select>
                                         <button
-                                            onClick={() => clearFilter('roommates')}
+                                            onClick={() => clearFilter('residents')}
                                             className="text-slate-500 hover:text-slate-700 transition-colors p-1"
                                         >
                                             <X className="w-4 h-4" />
-                                        </button>
-                                    </div>
-                                </div>
-
-                                {/* Room Size */}
-                                <div className="flex items-center justify-between sm:justify-start space-x-2 bg-slate-100 rounded-lg px-3 py-2 animate-in fade-in-0 slide-in-from-left-2 duration-300 delay-150">
-                                    <span className="text-sm text-slate-700">Room size:</span>
-                                    <div className="flex items-center space-x-2">
-                                        <button className="w-6 h-6 bg-white rounded border hover:bg-slate-50 transition-colors flex items-center justify-center">
-                                            <Plus className="w-4 h-4" />
-                                        </button>
-                                        <button className="w-6 h-6 bg-slate-200 rounded hover:bg-slate-300 transition-colors flex items-center justify-center">
-                                            <ChevronUp className="w-4 h-4" />
                                         </button>
                                     </div>
                                 </div>
@@ -343,6 +327,7 @@ export default function AllRoomsPage() {
                                         <input
                                             type="number"
                                             value={filters.groupSize}
+                                            min={1}
                                             onChange={(e) => handleFilterChange('groupSize', parseInt(e.target.value))}
                                             className="w-16 text-sm text-center border-none bg-white rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                         />
