@@ -4,19 +4,19 @@ import {
   Injectable,
   NotFoundException,
 } from "@nestjs/common";
-import { $Enums, PrismaClient, User } from "../../../../__generated__";
-import { RoomRepository, RoomWithRelations, UpdateRoomData } from "../repositories/room.repository";
-import { UpdateRoomDto } from "../dto/update-room.dto";
-import { AvailableRoomsDto } from "../dto/availableRooms.dto";
+import { $Enums, PrismaClient, User } from "../../../__generated__";
+import { RoomRepository, RoomWithRelations, UpdateRoomData } from "./room.repository";
+import { UpdateRoomDto } from "./dto/update-room.dto";
+import { AvailableRoomsDto } from "./dto/availableRooms.dto";
 import { BookRoomDto } from "@modules/room/dto/book-room.dto";
-import { RequestAccommmodationDto } from "../dto/requestAccommmodation.dto";
+import { RequestAccommmodationDto } from "./dto/requestAccommmodation.dto";
 import { RequestMoveOutDto } from "@modules/room/dto/request-moveout.dto";
 import { CreateRoomStatusDto } from "@modules/room/dto/create-room-status.dto";
 import { SetPriceDto } from "@modules/room/dto/set-price.dto";
 import { AuditService } from "@modules/audit/audit.service";
 import { NotificationsService } from "@modules/notifications/notifications.service";
 import { MailService } from "@libs/mail/mail.service";
-import { EvictUserFromRoomDto } from "../dto/evict-user.dto";
+import { EvictUserFromRoomDto } from "./dto/evict-user.dto";
 import { S3Service } from "@libs/common/s3/s3.service";
 @Injectable()
 export class RoomService {

@@ -12,7 +12,7 @@ import { EmailConfirmationModule } from '@/modules/auth/submodules/email-confirm
 import {PasswordRecoveryModule} from "@/modules/auth/submodules/password-recovery/password-recovery.module";
 import {TwoFactorAuthModule} from "@/modules/auth/submodules/two-factor-auth/two-factor-auth.module";
 import { AdminModule } from '@/modules/admin/admin.module';
-import { RoomModule } from '@/modules/room/module/room.module';
+import { RoomModule } from '@/modules/room/room.module';
 import {DormitoryModule} from "@/modules/dormitory/dormitory.module";
 import {SentryGlobalFilter, SentryModule} from "@sentry/nestjs/setup";
 import {APP_FILTER} from "@nestjs/core";

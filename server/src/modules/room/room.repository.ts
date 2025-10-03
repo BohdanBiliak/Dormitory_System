@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '@/prisma/prisma.service';
-import { Room, Prisma, $Enums } from '../../../../__generated__';
-import { AvailableRoomsDto } from '../dto/availableRooms.dto';
+import { Room, Prisma, $Enums } from '../../../__generated__';
+import { AvailableRoomsDto } from './dto/availableRooms.dto';
 export type RoomWithRelations = Prisma.RoomGetPayload<{
   include: {
     residents: {
