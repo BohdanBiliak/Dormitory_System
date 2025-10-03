@@ -17,7 +17,7 @@ import { AuditService } from "@modules/audit/audit.service";
 import { NotificationsService } from "@modules/notifications/notifications.service";
 import { MailService } from "@libs/mail/mail.service";
 import { EvictUserFromRoomDto } from "../dto/evict-user.dto";
-
+import { S3Service } from "@libs/common/s3/s3.service";
 @Injectable()
 export class RoomService {
   constructor(
@@ -25,7 +25,7 @@ export class RoomService {
     private readonly auditService: AuditService,
     private readonly notificationService: NotificationsService,
     private readonly emailService: MailService,
-    private readonly prisma: PrismaClient,
+    private readonly s3: S3Service
   ) { }
 
   async updateRoom(id: string, updateRoomDto: UpdateRoomDto, userId: string): Promise<RoomWithRelations> {
@@ -586,5 +586,9 @@ export class RoomService {
         totalAmount,
       },
     });
+  }
+
+  async uploadFiles(files: Express.Multer.File[], folder: string): Promise<string[]> {
+     return Promise.all(files.map(file => this.s3.uploadFile(file, folder)));
   }
 }

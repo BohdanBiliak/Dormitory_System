@@ -9,9 +9,11 @@ import { MailService } from '@/libs/mail/mail.service';
 import { NotificationGateway } from '../../notifications/NotificationGateway';
 import {RoomRepository} from "@modules/room/repositories/room.repository";
 import {MailModule} from "@libs/mail/mail.module";
+import {S3Module} from "@libs/common/s3/s3.module";
+import {S3Service} from "@libs/common/s3/s3.service";
 @Module({
-  imports: [UserModule, MailModule],
+  imports: [UserModule, MailModule, S3Module],
   controllers: [RoomController],
-  providers: [RoomService, PrismaService, AuditService, NotificationsService, MailService, NotificationGateway, RoomRepository],
+  providers: [RoomService, PrismaService, AuditService, NotificationsService, MailService, NotificationGateway, RoomRepository, S3Service],
 })
 export class RoomModule {}

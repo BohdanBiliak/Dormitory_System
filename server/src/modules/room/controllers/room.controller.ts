@@ -1,6 +1,6 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseInterceptors, UploadedFiles } from "@nestjs/common";
 import { RoomService } from "../services/room.service";
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags,ApiConsumes } from "@nestjs/swagger";
 import { Authorized } from "@/libs/common/decorators/authtorized.decorator";
 import { $Enums, User } from "../../../../__generated__";
 import { Authorization } from "@/libs/common/decorators/auth.decorator";
@@ -14,7 +14,7 @@ import { SetPriceDto } from "@modules/room/dto/set-price.dto";
 import { UpdateRoomDto } from "@modules/room/dto/update-room.dto";
 import UserRole = $Enums.UserRole;
 import { EvictUserFromRoomDto } from "../dto/evict-user.dto";
-
+import { FilesInterceptor } from "@nestjs/platform-express";
 @ApiTags("Rooms")
 @ApiBearerAuth()
 @Controller("rooms")
@@ -729,4 +729,27 @@ export class RoomController {
   async setPrice(@Body() dto: SetPriceDto) {
     return this.roomService.setRoomPrice(dto);
   }
+
+    @Post('upload')
+    @Authorization(UserRole.Admin, UserRole.SuperAdmin)
+    @ApiOperation({ summary: 'Upload announcement attachments' })
+    @ApiConsumes('multipart/form-data')
+    @ApiBody({
+      schema: {
+        type: 'object',
+        properties: {
+          files: {
+            type: 'array',
+            items: { type: 'string', format: 'binary' }
+          }
+        }
+      }
+    })
+    @ApiResponse({ status: 201, description: 'Array of uploaded file URLs', type: String, isArray: true })
+    @UseInterceptors(FilesInterceptor('files'))
+    async upload(@UploadedFiles() files: Express.Multer.File[]) {
+      const urls = await this.roomService.uploadFiles(files, 'rooms');
+
+      return { urls };
+    }
 }
