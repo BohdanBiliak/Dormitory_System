@@ -6,7 +6,7 @@ import {
   UnauthorizedException,
 } from "@nestjs/common";
 import { RegisterDto } from "@/modules/auth/dto/register.dto";
-import { UserService } from "@/modules/user/services/user.service";
+import { UserService } from "@/modules/user/user.service";
 import { $Enums, User } from "../../../__generated__";
 import AuthMethod = $Enums.AuthMethod;
 import { Request, Response } from "express";

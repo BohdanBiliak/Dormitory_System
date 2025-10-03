@@ -12,8 +12,8 @@ import TokenType = $Enums.TokenType;
 import { Request } from "express";
 import { ConfirmationDto } from "@/modules/auth/submodules/email-confirmation/dto/confirmation.dto";
 import { MailService } from "@/libs/mail/mail.service";
-import { UserService } from "@/modules/user/services/user.service";
-import { AuthService } from "@/modules/auth/services/auth.service";
+import { UserService } from "@/modules/user/user.service";
+import { AuthService } from "@/modules/auth/auth.service";
 
 @Injectable()
 export class EmailConfirmationService {

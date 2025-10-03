@@ -292,6 +292,7 @@ export class RoomRepository {
   ) {
     const updatePayload: Prisma.UserUpdateInput = {
       room: roomId ? { connect: { id: roomId } } : { disconnect: true },
+      role: roomId ? $Enums.UserRole.Resident : $Enums.UserRole.SignedInUser,
       ...(data.startDate !== undefined ? { startReservationDate: data.startDate } : {}),
       ...(data.endDate !== undefined ? { endReservationDate: data.endDate } : {}),
     };

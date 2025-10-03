@@ -1,7 +1,7 @@
 import {forwardRef, Module} from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { AuthController } from "./auth.controller";
-import { UserService } from "@/modules/user/services/user.service";
+import { UserService } from "@/modules/user/user.service";
 import { PrismaModule } from "@/prisma/prisma.module";
 import { GoogleRecaptchaModule } from "@nestlab/google-recaptcha";
 import { ConfigModule, ConfigService } from "@nestjs/config";

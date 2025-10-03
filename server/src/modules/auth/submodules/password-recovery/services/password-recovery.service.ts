@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from "@nestjs/common";
 import { PrismaService } from "@/prisma/prisma.service";
-import { UserService } from "@/modules/user/services/user.service";
+import { UserService } from "@/modules/user/user.service";
 import { v4 as uuidv4 } from "uuid";
 import { $Enums } from "../../../../../../__generated__";
 import TokenType = $Enums.TokenType;
