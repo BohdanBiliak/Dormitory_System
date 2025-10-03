@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { ManagerRepository } from '../../repositories/managerRepository';
+import { ManagerRepository } from '../../manager.repository';
 import { UpdateManagerDto } from '../../dto/UpdateManager.dto';
 
 @Injectable()

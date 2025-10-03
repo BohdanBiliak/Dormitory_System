@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ManagerRepository } from '../../repositories/managerRepository';
+import { ManagerRepository } from '../../manager.repository';
 import { ManagerFiltersDto } from '../../dto/ManagerFilters.dto';
 import { ManagerResponseDto } from '../../dto/ManagerResponse.dto';
 

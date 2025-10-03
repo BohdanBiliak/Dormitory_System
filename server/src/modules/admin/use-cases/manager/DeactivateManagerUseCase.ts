@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
-import { ManagerRepository } from '../../repositories/managerRepository';
+import { ManagerRepository } from '../../manager.repository';
 import { NotificationsService } from '@/modules/notifications/notifications.service';
 import { $Enums } from '../../../../../__generated__';
 

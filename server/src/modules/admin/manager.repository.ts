@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@/prisma/prisma.service';
-import { Prisma, User, $Enums } from '../../../../__generated__';
-import { CreateManagerDto } from '../dto/CreateMeneger.dto';
-import { UpdateManagerDto } from '../dto/UpdateManager.dto';
-import { ManagerFiltersDto } from '../dto/ManagerFilters.dto';
-import { IManagerRepository } from '../interfaces/ManagerRepository.interface';
+import { Prisma, User, $Enums } from '../../../__generated__';
+import { CreateManagerDto } from './dto/CreateMeneger.dto';
+import { UpdateManagerDto } from './dto/UpdateManager.dto';
+import { ManagerFiltersDto } from './dto/ManagerFilters.dto';
+import { IManagerRepository } from './manager-repository.interface';
 
 type UserWithRelations = Prisma.UserGetPayload<{
   include: {

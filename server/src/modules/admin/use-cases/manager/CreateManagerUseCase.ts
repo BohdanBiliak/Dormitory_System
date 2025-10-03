@@ -1,5 +1,5 @@
 import { Injectable, ConflictException, NotFoundException, BadRequestException } from '@nestjs/common';
-import { ManagerRepository } from '../../repositories/managerRepository';
+import { ManagerRepository } from '../../manager.repository';
 import { CreateManagerDto } from '../../dto/CreateMeneger.dto';
 import { DormitoryService } from '@/modules/dormitory/dormitory.service';
 import * as argon2 from 'argon2';
