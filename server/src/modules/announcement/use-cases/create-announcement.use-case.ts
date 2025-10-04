@@ -2,7 +2,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { CreateAnnouncementDto } from '../dto/create-announcement.dto';
-import {AnnouncementRepository} from "@modules/announcement/repositories/announcement.repository";
+import {AnnouncementRepository} from "@modules/announcement/announcement.repository";
 
 @Injectable()
 export class CreateAnnouncementUseCase {

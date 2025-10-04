@@ -7,7 +7,7 @@ import {
   Query, UploadedFile,
 } from "@nestjs/common";
 import { $Enums, ConfirmationStatus } from "../../../../__generated__";
-import { ConfirmationService } from "@/modules/confirmation/services/confirmation.service";
+import { ConfirmationService } from "@/modules/confirmation/confirmation.service";
 import { UpdateConfirmationStatusDto } from "@/modules/confirmation/dto/UpdateConfirmationStatus.dto";
 import { GetConfirmationsQueryDto } from "@/modules/confirmation/dto/GetConfirmationsQuery.dto";
 import { CurrentUser } from "@/libs/common/decorators/current-user.decorator";

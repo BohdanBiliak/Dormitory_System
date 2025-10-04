@@ -1,6 +1,6 @@
 // use-cases/get-announcements.use-case.ts
 import { Injectable } from '@nestjs/common';
-import { AnnouncementRepository } from "@modules/announcement/repositories/announcement.repository";
+import { AnnouncementRepository } from "@modules/announcement/announcement.repository";
 
 @Injectable()
 export class GetAnnouncementsUseCase {

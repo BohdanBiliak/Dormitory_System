@@ -6,19 +6,21 @@ import {
   Param, 
   Query, 
   Body, 
-  UseGuards,
   Req 
 } from '@nestjs/common';
 import { NotificationsService, NotificationFilters } from './notifications.service';
-import { Prisma, $Enums, UserRole } from "../../../__generated__";
+import { $Enums, UserRole } from "../../../__generated__";
 import { Authorization } from '@/libs/common/decorators/auth.decorator';
+import { NotificationsDocs } from './notifications.docs';
+
+@NotificationsDocs.controller()
 @Controller('notifications')
 export class NotificationsController {
   constructor(private notificationsService: NotificationsService) {}
 
-
-  @Authorization()
   @Get()
+  @Authorization()
+  @NotificationsDocs.getNotifications()
   async getNotifications(
     @Req() req: any,
     @Query('type') type?: $Enums.NotificationType,
@@ -38,28 +40,32 @@ export class NotificationsController {
 
     return await this.notificationsService.getUserNotifications(filters);
   }
-  @Authorization()
+
   @Get('unread-count')
+  @Authorization()
+  @NotificationsDocs.getUnreadCount()
   async getUnreadCount(@Req() req: any) {
     const count = await this.notificationsService.getUnreadCount(req.user.id);
     return { unreadCount: count };
   }
 
-    @Authorization()
   @Get('stats')
+  @Authorization()
+  @NotificationsDocs.getNotificationStats()
   async getNotificationStats(@Req() req: any) {
     return await this.notificationsService.getNotificationStats(req.user.id);
   }
-  @Authorization()
+
   @Patch(':id/read')
+  @Authorization()
+  @NotificationsDocs.markAsRead()
   async markAsRead(@Param('id') id: string, @Req() req: any) {
-    return await this.notificationsService.markAsRead(
-      id, 
-      req.user.id
-    );
+    return await this.notificationsService.markAsRead(id, req.user.id);
   }
-  @Authorization(UserRole.Admin, UserRole.SuperAdmin)
+
   @Post('admin/announcement')
+  @Authorization(UserRole.Admin, UserRole.SuperAdmin)
+  @NotificationsDocs.createAnnouncement()
   async createAnnouncement(
     @Body() body: {
       title: string;
@@ -76,12 +82,13 @@ export class NotificationsController {
     );
   }
 
-   @Authorization()
   @Post('test')
+  @Authorization()
+  @NotificationsDocs.createTestNotification()
   async createTestNotification(@Req() req: any) {
     return await this.notificationsService.createNotification({
       toUserId: req.user.id,
-      type: $Enums.NotificationType.ROOM_BOOKING_REQUEST, // Replace with a valid NotificationType value
+      type: $Enums.NotificationType.ROOM_BOOKING_REQUEST,
       title: 'Test Notification',
       message: 'This is a test notification to verify the system works',
       priority: $Enums.NotificationPriority.NORMAL,

@@ -11,27 +11,17 @@ import {
 } from "@nestjs/common";
 import { $Enums } from "../../../__generated__";
 import UserRole = $Enums.UserRole;
-import {
-  ApiBearerAuth,
-  ApiBody,
-  ApiConsumes,
-  ApiOperation,
-  ApiParam,
-  ApiResponse,
-  ApiTags,
-} from "@nestjs/swagger";
 import { CreateDormitoryDto } from "@/modules/dormitory/dto/create-dormitory.dto";
 import { UpdateDormitoryDto } from "@/modules/dormitory/dto/update-dormitory.dto";
 import { FileFieldsInterceptor } from "@nestjs/platform-express";
 import { DormitoryService } from "./dormitory.service";
 import { Authorization } from "@libs/common/decorators/auth.decorator";
+import { DormitoryDocs } from "./dormitory.docs";
 
-@ApiTags("Dormitories")
-@ApiBearerAuth()
+@DormitoryDocs.controller()
 @Controller("dormitories")
 export class DormitoryController {
   constructor(private readonly dormitoryService: DormitoryService) { }
-
 
   @Post()
   @Authorization(UserRole.Admin, UserRole.SuperAdmin)
@@ -41,42 +31,7 @@ export class DormitoryController {
       { name: "roomPhotos", maxCount: 50 },
     ])
   )
-  @ApiConsumes("multipart/form-data")
-  @ApiOperation({
-    summary: "Create new dormitory",
-    description: "Creates a new dormitory with optional photo uploads and auto-generated rooms with equipment.",
-  })
-  @ApiBody({
-    schema: {
-      type: "object",
-      properties: {
-        name: { type: "string", example: "Dorm 1" },
-        address: { type: "string", example: "123 Main St" },
-        groundFloorPhoneNumber: { type: "string", example: "+380123456789" },
-        roomGeneration: {
-          type: "string",
-          example: JSON.stringify({
-            numberOfFloors: 3,
-            roomsPerFloor: 4,
-            pricePerDay: 30,
-            pricePerMonth: 600,
-            roomEquipment: ["Bed", "Desk", "Chair", "Wardrobe", "Air Conditioner"],
-          }),
-        },
-        photos: {
-          type: "array",
-          items: { type: "string", format: "binary" },
-          description: "Dormitory photos",
-        },
-        roomPhotos: {
-          type: "array",
-          items: { type: "string", format: "binary" },
-          description: "Photos to be assigned to rooms during generation",
-        },
-      },
-    },
-  })
-  @ApiResponse({ status: 201, description: "Dormitory successfully created." })
+  @DormitoryDocs.create()
   create(
     @Body() dto: CreateDormitoryDto,
     @UploadedFiles() files: { photos?: Express.Multer.File[], roomPhotos?: Express.Multer.File[] },
@@ -84,128 +39,43 @@ export class DormitoryController {
     return this.dormitoryService.create(dto, files);
   }
 
-
   @Get()
-  //@Authorization()
-  @ApiOperation({ summary: "List all active dormitories" })
-  @ApiResponse({
-    status: 200,
-    description: "Returns paginated list of active dormitories.",
-    schema: {
-      example: {
-        data: [
-          {
-            id: "uuid",
-            name: "Dorm 1",
-            address: "123 Main St",
-            groundFloorPhoneNumber: "+380123456789",
-            photos: ["https://s3.example.com/photo1.jpg"],
-            status: "Active",
-            createdAt: "2024-07-16T10:00:00.000Z",
-          }
-        ],
-      }
-    }
-  })
+  @DormitoryDocs.findAll()
   findAll() {
     return this.dormitoryService.findAll();
   }
+
   @Get("deactivated")
   @Authorization(UserRole.Admin, UserRole.SuperAdmin)
-  @ApiOperation({ summary: "List all deactivated dormitories" })
-  @ApiResponse({
-    status: 200,
-    description: "Returns paginated list of deactivated dormitories.",
-    schema: {
-      example: {
-        data: [
-          {
-            id: "uuid",
-            name: "Dorm 2",
-            address: "456 Side St",
-            groundFloorPhoneNumber: "+380987654321",
-            photos: ["https://s3.example.com/photo2.jpg"],
-            status: "Deactivated",
-            createdAt: "2024-07-20T10:00:00.000Z",
-            deactivatedAt: "2024-08-01T12:00:00.000Z"
-          }
-        ]
-      }
-    }
-  })
-  findDeactivated(
-  ) {
+  @DormitoryDocs.findDeactivated()
+  findDeactivated() {
     return this.dormitoryService.findDeactivated();
   }
 
   @Get(":id")
-  //@Authorization()
-  @ApiOperation({ summary: "Get dormitory by ID" })
-  @ApiParam({ name: "id", description: "Dormitory UUID" })
-  @ApiResponse({
-    status: 200,
-    description: "Dormitory found",
-    schema: {
-      example: {
-        id: "uuid",
-        name: "Dorm 1",
-        address: "123 Main St",
-        groundFloorPhoneNumber: "+380123456789",
-        status: "Active",
-        createdAt: "2024-07-16T10:00:00.000Z",
-      },
-    },
-  })
+  @DormitoryDocs.findOne()
   findOne(@Param("id") id: string) {
     return this.dormitoryService.findOne(id);
   }
 
   @Patch(":id")
   @Authorization(UserRole.Admin)
-  @ApiOperation({ summary: "Update dormitory information" })
-  @ApiParam({ name: "id", description: "Dormitory UUID" })
-  @ApiBody({
-    type: UpdateDormitoryDto,
-    description: "Fields to update in dormitory",
-  })
-  @ApiResponse({
-    status: 200,
-    description: "Dormitory updated successfully",
-  })
+  @DormitoryDocs.update()
   update(@Param("id") id: string, @Body() dto: UpdateDormitoryDto) {
     return this.dormitoryService.update(id, dto);
   }
+
   @Patch(":id/activate")
   @Authorization(UserRole.Admin, UserRole.SuperAdmin)
-  @ApiOperation({ summary: "activate dormitory" })
-  @ApiParam({ name: "id", description: "Dormitory UUID" })
-  @ApiResponse({
-    status: 200,
-    description: "Dormitory activated successfully.",
-  })
-  @ApiResponse({
-    status: 400,
-    description: "Cannot activate dormitory that no exists ",
-  })
+  @DormitoryDocs.activate()
   activate(@Param("id") id: string) {
     return this.dormitoryService.activate(id);
   }
 
-
   @Patch(":id/deactivate")
   @Authorization(UserRole.Admin)
-  @ApiOperation({ summary: "Deactivate dormitory" })
-  @ApiParam({ name: "id", description: "Dormitory UUID" })
-  @ApiResponse({
-    status: 200,
-    description: "Dormitory deactivated if no active residents.",
-  })
-  @ApiResponse({
-    status: 400,
-    description: "Cannot deactivate dormitory with active residents.",
-  })
+  @DormitoryDocs.deactivate()
   deactivate(@Param("id") id: string) {
     return this.dormitoryService.deactivate(id);
   }
-
 }

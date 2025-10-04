@@ -1,12 +1,12 @@
-import { Payment, PaymentStatus, PaymentType, PaymentMethod, PaymentItemType } from "../../../../__generated__";
-import { $Enums } from "../../../../__generated__";
-import { IPaymentRepository } from "../interfaces/payments-repository.interfaces";
+import { Payment, PaymentStatus, PaymentType, PaymentMethod, PaymentItemType } from "../../../__generated__";
+import { $Enums } from "../../../__generated__";
+import { IPaymentRepository } from "./interfaces/payments-repository.interfaces";
 import {
     IPaymentService
-} from "../interfaces/payments-service.interfaces";
-import { S3Service } from "../../../libs/common/s3/s3.service";
-import { NotificationsService } from "../../notifications/notifications.service";
-import { CreatePaymentDto,CreateBulkPaymentDto, PaymentFilterDto , UploadPaymentProofDto,RejectPaymentDto, ConfirmPaymentDto,  } from "../dto";
+} from "./interfaces/payments-service.interfaces";
+import { S3Service } from "../../libs/common/s3/s3.service";
+import { NotificationsService } from "../notifications/notifications.service";
+import { CreatePaymentDto,CreateBulkPaymentDto, PaymentFilterDto , UploadPaymentProofDto,RejectPaymentDto, ConfirmPaymentDto,  } from "./dto";
 
 
 export class PaymentsService implements IPaymentService {

@@ -8,23 +8,23 @@ import {
   Query,
   UseInterceptors,
   UploadedFile,
-  UseGuards,
   Req,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiTags, ApiOperation, ApiResponse, ApiConsumes } from '@nestjs/swagger';
-import { PaymentsService } from '../sevices/payments.service';
-import { CreatePaymentDto, PaymentFilterDto, ConfirmPaymentDto, RejectPaymentDto } from '../dto';
-import { Authorization } from '../../../libs/common/decorators/auth.decorator';
-@ApiTags('payments')
+import { PaymentsService } from './payments.service';
+import { CreatePaymentDto, PaymentFilterDto, ConfirmPaymentDto, RejectPaymentDto } from './dto';
+import { Authorization } from '../../libs/common/decorators/auth.decorator';
+import { PaymentsDocs } from './payments.docs';
+
+@PaymentsDocs.controller()
 @Controller('payments')
 export class PaymentsController {
   constructor(private readonly paymentsService: PaymentsService) {}
 
   // For Residents
-    @Authorization()
   @Get('my')
-  @ApiOperation({ summary: 'Get user payments' })
+  @Authorization()
+  @PaymentsDocs.getMyPayments()
   async getMyPayments(
     @Req() req: any,
     @Query('limit') limit?: number,
@@ -32,17 +32,18 @@ export class PaymentsController {
   ) {
     return this.paymentsService.getPaymentsByUserId(req.user.id, limit ?? 10, offset ?? 0);
   }
-    @Authorization()
+
   @Get('my/stats')
-  @ApiOperation({ summary: 'Get user payment statistics' })
+  @Authorization()
+  @PaymentsDocs.getMyStats()
   async getMyStats(@Req() req: any) {
     return this.paymentsService.getPaymentStats(req.user.id);
   }
-    @Authorization()
+
   @Post(':id/upload-proof')
+  @Authorization()
   @UseInterceptors(FileInterceptor('file'))
-  @ApiConsumes('multipart/form-data')
-  @ApiOperation({ summary: 'Upload payment proof' })
+  @PaymentsDocs.uploadPaymentProof()
   async uploadPaymentProof(
     @Param('id') paymentId: string,
     @UploadedFile() file: Express.Multer.File,
@@ -56,30 +57,30 @@ export class PaymentsController {
   }
 
   // For Admins
-  @Authorization()
   @Post()
-  @ApiOperation({ summary: 'Create payment (Admin only)' })
+  @Authorization()
+  @PaymentsDocs.createPayment()
   async createPayment(@Body() createPaymentDto: CreatePaymentDto) {
     return this.paymentsService.createPayment(createPaymentDto);
   }
 
-      @Authorization()
   @Get('pending')
-  @ApiOperation({ summary: 'Get pending payments (Admin only)' })
+  @Authorization()
+  @PaymentsDocs.getPendingPayments()
   async getPendingPayments(@Query('dormitoryId') dormitoryId?: string) {
     return this.paymentsService.getPendingPayments(dormitoryId);
   }
-    @Authorization()
+
   @Get('awaiting-confirmation')
-  @ApiOperation({ summary: 'Get payments awaiting confirmation (Admin only)' })
+  @Authorization()
+  @PaymentsDocs.getAwaitingConfirmation()
   async getAwaitingConfirmation(@Query('dormitoryId') dormitoryId?: string) {
     return this.paymentsService.getAwaitingConfirmation(dormitoryId);
   }   
-  
-  @Authorization()
 
   @Put(':id/confirm')
-  @ApiOperation({ summary: 'Confirm payment (Admin only)' })
+  @Authorization()
+  @PaymentsDocs.confirmPayment()
   async confirmPayment(
     @Param('id') paymentId: string,
     @Body() confirmDto: ConfirmPaymentDto,
@@ -92,9 +93,9 @@ export class PaymentsController {
     });
   }
 
-      @Authorization()
   @Put(':id/reject')
-  @ApiOperation({ summary: 'Reject payment (Admin only)' })
+  @Authorization()
+  @PaymentsDocs.rejectPayment()
   async rejectPayment(
     @Param('id') paymentId: string,
     @Body() rejectDto: RejectPaymentDto,
@@ -107,30 +108,30 @@ export class PaymentsController {
     });
   }
 
-      @Authorization()
   @Get('overdue')
-  @ApiOperation({ summary: 'Get overdue payments (Admin only)' })
+  @Authorization()
+  @PaymentsDocs.getOverduePayments()
   async getOverduePayments() {
     return this.paymentsService.getOverduePayments();
   }
 
-      @Authorization()
   @Get('stats')
-  @ApiOperation({ summary: 'Get payment statistics (Admin only)' })
+  @Authorization()
+  @PaymentsDocs.getStats()
   async getStats(@Query('dormitoryId') dormitoryId?: string) {
     return this.paymentsService.getPaymentStats(undefined, dormitoryId);
   }
 
-      @Authorization()
   @Get(':id')
-  @ApiOperation({ summary: 'Get payment by ID' })
+  @Authorization()
+  @PaymentsDocs.getPaymentById()
   async getPaymentById(@Param('id') id: string) {
     return this.paymentsService.getPaymentById(id);
   }
 
-      @Authorization()
   @Get()
-  @ApiOperation({ summary: 'Get payments with filters' })
+  @Authorization()
+  @PaymentsDocs.getPayments()
   async getPayments(@Query() filters: PaymentFilterDto) {
     return this.paymentsService.getPaymentsWithFilters(filters);
   }

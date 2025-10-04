@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { AnnouncementController } from './controllers/announcement.controller';
+import { AnnouncementController } from './announcement.controller';
 
 import { CreateAnnouncementUseCase } from './use-cases/create-announcement.use-case';
 import { GetAnnouncementsUseCase } from './use-cases/get-announcements.use-case';
 import { DeleteAnnouncementUseCase } from './use-cases/delete-announcement.use-case';
-import {AnnouncementRepository} from "@modules/announcement/repositories/announcement.repository";
+import {AnnouncementRepository} from "@modules/announcement/announcement.repository";
 import {PrismaModule} from "@/prisma/prisma.module";
 import {S3Module} from "@libs/common/s3/s3.module";
 import {

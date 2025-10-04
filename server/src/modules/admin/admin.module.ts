@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AdminService } from './use-cases/admin.service';
 import { AdminController } from './controllers/admin.controller';
-import { ConfirmationService } from '@/modules/confirmation/services/confirmation.service';
+import { ConfirmationService } from '@/modules/confirmation/confirmation.service';
 import {PrismaModule} from "@/prisma/prisma.module";
 import {S3Service} from "@/libs/common/s3/s3.service";
 import {UserModule} from "@modules/user/user.module";

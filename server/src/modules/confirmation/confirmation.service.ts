@@ -4,7 +4,7 @@ import {
   $Enums,
   Confirmation,
   ConfirmationType,
-} from "../../../../__generated__";
+} from "../../../__generated__";
 import ConfirmationStatus = $Enums.ConfirmationStatus;
 import UserRole = $Enums.UserRole;
 

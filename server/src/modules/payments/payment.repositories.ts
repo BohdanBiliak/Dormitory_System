@@ -1,5 +1,5 @@
-import { PrismaClient, Payment, PaymentStatus, Prisma } from "../../../../__generated__";
-import { IPaymentRepository } from "../interfaces/payments-repository.interfaces";
+import { PrismaClient, Payment, PaymentStatus, Prisma } from "../../../__generated__";
+import { IPaymentRepository } from "./interfaces/payments-repository.interfaces";
 
 export class PaymentRepository implements IPaymentRepository {
     constructor(private prisma: PrismaClient) { }

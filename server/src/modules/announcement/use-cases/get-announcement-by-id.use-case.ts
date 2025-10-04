@@ -1,7 +1,7 @@
 // use-cases/get-announcement-by-id.use-case.ts
 
 import { Injectable, NotFoundException } from '@nestjs/common';
-import {AnnouncementRepository} from "@modules/announcement/repositories/announcement.repository";
+import {AnnouncementRepository} from "@modules/announcement/announcement.repository";
 
 @Injectable()
 export class GetAnnouncementByIdUseCase {
