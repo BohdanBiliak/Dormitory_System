@@ -228,15 +228,16 @@ model DormitoryAdmin {
 }
 
 model Confirmation {
-  id         String             @id @default(uuid())
-  userId     String             @map("user_id")
-  type       ConfirmationType
-  status     ConfirmationStatus @default(PENDING)
-  photo      String?
-  frontIdUrl String?            @map("front_id_url")
-  backIdUrl  String?            @map("back_id_url")
-  createdAt  DateTime           @default(now()) @map("created_at")
-  resolvedAt DateTime?          @map("resolved_at")
+  id              String             @id @default(uuid())
+  userId          String             @map("user_id")
+  type            ConfirmationType
+  status          ConfirmationStatus @default(PENDING)
+  photo           String?
+  frontIdUrl      String?            @map("front_id_url")
+  backIdUrl       String?            @map("back_id_url")
+  createdAt       DateTime           @default(now()) @map("created_at")
+  resolvedAt      DateTime?          @map("resolved_at")
+  rejectionReason String?            @map("rejection_reason")
 
   roomId         String?   @map("room_id")
   from           DateTime?

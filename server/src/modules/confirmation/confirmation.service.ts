@@ -7,10 +7,11 @@ import {
 } from "../../../__generated__";
 import ConfirmationStatus = $Enums.ConfirmationStatus;
 import UserRole = $Enums.UserRole;
+import { MailService } from "@/libs/mail/mail.service";
 
 @Injectable()
 export class ConfirmationService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService, private readonly mailService: MailService) { }
 
   async getAll(): Promise<Confirmation[]> {
     return this.prisma.confirmation.findMany({
@@ -79,5 +80,48 @@ export class ConfirmationService {
       page,
       pageCount: Math.ceil(total / limit),
     };
+  }
+
+  async reject(id: string, reason: string) {
+    const userId = await this.prisma.confirmation
+      .findUnique({ where: { id } })
+      .then((conf) => conf?.userId);
+
+    if (!userId) {
+      throw new Error("Confirmation not found");
+    }
+
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const updated = await this.prisma.confirmation.update({
+      where: { id },
+      data: {
+        status: ConfirmationStatus.REJECTED,
+        resolvedAt: new Date(),
+        rejectionReason: reason,
+      },
+    });
+
+    // Send rejection email to the requester
+    await this.sendRejectionEmail(user.email, user.displayName, reason, updated.type);
+
+    return updated;
+  }
+
+  private async sendRejectionEmail(
+    email: string,
+    name: string,
+    reason: string,
+    type: ConfirmationType
+  ) {
+
+    const subject = `Your ${type.toLowerCase().replace('_', ' ')} request has been rejected`;
+    const template = 'confirmation-rejection'; // Create this template
+
+    await this.mailService.sendRejectionEmail(email, name, reason, type);
   }
 }

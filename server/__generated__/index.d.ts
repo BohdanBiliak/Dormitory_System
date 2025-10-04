@@ -700,8 +700,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.14.0
-   * Query Engine version: 717184b7b35ea05dfa71a3236b7af656013e1e49
+   * Prisma Client JS version: 6.16.3
+   * Query Engine version: bb420e667c1820a8c05a38023385f6cc7ef8e83a
    */
   export type PrismaVersion = {
     client: string
@@ -2604,6 +2604,10 @@ export namespace Prisma {
       timeout?: number
       isolationLevel?: Prisma.TransactionIsolationLevel
     }
+    /**
+     * Instance of a Driver Adapter, e.g., like one provided by `@prisma/adapter-planetscale`
+     */
+    adapter?: runtime.SqlDriverAdapterFactory | null
     /**
      * Global configuration for omitting model fields by default.
      * 
@@ -5917,6 +5921,7 @@ export namespace Prisma {
     backIdUrl: string | null
     createdAt: Date | null
     resolvedAt: Date | null
+    rejectionReason: string | null
     roomId: string | null
     from: Date | null
     to: Date | null
@@ -5933,6 +5938,7 @@ export namespace Prisma {
     backIdUrl: string | null
     createdAt: Date | null
     resolvedAt: Date | null
+    rejectionReason: string | null
     roomId: string | null
     from: Date | null
     to: Date | null
@@ -5949,6 +5955,7 @@ export namespace Prisma {
     backIdUrl: number
     createdAt: number
     resolvedAt: number
+    rejectionReason: number
     roomId: number
     from: number
     to: number
@@ -5977,6 +5984,7 @@ export namespace Prisma {
     backIdUrl?: true
     createdAt?: true
     resolvedAt?: true
+    rejectionReason?: true
     roomId?: true
     from?: true
     to?: true
@@ -5993,6 +6001,7 @@ export namespace Prisma {
     backIdUrl?: true
     createdAt?: true
     resolvedAt?: true
+    rejectionReason?: true
     roomId?: true
     from?: true
     to?: true
@@ -6009,6 +6018,7 @@ export namespace Prisma {
     backIdUrl?: true
     createdAt?: true
     resolvedAt?: true
+    rejectionReason?: true
     roomId?: true
     from?: true
     to?: true
@@ -6114,6 +6124,7 @@ export namespace Prisma {
     backIdUrl: string | null
     createdAt: Date
     resolvedAt: Date | null
+    rejectionReason: string | null
     roomId: string | null
     from: Date | null
     to: Date | null
@@ -6151,6 +6162,7 @@ export namespace Prisma {
     backIdUrl?: boolean
     createdAt?: boolean
     resolvedAt?: boolean
+    rejectionReason?: boolean
     roomId?: boolean
     from?: boolean
     to?: boolean
@@ -6170,6 +6182,7 @@ export namespace Prisma {
     backIdUrl?: boolean
     createdAt?: boolean
     resolvedAt?: boolean
+    rejectionReason?: boolean
     roomId?: boolean
     from?: boolean
     to?: boolean
@@ -6189,6 +6202,7 @@ export namespace Prisma {
     backIdUrl?: boolean
     createdAt?: boolean
     resolvedAt?: boolean
+    rejectionReason?: boolean
     roomId?: boolean
     from?: boolean
     to?: boolean
@@ -6208,6 +6222,7 @@ export namespace Prisma {
     backIdUrl?: boolean
     createdAt?: boolean
     resolvedAt?: boolean
+    rejectionReason?: boolean
     roomId?: boolean
     from?: boolean
     to?: boolean
@@ -6216,7 +6231,7 @@ export namespace Prisma {
     metadata?: boolean
   }
 
-  export type ConfirmationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "type" | "status" | "photo" | "frontIdUrl" | "backIdUrl" | "createdAt" | "resolvedAt" | "roomId" | "from" | "to" | "roommateIds" | "numberOfPeople" | "metadata", ExtArgs["result"]["confirmation"]>
+  export type ConfirmationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "type" | "status" | "photo" | "frontIdUrl" | "backIdUrl" | "createdAt" | "resolvedAt" | "rejectionReason" | "roomId" | "from" | "to" | "roommateIds" | "numberOfPeople" | "metadata", ExtArgs["result"]["confirmation"]>
   export type ConfirmationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     requester?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -6242,6 +6257,7 @@ export namespace Prisma {
       backIdUrl: string | null
       createdAt: Date
       resolvedAt: Date | null
+      rejectionReason: string | null
       roomId: string | null
       from: Date | null
       to: Date | null
@@ -6681,6 +6697,7 @@ export namespace Prisma {
     readonly backIdUrl: FieldRef<"Confirmation", 'String'>
     readonly createdAt: FieldRef<"Confirmation", 'DateTime'>
     readonly resolvedAt: FieldRef<"Confirmation", 'DateTime'>
+    readonly rejectionReason: FieldRef<"Confirmation", 'String'>
     readonly roomId: FieldRef<"Confirmation", 'String'>
     readonly from: FieldRef<"Confirmation", 'DateTime'>
     readonly to: FieldRef<"Confirmation", 'DateTime'>
@@ -26007,6 +26024,7 @@ export namespace Prisma {
     backIdUrl: 'backIdUrl',
     createdAt: 'createdAt',
     resolvedAt: 'resolvedAt',
+    rejectionReason: 'rejectionReason',
     roomId: 'roomId',
     from: 'from',
     to: 'to',
@@ -26807,6 +26825,7 @@ export namespace Prisma {
     backIdUrl?: StringNullableFilter<"Confirmation"> | string | null
     createdAt?: DateTimeFilter<"Confirmation"> | Date | string
     resolvedAt?: DateTimeNullableFilter<"Confirmation"> | Date | string | null
+    rejectionReason?: StringNullableFilter<"Confirmation"> | string | null
     roomId?: StringNullableFilter<"Confirmation"> | string | null
     from?: DateTimeNullableFilter<"Confirmation"> | Date | string | null
     to?: DateTimeNullableFilter<"Confirmation"> | Date | string | null
@@ -26826,6 +26845,7 @@ export namespace Prisma {
     backIdUrl?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     resolvedAt?: SortOrderInput | SortOrder
+    rejectionReason?: SortOrderInput | SortOrder
     roomId?: SortOrderInput | SortOrder
     from?: SortOrderInput | SortOrder
     to?: SortOrderInput | SortOrder
@@ -26848,6 +26868,7 @@ export namespace Prisma {
     backIdUrl?: StringNullableFilter<"Confirmation"> | string | null
     createdAt?: DateTimeFilter<"Confirmation"> | Date | string
     resolvedAt?: DateTimeNullableFilter<"Confirmation"> | Date | string | null
+    rejectionReason?: StringNullableFilter<"Confirmation"> | string | null
     roomId?: StringNullableFilter<"Confirmation"> | string | null
     from?: DateTimeNullableFilter<"Confirmation"> | Date | string | null
     to?: DateTimeNullableFilter<"Confirmation"> | Date | string | null
@@ -26867,6 +26888,7 @@ export namespace Prisma {
     backIdUrl?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     resolvedAt?: SortOrderInput | SortOrder
+    rejectionReason?: SortOrderInput | SortOrder
     roomId?: SortOrderInput | SortOrder
     from?: SortOrderInput | SortOrder
     to?: SortOrderInput | SortOrder
@@ -26893,6 +26915,7 @@ export namespace Prisma {
     backIdUrl?: StringNullableWithAggregatesFilter<"Confirmation"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Confirmation"> | Date | string
     resolvedAt?: DateTimeNullableWithAggregatesFilter<"Confirmation"> | Date | string | null
+    rejectionReason?: StringNullableWithAggregatesFilter<"Confirmation"> | string | null
     roomId?: StringNullableWithAggregatesFilter<"Confirmation"> | string | null
     from?: DateTimeNullableWithAggregatesFilter<"Confirmation"> | Date | string | null
     to?: DateTimeNullableWithAggregatesFilter<"Confirmation"> | Date | string | null
@@ -28488,6 +28511,7 @@ export namespace Prisma {
     backIdUrl?: string | null
     createdAt?: Date | string
     resolvedAt?: Date | string | null
+    rejectionReason?: string | null
     roomId?: string | null
     from?: Date | string | null
     to?: Date | string | null
@@ -28507,6 +28531,7 @@ export namespace Prisma {
     backIdUrl?: string | null
     createdAt?: Date | string
     resolvedAt?: Date | string | null
+    rejectionReason?: string | null
     roomId?: string | null
     from?: Date | string | null
     to?: Date | string | null
@@ -28524,6 +28549,7 @@ export namespace Prisma {
     backIdUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
     from?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     to?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -28543,6 +28569,7 @@ export namespace Prisma {
     backIdUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
     from?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     to?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -28561,6 +28588,7 @@ export namespace Prisma {
     backIdUrl?: string | null
     createdAt?: Date | string
     resolvedAt?: Date | string | null
+    rejectionReason?: string | null
     roomId?: string | null
     from?: Date | string | null
     to?: Date | string | null
@@ -28578,6 +28606,7 @@ export namespace Prisma {
     backIdUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
     from?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     to?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -28596,6 +28625,7 @@ export namespace Prisma {
     backIdUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
     from?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     to?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -30468,6 +30498,7 @@ export namespace Prisma {
     backIdUrl?: SortOrder
     createdAt?: SortOrder
     resolvedAt?: SortOrder
+    rejectionReason?: SortOrder
     roomId?: SortOrder
     from?: SortOrder
     to?: SortOrder
@@ -30490,6 +30521,7 @@ export namespace Prisma {
     backIdUrl?: SortOrder
     createdAt?: SortOrder
     resolvedAt?: SortOrder
+    rejectionReason?: SortOrder
     roomId?: SortOrder
     from?: SortOrder
     to?: SortOrder
@@ -30506,6 +30538,7 @@ export namespace Prisma {
     backIdUrl?: SortOrder
     createdAt?: SortOrder
     resolvedAt?: SortOrder
+    rejectionReason?: SortOrder
     roomId?: SortOrder
     from?: SortOrder
     to?: SortOrder
@@ -33988,6 +34021,7 @@ export namespace Prisma {
     backIdUrl?: string | null
     createdAt?: Date | string
     resolvedAt?: Date | string | null
+    rejectionReason?: string | null
     roomId?: string | null
     from?: Date | string | null
     to?: Date | string | null
@@ -34005,6 +34039,7 @@ export namespace Prisma {
     backIdUrl?: string | null
     createdAt?: Date | string
     resolvedAt?: Date | string | null
+    rejectionReason?: string | null
     roomId?: string | null
     from?: Date | string | null
     to?: Date | string | null
@@ -34607,6 +34642,7 @@ export namespace Prisma {
     backIdUrl?: StringNullableFilter<"Confirmation"> | string | null
     createdAt?: DateTimeFilter<"Confirmation"> | Date | string
     resolvedAt?: DateTimeNullableFilter<"Confirmation"> | Date | string | null
+    rejectionReason?: StringNullableFilter<"Confirmation"> | string | null
     roomId?: StringNullableFilter<"Confirmation"> | string | null
     from?: DateTimeNullableFilter<"Confirmation"> | Date | string | null
     to?: DateTimeNullableFilter<"Confirmation"> | Date | string | null
@@ -39946,6 +39982,7 @@ export namespace Prisma {
     backIdUrl?: string | null
     createdAt?: Date | string
     resolvedAt?: Date | string | null
+    rejectionReason?: string | null
     roomId?: string | null
     from?: Date | string | null
     to?: Date | string | null
@@ -40121,6 +40158,7 @@ export namespace Prisma {
     backIdUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
     from?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     to?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -40138,6 +40176,7 @@ export namespace Prisma {
     backIdUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
     from?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     to?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -40155,6 +40194,7 @@ export namespace Prisma {
     backIdUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
     from?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     to?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null

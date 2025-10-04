@@ -73,5 +73,6 @@ export class AuthController {
   public async logout(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
     return this.authService.logout(req, res);
   }
+
 }
 

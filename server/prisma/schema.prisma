@@ -238,6 +238,7 @@ model Confirmation {
   backIdUrl  String?            @map("back_id_url")
   createdAt  DateTime           @default(now()) @map("created_at")
   resolvedAt DateTime?          @map("resolved_at")
+  rejectionReason String?       @map("rejection_reason")
 
   roomId        String?            @map("room_id")
   from          DateTime?

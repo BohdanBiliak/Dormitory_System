@@ -234,4 +234,46 @@ export const AdminDocs = {
       ApiBadRequestResponse({ description: "Invalid file format or size" }),
       ApiForbiddenResponse({ description: "Unauthorized or insufficient role" })
     ),
+
+  reject: () =>
+    applyDecorators(
+      ApiOperation({
+        summary: "Reject a confirmation with reason",
+        description:
+          "Allows an admin to reject a confirmation request with a specified reason.",
+      }),
+      ApiParam({
+        name: "id",
+        type: String,
+        description: "Confirmation ID to reject",
+      }),
+      ApiBody({
+        schema: {
+          type: 'object',
+          properties: {
+            reason: { type: 'string', example: 'The provided documents are invalid.' },
+          },
+          required: ['reason'],
+        },
+        description: "Reason for rejection",
+      }),
+      ApiOkResponse({
+        description: "Rejected confirmation object",
+        schema: {
+          example: {
+            id: "uuid",
+            status: "REJECTED",
+            type: "IDENTITY_VERIFICATION",
+            rejectionReason: "The provided documents are invalid.",
+            requester: {
+              id: "uuid",
+              displayName: "John Doe",
+            },
+            updatedAt: "2024-06-30T12:00:00.000Z",
+          },
+        },
+      }),
+      ApiNotFoundResponse({ description: "Confirmation not found" }),
+      ApiBadRequestResponse({ description: "Invalid reason or confirmation already processed" })
+    ),
 };

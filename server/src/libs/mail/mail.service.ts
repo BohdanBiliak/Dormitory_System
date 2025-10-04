@@ -2,21 +2,22 @@ import { Injectable } from "@nestjs/common";
 import { MailerService } from "@nestjs-modules/mailer";
 import { ConfigService } from "@nestjs/config";
 import { render } from "@react-email/components";
-import {ConfirmationTemplate} from "@/libs/mail/templates/confirmation.template"
-import {ResetPasswordTemplate} from "@/libs/mail/templates/reset-password.template";
-import {NotificationTemplate} from "@/libs/mail/templates/notification-email-template";
-import {BookingNotificationTemplate} from "@/libs/mail/templates/booking-notification-template";
-import { PaymentReminderTemplate} from "@/libs/mail/templates/payment-reminder";
-import {TwoFactorAuthTemplate} from "@/libs/mail/templates/two-factor-auth.template";
-import {AnnouncementTemplate} from "@/libs/mail/templates/announcement-template";
+import { ConfirmationTemplate } from "@/libs/mail/templates/confirmation.template"
+import { ResetPasswordTemplate } from "@/libs/mail/templates/reset-password.template";
+import { NotificationTemplate } from "@/libs/mail/templates/notification-email-template";
+import { BookingNotificationTemplate } from "@/libs/mail/templates/booking-notification-template";
+import { PaymentReminderTemplate } from "@/libs/mail/templates/payment-reminder";
+import { TwoFactorAuthTemplate } from "@/libs/mail/templates/two-factor-auth.template";
+import { AnnouncementTemplate } from "@/libs/mail/templates/announcement-template";
 import { EvictionTemplate } from "./templates/eviction-template";
-
+import { ConfirmationType } from "../../../__generated__";
+import {RejectTemplate} from "@/libs/mail/templates/reject.template";
 @Injectable()
 export class MailService {
   public constructor(
     private readonly mailerService: MailerService,
     private readonly configService: ConfigService,
-  ) {}
+  ) { }
 
   public async sendConfirmationEmail(email: string, token: string) {
     const domain = this.configService.getOrThrow<string>("ALLOWED_ORIGIN");
@@ -42,10 +43,10 @@ export class MailService {
   public async sendPasswordResetEmail(email: string, token: string) {
     const domain = this.configService.getOrThrow<string>("ALLOWED_ORIGIN");
     const html = await render(
-        ResetPasswordTemplate({
-          domain,
-          token,
-        })
+      ResetPasswordTemplate({
+        domain,
+        token,
+      })
     );
     return this.sendMail(email, 'Email Reset', html);
   }
@@ -82,6 +83,24 @@ export class MailService {
     return this.sendMail(email, notification.title, html);
   }
 
+  public async sendRejectionEmail(
+    email: string,
+    name: string,
+    reason: string,
+    type: ConfirmationType
+  ) {
+    const domain = this.configService.getOrThrow<string>("ALLOWED_ORIGIN");
+    const html = await render(
+      RejectTemplate({
+        domain,
+        name,
+        reason,
+        type,
+      })
+    );
+    return this.sendMail(email, 'Request Rejected', html);
+  }
+
   /**
    * Send booking-related notification
    */
@@ -99,7 +118,7 @@ export class MailService {
   ) {
     const domain = this.configService.getOrThrow<string>("ALLOWED_ORIGIN");
     const title = this.getBookingEmailTitle(bookingData.status);
-    
+
     const html = await render(
       BookingNotificationTemplate({
         domain,
@@ -116,7 +135,7 @@ export class MailService {
     return this.sendMail(email, title, html);
   }
 
-  
+
   /**
    * Send payment reminder email
    */
@@ -133,10 +152,10 @@ export class MailService {
     }
   ) {
     const domain = this.configService.getOrThrow<string>("ALLOWED_ORIGIN");
-    const title = paymentData.isOverdue 
+    const title = paymentData.isOverdue
       ? `⚠️ Overdue Payment - $${paymentData.amount}`
       : `💰 Payment Reminder - $${paymentData.amount} due in ${paymentData.daysUntilDue} days`;
-    
+
     const html = await render(
       PaymentReminderTemplate({
         domain,
@@ -169,7 +188,7 @@ export class MailService {
   ) {
     const domain = this.configService.getOrThrow<string>("ALLOWED_ORIGIN");
     const title = `📢 ${announcementData.title}`;
-    
+
     const html = await render(
       AnnouncementTemplate({
         domain,
@@ -199,7 +218,7 @@ export class MailService {
     }
   ) {
     const domain = this.configService.getOrThrow<string>("ALLOWED_ORIGIN");
-    const title = changeData.oldRoomNumber 
+    const title = changeData.oldRoomNumber
       ? `🏠 Room Change: ${changeData.oldRoomNumber} → ${changeData.newRoomNumber}`
       : `🏠 Room Assignment: ${changeData.newRoomNumber}`;
 
@@ -234,7 +253,7 @@ export class MailService {
   ) {
     const domain = this.configService.getOrThrow<string>("ALLOWED_ORIGIN");
     const title = this.getMaintenanceEmailTitle(maintenanceData.type, maintenanceData.roomNumber);
-    
+
     const html = await render(
       NotificationTemplate({
         domain,
@@ -250,7 +269,7 @@ export class MailService {
     return this.sendMail(email, title, html);
   }
 
-  
+
   /**
    * Send bulk notifications to multiple users
    */
@@ -264,12 +283,12 @@ export class MailService {
       actionUrl?: string;
     }
   ) {
-    const emailPromises = emails.map(email => 
+    const emailPromises = emails.map(email =>
       this.sendNotificationEmail(email, notification)
     );
 
     const results = await Promise.allSettled(emailPromises);
-    
+
     const successful = results.filter(result => result.status === 'fulfilled').length;
     const failed = results.filter(result => result.status === 'rejected').length;
 
@@ -289,7 +308,7 @@ export class MailService {
     const titles = {
       'PENDING': '⏳ Booking Request Submitted',
       'APPROVED': '✅ Booking Approved',
-      'REJECTED': '❌ Booking Rejected', 
+      'REJECTED': '❌ Booking Rejected',
       'CANCELLED': '🚫 Booking Cancelled',
       'COMPLETED': '🎉 Booking Completed',
     };
@@ -315,21 +334,22 @@ export class MailService {
 
   private createMaintenanceMessage(maintenanceData: any): string {
     const { type, roomNumber, dormitoryName, description } = maintenanceData;
-    
+
     switch (type) {
       case 'SCHEDULED':
         return `Maintenance has been scheduled for Room ${roomNumber} in ${dormitoryName}. Description: ${description}. Scheduled date: ${maintenanceData.scheduledDate}. Estimated duration: ${maintenanceData.estimatedDuration || 'TBD'}.`;
-      
+
       case 'COMPLETED':
         return `Maintenance for Room ${roomNumber} in ${dormitoryName} has been completed. Work performed: ${description}. Completed on: ${maintenanceData.completedDate}.`;
-      
+
       case 'URGENT':
         return `🚨 URGENT: Immediate maintenance required for Room ${roomNumber} in ${dormitoryName}. Issue: ${description}. Please avoid the area and report any safety concerns immediately.`;
-      
+
       default:
         return `Maintenance update for Room ${roomNumber} in ${dormitoryName}: ${description}`;
     }
   }
+
 
 
   private sendMail(email: string, subject: string, html: string) {

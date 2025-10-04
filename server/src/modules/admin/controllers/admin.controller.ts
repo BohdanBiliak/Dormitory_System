@@ -17,6 +17,7 @@ import { UseAvatarInterceptor } from "@/libs/common/decorators/upload-avatar.dec
 import { Authorization } from "@libs/common/decorators/auth.decorator";
 import { AdminDocs } from "../docs/admin.docs";
 import UserRole = $Enums.UserRole;
+import { RejectConfirmationDto } from "../dto/RejectConfirmation.dto";
 
 const ALLOWED_VERSIONS = ['original', 'mobile', 'tablet', 'desktop'] as const;
 type Version = (typeof ALLOWED_VERSIONS)[number];
@@ -73,5 +74,12 @@ export class AdminController {
       @Query('version') version: Version = 'original',
   ) {
     return this.adminService.uploadAndUpdateAvatar(adminId, file, version);
+  }
+
+  @Post("reject-confirmation/:id")
+  @Authorization(UserRole.Admin, UserRole.SuperAdmin)
+  @AdminDocs.reject()
+  rejectConfirmation(@Param("id") id: string, @Body() dto: RejectConfirmationDto) {
+    return this.confirmationService.reject(id, dto.reason);
   }
 }
