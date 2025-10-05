@@ -35,50 +35,70 @@ export function AdminProfileForm() {
   }, [user, isEditing])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, files } = e.target
+  const { name, value, files } = e.target
 
-    if(name === 'photo' && files && files[0]) {
-      setSelectedFile(files[0])
-      const previewUrl = URL.createObjectURL(files[0])
-      setProfileData(prev=>({...prev, photo: previewUrl}))
-    }
-    setProfileData(prev => ({ ...prev, [name]: value }))
+  if(name === 'photo' && files && files[0]) {
+    setSelectedFile(files[0])
+    const previewUrl = URL.createObjectURL(files[0])
+    setProfileData(prev => ({ ...prev, photo: previewUrl }))
+    return // Exit early to avoid the second setProfileData call
   }
+  
+  setProfileData(prev => ({ ...prev, [name]: value }))
+}
 
   const handleSave = async () => {
-    try {
-      if (selectedFile){
-        await uploadAvatar({
-          file: selectedFile,
-          userLastName: profileData.secondName
-        })
-      }
+  try {
+    let uploadedImageUrl = profileData.photo
 
-      if (profileData.displayName || profileData.secondName || profileData.email || profileData.photo) {
-        await updateProfile({
-          displayName: profileData.displayName,
-          secondName: profileData.secondName,
-          email: profileData.email,
-          picture: profileData.photo,
-        })
-      }
-      setSelectedFile(null)
-      setProfileData(prev => ({ ...prev, photo: user?.picture || '' }))
-      setIsEditing(false)
-    } catch (error) {
-      console.error('Save error:', error)
+    // Upload avatar first if a new file is selected
+    if (selectedFile) {
+      await uploadAvatar({
+        file: selectedFile,
+        userLastName: profileData.secondName
+      })
+      // The uploadAvatar function likely updates the user data directly
+      // so we'll use the current photo URL from profileData
+      uploadedImageUrl = profileData.photo
     }
+
+    // Update profile with the correct image URL
+    if (profileData.displayName || profileData.secondName || profileData.email) {
+      await updateProfile({
+        displayName: profileData.displayName,
+        secondName: profileData.secondName,
+        email: profileData.email,
+        picture: uploadedImageUrl, // Use the uploaded URL, not the local file path
+      })
+    }
+
+    // Clean up state
+    setSelectedFile(null)
+    if (selectedFile) {
+      // Revoke the preview URL to prevent memory leaks
+      URL.revokeObjectURL(profileData.photo)
+    }
+    setIsEditing(false)
+  } catch (error) {
+    console.error('Save error:', error)
   }
+}
 
   const handleCancel = () => {
-    setProfileData({
-        displayName: user?.displayName || '',
-        secondName: user?.secondName || '',
-        email: user?.email || '',
-        photo: user?.picture || ''
-    })
-    setIsEditing(false)
+  // Clean up preview URL if it exists
+  if (selectedFile && profileData.photo.startsWith('blob:')) {
+    URL.revokeObjectURL(profileData.photo)
   }
+  
+  setProfileData({
+    displayName: user?.displayName || '',
+    secondName: user?.secondName || '',
+    email: user?.email || '',
+    photo: user?.picture || ''
+  })
+  setSelectedFile(null)
+  setIsEditing(false)
+}
 
   if(isLoading){
     return (
