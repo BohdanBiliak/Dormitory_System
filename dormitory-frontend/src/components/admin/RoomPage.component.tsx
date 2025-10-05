@@ -13,7 +13,9 @@ interface RoomPageProps {
 }
 
 export function RoomPage({roomId}: RoomPageProps) {
-    const {updateRoom, postRoomStatus, removeRoomStatus, evictUser} = useUpdateRoom();
+    const {updateRoom, postRoomStatus, removeRoomStatus, evictUser, uploadRoomPhoto} = useUpdateRoom();
+    const inputRef = useRef<HTMLInputElement>(null); //input reference for new photos input
+
 
     {/*Initial values*/}
 
@@ -104,10 +106,27 @@ export function RoomPage({roomId}: RoomPageProps) {
     {/*Rooms CRUD Logic*/}
 
     const handleRoomUpdate = () => {
+        if(newPhotos.length>0){
+            uploadRoomPhoto({files:newPhotos})
+            newPhotos.forEach((photo) => {
+                setRoomInfo(prevState => {
+                    if(!prevState) return prevState;
+                    return {
+                        ...prevState,
+                        photos: [...prevState.photos, URL.createObjectURL(photo)]
+                    }
+                })
+                console.log("Adding new photo to room info:", URL.createObjectURL(photo));
+            })
+            setNewPhotos([])
+        }
+
+        console.log("Room info before update: ", roomInfo)
         const dataToUpdate: UpdateRoomData = {
             number: roomInfo.name,
             capacity: roomInfo.capacity,
-            roomEquipment: roomInfo.roomEquipment
+            roomEquipment: roomInfo.roomEquipment,
+            photos: roomInfo.photos
         }
 
         if (room) {
@@ -211,8 +230,7 @@ export function RoomPage({roomId}: RoomPageProps) {
                 pricePerDay: room?.price.pricePerDay || 0,
                 pricePerMonth: room?.price.pricePerMonth || 0,
                 statuses: room?.statuses || [],
-                //photos: room?.photos || [],
-                photos: ["https://dormitoryfiles-bucket.s3.eu-north-1.amazonaws.com/dormitories/74713efb-5a5e-48f7-8f65-81e60d8f1fd6-Dr_dorm.jpg","https://dormitoryfiles-bucket.s3.eu-north-1.amazonaws.com/dormitories/74713efb-5a5e-48f7-8f65-81e60d8f1fd6-Dr_dorm.jpg"],
+                photos: room?.photos || [],
                 roomEquipment: room?.roomEquipment || [],
             })
         }
@@ -243,6 +261,19 @@ export function RoomPage({roomId}: RoomPageProps) {
         setCurrentIndex(prev => (roomInfo?.photos && prev === roomInfo.photos.length - 1? 0 : prev + 1));
     };
 
+    const [newPhotos, setNewPhotos] = useState<File[]>([])
+
+    const addRoomImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { name} = event.target
+
+        if(inputRef.current && inputRef.current.files && inputRef.current.files.length>0 && name === "newImage"){
+            const file = inputRef.current.files[0];
+            setNewPhotos([...newPhotos, file]);
+            console.log("New photos changed")
+        }
+
+    }
+
     {/*Eviction confirmation(1st) dialog logic*/}
 
     const [showEvictionConfirmation, setShowEvictionConfirmation] = useState(false)
@@ -268,14 +299,12 @@ export function RoomPage({roomId}: RoomPageProps) {
     const [evictionInformation, setEvictionInformation] = useState<EvictRequest>({
         userId: '',
         description: '',
-        //date: '',
     })
 
     const closeEvictionMenu = () => {
         setEvictionInformation({
             userId: '',
             description: '',
-            //date: '',
         })
         setShowEvictionMenu(false)
     }
@@ -354,12 +383,20 @@ export function RoomPage({roomId}: RoomPageProps) {
 
         if(name !== ""){
             const indexToDelete = Number.parseInt(value)
+            if(indexToDelete >= roomInfo.photos.length - newPhotos.length){
+                setNewPhotos(newPhotos.splice(indexToDelete-roomInfo.photos.length+newPhotos.length, 1))
+
+            }
+
             setRoomInfo(prevState => {
                 if(!prevState) return prevState;
                 return {
                     ...prevState,
                     photos: roomInfo.photos.splice(indexToDelete, 1)}
             })
+
+            console.log("Room info photos: ", roomInfo.photos)
+            console.log("New photos: ", newPhotos)
         }
     }
 
@@ -1014,19 +1051,28 @@ export function RoomPage({roomId}: RoomPageProps) {
 
                             <div className={`flex flex-col`}>
                                 {roomInfo.photos.map((photo, index) => (
-                                    <button name={`photo`} value={index} key={`photo-${index}`} onClick={() => setCurrentIndex(index)}>
+                                    <button key={index} onClick={() => setCurrentIndex(index)}>
                                         <img src={photo} alt={`Room photo${index}`} className={`w-120 h-40`}/>
                                     </button>
                                 ))}
-                                <button
-                                    className="w-120 h-40 bg-gray-300 border-2 border-black rounded flex flex-col items-center justify-center gap-0.5 hover:bg-gray-400 active:bg-gray-500 transition-colors"
-                                >
-                                    <div className="w-5 h-5 border-2 border-black rounded-full relative flex items-center justify-center">
-                                        <div className="absolute w-2.5 h-0.5 bg-black"></div>
-                                        <div className="absolute w-0.5 h-2.5 bg-black"></div>
-                                    </div>
-                                    <span className="text-[13px] text-black">Add image</span>
-                                </button>
+                                {newPhotos.map((photo, index) => (
+                                    <button key={index}>
+                                        <img src={URL.createObjectURL(photo)} alt={`Room photo${index}`}/>
+                                    </button>
+                                ))
+                                }
+                                <div className={`w-120 h-40`}>
+                                    <label>
+                                        <input
+                                            type={"file"}
+                                            ref={inputRef}
+                                            name={'newImage'}
+                                            className={'hidden'}
+                                            onChange={addRoomImage}
+                                        />
+                                        Add Image
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </DialogPanel>

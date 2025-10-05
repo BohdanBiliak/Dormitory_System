@@ -32,7 +32,7 @@ export const useAuth = () => {
         case 'SuperAdmin': router.push('/admin/profile'); break;
         case 'Admin': router.push('/admin/profile'); break;
         case 'Regular': router.push('/profile');break;
-        case 'SignedInUser': router.push('/admin/profile'); break;
+        case 'SignedInUser': router.push('/profile'); break;
         default: throw Error('Unidentified user role');
       }
     },
@@ -99,7 +99,8 @@ export const useAuth = () => {
     mutationFn: authApi.logout,
     onSuccess: () => {
       queryClient.setQueryData(['user', 'current'], null)
-      queryClient.removeQueries({ queryKey: ['user', 'current'] })
+      queryClient.invalidateQueries({ queryKey: ['user', 'current'] })
+      queryClient.invalidateQueries({ queryKey: ['admin', 'profile'] })
       toast.success('Logged out successfully!')
       router.push('/auth/login')
     },

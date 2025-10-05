@@ -77,6 +77,17 @@ export function useUpdateRoom(){
         }
     })
 
+    const uploadRoomPhoto = useMutation({
+        mutationFn: ({files}:{files:File[]})=>roomsApi.uploadRoomPhotos(files),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["room"] })
+            toast.success('Room photo uploaded successfully!')
+        },
+        onError: (err) => {
+            toast.error(err.message)
+        }
+    })
+
     return({
         updateRoom: updateRoom.mutate,
         updatingRoom: updateRoom.isPending,
@@ -86,5 +97,7 @@ export function useUpdateRoom(){
         removingRoomStatus: removeRoomStatus.isPending,
         evictUser: evictUser.mutate,
         evictingUser: evictUser.isPending,
+        uploadRoomPhoto: uploadRoomPhoto.mutate,
+        uploadingRoomPhoto: uploadRoomPhoto.isPending,
     })
 }

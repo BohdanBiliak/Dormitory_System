@@ -58,7 +58,7 @@ export function UserSideMenu ({children}:UserSideMenuProps){
         }
     ]
 
-    const RegularMenuItems:MenuItem[] = [
+    const SignedInMenuItems:MenuItem[] = [
         {
             id: 'profile',
             image: '/user.svg',
@@ -79,7 +79,7 @@ export function UserSideMenu ({children}:UserSideMenuProps){
         },
         {
             id: 'messages',
-            image: 'envelope.svg',
+            image: '/envelope.svg',
             label: 'Messages',
             href: '#',
         },
@@ -105,9 +105,10 @@ export function UserSideMenu ({children}:UserSideMenuProps){
     const [currentMenuItems, setCurrentMenuItems] = useState<MenuItem[]>(GuestMenuItems)
 
     useEffect(() => {
-        if(user){
+        if(user && user.isVerified){
             switch (user.role){
-                case "Regular": setCurrentMenuItems(RegularMenuItems); break;
+                case "Regular": setCurrentMenuItems(GuestMenuItems); break;
+                case "SignedInUser": setCurrentMenuItems(SignedInMenuItems); break;
                 default: setCurrentMenuItems(GuestMenuItems);
             }
         }else{

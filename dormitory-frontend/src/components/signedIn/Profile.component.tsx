@@ -189,9 +189,18 @@ export function SignedInProfile(){
                                             {user?.role && user.role === 'Regular' ? (
                                                 <div>
                                                     <p className="font-medium text-gray-900">Regular</p>
-                                                    <p className="text-sm text-gray-600">You are ready to book a room</p>
+                                                    <p className="text-sm text-gray-600">You are resident</p>
                                                 </div>
-                                            ):(<></>)}
+                                            ):(
+                                                user?.role && user.role === 'SignedInUser' ? (
+                                                    <div>
+                                                        <p className="font-medium text-gray-900">Signed in user</p>
+                                                        <p className="text-sm text-gray-600">You are ready to book a room</p>
+                                                    </div>
+                                                ):(
+                                                    <></>
+                                                )
+                                            )}
                                         </div>
                                         <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                                             {user?.role || 'Admin'}

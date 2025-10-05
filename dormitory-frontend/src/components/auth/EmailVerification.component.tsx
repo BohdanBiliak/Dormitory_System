@@ -49,9 +49,6 @@ export function EmailVerificationForm() {
         setIsSuccess(true)
         toast.success('Email verified successfully!')
 
-        setTimeout(() => {
-          router.push('/admin/profile')
-        }, 2000)
       } else {
         const errorData = await response.json()
         console.error('❌ Verification failed:', errorData)
@@ -105,7 +102,7 @@ export function EmailVerificationForm() {
             Redirecting you to your profile...
           </p>
           <Link
-            href="/admin/profile"
+            href="/profile"
             className="inline-block bg-blue-900 text-white py-2.5 sm:py-3 lg:py-4 px-4 sm:px-6 lg:px-8 rounded-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 text-sm sm:text-base font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
           >
             Go to Profile

@@ -26,7 +26,7 @@ export interface User {
   email: string
   displayName: string
   picture: string
-  role: 'Regular' | 'Admin' | 'SignedInUser' | 'SuperAdmin'
+  role: 'Regular' | 'Admin' | 'SignedInUser' | 'Resident' | 'Manager';
   secondName: string
   isVerified: boolean
   isTwoFactorEnabled: boolean

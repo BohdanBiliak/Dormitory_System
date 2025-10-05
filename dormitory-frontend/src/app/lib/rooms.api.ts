@@ -59,5 +59,29 @@ export const roomsApi= {
     async evictUser(roomId:string, data:EvictRequest):Promise<User>{
         const response = await api.patch(`/rooms/${roomId}/evict-user`, data);
         return response.data;
+    },
+
+    async uploadRoomPhotos(files:File[]):Promise<{urls: string[]}>{
+        const formData = new FormData();
+        files.forEach(file => {
+            formData.append('files', file);
+        })
+
+        try{
+            const response = await api.post(`/rooms/upload`,formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                }
+            })
+            console.log(response.data)
+            return response.data;
+        }catch (error: any) {
+            console.error('Room photo upload error:', {
+                status: error.response?.status,
+                data: error.response?.data,
+                message: error.message
+            })
+            throw error
+        }
     }
 }
