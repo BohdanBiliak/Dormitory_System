@@ -29,7 +29,6 @@ export const useAuth = () => {
       queryClient.invalidateQueries({ queryKey: ['auth', 'currentUser'] })
       console.log(user?.role)
       switch (user?.role){
-        case 'SuperAdmin': router.push('/admin/profile'); break;
         case 'Admin': router.push('/admin/profile'); break;
         case 'Regular': router.push('/profile');break;
         case 'SignedInUser': router.push('/profile'); break;

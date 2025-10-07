@@ -1,4 +1,3 @@
-import { SideMenu } from "@/components/ui/SideMenu.component";
 import { LoginForm } from '@/components/auth/LoginForm.component'
 import { MenuItem } from "@/types/ui.types";
 import { Suspense } from "react";

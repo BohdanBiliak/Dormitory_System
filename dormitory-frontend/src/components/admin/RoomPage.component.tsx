@@ -1,6 +1,6 @@
 'use client'
 
-import {useGetRoom, useUpdateRoom} from "@/hooks/rooms.hook";
+import {useGetRoom, useUpdateRoom, useUploadRoomPhoto} from "@/hooks/rooms.hook";
 import React, {useEffect, useRef, useState} from "react";
 import {CreateRoomStatusRequest, EvictRequest, RoomStatus, UpdateRoomData} from "@/types/rooms.types";
 import {CalendarOfAvailabilityComponent} from "@/components/ui/CalendarOfAvailability.component";
@@ -14,6 +14,9 @@ interface RoomPageProps {
 
 export function RoomPage({roomId}: RoomPageProps) {
     const {updateRoom, postRoomStatus, removeRoomStatus, evictUser, uploadRoomPhoto} = useUpdateRoom();
+    const {data: urls, mutateAsync: uploadPhotos} = useUploadRoomPhoto()
+
+
     const inputRef = useRef<HTMLInputElement>(null); //input reference for new photos input
 
 
@@ -105,18 +108,18 @@ export function RoomPage({roomId}: RoomPageProps) {
 
     {/*Rooms CRUD Logic*/}
 
-    const handleRoomUpdate = () => {
+    const handleRoomUpdate = async() => {
         if(newPhotos.length>0){
-            uploadRoomPhoto({files:newPhotos})
-            newPhotos.forEach((photo) => {
+            const {urls} = await uploadPhotos({urls:newPhotos})
+            urls.forEach((photo) => {
                 setRoomInfo(prevState => {
                     if(!prevState) return prevState;
                     return {
                         ...prevState,
-                        photos: [...prevState.photos, URL.createObjectURL(photo)]
+                        photos: [...prevState.photos, photo]
                     }
                 })
-                console.log("Adding new photo to room info:", URL.createObjectURL(photo));
+                console.log("Adding new photo to room info:",photo);
             })
             setNewPhotos([])
         }

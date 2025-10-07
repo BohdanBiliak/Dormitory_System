@@ -47,7 +47,3 @@ export interface AnnouncementUpdateRequest {
     roomIds?: string[];
     floorNumbers?: number[];
 }
-
-export interface AddressesTypes {
-    type: 'Regular' | 'Room' | 'Floor';
-}

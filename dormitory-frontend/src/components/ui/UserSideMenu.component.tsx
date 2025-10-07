@@ -8,11 +8,12 @@ import Link from "next/link";
 
 interface UserSideMenuProps {
     children: React.ReactNode;
-    /*activeItem: string;*/
+    activeItem: string;
 }
 
-export function UserSideMenu ({children}:UserSideMenuProps){
+export function UserSideMenu ({children, activeItem}:UserSideMenuProps){
     const { logout, isLoggingOut } = useAuth()
+    const [currentItem, setCurrentItem] = useState<string>(activeItem);
     const [openMenu, setOpenMenu] = useState<string>()
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
@@ -103,6 +104,8 @@ export function UserSideMenu ({children}:UserSideMenuProps){
     ]
 
     const [currentMenuItems, setCurrentMenuItems] = useState<MenuItem[]>(GuestMenuItems)
+
+    {/*Languages*/}
 
     useEffect(() => {
         if(user && user.isVerified){
@@ -237,8 +240,8 @@ export function UserSideMenu ({children}:UserSideMenuProps){
                                     }else return(
                                         <Link
                                             href={item.href || '#'}
-                                            className={`flex items-center space-x-3 px-3 py-2 md:py-3 rounded hover:bg-blue-800 transition-colors`}
-                                            onClick={() => setIsMobileMenuOpen(false)}
+                                            className={`flex items-center space-x-3 px-3 py-2 md:py-3 rounded hover:bg-blue-800 transition-colors ${item.id === currentItem ? 'bg-blue-800' : ''}`}
+                                            onClick={() => {setIsMobileMenuOpen(false), setCurrentItem(item.id)}}
                                         >
                                             <img src={item.image} alt={item.label} className="w-8 h-8 md:w-10 md:h-10 filter brightness-0 invert"/>
                                             <span className="text-sm md:text-base">{item.label}</span>

@@ -1,7 +1,5 @@
 'use client'
 
-import {MenuItem} from "@/types/ui.types";
-import {SideMenu} from "@/components/ui/SideMenu.component";
 import AdminAnnouncement from "@/components/admin/AdminAnnouncement.component";
 import { use } from 'react';
 

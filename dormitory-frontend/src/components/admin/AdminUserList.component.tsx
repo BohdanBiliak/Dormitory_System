@@ -137,7 +137,6 @@ export function AdminUserList(){
                                     options={roomFloors} 
                                     onChange={(roomFloors) => {
                                         setSelectedRoomFloors(roomFloors);
-                                        console.log(selectedRoomFloors);
                                     }} 
                                 />
                             </div>

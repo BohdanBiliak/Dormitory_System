@@ -2,38 +2,45 @@
 
 import React, { useState } from 'react'
 import {useMutateAnnouncement} from "@/hooks/announcements.hook";
-import {AddressesTypes, AnnouncementCreateRequest} from "@/types/announcements.types";
+import {AnnouncementCreateRequest} from "@/types/announcements.types";
 import Link from "next/link";
 import {toast} from "sonner";
 import {Description, Dialog, DialogBackdrop, DialogPanel, DialogTitle} from "@headlessui/react";
 import {ChevronDown, ChevronUp, Plus, X} from "lucide-react";
 import {useGetActiveDormitories} from "@/hooks/dormitories.hook";
 import {useGetRooms} from "@/hooks/rooms.hook";
+import {User} from "@/types/auth.types";
+import {Room} from "@/types/rooms.types";
+import {Dormitory} from "@/types/dormitories.types";
+
+enum AddresseeType {
+    'Resident', 'Room', 'Floor', 'Dormitory'
+}
 
 interface AddresseeItem {
     id: string;
+    isChosen: boolean;
     label: string;
-    type: AddressesTypes
+    type: AddresseeType;
+    resident?: ResidentItem;
+    room?: RoomItem;
+    floor?: FloorItem;
+    dormitory?: DormitoryItem;
 }
 
 interface ResidentItem{
-    id: string;
-    label: string;
-    isChosen: boolean;
+    user: User;
 }
 
 interface RoomItem {
-    id: string;
-    label: string;
-    isChosen: boolean;
     showChildren: boolean;
+    room: Room;
     residents: ResidentItem[];
 }
 
 interface FloorItem {
-    id: string;
+    dormId: string;
     label: number;
-    isChosen: boolean;
     showChildren: boolean;
     rooms: RoomItem[];
 }
@@ -41,18 +48,17 @@ interface FloorItem {
 interface DormitoryItem {
     id: string;
     label: string;
-    isChosen: boolean;
     showChildren: boolean;
+    dormitory: Dormitory;
     floors: FloorItem[];
 }
 
 export function AdminNewAnnouncement(){
     const [attachedFiles, setAttachedFiles] = useState<File[]>([])
-    const [addresses, setAddresses] = useState<{id: string, label: string, type: AddressesTypes}[]>([])
+    const [addresses, setAddresses] = useState<{id: string, label: string, type: AddresseeType}[]>([])
     const [showAddressesDialog, setShowAddressesDialog] = useState<boolean>(false)
 
-    const [chosenAddresses, setChosenAddresses] = useState<{id: string, label: string, type: AddressesTypes}[]>([])
-    const [expandedAddresses, setExpandedAddresses] = useState<{id: string, label: string, type: AddressesTypes}[]>([])
+    const [chosenAddresses, setChosenAddresses] = useState<AddresseeItem[]>([])
 
     const [newAnnouncement, setNewAnnouncement] = useState<AnnouncementCreateRequest>({
         title: '',
@@ -79,7 +85,7 @@ export function AdminNewAnnouncement(){
         setAttachedFiles(prev => prev.filter((_, i) => i !== index))
     }
 
-    const updateAddresses = (index: number, value: {id: string, label:string, type: AddressesTypes}) => {
+    const updateAddresses = (index: number, value: {id: string, label:string, type: AddresseeType}) => {
         setAddresses(prev => prev.map((addr, i) => i === index ? value : addr))
     }
 
@@ -122,14 +128,9 @@ export function AdminNewAnnouncement(){
         setShowAddressesDialog(false);
     }
 
-    const handleToggleAddresses = (expandAddresse:AddresseeItem) => {
-        const searchResult = expandedAddresses.find((elem) => {elem.id === expandAddresse.id && elem.type === expandAddresse.type})
-        if(searchResult){
-            setExpandedAddresses(prev => prev.filter(addresse => addresse !== expandAddresse))
-        }else{
-            setExpandedAddresses(prev => [...prev,expandAddresse])
-        }
-    }
+   const toggleAddresses = (addressItem: AddresseeItem) => {
+        if(addressItem.type !== 'Resident' as AddressesTypes ){}
+   }
 
     const handleAddAddress = (address:AddresseeItem) => {
         if(!chosenAddresses.find((addr) => {addr.id ===address.id && addr.type === address.type})){
@@ -142,24 +143,8 @@ export function AdminNewAnnouncement(){
             setChosenAddresses(prev => prev.filter(addr => addr !== address))
         }
     }
-    const AddresseeItem = ({
-        item,
-        level,
-        isExpanded = false,
 
-    }:{
-        item:AddresseeItem,
-        level:number,
-        isExpanded:boolean,
-    }) => {
-        <div className={`flex items-center justify-between py-1 px-2 hover:bg-gray-50 ${
-            level === 0 ? 'bg-gray-100 font-semibold' : ''
-        } ${level === 1 ? 'bg-gray-50' : ''}`}>
-            <div className="flex items-center gap-2">
-
-            </div>
-        </div>
-    }
+    const availableAddresses:AddresseeItem[] = []
 
     return(
         <div className="w-full bg-gradient-to-br from-gray-50 to-gray-100">
