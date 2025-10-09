@@ -494,7 +494,7 @@ export class RoomService {
     }
 
     if (updateRoomDto.floor !== undefined) {
-      updateData.floor = Number(updateRoomDto.floor);
+      updateData.floorId = String(updateRoomDto.floor);
     }
 
     if (updateRoomDto.capacity !== undefined) {

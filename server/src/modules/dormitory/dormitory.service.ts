@@ -13,198 +13,381 @@ export class DormitoryService {
   ) { }
 
   async create(dto: CreateDormitoryDto, files: { photos?: Express.Multer.File[], roomPhotos?: Express.Multer.File[] }) {
-  const existingDormitory = await this.prismaService.dormitory.findFirst({
-    where: { name: dto.name },
-  });
+    const existingDormitory = await this.prismaService.dormitory.findFirst({
+      where: { name: dto.name },
+    });
 
-  if (existingDormitory) {
-    throw new BadRequestException(`Dormitory with name "${dto.name}" already exists`);
-  }
+    if (existingDormitory) {
+      throw new BadRequestException(`Dormitory with name "${dto.name}" already exists`);
+    }
 
-  // Upload dormitory photos
-  const photoUrls = files.photos 
-    ? await Promise.all(
+    // Upload dormitory photos
+    const photoUrls = files.photos
+      ? await Promise.all(
         files.photos.map((file) => this.s3Service.uploadFile(file, "dormitories"))
       )
-    : [];
+      : [];
 
-  // Upload room photos
-  const roomPhotoUrls = files.roomPhotos 
-    ? await Promise.all(
+    // Upload room photos
+    const roomPhotoUrls = files.roomPhotos
+      ? await Promise.all(
         files.roomPhotos.map((file) => this.s3Service.uploadFile(file, "rooms"))
       )
-    : [];
+      : [];
 
-  const roomGeneration = JSON.parse(dto.roomGeneration);
-  const { roomGeneration: _removed, ...rest } = dto;
+    const roomGeneration = JSON.parse(dto.roomGeneration);
+    const { roomGeneration: _removed, ...rest } = dto;
 
-  return this.prismaService.$transaction(async (tx) => {
-    const dormitory = await tx.dormitory.create({
-      data: {
-        ...rest,
-        photos: photoUrls,
-      },
-    });
+    return this.prismaService.$transaction(async (tx) => {
+      // Create the dormitory first
+      const dormitory = await tx.dormitory.create({
+        data: {
+          ...rest,
+          photos: photoUrls,
+        },
+      });
 
-    const rooms: Prisma.RoomCreateManyInput[] = [];
-    const totalRooms = roomGeneration.numberOfFloors * roomGeneration.roomsPerFloor;
-    
-    // Default equipment if not provided
-    const defaultEquipment = [
-      "Bed",
-      "Desk", 
-      "Chair",
-      "Wardrobe",
-      "Window",
-      "Lighting"
-    ];
-    
-    const roomEquipment = roomGeneration.roomEquipment || defaultEquipment;
-
-    for (let floor = 1; floor <= roomGeneration.numberOfFloors; floor++) {
-      for (let i = 1; i <= roomGeneration.roomsPerFloor; i++) {
-        const roomIndex = (floor - 1) * roomGeneration.roomsPerFloor + (i - 1);
-        
-        // Distribute photos evenly across rooms, or assign random photos
-        const assignedPhotos = this.distributePhotosToRooms(roomPhotoUrls, roomIndex, totalRooms);
-        
-        rooms.push({
-          number: `${floor}${i.toString().padStart(2, "0")}`,
-          floor,
-          capacity: 2,
+      // Create floors
+      const floors: Prisma.FloorCreateManyInput[] = [];
+      for (let floorNumber = 1; floorNumber <= roomGeneration.numberOfFloors; floorNumber++) {
+        floors.push({
+          floorNumber,
           dormitoryId: dormitory.id,
-          roomEquipment,
-          photos: assignedPhotos,
         });
       }
+
+      await tx.floor.createMany({ data: floors });
+
+      // Get the created floors
+      const createdFloors = await tx.floor.findMany({
+        where: { dormitoryId: dormitory.id },
+        orderBy: { floorNumber: 'asc' }
+      });
+
+      // Create rooms
+      const rooms: Prisma.RoomCreateManyInput[] = [];
+      const totalRooms = roomGeneration.numberOfFloors * roomGeneration.roomsPerFloor;
+
+      // Default equipment if not provided
+      const defaultEquipment = [
+        "Bed",
+        "Desk",
+        "Chair",
+        "Wardrobe",
+        "Window",
+        "Lighting"
+      ];
+
+      const roomEquipment = roomGeneration.roomEquipment || defaultEquipment;
+
+      for (let floorIndex = 0; floorIndex < createdFloors.length; floorIndex++) {
+        const floor = createdFloors[floorIndex];
+
+        for (let roomNumber = 1; roomNumber <= roomGeneration.roomsPerFloor; roomNumber++) {
+          const roomIndex = floorIndex * roomGeneration.roomsPerFloor + (roomNumber - 1);
+
+          // Distribute photos evenly across rooms, or assign random photos
+          const assignedPhotos = this.distributePhotosToRooms(roomPhotoUrls, roomIndex, totalRooms);
+
+          rooms.push({
+            number: `${floor.floorNumber}${roomNumber.toString().padStart(2, "0")}`,
+            floorId: floor.id,
+            capacity: roomGeneration.roomCapacity || 2,
+            dormitoryId: dormitory.id,
+            roomEquipment,
+            photos: assignedPhotos,
+          });
+        }
+      }
+
+      await tx.room.createMany({ data: rooms });
+
+      // Create unique price entries to avoid duplicates
+      const uniqueCapacities = new Set<number>();
+      const savedRooms = await tx.room.findMany({
+        where: { dormitoryId: dormitory.id },
+        select: { capacity: true }
+      });
+
+      savedRooms.forEach(room => uniqueCapacities.add(room.capacity));
+
+      // Create prices (capacity-based, not room-specific)
+      const prices: Prisma.PriceCreateManyInput[] = Array.from(uniqueCapacities).map((capacity) => ({
+        roomId: null, // Capacity-based pricing
+        roomCapacity: capacity,
+        pricePerMonth: roomGeneration.pricePerMonth,
+        pricePerDay: roomGeneration.pricePerDay,
+        dateFrom: new Date(),
+        dateTo: null, // Open-ended pricing
+      }));
+
+      await tx.price.createMany({ data: prices });
+
+      // Return dormitory with created floors and rooms for response
+      return tx.dormitory.findUnique({
+        where: { id: dormitory.id },
+        include: {
+          floors: {
+            include: {
+              rooms: {
+                select: {
+                  id: true,
+                  number: true,
+                  capacity: true,
+                  roomEquipment: true,
+                  photos: true,
+                  floorId: true
+                }
+              }
+            },
+            orderBy: { floorNumber: 'asc' }
+          }
+        }
+      });
+    });
+  }
+
+  private distributePhotosToRooms(photoUrls: string[], roomIndex: number, totalRooms: number): string[] {
+    if (!photoUrls.length) return [];
+
+    // Simple distribution: cycle through photos
+    const photosPerRoom = Math.max(1, Math.floor(photoUrls.length / totalRooms));
+    const startIndex = (roomIndex * photosPerRoom) % photoUrls.length;
+
+    const assignedPhotos: string[] = [];
+    for (let i = 0; i < photosPerRoom && assignedPhotos.length < 3; i++) {
+      const photoIndex = (startIndex + i) % photoUrls.length;
+      assignedPhotos.push(photoUrls[photoIndex]);
     }
 
-    await tx.room.createMany({ data: rooms });
-
-    const savedRooms = await tx.room.findMany({
-      where: { dormitoryId: dormitory.id },
-    });
-
-    const prices: Prisma.PriceCreateManyInput[] = savedRooms.map((room) => ({
-      roomId: null,
-      roomCapacity: room.capacity,
-      pricePerMonth: roomGeneration.pricePerMonth,
-      pricePerDay: roomGeneration.pricePerDay,
-      dateFrom: new Date(),
-    }));
-
-    await tx.price.createMany({ data: prices });
-
-    return dormitory;
-  });
-}
-
-private distributePhotosToRooms(roomPhotoUrls: string[], roomIndex: number, totalRooms: number): string[] {
-  if (roomPhotoUrls.length === 0) {
-    return [];
+    return assignedPhotos;
   }
-
-  // Strategy 1: Distribute photos evenly
-  const photosPerRoom = Math.floor(roomPhotoUrls.length / totalRooms);
-  const extraPhotos = roomPhotoUrls.length % totalRooms;
-  
-  const startIndex = roomIndex * photosPerRoom + Math.min(roomIndex, extraPhotos);
-  const endIndex = startIndex + photosPerRoom + (roomIndex < extraPhotos ? 1 : 0);
-  
-  const assignedPhotos = roomPhotoUrls.slice(startIndex, endIndex);
-  
-  // If no photos assigned due to fewer photos than rooms, assign one random photo
-  if (assignedPhotos.length === 0 && roomPhotoUrls.length > 0) {
-    const randomIndex = roomIndex % roomPhotoUrls.length;
-    return [roomPhotoUrls[randomIndex]];
-  }
-  
-  return assignedPhotos;
-}
 
   async findAll() {
-  const [data, total] = await this.prismaService.$transaction([
-    this.prismaService.dormitory.findMany({
+    const dormitories = await this.prismaService.dormitory.findMany({
       where: { status: 'Active' },
       orderBy: { name: "asc" },
-    }),
-    this.prismaService.dormitory.count({
-      where: { status: 'Active' },
-    }),
-  ]);
+      include: {
+        _count: {
+          select: {
+            floors: true,
+            rooms: true,
+            residents: {
+              where: { isActive: true }
+            }
+          }
+        }
+      }
+    });
 
-  return {
-    data,
-    total,
-  };
-}
+    // Calculate availability statistics
+    const enrichedDormitories = await Promise.all(
+      dormitories.map(async (dormitory) => {
+        const availableRoomsCount = await this.prismaService.room.count({
+          where: {
+            dormitoryId: dormitory.id,
+            residents: {
+              every: {
+                isActive: false
+              }
+            }
+          }
+        });
+
+        return {
+          ...dormitory,
+          floorCount: dormitory._count.floors,
+          roomCount: dormitory._count.rooms,
+          availableRooms: availableRoomsCount,
+          totalResidents: dormitory._count.residents
+        };
+      })
+    );
+
+    return {
+      data: enrichedDormitories,
+      total: enrichedDormitories.length,
+    };
+  }
 
   async findDeactivated() {
-  const [data, total] = await this.prismaService.$transaction([
-    this.prismaService.dormitory.findMany({
-      where: { status: 'Deactivated' },
-      orderBy: { name: "asc" },
-    }),
-    this.prismaService.dormitory.count({
-      where: { status: 'Deactivated' },
-    }),
-  ]);
+    const [data, total] = await this.prismaService.$transaction([
+      this.prismaService.dormitory.findMany({
+        where: { status: 'Deactivated' },
+        orderBy: { name: "asc" },
+        include: {
+          _count: {
+            select: {
+              floors: true,
+              rooms: true
+            }
+          }
+        }
+      }),
+      this.prismaService.dormitory.count({
+        where: { status: 'Deactivated' },
+      }),
+    ]);
 
-  return {
-    data,
-    total,
-  };
-}
-
+    return {
+      data: data.map(dormitory => ({
+        ...dormitory,
+        floorCount: dormitory._count.floors,
+        roomCount: dormitory._count.rooms
+      })),
+      total,
+    };
+  }
 
   async findOne(id: string) {
-  const dormitory = await this.prismaService.dormitory.findUnique({ 
-    where: { id },
-    include: {
-      rooms: true,
+    const dormitory = await this.prismaService.dormitory.findUnique({
+      where: { id },
+      include: {
+        floors: {
+          include: {
+            rooms: {
+              include: {
+                residents: {
+                  select: {
+                    id: true,
+                    displayName: true,
+                    email: true
+                  },
+                  where: { isActive: true }
+                }
+              }
+            }
+          },
+          orderBy: { floorNumber: 'asc' }
+        },
+        manager: {
+          select: {
+            id: true,
+            displayName: true,
+            email: true
+          }
+        },
+        admins: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                displayName: true,
+                email: true
+              }
+            }
+          }
+        },
+        residents: {
+          select: {
+            id: true,
+            displayName: true,
+            email: true,
+            roomId: true
+          },
+          where: { isActive: true }
+        }
+      }
+    });
+
+    if (!dormitory) {
+      throw new NotFoundException(`Dormitory with ID ${id} not found`);
     }
-  });
 
-  
-  if (!dormitory) {
-    throw new NotFoundException(`Dormitory with ID ${id} not found`);
+    // Calculate statistics
+    const totalRooms = dormitory.floors.reduce((acc, floor) => acc + floor.rooms.length, 0);
+    const occupiedRooms = dormitory.floors.reduce((acc, floor) => 
+      acc + floor.rooms.filter(room => room.residents.length > 0).length, 0
+    );
+    const availableRooms = totalRooms - occupiedRooms;
+    const totalResidents = dormitory.residents.length;
+    const totalCapacity = dormitory.floors.reduce((acc, floor) => 
+      acc + floor.rooms.reduce((roomAcc, room) => roomAcc + room.capacity, 0), 0
+    );
+
+    return {
+      ...dormitory,
+      statistics: {
+        totalFloors: dormitory.floors.length,
+        totalRooms,
+        availableRooms,
+        occupiedRooms,
+        totalResidents,
+        occupancyRate: totalCapacity > 0 ? totalResidents / totalCapacity : 0
+      }
+    };
   }
   
-  
-  return dormitory;
-}
-async activate(id: string) {
-  const dormitory = await this.prismaService.dormitory.findUnique({
-    where: { id },
-  });
+  async activate(id: string) {
+    const dormitory = await this.prismaService.dormitory.findUnique({
+      where: { id },
+    });
 
-  if (!dormitory) {
-    throw new NotFoundException(`Dormitory with ID ${id} not found`);
+    if (!dormitory) {
+      throw new NotFoundException(`Dormitory with ID ${id} not found`);
+    }
+
+    if (dormitory.status === 'Active') {
+      throw new BadRequestException('Dormitory is already active');
+    }
+
+    return this.prismaService.dormitory.update({
+      where: { id },
+      data: { 
+        status: 'Active'
+      },
+    });
   }
-
-  return this.prismaService.dormitory.update({
-    where: { id },
-    data: { status: 'Active' },
-  });
-}
 
   async update(id: string, dto: UpdateDormitoryDto) {
+    const dormitory = await this.prismaService.dormitory.findUnique({
+      where: { id },
+    });
 
-    return this.prismaService.dormitory.update({ where: { id }, data: dto });
+    if (!dormitory) {
+      throw new NotFoundException(`Dormitory with ID ${id} not found`);
+    }
+
+    return this.prismaService.dormitory.update({ 
+      where: { id }, 
+      data: {
+        ...dto
+      }
+    });
   }
 
   async deactivate(id: string) {
-    const residentsCount = await this.prismaService.user.count({
-      where: { dormitoryId: id },
+    const dormitory = await this.prismaService.dormitory.findUnique({
+      where: { id },
     });
-    if (residentsCount > 0) {
+
+    if (!dormitory) {
+      throw new NotFoundException(`Dormitory with ID ${id} not found`);
+    }
+
+    if (dormitory.status === 'Deactivated') {
+      throw new BadRequestException('Dormitory is already deactivated');
+    }
+
+    // Check for active residents
+    const activeResidentsCount = await this.prismaService.user.count({
+      where: { 
+        dormitoryId: id,
+        isActive: true
+      },
+    });
+
+    if (activeResidentsCount > 0) {
       throw new BadRequestException(
-        "Cannot deactivate dormitory with residents",
+        `Cannot deactivate dormitory with ${activeResidentsCount} active residents. Please relocate residents first.`
       );
     }
+
     return this.prismaService.dormitory.update({
       where: { id },
-      data: { status: 'Deactivated' },
+      data: { 
+        status: 'Deactivated'
+      },
     });
   }
 }

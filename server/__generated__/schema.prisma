@@ -295,6 +295,7 @@ model Dormitory {
   name                   String
   address                String
   groundFloorPhoneNumber String   @map("ground_floor_phone_number")
+  floors                 Floor[]
   status                 String   @default("Active")
   photos                 String[]
   managerId              String?  @map("manager_id")
@@ -312,15 +313,28 @@ model Dormitory {
   @@map("dormitories")
 }
 
+model Floor {
+  id          String    @id @default(cuid())
+  floorNumber Int
+  dormitoryId String
+  dormitory   Dormitory @relation(fields: [dormitoryId], references: [id])
+  rooms       Room[]
+
+  @@unique([dormitoryId, floorNumber])
+  @@map("floors")
+}
+
 model Room {
   id            String   @id @default(uuid())
   number        String
-  floor         Int
+  floorId       String   @map("floor_id")
   capacity      Int
   roomEquipment String[] @map("room_equipment")
   photos        String[]
   dormitoryId   String   @map("dormitory_id")
   createdAt     DateTime @default(now()) @map("created_at")
+
+  floor Floor @relation(fields: [floorId], references: [id])
 
   dormitory              Dormitory               @relation(fields: [dormitoryId], references: [id], onDelete: Cascade)
   statuses               RoomStatus[]
@@ -330,12 +344,13 @@ model Room {
   bookings               Booking[]
   prices                 Price[]
 
-  @@index([dormitoryId, floor]) // Rooms by dormitory and floor
+  @@unique([floorId, number])
+  @@index([dormitoryId]) // Rooms by dormitory
   @@index([dormitoryId, capacity]) // Rooms by dormitory and capacity
   @@index([number, dormitoryId]) // Unique room identification
-  @@index([floor, capacity]) // Cross-dormitory room search
+  // Removed invalid index referencing non-existent field 'floor'
   @@index([createdAt]) // Chronological queries
-  @@index([dormitoryId])
+  @@index([dormitoryId], map: "rooms_dormitory_id_unique_idx")
   @@map("rooms")
 }
 

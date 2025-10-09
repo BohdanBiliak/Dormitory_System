@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { PrismaService } from '@/prisma/prisma.service';
 import { Room, Prisma, $Enums } from '../../../__generated__';
 import { AvailableRoomsDto } from './dto/availableRooms.dto';
+
 export type RoomWithRelations = Prisma.RoomGetPayload<{
   include: {
     residents: {
@@ -19,13 +20,20 @@ export type RoomWithRelations = Prisma.RoomGetPayload<{
         address: true;
       };
     };
+    floor: {
+      select: {
+        id: true;
+        floorNumber: true;
+        dormitoryId: true;
+      };
+    };
     statuses: true;
   };
 }>;
 
 export interface UpdateRoomData {
   number?: string;
-  floor?: number;
+  floorId?: string; // Changed from floor to floorId
   capacity?: number;
   roomEquipment?: string[];
   photos?: string[];
@@ -57,10 +65,18 @@ export class RoomRepository {
             address: true
           }
         },
+        floor: {
+          select: {
+            id: true,
+            floorNumber: true,
+            dormitoryId: true
+          }
+        },
         statuses: true
       }
     });
   }
+
   async findStatusesByUserAndRoom(userId: string, roomId: string) {
     return this.prisma.roomStatus.findMany({
       where: {
@@ -88,6 +104,13 @@ export class RoomRepository {
             address: true
           }
         },
+        floor: {
+          select: {
+            id: true,
+            floorNumber: true,
+            dormitoryId: true
+          }
+        },
         statuses: true
       }
     });
@@ -112,27 +135,33 @@ export class RoomRepository {
             address: true
           }
         },
+        floor: {
+          select: {
+            id: true,
+            floorNumber: true,
+            dormitoryId: true
+          }
+        },
         statuses: true
       }
     });
   }
 
-  async findByNumber(number: string, excludeId?: string): Promise<Room | null> {
+  async findByNumber(number: string, floorId?: string, excludeId?: string): Promise<Room | null> {
     return this.prisma.room.findFirst({
       where: {
         number,
+        ...(floorId && { floorId }),
         ...(excludeId && { id: { not: excludeId } })
       }
     });
   }
 
   async findAvailableRooms(dto: AvailableRoomsDto) {
-    // Парсимо дати і підганяємо кінець дня для 'to'
     const fromDate = new Date(dto.from);
     const toDate = new Date(dto.to);
     toDate.setHours(23, 59, 59, 999);
 
-    // Отримуємо всі кімнати (з фільтром по гуртожитку, якщо є)
     const rooms = await this.prisma.room.findMany({
       where: {
         ...(dto.dormitoryId && { dormitoryId: dto.dormitoryId }),
@@ -166,6 +195,13 @@ export class RoomRepository {
             address: true
           }
         },
+        floor: {
+          select: {
+            id: true,
+            floorNumber: true,
+            dormitoryId: true
+          }
+        },
         statuses: true
       }
     });
@@ -193,8 +229,6 @@ export class RoomRepository {
     );
   }
 
-
-
   async countOccupants(roomId: string): Promise<number> {
     return this.prisma.user.count({
       where: {
@@ -209,21 +243,21 @@ export class RoomRepository {
       where: { id },
       data: {
         ...(data.number && { number: data.number }),
-        ...(data.floor && { floor: data.floor }),
+        ...(data.floorId && { floor: { connect: { id: data.floorId } } }),
         ...(data.capacity && { capacity: data.capacity }),
-        ...(data.roomEquipment && { roomEquipment: data.roomEquipment }),
-        ...(data.photos && { photos: data.photos })
+        ...(data.roomEquipment && { roomEquipment: { set: data.roomEquipment } }),
+        ...(data.photos && { photos: { set: data.photos } })
       },
       include: {
         residents: {
           select: { id: true, displayName: true, secondName: true, email: true }
         },
         dormitory: { select: { id: true, name: true, address: true } },
+        floor: { select: { id: true, floorNumber: true, dormitoryId: true } },
         statuses: true
       }
     });
   }
-
 
   async exists(id: string): Promise<boolean> {
     const count = await this.prisma.room.count({
@@ -232,8 +266,8 @@ export class RoomRepository {
     return count > 0;
   }
 
-  async isRoomNumberUnique(number: string, excludeId?: string): Promise<boolean> {
-    const existingRoom = await this.findByNumber(number, excludeId);
+  async isRoomNumberUnique(number: string, floorId: string, excludeId?: string): Promise<boolean> {
+    const existingRoom = await this.findByNumber(number, floorId, excludeId);
     return !existingRoom;
   }
 
@@ -262,7 +296,50 @@ export class RoomRepository {
     };
   }
 
-  // Original methods for existing functionality
+  // Floor-related methods
+  async findFloorById(floorId: string) {
+    return this.prisma.floor.findUnique({
+      where: { id: floorId },
+      include: {
+        dormitory: {
+          select: {
+            id: true,
+            name: true
+          }
+        },
+        rooms: {
+          select: {
+            id: true,
+            number: true,
+            capacity: true
+          }
+        }
+      }
+    });
+  }
+
+  async findFloorsByDormitory(dormitoryId: string) {
+    return this.prisma.floor.findMany({
+      where: { dormitoryId },
+      orderBy: { floorNumber: 'asc' },
+      include: {
+        rooms: {
+          select: {
+            id: true,
+            number: true,
+            capacity: true,
+            residents: {
+              select: {
+                id: true
+              }
+            }
+          }
+        }
+      }
+    });
+  }
+
+  // ...existing code...
   async createRoomStatus(roomId: string, data: any) {
     return this.prisma.roomStatus.create({
       data: {
@@ -379,6 +456,7 @@ export class RoomRepository {
       where: { id: userId }
     });
   }
+
   async endUserRoomStatuses(userId: string, roomId: string) {
     return this.prisma.roomStatus.updateMany({
       where: {

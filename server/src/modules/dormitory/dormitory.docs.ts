@@ -28,7 +28,7 @@ export const DormitoryDocs = {
     applyDecorators(
       ApiOperation({
         summary: "Create new dormitory",
-        description: "Creates a new dormitory with optional photo uploads and auto-generated rooms with equipment. Admins only.",
+        description: "Creates a new dormitory with optional photo uploads, auto-generated floors and rooms with equipment. Admins only.",
       }),
       ApiConsumes("multipart/form-data"),
       ApiBody({
@@ -64,7 +64,7 @@ export const DormitoryDocs = {
         },
       }),
       ApiCreatedResponse({ 
-        description: "Dormitory successfully created with generated rooms",
+        description: "Dormitory successfully created with generated floors, rooms and pricing",
         schema: {
           example: {
             id: "uuid",
@@ -74,24 +74,41 @@ export const DormitoryDocs = {
             photos: ["https://s3.example.com/dormitory1.jpg"],
             status: "Active",
             createdAt: "2025-10-03T10:00:00.000Z",
-            rooms: [
+            floors: [
               {
-                id: "uuid",
-                number: "101",
-                floor: 1,
-                capacity: 2,
-                roomEquipment: ["Bed", "Desk", "Chair", "Wardrobe"],
-                photos: ["https://s3.example.com/room1.jpg"]
+                id: "cuid",
+                floorNumber: 1,
+                dormitoryId: "uuid",
+                rooms: [
+                  {
+                    id: "uuid",
+                    number: "101",
+                    floorId: "cuid",
+                    capacity: 2,
+                    roomEquipment: ["Bed", "Desk", "Chair", "Wardrobe"],
+                    photos: ["https://s3.example.com/room1.jpg"],
+                    dormitoryId: "uuid"
+                  },
+                  {
+                    id: "uuid",
+                    number: "102",
+                    floorId: "cuid",
+                    capacity: 2,
+                    roomEquipment: ["Bed", "Desk", "Chair", "Wardrobe"],
+                    photos: ["https://s3.example.com/room2.jpg"],
+                    dormitoryId: "uuid"
+                  }
+                ]
               }
             ],
-            roomCount: 12,
             generationSummary: {
               floorsCreated: 3,
               roomsPerFloor: 4,
               totalRooms: 12,
               priceConfiguration: {
                 pricePerDay: 30,
-                pricePerMonth: 600
+                pricePerMonth: 600,
+                roomCapacity: 2
               }
             }
           }
@@ -106,7 +123,7 @@ export const DormitoryDocs = {
     applyDecorators(
       ApiOperation({ 
         summary: "List all active dormitories",
-        description: "Returns list of all active dormitories. No authentication required."
+        description: "Returns list of all active dormitories with floor and room counts. No authentication required."
       }),
       ApiOkResponse({
         description: "List of active dormitories",
@@ -125,8 +142,9 @@ export const DormitoryDocs = {
                 example: ["https://s3.example.com/photo1.jpg"]
               },
               status: { type: "string", example: "Active" },
-              roomCount: { type: "number", example: 50 },
-              availableRooms: { type: "number", example: 12 },
+              floorCount: { type: "number", example: 3 },
+              roomCount: { type: "number", example: 12 },
+              availableRooms: { type: "number", example: 8 },
               createdAt: { type: "string", format: "date-time" },
             }
           }
@@ -158,8 +176,6 @@ export const DormitoryDocs = {
               },
               status: { type: "string", example: "Deactivated" },
               createdAt: { type: "string", format: "date-time" },
-              deactivatedAt: { type: "string", format: "date-time" },
-              deactivationReason: { type: "string", example: "Building renovation" }
             }
           }
         }
@@ -171,7 +187,7 @@ export const DormitoryDocs = {
     applyDecorators(
       ApiOperation({ 
         summary: "Get dormitory by ID",
-        description: "Returns detailed information about a specific dormitory including rooms and statistics"
+        description: "Returns detailed information about a specific dormitory including floors, rooms and statistics"
       }),
       ApiParam({ name: "id", description: "Dormitory UUID" }),
       ApiOkResponse({
@@ -185,30 +201,58 @@ export const DormitoryDocs = {
             photos: ["https://s3.example.com/dormitory1.jpg"],
             status: "Active",
             createdAt: "2025-10-03T10:00:00.000Z",
-            rooms: [
+            floors: [
               {
-                id: "uuid",
-                number: "101",
-                floor: 1,
-                capacity: 2,
-                isAvailable: true,
-                currentOccupants: 1,
-                roomEquipment: ["Bed", "Desk", "Chair", "Wardrobe"],
-                photos: ["https://s3.example.com/room1.jpg"]
+                id: "cuid",
+                floorNumber: 1,
+                dormitoryId: "uuid",
+                rooms: [
+                  {
+                    id: "uuid",
+                    number: "101",
+                    floorId: "cuid",
+                    capacity: 2,
+                    roomEquipment: ["Bed", "Desk", "Chair", "Wardrobe"],
+                    photos: ["https://s3.example.com/room1.jpg"],
+                    dormitoryId: "uuid",
+                    residents: [],
+                    currentOccupants: 0,
+                    isAvailable: true
+                  }
+                ]
               }
             ],
-            statistics: {
-              totalRooms: 50,
-              availableRooms: 12,
-              occupiedRooms: 35,
-              maintenanceRooms: 3,
-              totalResidents: 87,
-              occupancyRate: 0.7
-            },
             manager: {
               id: "uuid",
               displayName: "John Manager",
               email: "manager@university.edu"
+            },
+            admins: [
+              {
+                id: "uuid",
+                role: "dormitory_admin",
+                user: {
+                  id: "uuid",
+                  displayName: "Admin User",
+                  email: "admin@university.edu"
+                }
+              }
+            ],
+            residents: [
+              {
+                id: "uuid",
+                displayName: "Student Name",
+                email: "student@university.edu",
+                roomId: "uuid"
+              }
+            ],
+            statistics: {
+              totalFloors: 3,
+              totalRooms: 12,
+              availableRooms: 8,
+              occupiedRooms: 4,
+              totalResidents: 6,
+              occupancyRate: 0.5
             }
           },
         },
