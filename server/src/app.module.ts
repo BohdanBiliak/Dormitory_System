@@ -19,13 +19,14 @@ import {APP_FILTER} from "@nestjs/core";
 import {SentryUserMiddleware} from "@libs/common/middleware/sentry-action-logger.middleware";
 import { NotificationsModule } from "./modules/notifications/notifications.module";
 import { PaymentsModule } from "./modules/payments/payments.module";
+import { RoomTypesModule } from "./modules/dormitory/room-types/room-types.module";
 
 @Module({
 
   imports: [  UserModule, ConfigModule.forRoot({
     isGlobal: true,
     ignoreEnvFile: !IS_DEV_ENV,
-  }),   SentryModule.forRoot(), PrismaModule, AuthModule, UserModule, MailModule, EmailConfirmationModule, MailModule, EmailConfirmationModule, PasswordRecoveryModule, TwoFactorAuthModule, AdminModule,DormitoryModule, RoomModule,AnnouncementModule, NotificationsModule, PaymentsModule],
+  }),   SentryModule.forRoot(), PrismaModule, AuthModule, UserModule, MailModule, EmailConfirmationModule, MailModule, EmailConfirmationModule, PasswordRecoveryModule, TwoFactorAuthModule, AdminModule,DormitoryModule, RoomModule,AnnouncementModule, NotificationsModule, PaymentsModule,   RoomTypesModule],
   controllers: [],
   providers: [ {
     provide: APP_FILTER,

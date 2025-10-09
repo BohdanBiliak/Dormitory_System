@@ -209,10 +209,30 @@ exports.Prisma.RoomScalarFieldEnum = {
   number: 'number',
   floorId: 'floorId',
   capacity: 'capacity',
+  dormitoryId: 'dormitoryId',
   roomEquipment: 'roomEquipment',
   photos: 'photos',
-  dormitoryId: 'dormitoryId',
-  createdAt: 'createdAt'
+  roomTypeId: 'roomTypeId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.RoomTypeScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  capacity: 'capacity',
+  equipment: 'equipment',
+  typeCode: 'typeCode',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.FloorRoomAssignmentScalarFieldEnum = {
+  id: 'id',
+  floorId: 'floorId',
+  roomTypeId: 'roomTypeId',
+  roomNumbers: 'roomNumbers'
 };
 
 exports.Prisma.RoomStatusScalarFieldEnum = {
@@ -533,6 +553,8 @@ exports.Prisma.ModelName = {
   Dormitory: 'Dormitory',
   Floor: 'Floor',
   Room: 'Room',
+  RoomType: 'RoomType',
+  FloorRoomAssignment: 'FloorRoomAssignment',
   RoomStatus: 'RoomStatus',
   Price: 'Price',
   Booking: 'Booking',

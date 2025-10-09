@@ -3,7 +3,7 @@ import { PrismaService } from "@/prisma/prisma.service";
 import { CreateDormitoryDto } from "@/modules/dormitory/dto/create-dormitory.dto";
 import { UpdateDormitoryDto } from "@/modules/dormitory/dto/update-dormitory.dto";
 import { S3Service } from "@/libs/common/s3/s3.service";
-import { Prisma } from "../../../__generated__";
+import { FloorRoomAssignmentDto } from "./dto/room-assignment.dto";
 
 @Injectable()
 export class DormitoryService {
@@ -12,142 +12,204 @@ export class DormitoryService {
     private readonly s3Service: S3Service,
   ) { }
 
-  async create(dto: CreateDormitoryDto, files: { photos?: Express.Multer.File[], roomPhotos?: Express.Multer.File[] }) {
-    const existingDormitory = await this.prismaService.dormitory.findFirst({
-      where: { name: dto.name },
+  async create(
+  dto: CreateDormitoryDto & { floorAssignments: FloorRoomAssignmentDto[] },
+  files: { photos?: Express.Multer.File[], roomPhotos?: Express.Multer.File[] }
+) {
+  // Add debugging logs
+  console.log('=== DORMITORY CREATION DEBUG ===');
+  console.log('DTO received:', JSON.stringify(dto, null, 2));
+  console.log('Floor assignments count:', dto.floorAssignments?.length);
+  
+  dto.floorAssignments?.forEach((floor, floorIndex) => {
+    console.log(`Floor ${floorIndex + 1}:`, {
+      floorNumber: floor.floorNumber,
+      roomAssignmentsCount: floor.roomAssignments?.length
     });
-
-    if (existingDormitory) {
-      throw new BadRequestException(`Dormitory with name "${dto.name}" already exists`);
-    }
-
-    // Upload dormitory photos
-    const photoUrls = files.photos
-      ? await Promise.all(
-        files.photos.map((file) => this.s3Service.uploadFile(file, "dormitories"))
-      )
-      : [];
-
-    // Upload room photos
-    const roomPhotoUrls = files.roomPhotos
-      ? await Promise.all(
-        files.roomPhotos.map((file) => this.s3Service.uploadFile(file, "rooms"))
-      )
-      : [];
-
-    const roomGeneration = JSON.parse(dto.roomGeneration);
-    const { roomGeneration: _removed, ...rest } = dto;
-
-    return this.prismaService.$transaction(async (tx) => {
-      // Create the dormitory first
-      const dormitory = await tx.dormitory.create({
-        data: {
-          ...rest,
-          photos: photoUrls,
-        },
-      });
-
-      // Create floors
-      const floors: Prisma.FloorCreateManyInput[] = [];
-      for (let floorNumber = 1; floorNumber <= roomGeneration.numberOfFloors; floorNumber++) {
-        floors.push({
-          floorNumber,
-          dormitoryId: dormitory.id,
-        });
-      }
-
-      await tx.floor.createMany({ data: floors });
-
-      // Get the created floors
-      const createdFloors = await tx.floor.findMany({
-        where: { dormitoryId: dormitory.id },
-        orderBy: { floorNumber: 'asc' }
-      });
-
-      // Create rooms
-      const rooms: Prisma.RoomCreateManyInput[] = [];
-      const totalRooms = roomGeneration.numberOfFloors * roomGeneration.roomsPerFloor;
-
-      // Default equipment if not provided
-      const defaultEquipment = [
-        "Bed",
-        "Desk",
-        "Chair",
-        "Wardrobe",
-        "Window",
-        "Lighting"
-      ];
-
-      const roomEquipment = roomGeneration.roomEquipment || defaultEquipment;
-
-      for (let floorIndex = 0; floorIndex < createdFloors.length; floorIndex++) {
-        const floor = createdFloors[floorIndex];
-
-        for (let roomNumber = 1; roomNumber <= roomGeneration.roomsPerFloor; roomNumber++) {
-          const roomIndex = floorIndex * roomGeneration.roomsPerFloor + (roomNumber - 1);
-
-          // Distribute photos evenly across rooms, or assign random photos
-          const assignedPhotos = this.distributePhotosToRooms(roomPhotoUrls, roomIndex, totalRooms);
-
-          rooms.push({
-            number: `${floor.floorNumber}${roomNumber.toString().padStart(2, "0")}`,
-            floorId: floor.id,
-            capacity: roomGeneration.roomCapacity || 2,
-            dormitoryId: dormitory.id,
-            roomEquipment,
-            photos: assignedPhotos,
-          });
-        }
-      }
-
-      await tx.room.createMany({ data: rooms });
-
-      // Create unique price entries to avoid duplicates
-      const uniqueCapacities = new Set<number>();
-      const savedRooms = await tx.room.findMany({
-        where: { dormitoryId: dormitory.id },
-        select: { capacity: true }
-      });
-
-      savedRooms.forEach(room => uniqueCapacities.add(room.capacity));
-
-      // Create prices (capacity-based, not room-specific)
-      const prices: Prisma.PriceCreateManyInput[] = Array.from(uniqueCapacities).map((capacity) => ({
-        roomId: null, // Capacity-based pricing
-        roomCapacity: capacity,
-        pricePerMonth: roomGeneration.pricePerMonth,
-        pricePerDay: roomGeneration.pricePerDay,
-        dateFrom: new Date(),
-        dateTo: null, // Open-ended pricing
-      }));
-
-      await tx.price.createMany({ data: prices });
-
-      // Return dormitory with created floors and rooms for response
-      return tx.dormitory.findUnique({
-        where: { id: dormitory.id },
-        include: {
-          floors: {
-            include: {
-              rooms: {
-                select: {
-                  id: true,
-                  number: true,
-                  capacity: true,
-                  roomEquipment: true,
-                  photos: true,
-                  floorId: true
-                }
-              }
-            },
-            orderBy: { floorNumber: 'asc' }
-          }
-        }
+    
+    floor.roomAssignments?.forEach((roomAssignment, roomIndex) => {
+      console.log(`  Room assignment ${roomIndex + 1}:`, {
+        roomTypeId: roomAssignment.roomTypeId,
+        roomNumbers: roomAssignment.roomNumbers,
+        roomNumbersType: typeof roomAssignment.roomNumbers,
+        roomNumbersLength: Array.isArray(roomAssignment.roomNumbers) ? roomAssignment.roomNumbers.length : 'not array'
       });
     });
+  });
+
+  const existingDormitory = await this.prismaService.dormitory.findFirst({
+    where: { name: dto.name },
+  });
+
+  if (existingDormitory) {
+    throw new BadRequestException(`Dormitory with name "${dto.name}" already exists`);
   }
 
-  private distributePhotosToRooms(photoUrls: string[], roomIndex: number, totalRooms: number): string[] {
+  // Upload photos
+  const photoUrls = files.photos
+    ? await Promise.all(
+      files.photos.map((file) => this.s3Service.uploadFile(file, "dormitories"))
+    )
+    : [];
+
+  const roomPhotoUrls = files.roomPhotos
+    ? await Promise.all(
+      files.roomPhotos.map((file) => this.s3Service.uploadFile(file, "rooms"))
+    )
+    : [];
+
+  return this.prismaService.$transaction(async (tx) => {
+    // Create the dormitory
+    const dormitory = await tx.dormitory.create({
+      data: {
+        name: dto.name,
+        address: dto.address,
+        groundFloorPhoneNumber: dto.groundFloorPhoneNumber,
+        photos: photoUrls,
+      },
+    });
+
+    console.log('Dormitory created:', dormitory.id);
+
+    // Create floors and rooms based on assignments
+    for (const floorAssignment of dto.floorAssignments) {
+      console.log(`Creating floor ${floorAssignment.floorNumber}`);
+      
+      // Create floor
+      const floor = await tx.floor.create({
+        data: {
+          floorNumber: floorAssignment.floorNumber,
+          dormitoryId: dormitory.id,
+        }
+      });
+
+      console.log(`Floor created with ID: ${floor.id}`);
+
+      // Process room assignments for this floor
+      for (const roomAssignment of floorAssignment.roomAssignments) {
+        console.log(`Processing room assignment:`, {
+          roomTypeId: roomAssignment.roomTypeId,
+          roomNumbers: roomAssignment.roomNumbers
+        });
+
+        // Get room type details
+        const roomType = await tx.roomType.findUnique({
+          where: { id: roomAssignment.roomTypeId }
+        });
+
+        if (!roomType) {
+          throw new BadRequestException(`Room type ${roomAssignment.roomTypeId} not found`);
+        }
+
+        console.log(`Room type found:`, {
+          id: roomType.id,
+          typeCode: roomType.typeCode,
+          capacity: roomType.capacity
+        });
+
+        // Create floor room assignment record
+        await tx.floorRoomAssignment.create({
+          data: {
+            floorId: floor.id,
+            roomTypeId: roomType.id,
+            roomNumbers: roomAssignment.roomNumbers,
+          }
+        });
+
+        console.log('Floor room assignment created');
+
+        // Create individual rooms
+        const rooms = roomAssignment.roomNumbers.map(roomNumber => ({
+          number: `${floorAssignment.floorNumber}${roomNumber.toString().padStart(2, '0')}`,
+          floorId: floor.id,
+          capacity: roomType.capacity,
+          dormitoryId: dormitory.id,
+          roomEquipment: roomType.equipment,
+          photos: this.assignPhotosToRoom(roomPhotoUrls, roomType.typeCode),
+          roomTypeId: roomType.id,
+        }));
+
+        console.log(`Creating ${rooms.length} rooms:`, rooms.map(r => r.number));
+        
+        const result = await tx.room.createMany({ data: rooms });
+        console.log(`Rooms created successfully, count: ${result.count}`);
+      }
+    }
+
+    // Create pricing
+    const uniqueCapacities = new Set<number>();
+    for (const floorAssignment of dto.floorAssignments) {
+      for (const roomAssignment of floorAssignment.roomAssignments) {
+        const roomType = await tx.roomType.findUnique({
+          where: { id: roomAssignment.roomTypeId },
+          select: { capacity: true }
+        });
+        if (roomType) {
+          uniqueCapacities.add(roomType.capacity);
+        }
+      }
+    }
+
+    const prices = Array.from(uniqueCapacities).map((capacity) => ({
+      roomId: null,
+      roomCapacity: capacity,
+      pricePerMonth: +dto.pricePerMonth,
+      pricePerDay: +dto.pricePerDay,
+      dateFrom: new Date(),
+      dateTo: null,
+    }));
+
+    await tx.price.createMany({ data: prices });
+
+    console.log('Pricing created');
+
+    // Return dormitory with created structure
+    const result = await tx.dormitory.findUnique({
+      where: { id: dormitory.id },
+      include: {
+        floors: {
+          include: {
+            rooms: {
+              include: {
+                roomType: true
+              }
+            },
+            floorRoomAssignments: {
+              include: {
+                roomType: true
+              }
+            }
+          },
+          orderBy: { floorNumber: 'asc' }
+        }
+      }
+    });
+
+    console.log('Final result floors:', result?.floors?.length);
+    console.log('Total rooms created:', result?.floors?.reduce((acc, floor) => acc + floor.rooms.length, 0));
+    console.log('=== END DEBUG ===');
+
+    return result;
+  });
+}
+   private assignPhotosToRoom(photoUrls: string[], typeCode: string): string[] {
+    if (!photoUrls.length) return [];
+    
+    // Simple assignment based on type code
+    const maxPhotos = 3;
+    const startIndex = typeCode.charCodeAt(0) % photoUrls.length;
+    
+    const assigned: string[] = [];
+    for (let i = 0; i < Math.min(maxPhotos, photoUrls.length); i++) {
+      const index = (startIndex + i) % photoUrls.length;
+      assigned.push(photoUrls[index]);
+    }
+    
+    return assigned;
+  }
+
+
+    private distributePhotosToRooms(photoUrls: string[], roomIndex: number, totalRooms: number): string[] {
     if (!photoUrls.length) return [];
 
     // Simple distribution: cycle through photos

@@ -314,34 +314,38 @@ model Dormitory {
 }
 
 model Floor {
-  id          String    @id @default(cuid())
-  floorNumber Int
-  dormitoryId String
-  dormitory   Dormitory @relation(fields: [dormitoryId], references: [id])
-  rooms       Room[]
+  id                   String                @id @default(cuid())
+  floorNumber          Int
+  dormitoryId          String
+  dormitory            Dormitory             @relation(fields: [dormitoryId], references: [id])
+  rooms                Room[]
+  floorRoomAssignments FloorRoomAssignment[]
 
   @@unique([dormitoryId, floorNumber])
   @@map("floors")
 }
 
 model Room {
-  id            String   @id @default(uuid())
+  id            String   @id @default(cuid())
   number        String
-  floorId       String   @map("floor_id")
+  floorId       String
   capacity      Int
-  roomEquipment String[] @map("room_equipment")
+  dormitoryId   String
+  roomEquipment String[]
   photos        String[]
-  dormitoryId   String   @map("dormitory_id")
-  createdAt     DateTime @default(now()) @map("created_at")
+  roomTypeId    String? // Add this field
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
-  floor Floor @relation(fields: [floorId], references: [id])
-
+  // Relations
+  floor                  Floor                   @relation(fields: [floorId], references: [id], onDelete: Cascade)
   dormitory              Dormitory               @relation(fields: [dormitoryId], references: [id], onDelete: Cascade)
-  statuses               RoomStatus[]
-  residents              User[]
+  roomType               RoomType?               @relation(fields: [roomTypeId], references: [id])
   announcementRecipients AnnouncementRecipient[] @relation("AnnouncementRecipientRoom")
   notifications          Notification[]
   bookings               Booking[]
+  statuses               RoomStatus[]
+  residents              User[]
   prices                 Price[]
 
   @@unique([floorId, number])
@@ -352,6 +356,36 @@ model Room {
   @@index([createdAt]) // Chronological queries
   @@index([dormitoryId], map: "rooms_dormitory_id_unique_idx")
   @@map("rooms")
+}
+
+model RoomType {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  capacity    Int
+  equipment   String[] // Array of equipment/furniture items
+  typeCode    String   @unique // A, B, C, etc.
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  rooms                Room[]
+  floorRoomAssignments FloorRoomAssignment[]
+
+  @@map("room_types")
+}
+
+model FloorRoomAssignment {
+  id          String @id @default(cuid())
+  floorId     String
+  roomTypeId  String
+  roomNumbers Int[] // Array of room numbers using this type
+
+  // Relations
+  floor    Floor    @relation(fields: [floorId], references: [id], onDelete: Cascade)
+  roomType RoomType @relation(fields: [roomTypeId], references: [id])
+
+  @@map("floor_room_assignments")
 }
 
 model RoomStatus {

@@ -8,6 +8,7 @@ import {
   Post,
   UploadedFiles,
   UseInterceptors,
+  ParseArrayPipe,
 } from "@nestjs/common";
 import { $Enums } from "../../../__generated__";
 import UserRole = $Enums.UserRole;
@@ -17,6 +18,8 @@ import { FileFieldsInterceptor } from "@nestjs/platform-express";
 import { DormitoryService } from "./dormitory.service";
 import { Authorization } from "@libs/common/decorators/auth.decorator";
 import { DormitoryDocs } from "./dormitory.docs";
+import { FloorRoomAssignmentDto } from "./dto/room-assignment.dto";
+import { MultipartTransformInterceptor } from "@/libs/common/interceptors/MultipartTransformInterceptor";
 
 @DormitoryDocs.controller()
 @Controller("dormitories")
@@ -24,20 +27,19 @@ export class DormitoryController {
   constructor(private readonly dormitoryService: DormitoryService) { }
 
   @Post()
-  @Authorization(UserRole.Admin, UserRole.SuperAdmin)
-  @UseInterceptors(
-    FileFieldsInterceptor([
-      { name: "photos", maxCount: 10 },
-      { name: "roomPhotos", maxCount: 50 },
-    ])
-  )
+  @UseInterceptors(MultipartTransformInterceptor)
   @DormitoryDocs.create()
-  create(
-    @Body() dto: CreateDormitoryDto,
-    @UploadedFiles() files: { photos?: Express.Multer.File[], roomPhotos?: Express.Multer.File[] },
-  ) {
-    return this.dormitoryService.create(dto, files);
-  }
+@UseInterceptors(FileFieldsInterceptor([
+  { name: "photos", maxCount: 10 },
+  { name: "roomPhotos", maxCount: 50 },
+]))
+create(
+  @Body('floorAssignments', new ParseArrayPipe({ items: FloorRoomAssignmentDto })) floorAssignments: FloorRoomAssignmentDto[],
+  @UploadedFiles() files: { photos?: Express.Multer.File[], roomPhotos?: Express.Multer.File[] },
+  @Body() dto: Omit<CreateDormitoryDto, 'floorAssignments'>,
+) {
+  return this.dormitoryService.create({ ...dto, floorAssignments }, files);
+}
 
   @Get()
   @DormitoryDocs.findAll()
