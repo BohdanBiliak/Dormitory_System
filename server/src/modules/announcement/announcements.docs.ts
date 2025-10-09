@@ -26,271 +26,295 @@ export const AnnouncementDocs = {
 
   create: () =>
     applyDecorators(
-      ApiOperation({ 
-        summary: 'Create announcement', 
-        description: 'Creates a new announcement that can be public or private. Only admins can create announcements.'
+      ApiOperation({
+        summary: 'Create new announcement',
+        description:
+          'Creates a new announcement that may be public or targeted to specific users, rooms, or floors. Only Admins can perform this action.',
       }),
-      ApiBody({ 
+      ApiBody({
         type: CreateAnnouncementDto,
         examples: {
-          publicAnnouncement: {
-            summary: "Public announcement",
+          forEveryone: {
+            summary: "Public announcement for everyone",
             value: {
-              title: "Dormitory Maintenance",
-              content: "Water will be shut off tomorrow from 9 AM to 5 PM for maintenance work.",
-              isPublic: true,
-              isImportant: true,
-              validFrom: "2025-10-03T00:00:00.000Z",
-              validTo: "2025-10-04T23:59:59.000Z",
-              attachments: ["https://s3.example.com/maintenance-notice.pdf"]
-            }
+              title: "Electricity Maintenance",
+              content: "Electricity will be unavailable on Tuesday between 10:00 and 16:00 due to maintenance work.",
+              expiresAt: "2025-10-12T16:00:00.000Z",
+              forEveryone: true,
+              attachmentUrls: [
+                "https://s3.example.com/announcements/maintenance-info.pdf"
+              ]
+            },
           },
-          privateAnnouncement: {
-            summary: "Private announcement (admin only)",
+          forSpecificUsers: {
+            summary: "Announcement for specific users and rooms",
             value: {
-              title: "Staff Meeting",
-              content: "Monthly staff meeting scheduled for next Friday at 2 PM in the conference room.",
-              isPublic: false,
-              isImportant: false,
-              validFrom: "2025-10-03T00:00:00.000Z",
-              validTo: "2025-10-10T23:59:59.000Z"
-            }
-          }
-        }
+              title: "Room Inspection",
+              content: "Scheduled room inspection for selected rooms this weekend.",
+              expiresAt: "2025-10-10T23:59:59.000Z",
+              userIds: ["uuid-user-1", "uuid-user-2"],
+              roomIds: ["uuid-room-101", "uuid-room-202"],
+              floorNumbers: [1, 2],
+              attachmentUrls: [
+                "https://s3.example.com/announcements/inspection-schedule.pdf"
+              ]
+            },
+          },
+        },
       }),
-      ApiCreatedResponse({ 
-        description: 'Announcement created successfully', 
+      ApiCreatedResponse({
+        description: "Announcement created successfully",
         type: AnnouncementResponseDto,
         schema: {
           example: {
-            id: "uuid",
-            title: "Dormitory Maintenance",
-            content: "Water will be shut off tomorrow from 9 AM to 5 PM for maintenance work.",
-            isPublic: true,
-            isImportant: true,
+            id: "uuid-announcement-1",
+            title: "Electricity Maintenance",
+            content:
+              "Electricity will be unavailable on Tuesday between 10:00 and 16:00 due to maintenance work.",
+            expiresAt: "2025-10-12T16:00:00.000Z",
             isHidden: false,
-            validFrom: "2025-10-03T00:00:00.000Z",
-            validTo: "2025-10-04T23:59:59.000Z",
-            attachments: ["https://s3.example.com/maintenance-notice.pdf"],
-            authorId: "uuid",
+            postedAt: "2025-10-07T10:00:00.000Z",
+            attachments: [
+              {
+                id: "uuid-attach-1",
+                url: "https://s3.example.com/announcements/maintenance-info.pdf",
+                filename: "maintenance-info.pdf",
+              },
+            ],
+            recipients: [
+              { id: "uuid-rec-1", forEveryone: true },
+            ],
+            authorId: "uuid-admin-1",
             author: {
-              id: "uuid",
-              displayName: "Admin User"
+              id: "uuid-admin-1",
+              displayName: "Admin User",
+              email: "admin@university.edu",
             },
-            createdAt: "2025-10-03T10:00:00.000Z",
-            updatedAt: "2025-10-03T10:00:00.000Z"
-          }
-        }
+            createdAt: "2025-10-07T10:00:00.000Z",
+            updatedAt: "2025-10-07T10:00:00.000Z",
+          },
+        },
       }),
-      ApiBadRequestResponse({ description: 'Invalid announcement data' }),
-      ApiForbiddenResponse({ description: 'Only admins can create announcements' })
+      ApiBadRequestResponse({ description: "Invalid announcement data" }),
+      ApiForbiddenResponse({ description: "Only admins can create announcements" }),
     ),
 
   findPublic: () =>
     applyDecorators(
-      ApiOperation({ 
-        summary: 'Get all public announcements (for everyone)',
-        description: 'Returns paginated list of public announcements. No authentication required.'
+      ApiOperation({
+        summary: "Get all public announcements",
+        description:
+          "Returns a paginated list of announcements visible to everyone (no authentication required).",
       }),
-      ApiQuery({ name: 'showHidden', required: false, type: Boolean, description: 'Include hidden announcements (admin only)' }),
-      ApiQuery({ name: 'showExpired', required: false, type: Boolean, description: 'Include expired announcements' }),
-      ApiQuery({ name: 'page', required: false, type: Number, description: 'Page number (pagination)', example: 1 }),
-      ApiQuery({ name: 'limit', required: false, type: Number, description: 'Items per page (pagination)', example: 20 }),
+      ApiQuery({ name: "showHidden", required: false, type: Boolean, description: "Include hidden announcements (admin only)" }),
+      ApiQuery({ name: "showExpired", required: false, type: Boolean, description: "Include expired announcements" }),
+      ApiQuery({ name: "page", required: false, type: Number, example: 1 }),
+      ApiQuery({ name: "limit", required: false, type: Number, example: 20 }),
       ApiOkResponse({
-        description: 'List of public announcements with pagination',
+        description: "List of public announcements with pagination",
         schema: {
-          type: 'object',
+          type: "object",
           properties: {
-            data: { 
-              type: 'array', 
-              items: { 
-                type: 'object',
+            data: {
+              type: "array",
+              items: {
+                type: "object",
                 properties: {
-                  id: { type: 'string', format: 'uuid' },
-                  title: { type: 'string' },
-                  content: { type: 'string' },
-                  isPublic: { type: 'boolean', example: true },
-                  isImportant: { type: 'boolean' },
-                  isHidden: { type: 'boolean', example: false },
-                  validFrom: { type: 'string', format: 'date-time' },
-                  validTo: { type: 'string', format: 'date-time' },
-                  attachments: { type: 'array', items: { type: 'string' } },
-                  author: {
-                    type: 'object',
-                    properties: {
-                      id: { type: 'string', format: 'uuid' },
-                      displayName: { type: 'string' }
-                    }
+                  id: { type: "string", format: "uuid" },
+                  title: { type: "string" },
+                  content: { type: "string" },
+                  isHidden: { type: "boolean", example: false },
+                  validTo: { type: "string", format: "date-time" },
+                  attachments: {
+                    type: "array",
+                    items: {
+                      type: "object",
+                      properties: {
+                        id: { type: "string" },
+                        url: { type: "string" },
+                        filename: { type: "string" },
+                      },
+                    },
                   },
-                  createdAt: { type: 'string', format: 'date-time' }
-                }
-              }
+                  recipients: {
+                    type: "array",
+                    items: {
+                      type: "object",
+                      properties: {
+                        id: { type: "string" },
+                        forEveryone: { type: "boolean" },
+                        roomId: { type: "string", nullable: true },
+                        userId: { type: "string", nullable: true },
+                        floor: { type: "number", nullable: true },
+                      },
+                    },
+                  },
+                  author: {
+                    type: "object",
+                    properties: {
+                      id: { type: "string", format: "uuid" },
+                      displayName: { type: "string" },
+                    },
+                  },
+                  createdAt: { type: "string", format: "date-time" },
+                },
+              },
             },
             pagination: {
-              type: 'object',
+              type: "object",
               properties: {
-                total: { type: 'number', example: 100 },
-                page: { type: 'number', example: 1 },
-                limit: { type: 'number', example: 20 },
-                totalPages: { type: 'number', example: 5 },
+                total: { type: "number", example: 42 },
+                page: { type: "number", example: 1 },
+                limit: { type: "number", example: 10 },
+                totalPages: { type: "number", example: 5 },
               },
             },
           },
         },
-      })
+      }),
     ),
 
   findAll: () =>
     applyDecorators(
-      ApiOperation({ 
-        summary: 'Get all announcements (admin only)',
-        description: 'Returns paginated list of all announcements including private ones. Admin access required.'
+      ApiOperation({
+        summary: "Get all announcements (admin only)",
+        description:
+          "Returns all announcements including private and hidden ones. Admin access required.",
       }),
-      ApiQuery({ name: 'showHidden', required: false, type: Boolean, description: 'Include hidden announcements' }),
-      ApiQuery({ name: 'showExpired', required: false, type: Boolean, description: 'Include expired announcements' }),
-      ApiQuery({ name: 'page', required: false, type: Number, example: 1, description: 'Page number' }),
-      ApiQuery({ name: 'limit', required: false, type: Number, example: 20, description: 'Items per page' }),
+      ApiQuery({ name: "showHidden", required: false, type: Boolean }),
+      ApiQuery({ name: "showExpired", required: false, type: Boolean }),
+      ApiQuery({ name: "page", required: false, type: Number, example: 1 }),
+      ApiQuery({ name: "limit", required: false, type: Number, example: 20 }),
       ApiOkResponse({
-        description: 'List of announcements with pagination',
+        description: "List of all announcements (admin)",
         schema: {
-          type: 'object',
-          properties: {
-            data: { 
-              type: 'array',
-              items: {
-                type: 'object',
-                properties: {
-                  id: { type: 'string', format: 'uuid' },
-                  title: { type: 'string' },
-                  content: { type: 'string' },
-                  isPublic: { type: 'boolean' },
-                  isImportant: { type: 'boolean' },
-                  isHidden: { type: 'boolean' },
-                  validFrom: { type: 'string', format: 'date-time' },
-                  validTo: { type: 'string', format: 'date-time' },
-                  attachments: { type: 'array', items: { type: 'string' } },
-                  author: {
-                    type: 'object',
-                    properties: {
-                      id: { type: 'string', format: 'uuid' },
-                      displayName: { type: 'string' }
-                    }
-                  },
-                  createdAt: { type: 'string', format: 'date-time' },
-                  updatedAt: { type: 'string', format: 'date-time' }
-                }
-              }
-            },
-            pagination: {
-              type: 'object',
-              properties: {
-                total: { type: 'number', example: 100 },
-                page: { type: 'number', example: 1 },
-                limit: { type: 'number', example: 20 },
-                totalPages: { type: 'number', example: 5 },
+          example: {
+            data: [
+              {
+                id: "uuid-announcement-1",
+                title: "Staff Meeting",
+                content: "Staff meeting next Friday at 14:00 in conference room.",
+                isHidden: false,
+                expiresAt: "2025-10-15T00:00:00.000Z",
+                attachments: [],
+                recipients: [
+                  { id: "uuid-rec-1", userId: "uuid-user-2", forEveryone: false },
+                ],
+                author: {
+                  id: "uuid-admin-1",
+                  displayName: "Admin User",
+                },
+                createdAt: "2025-10-07T10:00:00.000Z",
               },
+            ],
+            pagination: {
+              total: 1,
+              page: 1,
+              limit: 20,
+              totalPages: 1,
             },
           },
         },
       }),
-      ApiForbiddenResponse({ description: 'Admin access required' })
+      ApiForbiddenResponse({ description: "Admin access required" }),
     ),
 
   getById: () =>
     applyDecorators(
-      ApiOperation({ 
-        summary: 'Get announcement by ID',
-        description: 'Returns detailed information about a specific announcement'
+      ApiOperation({
+        summary: "Get announcement by ID",
+        description:
+          "Returns full details of a single announcement including recipients and attachments.",
       }),
-      ApiParam({ name: 'id', type: String, description: 'Announcement ID (UUID)' }),
-      ApiOkResponse({ 
-        description: 'Announcement found', 
+      ApiParam({ name: "id", type: String, description: "Announcement ID (UUID)" }),
+      ApiOkResponse({
+        description: "Announcement found",
         type: AnnouncementResponseDto,
         schema: {
           example: {
-            id: "uuid",
+            id: "uuid-announcement-1",
             title: "Dormitory Maintenance",
             content: "Water will be shut off tomorrow from 9 AM to 5 PM for maintenance work.",
-            isPublic: true,
-            isImportant: true,
-            isHidden: false,
-            validFrom: "2025-10-03T00:00:00.000Z",
-            validTo: "2025-10-04T23:59:59.000Z",
-            attachments: ["https://s3.example.com/maintenance-notice.pdf"],
-            authorId: "uuid",
+            expiresAt: "2025-10-09T17:00:00.000Z",
+            postedAt: "2025-10-07T09:00:00.000Z",
+            attachments: [
+              {
+                id: "uuid-attach-1",
+                url: "https://s3.example.com/maintenance.pdf",
+                filename: "maintenance.pdf",
+              },
+            ],
+            recipients: [
+              { id: "uuid-rec-1", forEveryone: true },
+              { id: "uuid-rec-2", roomId: "uuid-room-101" },
+              { id: "uuid-rec-3", floor: 3 },
+            ],
+            authorId: "uuid-admin-1",
             author: {
-              id: "uuid",
+              id: "uuid-admin-1",
               displayName: "Admin User",
-              email: "admin@university.edu"
+              email: "admin@university.edu",
             },
-            createdAt: "2025-10-03T10:00:00.000Z",
-            updatedAt: "2025-10-03T10:00:00.000Z"
-          }
-        }
+            createdAt: "2025-10-07T10:00:00.000Z",
+            updatedAt: "2025-10-07T10:00:00.000Z",
+          },
+        },
       }),
-      ApiNotFoundResponse({ description: 'Announcement not found' }),
-      ApiForbiddenResponse({ description: 'Access denied for private announcements' })
+      ApiNotFoundResponse({ description: "Announcement not found" }),
     ),
 
   remove: () =>
     applyDecorators(
-      ApiOperation({ 
-        summary: 'Delete announcement (soft delete)',
-        description: 'Marks an announcement as deleted (soft delete). Only admins can delete announcements.'
+      ApiOperation({
+        summary: "Soft delete announcement (admin only)",
+        description:
+          "Marks announcement as hidden instead of removing it permanently.",
       }),
-      ApiParam({ name: 'id', type: String, description: 'Announcement ID (UUID)' }),
-      ApiOkResponse({ 
-        description: 'Announcement deleted (soft)',
+      ApiParam({ name: "id", type: String }),
+      ApiOkResponse({
+        description: "Announcement hidden successfully",
         schema: {
           example: {
-            id: "uuid",
+            id: "uuid-announcement-1",
             title: "Dormitory Maintenance",
-            isDeleted: true,
-            deletedAt: "2025-10-03T15:00:00.000Z"
-          }
-        }
+            isHidden: true,
+          },
+        },
       }),
-      ApiNotFoundResponse({ description: 'Announcement not found' }),
-      ApiForbiddenResponse({ description: 'Only admins can delete announcements' }),
-      ApiBadRequestResponse({ description: 'Announcement already deleted' })
+      ApiNotFoundResponse({ description: "Announcement not found" }),
+      ApiForbiddenResponse({ description: "Only admins can delete announcements" }),
     ),
 
   upload: () =>
     applyDecorators(
-      ApiOperation({ 
-        summary: 'Upload announcement attachments',
-        description: 'Uploads files to be used as attachments in announcements. Returns array of file URLs.'
+      ApiOperation({
+        summary: "Upload announcement attachments",
+        description: "Uploads files and returns their URLs for use in announcements.",
       }),
-      ApiConsumes('multipart/form-data'),
+      ApiConsumes("multipart/form-data"),
       ApiBody({
         schema: {
-          type: 'object',
+          type: "object",
           properties: {
             files: {
-              type: 'array',
-              items: { type: 'string', format: 'binary' },
-              description: 'Files to upload (documents, images, etc.)'
-            }
-          }
-        }
+              type: "array",
+              items: { type: "string", format: "binary" },
+              description: "Files to upload (PDF, images, etc.)",
+            },
+          },
+        },
       }),
-      ApiCreatedResponse({ 
-        description: 'Files uploaded successfully',
+      ApiCreatedResponse({
+        description: "Files uploaded successfully",
         schema: {
-          type: 'object',
-          properties: {
-            urls: {
-              type: 'array',
-              items: { type: 'string' },
-              example: [
-                "https://s3.example.com/announcements/document1.pdf",
-                "https://s3.example.com/announcements/image1.jpg"
-              ]
-            }
-          }
-        }
+          example: {
+            urls: [
+              "https://s3.example.com/announcements/notice1.pdf",
+              "https://s3.example.com/announcements/image2.png",
+            ],
+          },
+        },
       }),
-      ApiBadRequestResponse({ description: 'Invalid file format or size' }),
-      ApiForbiddenResponse({ description: 'Only admins can upload files' })
+      ApiBadRequestResponse({ description: "Invalid file format or upload error" }),
     ),
 };
