@@ -17,6 +17,7 @@ export function RegisterForm() {
     studentIdBack: null as File | null,
   })
   const [errors, setErrors] = useState<Record<string, string>>({})
+  const [showPassword, setShowPassword] = useState<boolean>(false)
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, files } = e.target
@@ -174,17 +175,22 @@ export function RegisterForm() {
               <label className="block text-sm sm:text-base font-medium text-gray-700 mb-1 sm:mb-2">
                 Password *
               </label>
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleInputChange}
-                disabled={isLoading}
-                className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 transition-colors text-sm sm:text-base ${
-                  errors.password ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
-                }`}
-                placeholder="Enter password"
-              />
+              <div className={`relative`}>
+                <input
+                  type={showPassword ? `text` : `password`}
+                  name="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  disabled={isLoading}
+                  className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 transition-colors text-sm sm:text-base ${
+                    errors.password ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
+                  }`}
+                  placeholder="Enter password"
+                />
+                <span className="absolute z-10 top-2 right-2" onClick={()=>{setShowPassword(!showPassword)}} >
+                  <img src={showPassword ? '/eye.svg' : '/eye-slash.svg'} alt={showPassword ? 'show password' : 'hide password'} className='h-8 w-8 right-0'/>
+                </span>
+              </div>
               {errors.password && <p className="text-red-500 text-xs sm:text-sm mt-1 flex items-center">
                 <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
@@ -197,17 +203,22 @@ export function RegisterForm() {
               <label className="block text-sm sm:text-base font-medium text-gray-700 mb-1 sm:mb-2">
                 Confirm Password *
               </label>
-              <input
-                type="password"
-                name="passwordRepeat"
-                value={formData.passwordRepeat}
-                onChange={handleInputChange}
-                disabled={isLoading}
-                className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 transition-colors text-sm sm:text-base ${
-                  errors.passwordRepeat ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
-                }`}
-                placeholder="Confirm password"
-              />
+              <div className={`relative`}>
+                <input
+                  type={showPassword ? `text` : `password`}
+                  name="passwordRepeat"
+                  value={formData.passwordRepeat}
+                  onChange={handleInputChange}
+                  disabled={isLoading}
+                  className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 transition-colors text-sm sm:text-base ${
+                    errors.passwordRepeat ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
+                  }`}
+                  placeholder="Confirm password"
+                />
+                <span className="absolute z-10 top-2 right-2" onClick={()=>{setShowPassword(!showPassword)}} >
+                  <img src={showPassword ? '/eye.svg' : '/eye-slash.svg'} alt={showPassword ? 'show password' : 'hide password'} className='h-8 w-8 right-0'/>
+                </span>
+              </div>
               {errors.passwordRepeat && <p className="text-red-500 text-xs sm:text-sm mt-1 flex items-center">
                 <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />

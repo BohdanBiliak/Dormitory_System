@@ -83,10 +83,9 @@ export const confirmationsApi = {
   },
 
   // Reject confirmation
-  async rejectConfirmation(id: string, reason?: string): Promise<Confirmation> {
-    const response = await api.patch(`/admin/confirmations/${id}`, {
-      status: 'REJECTED',
-      rejectionReason: reason
+  async rejectConfirmation(id: string, reason: string): Promise<Confirmation> {
+    const response = await api.post(`/admin/reject-confirmation/${id}`, {
+      reason: reason
     })
     return response.data
   },

@@ -35,8 +35,8 @@ export function ConfirmationsTable() {
     setSelectedConfirmation(null)
   }
 
-  const handleReject = (confirmationId: string) => {
-    rejectConfirmation({ id: confirmationId })
+  const handleReject = ({id, reason}:{id:string, reason: string}) => {
+    rejectConfirmation({ id: id, reason: reason })
     setSelectedConfirmation(null)
   }
 

@@ -15,7 +15,7 @@ export function UserProfileForm({userId}:UserProfileFormProps){
         displayName: '',
         lastName: '',
         email: '',
-        photo: null as File | null,
+        photo: '',
         role: 'user'
     })
 

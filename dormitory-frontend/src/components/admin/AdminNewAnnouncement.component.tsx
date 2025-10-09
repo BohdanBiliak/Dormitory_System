@@ -4,61 +4,18 @@ import React, { useState } from 'react'
 import {useMutateAnnouncement} from "@/hooks/announcements.hook";
 import {AnnouncementCreateRequest} from "@/types/announcements.types";
 import Link from "next/link";
-import {toast} from "sonner";
-import {Description, Dialog, DialogBackdrop, DialogPanel, DialogTitle} from "@headlessui/react";
-import {ChevronDown, ChevronUp, Plus, X} from "lucide-react";
 import {useGetActiveDormitories} from "@/hooks/dormitories.hook";
 import {useGetRooms} from "@/hooks/rooms.hook";
-import {User} from "@/types/auth.types";
-import {Room} from "@/types/rooms.types";
-import {Dormitory} from "@/types/dormitories.types";
+import AddressesDialogComponent, {AddresseeItem, AddresseeType } from "@/components/dialogs/admin/AddressesDialog.component";
 
-enum AddresseeType {
-    'Resident', 'Room', 'Floor', 'Dormitory'
-}
 
-interface AddresseeItem {
-    id: string;
-    isChosen: boolean;
-    label: string;
-    type: AddresseeType;
-    resident?: ResidentItem;
-    room?: RoomItem;
-    floor?: FloorItem;
-    dormitory?: DormitoryItem;
-}
-
-interface ResidentItem{
-    user: User;
-}
-
-interface RoomItem {
-    showChildren: boolean;
-    room: Room;
-    residents: ResidentItem[];
-}
-
-interface FloorItem {
-    dormId: string;
-    label: number;
-    showChildren: boolean;
-    rooms: RoomItem[];
-}
-
-interface DormitoryItem {
-    id: string;
-    label: string;
-    showChildren: boolean;
-    dormitory: Dormitory;
-    floors: FloorItem[];
-}
 
 export function AdminNewAnnouncement(){
     const [attachedFiles, setAttachedFiles] = useState<File[]>([])
-    const [addresses, setAddresses] = useState<{id: string, label: string, type: AddresseeType}[]>([])
+    const [addresses, setAddresses] = useState<{id: string, label: string, type: AddresseeType, addressee: AddresseeItem}[]>([])
     const [showAddressesDialog, setShowAddressesDialog] = useState<boolean>(false)
 
-    const [chosenAddresses, setChosenAddresses] = useState<AddresseeItem[]>([])
+    const [preselectedAddresses, setPreselectedAddresses] = useState<string[]>([])
 
     const [newAnnouncement, setNewAnnouncement] = useState<AnnouncementCreateRequest>({
         title: '',
@@ -85,9 +42,6 @@ export function AdminNewAnnouncement(){
         setAttachedFiles(prev => prev.filter((_, i) => i !== index))
     }
 
-    const updateAddresses = (index: number, value: {id: string, label:string, type: AddresseeType}) => {
-        setAddresses(prev => prev.map((addr, i) => i === index ? value : addr))
-    }
 
     const removeAddresses = (index: number) => {
         setAddresses(prev => prev.filter((_, i) => i !== index))
@@ -110,7 +64,12 @@ export function AdminNewAnnouncement(){
     const handleInputChange = (e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const {name, value} = e.target
 
-            if(name !== "attachmentUrls"){
+        if(name === "expiresAt"){
+            const isoString = new Date(value + "T00:00:00Z").toISOString()
+            setNewAnnouncement(prev => ({...prev, expiresAt: isoString}))
+        }
+
+        if(name !== "attachmentUrls" && name !=="expiresAt"){
             setNewAnnouncement(prev =>({...prev, [name]:value}))
         }
 
@@ -128,23 +87,29 @@ export function AdminNewAnnouncement(){
         setShowAddressesDialog(false);
     }
 
-   const toggleAddresses = (addressItem: AddresseeItem) => {
-        if(addressItem.type !== 'Resident' as AddressesTypes ){}
-   }
-
-    const handleAddAddress = (address:AddresseeItem) => {
-        if(!chosenAddresses.find((addr) => {addr.id ===address.id && addr.type === address.type})){
-            setChosenAddresses(prev=>[...prev, address])
-        }
+    const handleOpenAddressesDialog = () => {
+        const preselect = addresses.map((addressee) =>
+            addressee.addressee.id
+        )
+        setPreselectedAddresses(preselect)
+        setShowAddressesDialog(true);
     }
 
-    const handleRemoveAddress = (address:AddresseeItem) => {
-        if(chosenAddresses.find((addr) => {addr.id === address.id && addr.type === address.type})){
-            setChosenAddresses(prev => prev.filter(addr => addr !== address))
-        }
-    }
+    const handleConfirmAddressesInDialog = (selected: AddresseeItem[]) => {
+        console.log(selected)
+        const newAddressees:{id: string, label: string, type: AddresseeType, addressee: AddresseeItem}[] = []
+        selected.forEach((item,index) => {
+            newAddressees.push({
+                id: index.toString(),
+                label: item.label,
+                type: item.type,
+                addressee: item
 
-    const availableAddresses:AddresseeItem[] = []
+            })
+        })
+        setAddresses(newAddressees)
+        setShowAddressesDialog(false)
+    }
 
     return(
         <div className="w-full bg-gradient-to-br from-gray-50 to-gray-100">
@@ -311,7 +276,7 @@ export function AdminNewAnnouncement(){
                                         {addresses.map((address, index) => (
                                             <div key={index} className="flex items-center space-x-2">
                                                 <div className="flex items-center space-x-2">
-                                                    <label>address</label>
+                                                    {address.label}
                                                 </div>
                                                 <button
                                                     onClick={() => removeAddresses(index)}
@@ -325,7 +290,7 @@ export function AdminNewAnnouncement(){
                                         ))}
 
                                         <button
-                                            onClick={()=>setShowAddressesDialog(true)}
+                                            onClick={handleOpenAddressesDialog}
                                             className="w-full flex items-center justify-center px-4 py-2 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-green-400 hover:text-green-600 transition-colors"
                                         >
                                             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -357,6 +322,7 @@ export function AdminNewAnnouncement(){
                                         <input
                                             name="expiresAt"
                                             type="date"
+                                            min={new Date().toISOString().split('T')[0]}
                                             //value={newAnnouncement.expiresAt}
                                             onChange={handleInputChange}
                                             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm"
@@ -383,46 +349,7 @@ export function AdminNewAnnouncement(){
                     </div>
                 </div>
             </div>
-            <Dialog onClose={handleCloseAddressesDialog} open={showAddressesDialog} className="relative z-50">
-                <DialogBackdrop className="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity" />
-                <div className="fixed inset-0 flex items-center justify-center p-4">
-                    <DialogPanel className="w-full max-w-2xl max-h-[90vh] bg-white rounded-2xl shadow-2xl overflow-hidden">
-
-                        {/*header*/}
-                        <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center space-x-3">
-                                    <div className="p-2 bg-white/20 rounded-lg">
-                                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                        </svg>
-                                    </div>
-                                    <div>
-                                        <DialogTitle className="text-xl font-semibold text-white">
-                                            Create New Dormitory
-                                        </DialogTitle>
-                                        <Description className="text-blue-100 text-sm mt-1">
-                                            Add a new dormitory to the system with room configuration
-                                        </Description>
-                                    </div>
-                                </div>
-                                <button
-                                    onClick={handleCloseAddressesDialog}
-                                    className="p-1 hover:bg-white/20 rounded-lg transition-colors"
-                                >
-                                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div className="overflow-y-auto max-h-[calc(90vh-120px)]">
-
-                        </div>
-                    </DialogPanel>
-                </div>
-            </Dialog>
+           <AddressesDialogComponent open={showAddressesDialog} onClose={handleCloseAddressesDialog} onConfirm={handleConfirmAddressesInDialog} preSelected={preselectedAddresses}/>
         </div>
     )
 }

@@ -42,7 +42,7 @@ export const useConfirmations = () => {
 
   // Reject confirmation
   const rejectConfirmation = useMutation({
-    mutationFn: ({ id, reason }: { id: string; reason?: string }) =>
+    mutationFn: ({ id, reason }: { id: string; reason: string }) =>
       confirmationsApi.rejectConfirmation(id, reason),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['confirmations'] })
