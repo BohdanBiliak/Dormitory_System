@@ -22,7 +22,7 @@ export class RoomController {
   constructor(private roomService: RoomService) { }
 
   @Get()
-  @Authorization()
+  @Authorization(UserRole.Admin, UserRole.SignedInUser, UserRole.SuperAdmin, UserRole.Resident, UserRole.Regular)
   @RoomDocs.getRooms()
   async getRooms(@Authorized() user: User) {
     return this.roomService.findAll(user);
