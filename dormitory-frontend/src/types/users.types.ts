@@ -1,5 +1,8 @@
+import {UserRole} from "@/types/auth.types";
+
+
 export interface UserListRequest {
-    role?: 'Regular'|'All'|'SignedInUser',
+    role?: UserRole,
     paymentStatus?: 'Paid' | 'Awaiting' |'Overdue'|'All',
     roomFlor?: string[],
     sortBy?: 'Name'|'Id'|'Room',

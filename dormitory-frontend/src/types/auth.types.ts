@@ -21,12 +21,17 @@ export interface AuthResponse {
   token?: string
   success?: boolean
 }
+
+export enum UserRole{
+  'Admin'="Admin", 'Manager'="Manager",'Resident'="Resident",'SignedInUser'="SignedInUser", 'Regular'="Regular"
+}
+
 export interface User {
   id: string
   email: string
   displayName: string
   picture: string
-  role: 'Regular' | 'Admin' | 'SignedInUser' | 'Resident' | 'Manager';
+  role: UserRole;
   secondName: string
   isVerified: boolean
   isTwoFactorEnabled: boolean

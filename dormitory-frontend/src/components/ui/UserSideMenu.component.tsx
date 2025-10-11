@@ -5,6 +5,7 @@ import {useAuth} from "@/hooks/auth.hook";
 import {useEffect, useState} from "react";
 import {useCurrentUserProfile} from "@/hooks/user.hook";
 import Link from "next/link";
+import {UserRole} from "@/types/auth.types";
 
 interface UserSideMenuProps {
     children: React.ReactNode;
@@ -49,7 +50,41 @@ export function UserSideMenu ({children, activeItem}:UserSideMenuProps){
         {
             id: 'rooms',
             image: '/home.svg',
-            label: 'Available rooms'
+            label: 'Available rooms',
+            href: '/rooms',
+        },
+        {
+            id: 'signin',
+            image: '/user.svg',
+            label: 'Sign in',
+            href: "/auth/login",
+        }
+    ]
+
+    const RegularMenuItems: MenuItem[] = [
+        {
+            id: 'profile',
+            image: '/user.svg',
+            label: 'My profile',
+            href: '/profile'
+        },
+        {
+            id: 'dormitories',
+            image: '/workplace.svg',
+            label: 'Dormitories Information',
+            href: "/dormitories",
+        },
+        {
+            id: 'announcements',
+            image: '/clipboard-check.svg',
+            label: 'Announcements',
+            href: "/announcements-public"
+        },
+        {
+            id: 'rooms',
+            image: '/home.svg',
+            label: 'Available rooms',
+            href: "/rooms",
         },
         {
             id: 'signin',
@@ -88,7 +123,7 @@ export function UserSideMenu ({children, activeItem}:UserSideMenuProps){
             id:'rooms',
             image: '/home.svg',
             label: 'Available rooms',
-            href: '#',
+            href: '/rooms',
         },
         {
             id:'notification',
@@ -110,8 +145,9 @@ export function UserSideMenu ({children, activeItem}:UserSideMenuProps){
     useEffect(() => {
         if(user && user.isVerified){
             switch (user.role){
-                case "Regular": setCurrentMenuItems(GuestMenuItems); break;
-                case "SignedInUser": setCurrentMenuItems(SignedInMenuItems); break;
+                case UserRole.Regular: setCurrentMenuItems(RegularMenuItems); break;
+                case UserRole.SignedInUser:
+                case UserRole.Resident: setCurrentMenuItems(SignedInMenuItems); break;
                 default: setCurrentMenuItems(GuestMenuItems);
             }
         }else{

@@ -1,17 +1,12 @@
 import {Description, Dialog, DialogBackdrop, DialogPanel, DialogTitle} from "@headlessui/react";
 import {AlertTriangle} from "lucide-react";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {User} from "@/types/auth.types";
-import {EvictRequest, Room} from "@/types/rooms.types";
+import {EvictRequest, Room, RoomResident} from "@/types/rooms.types";
 import {useUpdateRoom} from "@/hooks/rooms.hook";
 
 export interface EvictionFlowProps {
-    userToEvict: {
-        id: '',
-        displayName: '',
-        secondName: '',
-        email: ''
-    },
+    userToEvict: RoomResident,
     showEvictionConfirmation: boolean;
     closeEvictionConfirmation: () => void;
     roomInfo: Room;
@@ -27,6 +22,16 @@ export default function EvictionFlowDialogsComponent({userToEvict, showEvictionC
         description: '',
     })
 
+    useEffect(() => {
+        setEvictionInformation(prevState => {
+            if(!prevState) return prevState;
+            return {
+                ...prevState,
+                userId: userToEvict.id
+            }
+        })
+    }, [userToEvict]);
+
     const openEvictionMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
         setShowEvictionMenu(true);
     }
@@ -35,17 +40,19 @@ export default function EvictionFlowDialogsComponent({userToEvict, showEvictionC
         setShowEvictionMenu(false);
     }
 
-    const handleEvictionInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const {name, value} = event.target;
+    const handleEvictionReasonInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const {value} = event.target;
 
         setEvictionInformation(prev => {
             if(!prev) return prev;
-            return{...prev, [name]:value}
+            return{...prev, description:value}
         })
     }
 
     const handleEvictResident = (evet: React.MouseEvent<HTMLButtonElement>) => {
-        evictUser({roomId: roomInfo.id,message: evictionInformation})
+        evictUser({roomId: roomInfo.id, body: evictionInformation})
+        closeEvictionMenu()
+        closeEvictionConfirmation()
     }
 
     return(
@@ -107,7 +114,7 @@ export default function EvictionFlowDialogsComponent({userToEvict, showEvictionC
                                     name="description"
                                     type="text"
                                     value={evictionInformation.description}
-                                    onChange={handleEvictionInputChange}
+                                    onChange={handleEvictionReasonInputChange}
                                     className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-200 hover:shadow-sm"
                                     placeholder="Enter reason for eviction..."
                                 />

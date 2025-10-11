@@ -18,7 +18,7 @@ interface Filters {
     groupSize: number;
 }
 
-export default function AllRoomsPage() {
+export default function UserAllRoomsPage() {
 
     // Dormitories, floors and rooms
     const [dormitoriesList, setDormitoriesList] = useState<Dormitory[]>([]);
@@ -223,25 +223,6 @@ export default function AllRoomsPage() {
         setShowMobileRoomDetails(true);
     };
 
-    //eviction
-
-    const [showEvictionConfirmation, setShowEvictionConfirmation] = useState(false);
-    const [userToEvict, setUserToEvict] = useState<RoomResident>({
-        id: ``,
-        displayName: ``,
-        secondName: ``,
-        email: ``,
-    });
-
-    const closeEvictionConfirmation = () => {
-        setUserToEvict({
-            id: '',
-            displayName: '',
-            secondName: '',
-            email: '',
-        })
-        setShowEvictionConfirmation(false);
-    }
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
@@ -400,9 +381,9 @@ export default function AllRoomsPage() {
                                                     value={floor}
                                                     onClick={handleFloorChange}
                                                     className={`px-2 py-1 text-xs sm:text-sm font-medium rounded-lg transition-all duration-200 hover:scale-105 active:scale-95 ${currentFloor === floor
-                                                            ? 'bg-blue-600 text-white shadow-md'
-                                                            : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                                                        }`}
+                                                        ? 'bg-blue-600 text-white shadow-md'
+                                                        : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                                                    }`}
                                                 >
                                                     {floor}
                                                 </button>
@@ -490,44 +471,6 @@ export default function AllRoomsPage() {
 
                                     {/* Availability Calendar */}
                                     <CalendarOfAvailability2WVerComponent statuses={selectedRoom.statuses} showLegend={false} />
-
-                                    {/* Residents */}
-                                    <div className="px-4 py-3">
-                                        <h4 className="text-sm font-medium text-slate-900 mb-2">
-                                            Residents, {selectedRoom.residents.length}/{selectedRoom.capacity}:
-                                        </h4>
-                                        <div className="space-y-2">
-                                            {selectedRoom.residents.map((resident, index) => (
-                                                <div
-                                                    key={resident.id}
-                                                    className="bg-slate-100 rounded-lg p-2 animate-in fade-in-0 slide-in-from-left-2 duration-300"
-                                                    style={{ animationDelay: `${index * 100}ms` }}
-                                                >
-                                                    <div className="space-y-1">
-                                                        <div>
-                                                            <div className="font-medium text-slate-900 text-xs">
-                                                                {resident.displayName} {resident.secondName}
-                                                            </div>
-                                                        </div>
-                                                        <div className="flex items-center justify-between">
-                                                            <div className="flex items-center space-x-1">
-                                                                <span className="text-xs">Payments</span>
-                                                            </div>
-                                                            <button name={`eviction${index}`} className="px-3 py-2 bg-red-600 text-white text-sm rounded-lg hover:bg-red-700 transition-colors" onClick={()=>{setUserToEvict(resident); setShowEvictionConfirmation(true)}}>
-                                                                Evict
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                            {Array.from({ length: selectedRoom.capacity - selectedRoom.residents.length }, (_, i) => (
-                                                <div key={`empty-${i}`} className="bg-slate-50 border-2 border-dashed border-slate-300 rounded-lg p-2 text-center text-slate-500 text-xs animate-in fade-in-0 zoom-in-95 duration-300">
-                                                    Available for accommodation
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                    <EvictionFlowDialogsComponent userToEvict={userToEvict} showEvictionConfirmation={showEvictionConfirmation} closeEvictionConfirmation={closeEvictionConfirmation} roomInfo={selectedRoom}/>
                                 </>
                             ) : (
                                 <div className="px-4 py-8 text-center animate-in fade-in-0 zoom-in-50 duration-500">
@@ -593,7 +536,7 @@ export default function AllRoomsPage() {
                                                     style={{ animationDelay: `${index * 30}ms` }}
                                                 >
                                                     <div className={`w-full py-1 rounded ${index < 4 ? 'bg-red-200 text-red-800' : 'bg-green-200 text-green-800'
-                                                        }`}>
+                                                    }`}>
                                                         <div>{day.dayNumber}.{day.month}</div>
                                                     </div>
                                                 </div>
@@ -622,11 +565,6 @@ export default function AllRoomsPage() {
                                                         <div className="flex items-center justify-between">
                                                             <div className="flex items-center space-x-2">
                                                                 <span className="text-sm">Payments</span>
-                                                            </div>
-                                                            <div onClick={(e)=>e.stopPropagation()}>
-                                                            <button name={`eviction${index}`} className="px-3 py-2 bg-red-600 text-white text-sm rounded-lg hover:bg-red-700 transition-colors" onClick={()=>{setUserToEvict(resident); setShowEvictionConfirmation(true)}}>
-                                                                Evict
-                                                            </button>
                                                             </div>
                                                         </div>
                                                     </div>

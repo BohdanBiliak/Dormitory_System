@@ -2,7 +2,7 @@
 
 import {useGetRoom, useUpdateRoom, useUploadRoomPhoto} from "@/hooks/rooms.hook";
 import React, {useEffect, useRef, useState} from "react";
-import {CreateRoomStatusRequest, EvictRequest, RoomStatus, UpdateRoomData} from "@/types/rooms.types";
+import {CreateRoomStatusRequest, EvictRequest, RoomResident, RoomStatus, UpdateRoomData} from "@/types/rooms.types";
 import {CalendarOfAvailabilityComponent} from "@/components/ui/CalendarOfAvailability.component";
 import {ChevronLeft, ChevronRight, Edit3, Users, DollarSign, Camera, Settings, AlertTriangle, X, Check} from "lucide-react";
 import Link from "next/link";
@@ -281,7 +281,7 @@ export function RoomPage({roomId}: RoomPageProps) {
     {/*Eviction confirmation(1st) dialog logic*/}
 
     const [showEvictionConfirmation, setShowEvictionConfirmation] = useState(false)
-    const [userToEvict, setUserToEvict] = useState({
+    const [userToEvict, setUserToEvict] = useState<RoomResident>({
         id: '',
         displayName: '',
         secondName: '',
@@ -323,7 +323,7 @@ export function RoomPage({roomId}: RoomPageProps) {
     }
 
     const handleEvictResident = (evet: React.MouseEvent<HTMLButtonElement>) => {
-        evictUser({roomId: roomId,message: evictionInformation})
+        evictUser({roomId: roomId,  body: evictionInformation})
     }
 
 
@@ -812,7 +812,7 @@ export function RoomPage({roomId}: RoomPageProps) {
                 </div>
             </div>
 
-            {/*<EvictionFlowDialogsComponent userToEvict={userToEvict} showEvictionConfirmation={showEvictionConfirmation} closeEvictionConfirmation={closeEvictionConfirmation} roomInfo={room} />*/}
+            {room && <EvictionFlowDialogsComponent userToEvict={userToEvict} showEvictionConfirmation={showEvictionConfirmation} closeEvictionConfirmation={closeEvictionConfirmation} roomInfo={room} />}
 
             {/*Statuses dialog*/}
             <Dialog onClose={closeStatusesDialog} open={showStatusesDialog} className="relative z-50">

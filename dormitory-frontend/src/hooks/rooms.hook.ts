@@ -68,9 +68,11 @@ export function useUpdateRoom(){
     })
 
     const evictUser = useMutation({
-        mutationFn: ({roomId, message}:{roomId:string, message:EvictRequest})=>roomsApi.evictUser(roomId, message),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["room"] })
+        mutationFn: ({roomId, body}:{roomId:string, body:EvictRequest})=>roomsApi.evictUser(roomId, body),
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({ queryKey: ["room"], exact: false})
+            await queryClient.invalidateQueries({ queryKey: ["rooms"], exact: false})
+            await queryClient.invalidateQueries({ queryKey: ["dormitories"], exact: false})
             toast.success('User evicted successfully!')
         },
         onError: (err) => {
