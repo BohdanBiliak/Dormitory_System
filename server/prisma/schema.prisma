@@ -172,6 +172,7 @@ model User {
   studentIdFront     String     @map("student_id_front")
   studentIdBack      String?    @map("student_id_back")
   isActive           Boolean    @default(true) @map("is_active")
+  language           String     @default("en")
   startReservationDate          DateTime?  @map("start_date") 
   endReservationDate            DateTime?  @map("end_date")  
   // Foreign Keys
@@ -182,7 +183,7 @@ model User {
   confirmations             Confirmation[]          @relation("UserConfirmations")
   dormitoryAdminAssignments DormitoryAdmin[]
   dormitory                 Dormitory?              @relation("DormitoryResidents", fields: [dormitoryId], references: [id])
-  managedDormitories        Dormitory[]             @relation("ManagedDormitories")
+  dormitoryManagerAssignments DormitoryManager[]
   room                      Room?                   @relation(fields: [roomId], references: [id])
   announcements             Announcement[]          @relation("AnnouncementAuthor")
   announcementRecipients    AnnouncementRecipient[] @relation("AnnouncementRecipientUser")
@@ -199,7 +200,7 @@ model User {
   confirmedPayments     Payment[]           @relation("ManagerConfirmedPayments")
   paymentAuditLogs      PaymentAuditLog[]
   
-  @@index([email]) // Unique constraint already creates index, but explicit for clarity
+  @@index([email]) 
   @@index([role, isActive]) // Filter active users by role
   @@index([dormitoryId, isActive]) // Find active residents of a dormitory
   @@index([roomId]) // Find roommates
@@ -227,6 +228,18 @@ model DormitoryAdmin {
   @@index([dormitoryId, role]) // Dormitory admin hierarchy
   @@map("dormitory_admins")
 }
+
+model DormitoryManager {
+  id          String     @id @default(uuid())
+  dormitoryId String
+  userId      String
+
+  dormitory Dormitory @relation(fields: [dormitoryId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([dormitoryId, userId])
+}
+
 
 model Confirmation {
   id         String             @id @default(uuid())
@@ -297,16 +310,14 @@ model Dormitory {
   floors      Floor[]
   status                 String           @default("Active")
   photos                 String[]
-  managerId              String?          @map("manager_id")
   createdAt              DateTime         @default(now()) @map("created_at")
   
-  manager   User?            @relation("ManagedDormitories", fields: [managerId], references: [id])
   admins    DormitoryAdmin[]
-  residents User[]           @relation("DormitoryResidents")
+  managers  DormitoryManager[]
+  residents User[]             @relation("DormitoryResidents")
   rooms     Room[]
   
   @@index([status, name]) // List active/inactive dormitories alphabetically
-  @@index([managerId]) // Find dormitories by manager
   @@index([createdAt]) // Chronological ordering
   @@index([status, createdAt]) // Status with time-based filtering
   @@map("dormitories")
