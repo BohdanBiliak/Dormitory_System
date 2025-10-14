@@ -61,7 +61,7 @@ export class RoomTypesController {
     @Body() updateRoomTypeDto: UpdateRoomTypeDto,
     @UploadedFiles() photos?: Express.Multer.File[]
   ) {
-    return this.updateRoomTypeUseCase.execute(id, updateRoomTypeDto);
+    return this.updateRoomTypeUseCase.execute(id, updateRoomTypeDto, photos);
   }
 
   @Delete(':id')

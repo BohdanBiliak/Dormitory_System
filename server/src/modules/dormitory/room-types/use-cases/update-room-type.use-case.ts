@@ -6,7 +6,7 @@ import { UpdateRoomTypeDto } from '../dto/update-room-type.dto';
 export class UpdateRoomTypeUseCase {
   constructor(private readonly prisma: PrismaService) {}
 
-  async execute(id: string, dto: UpdateRoomTypeDto) {
+  async execute(id: string, dto: UpdateRoomTypeDto, photos?: Express.Multer.File[]) {
     // Check if room type exists
     const existingRoomType = await this.prisma.roomType.findUnique({
       where: { id }
@@ -27,11 +27,40 @@ export class UpdateRoomTypeUseCase {
       }
     }
 
+    // Handle photo uploads if provided
+    let photoUrls = existingRoomType.photos;
+    if (photos && photos.length > 0) {
+      // TODO: Implement photo upload logic (S3, local storage, etc.)
+      // For now, we'll just create placeholder URLs
+      photoUrls = photos.map((photo, index) => 
+        `https://s3.example.com/room-types/${dto.typeCode || existingRoomType.typeCode}/photo-${Date.now()}-${index}.jpg`
+      );
+    }
+
+    // Parse equipment if it's a string
+    let equipment: string[] | undefined;
+    if (typeof dto.equipment === 'string') {
+      try {
+        equipment = JSON.parse(dto.equipment);
+      } catch (error) {
+        throw new BadRequestException('Invalid equipment format. Must be a valid JSON array.');
+      }
+    } else {
+      equipment = dto.equipment;
+    }
+    
+    // Ensure equipment is an array if it exists
+    if (equipment && !Array.isArray(equipment)) {
+      equipment = [equipment];
+    }
+
     // Update the room type
     const updatedRoomType = await this.prisma.roomType.update({
       where: { id },
       data: {
         ...dto,
+        equipment,
+        photos: photoUrls,
         updatedAt: new Date()
       }
     });
@@ -45,10 +74,10 @@ export class UpdateRoomTypeUseCase {
     }
 
     // If equipment changed, update related rooms
-    if (dto.equipment && JSON.stringify(dto.equipment) !== JSON.stringify(existingRoomType.equipment)) {
+    if (equipment && JSON.stringify(equipment) !== JSON.stringify(existingRoomType.equipment)) {
       await this.prisma.room.updateMany({
         where: { roomTypeId: id },
-        data: { roomEquipment: dto.equipment }
+        data: { roomEquipment: Array.isArray(equipment) ? equipment : [equipment] }
       });
     }
 
