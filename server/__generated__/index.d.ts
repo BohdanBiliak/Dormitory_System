@@ -24,6 +24,11 @@ export type User = $Result.DefaultSelection<Prisma.$UserPayload>
  */
 export type DormitoryAdmin = $Result.DefaultSelection<Prisma.$DormitoryAdminPayload>
 /**
+ * Model DormitoryManager
+ * 
+ */
+export type DormitoryManager = $Result.DefaultSelection<Prisma.$DormitoryManagerPayload>
+/**
  * Model Confirmation
  * 
  */
@@ -296,6 +301,16 @@ export const PaymentItemType: {
 
 export type PaymentItemType = (typeof PaymentItemType)[keyof typeof PaymentItemType]
 
+
+export const RoomAvailabilityStatus: {
+  AVAILABLE: 'AVAILABLE',
+  PART_EMPTY: 'PART_EMPTY',
+  FULL: 'FULL',
+  UNAVAILABLE: 'UNAVAILABLE'
+};
+
+export type RoomAvailabilityStatus = (typeof RoomAvailabilityStatus)[keyof typeof RoomAvailabilityStatus]
+
 }
 
 export type UserRole = $Enums.UserRole
@@ -349,6 +364,10 @@ export const RecurringFrequency: typeof $Enums.RecurringFrequency
 export type PaymentItemType = $Enums.PaymentItemType
 
 export const PaymentItemType: typeof $Enums.PaymentItemType
+
+export type RoomAvailabilityStatus = $Enums.RoomAvailabilityStatus
+
+export const RoomAvailabilityStatus: typeof $Enums.RoomAvailabilityStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -487,6 +506,16 @@ export class PrismaClient<
     * ```
     */
   get dormitoryAdmin(): Prisma.DormitoryAdminDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.dormitoryManager`: Exposes CRUD operations for the **DormitoryManager** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more DormitoryManagers
+    * const dormitoryManagers = await prisma.dormitoryManager.findMany()
+    * ```
+    */
+  get dormitoryManager(): Prisma.DormitoryManagerDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.confirmation`: Exposes CRUD operations for the **Confirmation** model.
@@ -745,8 +774,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.17.0
-   * Query Engine version: c0aafc03b8ef6cdced8654b9a817999e02457d6a
+   * Prisma Client JS version: 6.17.1
+   * Query Engine version: 272a37d34178c2894197e17273bf937f25acdeac
    */
   export type PrismaVersion = {
     client: string
@@ -1129,6 +1158,7 @@ export namespace Prisma {
   export const ModelName: {
     User: 'User',
     DormitoryAdmin: 'DormitoryAdmin',
+    DormitoryManager: 'DormitoryManager',
     Confirmation: 'Confirmation',
     Token: 'Token',
     AuditLog: 'AuditLog',
@@ -1167,7 +1197,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "dormitoryAdmin" | "confirmation" | "token" | "auditLog" | "dormitory" | "floor" | "room" | "roomType" | "floorRoomAssignment" | "roomStatus" | "price" | "booking" | "payment" | "recurringPayment" | "paymentItem" | "paymentAuditLog" | "notification" | "notificationSettings" | "announcement" | "attachment" | "announcementRecipient"
+      modelProps: "user" | "dormitoryAdmin" | "dormitoryManager" | "confirmation" | "token" | "auditLog" | "dormitory" | "floor" | "room" | "roomType" | "floorRoomAssignment" | "roomStatus" | "price" | "booking" | "payment" | "recurringPayment" | "paymentItem" | "paymentAuditLog" | "notification" | "notificationSettings" | "announcement" | "attachment" | "announcementRecipient"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1316,6 +1346,80 @@ export namespace Prisma {
           count: {
             args: Prisma.DormitoryAdminCountArgs<ExtArgs>
             result: $Utils.Optional<DormitoryAdminCountAggregateOutputType> | number
+          }
+        }
+      }
+      DormitoryManager: {
+        payload: Prisma.$DormitoryManagerPayload<ExtArgs>
+        fields: Prisma.DormitoryManagerFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DormitoryManagerFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DormitoryManagerPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DormitoryManagerFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DormitoryManagerPayload>
+          }
+          findFirst: {
+            args: Prisma.DormitoryManagerFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DormitoryManagerPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DormitoryManagerFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DormitoryManagerPayload>
+          }
+          findMany: {
+            args: Prisma.DormitoryManagerFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DormitoryManagerPayload>[]
+          }
+          create: {
+            args: Prisma.DormitoryManagerCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DormitoryManagerPayload>
+          }
+          createMany: {
+            args: Prisma.DormitoryManagerCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DormitoryManagerCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DormitoryManagerPayload>[]
+          }
+          delete: {
+            args: Prisma.DormitoryManagerDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DormitoryManagerPayload>
+          }
+          update: {
+            args: Prisma.DormitoryManagerUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DormitoryManagerPayload>
+          }
+          deleteMany: {
+            args: Prisma.DormitoryManagerDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DormitoryManagerUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DormitoryManagerUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DormitoryManagerPayload>[]
+          }
+          upsert: {
+            args: Prisma.DormitoryManagerUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DormitoryManagerPayload>
+          }
+          aggregate: {
+            args: Prisma.DormitoryManagerAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDormitoryManager>
+          }
+          groupBy: {
+            args: Prisma.DormitoryManagerGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DormitoryManagerGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DormitoryManagerCountArgs<ExtArgs>
+            result: $Utils.Optional<DormitoryManagerCountAggregateOutputType> | number
           }
         }
       }
@@ -2897,6 +3001,7 @@ export namespace Prisma {
   export type GlobalOmitConfig = {
     user?: UserOmit
     dormitoryAdmin?: DormitoryAdminOmit
+    dormitoryManager?: DormitoryManagerOmit
     confirmation?: ConfirmationOmit
     token?: TokenOmit
     auditLog?: AuditLogOmit
@@ -2999,7 +3104,7 @@ export namespace Prisma {
   export type UserCountOutputType = {
     confirmations: number
     dormitoryAdminAssignments: number
-    managedDormitories: number
+    dormitoryManagerAssignments: number
     announcements: number
     announcementRecipients: number
     auditLogs: number
@@ -3014,7 +3119,7 @@ export namespace Prisma {
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     confirmations?: boolean | UserCountOutputTypeCountConfirmationsArgs
     dormitoryAdminAssignments?: boolean | UserCountOutputTypeCountDormitoryAdminAssignmentsArgs
-    managedDormitories?: boolean | UserCountOutputTypeCountManagedDormitoriesArgs
+    dormitoryManagerAssignments?: boolean | UserCountOutputTypeCountDormitoryManagerAssignmentsArgs
     announcements?: boolean | UserCountOutputTypeCountAnnouncementsArgs
     announcementRecipients?: boolean | UserCountOutputTypeCountAnnouncementRecipientsArgs
     auditLogs?: boolean | UserCountOutputTypeCountAuditLogsArgs
@@ -3054,8 +3159,8 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountManagedDormitoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: DormitoryWhereInput
+  export type UserCountOutputTypeCountDormitoryManagerAssignmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DormitoryManagerWhereInput
   }
 
   /**
@@ -3129,6 +3234,7 @@ export namespace Prisma {
   export type DormitoryCountOutputType = {
     floors: number
     admins: number
+    managers: number
     residents: number
     rooms: number
   }
@@ -3136,6 +3242,7 @@ export namespace Prisma {
   export type DormitoryCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     floors?: boolean | DormitoryCountOutputTypeCountFloorsArgs
     admins?: boolean | DormitoryCountOutputTypeCountAdminsArgs
+    managers?: boolean | DormitoryCountOutputTypeCountManagersArgs
     residents?: boolean | DormitoryCountOutputTypeCountResidentsArgs
     rooms?: boolean | DormitoryCountOutputTypeCountRoomsArgs
   }
@@ -3163,6 +3270,13 @@ export namespace Prisma {
    */
   export type DormitoryCountOutputTypeCountAdminsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DormitoryAdminWhereInput
+  }
+
+  /**
+   * DormitoryCountOutputType without action
+   */
+  export type DormitoryCountOutputTypeCountManagersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DormitoryManagerWhereInput
   }
 
   /**
@@ -3564,6 +3678,7 @@ export namespace Prisma {
     studentIdFront: string | null
     studentIdBack: string | null
     isActive: boolean | null
+    language: string | null
     startReservationDate: Date | null
     endReservationDate: Date | null
     dormitoryId: string | null
@@ -3586,6 +3701,7 @@ export namespace Prisma {
     studentIdFront: string | null
     studentIdBack: string | null
     isActive: boolean | null
+    language: string | null
     startReservationDate: Date | null
     endReservationDate: Date | null
     dormitoryId: string | null
@@ -3608,6 +3724,7 @@ export namespace Prisma {
     studentIdFront: number
     studentIdBack: number
     isActive: number
+    language: number
     startReservationDate: number
     endReservationDate: number
     dormitoryId: number
@@ -3632,6 +3749,7 @@ export namespace Prisma {
     studentIdFront?: true
     studentIdBack?: true
     isActive?: true
+    language?: true
     startReservationDate?: true
     endReservationDate?: true
     dormitoryId?: true
@@ -3654,6 +3772,7 @@ export namespace Prisma {
     studentIdFront?: true
     studentIdBack?: true
     isActive?: true
+    language?: true
     startReservationDate?: true
     endReservationDate?: true
     dormitoryId?: true
@@ -3676,6 +3795,7 @@ export namespace Prisma {
     studentIdFront?: true
     studentIdBack?: true
     isActive?: true
+    language?: true
     startReservationDate?: true
     endReservationDate?: true
     dormitoryId?: true
@@ -3771,6 +3891,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack: string | null
     isActive: boolean
+    language: string
     startReservationDate: Date | null
     endReservationDate: Date | null
     dormitoryId: string | null
@@ -3810,6 +3931,7 @@ export namespace Prisma {
     studentIdFront?: boolean
     studentIdBack?: boolean
     isActive?: boolean
+    language?: boolean
     startReservationDate?: boolean
     endReservationDate?: boolean
     dormitoryId?: boolean
@@ -3819,7 +3941,7 @@ export namespace Prisma {
     confirmations?: boolean | User$confirmationsArgs<ExtArgs>
     dormitoryAdminAssignments?: boolean | User$dormitoryAdminAssignmentsArgs<ExtArgs>
     dormitory?: boolean | User$dormitoryArgs<ExtArgs>
-    managedDormitories?: boolean | User$managedDormitoriesArgs<ExtArgs>
+    dormitoryManagerAssignments?: boolean | User$dormitoryManagerAssignmentsArgs<ExtArgs>
     room?: boolean | User$roomArgs<ExtArgs>
     announcements?: boolean | User$announcementsArgs<ExtArgs>
     announcementRecipients?: boolean | User$announcementRecipientsArgs<ExtArgs>
@@ -3848,6 +3970,7 @@ export namespace Prisma {
     studentIdFront?: boolean
     studentIdBack?: boolean
     isActive?: boolean
+    language?: boolean
     startReservationDate?: boolean
     endReservationDate?: boolean
     dormitoryId?: boolean
@@ -3872,6 +3995,7 @@ export namespace Prisma {
     studentIdFront?: boolean
     studentIdBack?: boolean
     isActive?: boolean
+    language?: boolean
     startReservationDate?: boolean
     endReservationDate?: boolean
     dormitoryId?: boolean
@@ -3896,6 +4020,7 @@ export namespace Prisma {
     studentIdFront?: boolean
     studentIdBack?: boolean
     isActive?: boolean
+    language?: boolean
     startReservationDate?: boolean
     endReservationDate?: boolean
     dormitoryId?: boolean
@@ -3904,12 +4029,12 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "displayName" | "picture" | "isVerified" | "isTwoFactorEnabled" | "method" | "role" | "secondName" | "studentIdFront" | "studentIdBack" | "isActive" | "startReservationDate" | "endReservationDate" | "dormitoryId" | "roomId" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "displayName" | "picture" | "isVerified" | "isTwoFactorEnabled" | "method" | "role" | "secondName" | "studentIdFront" | "studentIdBack" | "isActive" | "language" | "startReservationDate" | "endReservationDate" | "dormitoryId" | "roomId" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     confirmations?: boolean | User$confirmationsArgs<ExtArgs>
     dormitoryAdminAssignments?: boolean | User$dormitoryAdminAssignmentsArgs<ExtArgs>
     dormitory?: boolean | User$dormitoryArgs<ExtArgs>
-    managedDormitories?: boolean | User$managedDormitoriesArgs<ExtArgs>
+    dormitoryManagerAssignments?: boolean | User$dormitoryManagerAssignmentsArgs<ExtArgs>
     room?: boolean | User$roomArgs<ExtArgs>
     announcements?: boolean | User$announcementsArgs<ExtArgs>
     announcementRecipients?: boolean | User$announcementRecipientsArgs<ExtArgs>
@@ -3938,7 +4063,7 @@ export namespace Prisma {
       confirmations: Prisma.$ConfirmationPayload<ExtArgs>[]
       dormitoryAdminAssignments: Prisma.$DormitoryAdminPayload<ExtArgs>[]
       dormitory: Prisma.$DormitoryPayload<ExtArgs> | null
-      managedDormitories: Prisma.$DormitoryPayload<ExtArgs>[]
+      dormitoryManagerAssignments: Prisma.$DormitoryManagerPayload<ExtArgs>[]
       room: Prisma.$RoomPayload<ExtArgs> | null
       announcements: Prisma.$AnnouncementPayload<ExtArgs>[]
       announcementRecipients: Prisma.$AnnouncementRecipientPayload<ExtArgs>[]
@@ -3965,6 +4090,7 @@ export namespace Prisma {
       studentIdFront: string
       studentIdBack: string | null
       isActive: boolean
+      language: string
       startReservationDate: Date | null
       endReservationDate: Date | null
       dormitoryId: string | null
@@ -4368,7 +4494,7 @@ export namespace Prisma {
     confirmations<T extends User$confirmationsArgs<ExtArgs> = {}>(args?: Subset<T, User$confirmationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConfirmationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     dormitoryAdminAssignments<T extends User$dormitoryAdminAssignmentsArgs<ExtArgs> = {}>(args?: Subset<T, User$dormitoryAdminAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DormitoryAdminPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     dormitory<T extends User$dormitoryArgs<ExtArgs> = {}>(args?: Subset<T, User$dormitoryArgs<ExtArgs>>): Prisma__DormitoryClient<$Result.GetResult<Prisma.$DormitoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    managedDormitories<T extends User$managedDormitoriesArgs<ExtArgs> = {}>(args?: Subset<T, User$managedDormitoriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DormitoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    dormitoryManagerAssignments<T extends User$dormitoryManagerAssignmentsArgs<ExtArgs> = {}>(args?: Subset<T, User$dormitoryManagerAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DormitoryManagerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     room<T extends User$roomArgs<ExtArgs> = {}>(args?: Subset<T, User$roomArgs<ExtArgs>>): Prisma__RoomClient<$Result.GetResult<Prisma.$RoomPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     announcements<T extends User$announcementsArgs<ExtArgs> = {}>(args?: Subset<T, User$announcementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     announcementRecipients<T extends User$announcementRecipientsArgs<ExtArgs> = {}>(args?: Subset<T, User$announcementRecipientsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnouncementRecipientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -4422,6 +4548,7 @@ export namespace Prisma {
     readonly studentIdFront: FieldRef<"User", 'String'>
     readonly studentIdBack: FieldRef<"User", 'String'>
     readonly isActive: FieldRef<"User", 'Boolean'>
+    readonly language: FieldRef<"User", 'String'>
     readonly startReservationDate: FieldRef<"User", 'DateTime'>
     readonly endReservationDate: FieldRef<"User", 'DateTime'>
     readonly dormitoryId: FieldRef<"User", 'String'>
@@ -4891,27 +5018,27 @@ export namespace Prisma {
   }
 
   /**
-   * User.managedDormitories
+   * User.dormitoryManagerAssignments
    */
-  export type User$managedDormitoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$dormitoryManagerAssignmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Dormitory
+     * Select specific fields to fetch from the DormitoryManager
      */
-    select?: DormitorySelect<ExtArgs> | null
+    select?: DormitoryManagerSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Dormitory
+     * Omit specific fields from the DormitoryManager
      */
-    omit?: DormitoryOmit<ExtArgs> | null
+    omit?: DormitoryManagerOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: DormitoryInclude<ExtArgs> | null
-    where?: DormitoryWhereInput
-    orderBy?: DormitoryOrderByWithRelationInput | DormitoryOrderByWithRelationInput[]
-    cursor?: DormitoryWhereUniqueInput
+    include?: DormitoryManagerInclude<ExtArgs> | null
+    where?: DormitoryManagerWhereInput
+    orderBy?: DormitoryManagerOrderByWithRelationInput | DormitoryManagerOrderByWithRelationInput[]
+    cursor?: DormitoryManagerWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: DormitoryScalarFieldEnum | DormitoryScalarFieldEnum[]
+    distinct?: DormitoryManagerScalarFieldEnum | DormitoryManagerScalarFieldEnum[]
   }
 
   /**
@@ -6250,6 +6377,1046 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: DormitoryAdminInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model DormitoryManager
+   */
+
+  export type AggregateDormitoryManager = {
+    _count: DormitoryManagerCountAggregateOutputType | null
+    _min: DormitoryManagerMinAggregateOutputType | null
+    _max: DormitoryManagerMaxAggregateOutputType | null
+  }
+
+  export type DormitoryManagerMinAggregateOutputType = {
+    id: string | null
+    dormitoryId: string | null
+    userId: string | null
+  }
+
+  export type DormitoryManagerMaxAggregateOutputType = {
+    id: string | null
+    dormitoryId: string | null
+    userId: string | null
+  }
+
+  export type DormitoryManagerCountAggregateOutputType = {
+    id: number
+    dormitoryId: number
+    userId: number
+    _all: number
+  }
+
+
+  export type DormitoryManagerMinAggregateInputType = {
+    id?: true
+    dormitoryId?: true
+    userId?: true
+  }
+
+  export type DormitoryManagerMaxAggregateInputType = {
+    id?: true
+    dormitoryId?: true
+    userId?: true
+  }
+
+  export type DormitoryManagerCountAggregateInputType = {
+    id?: true
+    dormitoryId?: true
+    userId?: true
+    _all?: true
+  }
+
+  export type DormitoryManagerAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DormitoryManager to aggregate.
+     */
+    where?: DormitoryManagerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DormitoryManagers to fetch.
+     */
+    orderBy?: DormitoryManagerOrderByWithRelationInput | DormitoryManagerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DormitoryManagerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DormitoryManagers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DormitoryManagers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned DormitoryManagers
+    **/
+    _count?: true | DormitoryManagerCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DormitoryManagerMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DormitoryManagerMaxAggregateInputType
+  }
+
+  export type GetDormitoryManagerAggregateType<T extends DormitoryManagerAggregateArgs> = {
+        [P in keyof T & keyof AggregateDormitoryManager]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDormitoryManager[P]>
+      : GetScalarType<T[P], AggregateDormitoryManager[P]>
+  }
+
+
+
+
+  export type DormitoryManagerGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DormitoryManagerWhereInput
+    orderBy?: DormitoryManagerOrderByWithAggregationInput | DormitoryManagerOrderByWithAggregationInput[]
+    by: DormitoryManagerScalarFieldEnum[] | DormitoryManagerScalarFieldEnum
+    having?: DormitoryManagerScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DormitoryManagerCountAggregateInputType | true
+    _min?: DormitoryManagerMinAggregateInputType
+    _max?: DormitoryManagerMaxAggregateInputType
+  }
+
+  export type DormitoryManagerGroupByOutputType = {
+    id: string
+    dormitoryId: string
+    userId: string
+    _count: DormitoryManagerCountAggregateOutputType | null
+    _min: DormitoryManagerMinAggregateOutputType | null
+    _max: DormitoryManagerMaxAggregateOutputType | null
+  }
+
+  type GetDormitoryManagerGroupByPayload<T extends DormitoryManagerGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DormitoryManagerGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DormitoryManagerGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DormitoryManagerGroupByOutputType[P]>
+            : GetScalarType<T[P], DormitoryManagerGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DormitoryManagerSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    dormitoryId?: boolean
+    userId?: boolean
+    dormitory?: boolean | DormitoryDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dormitoryManager"]>
+
+  export type DormitoryManagerSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    dormitoryId?: boolean
+    userId?: boolean
+    dormitory?: boolean | DormitoryDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dormitoryManager"]>
+
+  export type DormitoryManagerSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    dormitoryId?: boolean
+    userId?: boolean
+    dormitory?: boolean | DormitoryDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dormitoryManager"]>
+
+  export type DormitoryManagerSelectScalar = {
+    id?: boolean
+    dormitoryId?: boolean
+    userId?: boolean
+  }
+
+  export type DormitoryManagerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "dormitoryId" | "userId", ExtArgs["result"]["dormitoryManager"]>
+  export type DormitoryManagerInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    dormitory?: boolean | DormitoryDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type DormitoryManagerIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    dormitory?: boolean | DormitoryDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type DormitoryManagerIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    dormitory?: boolean | DormitoryDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $DormitoryManagerPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "DormitoryManager"
+    objects: {
+      dormitory: Prisma.$DormitoryPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      dormitoryId: string
+      userId: string
+    }, ExtArgs["result"]["dormitoryManager"]>
+    composites: {}
+  }
+
+  type DormitoryManagerGetPayload<S extends boolean | null | undefined | DormitoryManagerDefaultArgs> = $Result.GetResult<Prisma.$DormitoryManagerPayload, S>
+
+  type DormitoryManagerCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DormitoryManagerFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DormitoryManagerCountAggregateInputType | true
+    }
+
+  export interface DormitoryManagerDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DormitoryManager'], meta: { name: 'DormitoryManager' } }
+    /**
+     * Find zero or one DormitoryManager that matches the filter.
+     * @param {DormitoryManagerFindUniqueArgs} args - Arguments to find a DormitoryManager
+     * @example
+     * // Get one DormitoryManager
+     * const dormitoryManager = await prisma.dormitoryManager.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DormitoryManagerFindUniqueArgs>(args: SelectSubset<T, DormitoryManagerFindUniqueArgs<ExtArgs>>): Prisma__DormitoryManagerClient<$Result.GetResult<Prisma.$DormitoryManagerPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one DormitoryManager that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DormitoryManagerFindUniqueOrThrowArgs} args - Arguments to find a DormitoryManager
+     * @example
+     * // Get one DormitoryManager
+     * const dormitoryManager = await prisma.dormitoryManager.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DormitoryManagerFindUniqueOrThrowArgs>(args: SelectSubset<T, DormitoryManagerFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DormitoryManagerClient<$Result.GetResult<Prisma.$DormitoryManagerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DormitoryManager that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DormitoryManagerFindFirstArgs} args - Arguments to find a DormitoryManager
+     * @example
+     * // Get one DormitoryManager
+     * const dormitoryManager = await prisma.dormitoryManager.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DormitoryManagerFindFirstArgs>(args?: SelectSubset<T, DormitoryManagerFindFirstArgs<ExtArgs>>): Prisma__DormitoryManagerClient<$Result.GetResult<Prisma.$DormitoryManagerPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DormitoryManager that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DormitoryManagerFindFirstOrThrowArgs} args - Arguments to find a DormitoryManager
+     * @example
+     * // Get one DormitoryManager
+     * const dormitoryManager = await prisma.dormitoryManager.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DormitoryManagerFindFirstOrThrowArgs>(args?: SelectSubset<T, DormitoryManagerFindFirstOrThrowArgs<ExtArgs>>): Prisma__DormitoryManagerClient<$Result.GetResult<Prisma.$DormitoryManagerPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more DormitoryManagers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DormitoryManagerFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all DormitoryManagers
+     * const dormitoryManagers = await prisma.dormitoryManager.findMany()
+     * 
+     * // Get first 10 DormitoryManagers
+     * const dormitoryManagers = await prisma.dormitoryManager.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const dormitoryManagerWithIdOnly = await prisma.dormitoryManager.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DormitoryManagerFindManyArgs>(args?: SelectSubset<T, DormitoryManagerFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DormitoryManagerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a DormitoryManager.
+     * @param {DormitoryManagerCreateArgs} args - Arguments to create a DormitoryManager.
+     * @example
+     * // Create one DormitoryManager
+     * const DormitoryManager = await prisma.dormitoryManager.create({
+     *   data: {
+     *     // ... data to create a DormitoryManager
+     *   }
+     * })
+     * 
+     */
+    create<T extends DormitoryManagerCreateArgs>(args: SelectSubset<T, DormitoryManagerCreateArgs<ExtArgs>>): Prisma__DormitoryManagerClient<$Result.GetResult<Prisma.$DormitoryManagerPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many DormitoryManagers.
+     * @param {DormitoryManagerCreateManyArgs} args - Arguments to create many DormitoryManagers.
+     * @example
+     * // Create many DormitoryManagers
+     * const dormitoryManager = await prisma.dormitoryManager.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DormitoryManagerCreateManyArgs>(args?: SelectSubset<T, DormitoryManagerCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many DormitoryManagers and returns the data saved in the database.
+     * @param {DormitoryManagerCreateManyAndReturnArgs} args - Arguments to create many DormitoryManagers.
+     * @example
+     * // Create many DormitoryManagers
+     * const dormitoryManager = await prisma.dormitoryManager.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many DormitoryManagers and only return the `id`
+     * const dormitoryManagerWithIdOnly = await prisma.dormitoryManager.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DormitoryManagerCreateManyAndReturnArgs>(args?: SelectSubset<T, DormitoryManagerCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DormitoryManagerPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a DormitoryManager.
+     * @param {DormitoryManagerDeleteArgs} args - Arguments to delete one DormitoryManager.
+     * @example
+     * // Delete one DormitoryManager
+     * const DormitoryManager = await prisma.dormitoryManager.delete({
+     *   where: {
+     *     // ... filter to delete one DormitoryManager
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DormitoryManagerDeleteArgs>(args: SelectSubset<T, DormitoryManagerDeleteArgs<ExtArgs>>): Prisma__DormitoryManagerClient<$Result.GetResult<Prisma.$DormitoryManagerPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one DormitoryManager.
+     * @param {DormitoryManagerUpdateArgs} args - Arguments to update one DormitoryManager.
+     * @example
+     * // Update one DormitoryManager
+     * const dormitoryManager = await prisma.dormitoryManager.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DormitoryManagerUpdateArgs>(args: SelectSubset<T, DormitoryManagerUpdateArgs<ExtArgs>>): Prisma__DormitoryManagerClient<$Result.GetResult<Prisma.$DormitoryManagerPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more DormitoryManagers.
+     * @param {DormitoryManagerDeleteManyArgs} args - Arguments to filter DormitoryManagers to delete.
+     * @example
+     * // Delete a few DormitoryManagers
+     * const { count } = await prisma.dormitoryManager.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DormitoryManagerDeleteManyArgs>(args?: SelectSubset<T, DormitoryManagerDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DormitoryManagers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DormitoryManagerUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many DormitoryManagers
+     * const dormitoryManager = await prisma.dormitoryManager.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DormitoryManagerUpdateManyArgs>(args: SelectSubset<T, DormitoryManagerUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DormitoryManagers and returns the data updated in the database.
+     * @param {DormitoryManagerUpdateManyAndReturnArgs} args - Arguments to update many DormitoryManagers.
+     * @example
+     * // Update many DormitoryManagers
+     * const dormitoryManager = await prisma.dormitoryManager.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more DormitoryManagers and only return the `id`
+     * const dormitoryManagerWithIdOnly = await prisma.dormitoryManager.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends DormitoryManagerUpdateManyAndReturnArgs>(args: SelectSubset<T, DormitoryManagerUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DormitoryManagerPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one DormitoryManager.
+     * @param {DormitoryManagerUpsertArgs} args - Arguments to update or create a DormitoryManager.
+     * @example
+     * // Update or create a DormitoryManager
+     * const dormitoryManager = await prisma.dormitoryManager.upsert({
+     *   create: {
+     *     // ... data to create a DormitoryManager
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the DormitoryManager we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DormitoryManagerUpsertArgs>(args: SelectSubset<T, DormitoryManagerUpsertArgs<ExtArgs>>): Prisma__DormitoryManagerClient<$Result.GetResult<Prisma.$DormitoryManagerPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of DormitoryManagers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DormitoryManagerCountArgs} args - Arguments to filter DormitoryManagers to count.
+     * @example
+     * // Count the number of DormitoryManagers
+     * const count = await prisma.dormitoryManager.count({
+     *   where: {
+     *     // ... the filter for the DormitoryManagers we want to count
+     *   }
+     * })
+    **/
+    count<T extends DormitoryManagerCountArgs>(
+      args?: Subset<T, DormitoryManagerCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DormitoryManagerCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a DormitoryManager.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DormitoryManagerAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DormitoryManagerAggregateArgs>(args: Subset<T, DormitoryManagerAggregateArgs>): Prisma.PrismaPromise<GetDormitoryManagerAggregateType<T>>
+
+    /**
+     * Group by DormitoryManager.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DormitoryManagerGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DormitoryManagerGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DormitoryManagerGroupByArgs['orderBy'] }
+        : { orderBy?: DormitoryManagerGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DormitoryManagerGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDormitoryManagerGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the DormitoryManager model
+   */
+  readonly fields: DormitoryManagerFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for DormitoryManager.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DormitoryManagerClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    dormitory<T extends DormitoryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DormitoryDefaultArgs<ExtArgs>>): Prisma__DormitoryClient<$Result.GetResult<Prisma.$DormitoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the DormitoryManager model
+   */
+  interface DormitoryManagerFieldRefs {
+    readonly id: FieldRef<"DormitoryManager", 'String'>
+    readonly dormitoryId: FieldRef<"DormitoryManager", 'String'>
+    readonly userId: FieldRef<"DormitoryManager", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * DormitoryManager findUnique
+   */
+  export type DormitoryManagerFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DormitoryManager
+     */
+    select?: DormitoryManagerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DormitoryManager
+     */
+    omit?: DormitoryManagerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryManagerInclude<ExtArgs> | null
+    /**
+     * Filter, which DormitoryManager to fetch.
+     */
+    where: DormitoryManagerWhereUniqueInput
+  }
+
+  /**
+   * DormitoryManager findUniqueOrThrow
+   */
+  export type DormitoryManagerFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DormitoryManager
+     */
+    select?: DormitoryManagerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DormitoryManager
+     */
+    omit?: DormitoryManagerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryManagerInclude<ExtArgs> | null
+    /**
+     * Filter, which DormitoryManager to fetch.
+     */
+    where: DormitoryManagerWhereUniqueInput
+  }
+
+  /**
+   * DormitoryManager findFirst
+   */
+  export type DormitoryManagerFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DormitoryManager
+     */
+    select?: DormitoryManagerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DormitoryManager
+     */
+    omit?: DormitoryManagerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryManagerInclude<ExtArgs> | null
+    /**
+     * Filter, which DormitoryManager to fetch.
+     */
+    where?: DormitoryManagerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DormitoryManagers to fetch.
+     */
+    orderBy?: DormitoryManagerOrderByWithRelationInput | DormitoryManagerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DormitoryManagers.
+     */
+    cursor?: DormitoryManagerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DormitoryManagers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DormitoryManagers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DormitoryManagers.
+     */
+    distinct?: DormitoryManagerScalarFieldEnum | DormitoryManagerScalarFieldEnum[]
+  }
+
+  /**
+   * DormitoryManager findFirstOrThrow
+   */
+  export type DormitoryManagerFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DormitoryManager
+     */
+    select?: DormitoryManagerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DormitoryManager
+     */
+    omit?: DormitoryManagerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryManagerInclude<ExtArgs> | null
+    /**
+     * Filter, which DormitoryManager to fetch.
+     */
+    where?: DormitoryManagerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DormitoryManagers to fetch.
+     */
+    orderBy?: DormitoryManagerOrderByWithRelationInput | DormitoryManagerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DormitoryManagers.
+     */
+    cursor?: DormitoryManagerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DormitoryManagers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DormitoryManagers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DormitoryManagers.
+     */
+    distinct?: DormitoryManagerScalarFieldEnum | DormitoryManagerScalarFieldEnum[]
+  }
+
+  /**
+   * DormitoryManager findMany
+   */
+  export type DormitoryManagerFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DormitoryManager
+     */
+    select?: DormitoryManagerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DormitoryManager
+     */
+    omit?: DormitoryManagerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryManagerInclude<ExtArgs> | null
+    /**
+     * Filter, which DormitoryManagers to fetch.
+     */
+    where?: DormitoryManagerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DormitoryManagers to fetch.
+     */
+    orderBy?: DormitoryManagerOrderByWithRelationInput | DormitoryManagerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing DormitoryManagers.
+     */
+    cursor?: DormitoryManagerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DormitoryManagers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DormitoryManagers.
+     */
+    skip?: number
+    distinct?: DormitoryManagerScalarFieldEnum | DormitoryManagerScalarFieldEnum[]
+  }
+
+  /**
+   * DormitoryManager create
+   */
+  export type DormitoryManagerCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DormitoryManager
+     */
+    select?: DormitoryManagerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DormitoryManager
+     */
+    omit?: DormitoryManagerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryManagerInclude<ExtArgs> | null
+    /**
+     * The data needed to create a DormitoryManager.
+     */
+    data: XOR<DormitoryManagerCreateInput, DormitoryManagerUncheckedCreateInput>
+  }
+
+  /**
+   * DormitoryManager createMany
+   */
+  export type DormitoryManagerCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many DormitoryManagers.
+     */
+    data: DormitoryManagerCreateManyInput | DormitoryManagerCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * DormitoryManager createManyAndReturn
+   */
+  export type DormitoryManagerCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DormitoryManager
+     */
+    select?: DormitoryManagerSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DormitoryManager
+     */
+    omit?: DormitoryManagerOmit<ExtArgs> | null
+    /**
+     * The data used to create many DormitoryManagers.
+     */
+    data: DormitoryManagerCreateManyInput | DormitoryManagerCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryManagerIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DormitoryManager update
+   */
+  export type DormitoryManagerUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DormitoryManager
+     */
+    select?: DormitoryManagerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DormitoryManager
+     */
+    omit?: DormitoryManagerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryManagerInclude<ExtArgs> | null
+    /**
+     * The data needed to update a DormitoryManager.
+     */
+    data: XOR<DormitoryManagerUpdateInput, DormitoryManagerUncheckedUpdateInput>
+    /**
+     * Choose, which DormitoryManager to update.
+     */
+    where: DormitoryManagerWhereUniqueInput
+  }
+
+  /**
+   * DormitoryManager updateMany
+   */
+  export type DormitoryManagerUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update DormitoryManagers.
+     */
+    data: XOR<DormitoryManagerUpdateManyMutationInput, DormitoryManagerUncheckedUpdateManyInput>
+    /**
+     * Filter which DormitoryManagers to update
+     */
+    where?: DormitoryManagerWhereInput
+    /**
+     * Limit how many DormitoryManagers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * DormitoryManager updateManyAndReturn
+   */
+  export type DormitoryManagerUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DormitoryManager
+     */
+    select?: DormitoryManagerSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DormitoryManager
+     */
+    omit?: DormitoryManagerOmit<ExtArgs> | null
+    /**
+     * The data used to update DormitoryManagers.
+     */
+    data: XOR<DormitoryManagerUpdateManyMutationInput, DormitoryManagerUncheckedUpdateManyInput>
+    /**
+     * Filter which DormitoryManagers to update
+     */
+    where?: DormitoryManagerWhereInput
+    /**
+     * Limit how many DormitoryManagers to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryManagerIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DormitoryManager upsert
+   */
+  export type DormitoryManagerUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DormitoryManager
+     */
+    select?: DormitoryManagerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DormitoryManager
+     */
+    omit?: DormitoryManagerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryManagerInclude<ExtArgs> | null
+    /**
+     * The filter to search for the DormitoryManager to update in case it exists.
+     */
+    where: DormitoryManagerWhereUniqueInput
+    /**
+     * In case the DormitoryManager found by the `where` argument doesn't exist, create a new DormitoryManager with this data.
+     */
+    create: XOR<DormitoryManagerCreateInput, DormitoryManagerUncheckedCreateInput>
+    /**
+     * In case the DormitoryManager was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DormitoryManagerUpdateInput, DormitoryManagerUncheckedUpdateInput>
+  }
+
+  /**
+   * DormitoryManager delete
+   */
+  export type DormitoryManagerDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DormitoryManager
+     */
+    select?: DormitoryManagerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DormitoryManager
+     */
+    omit?: DormitoryManagerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryManagerInclude<ExtArgs> | null
+    /**
+     * Filter which DormitoryManager to delete.
+     */
+    where: DormitoryManagerWhereUniqueInput
+  }
+
+  /**
+   * DormitoryManager deleteMany
+   */
+  export type DormitoryManagerDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DormitoryManagers to delete
+     */
+    where?: DormitoryManagerWhereInput
+    /**
+     * Limit how many DormitoryManagers to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * DormitoryManager without action
+   */
+  export type DormitoryManagerDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DormitoryManager
+     */
+    select?: DormitoryManagerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DormitoryManager
+     */
+    omit?: DormitoryManagerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryManagerInclude<ExtArgs> | null
   }
 
 
@@ -9571,7 +10738,6 @@ export namespace Prisma {
     address: string | null
     groundFloorPhoneNumber: string | null
     status: string | null
-    managerId: string | null
     createdAt: Date | null
   }
 
@@ -9581,7 +10747,6 @@ export namespace Prisma {
     address: string | null
     groundFloorPhoneNumber: string | null
     status: string | null
-    managerId: string | null
     createdAt: Date | null
   }
 
@@ -9592,7 +10757,6 @@ export namespace Prisma {
     groundFloorPhoneNumber: number
     status: number
     photos: number
-    managerId: number
     createdAt: number
     _all: number
   }
@@ -9604,7 +10768,6 @@ export namespace Prisma {
     address?: true
     groundFloorPhoneNumber?: true
     status?: true
-    managerId?: true
     createdAt?: true
   }
 
@@ -9614,7 +10777,6 @@ export namespace Prisma {
     address?: true
     groundFloorPhoneNumber?: true
     status?: true
-    managerId?: true
     createdAt?: true
   }
 
@@ -9625,7 +10787,6 @@ export namespace Prisma {
     groundFloorPhoneNumber?: true
     status?: true
     photos?: true
-    managerId?: true
     createdAt?: true
     _all?: true
   }
@@ -9709,7 +10870,6 @@ export namespace Prisma {
     groundFloorPhoneNumber: string
     status: string
     photos: string[]
-    managerId: string | null
     createdAt: Date
     _count: DormitoryCountAggregateOutputType | null
     _min: DormitoryMinAggregateOutputType | null
@@ -9737,11 +10897,10 @@ export namespace Prisma {
     groundFloorPhoneNumber?: boolean
     status?: boolean
     photos?: boolean
-    managerId?: boolean
     createdAt?: boolean
     floors?: boolean | Dormitory$floorsArgs<ExtArgs>
-    manager?: boolean | Dormitory$managerArgs<ExtArgs>
     admins?: boolean | Dormitory$adminsArgs<ExtArgs>
+    managers?: boolean | Dormitory$managersArgs<ExtArgs>
     residents?: boolean | Dormitory$residentsArgs<ExtArgs>
     rooms?: boolean | Dormitory$roomsArgs<ExtArgs>
     _count?: boolean | DormitoryCountOutputTypeDefaultArgs<ExtArgs>
@@ -9754,9 +10913,7 @@ export namespace Prisma {
     groundFloorPhoneNumber?: boolean
     status?: boolean
     photos?: boolean
-    managerId?: boolean
     createdAt?: boolean
-    manager?: boolean | Dormitory$managerArgs<ExtArgs>
   }, ExtArgs["result"]["dormitory"]>
 
   export type DormitorySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -9766,9 +10923,7 @@ export namespace Prisma {
     groundFloorPhoneNumber?: boolean
     status?: boolean
     photos?: boolean
-    managerId?: boolean
     createdAt?: boolean
-    manager?: boolean | Dormitory$managerArgs<ExtArgs>
   }, ExtArgs["result"]["dormitory"]>
 
   export type DormitorySelectScalar = {
@@ -9778,32 +10933,27 @@ export namespace Prisma {
     groundFloorPhoneNumber?: boolean
     status?: boolean
     photos?: boolean
-    managerId?: boolean
     createdAt?: boolean
   }
 
-  export type DormitoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "address" | "groundFloorPhoneNumber" | "status" | "photos" | "managerId" | "createdAt", ExtArgs["result"]["dormitory"]>
+  export type DormitoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "address" | "groundFloorPhoneNumber" | "status" | "photos" | "createdAt", ExtArgs["result"]["dormitory"]>
   export type DormitoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     floors?: boolean | Dormitory$floorsArgs<ExtArgs>
-    manager?: boolean | Dormitory$managerArgs<ExtArgs>
     admins?: boolean | Dormitory$adminsArgs<ExtArgs>
+    managers?: boolean | Dormitory$managersArgs<ExtArgs>
     residents?: boolean | Dormitory$residentsArgs<ExtArgs>
     rooms?: boolean | Dormitory$roomsArgs<ExtArgs>
     _count?: boolean | DormitoryCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type DormitoryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    manager?: boolean | Dormitory$managerArgs<ExtArgs>
-  }
-  export type DormitoryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    manager?: boolean | Dormitory$managerArgs<ExtArgs>
-  }
+  export type DormitoryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type DormitoryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $DormitoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Dormitory"
     objects: {
       floors: Prisma.$FloorPayload<ExtArgs>[]
-      manager: Prisma.$UserPayload<ExtArgs> | null
       admins: Prisma.$DormitoryAdminPayload<ExtArgs>[]
+      managers: Prisma.$DormitoryManagerPayload<ExtArgs>[]
       residents: Prisma.$UserPayload<ExtArgs>[]
       rooms: Prisma.$RoomPayload<ExtArgs>[]
     }
@@ -9814,7 +10964,6 @@ export namespace Prisma {
       groundFloorPhoneNumber: string
       status: string
       photos: string[]
-      managerId: string | null
       createdAt: Date
     }, ExtArgs["result"]["dormitory"]>
     composites: {}
@@ -10211,8 +11360,8 @@ export namespace Prisma {
   export interface Prisma__DormitoryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     floors<T extends Dormitory$floorsArgs<ExtArgs> = {}>(args?: Subset<T, Dormitory$floorsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FloorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    manager<T extends Dormitory$managerArgs<ExtArgs> = {}>(args?: Subset<T, Dormitory$managerArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     admins<T extends Dormitory$adminsArgs<ExtArgs> = {}>(args?: Subset<T, Dormitory$adminsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DormitoryAdminPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    managers<T extends Dormitory$managersArgs<ExtArgs> = {}>(args?: Subset<T, Dormitory$managersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DormitoryManagerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     residents<T extends Dormitory$residentsArgs<ExtArgs> = {}>(args?: Subset<T, Dormitory$residentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     rooms<T extends Dormitory$roomsArgs<ExtArgs> = {}>(args?: Subset<T, Dormitory$roomsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoomPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -10250,7 +11399,6 @@ export namespace Prisma {
     readonly groundFloorPhoneNumber: FieldRef<"Dormitory", 'String'>
     readonly status: FieldRef<"Dormitory", 'String'>
     readonly photos: FieldRef<"Dormitory", 'String[]'>
-    readonly managerId: FieldRef<"Dormitory", 'String'>
     readonly createdAt: FieldRef<"Dormitory", 'DateTime'>
   }
     
@@ -10501,10 +11649,6 @@ export namespace Prisma {
      */
     data: DormitoryCreateManyInput | DormitoryCreateManyInput[]
     skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DormitoryIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -10575,10 +11719,6 @@ export namespace Prisma {
      * Limit how many Dormitories to update.
      */
     limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DormitoryIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -10672,25 +11812,6 @@ export namespace Prisma {
   }
 
   /**
-   * Dormitory.manager
-   */
-  export type Dormitory$managerArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    where?: UserWhereInput
-  }
-
-  /**
    * Dormitory.admins
    */
   export type Dormitory$adminsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -10712,6 +11833,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: DormitoryAdminScalarFieldEnum | DormitoryAdminScalarFieldEnum[]
+  }
+
+  /**
+   * Dormitory.managers
+   */
+  export type Dormitory$managersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DormitoryManager
+     */
+    select?: DormitoryManagerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DormitoryManager
+     */
+    omit?: DormitoryManagerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryManagerInclude<ExtArgs> | null
+    where?: DormitoryManagerWhereInput
+    orderBy?: DormitoryManagerOrderByWithRelationInput | DormitoryManagerOrderByWithRelationInput[]
+    cursor?: DormitoryManagerWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DormitoryManagerScalarFieldEnum | DormitoryManagerScalarFieldEnum[]
   }
 
   /**
@@ -13306,6 +14451,7 @@ export namespace Prisma {
     capacity: number
     equipment: number
     typeCode: number
+    photos: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -13347,6 +14493,7 @@ export namespace Prisma {
     capacity?: true
     equipment?: true
     typeCode?: true
+    photos?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -13445,6 +14592,7 @@ export namespace Prisma {
     capacity: number
     equipment: string[]
     typeCode: string
+    photos: string[]
     createdAt: Date
     updatedAt: Date
     _count: RoomTypeCountAggregateOutputType | null
@@ -13475,6 +14623,7 @@ export namespace Prisma {
     capacity?: boolean
     equipment?: boolean
     typeCode?: boolean
+    photos?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     rooms?: boolean | RoomType$roomsArgs<ExtArgs>
@@ -13489,6 +14638,7 @@ export namespace Prisma {
     capacity?: boolean
     equipment?: boolean
     typeCode?: boolean
+    photos?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["roomType"]>
@@ -13500,6 +14650,7 @@ export namespace Prisma {
     capacity?: boolean
     equipment?: boolean
     typeCode?: boolean
+    photos?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["roomType"]>
@@ -13511,11 +14662,12 @@ export namespace Prisma {
     capacity?: boolean
     equipment?: boolean
     typeCode?: boolean
+    photos?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type RoomTypeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "capacity" | "equipment" | "typeCode" | "createdAt" | "updatedAt", ExtArgs["result"]["roomType"]>
+  export type RoomTypeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "capacity" | "equipment" | "typeCode" | "photos" | "createdAt" | "updatedAt", ExtArgs["result"]["roomType"]>
   export type RoomTypeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     rooms?: boolean | RoomType$roomsArgs<ExtArgs>
     floorRoomAssignments?: boolean | RoomType$floorRoomAssignmentsArgs<ExtArgs>
@@ -13537,6 +14689,7 @@ export namespace Prisma {
       capacity: number
       equipment: string[]
       typeCode: string
+      photos: string[]
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["roomType"]>
@@ -13970,6 +15123,7 @@ export namespace Prisma {
     readonly capacity: FieldRef<"RoomType", 'Int'>
     readonly equipment: FieldRef<"RoomType", 'String[]'>
     readonly typeCode: FieldRef<"RoomType", 'String'>
+    readonly photos: FieldRef<"RoomType", 'String[]'>
     readonly createdAt: FieldRef<"RoomType", 'DateTime'>
     readonly updatedAt: FieldRef<"RoomType", 'DateTime'>
   }
@@ -29813,6 +30967,7 @@ export namespace Prisma {
     studentIdFront: 'studentIdFront',
     studentIdBack: 'studentIdBack',
     isActive: 'isActive',
+    language: 'language',
     startReservationDate: 'startReservationDate',
     endReservationDate: 'endReservationDate',
     dormitoryId: 'dormitoryId',
@@ -29833,6 +30988,15 @@ export namespace Prisma {
   };
 
   export type DormitoryAdminScalarFieldEnum = (typeof DormitoryAdminScalarFieldEnum)[keyof typeof DormitoryAdminScalarFieldEnum]
+
+
+  export const DormitoryManagerScalarFieldEnum: {
+    id: 'id',
+    dormitoryId: 'dormitoryId',
+    userId: 'userId'
+  };
+
+  export type DormitoryManagerScalarFieldEnum = (typeof DormitoryManagerScalarFieldEnum)[keyof typeof DormitoryManagerScalarFieldEnum]
 
 
   export const ConfirmationScalarFieldEnum: {
@@ -29888,7 +31052,6 @@ export namespace Prisma {
     groundFloorPhoneNumber: 'groundFloorPhoneNumber',
     status: 'status',
     photos: 'photos',
-    managerId: 'managerId',
     createdAt: 'createdAt'
   };
 
@@ -29927,6 +31090,7 @@ export namespace Prisma {
     capacity: 'capacity',
     equipment: 'equipment',
     typeCode: 'typeCode',
+    photos: 'photos',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -30459,6 +31623,7 @@ export namespace Prisma {
     studentIdFront?: StringFilter<"User"> | string
     studentIdBack?: StringNullableFilter<"User"> | string | null
     isActive?: BoolFilter<"User"> | boolean
+    language?: StringFilter<"User"> | string
     startReservationDate?: DateTimeNullableFilter<"User"> | Date | string | null
     endReservationDate?: DateTimeNullableFilter<"User"> | Date | string | null
     dormitoryId?: StringNullableFilter<"User"> | string | null
@@ -30468,7 +31633,7 @@ export namespace Prisma {
     confirmations?: ConfirmationListRelationFilter
     dormitoryAdminAssignments?: DormitoryAdminListRelationFilter
     dormitory?: XOR<DormitoryNullableScalarRelationFilter, DormitoryWhereInput> | null
-    managedDormitories?: DormitoryListRelationFilter
+    dormitoryManagerAssignments?: DormitoryManagerListRelationFilter
     room?: XOR<RoomNullableScalarRelationFilter, RoomWhereInput> | null
     announcements?: AnnouncementListRelationFilter
     announcementRecipients?: AnnouncementRecipientListRelationFilter
@@ -30496,6 +31661,7 @@ export namespace Prisma {
     studentIdFront?: SortOrder
     studentIdBack?: SortOrderInput | SortOrder
     isActive?: SortOrder
+    language?: SortOrder
     startReservationDate?: SortOrderInput | SortOrder
     endReservationDate?: SortOrderInput | SortOrder
     dormitoryId?: SortOrderInput | SortOrder
@@ -30505,7 +31671,7 @@ export namespace Prisma {
     confirmations?: ConfirmationOrderByRelationAggregateInput
     dormitoryAdminAssignments?: DormitoryAdminOrderByRelationAggregateInput
     dormitory?: DormitoryOrderByWithRelationInput
-    managedDormitories?: DormitoryOrderByRelationAggregateInput
+    dormitoryManagerAssignments?: DormitoryManagerOrderByRelationAggregateInput
     room?: RoomOrderByWithRelationInput
     announcements?: AnnouncementOrderByRelationAggregateInput
     announcementRecipients?: AnnouncementRecipientOrderByRelationAggregateInput
@@ -30536,6 +31702,7 @@ export namespace Prisma {
     studentIdFront?: StringFilter<"User"> | string
     studentIdBack?: StringNullableFilter<"User"> | string | null
     isActive?: BoolFilter<"User"> | boolean
+    language?: StringFilter<"User"> | string
     startReservationDate?: DateTimeNullableFilter<"User"> | Date | string | null
     endReservationDate?: DateTimeNullableFilter<"User"> | Date | string | null
     dormitoryId?: StringNullableFilter<"User"> | string | null
@@ -30545,7 +31712,7 @@ export namespace Prisma {
     confirmations?: ConfirmationListRelationFilter
     dormitoryAdminAssignments?: DormitoryAdminListRelationFilter
     dormitory?: XOR<DormitoryNullableScalarRelationFilter, DormitoryWhereInput> | null
-    managedDormitories?: DormitoryListRelationFilter
+    dormitoryManagerAssignments?: DormitoryManagerListRelationFilter
     room?: XOR<RoomNullableScalarRelationFilter, RoomWhereInput> | null
     announcements?: AnnouncementListRelationFilter
     announcementRecipients?: AnnouncementRecipientListRelationFilter
@@ -30573,6 +31740,7 @@ export namespace Prisma {
     studentIdFront?: SortOrder
     studentIdBack?: SortOrderInput | SortOrder
     isActive?: SortOrder
+    language?: SortOrder
     startReservationDate?: SortOrderInput | SortOrder
     endReservationDate?: SortOrderInput | SortOrder
     dormitoryId?: SortOrderInput | SortOrder
@@ -30601,6 +31769,7 @@ export namespace Prisma {
     studentIdFront?: StringWithAggregatesFilter<"User"> | string
     studentIdBack?: StringNullableWithAggregatesFilter<"User"> | string | null
     isActive?: BoolWithAggregatesFilter<"User"> | boolean
+    language?: StringWithAggregatesFilter<"User"> | string
     startReservationDate?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     endReservationDate?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     dormitoryId?: StringNullableWithAggregatesFilter<"User"> | string | null
@@ -30666,6 +31835,55 @@ export namespace Prisma {
     dormitoryId?: StringWithAggregatesFilter<"DormitoryAdmin"> | string
     role?: StringWithAggregatesFilter<"DormitoryAdmin"> | string
     createdAt?: DateTimeWithAggregatesFilter<"DormitoryAdmin"> | Date | string
+  }
+
+  export type DormitoryManagerWhereInput = {
+    AND?: DormitoryManagerWhereInput | DormitoryManagerWhereInput[]
+    OR?: DormitoryManagerWhereInput[]
+    NOT?: DormitoryManagerWhereInput | DormitoryManagerWhereInput[]
+    id?: StringFilter<"DormitoryManager"> | string
+    dormitoryId?: StringFilter<"DormitoryManager"> | string
+    userId?: StringFilter<"DormitoryManager"> | string
+    dormitory?: XOR<DormitoryScalarRelationFilter, DormitoryWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type DormitoryManagerOrderByWithRelationInput = {
+    id?: SortOrder
+    dormitoryId?: SortOrder
+    userId?: SortOrder
+    dormitory?: DormitoryOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type DormitoryManagerWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    dormitoryId_userId?: DormitoryManagerDormitoryIdUserIdCompoundUniqueInput
+    AND?: DormitoryManagerWhereInput | DormitoryManagerWhereInput[]
+    OR?: DormitoryManagerWhereInput[]
+    NOT?: DormitoryManagerWhereInput | DormitoryManagerWhereInput[]
+    dormitoryId?: StringFilter<"DormitoryManager"> | string
+    userId?: StringFilter<"DormitoryManager"> | string
+    dormitory?: XOR<DormitoryScalarRelationFilter, DormitoryWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "dormitoryId_userId">
+
+  export type DormitoryManagerOrderByWithAggregationInput = {
+    id?: SortOrder
+    dormitoryId?: SortOrder
+    userId?: SortOrder
+    _count?: DormitoryManagerCountOrderByAggregateInput
+    _max?: DormitoryManagerMaxOrderByAggregateInput
+    _min?: DormitoryManagerMinOrderByAggregateInput
+  }
+
+  export type DormitoryManagerScalarWhereWithAggregatesInput = {
+    AND?: DormitoryManagerScalarWhereWithAggregatesInput | DormitoryManagerScalarWhereWithAggregatesInput[]
+    OR?: DormitoryManagerScalarWhereWithAggregatesInput[]
+    NOT?: DormitoryManagerScalarWhereWithAggregatesInput | DormitoryManagerScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"DormitoryManager"> | string
+    dormitoryId?: StringWithAggregatesFilter<"DormitoryManager"> | string
+    userId?: StringWithAggregatesFilter<"DormitoryManager"> | string
   }
 
   export type ConfirmationWhereInput = {
@@ -30907,11 +32125,10 @@ export namespace Prisma {
     groundFloorPhoneNumber?: StringFilter<"Dormitory"> | string
     status?: StringFilter<"Dormitory"> | string
     photos?: StringNullableListFilter<"Dormitory">
-    managerId?: StringNullableFilter<"Dormitory"> | string | null
     createdAt?: DateTimeFilter<"Dormitory"> | Date | string
     floors?: FloorListRelationFilter
-    manager?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     admins?: DormitoryAdminListRelationFilter
+    managers?: DormitoryManagerListRelationFilter
     residents?: UserListRelationFilter
     rooms?: RoomListRelationFilter
   }
@@ -30923,11 +32140,10 @@ export namespace Prisma {
     groundFloorPhoneNumber?: SortOrder
     status?: SortOrder
     photos?: SortOrder
-    managerId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     floors?: FloorOrderByRelationAggregateInput
-    manager?: UserOrderByWithRelationInput
     admins?: DormitoryAdminOrderByRelationAggregateInput
+    managers?: DormitoryManagerOrderByRelationAggregateInput
     residents?: UserOrderByRelationAggregateInput
     rooms?: RoomOrderByRelationAggregateInput
   }
@@ -30942,11 +32158,10 @@ export namespace Prisma {
     groundFloorPhoneNumber?: StringFilter<"Dormitory"> | string
     status?: StringFilter<"Dormitory"> | string
     photos?: StringNullableListFilter<"Dormitory">
-    managerId?: StringNullableFilter<"Dormitory"> | string | null
     createdAt?: DateTimeFilter<"Dormitory"> | Date | string
     floors?: FloorListRelationFilter
-    manager?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     admins?: DormitoryAdminListRelationFilter
+    managers?: DormitoryManagerListRelationFilter
     residents?: UserListRelationFilter
     rooms?: RoomListRelationFilter
   }, "id">
@@ -30958,7 +32173,6 @@ export namespace Prisma {
     groundFloorPhoneNumber?: SortOrder
     status?: SortOrder
     photos?: SortOrder
-    managerId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: DormitoryCountOrderByAggregateInput
     _max?: DormitoryMaxOrderByAggregateInput
@@ -30975,7 +32189,6 @@ export namespace Prisma {
     groundFloorPhoneNumber?: StringWithAggregatesFilter<"Dormitory"> | string
     status?: StringWithAggregatesFilter<"Dormitory"> | string
     photos?: StringNullableListFilter<"Dormitory">
-    managerId?: StringNullableWithAggregatesFilter<"Dormitory"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Dormitory"> | Date | string
   }
 
@@ -31150,6 +32363,7 @@ export namespace Prisma {
     capacity?: IntFilter<"RoomType"> | number
     equipment?: StringNullableListFilter<"RoomType">
     typeCode?: StringFilter<"RoomType"> | string
+    photos?: StringNullableListFilter<"RoomType">
     createdAt?: DateTimeFilter<"RoomType"> | Date | string
     updatedAt?: DateTimeFilter<"RoomType"> | Date | string
     rooms?: RoomListRelationFilter
@@ -31163,6 +32377,7 @@ export namespace Prisma {
     capacity?: SortOrder
     equipment?: SortOrder
     typeCode?: SortOrder
+    photos?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     rooms?: RoomOrderByRelationAggregateInput
@@ -31179,6 +32394,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"RoomType"> | string | null
     capacity?: IntFilter<"RoomType"> | number
     equipment?: StringNullableListFilter<"RoomType">
+    photos?: StringNullableListFilter<"RoomType">
     createdAt?: DateTimeFilter<"RoomType"> | Date | string
     updatedAt?: DateTimeFilter<"RoomType"> | Date | string
     rooms?: RoomListRelationFilter
@@ -31192,6 +32408,7 @@ export namespace Prisma {
     capacity?: SortOrder
     equipment?: SortOrder
     typeCode?: SortOrder
+    photos?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: RoomTypeCountOrderByAggregateInput
@@ -31211,6 +32428,7 @@ export namespace Prisma {
     capacity?: IntWithAggregatesFilter<"RoomType"> | number
     equipment?: StringNullableListFilter<"RoomType">
     typeCode?: StringWithAggregatesFilter<"RoomType"> | string
+    photos?: StringNullableListFilter<"RoomType">
     createdAt?: DateTimeWithAggregatesFilter<"RoomType"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"RoomType"> | Date | string
   }
@@ -31238,6 +32456,7 @@ export namespace Prisma {
 
   export type FloorRoomAssignmentWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    floorId_roomTypeId?: FloorRoomAssignmentFloorIdRoomTypeIdCompoundUniqueInput
     AND?: FloorRoomAssignmentWhereInput | FloorRoomAssignmentWhereInput[]
     OR?: FloorRoomAssignmentWhereInput[]
     NOT?: FloorRoomAssignmentWhereInput | FloorRoomAssignmentWhereInput[]
@@ -31246,7 +32465,7 @@ export namespace Prisma {
     roomNumbers?: IntNullableListFilter<"FloorRoomAssignment">
     floor?: XOR<FloorScalarRelationFilter, FloorWhereInput>
     roomType?: XOR<RoomTypeScalarRelationFilter, RoomTypeWhereInput>
-  }, "id">
+  }, "id" | "floorId_roomTypeId">
 
   export type FloorRoomAssignmentOrderByWithAggregationInput = {
     id?: SortOrder
@@ -32318,6 +33537,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    language?: string
     startReservationDate?: Date | string | null
     endReservationDate?: Date | string | null
     createdAt?: Date | string
@@ -32325,7 +33545,7 @@ export namespace Prisma {
     confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
     dormitoryAdminAssignments?: DormitoryAdminCreateNestedManyWithoutUserInput
     dormitory?: DormitoryCreateNestedOneWithoutResidentsInput
-    managedDormitories?: DormitoryCreateNestedManyWithoutManagerInput
+    dormitoryManagerAssignments?: DormitoryManagerCreateNestedManyWithoutUserInput
     room?: RoomCreateNestedOneWithoutResidentsInput
     announcements?: AnnouncementCreateNestedManyWithoutAuthorInput
     announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutUserInput
@@ -32353,6 +33573,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    language?: string
     startReservationDate?: Date | string | null
     endReservationDate?: Date | string | null
     dormitoryId?: string | null
@@ -32361,7 +33582,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     confirmations?: ConfirmationUncheckedCreateNestedManyWithoutRequesterInput
     dormitoryAdminAssignments?: DormitoryAdminUncheckedCreateNestedManyWithoutUserInput
-    managedDormitories?: DormitoryUncheckedCreateNestedManyWithoutManagerInput
+    dormitoryManagerAssignments?: DormitoryManagerUncheckedCreateNestedManyWithoutUserInput
     announcements?: AnnouncementUncheckedCreateNestedManyWithoutAuthorInput
     announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
@@ -32388,6 +33609,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
     startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -32395,7 +33617,7 @@ export namespace Prisma {
     confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
     dormitoryAdminAssignments?: DormitoryAdminUpdateManyWithoutUserNestedInput
     dormitory?: DormitoryUpdateOneWithoutResidentsNestedInput
-    managedDormitories?: DormitoryUpdateManyWithoutManagerNestedInput
+    dormitoryManagerAssignments?: DormitoryManagerUpdateManyWithoutUserNestedInput
     room?: RoomUpdateOneWithoutResidentsNestedInput
     announcements?: AnnouncementUpdateManyWithoutAuthorNestedInput
     announcementRecipients?: AnnouncementRecipientUpdateManyWithoutUserNestedInput
@@ -32423,6 +33645,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
     startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32431,7 +33654,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmations?: ConfirmationUncheckedUpdateManyWithoutRequesterNestedInput
     dormitoryAdminAssignments?: DormitoryAdminUncheckedUpdateManyWithoutUserNestedInput
-    managedDormitories?: DormitoryUncheckedUpdateManyWithoutManagerNestedInput
+    dormitoryManagerAssignments?: DormitoryManagerUncheckedUpdateManyWithoutUserNestedInput
     announcements?: AnnouncementUncheckedUpdateManyWithoutAuthorNestedInput
     announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
@@ -32458,6 +33681,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    language?: string
     startReservationDate?: Date | string | null
     endReservationDate?: Date | string | null
     dormitoryId?: string | null
@@ -32480,6 +33704,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
     startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -32500,6 +33725,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
     startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32560,6 +33786,46 @@ export namespace Prisma {
     dormitoryId?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DormitoryManagerCreateInput = {
+    id?: string
+    dormitory: DormitoryCreateNestedOneWithoutManagersInput
+    user: UserCreateNestedOneWithoutDormitoryManagerAssignmentsInput
+  }
+
+  export type DormitoryManagerUncheckedCreateInput = {
+    id?: string
+    dormitoryId: string
+    userId: string
+  }
+
+  export type DormitoryManagerUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dormitory?: DormitoryUpdateOneRequiredWithoutManagersNestedInput
+    user?: UserUpdateOneRequiredWithoutDormitoryManagerAssignmentsNestedInput
+  }
+
+  export type DormitoryManagerUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dormitoryId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type DormitoryManagerCreateManyInput = {
+    id?: string
+    dormitoryId: string
+    userId: string
+  }
+
+  export type DormitoryManagerUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type DormitoryManagerUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dormitoryId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
   }
 
   export type ConfirmationCreateInput = {
@@ -32828,8 +34094,8 @@ export namespace Prisma {
     photos?: DormitoryCreatephotosInput | string[]
     createdAt?: Date | string
     floors?: FloorCreateNestedManyWithoutDormitoryInput
-    manager?: UserCreateNestedOneWithoutManagedDormitoriesInput
     admins?: DormitoryAdminCreateNestedManyWithoutDormitoryInput
+    managers?: DormitoryManagerCreateNestedManyWithoutDormitoryInput
     residents?: UserCreateNestedManyWithoutDormitoryInput
     rooms?: RoomCreateNestedManyWithoutDormitoryInput
   }
@@ -32841,10 +34107,10 @@ export namespace Prisma {
     groundFloorPhoneNumber: string
     status?: string
     photos?: DormitoryCreatephotosInput | string[]
-    managerId?: string | null
     createdAt?: Date | string
     floors?: FloorUncheckedCreateNestedManyWithoutDormitoryInput
     admins?: DormitoryAdminUncheckedCreateNestedManyWithoutDormitoryInput
+    managers?: DormitoryManagerUncheckedCreateNestedManyWithoutDormitoryInput
     residents?: UserUncheckedCreateNestedManyWithoutDormitoryInput
     rooms?: RoomUncheckedCreateNestedManyWithoutDormitoryInput
   }
@@ -32858,8 +34124,8 @@ export namespace Prisma {
     photos?: DormitoryUpdatephotosInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     floors?: FloorUpdateManyWithoutDormitoryNestedInput
-    manager?: UserUpdateOneWithoutManagedDormitoriesNestedInput
     admins?: DormitoryAdminUpdateManyWithoutDormitoryNestedInput
+    managers?: DormitoryManagerUpdateManyWithoutDormitoryNestedInput
     residents?: UserUpdateManyWithoutDormitoryNestedInput
     rooms?: RoomUpdateManyWithoutDormitoryNestedInput
   }
@@ -32871,10 +34137,10 @@ export namespace Prisma {
     groundFloorPhoneNumber?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     photos?: DormitoryUpdatephotosInput | string[]
-    managerId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     floors?: FloorUncheckedUpdateManyWithoutDormitoryNestedInput
     admins?: DormitoryAdminUncheckedUpdateManyWithoutDormitoryNestedInput
+    managers?: DormitoryManagerUncheckedUpdateManyWithoutDormitoryNestedInput
     residents?: UserUncheckedUpdateManyWithoutDormitoryNestedInput
     rooms?: RoomUncheckedUpdateManyWithoutDormitoryNestedInput
   }
@@ -32886,7 +34152,6 @@ export namespace Prisma {
     groundFloorPhoneNumber: string
     status?: string
     photos?: DormitoryCreatephotosInput | string[]
-    managerId?: string | null
     createdAt?: Date | string
   }
 
@@ -32907,7 +34172,6 @@ export namespace Prisma {
     groundFloorPhoneNumber?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     photos?: DormitoryUpdatephotosInput | string[]
-    managerId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -33079,6 +34343,7 @@ export namespace Prisma {
     capacity: number
     equipment?: RoomTypeCreateequipmentInput | string[]
     typeCode: string
+    photos?: RoomTypeCreatephotosInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     rooms?: RoomCreateNestedManyWithoutRoomTypeInput
@@ -33092,6 +34357,7 @@ export namespace Prisma {
     capacity: number
     equipment?: RoomTypeCreateequipmentInput | string[]
     typeCode: string
+    photos?: RoomTypeCreatephotosInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     rooms?: RoomUncheckedCreateNestedManyWithoutRoomTypeInput
@@ -33105,6 +34371,7 @@ export namespace Prisma {
     capacity?: IntFieldUpdateOperationsInput | number
     equipment?: RoomTypeUpdateequipmentInput | string[]
     typeCode?: StringFieldUpdateOperationsInput | string
+    photos?: RoomTypeUpdatephotosInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     rooms?: RoomUpdateManyWithoutRoomTypeNestedInput
@@ -33118,6 +34385,7 @@ export namespace Prisma {
     capacity?: IntFieldUpdateOperationsInput | number
     equipment?: RoomTypeUpdateequipmentInput | string[]
     typeCode?: StringFieldUpdateOperationsInput | string
+    photos?: RoomTypeUpdatephotosInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     rooms?: RoomUncheckedUpdateManyWithoutRoomTypeNestedInput
@@ -33131,6 +34399,7 @@ export namespace Prisma {
     capacity: number
     equipment?: RoomTypeCreateequipmentInput | string[]
     typeCode: string
+    photos?: RoomTypeCreatephotosInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -33142,6 +34411,7 @@ export namespace Prisma {
     capacity?: IntFieldUpdateOperationsInput | number
     equipment?: RoomTypeUpdateequipmentInput | string[]
     typeCode?: StringFieldUpdateOperationsInput | string
+    photos?: RoomTypeUpdatephotosInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -33153,6 +34423,7 @@ export namespace Prisma {
     capacity?: IntFieldUpdateOperationsInput | number
     equipment?: RoomTypeUpdateequipmentInput | string[]
     typeCode?: StringFieldUpdateOperationsInput | string
+    photos?: RoomTypeUpdatephotosInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -34389,10 +35660,10 @@ export namespace Prisma {
     isNot?: DormitoryWhereInput | null
   }
 
-  export type DormitoryListRelationFilter = {
-    every?: DormitoryWhereInput
-    some?: DormitoryWhereInput
-    none?: DormitoryWhereInput
+  export type DormitoryManagerListRelationFilter = {
+    every?: DormitoryManagerWhereInput
+    some?: DormitoryManagerWhereInput
+    none?: DormitoryManagerWhereInput
   }
 
   export type RoomNullableScalarRelationFilter = {
@@ -34460,7 +35731,7 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type DormitoryOrderByRelationAggregateInput = {
+  export type DormitoryManagerOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -34506,6 +35777,7 @@ export namespace Prisma {
     studentIdFront?: SortOrder
     studentIdBack?: SortOrder
     isActive?: SortOrder
+    language?: SortOrder
     startReservationDate?: SortOrder
     endReservationDate?: SortOrder
     dormitoryId?: SortOrder
@@ -34528,6 +35800,7 @@ export namespace Prisma {
     studentIdFront?: SortOrder
     studentIdBack?: SortOrder
     isActive?: SortOrder
+    language?: SortOrder
     startReservationDate?: SortOrder
     endReservationDate?: SortOrder
     dormitoryId?: SortOrder
@@ -34550,6 +35823,7 @@ export namespace Prisma {
     studentIdFront?: SortOrder
     studentIdBack?: SortOrder
     isActive?: SortOrder
+    language?: SortOrder
     startReservationDate?: SortOrder
     endReservationDate?: SortOrder
     dormitoryId?: SortOrder
@@ -34687,6 +35961,29 @@ export namespace Prisma {
     dormitoryId?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
+  }
+
+  export type DormitoryManagerDormitoryIdUserIdCompoundUniqueInput = {
+    dormitoryId: string
+    userId: string
+  }
+
+  export type DormitoryManagerCountOrderByAggregateInput = {
+    id?: SortOrder
+    dormitoryId?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type DormitoryManagerMaxOrderByAggregateInput = {
+    id?: SortOrder
+    dormitoryId?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type DormitoryManagerMinOrderByAggregateInput = {
+    id?: SortOrder
+    dormitoryId?: SortOrder
+    userId?: SortOrder
   }
 
   export type EnumConfirmationTypeFilter<$PrismaModel = never> = {
@@ -34943,11 +36240,6 @@ export namespace Prisma {
     none?: FloorWhereInput
   }
 
-  export type UserNullableScalarRelationFilter = {
-    is?: UserWhereInput | null
-    isNot?: UserWhereInput | null
-  }
-
   export type UserListRelationFilter = {
     every?: UserWhereInput
     some?: UserWhereInput
@@ -34979,7 +36271,6 @@ export namespace Prisma {
     groundFloorPhoneNumber?: SortOrder
     status?: SortOrder
     photos?: SortOrder
-    managerId?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -34989,7 +36280,6 @@ export namespace Prisma {
     address?: SortOrder
     groundFloorPhoneNumber?: SortOrder
     status?: SortOrder
-    managerId?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -34999,7 +36289,6 @@ export namespace Prisma {
     address?: SortOrder
     groundFloorPhoneNumber?: SortOrder
     status?: SortOrder
-    managerId?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -35156,6 +36445,7 @@ export namespace Prisma {
     capacity?: SortOrder
     equipment?: SortOrder
     typeCode?: SortOrder
+    photos?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -35199,6 +36489,11 @@ export namespace Prisma {
   export type RoomTypeScalarRelationFilter = {
     is?: RoomTypeWhereInput
     isNot?: RoomTypeWhereInput
+  }
+
+  export type FloorRoomAssignmentFloorIdRoomTypeIdCompoundUniqueInput = {
+    floorId: string
+    roomTypeId: string
   }
 
   export type FloorRoomAssignmentCountOrderByAggregateInput = {
@@ -35429,6 +36724,11 @@ export namespace Prisma {
   export type PriceNullableScalarRelationFilter = {
     is?: PriceWhereInput | null
     isNot?: PriceWhereInput | null
+  }
+
+  export type UserNullableScalarRelationFilter = {
+    is?: UserWhereInput | null
+    isNot?: UserWhereInput | null
   }
 
   export type RecurringPaymentNullableScalarRelationFilter = {
@@ -35989,11 +37289,11 @@ export namespace Prisma {
     connect?: DormitoryWhereUniqueInput
   }
 
-  export type DormitoryCreateNestedManyWithoutManagerInput = {
-    create?: XOR<DormitoryCreateWithoutManagerInput, DormitoryUncheckedCreateWithoutManagerInput> | DormitoryCreateWithoutManagerInput[] | DormitoryUncheckedCreateWithoutManagerInput[]
-    connectOrCreate?: DormitoryCreateOrConnectWithoutManagerInput | DormitoryCreateOrConnectWithoutManagerInput[]
-    createMany?: DormitoryCreateManyManagerInputEnvelope
-    connect?: DormitoryWhereUniqueInput | DormitoryWhereUniqueInput[]
+  export type DormitoryManagerCreateNestedManyWithoutUserInput = {
+    create?: XOR<DormitoryManagerCreateWithoutUserInput, DormitoryManagerUncheckedCreateWithoutUserInput> | DormitoryManagerCreateWithoutUserInput[] | DormitoryManagerUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DormitoryManagerCreateOrConnectWithoutUserInput | DormitoryManagerCreateOrConnectWithoutUserInput[]
+    createMany?: DormitoryManagerCreateManyUserInputEnvelope
+    connect?: DormitoryManagerWhereUniqueInput | DormitoryManagerWhereUniqueInput[]
   }
 
   export type RoomCreateNestedOneWithoutResidentsInput = {
@@ -36085,11 +37385,11 @@ export namespace Prisma {
     connect?: DormitoryAdminWhereUniqueInput | DormitoryAdminWhereUniqueInput[]
   }
 
-  export type DormitoryUncheckedCreateNestedManyWithoutManagerInput = {
-    create?: XOR<DormitoryCreateWithoutManagerInput, DormitoryUncheckedCreateWithoutManagerInput> | DormitoryCreateWithoutManagerInput[] | DormitoryUncheckedCreateWithoutManagerInput[]
-    connectOrCreate?: DormitoryCreateOrConnectWithoutManagerInput | DormitoryCreateOrConnectWithoutManagerInput[]
-    createMany?: DormitoryCreateManyManagerInputEnvelope
-    connect?: DormitoryWhereUniqueInput | DormitoryWhereUniqueInput[]
+  export type DormitoryManagerUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<DormitoryManagerCreateWithoutUserInput, DormitoryManagerUncheckedCreateWithoutUserInput> | DormitoryManagerCreateWithoutUserInput[] | DormitoryManagerUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DormitoryManagerCreateOrConnectWithoutUserInput | DormitoryManagerCreateOrConnectWithoutUserInput[]
+    createMany?: DormitoryManagerCreateManyUserInputEnvelope
+    connect?: DormitoryManagerWhereUniqueInput | DormitoryManagerWhereUniqueInput[]
   }
 
   export type AnnouncementUncheckedCreateNestedManyWithoutAuthorInput = {
@@ -36227,18 +37527,18 @@ export namespace Prisma {
     update?: XOR<XOR<DormitoryUpdateToOneWithWhereWithoutResidentsInput, DormitoryUpdateWithoutResidentsInput>, DormitoryUncheckedUpdateWithoutResidentsInput>
   }
 
-  export type DormitoryUpdateManyWithoutManagerNestedInput = {
-    create?: XOR<DormitoryCreateWithoutManagerInput, DormitoryUncheckedCreateWithoutManagerInput> | DormitoryCreateWithoutManagerInput[] | DormitoryUncheckedCreateWithoutManagerInput[]
-    connectOrCreate?: DormitoryCreateOrConnectWithoutManagerInput | DormitoryCreateOrConnectWithoutManagerInput[]
-    upsert?: DormitoryUpsertWithWhereUniqueWithoutManagerInput | DormitoryUpsertWithWhereUniqueWithoutManagerInput[]
-    createMany?: DormitoryCreateManyManagerInputEnvelope
-    set?: DormitoryWhereUniqueInput | DormitoryWhereUniqueInput[]
-    disconnect?: DormitoryWhereUniqueInput | DormitoryWhereUniqueInput[]
-    delete?: DormitoryWhereUniqueInput | DormitoryWhereUniqueInput[]
-    connect?: DormitoryWhereUniqueInput | DormitoryWhereUniqueInput[]
-    update?: DormitoryUpdateWithWhereUniqueWithoutManagerInput | DormitoryUpdateWithWhereUniqueWithoutManagerInput[]
-    updateMany?: DormitoryUpdateManyWithWhereWithoutManagerInput | DormitoryUpdateManyWithWhereWithoutManagerInput[]
-    deleteMany?: DormitoryScalarWhereInput | DormitoryScalarWhereInput[]
+  export type DormitoryManagerUpdateManyWithoutUserNestedInput = {
+    create?: XOR<DormitoryManagerCreateWithoutUserInput, DormitoryManagerUncheckedCreateWithoutUserInput> | DormitoryManagerCreateWithoutUserInput[] | DormitoryManagerUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DormitoryManagerCreateOrConnectWithoutUserInput | DormitoryManagerCreateOrConnectWithoutUserInput[]
+    upsert?: DormitoryManagerUpsertWithWhereUniqueWithoutUserInput | DormitoryManagerUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: DormitoryManagerCreateManyUserInputEnvelope
+    set?: DormitoryManagerWhereUniqueInput | DormitoryManagerWhereUniqueInput[]
+    disconnect?: DormitoryManagerWhereUniqueInput | DormitoryManagerWhereUniqueInput[]
+    delete?: DormitoryManagerWhereUniqueInput | DormitoryManagerWhereUniqueInput[]
+    connect?: DormitoryManagerWhereUniqueInput | DormitoryManagerWhereUniqueInput[]
+    update?: DormitoryManagerUpdateWithWhereUniqueWithoutUserInput | DormitoryManagerUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: DormitoryManagerUpdateManyWithWhereWithoutUserInput | DormitoryManagerUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: DormitoryManagerScalarWhereInput | DormitoryManagerScalarWhereInput[]
   }
 
   export type RoomUpdateOneWithoutResidentsNestedInput = {
@@ -36415,18 +37715,18 @@ export namespace Prisma {
     deleteMany?: DormitoryAdminScalarWhereInput | DormitoryAdminScalarWhereInput[]
   }
 
-  export type DormitoryUncheckedUpdateManyWithoutManagerNestedInput = {
-    create?: XOR<DormitoryCreateWithoutManagerInput, DormitoryUncheckedCreateWithoutManagerInput> | DormitoryCreateWithoutManagerInput[] | DormitoryUncheckedCreateWithoutManagerInput[]
-    connectOrCreate?: DormitoryCreateOrConnectWithoutManagerInput | DormitoryCreateOrConnectWithoutManagerInput[]
-    upsert?: DormitoryUpsertWithWhereUniqueWithoutManagerInput | DormitoryUpsertWithWhereUniqueWithoutManagerInput[]
-    createMany?: DormitoryCreateManyManagerInputEnvelope
-    set?: DormitoryWhereUniqueInput | DormitoryWhereUniqueInput[]
-    disconnect?: DormitoryWhereUniqueInput | DormitoryWhereUniqueInput[]
-    delete?: DormitoryWhereUniqueInput | DormitoryWhereUniqueInput[]
-    connect?: DormitoryWhereUniqueInput | DormitoryWhereUniqueInput[]
-    update?: DormitoryUpdateWithWhereUniqueWithoutManagerInput | DormitoryUpdateWithWhereUniqueWithoutManagerInput[]
-    updateMany?: DormitoryUpdateManyWithWhereWithoutManagerInput | DormitoryUpdateManyWithWhereWithoutManagerInput[]
-    deleteMany?: DormitoryScalarWhereInput | DormitoryScalarWhereInput[]
+  export type DormitoryManagerUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<DormitoryManagerCreateWithoutUserInput, DormitoryManagerUncheckedCreateWithoutUserInput> | DormitoryManagerCreateWithoutUserInput[] | DormitoryManagerUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DormitoryManagerCreateOrConnectWithoutUserInput | DormitoryManagerCreateOrConnectWithoutUserInput[]
+    upsert?: DormitoryManagerUpsertWithWhereUniqueWithoutUserInput | DormitoryManagerUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: DormitoryManagerCreateManyUserInputEnvelope
+    set?: DormitoryManagerWhereUniqueInput | DormitoryManagerWhereUniqueInput[]
+    disconnect?: DormitoryManagerWhereUniqueInput | DormitoryManagerWhereUniqueInput[]
+    delete?: DormitoryManagerWhereUniqueInput | DormitoryManagerWhereUniqueInput[]
+    connect?: DormitoryManagerWhereUniqueInput | DormitoryManagerWhereUniqueInput[]
+    update?: DormitoryManagerUpdateWithWhereUniqueWithoutUserInput | DormitoryManagerUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: DormitoryManagerUpdateManyWithWhereWithoutUserInput | DormitoryManagerUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: DormitoryManagerScalarWhereInput | DormitoryManagerScalarWhereInput[]
   }
 
   export type AnnouncementUncheckedUpdateManyWithoutAuthorNestedInput = {
@@ -36593,6 +37893,34 @@ export namespace Prisma {
     update?: XOR<XOR<DormitoryUpdateToOneWithWhereWithoutAdminsInput, DormitoryUpdateWithoutAdminsInput>, DormitoryUncheckedUpdateWithoutAdminsInput>
   }
 
+  export type DormitoryCreateNestedOneWithoutManagersInput = {
+    create?: XOR<DormitoryCreateWithoutManagersInput, DormitoryUncheckedCreateWithoutManagersInput>
+    connectOrCreate?: DormitoryCreateOrConnectWithoutManagersInput
+    connect?: DormitoryWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutDormitoryManagerAssignmentsInput = {
+    create?: XOR<UserCreateWithoutDormitoryManagerAssignmentsInput, UserUncheckedCreateWithoutDormitoryManagerAssignmentsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDormitoryManagerAssignmentsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type DormitoryUpdateOneRequiredWithoutManagersNestedInput = {
+    create?: XOR<DormitoryCreateWithoutManagersInput, DormitoryUncheckedCreateWithoutManagersInput>
+    connectOrCreate?: DormitoryCreateOrConnectWithoutManagersInput
+    upsert?: DormitoryUpsertWithoutManagersInput
+    connect?: DormitoryWhereUniqueInput
+    update?: XOR<XOR<DormitoryUpdateToOneWithWhereWithoutManagersInput, DormitoryUpdateWithoutManagersInput>, DormitoryUncheckedUpdateWithoutManagersInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutDormitoryManagerAssignmentsNestedInput = {
+    create?: XOR<UserCreateWithoutDormitoryManagerAssignmentsInput, UserUncheckedCreateWithoutDormitoryManagerAssignmentsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDormitoryManagerAssignmentsInput
+    upsert?: UserUpsertWithoutDormitoryManagerAssignmentsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDormitoryManagerAssignmentsInput, UserUpdateWithoutDormitoryManagerAssignmentsInput>, UserUncheckedUpdateWithoutDormitoryManagerAssignmentsInput>
+  }
+
   export type ConfirmationCreateroommateIdsInput = {
     set: string[]
   }
@@ -36661,17 +37989,18 @@ export namespace Prisma {
     connect?: FloorWhereUniqueInput | FloorWhereUniqueInput[]
   }
 
-  export type UserCreateNestedOneWithoutManagedDormitoriesInput = {
-    create?: XOR<UserCreateWithoutManagedDormitoriesInput, UserUncheckedCreateWithoutManagedDormitoriesInput>
-    connectOrCreate?: UserCreateOrConnectWithoutManagedDormitoriesInput
-    connect?: UserWhereUniqueInput
-  }
-
   export type DormitoryAdminCreateNestedManyWithoutDormitoryInput = {
     create?: XOR<DormitoryAdminCreateWithoutDormitoryInput, DormitoryAdminUncheckedCreateWithoutDormitoryInput> | DormitoryAdminCreateWithoutDormitoryInput[] | DormitoryAdminUncheckedCreateWithoutDormitoryInput[]
     connectOrCreate?: DormitoryAdminCreateOrConnectWithoutDormitoryInput | DormitoryAdminCreateOrConnectWithoutDormitoryInput[]
     createMany?: DormitoryAdminCreateManyDormitoryInputEnvelope
     connect?: DormitoryAdminWhereUniqueInput | DormitoryAdminWhereUniqueInput[]
+  }
+
+  export type DormitoryManagerCreateNestedManyWithoutDormitoryInput = {
+    create?: XOR<DormitoryManagerCreateWithoutDormitoryInput, DormitoryManagerUncheckedCreateWithoutDormitoryInput> | DormitoryManagerCreateWithoutDormitoryInput[] | DormitoryManagerUncheckedCreateWithoutDormitoryInput[]
+    connectOrCreate?: DormitoryManagerCreateOrConnectWithoutDormitoryInput | DormitoryManagerCreateOrConnectWithoutDormitoryInput[]
+    createMany?: DormitoryManagerCreateManyDormitoryInputEnvelope
+    connect?: DormitoryManagerWhereUniqueInput | DormitoryManagerWhereUniqueInput[]
   }
 
   export type UserCreateNestedManyWithoutDormitoryInput = {
@@ -36700,6 +38029,13 @@ export namespace Prisma {
     connectOrCreate?: DormitoryAdminCreateOrConnectWithoutDormitoryInput | DormitoryAdminCreateOrConnectWithoutDormitoryInput[]
     createMany?: DormitoryAdminCreateManyDormitoryInputEnvelope
     connect?: DormitoryAdminWhereUniqueInput | DormitoryAdminWhereUniqueInput[]
+  }
+
+  export type DormitoryManagerUncheckedCreateNestedManyWithoutDormitoryInput = {
+    create?: XOR<DormitoryManagerCreateWithoutDormitoryInput, DormitoryManagerUncheckedCreateWithoutDormitoryInput> | DormitoryManagerCreateWithoutDormitoryInput[] | DormitoryManagerUncheckedCreateWithoutDormitoryInput[]
+    connectOrCreate?: DormitoryManagerCreateOrConnectWithoutDormitoryInput | DormitoryManagerCreateOrConnectWithoutDormitoryInput[]
+    createMany?: DormitoryManagerCreateManyDormitoryInputEnvelope
+    connect?: DormitoryManagerWhereUniqueInput | DormitoryManagerWhereUniqueInput[]
   }
 
   export type UserUncheckedCreateNestedManyWithoutDormitoryInput = {
@@ -36735,16 +38071,6 @@ export namespace Prisma {
     deleteMany?: FloorScalarWhereInput | FloorScalarWhereInput[]
   }
 
-  export type UserUpdateOneWithoutManagedDormitoriesNestedInput = {
-    create?: XOR<UserCreateWithoutManagedDormitoriesInput, UserUncheckedCreateWithoutManagedDormitoriesInput>
-    connectOrCreate?: UserCreateOrConnectWithoutManagedDormitoriesInput
-    upsert?: UserUpsertWithoutManagedDormitoriesInput
-    disconnect?: UserWhereInput | boolean
-    delete?: UserWhereInput | boolean
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutManagedDormitoriesInput, UserUpdateWithoutManagedDormitoriesInput>, UserUncheckedUpdateWithoutManagedDormitoriesInput>
-  }
-
   export type DormitoryAdminUpdateManyWithoutDormitoryNestedInput = {
     create?: XOR<DormitoryAdminCreateWithoutDormitoryInput, DormitoryAdminUncheckedCreateWithoutDormitoryInput> | DormitoryAdminCreateWithoutDormitoryInput[] | DormitoryAdminUncheckedCreateWithoutDormitoryInput[]
     connectOrCreate?: DormitoryAdminCreateOrConnectWithoutDormitoryInput | DormitoryAdminCreateOrConnectWithoutDormitoryInput[]
@@ -36757,6 +38083,20 @@ export namespace Prisma {
     update?: DormitoryAdminUpdateWithWhereUniqueWithoutDormitoryInput | DormitoryAdminUpdateWithWhereUniqueWithoutDormitoryInput[]
     updateMany?: DormitoryAdminUpdateManyWithWhereWithoutDormitoryInput | DormitoryAdminUpdateManyWithWhereWithoutDormitoryInput[]
     deleteMany?: DormitoryAdminScalarWhereInput | DormitoryAdminScalarWhereInput[]
+  }
+
+  export type DormitoryManagerUpdateManyWithoutDormitoryNestedInput = {
+    create?: XOR<DormitoryManagerCreateWithoutDormitoryInput, DormitoryManagerUncheckedCreateWithoutDormitoryInput> | DormitoryManagerCreateWithoutDormitoryInput[] | DormitoryManagerUncheckedCreateWithoutDormitoryInput[]
+    connectOrCreate?: DormitoryManagerCreateOrConnectWithoutDormitoryInput | DormitoryManagerCreateOrConnectWithoutDormitoryInput[]
+    upsert?: DormitoryManagerUpsertWithWhereUniqueWithoutDormitoryInput | DormitoryManagerUpsertWithWhereUniqueWithoutDormitoryInput[]
+    createMany?: DormitoryManagerCreateManyDormitoryInputEnvelope
+    set?: DormitoryManagerWhereUniqueInput | DormitoryManagerWhereUniqueInput[]
+    disconnect?: DormitoryManagerWhereUniqueInput | DormitoryManagerWhereUniqueInput[]
+    delete?: DormitoryManagerWhereUniqueInput | DormitoryManagerWhereUniqueInput[]
+    connect?: DormitoryManagerWhereUniqueInput | DormitoryManagerWhereUniqueInput[]
+    update?: DormitoryManagerUpdateWithWhereUniqueWithoutDormitoryInput | DormitoryManagerUpdateWithWhereUniqueWithoutDormitoryInput[]
+    updateMany?: DormitoryManagerUpdateManyWithWhereWithoutDormitoryInput | DormitoryManagerUpdateManyWithWhereWithoutDormitoryInput[]
+    deleteMany?: DormitoryManagerScalarWhereInput | DormitoryManagerScalarWhereInput[]
   }
 
   export type UserUpdateManyWithoutDormitoryNestedInput = {
@@ -36813,6 +38153,20 @@ export namespace Prisma {
     update?: DormitoryAdminUpdateWithWhereUniqueWithoutDormitoryInput | DormitoryAdminUpdateWithWhereUniqueWithoutDormitoryInput[]
     updateMany?: DormitoryAdminUpdateManyWithWhereWithoutDormitoryInput | DormitoryAdminUpdateManyWithWhereWithoutDormitoryInput[]
     deleteMany?: DormitoryAdminScalarWhereInput | DormitoryAdminScalarWhereInput[]
+  }
+
+  export type DormitoryManagerUncheckedUpdateManyWithoutDormitoryNestedInput = {
+    create?: XOR<DormitoryManagerCreateWithoutDormitoryInput, DormitoryManagerUncheckedCreateWithoutDormitoryInput> | DormitoryManagerCreateWithoutDormitoryInput[] | DormitoryManagerUncheckedCreateWithoutDormitoryInput[]
+    connectOrCreate?: DormitoryManagerCreateOrConnectWithoutDormitoryInput | DormitoryManagerCreateOrConnectWithoutDormitoryInput[]
+    upsert?: DormitoryManagerUpsertWithWhereUniqueWithoutDormitoryInput | DormitoryManagerUpsertWithWhereUniqueWithoutDormitoryInput[]
+    createMany?: DormitoryManagerCreateManyDormitoryInputEnvelope
+    set?: DormitoryManagerWhereUniqueInput | DormitoryManagerWhereUniqueInput[]
+    disconnect?: DormitoryManagerWhereUniqueInput | DormitoryManagerWhereUniqueInput[]
+    delete?: DormitoryManagerWhereUniqueInput | DormitoryManagerWhereUniqueInput[]
+    connect?: DormitoryManagerWhereUniqueInput | DormitoryManagerWhereUniqueInput[]
+    update?: DormitoryManagerUpdateWithWhereUniqueWithoutDormitoryInput | DormitoryManagerUpdateWithWhereUniqueWithoutDormitoryInput[]
+    updateMany?: DormitoryManagerUpdateManyWithWhereWithoutDormitoryInput | DormitoryManagerUpdateManyWithWhereWithoutDormitoryInput[]
+    deleteMany?: DormitoryManagerScalarWhereInput | DormitoryManagerScalarWhereInput[]
   }
 
   export type UserUncheckedUpdateManyWithoutDormitoryNestedInput = {
@@ -37267,6 +38621,10 @@ export namespace Prisma {
     set: string[]
   }
 
+  export type RoomTypeCreatephotosInput = {
+    set: string[]
+  }
+
   export type RoomCreateNestedManyWithoutRoomTypeInput = {
     create?: XOR<RoomCreateWithoutRoomTypeInput, RoomUncheckedCreateWithoutRoomTypeInput> | RoomCreateWithoutRoomTypeInput[] | RoomUncheckedCreateWithoutRoomTypeInput[]
     connectOrCreate?: RoomCreateOrConnectWithoutRoomTypeInput | RoomCreateOrConnectWithoutRoomTypeInput[]
@@ -37296,6 +38654,11 @@ export namespace Prisma {
   }
 
   export type RoomTypeUpdateequipmentInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type RoomTypeUpdatephotosInput = {
     set?: string[]
     push?: string | string[]
   }
@@ -38797,8 +40160,8 @@ export namespace Prisma {
     photos?: DormitoryCreatephotosInput | string[]
     createdAt?: Date | string
     floors?: FloorCreateNestedManyWithoutDormitoryInput
-    manager?: UserCreateNestedOneWithoutManagedDormitoriesInput
     admins?: DormitoryAdminCreateNestedManyWithoutDormitoryInput
+    managers?: DormitoryManagerCreateNestedManyWithoutDormitoryInput
     rooms?: RoomCreateNestedManyWithoutDormitoryInput
   }
 
@@ -38809,10 +40172,10 @@ export namespace Prisma {
     groundFloorPhoneNumber: string
     status?: string
     photos?: DormitoryCreatephotosInput | string[]
-    managerId?: string | null
     createdAt?: Date | string
     floors?: FloorUncheckedCreateNestedManyWithoutDormitoryInput
     admins?: DormitoryAdminUncheckedCreateNestedManyWithoutDormitoryInput
+    managers?: DormitoryManagerUncheckedCreateNestedManyWithoutDormitoryInput
     rooms?: RoomUncheckedCreateNestedManyWithoutDormitoryInput
   }
 
@@ -38821,41 +40184,23 @@ export namespace Prisma {
     create: XOR<DormitoryCreateWithoutResidentsInput, DormitoryUncheckedCreateWithoutResidentsInput>
   }
 
-  export type DormitoryCreateWithoutManagerInput = {
+  export type DormitoryManagerCreateWithoutUserInput = {
     id?: string
-    name: string
-    address: string
-    groundFloorPhoneNumber: string
-    status?: string
-    photos?: DormitoryCreatephotosInput | string[]
-    createdAt?: Date | string
-    floors?: FloorCreateNestedManyWithoutDormitoryInput
-    admins?: DormitoryAdminCreateNestedManyWithoutDormitoryInput
-    residents?: UserCreateNestedManyWithoutDormitoryInput
-    rooms?: RoomCreateNestedManyWithoutDormitoryInput
+    dormitory: DormitoryCreateNestedOneWithoutManagersInput
   }
 
-  export type DormitoryUncheckedCreateWithoutManagerInput = {
+  export type DormitoryManagerUncheckedCreateWithoutUserInput = {
     id?: string
-    name: string
-    address: string
-    groundFloorPhoneNumber: string
-    status?: string
-    photos?: DormitoryCreatephotosInput | string[]
-    createdAt?: Date | string
-    floors?: FloorUncheckedCreateNestedManyWithoutDormitoryInput
-    admins?: DormitoryAdminUncheckedCreateNestedManyWithoutDormitoryInput
-    residents?: UserUncheckedCreateNestedManyWithoutDormitoryInput
-    rooms?: RoomUncheckedCreateNestedManyWithoutDormitoryInput
+    dormitoryId: string
   }
 
-  export type DormitoryCreateOrConnectWithoutManagerInput = {
-    where: DormitoryWhereUniqueInput
-    create: XOR<DormitoryCreateWithoutManagerInput, DormitoryUncheckedCreateWithoutManagerInput>
+  export type DormitoryManagerCreateOrConnectWithoutUserInput = {
+    where: DormitoryManagerWhereUniqueInput
+    create: XOR<DormitoryManagerCreateWithoutUserInput, DormitoryManagerUncheckedCreateWithoutUserInput>
   }
 
-  export type DormitoryCreateManyManagerInputEnvelope = {
-    data: DormitoryCreateManyManagerInput | DormitoryCreateManyManagerInput[]
+  export type DormitoryManagerCreateManyUserInputEnvelope = {
+    data: DormitoryManagerCreateManyUserInput | DormitoryManagerCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -39412,8 +40757,8 @@ export namespace Prisma {
     photos?: DormitoryUpdatephotosInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     floors?: FloorUpdateManyWithoutDormitoryNestedInput
-    manager?: UserUpdateOneWithoutManagedDormitoriesNestedInput
     admins?: DormitoryAdminUpdateManyWithoutDormitoryNestedInput
+    managers?: DormitoryManagerUpdateManyWithoutDormitoryNestedInput
     rooms?: RoomUpdateManyWithoutDormitoryNestedInput
   }
 
@@ -39424,41 +40769,36 @@ export namespace Prisma {
     groundFloorPhoneNumber?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     photos?: DormitoryUpdatephotosInput | string[]
-    managerId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     floors?: FloorUncheckedUpdateManyWithoutDormitoryNestedInput
     admins?: DormitoryAdminUncheckedUpdateManyWithoutDormitoryNestedInput
+    managers?: DormitoryManagerUncheckedUpdateManyWithoutDormitoryNestedInput
     rooms?: RoomUncheckedUpdateManyWithoutDormitoryNestedInput
   }
 
-  export type DormitoryUpsertWithWhereUniqueWithoutManagerInput = {
-    where: DormitoryWhereUniqueInput
-    update: XOR<DormitoryUpdateWithoutManagerInput, DormitoryUncheckedUpdateWithoutManagerInput>
-    create: XOR<DormitoryCreateWithoutManagerInput, DormitoryUncheckedCreateWithoutManagerInput>
+  export type DormitoryManagerUpsertWithWhereUniqueWithoutUserInput = {
+    where: DormitoryManagerWhereUniqueInput
+    update: XOR<DormitoryManagerUpdateWithoutUserInput, DormitoryManagerUncheckedUpdateWithoutUserInput>
+    create: XOR<DormitoryManagerCreateWithoutUserInput, DormitoryManagerUncheckedCreateWithoutUserInput>
   }
 
-  export type DormitoryUpdateWithWhereUniqueWithoutManagerInput = {
-    where: DormitoryWhereUniqueInput
-    data: XOR<DormitoryUpdateWithoutManagerInput, DormitoryUncheckedUpdateWithoutManagerInput>
+  export type DormitoryManagerUpdateWithWhereUniqueWithoutUserInput = {
+    where: DormitoryManagerWhereUniqueInput
+    data: XOR<DormitoryManagerUpdateWithoutUserInput, DormitoryManagerUncheckedUpdateWithoutUserInput>
   }
 
-  export type DormitoryUpdateManyWithWhereWithoutManagerInput = {
-    where: DormitoryScalarWhereInput
-    data: XOR<DormitoryUpdateManyMutationInput, DormitoryUncheckedUpdateManyWithoutManagerInput>
+  export type DormitoryManagerUpdateManyWithWhereWithoutUserInput = {
+    where: DormitoryManagerScalarWhereInput
+    data: XOR<DormitoryManagerUpdateManyMutationInput, DormitoryManagerUncheckedUpdateManyWithoutUserInput>
   }
 
-  export type DormitoryScalarWhereInput = {
-    AND?: DormitoryScalarWhereInput | DormitoryScalarWhereInput[]
-    OR?: DormitoryScalarWhereInput[]
-    NOT?: DormitoryScalarWhereInput | DormitoryScalarWhereInput[]
-    id?: StringFilter<"Dormitory"> | string
-    name?: StringFilter<"Dormitory"> | string
-    address?: StringFilter<"Dormitory"> | string
-    groundFloorPhoneNumber?: StringFilter<"Dormitory"> | string
-    status?: StringFilter<"Dormitory"> | string
-    photos?: StringNullableListFilter<"Dormitory">
-    managerId?: StringNullableFilter<"Dormitory"> | string | null
-    createdAt?: DateTimeFilter<"Dormitory"> | Date | string
+  export type DormitoryManagerScalarWhereInput = {
+    AND?: DormitoryManagerScalarWhereInput | DormitoryManagerScalarWhereInput[]
+    OR?: DormitoryManagerScalarWhereInput[]
+    NOT?: DormitoryManagerScalarWhereInput | DormitoryManagerScalarWhereInput[]
+    id?: StringFilter<"DormitoryManager"> | string
+    dormitoryId?: StringFilter<"DormitoryManager"> | string
+    userId?: StringFilter<"DormitoryManager"> | string
   }
 
   export type RoomUpsertWithoutResidentsInput = {
@@ -39824,13 +41164,14 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    language?: string
     startReservationDate?: Date | string | null
     endReservationDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
     dormitory?: DormitoryCreateNestedOneWithoutResidentsInput
-    managedDormitories?: DormitoryCreateNestedManyWithoutManagerInput
+    dormitoryManagerAssignments?: DormitoryManagerCreateNestedManyWithoutUserInput
     room?: RoomCreateNestedOneWithoutResidentsInput
     announcements?: AnnouncementCreateNestedManyWithoutAuthorInput
     announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutUserInput
@@ -39858,6 +41199,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    language?: string
     startReservationDate?: Date | string | null
     endReservationDate?: Date | string | null
     dormitoryId?: string | null
@@ -39865,7 +41207,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     confirmations?: ConfirmationUncheckedCreateNestedManyWithoutRequesterInput
-    managedDormitories?: DormitoryUncheckedCreateNestedManyWithoutManagerInput
+    dormitoryManagerAssignments?: DormitoryManagerUncheckedCreateNestedManyWithoutUserInput
     announcements?: AnnouncementUncheckedCreateNestedManyWithoutAuthorInput
     announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
@@ -39892,7 +41234,7 @@ export namespace Prisma {
     photos?: DormitoryCreatephotosInput | string[]
     createdAt?: Date | string
     floors?: FloorCreateNestedManyWithoutDormitoryInput
-    manager?: UserCreateNestedOneWithoutManagedDormitoriesInput
+    managers?: DormitoryManagerCreateNestedManyWithoutDormitoryInput
     residents?: UserCreateNestedManyWithoutDormitoryInput
     rooms?: RoomCreateNestedManyWithoutDormitoryInput
   }
@@ -39904,9 +41246,9 @@ export namespace Prisma {
     groundFloorPhoneNumber: string
     status?: string
     photos?: DormitoryCreatephotosInput | string[]
-    managerId?: string | null
     createdAt?: Date | string
     floors?: FloorUncheckedCreateNestedManyWithoutDormitoryInput
+    managers?: DormitoryManagerUncheckedCreateNestedManyWithoutDormitoryInput
     residents?: UserUncheckedCreateNestedManyWithoutDormitoryInput
     rooms?: RoomUncheckedCreateNestedManyWithoutDormitoryInput
   }
@@ -39941,13 +41283,14 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
     startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
     dormitory?: DormitoryUpdateOneWithoutResidentsNestedInput
-    managedDormitories?: DormitoryUpdateManyWithoutManagerNestedInput
+    dormitoryManagerAssignments?: DormitoryManagerUpdateManyWithoutUserNestedInput
     room?: RoomUpdateOneWithoutResidentsNestedInput
     announcements?: AnnouncementUpdateManyWithoutAuthorNestedInput
     announcementRecipients?: AnnouncementRecipientUpdateManyWithoutUserNestedInput
@@ -39975,6 +41318,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
     startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -39982,7 +41326,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmations?: ConfirmationUncheckedUpdateManyWithoutRequesterNestedInput
-    managedDormitories?: DormitoryUncheckedUpdateManyWithoutManagerNestedInput
+    dormitoryManagerAssignments?: DormitoryManagerUncheckedUpdateManyWithoutUserNestedInput
     announcements?: AnnouncementUncheckedUpdateManyWithoutAuthorNestedInput
     announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
@@ -40015,7 +41359,7 @@ export namespace Prisma {
     photos?: DormitoryUpdatephotosInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     floors?: FloorUpdateManyWithoutDormitoryNestedInput
-    manager?: UserUpdateOneWithoutManagedDormitoriesNestedInput
+    managers?: DormitoryManagerUpdateManyWithoutDormitoryNestedInput
     residents?: UserUpdateManyWithoutDormitoryNestedInput
     rooms?: RoomUpdateManyWithoutDormitoryNestedInput
   }
@@ -40027,11 +41371,239 @@ export namespace Prisma {
     groundFloorPhoneNumber?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     photos?: DormitoryUpdatephotosInput | string[]
-    managerId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     floors?: FloorUncheckedUpdateManyWithoutDormitoryNestedInput
+    managers?: DormitoryManagerUncheckedUpdateManyWithoutDormitoryNestedInput
     residents?: UserUncheckedUpdateManyWithoutDormitoryNestedInput
     rooms?: RoomUncheckedUpdateManyWithoutDormitoryNestedInput
+  }
+
+  export type DormitoryCreateWithoutManagersInput = {
+    id?: string
+    name: string
+    address: string
+    groundFloorPhoneNumber: string
+    status?: string
+    photos?: DormitoryCreatephotosInput | string[]
+    createdAt?: Date | string
+    floors?: FloorCreateNestedManyWithoutDormitoryInput
+    admins?: DormitoryAdminCreateNestedManyWithoutDormitoryInput
+    residents?: UserCreateNestedManyWithoutDormitoryInput
+    rooms?: RoomCreateNestedManyWithoutDormitoryInput
+  }
+
+  export type DormitoryUncheckedCreateWithoutManagersInput = {
+    id?: string
+    name: string
+    address: string
+    groundFloorPhoneNumber: string
+    status?: string
+    photos?: DormitoryCreatephotosInput | string[]
+    createdAt?: Date | string
+    floors?: FloorUncheckedCreateNestedManyWithoutDormitoryInput
+    admins?: DormitoryAdminUncheckedCreateNestedManyWithoutDormitoryInput
+    residents?: UserUncheckedCreateNestedManyWithoutDormitoryInput
+    rooms?: RoomUncheckedCreateNestedManyWithoutDormitoryInput
+  }
+
+  export type DormitoryCreateOrConnectWithoutManagersInput = {
+    where: DormitoryWhereUniqueInput
+    create: XOR<DormitoryCreateWithoutManagersInput, DormitoryUncheckedCreateWithoutManagersInput>
+  }
+
+  export type UserCreateWithoutDormitoryManagerAssignmentsInput = {
+    id?: string
+    email: string
+    password: string
+    displayName: string
+    picture: string
+    isVerified?: boolean
+    isTwoFactorEnabled?: boolean
+    method: $Enums.AuthMethod
+    role?: $Enums.UserRole
+    secondName: string
+    studentIdFront: string
+    studentIdBack?: string | null
+    isActive?: boolean
+    language?: string
+    startReservationDate?: Date | string | null
+    endReservationDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
+    dormitoryAdminAssignments?: DormitoryAdminCreateNestedManyWithoutUserInput
+    dormitory?: DormitoryCreateNestedOneWithoutResidentsInput
+    room?: RoomCreateNestedOneWithoutResidentsInput
+    announcements?: AnnouncementCreateNestedManyWithoutAuthorInput
+    announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    sentNotifications?: NotificationCreateNestedManyWithoutFromUserInput
+    receivedNotifications?: NotificationCreateNestedManyWithoutToUserInput
+    notificationSettings?: NotificationSettingsCreateNestedOneWithoutUserInput
+    bookings?: BookingCreateNestedManyWithoutUserInput
+    payments?: PaymentCreateNestedManyWithoutUserInput
+    confirmedPayments?: PaymentCreateNestedManyWithoutConfirmedByUserInput
+    paymentAuditLogs?: PaymentAuditLogCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutDormitoryManagerAssignmentsInput = {
+    id?: string
+    email: string
+    password: string
+    displayName: string
+    picture: string
+    isVerified?: boolean
+    isTwoFactorEnabled?: boolean
+    method: $Enums.AuthMethod
+    role?: $Enums.UserRole
+    secondName: string
+    studentIdFront: string
+    studentIdBack?: string | null
+    isActive?: boolean
+    language?: string
+    startReservationDate?: Date | string | null
+    endReservationDate?: Date | string | null
+    dormitoryId?: string | null
+    roomId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    confirmations?: ConfirmationUncheckedCreateNestedManyWithoutRequesterInput
+    dormitoryAdminAssignments?: DormitoryAdminUncheckedCreateNestedManyWithoutUserInput
+    announcements?: AnnouncementUncheckedCreateNestedManyWithoutAuthorInput
+    announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    sentNotifications?: NotificationUncheckedCreateNestedManyWithoutFromUserInput
+    receivedNotifications?: NotificationUncheckedCreateNestedManyWithoutToUserInput
+    notificationSettings?: NotificationSettingsUncheckedCreateNestedOneWithoutUserInput
+    bookings?: BookingUncheckedCreateNestedManyWithoutUserInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    confirmedPayments?: PaymentUncheckedCreateNestedManyWithoutConfirmedByUserInput
+    paymentAuditLogs?: PaymentAuditLogUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutDormitoryManagerAssignmentsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutDormitoryManagerAssignmentsInput, UserUncheckedCreateWithoutDormitoryManagerAssignmentsInput>
+  }
+
+  export type DormitoryUpsertWithoutManagersInput = {
+    update: XOR<DormitoryUpdateWithoutManagersInput, DormitoryUncheckedUpdateWithoutManagersInput>
+    create: XOR<DormitoryCreateWithoutManagersInput, DormitoryUncheckedCreateWithoutManagersInput>
+    where?: DormitoryWhereInput
+  }
+
+  export type DormitoryUpdateToOneWithWhereWithoutManagersInput = {
+    where?: DormitoryWhereInput
+    data: XOR<DormitoryUpdateWithoutManagersInput, DormitoryUncheckedUpdateWithoutManagersInput>
+  }
+
+  export type DormitoryUpdateWithoutManagersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    groundFloorPhoneNumber?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    photos?: DormitoryUpdatephotosInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    floors?: FloorUpdateManyWithoutDormitoryNestedInput
+    admins?: DormitoryAdminUpdateManyWithoutDormitoryNestedInput
+    residents?: UserUpdateManyWithoutDormitoryNestedInput
+    rooms?: RoomUpdateManyWithoutDormitoryNestedInput
+  }
+
+  export type DormitoryUncheckedUpdateWithoutManagersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    groundFloorPhoneNumber?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    photos?: DormitoryUpdatephotosInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    floors?: FloorUncheckedUpdateManyWithoutDormitoryNestedInput
+    admins?: DormitoryAdminUncheckedUpdateManyWithoutDormitoryNestedInput
+    residents?: UserUncheckedUpdateManyWithoutDormitoryNestedInput
+    rooms?: RoomUncheckedUpdateManyWithoutDormitoryNestedInput
+  }
+
+  export type UserUpsertWithoutDormitoryManagerAssignmentsInput = {
+    update: XOR<UserUpdateWithoutDormitoryManagerAssignmentsInput, UserUncheckedUpdateWithoutDormitoryManagerAssignmentsInput>
+    create: XOR<UserCreateWithoutDormitoryManagerAssignmentsInput, UserUncheckedCreateWithoutDormitoryManagerAssignmentsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutDormitoryManagerAssignmentsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutDormitoryManagerAssignmentsInput, UserUncheckedUpdateWithoutDormitoryManagerAssignmentsInput>
+  }
+
+  export type UserUpdateWithoutDormitoryManagerAssignmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    picture?: StringFieldUpdateOperationsInput | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    method?: EnumAuthMethodFieldUpdateOperationsInput | $Enums.AuthMethod
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    secondName?: StringFieldUpdateOperationsInput | string
+    studentIdFront?: StringFieldUpdateOperationsInput | string
+    studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
+    startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
+    dormitoryAdminAssignments?: DormitoryAdminUpdateManyWithoutUserNestedInput
+    dormitory?: DormitoryUpdateOneWithoutResidentsNestedInput
+    room?: RoomUpdateOneWithoutResidentsNestedInput
+    announcements?: AnnouncementUpdateManyWithoutAuthorNestedInput
+    announcementRecipients?: AnnouncementRecipientUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    sentNotifications?: NotificationUpdateManyWithoutFromUserNestedInput
+    receivedNotifications?: NotificationUpdateManyWithoutToUserNestedInput
+    notificationSettings?: NotificationSettingsUpdateOneWithoutUserNestedInput
+    bookings?: BookingUpdateManyWithoutUserNestedInput
+    payments?: PaymentUpdateManyWithoutUserNestedInput
+    confirmedPayments?: PaymentUpdateManyWithoutConfirmedByUserNestedInput
+    paymentAuditLogs?: PaymentAuditLogUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutDormitoryManagerAssignmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    picture?: StringFieldUpdateOperationsInput | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    method?: EnumAuthMethodFieldUpdateOperationsInput | $Enums.AuthMethod
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    secondName?: StringFieldUpdateOperationsInput | string
+    studentIdFront?: StringFieldUpdateOperationsInput | string
+    studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
+    startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
+    roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    confirmations?: ConfirmationUncheckedUpdateManyWithoutRequesterNestedInput
+    dormitoryAdminAssignments?: DormitoryAdminUncheckedUpdateManyWithoutUserNestedInput
+    announcements?: AnnouncementUncheckedUpdateManyWithoutAuthorNestedInput
+    announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    sentNotifications?: NotificationUncheckedUpdateManyWithoutFromUserNestedInput
+    receivedNotifications?: NotificationUncheckedUpdateManyWithoutToUserNestedInput
+    notificationSettings?: NotificationSettingsUncheckedUpdateOneWithoutUserNestedInput
+    bookings?: BookingUncheckedUpdateManyWithoutUserNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    confirmedPayments?: PaymentUncheckedUpdateManyWithoutConfirmedByUserNestedInput
+    paymentAuditLogs?: PaymentAuditLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutConfirmationsInput = {
@@ -40048,13 +41620,14 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    language?: string
     startReservationDate?: Date | string | null
     endReservationDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     dormitoryAdminAssignments?: DormitoryAdminCreateNestedManyWithoutUserInput
     dormitory?: DormitoryCreateNestedOneWithoutResidentsInput
-    managedDormitories?: DormitoryCreateNestedManyWithoutManagerInput
+    dormitoryManagerAssignments?: DormitoryManagerCreateNestedManyWithoutUserInput
     room?: RoomCreateNestedOneWithoutResidentsInput
     announcements?: AnnouncementCreateNestedManyWithoutAuthorInput
     announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutUserInput
@@ -40082,6 +41655,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    language?: string
     startReservationDate?: Date | string | null
     endReservationDate?: Date | string | null
     dormitoryId?: string | null
@@ -40089,7 +41663,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     dormitoryAdminAssignments?: DormitoryAdminUncheckedCreateNestedManyWithoutUserInput
-    managedDormitories?: DormitoryUncheckedCreateNestedManyWithoutManagerInput
+    dormitoryManagerAssignments?: DormitoryManagerUncheckedCreateNestedManyWithoutUserInput
     announcements?: AnnouncementUncheckedCreateNestedManyWithoutAuthorInput
     announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
@@ -40132,13 +41706,14 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
     startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dormitoryAdminAssignments?: DormitoryAdminUpdateManyWithoutUserNestedInput
     dormitory?: DormitoryUpdateOneWithoutResidentsNestedInput
-    managedDormitories?: DormitoryUpdateManyWithoutManagerNestedInput
+    dormitoryManagerAssignments?: DormitoryManagerUpdateManyWithoutUserNestedInput
     room?: RoomUpdateOneWithoutResidentsNestedInput
     announcements?: AnnouncementUpdateManyWithoutAuthorNestedInput
     announcementRecipients?: AnnouncementRecipientUpdateManyWithoutUserNestedInput
@@ -40166,6 +41741,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
     startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -40173,7 +41749,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dormitoryAdminAssignments?: DormitoryAdminUncheckedUpdateManyWithoutUserNestedInput
-    managedDormitories?: DormitoryUncheckedUpdateManyWithoutManagerNestedInput
+    dormitoryManagerAssignments?: DormitoryManagerUncheckedUpdateManyWithoutUserNestedInput
     announcements?: AnnouncementUncheckedUpdateManyWithoutAuthorNestedInput
     announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
@@ -40200,6 +41776,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    language?: string
     startReservationDate?: Date | string | null
     endReservationDate?: Date | string | null
     createdAt?: Date | string
@@ -40207,7 +41784,7 @@ export namespace Prisma {
     confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
     dormitoryAdminAssignments?: DormitoryAdminCreateNestedManyWithoutUserInput
     dormitory?: DormitoryCreateNestedOneWithoutResidentsInput
-    managedDormitories?: DormitoryCreateNestedManyWithoutManagerInput
+    dormitoryManagerAssignments?: DormitoryManagerCreateNestedManyWithoutUserInput
     room?: RoomCreateNestedOneWithoutResidentsInput
     announcements?: AnnouncementCreateNestedManyWithoutAuthorInput
     announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutUserInput
@@ -40234,6 +41811,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    language?: string
     startReservationDate?: Date | string | null
     endReservationDate?: Date | string | null
     dormitoryId?: string | null
@@ -40242,7 +41820,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     confirmations?: ConfirmationUncheckedCreateNestedManyWithoutRequesterInput
     dormitoryAdminAssignments?: DormitoryAdminUncheckedCreateNestedManyWithoutUserInput
-    managedDormitories?: DormitoryUncheckedCreateNestedManyWithoutManagerInput
+    dormitoryManagerAssignments?: DormitoryManagerUncheckedCreateNestedManyWithoutUserInput
     announcements?: AnnouncementUncheckedCreateNestedManyWithoutAuthorInput
     announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
     sentNotifications?: NotificationUncheckedCreateNestedManyWithoutFromUserInput
@@ -40284,6 +41862,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
     startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -40291,7 +41870,7 @@ export namespace Prisma {
     confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
     dormitoryAdminAssignments?: DormitoryAdminUpdateManyWithoutUserNestedInput
     dormitory?: DormitoryUpdateOneWithoutResidentsNestedInput
-    managedDormitories?: DormitoryUpdateManyWithoutManagerNestedInput
+    dormitoryManagerAssignments?: DormitoryManagerUpdateManyWithoutUserNestedInput
     room?: RoomUpdateOneWithoutResidentsNestedInput
     announcements?: AnnouncementUpdateManyWithoutAuthorNestedInput
     announcementRecipients?: AnnouncementRecipientUpdateManyWithoutUserNestedInput
@@ -40318,6 +41897,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
     startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -40326,7 +41906,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmations?: ConfirmationUncheckedUpdateManyWithoutRequesterNestedInput
     dormitoryAdminAssignments?: DormitoryAdminUncheckedUpdateManyWithoutUserNestedInput
-    managedDormitories?: DormitoryUncheckedUpdateManyWithoutManagerNestedInput
+    dormitoryManagerAssignments?: DormitoryManagerUncheckedUpdateManyWithoutUserNestedInput
     announcements?: AnnouncementUncheckedUpdateManyWithoutAuthorNestedInput
     announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
     sentNotifications?: NotificationUncheckedUpdateManyWithoutFromUserNestedInput
@@ -40362,79 +41942,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type UserCreateWithoutManagedDormitoriesInput = {
-    id?: string
-    email: string
-    password: string
-    displayName: string
-    picture: string
-    isVerified?: boolean
-    isTwoFactorEnabled?: boolean
-    method: $Enums.AuthMethod
-    role?: $Enums.UserRole
-    secondName: string
-    studentIdFront: string
-    studentIdBack?: string | null
-    isActive?: boolean
-    startReservationDate?: Date | string | null
-    endReservationDate?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
-    dormitoryAdminAssignments?: DormitoryAdminCreateNestedManyWithoutUserInput
-    dormitory?: DormitoryCreateNestedOneWithoutResidentsInput
-    room?: RoomCreateNestedOneWithoutResidentsInput
-    announcements?: AnnouncementCreateNestedManyWithoutAuthorInput
-    announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutUserInput
-    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
-    sentNotifications?: NotificationCreateNestedManyWithoutFromUserInput
-    receivedNotifications?: NotificationCreateNestedManyWithoutToUserInput
-    notificationSettings?: NotificationSettingsCreateNestedOneWithoutUserInput
-    bookings?: BookingCreateNestedManyWithoutUserInput
-    payments?: PaymentCreateNestedManyWithoutUserInput
-    confirmedPayments?: PaymentCreateNestedManyWithoutConfirmedByUserInput
-    paymentAuditLogs?: PaymentAuditLogCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutManagedDormitoriesInput = {
-    id?: string
-    email: string
-    password: string
-    displayName: string
-    picture: string
-    isVerified?: boolean
-    isTwoFactorEnabled?: boolean
-    method: $Enums.AuthMethod
-    role?: $Enums.UserRole
-    secondName: string
-    studentIdFront: string
-    studentIdBack?: string | null
-    isActive?: boolean
-    startReservationDate?: Date | string | null
-    endReservationDate?: Date | string | null
-    dormitoryId?: string | null
-    roomId?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    confirmations?: ConfirmationUncheckedCreateNestedManyWithoutRequesterInput
-    dormitoryAdminAssignments?: DormitoryAdminUncheckedCreateNestedManyWithoutUserInput
-    announcements?: AnnouncementUncheckedCreateNestedManyWithoutAuthorInput
-    announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
-    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
-    sentNotifications?: NotificationUncheckedCreateNestedManyWithoutFromUserInput
-    receivedNotifications?: NotificationUncheckedCreateNestedManyWithoutToUserInput
-    notificationSettings?: NotificationSettingsUncheckedCreateNestedOneWithoutUserInput
-    bookings?: BookingUncheckedCreateNestedManyWithoutUserInput
-    payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
-    confirmedPayments?: PaymentUncheckedCreateNestedManyWithoutConfirmedByUserInput
-    paymentAuditLogs?: PaymentAuditLogUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutManagedDormitoriesInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutManagedDormitoriesInput, UserUncheckedCreateWithoutManagedDormitoriesInput>
-  }
-
   export type DormitoryAdminCreateWithoutDormitoryInput = {
     id?: string
     role: string
@@ -40459,6 +41966,26 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type DormitoryManagerCreateWithoutDormitoryInput = {
+    id?: string
+    user: UserCreateNestedOneWithoutDormitoryManagerAssignmentsInput
+  }
+
+  export type DormitoryManagerUncheckedCreateWithoutDormitoryInput = {
+    id?: string
+    userId: string
+  }
+
+  export type DormitoryManagerCreateOrConnectWithoutDormitoryInput = {
+    where: DormitoryManagerWhereUniqueInput
+    create: XOR<DormitoryManagerCreateWithoutDormitoryInput, DormitoryManagerUncheckedCreateWithoutDormitoryInput>
+  }
+
+  export type DormitoryManagerCreateManyDormitoryInputEnvelope = {
+    data: DormitoryManagerCreateManyDormitoryInput | DormitoryManagerCreateManyDormitoryInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserCreateWithoutDormitoryInput = {
     id?: string
     email: string
@@ -40473,13 +42000,14 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    language?: string
     startReservationDate?: Date | string | null
     endReservationDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
     dormitoryAdminAssignments?: DormitoryAdminCreateNestedManyWithoutUserInput
-    managedDormitories?: DormitoryCreateNestedManyWithoutManagerInput
+    dormitoryManagerAssignments?: DormitoryManagerCreateNestedManyWithoutUserInput
     room?: RoomCreateNestedOneWithoutResidentsInput
     announcements?: AnnouncementCreateNestedManyWithoutAuthorInput
     announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutUserInput
@@ -40507,6 +42035,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    language?: string
     startReservationDate?: Date | string | null
     endReservationDate?: Date | string | null
     roomId?: string | null
@@ -40514,7 +42043,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     confirmations?: ConfirmationUncheckedCreateNestedManyWithoutRequesterInput
     dormitoryAdminAssignments?: DormitoryAdminUncheckedCreateNestedManyWithoutUserInput
-    managedDormitories?: DormitoryUncheckedCreateNestedManyWithoutManagerInput
+    dormitoryManagerAssignments?: DormitoryManagerUncheckedCreateNestedManyWithoutUserInput
     announcements?: AnnouncementUncheckedCreateNestedManyWithoutAuthorInput
     announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
@@ -40608,85 +42137,6 @@ export namespace Prisma {
     dormitoryId?: StringFilter<"Floor"> | string
   }
 
-  export type UserUpsertWithoutManagedDormitoriesInput = {
-    update: XOR<UserUpdateWithoutManagedDormitoriesInput, UserUncheckedUpdateWithoutManagedDormitoriesInput>
-    create: XOR<UserCreateWithoutManagedDormitoriesInput, UserUncheckedCreateWithoutManagedDormitoriesInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutManagedDormitoriesInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutManagedDormitoriesInput, UserUncheckedUpdateWithoutManagedDormitoriesInput>
-  }
-
-  export type UserUpdateWithoutManagedDormitoriesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    displayName?: StringFieldUpdateOperationsInput | string
-    picture?: StringFieldUpdateOperationsInput | string
-    isVerified?: BoolFieldUpdateOperationsInput | boolean
-    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    method?: EnumAuthMethodFieldUpdateOperationsInput | $Enums.AuthMethod
-    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-    secondName?: StringFieldUpdateOperationsInput | string
-    studentIdFront?: StringFieldUpdateOperationsInput | string
-    studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
-    dormitoryAdminAssignments?: DormitoryAdminUpdateManyWithoutUserNestedInput
-    dormitory?: DormitoryUpdateOneWithoutResidentsNestedInput
-    room?: RoomUpdateOneWithoutResidentsNestedInput
-    announcements?: AnnouncementUpdateManyWithoutAuthorNestedInput
-    announcementRecipients?: AnnouncementRecipientUpdateManyWithoutUserNestedInput
-    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
-    sentNotifications?: NotificationUpdateManyWithoutFromUserNestedInput
-    receivedNotifications?: NotificationUpdateManyWithoutToUserNestedInput
-    notificationSettings?: NotificationSettingsUpdateOneWithoutUserNestedInput
-    bookings?: BookingUpdateManyWithoutUserNestedInput
-    payments?: PaymentUpdateManyWithoutUserNestedInput
-    confirmedPayments?: PaymentUpdateManyWithoutConfirmedByUserNestedInput
-    paymentAuditLogs?: PaymentAuditLogUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutManagedDormitoriesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    displayName?: StringFieldUpdateOperationsInput | string
-    picture?: StringFieldUpdateOperationsInput | string
-    isVerified?: BoolFieldUpdateOperationsInput | boolean
-    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    method?: EnumAuthMethodFieldUpdateOperationsInput | $Enums.AuthMethod
-    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-    secondName?: StringFieldUpdateOperationsInput | string
-    studentIdFront?: StringFieldUpdateOperationsInput | string
-    studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
-    roomId?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    confirmations?: ConfirmationUncheckedUpdateManyWithoutRequesterNestedInput
-    dormitoryAdminAssignments?: DormitoryAdminUncheckedUpdateManyWithoutUserNestedInput
-    announcements?: AnnouncementUncheckedUpdateManyWithoutAuthorNestedInput
-    announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
-    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
-    sentNotifications?: NotificationUncheckedUpdateManyWithoutFromUserNestedInput
-    receivedNotifications?: NotificationUncheckedUpdateManyWithoutToUserNestedInput
-    notificationSettings?: NotificationSettingsUncheckedUpdateOneWithoutUserNestedInput
-    bookings?: BookingUncheckedUpdateManyWithoutUserNestedInput
-    payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
-    confirmedPayments?: PaymentUncheckedUpdateManyWithoutConfirmedByUserNestedInput
-    paymentAuditLogs?: PaymentAuditLogUncheckedUpdateManyWithoutUserNestedInput
-  }
-
   export type DormitoryAdminUpsertWithWhereUniqueWithoutDormitoryInput = {
     where: DormitoryAdminWhereUniqueInput
     update: XOR<DormitoryAdminUpdateWithoutDormitoryInput, DormitoryAdminUncheckedUpdateWithoutDormitoryInput>
@@ -40701,6 +42151,22 @@ export namespace Prisma {
   export type DormitoryAdminUpdateManyWithWhereWithoutDormitoryInput = {
     where: DormitoryAdminScalarWhereInput
     data: XOR<DormitoryAdminUpdateManyMutationInput, DormitoryAdminUncheckedUpdateManyWithoutDormitoryInput>
+  }
+
+  export type DormitoryManagerUpsertWithWhereUniqueWithoutDormitoryInput = {
+    where: DormitoryManagerWhereUniqueInput
+    update: XOR<DormitoryManagerUpdateWithoutDormitoryInput, DormitoryManagerUncheckedUpdateWithoutDormitoryInput>
+    create: XOR<DormitoryManagerCreateWithoutDormitoryInput, DormitoryManagerUncheckedCreateWithoutDormitoryInput>
+  }
+
+  export type DormitoryManagerUpdateWithWhereUniqueWithoutDormitoryInput = {
+    where: DormitoryManagerWhereUniqueInput
+    data: XOR<DormitoryManagerUpdateWithoutDormitoryInput, DormitoryManagerUncheckedUpdateWithoutDormitoryInput>
+  }
+
+  export type DormitoryManagerUpdateManyWithWhereWithoutDormitoryInput = {
+    where: DormitoryManagerScalarWhereInput
+    data: XOR<DormitoryManagerUpdateManyMutationInput, DormitoryManagerUncheckedUpdateManyWithoutDormitoryInput>
   }
 
   export type UserUpsertWithWhereUniqueWithoutDormitoryInput = {
@@ -40736,6 +42202,7 @@ export namespace Prisma {
     studentIdFront?: StringFilter<"User"> | string
     studentIdBack?: StringNullableFilter<"User"> | string | null
     isActive?: BoolFilter<"User"> | boolean
+    language?: StringFilter<"User"> | string
     startReservationDate?: DateTimeNullableFilter<"User"> | Date | string | null
     endReservationDate?: DateTimeNullableFilter<"User"> | Date | string | null
     dormitoryId?: StringNullableFilter<"User"> | string | null
@@ -40784,8 +42251,8 @@ export namespace Prisma {
     status?: string
     photos?: DormitoryCreatephotosInput | string[]
     createdAt?: Date | string
-    manager?: UserCreateNestedOneWithoutManagedDormitoriesInput
     admins?: DormitoryAdminCreateNestedManyWithoutDormitoryInput
+    managers?: DormitoryManagerCreateNestedManyWithoutDormitoryInput
     residents?: UserCreateNestedManyWithoutDormitoryInput
     rooms?: RoomCreateNestedManyWithoutDormitoryInput
   }
@@ -40797,9 +42264,9 @@ export namespace Prisma {
     groundFloorPhoneNumber: string
     status?: string
     photos?: DormitoryCreatephotosInput | string[]
-    managerId?: string | null
     createdAt?: Date | string
     admins?: DormitoryAdminUncheckedCreateNestedManyWithoutDormitoryInput
+    managers?: DormitoryManagerUncheckedCreateNestedManyWithoutDormitoryInput
     residents?: UserUncheckedCreateNestedManyWithoutDormitoryInput
     rooms?: RoomUncheckedCreateNestedManyWithoutDormitoryInput
   }
@@ -40896,8 +42363,8 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     photos?: DormitoryUpdatephotosInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    manager?: UserUpdateOneWithoutManagedDormitoriesNestedInput
     admins?: DormitoryAdminUpdateManyWithoutDormitoryNestedInput
+    managers?: DormitoryManagerUpdateManyWithoutDormitoryNestedInput
     residents?: UserUpdateManyWithoutDormitoryNestedInput
     rooms?: RoomUpdateManyWithoutDormitoryNestedInput
   }
@@ -40909,9 +42376,9 @@ export namespace Prisma {
     groundFloorPhoneNumber?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     photos?: DormitoryUpdatephotosInput | string[]
-    managerId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     admins?: DormitoryAdminUncheckedUpdateManyWithoutDormitoryNestedInput
+    managers?: DormitoryManagerUncheckedUpdateManyWithoutDormitoryNestedInput
     residents?: UserUncheckedUpdateManyWithoutDormitoryNestedInput
     rooms?: RoomUncheckedUpdateManyWithoutDormitoryNestedInput
   }
@@ -40986,8 +42453,8 @@ export namespace Prisma {
     photos?: DormitoryCreatephotosInput | string[]
     createdAt?: Date | string
     floors?: FloorCreateNestedManyWithoutDormitoryInput
-    manager?: UserCreateNestedOneWithoutManagedDormitoriesInput
     admins?: DormitoryAdminCreateNestedManyWithoutDormitoryInput
+    managers?: DormitoryManagerCreateNestedManyWithoutDormitoryInput
     residents?: UserCreateNestedManyWithoutDormitoryInput
   }
 
@@ -40998,10 +42465,10 @@ export namespace Prisma {
     groundFloorPhoneNumber: string
     status?: string
     photos?: DormitoryCreatephotosInput | string[]
-    managerId?: string | null
     createdAt?: Date | string
     floors?: FloorUncheckedCreateNestedManyWithoutDormitoryInput
     admins?: DormitoryAdminUncheckedCreateNestedManyWithoutDormitoryInput
+    managers?: DormitoryManagerUncheckedCreateNestedManyWithoutDormitoryInput
     residents?: UserUncheckedCreateNestedManyWithoutDormitoryInput
   }
 
@@ -41017,6 +42484,7 @@ export namespace Prisma {
     capacity: number
     equipment?: RoomTypeCreateequipmentInput | string[]
     typeCode: string
+    photos?: RoomTypeCreatephotosInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     floorRoomAssignments?: FloorRoomAssignmentCreateNestedManyWithoutRoomTypeInput
@@ -41029,6 +42497,7 @@ export namespace Prisma {
     capacity: number
     equipment?: RoomTypeCreateequipmentInput | string[]
     typeCode: string
+    photos?: RoomTypeCreatephotosInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     floorRoomAssignments?: FloorRoomAssignmentUncheckedCreateNestedManyWithoutRoomTypeInput
@@ -41191,6 +42660,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    language?: string
     startReservationDate?: Date | string | null
     endReservationDate?: Date | string | null
     createdAt?: Date | string
@@ -41198,7 +42668,7 @@ export namespace Prisma {
     confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
     dormitoryAdminAssignments?: DormitoryAdminCreateNestedManyWithoutUserInput
     dormitory?: DormitoryCreateNestedOneWithoutResidentsInput
-    managedDormitories?: DormitoryCreateNestedManyWithoutManagerInput
+    dormitoryManagerAssignments?: DormitoryManagerCreateNestedManyWithoutUserInput
     announcements?: AnnouncementCreateNestedManyWithoutAuthorInput
     announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
@@ -41225,6 +42695,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    language?: string
     startReservationDate?: Date | string | null
     endReservationDate?: Date | string | null
     dormitoryId?: string | null
@@ -41232,7 +42703,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     confirmations?: ConfirmationUncheckedCreateNestedManyWithoutRequesterInput
     dormitoryAdminAssignments?: DormitoryAdminUncheckedCreateNestedManyWithoutUserInput
-    managedDormitories?: DormitoryUncheckedCreateNestedManyWithoutManagerInput
+    dormitoryManagerAssignments?: DormitoryManagerUncheckedCreateNestedManyWithoutUserInput
     announcements?: AnnouncementUncheckedCreateNestedManyWithoutAuthorInput
     announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
@@ -41330,8 +42801,8 @@ export namespace Prisma {
     photos?: DormitoryUpdatephotosInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     floors?: FloorUpdateManyWithoutDormitoryNestedInput
-    manager?: UserUpdateOneWithoutManagedDormitoriesNestedInput
     admins?: DormitoryAdminUpdateManyWithoutDormitoryNestedInput
+    managers?: DormitoryManagerUpdateManyWithoutDormitoryNestedInput
     residents?: UserUpdateManyWithoutDormitoryNestedInput
   }
 
@@ -41342,10 +42813,10 @@ export namespace Prisma {
     groundFloorPhoneNumber?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     photos?: DormitoryUpdatephotosInput | string[]
-    managerId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     floors?: FloorUncheckedUpdateManyWithoutDormitoryNestedInput
     admins?: DormitoryAdminUncheckedUpdateManyWithoutDormitoryNestedInput
+    managers?: DormitoryManagerUncheckedUpdateManyWithoutDormitoryNestedInput
     residents?: UserUncheckedUpdateManyWithoutDormitoryNestedInput
   }
 
@@ -41367,6 +42838,7 @@ export namespace Prisma {
     capacity?: IntFieldUpdateOperationsInput | number
     equipment?: RoomTypeUpdateequipmentInput | string[]
     typeCode?: StringFieldUpdateOperationsInput | string
+    photos?: RoomTypeUpdatephotosInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     floorRoomAssignments?: FloorRoomAssignmentUpdateManyWithoutRoomTypeNestedInput
@@ -41379,6 +42851,7 @@ export namespace Prisma {
     capacity?: IntFieldUpdateOperationsInput | number
     equipment?: RoomTypeUpdateequipmentInput | string[]
     typeCode?: StringFieldUpdateOperationsInput | string
+    photos?: RoomTypeUpdatephotosInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     floorRoomAssignments?: FloorRoomAssignmentUncheckedUpdateManyWithoutRoomTypeNestedInput
@@ -41630,6 +43103,7 @@ export namespace Prisma {
     capacity: number
     equipment?: RoomTypeCreateequipmentInput | string[]
     typeCode: string
+    photos?: RoomTypeCreatephotosInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     rooms?: RoomCreateNestedManyWithoutRoomTypeInput
@@ -41642,6 +43116,7 @@ export namespace Prisma {
     capacity: number
     equipment?: RoomTypeCreateequipmentInput | string[]
     typeCode: string
+    photos?: RoomTypeCreatephotosInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     rooms?: RoomUncheckedCreateNestedManyWithoutRoomTypeInput
@@ -41695,6 +43170,7 @@ export namespace Prisma {
     capacity?: IntFieldUpdateOperationsInput | number
     equipment?: RoomTypeUpdateequipmentInput | string[]
     typeCode?: StringFieldUpdateOperationsInput | string
+    photos?: RoomTypeUpdatephotosInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     rooms?: RoomUpdateManyWithoutRoomTypeNestedInput
@@ -41707,6 +43183,7 @@ export namespace Prisma {
     capacity?: IntFieldUpdateOperationsInput | number
     equipment?: RoomTypeUpdateequipmentInput | string[]
     typeCode?: StringFieldUpdateOperationsInput | string
+    photos?: RoomTypeUpdatephotosInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     rooms?: RoomUncheckedUpdateManyWithoutRoomTypeNestedInput
@@ -41990,6 +43467,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    language?: string
     startReservationDate?: Date | string | null
     endReservationDate?: Date | string | null
     createdAt?: Date | string
@@ -41997,7 +43475,7 @@ export namespace Prisma {
     confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
     dormitoryAdminAssignments?: DormitoryAdminCreateNestedManyWithoutUserInput
     dormitory?: DormitoryCreateNestedOneWithoutResidentsInput
-    managedDormitories?: DormitoryCreateNestedManyWithoutManagerInput
+    dormitoryManagerAssignments?: DormitoryManagerCreateNestedManyWithoutUserInput
     room?: RoomCreateNestedOneWithoutResidentsInput
     announcements?: AnnouncementCreateNestedManyWithoutAuthorInput
     announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutUserInput
@@ -42024,6 +43502,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    language?: string
     startReservationDate?: Date | string | null
     endReservationDate?: Date | string | null
     dormitoryId?: string | null
@@ -42032,7 +43511,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     confirmations?: ConfirmationUncheckedCreateNestedManyWithoutRequesterInput
     dormitoryAdminAssignments?: DormitoryAdminUncheckedCreateNestedManyWithoutUserInput
-    managedDormitories?: DormitoryUncheckedCreateNestedManyWithoutManagerInput
+    dormitoryManagerAssignments?: DormitoryManagerUncheckedCreateNestedManyWithoutUserInput
     announcements?: AnnouncementUncheckedCreateNestedManyWithoutAuthorInput
     announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
@@ -42275,6 +43754,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
     startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -42282,7 +43762,7 @@ export namespace Prisma {
     confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
     dormitoryAdminAssignments?: DormitoryAdminUpdateManyWithoutUserNestedInput
     dormitory?: DormitoryUpdateOneWithoutResidentsNestedInput
-    managedDormitories?: DormitoryUpdateManyWithoutManagerNestedInput
+    dormitoryManagerAssignments?: DormitoryManagerUpdateManyWithoutUserNestedInput
     room?: RoomUpdateOneWithoutResidentsNestedInput
     announcements?: AnnouncementUpdateManyWithoutAuthorNestedInput
     announcementRecipients?: AnnouncementRecipientUpdateManyWithoutUserNestedInput
@@ -42309,6 +43789,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
     startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -42317,7 +43798,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmations?: ConfirmationUncheckedUpdateManyWithoutRequesterNestedInput
     dormitoryAdminAssignments?: DormitoryAdminUncheckedUpdateManyWithoutUserNestedInput
-    managedDormitories?: DormitoryUncheckedUpdateManyWithoutManagerNestedInput
+    dormitoryManagerAssignments?: DormitoryManagerUncheckedUpdateManyWithoutUserNestedInput
     announcements?: AnnouncementUncheckedUpdateManyWithoutAuthorNestedInput
     announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
@@ -42456,6 +43937,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    language?: string
     startReservationDate?: Date | string | null
     endReservationDate?: Date | string | null
     createdAt?: Date | string
@@ -42463,7 +43945,7 @@ export namespace Prisma {
     confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
     dormitoryAdminAssignments?: DormitoryAdminCreateNestedManyWithoutUserInput
     dormitory?: DormitoryCreateNestedOneWithoutResidentsInput
-    managedDormitories?: DormitoryCreateNestedManyWithoutManagerInput
+    dormitoryManagerAssignments?: DormitoryManagerCreateNestedManyWithoutUserInput
     room?: RoomCreateNestedOneWithoutResidentsInput
     announcements?: AnnouncementCreateNestedManyWithoutAuthorInput
     announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutUserInput
@@ -42490,6 +43972,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    language?: string
     startReservationDate?: Date | string | null
     endReservationDate?: Date | string | null
     dormitoryId?: string | null
@@ -42498,7 +43981,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     confirmations?: ConfirmationUncheckedCreateNestedManyWithoutRequesterInput
     dormitoryAdminAssignments?: DormitoryAdminUncheckedCreateNestedManyWithoutUserInput
-    managedDormitories?: DormitoryUncheckedCreateNestedManyWithoutManagerInput
+    dormitoryManagerAssignments?: DormitoryManagerUncheckedCreateNestedManyWithoutUserInput
     announcements?: AnnouncementUncheckedCreateNestedManyWithoutAuthorInput
     announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
@@ -42589,6 +44072,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    language?: string
     startReservationDate?: Date | string | null
     endReservationDate?: Date | string | null
     createdAt?: Date | string
@@ -42596,7 +44080,7 @@ export namespace Prisma {
     confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
     dormitoryAdminAssignments?: DormitoryAdminCreateNestedManyWithoutUserInput
     dormitory?: DormitoryCreateNestedOneWithoutResidentsInput
-    managedDormitories?: DormitoryCreateNestedManyWithoutManagerInput
+    dormitoryManagerAssignments?: DormitoryManagerCreateNestedManyWithoutUserInput
     room?: RoomCreateNestedOneWithoutResidentsInput
     announcements?: AnnouncementCreateNestedManyWithoutAuthorInput
     announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutUserInput
@@ -42623,6 +44107,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    language?: string
     startReservationDate?: Date | string | null
     endReservationDate?: Date | string | null
     dormitoryId?: string | null
@@ -42631,7 +44116,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     confirmations?: ConfirmationUncheckedCreateNestedManyWithoutRequesterInput
     dormitoryAdminAssignments?: DormitoryAdminUncheckedCreateNestedManyWithoutUserInput
-    managedDormitories?: DormitoryUncheckedCreateNestedManyWithoutManagerInput
+    dormitoryManagerAssignments?: DormitoryManagerUncheckedCreateNestedManyWithoutUserInput
     announcements?: AnnouncementUncheckedCreateNestedManyWithoutAuthorInput
     announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
@@ -42849,6 +44334,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
     startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -42856,7 +44342,7 @@ export namespace Prisma {
     confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
     dormitoryAdminAssignments?: DormitoryAdminUpdateManyWithoutUserNestedInput
     dormitory?: DormitoryUpdateOneWithoutResidentsNestedInput
-    managedDormitories?: DormitoryUpdateManyWithoutManagerNestedInput
+    dormitoryManagerAssignments?: DormitoryManagerUpdateManyWithoutUserNestedInput
     room?: RoomUpdateOneWithoutResidentsNestedInput
     announcements?: AnnouncementUpdateManyWithoutAuthorNestedInput
     announcementRecipients?: AnnouncementRecipientUpdateManyWithoutUserNestedInput
@@ -42883,6 +44369,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
     startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -42891,7 +44378,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmations?: ConfirmationUncheckedUpdateManyWithoutRequesterNestedInput
     dormitoryAdminAssignments?: DormitoryAdminUncheckedUpdateManyWithoutUserNestedInput
-    managedDormitories?: DormitoryUncheckedUpdateManyWithoutManagerNestedInput
+    dormitoryManagerAssignments?: DormitoryManagerUncheckedUpdateManyWithoutUserNestedInput
     announcements?: AnnouncementUncheckedUpdateManyWithoutAuthorNestedInput
     announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
@@ -43000,6 +44487,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
     startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -43007,7 +44495,7 @@ export namespace Prisma {
     confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
     dormitoryAdminAssignments?: DormitoryAdminUpdateManyWithoutUserNestedInput
     dormitory?: DormitoryUpdateOneWithoutResidentsNestedInput
-    managedDormitories?: DormitoryUpdateManyWithoutManagerNestedInput
+    dormitoryManagerAssignments?: DormitoryManagerUpdateManyWithoutUserNestedInput
     room?: RoomUpdateOneWithoutResidentsNestedInput
     announcements?: AnnouncementUpdateManyWithoutAuthorNestedInput
     announcementRecipients?: AnnouncementRecipientUpdateManyWithoutUserNestedInput
@@ -43034,6 +44522,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
     startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43042,7 +44531,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmations?: ConfirmationUncheckedUpdateManyWithoutRequesterNestedInput
     dormitoryAdminAssignments?: DormitoryAdminUncheckedUpdateManyWithoutUserNestedInput
-    managedDormitories?: DormitoryUncheckedUpdateManyWithoutManagerNestedInput
+    dormitoryManagerAssignments?: DormitoryManagerUncheckedUpdateManyWithoutUserNestedInput
     announcements?: AnnouncementUncheckedUpdateManyWithoutAuthorNestedInput
     announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
@@ -43721,6 +45210,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    language?: string
     startReservationDate?: Date | string | null
     endReservationDate?: Date | string | null
     createdAt?: Date | string
@@ -43728,7 +45218,7 @@ export namespace Prisma {
     confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
     dormitoryAdminAssignments?: DormitoryAdminCreateNestedManyWithoutUserInput
     dormitory?: DormitoryCreateNestedOneWithoutResidentsInput
-    managedDormitories?: DormitoryCreateNestedManyWithoutManagerInput
+    dormitoryManagerAssignments?: DormitoryManagerCreateNestedManyWithoutUserInput
     room?: RoomCreateNestedOneWithoutResidentsInput
     announcements?: AnnouncementCreateNestedManyWithoutAuthorInput
     announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutUserInput
@@ -43755,6 +45245,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    language?: string
     startReservationDate?: Date | string | null
     endReservationDate?: Date | string | null
     dormitoryId?: string | null
@@ -43763,7 +45254,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     confirmations?: ConfirmationUncheckedCreateNestedManyWithoutRequesterInput
     dormitoryAdminAssignments?: DormitoryAdminUncheckedCreateNestedManyWithoutUserInput
-    managedDormitories?: DormitoryUncheckedCreateNestedManyWithoutManagerInput
+    dormitoryManagerAssignments?: DormitoryManagerUncheckedCreateNestedManyWithoutUserInput
     announcements?: AnnouncementUncheckedCreateNestedManyWithoutAuthorInput
     announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
@@ -43878,6 +45369,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
     startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -43885,7 +45377,7 @@ export namespace Prisma {
     confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
     dormitoryAdminAssignments?: DormitoryAdminUpdateManyWithoutUserNestedInput
     dormitory?: DormitoryUpdateOneWithoutResidentsNestedInput
-    managedDormitories?: DormitoryUpdateManyWithoutManagerNestedInput
+    dormitoryManagerAssignments?: DormitoryManagerUpdateManyWithoutUserNestedInput
     room?: RoomUpdateOneWithoutResidentsNestedInput
     announcements?: AnnouncementUpdateManyWithoutAuthorNestedInput
     announcementRecipients?: AnnouncementRecipientUpdateManyWithoutUserNestedInput
@@ -43912,6 +45404,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
     startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43920,7 +45413,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmations?: ConfirmationUncheckedUpdateManyWithoutRequesterNestedInput
     dormitoryAdminAssignments?: DormitoryAdminUncheckedUpdateManyWithoutUserNestedInput
-    managedDormitories?: DormitoryUncheckedUpdateManyWithoutManagerNestedInput
+    dormitoryManagerAssignments?: DormitoryManagerUncheckedUpdateManyWithoutUserNestedInput
     announcements?: AnnouncementUncheckedUpdateManyWithoutAuthorNestedInput
     announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
@@ -43946,6 +45439,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    language?: string
     startReservationDate?: Date | string | null
     endReservationDate?: Date | string | null
     createdAt?: Date | string
@@ -43953,7 +45447,7 @@ export namespace Prisma {
     confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
     dormitoryAdminAssignments?: DormitoryAdminCreateNestedManyWithoutUserInput
     dormitory?: DormitoryCreateNestedOneWithoutResidentsInput
-    managedDormitories?: DormitoryCreateNestedManyWithoutManagerInput
+    dormitoryManagerAssignments?: DormitoryManagerCreateNestedManyWithoutUserInput
     room?: RoomCreateNestedOneWithoutResidentsInput
     announcements?: AnnouncementCreateNestedManyWithoutAuthorInput
     announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutUserInput
@@ -43980,6 +45474,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    language?: string
     startReservationDate?: Date | string | null
     endReservationDate?: Date | string | null
     dormitoryId?: string | null
@@ -43988,7 +45483,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     confirmations?: ConfirmationUncheckedCreateNestedManyWithoutRequesterInput
     dormitoryAdminAssignments?: DormitoryAdminUncheckedCreateNestedManyWithoutUserInput
-    managedDormitories?: DormitoryUncheckedCreateNestedManyWithoutManagerInput
+    dormitoryManagerAssignments?: DormitoryManagerUncheckedCreateNestedManyWithoutUserInput
     announcements?: AnnouncementUncheckedCreateNestedManyWithoutAuthorInput
     announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
@@ -44019,6 +45514,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    language?: string
     startReservationDate?: Date | string | null
     endReservationDate?: Date | string | null
     createdAt?: Date | string
@@ -44026,7 +45522,7 @@ export namespace Prisma {
     confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
     dormitoryAdminAssignments?: DormitoryAdminCreateNestedManyWithoutUserInput
     dormitory?: DormitoryCreateNestedOneWithoutResidentsInput
-    managedDormitories?: DormitoryCreateNestedManyWithoutManagerInput
+    dormitoryManagerAssignments?: DormitoryManagerCreateNestedManyWithoutUserInput
     room?: RoomCreateNestedOneWithoutResidentsInput
     announcements?: AnnouncementCreateNestedManyWithoutAuthorInput
     announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutUserInput
@@ -44053,6 +45549,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    language?: string
     startReservationDate?: Date | string | null
     endReservationDate?: Date | string | null
     dormitoryId?: string | null
@@ -44061,7 +45558,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     confirmations?: ConfirmationUncheckedCreateNestedManyWithoutRequesterInput
     dormitoryAdminAssignments?: DormitoryAdminUncheckedCreateNestedManyWithoutUserInput
-    managedDormitories?: DormitoryUncheckedCreateNestedManyWithoutManagerInput
+    dormitoryManagerAssignments?: DormitoryManagerUncheckedCreateNestedManyWithoutUserInput
     announcements?: AnnouncementUncheckedCreateNestedManyWithoutAuthorInput
     announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
@@ -44246,6 +45743,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
     startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -44253,7 +45751,7 @@ export namespace Prisma {
     confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
     dormitoryAdminAssignments?: DormitoryAdminUpdateManyWithoutUserNestedInput
     dormitory?: DormitoryUpdateOneWithoutResidentsNestedInput
-    managedDormitories?: DormitoryUpdateManyWithoutManagerNestedInput
+    dormitoryManagerAssignments?: DormitoryManagerUpdateManyWithoutUserNestedInput
     room?: RoomUpdateOneWithoutResidentsNestedInput
     announcements?: AnnouncementUpdateManyWithoutAuthorNestedInput
     announcementRecipients?: AnnouncementRecipientUpdateManyWithoutUserNestedInput
@@ -44280,6 +45778,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
     startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -44288,7 +45787,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmations?: ConfirmationUncheckedUpdateManyWithoutRequesterNestedInput
     dormitoryAdminAssignments?: DormitoryAdminUncheckedUpdateManyWithoutUserNestedInput
-    managedDormitories?: DormitoryUncheckedUpdateManyWithoutManagerNestedInput
+    dormitoryManagerAssignments?: DormitoryManagerUncheckedUpdateManyWithoutUserNestedInput
     announcements?: AnnouncementUncheckedUpdateManyWithoutAuthorNestedInput
     announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
@@ -44325,6 +45824,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
     startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -44332,7 +45832,7 @@ export namespace Prisma {
     confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
     dormitoryAdminAssignments?: DormitoryAdminUpdateManyWithoutUserNestedInput
     dormitory?: DormitoryUpdateOneWithoutResidentsNestedInput
-    managedDormitories?: DormitoryUpdateManyWithoutManagerNestedInput
+    dormitoryManagerAssignments?: DormitoryManagerUpdateManyWithoutUserNestedInput
     room?: RoomUpdateOneWithoutResidentsNestedInput
     announcements?: AnnouncementUpdateManyWithoutAuthorNestedInput
     announcementRecipients?: AnnouncementRecipientUpdateManyWithoutUserNestedInput
@@ -44359,6 +45859,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
     startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -44367,7 +45868,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmations?: ConfirmationUncheckedUpdateManyWithoutRequesterNestedInput
     dormitoryAdminAssignments?: DormitoryAdminUncheckedUpdateManyWithoutUserNestedInput
-    managedDormitories?: DormitoryUncheckedUpdateManyWithoutManagerNestedInput
+    dormitoryManagerAssignments?: DormitoryManagerUncheckedUpdateManyWithoutUserNestedInput
     announcements?: AnnouncementUncheckedUpdateManyWithoutAuthorNestedInput
     announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
@@ -44554,6 +46055,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    language?: string
     startReservationDate?: Date | string | null
     endReservationDate?: Date | string | null
     createdAt?: Date | string
@@ -44561,7 +46063,7 @@ export namespace Prisma {
     confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
     dormitoryAdminAssignments?: DormitoryAdminCreateNestedManyWithoutUserInput
     dormitory?: DormitoryCreateNestedOneWithoutResidentsInput
-    managedDormitories?: DormitoryCreateNestedManyWithoutManagerInput
+    dormitoryManagerAssignments?: DormitoryManagerCreateNestedManyWithoutUserInput
     room?: RoomCreateNestedOneWithoutResidentsInput
     announcements?: AnnouncementCreateNestedManyWithoutAuthorInput
     announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutUserInput
@@ -44588,6 +46090,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    language?: string
     startReservationDate?: Date | string | null
     endReservationDate?: Date | string | null
     dormitoryId?: string | null
@@ -44596,7 +46099,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     confirmations?: ConfirmationUncheckedCreateNestedManyWithoutRequesterInput
     dormitoryAdminAssignments?: DormitoryAdminUncheckedCreateNestedManyWithoutUserInput
-    managedDormitories?: DormitoryUncheckedCreateNestedManyWithoutManagerInput
+    dormitoryManagerAssignments?: DormitoryManagerUncheckedCreateNestedManyWithoutUserInput
     announcements?: AnnouncementUncheckedCreateNestedManyWithoutAuthorInput
     announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
@@ -44638,6 +46141,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
     startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -44645,7 +46149,7 @@ export namespace Prisma {
     confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
     dormitoryAdminAssignments?: DormitoryAdminUpdateManyWithoutUserNestedInput
     dormitory?: DormitoryUpdateOneWithoutResidentsNestedInput
-    managedDormitories?: DormitoryUpdateManyWithoutManagerNestedInput
+    dormitoryManagerAssignments?: DormitoryManagerUpdateManyWithoutUserNestedInput
     room?: RoomUpdateOneWithoutResidentsNestedInput
     announcements?: AnnouncementUpdateManyWithoutAuthorNestedInput
     announcementRecipients?: AnnouncementRecipientUpdateManyWithoutUserNestedInput
@@ -44672,6 +46176,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
     startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -44680,7 +46185,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmations?: ConfirmationUncheckedUpdateManyWithoutRequesterNestedInput
     dormitoryAdminAssignments?: DormitoryAdminUncheckedUpdateManyWithoutUserNestedInput
-    managedDormitories?: DormitoryUncheckedUpdateManyWithoutManagerNestedInput
+    dormitoryManagerAssignments?: DormitoryManagerUncheckedUpdateManyWithoutUserNestedInput
     announcements?: AnnouncementUncheckedUpdateManyWithoutAuthorNestedInput
     announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
@@ -44706,6 +46211,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    language?: string
     startReservationDate?: Date | string | null
     endReservationDate?: Date | string | null
     createdAt?: Date | string
@@ -44713,7 +46219,7 @@ export namespace Prisma {
     confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
     dormitoryAdminAssignments?: DormitoryAdminCreateNestedManyWithoutUserInput
     dormitory?: DormitoryCreateNestedOneWithoutResidentsInput
-    managedDormitories?: DormitoryCreateNestedManyWithoutManagerInput
+    dormitoryManagerAssignments?: DormitoryManagerCreateNestedManyWithoutUserInput
     room?: RoomCreateNestedOneWithoutResidentsInput
     announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
@@ -44740,6 +46246,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    language?: string
     startReservationDate?: Date | string | null
     endReservationDate?: Date | string | null
     dormitoryId?: string | null
@@ -44748,7 +46255,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     confirmations?: ConfirmationUncheckedCreateNestedManyWithoutRequesterInput
     dormitoryAdminAssignments?: DormitoryAdminUncheckedCreateNestedManyWithoutUserInput
-    managedDormitories?: DormitoryUncheckedCreateNestedManyWithoutManagerInput
+    dormitoryManagerAssignments?: DormitoryManagerUncheckedCreateNestedManyWithoutUserInput
     announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     sentNotifications?: NotificationUncheckedCreateNestedManyWithoutFromUserInput
@@ -44838,6 +46345,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
     startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -44845,7 +46353,7 @@ export namespace Prisma {
     confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
     dormitoryAdminAssignments?: DormitoryAdminUpdateManyWithoutUserNestedInput
     dormitory?: DormitoryUpdateOneWithoutResidentsNestedInput
-    managedDormitories?: DormitoryUpdateManyWithoutManagerNestedInput
+    dormitoryManagerAssignments?: DormitoryManagerUpdateManyWithoutUserNestedInput
     room?: RoomUpdateOneWithoutResidentsNestedInput
     announcementRecipients?: AnnouncementRecipientUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
@@ -44872,6 +46380,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
     startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -44880,7 +46389,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmations?: ConfirmationUncheckedUpdateManyWithoutRequesterNestedInput
     dormitoryAdminAssignments?: DormitoryAdminUncheckedUpdateManyWithoutUserNestedInput
-    managedDormitories?: DormitoryUncheckedUpdateManyWithoutManagerNestedInput
+    dormitoryManagerAssignments?: DormitoryManagerUncheckedUpdateManyWithoutUserNestedInput
     announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     sentNotifications?: NotificationUncheckedUpdateManyWithoutFromUserNestedInput
@@ -45035,6 +46544,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    language?: string
     startReservationDate?: Date | string | null
     endReservationDate?: Date | string | null
     createdAt?: Date | string
@@ -45042,7 +46552,7 @@ export namespace Prisma {
     confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
     dormitoryAdminAssignments?: DormitoryAdminCreateNestedManyWithoutUserInput
     dormitory?: DormitoryCreateNestedOneWithoutResidentsInput
-    managedDormitories?: DormitoryCreateNestedManyWithoutManagerInput
+    dormitoryManagerAssignments?: DormitoryManagerCreateNestedManyWithoutUserInput
     room?: RoomCreateNestedOneWithoutResidentsInput
     announcements?: AnnouncementCreateNestedManyWithoutAuthorInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
@@ -45069,6 +46579,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    language?: string
     startReservationDate?: Date | string | null
     endReservationDate?: Date | string | null
     dormitoryId?: string | null
@@ -45077,7 +46588,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     confirmations?: ConfirmationUncheckedCreateNestedManyWithoutRequesterInput
     dormitoryAdminAssignments?: DormitoryAdminUncheckedCreateNestedManyWithoutUserInput
-    managedDormitories?: DormitoryUncheckedCreateNestedManyWithoutManagerInput
+    dormitoryManagerAssignments?: DormitoryManagerUncheckedCreateNestedManyWithoutUserInput
     announcements?: AnnouncementUncheckedCreateNestedManyWithoutAuthorInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     sentNotifications?: NotificationUncheckedCreateNestedManyWithoutFromUserInput
@@ -45193,6 +46704,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
     startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -45200,7 +46712,7 @@ export namespace Prisma {
     confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
     dormitoryAdminAssignments?: DormitoryAdminUpdateManyWithoutUserNestedInput
     dormitory?: DormitoryUpdateOneWithoutResidentsNestedInput
-    managedDormitories?: DormitoryUpdateManyWithoutManagerNestedInput
+    dormitoryManagerAssignments?: DormitoryManagerUpdateManyWithoutUserNestedInput
     room?: RoomUpdateOneWithoutResidentsNestedInput
     announcements?: AnnouncementUpdateManyWithoutAuthorNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
@@ -45227,6 +46739,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
     startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -45235,7 +46748,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmations?: ConfirmationUncheckedUpdateManyWithoutRequesterNestedInput
     dormitoryAdminAssignments?: DormitoryAdminUncheckedUpdateManyWithoutUserNestedInput
-    managedDormitories?: DormitoryUncheckedUpdateManyWithoutManagerNestedInput
+    dormitoryManagerAssignments?: DormitoryManagerUncheckedUpdateManyWithoutUserNestedInput
     announcements?: AnnouncementUncheckedUpdateManyWithoutAuthorNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     sentNotifications?: NotificationUncheckedUpdateManyWithoutFromUserNestedInput
@@ -45319,14 +46832,9 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
-  export type DormitoryCreateManyManagerInput = {
+  export type DormitoryManagerCreateManyUserInput = {
     id?: string
-    name: string
-    address: string
-    groundFloorPhoneNumber: string
-    status?: string
-    photos?: DormitoryCreatephotosInput | string[]
-    createdAt?: Date | string
+    dormitoryId: string
   }
 
   export type AnnouncementCreateManyAuthorInput = {
@@ -45545,42 +47053,19 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type DormitoryUpdateWithoutManagerInput = {
+  export type DormitoryManagerUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    address?: StringFieldUpdateOperationsInput | string
-    groundFloorPhoneNumber?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    photos?: DormitoryUpdatephotosInput | string[]
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    floors?: FloorUpdateManyWithoutDormitoryNestedInput
-    admins?: DormitoryAdminUpdateManyWithoutDormitoryNestedInput
-    residents?: UserUpdateManyWithoutDormitoryNestedInput
-    rooms?: RoomUpdateManyWithoutDormitoryNestedInput
+    dormitory?: DormitoryUpdateOneRequiredWithoutManagersNestedInput
   }
 
-  export type DormitoryUncheckedUpdateWithoutManagerInput = {
+  export type DormitoryManagerUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    address?: StringFieldUpdateOperationsInput | string
-    groundFloorPhoneNumber?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    photos?: DormitoryUpdatephotosInput | string[]
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    floors?: FloorUncheckedUpdateManyWithoutDormitoryNestedInput
-    admins?: DormitoryAdminUncheckedUpdateManyWithoutDormitoryNestedInput
-    residents?: UserUncheckedUpdateManyWithoutDormitoryNestedInput
-    rooms?: RoomUncheckedUpdateManyWithoutDormitoryNestedInput
+    dormitoryId?: StringFieldUpdateOperationsInput | string
   }
 
-  export type DormitoryUncheckedUpdateManyWithoutManagerInput = {
+  export type DormitoryManagerUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    address?: StringFieldUpdateOperationsInput | string
-    groundFloorPhoneNumber?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    photos?: DormitoryUpdatephotosInput | string[]
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    dormitoryId?: StringFieldUpdateOperationsInput | string
   }
 
   export type AnnouncementUpdateWithoutAuthorInput = {
@@ -46044,6 +47529,11 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
+  export type DormitoryManagerCreateManyDormitoryInput = {
+    id?: string
+    userId: string
+  }
+
   export type UserCreateManyDormitoryInput = {
     id?: string
     email: string
@@ -46058,6 +47548,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    language?: string
     startReservationDate?: Date | string | null
     endReservationDate?: Date | string | null
     roomId?: string | null
@@ -46117,6 +47608,21 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type DormitoryManagerUpdateWithoutDormitoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user?: UserUpdateOneRequiredWithoutDormitoryManagerAssignmentsNestedInput
+  }
+
+  export type DormitoryManagerUncheckedUpdateWithoutDormitoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type DormitoryManagerUncheckedUpdateManyWithoutDormitoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+  }
+
   export type UserUpdateWithoutDormitoryInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
@@ -46131,13 +47637,14 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
     startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
     dormitoryAdminAssignments?: DormitoryAdminUpdateManyWithoutUserNestedInput
-    managedDormitories?: DormitoryUpdateManyWithoutManagerNestedInput
+    dormitoryManagerAssignments?: DormitoryManagerUpdateManyWithoutUserNestedInput
     room?: RoomUpdateOneWithoutResidentsNestedInput
     announcements?: AnnouncementUpdateManyWithoutAuthorNestedInput
     announcementRecipients?: AnnouncementRecipientUpdateManyWithoutUserNestedInput
@@ -46165,6 +47672,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
     startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -46172,7 +47680,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmations?: ConfirmationUncheckedUpdateManyWithoutRequesterNestedInput
     dormitoryAdminAssignments?: DormitoryAdminUncheckedUpdateManyWithoutUserNestedInput
-    managedDormitories?: DormitoryUncheckedUpdateManyWithoutManagerNestedInput
+    dormitoryManagerAssignments?: DormitoryManagerUncheckedUpdateManyWithoutUserNestedInput
     announcements?: AnnouncementUncheckedUpdateManyWithoutAuthorNestedInput
     announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
@@ -46199,6 +47707,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
     startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -46398,6 +47907,7 @@ export namespace Prisma {
     studentIdFront: string
     studentIdBack?: string | null
     isActive?: boolean
+    language?: string
     startReservationDate?: Date | string | null
     endReservationDate?: Date | string | null
     dormitoryId?: string | null
@@ -46572,6 +48082,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
     startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -46579,7 +48090,7 @@ export namespace Prisma {
     confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
     dormitoryAdminAssignments?: DormitoryAdminUpdateManyWithoutUserNestedInput
     dormitory?: DormitoryUpdateOneWithoutResidentsNestedInput
-    managedDormitories?: DormitoryUpdateManyWithoutManagerNestedInput
+    dormitoryManagerAssignments?: DormitoryManagerUpdateManyWithoutUserNestedInput
     announcements?: AnnouncementUpdateManyWithoutAuthorNestedInput
     announcementRecipients?: AnnouncementRecipientUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
@@ -46606,6 +48117,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
     startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -46613,7 +48125,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmations?: ConfirmationUncheckedUpdateManyWithoutRequesterNestedInput
     dormitoryAdminAssignments?: DormitoryAdminUncheckedUpdateManyWithoutUserNestedInput
-    managedDormitories?: DormitoryUncheckedUpdateManyWithoutManagerNestedInput
+    dormitoryManagerAssignments?: DormitoryManagerUncheckedUpdateManyWithoutUserNestedInput
     announcements?: AnnouncementUncheckedUpdateManyWithoutAuthorNestedInput
     announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
@@ -46640,6 +48152,7 @@ export namespace Prisma {
     studentIdFront?: StringFieldUpdateOperationsInput | string
     studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
     startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null

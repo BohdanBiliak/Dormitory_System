@@ -155,6 +155,13 @@ enum PaymentItemType {
   OTHER
 }
 
+enum RoomAvailabilityStatus {
+  AVAILABLE
+  PART_EMPTY
+  FULL
+  UNAVAILABLE
+}
+
 // ==========================================
 // USER MODELS
 // ==========================================
@@ -172,6 +179,7 @@ model User {
   studentIdFront       String     @map("student_id_front")
   studentIdBack        String?    @map("student_id_back")
   isActive             Boolean    @default(true) @map("is_active")
+  language             String     @default("en")
   startReservationDate DateTime?  @map("start_date")
   endReservationDate   DateTime?  @map("end_date")
   // Foreign Keys
@@ -179,14 +187,14 @@ model User {
   roomId               String?    @map("room_id")
 
   // Relations
-  confirmations             Confirmation[]          @relation("UserConfirmations")
-  dormitoryAdminAssignments DormitoryAdmin[]
-  dormitory                 Dormitory?              @relation("DormitoryResidents", fields: [dormitoryId], references: [id])
-  managedDormitories        Dormitory[]             @relation("ManagedDormitories")
-  room                      Room?                   @relation(fields: [roomId], references: [id])
-  announcements             Announcement[]          @relation("AnnouncementAuthor")
-  announcementRecipients    AnnouncementRecipient[] @relation("AnnouncementRecipientUser")
-  auditLogs                 AuditLog[]              @relation("UserAuditLogs")
+  confirmations               Confirmation[]          @relation("UserConfirmations")
+  dormitoryAdminAssignments   DormitoryAdmin[]
+  dormitory                   Dormitory?              @relation("DormitoryResidents", fields: [dormitoryId], references: [id])
+  dormitoryManagerAssignments DormitoryManager[]
+  room                        Room?                   @relation(fields: [roomId], references: [id])
+  announcements               Announcement[]          @relation("AnnouncementAuthor")
+  announcementRecipients      AnnouncementRecipient[] @relation("AnnouncementRecipientUser")
+  auditLogs                   AuditLog[]              @relation("UserAuditLogs")
 
   // Notification relations
   sentNotifications     Notification[]        @relation("NotificationSender")
@@ -201,7 +209,7 @@ model User {
   createdAt         DateTime          @default(now()) @map("created_at")
   updatedAt         DateTime          @updatedAt @map("updated_at")
 
-  @@index([email]) // Unique constraint already creates index, but explicit for clarity
+  @@index([email])
   @@index([role, isActive]) // Filter active users by role
   @@index([dormitoryId, isActive]) // Find active residents of a dormitory
   @@index([roomId]) // Find roommates
@@ -225,6 +233,17 @@ model DormitoryAdmin {
   @@index([role, createdAt]) // Admin role analysis
   @@index([dormitoryId, role]) // Dormitory admin hierarchy
   @@map("dormitory_admins")
+}
+
+model DormitoryManager {
+  id          String @id @default(uuid())
+  dormitoryId String
+  userId      String
+
+  dormitory Dormitory @relation(fields: [dormitoryId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([dormitoryId, userId])
 }
 
 model Confirmation {
@@ -298,16 +317,14 @@ model Dormitory {
   floors                 Floor[]
   status                 String   @default("Active")
   photos                 String[]
-  managerId              String?  @map("manager_id")
   createdAt              DateTime @default(now()) @map("created_at")
 
-  manager   User?            @relation("ManagedDormitories", fields: [managerId], references: [id])
   admins    DormitoryAdmin[]
-  residents User[]           @relation("DormitoryResidents")
+  managers  DormitoryManager[]
+  residents User[]             @relation("DormitoryResidents")
   rooms     Room[]
 
   @@index([status, name]) // List active/inactive dormitories alphabetically
-  @@index([managerId]) // Find dormitories by manager
   @@index([createdAt]) // Chronological ordering
   @@index([status, createdAt]) // Status with time-based filtering
   @@map("dormitories")
@@ -352,7 +369,6 @@ model Room {
   @@index([dormitoryId]) // Rooms by dormitory
   @@index([dormitoryId, capacity]) // Rooms by dormitory and capacity
   @@index([number, dormitoryId]) // Unique room identification
-  // Removed invalid index referencing non-existent field 'floor'
   @@index([createdAt]) // Chronological queries
   @@index([dormitoryId], map: "rooms_dormitory_id_unique_idx")
   @@map("rooms")
@@ -363,8 +379,9 @@ model RoomType {
   name        String
   description String?
   capacity    Int
-  equipment   String[] // Array of equipment/furniture items
-  typeCode    String   @unique // A, B, C, etc.
+  equipment   String[]
+  typeCode    String   @unique
+  photos      String[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -379,12 +396,13 @@ model FloorRoomAssignment {
   id          String @id @default(cuid())
   floorId     String
   roomTypeId  String
-  roomNumbers Int[] // Array of room numbers using this type
+  roomNumbers Int[]
 
   // Relations
   floor    Floor    @relation(fields: [floorId], references: [id], onDelete: Cascade)
   roomType RoomType @relation(fields: [roomTypeId], references: [id])
 
+  @@unique([floorId, roomTypeId])
   @@map("floor_room_assignments")
 }
 

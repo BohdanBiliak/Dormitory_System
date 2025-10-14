@@ -24,162 +24,269 @@ export const DormitoryDocs = {
     ),
 
   create: () =>
-    applyDecorators(
-      ApiOperation({
-        summary: "Create new dormitory",
-        description: "Creates a new dormitory with floor-by-floor room type assignments and pricing configuration. Supports file uploads for dormitory and room photos. Admins only.",
-      }),
-      ApiConsumes('multipart/form-data'),
-      ApiBody({
-        description: 'Dormitory creation data with floor assignments and optional photos',
-        schema: {
-          type: 'object',
-          properties: {
-            name: { type: 'string', example: 'East Wing Dormitory' },
-            address: { type: 'string', example: '123 University Ave' },
-            groundFloorPhoneNumber: { type: 'string', example: '+380123456789' },
-            pricePerDay: { type: 'string', example: '30', description: 'Will be converted to number' },
-            pricePerMonth: { type: 'string', example: '600', description: 'Will be converted to number' },
-            'floorAssignments[0][floorNumber]': {
-              type: 'string',
-              example: '1',
-              description: 'Floor number (will be converted to integer)'
-            },
-            'floorAssignments[0][roomAssignments][0][roomTypeId]': {
-              type: 'string',
-              example: 'cmgjauk7z0000qy01d5g4j8jp',
-              description: 'Room type ID'
-            },
-            'floorAssignments[0][roomAssignments][0][roomNumbers]': {
-              type: 'string',
-              example: '[1,2,3,4,5]',
-              description: 'JSON array of room numbers or comma-separated values'
-            },
-            'floorAssignments[1][floorNumber]': {
-              type: 'string',
-              example: '2',
-              description: 'Additional floor (optional)'
-            },
-            'floorAssignments[1][roomAssignments][0][roomTypeId]': {
-              type: 'string',
-              example: 'cmgjauk7z0000qy01d5g4j8jp',
-              description: 'Room type ID for second floor (optional)'
-            },
-            'floorAssignments[1][roomAssignments][0][roomNumbers]': {
-              type: 'string',
-              example: '[6,7,8,9,10]',
-              description: 'Room numbers for second floor (optional)'
-            },
-            photos: {
-              type: 'array',
-              items: { type: 'string', format: 'binary' },
-              description: 'Dormitory photos (max 10 files)',
-              maxItems: 10
-            },
-            roomPhotos: {
-              type: 'array',
-              items: { type: 'string', format: 'binary' },
-              description: 'Room photos (max 50 files)',
-              maxItems: 50
-            }
+  applyDecorators(
+    ApiOperation({
+      summary: "Create new dormitory",
+      description: "Creates a new dormitory with floor-by-floor room type assignments and pricing configuration. Supports file uploads for dormitory photos. Room photos are automatically inherited from room types. Admins only.",
+    }),
+    ApiConsumes('multipart/form-data'),
+    ApiBody({
+      description: 'Dormitory creation data with floor assignments and optional dormitory photos',
+      schema: {
+        type: 'object',
+        properties: {
+          name: { type: 'string', example: 'East Wing Dormitory' },
+          address: { type: 'string', example: '123 University Ave' },
+          groundFloorPhoneNumber: { type: 'string', example: '+380123456789' },
+          pricePerDay: { type: 'string', example: '30', description: 'Will be converted to number' },
+          pricePerMonth: { type: 'string', example: '600', description: 'Will be converted to number' },
+          'floorAssignments[0][floorNumber]': {
+            type: 'string',
+            example: '1',
+            description: 'Floor number (will be converted to integer)'
           },
-          required: ['name', 'address', 'groundFloorPhoneNumber', 'pricePerDay', 'pricePerMonth', 'floorAssignments[0][floorNumber]', 'floorAssignments[0][roomAssignments][0][roomTypeId]', 'floorAssignments[0][roomAssignments][0][roomNumbers]']
-        }
-      }),
-      ApiCreatedResponse({
-        description: "Dormitory successfully created with floors and rooms based on assignments",
-        schema: {
-          example: {
-            id: "uuid",
-            name: "East Wing Dormitory",
-            address: "123 University Ave",
-            groundFloorPhoneNumber: "+380123456789",
-            status: "Active",
-            photos: ["https://s3.example.com/dormitory-photo1.jpg", "https://s3.example.com/dormitory-photo2.jpg"],
-            createdAt: "2025-10-09T10:00:00.000Z",
-            floors: [
-              {
-                id: "cuid",
-                floorNumber: 1,
-                dormitoryId: "uuid",
-                rooms: [
-                  {
-                    id: "uuid",
-                    number: "101",
-                    floorId: "cuid",
-                    roomTypeId: "single-room-uuid",
+          'floorAssignments[0][roomAssignments][0][roomTypeId]': {
+            type: 'string',
+            example: 'cmgjauk7z0000qy01d5g4j8jp',
+            description: 'Single room type ID'
+          },
+          'floorAssignments[0][roomAssignments][0][roomNumbers]': {
+            type: 'string',
+            example: '[1,2,3]',
+            description: 'JSON array of room numbers for single rooms'
+          },
+          'floorAssignments[0][roomAssignments][1][roomTypeId]': {
+            type: 'string',
+            example: 'cmgjauk7z0000qy01d5g4j8kp',
+            description: 'Double room type ID for same floor'
+          },
+          'floorAssignments[0][roomAssignments][1][roomNumbers]': {
+            type: 'string',
+            example: '[4,5,6,7]',
+            description: 'JSON array of room numbers for double rooms on same floor'
+          },
+          'floorAssignments[1][floorNumber]': {
+            type: 'string',
+            example: '2',
+            description: 'Second floor (optional)'
+          },
+          'floorAssignments[1][roomAssignments][0][roomTypeId]': {
+            type: 'string',
+            example: 'cmgjauk7z0000qy01d5g4j8lp',
+            description: 'Triple room type ID for second floor'
+          },
+          'floorAssignments[1][roomAssignments][0][roomNumbers]': {
+            type: 'string',
+            example: '[1,2,3,4,5]',
+            description: 'Room numbers for triple rooms on second floor'
+          },
+          photos: {
+            type: 'array',
+            items: { type: 'string', format: 'binary' },
+            description: 'Dormitory photos only (max 10 files). Room photos are inherited from room types.',
+            maxItems: 10
+          }
+        },
+        required: ['name', 'address', 'groundFloorPhoneNumber', 'pricePerDay', 'pricePerMonth', 'floorAssignments[0][floorNumber]', 'floorAssignments[0][roomAssignments][0][roomTypeId]', 'floorAssignments[0][roomAssignments][0][roomNumbers]']
+      }
+    }),
+    ApiCreatedResponse({
+      description: "Dormitory successfully created with floors and rooms based on assignments. Room photos are automatically inherited from room types.",
+      schema: {
+        example: {
+          id: "uuid",
+          name: "East Wing Dormitory",
+          address: "123 University Ave",
+          groundFloorPhoneNumber: "+380123456789",
+          status: "Active",
+          photos: ["https://s3.example.com/dormitories/dormitory-photo1.jpg", "https://s3.example.com/dormitories/dormitory-photo2.jpg"],
+          createdAt: "2025-10-09T10:00:00.000Z",
+          floors: [
+            {
+              id: "cuid",
+              floorNumber: 1,
+              dormitoryId: "uuid",
+              rooms: [
+                {
+                  id: "uuid",
+                  number: "101",
+                  floorId: "cuid",
+                  roomTypeId: "single-room-uuid",
+                  capacity: 1,
+                  dormitoryId: "uuid",
+                  photos: ["https://s3.example.com/room-types/SGL/photo1.jpg", "https://s3.example.com/room-types/SGL/photo2.jpg"],
+                  roomEquipment: ["Bed", "Desk", "Chair", "Wardrobe"],
+                  roomType: {
+                    id: "single-room-uuid",
+                    name: "Single Room",
+                    typeCode: "SGL",
                     capacity: 1,
-                    dormitoryId: "uuid",
-                    photos: ["https://s3.example.com/room-photo1.jpg"],
-                    roomType: {
-                      id: "single-room-uuid",
-                      name: "Single Room",
-                      capacity: 1,
-                      equipment: ["Bed", "Desk", "Chair", "Wardrobe"]
-                    }
-                  },
-                  {
-                    id: "uuid",
-                    number: "102",
-                    floorId: "cuid",
-                    roomTypeId: "double-room-uuid",
-                    capacity: 2,
-                    dormitoryId: "uuid",
-                    photos: ["https://s3.example.com/room-photo2.jpg"],
-                    roomType: {
-                      id: "double-room-uuid",
-                      name: "Double Room",
-                      capacity: 2,
-                      equipment: ["Bed", "Desk", "Chair", "Wardrobe", "Mini Fridge"]
-                    }
+                    equipment: ["Bed", "Desk", "Chair", "Wardrobe"],
+                    photos: ["https://s3.example.com/room-types/SGL/photo1.jpg", "https://s3.example.com/room-types/SGL/photo2.jpg"]
                   }
-                ]
-              }
-            ],
-            creationSummary: {
-              floorsCreated: 2,
-              totalRoomsCreated: 12,
-              roomTypeBreakdown: [
-                { roomTypeName: "Single Room", quantity: 5 },
-                { roomTypeName: "Double Room", quantity: 6 },
-                { roomTypeName: "Triple Room", quantity: 1 }
+                },
+                {
+                  id: "uuid",
+                  number: "102",
+                  floorId: "cuid",
+                  roomTypeId: "single-room-uuid",
+                  capacity: 1,
+                  dormitoryId: "uuid",
+                  photos: ["https://s3.example.com/room-types/SGL/photo1.jpg", "https://s3.example.com/room-types/SGL/photo2.jpg"],
+                  roomEquipment: ["Bed", "Desk", "Chair", "Wardrobe"],
+                  roomType: {
+                    id: "single-room-uuid",
+                    name: "Single Room",
+                    typeCode: "SGL",
+                    capacity: 1,
+                    equipment: ["Bed", "Desk", "Chair", "Wardrobe"],
+                    photos: ["https://s3.example.com/room-types/SGL/photo1.jpg", "https://s3.example.com/room-types/SGL/photo2.jpg"]
+                  }
+                },
+                {
+                  id: "uuid",
+                  number: "104",
+                  floorId: "cuid",
+                  roomTypeId: "double-room-uuid",
+                  capacity: 2,
+                  dormitoryId: "uuid",
+                  photos: ["https://s3.example.com/room-types/DBL/photo1.jpg", "https://s3.example.com/room-types/DBL/photo2.jpg"],
+                  roomEquipment: ["Bed", "Bed", "Desk", "Chair", "Chair", "Wardrobe", "Mini Fridge"],
+                  roomType: {
+                    id: "double-room-uuid",
+                    name: "Double Room",
+                    typeCode: "DBL",
+                    capacity: 2,
+                    equipment: ["Bed", "Bed", "Desk", "Chair", "Chair", "Wardrobe", "Mini Fridge"],
+                    photos: ["https://s3.example.com/room-types/DBL/photo1.jpg", "https://s3.example.com/room-types/DBL/photo2.jpg"]
+                  }
+                },
+                {
+                  id: "uuid",
+                  number: "105",
+                  floorId: "cuid",
+                  roomTypeId: "double-room-uuid",
+                  capacity: 2,
+                  dormitoryId: "uuid",
+                  photos: ["https://s3.example.com/room-types/DBL/photo1.jpg", "https://s3.example.com/room-types/DBL/photo2.jpg"],
+                  roomEquipment: ["Bed", "Bed", "Desk", "Chair", "Chair", "Wardrobe", "Mini Fridge"],
+                  roomType: {
+                    id: "double-room-uuid",
+                    name: "Double Room",
+                    typeCode: "DBL",
+                    capacity: 2,
+                    equipment: ["Bed", "Bed", "Desk", "Chair", "Chair", "Wardrobe", "Mini Fridge"],
+                    photos: ["https://s3.example.com/room-types/DBL/photo1.jpg", "https://s3.example.com/room-types/DBL/photo2.jpg"]
+                  }
+                }
               ],
-              priceConfiguration: {
-                pricePerDay: 30,
-                pricePerMonth: 600
-              }
+              floorRoomAssignments: [
+                {
+                  id: "assignment-uuid-1",
+                  floorId: "cuid",
+                  roomTypeId: "single-room-uuid",
+                  roomNumbers: [1, 2, 3],
+                  roomType: {
+                    id: "single-room-uuid",
+                    name: "Single Room",
+                    typeCode: "SGL",
+                    capacity: 1
+                  }
+                },
+                {
+                  id: "assignment-uuid-2",
+                  floorId: "cuid",
+                  roomTypeId: "double-room-uuid",
+                  roomNumbers: [4, 5, 6, 7],
+                  roomType: {
+                    id: "double-room-uuid",
+                    name: "Double Room",
+                    typeCode: "DBL",
+                    capacity: 2
+                  }
+                }
+              ]
+            },
+            {
+              id: "cuid-2",
+              floorNumber: 2,
+              dormitoryId: "uuid",
+              rooms: [
+                {
+                  id: "uuid",
+                  number: "201",
+                  floorId: "cuid-2",
+                  roomTypeId: "triple-room-uuid",
+                  capacity: 3,
+                  dormitoryId: "uuid",
+                  photos: ["https://s3.example.com/room-types/TPL/photo1.jpg"],
+                  roomEquipment: ["Bed", "Bed", "Bed", "Desk", "Chair", "Chair", "Chair", "Wardrobe"],
+                  roomType: {
+                    id: "triple-room-uuid",
+                    name: "Triple Room",
+                    typeCode: "TPL",
+                    capacity: 3,
+                    equipment: ["Bed", "Bed", "Bed", "Desk", "Chair", "Chair", "Chair", "Wardrobe"],
+                    photos: ["https://s3.example.com/room-types/TPL/photo1.jpg"]
+                  }
+                }
+              ]
+            }
+          ],
+          creationSummary: {
+            floorsCreated: 2,
+            totalRoomsCreated: 8,
+            roomTypeBreakdown: [
+              { roomTypeName: "Single Room", quantity: 3, roomTypeId: "single-room-uuid" },
+              { roomTypeName: "Double Room", quantity: 4, roomTypeId: "double-room-uuid" },
+              { roomTypeName: "Triple Room", quantity: 1, roomTypeId: "triple-room-uuid" }
+            ],
+            priceConfiguration: {
+              pricePerDay: 30,
+              pricePerMonth: 600
+            },
+            photoInheritance: {
+              message: "Room photos automatically inherited from room types",
+              roomTypesWithPhotos: [
+                { roomTypeId: "single-room-uuid", photosCount: 2 },
+                { roomTypeId: "double-room-uuid", photosCount: 2 },
+                { roomTypeId: "triple-room-uuid", photosCount: 1 }
+              ]
             }
           }
         }
-      }),
-      ApiBadRequestResponse({
-        description: "Invalid dormitory data, floor assignments, room type references, or file upload errors",
-        schema: {
-          example: {
-            statusCode: 400,
-            message: [
-              "Room type with ID 'invalid-uuid' not found",
-              "Floor number must be positive",
-              "roomNumbers must be an array of integers",
-              "File size exceeds limit",
-              "Invalid file format for photos"
-            ],
-            error: "Bad Request"
-          }
+      }
+    }),
+    ApiBadRequestResponse({
+      description: "Invalid dormitory data, floor assignments, room type references, or file upload errors",
+      schema: {
+        example: {
+          statusCode: 400,
+          message: [
+            "Room type with ID 'invalid-uuid' not found",
+            "Room type must have at least one photo before creating dormitory",
+            "Floor number must be positive",
+            "roomNumbers must be an array of integers",
+            "Duplicate room numbers found on floor 1: [1, 2]",
+            "File size exceeds limit",
+            "Invalid file format for dormitory photos"
+          ],
+          error: "Bad Request"
         }
-      }),
-      ApiForbiddenResponse({ description: "Only admins can create dormitories" }),
-      ApiConflictResponse({
-        description: "Dormitory with this name already exists",
-        schema: {
-          example: {
-            statusCode: 409,
-            message: "Dormitory with name 'East Wing Dormitory' already exists",
-            error: "Conflict"
-          }
+      }
+    }),
+    ApiForbiddenResponse({ description: "Only admins can create dormitories" }),
+    ApiConflictResponse({
+      description: "Dormitory with this name already exists",
+      schema: {
+        example: {
+          statusCode: 409,
+          message: "Dormitory with name 'East Wing Dormitory' already exists",
+          error: "Conflict"
         }
-      })
-    ),
+      }
+    })
+  ),
 
   findAll: () =>
     applyDecorators(

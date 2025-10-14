@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsString, IsNumber, IsEnum, IsArray, IsOptional, Min, Max } from 'class-validator';
-import { RoomCategory } from '../../room-types/entities/room-type.entity';
+import { IsString, IsNumber, IsEnum, IsArray, IsOptional, Min, Max, ArrayMinSize } from 'class-validator';
+import { Transform } from 'class-transformer';
 
 export class CreateRoomTypeDto {
   @ApiProperty({ example: 'Standard Double Room' })
@@ -22,22 +22,35 @@ export class CreateRoomTypeDto {
   @Max(10)
   capacity: number;
 
-  @ApiProperty({ example: 25.5, minimum: 5, maximum: 200 })
-  @IsNumber()
-  @Min(5)
-  @Max(200)
-  area: number;
+  @IsEnum(['residential', 'technical', 'common'])
+  category: 'residential' | 'technical' | 'common';
 
-  @ApiProperty({ enum: RoomCategory, example: RoomCategory.RESIDENTIAL })
-  @IsEnum(RoomCategory)
-  category: RoomCategory;
-
-  @ApiProperty({ 
-    type: [String], 
+  @ApiProperty({
+    type: [String],
     example: ['lamp', 'table', 'chair', 'wardrobe', 'bed'],
     description: 'List of equipment in the room'
+  })
+  @Transform(({ value }) => {
+    if (typeof value === 'string') {
+      return value.split(',').map(item => item.trim());
+    }
+    if (Array.isArray(value)) {
+      return value;
+    }
+    return [];
   })
   @IsArray()
   @IsString({ each: true })
   equipment: string[];
+
+  @ApiPropertyOptional({
+    type: 'array',
+    items: { type: 'string', format: 'binary' },
+    description: 'Array of photo URLs (optional when uploading files)',
+    example: ['https://example.com/photo1.jpg', 'https://example.com/photo2.jpg']
+  })
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  photos?: string[];
 }

@@ -154,6 +154,12 @@ enum PaymentItemType {
   CLEANING_FEE
   OTHER
 }
+enum RoomAvailabilityStatus {
+  AVAILABLE
+  PART_EMPTY
+  FULL
+  UNAVAILABLE
+}
 
 // ==========================================
 // USER MODELS
@@ -360,7 +366,6 @@ model Room {
   @@index([dormitoryId]) // Rooms by dormitory
   @@index([dormitoryId, capacity]) // Rooms by dormitory and capacity
   @@index([number, dormitoryId]) // Unique room identification
-  // Removed invalid index referencing non-existent field 'floor'
   @@index([createdAt]) // Chronological queries
   @@index([dormitoryId], map: "rooms_dormitory_id_unique_idx")
   @@map("rooms")
@@ -370,8 +375,9 @@ model RoomType {
   name        String
   description String?
   capacity    Int
-  equipment   String[] // Array of equipment/furniture items
-  typeCode    String   @unique // A, B, C, etc.
+  equipment   String[]
+  typeCode    String   @unique 
+  photos      String[] 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -386,12 +392,12 @@ model FloorRoomAssignment {
   id          String @id @default(cuid())
   floorId     String
   roomTypeId  String
-  roomNumbers Int[]  // Array of room numbers using this type
+  roomNumbers Int[]  
 
   // Relations
   floor    Floor    @relation(fields: [floorId], references: [id], onDelete: Cascade)
   roomType RoomType @relation(fields: [roomTypeId], references: [id])
-
+  @@unique([floorId, roomTypeId])
   @@map("floor_room_assignments")
 }
 model RoomStatus {

@@ -31,11 +31,10 @@ export class DormitoryController {
   @DormitoryDocs.create()
 @UseInterceptors(FileFieldsInterceptor([
   { name: "photos", maxCount: 10 },
-  { name: "roomPhotos", maxCount: 50 },
 ]))
 create(
   @Body('floorAssignments', new ParseArrayPipe({ items: FloorRoomAssignmentDto })) floorAssignments: FloorRoomAssignmentDto[],
-  @UploadedFiles() files: { photos?: Express.Multer.File[], roomPhotos?: Express.Multer.File[] },
+  @UploadedFiles() files: { photos?: Express.Multer.File[] },
   @Body() dto: Omit<CreateDormitoryDto, 'floorAssignments'>,
 ) {
   return this.dormitoryService.create({ ...dto, floorAssignments }, files);
