@@ -203,8 +203,8 @@ export const RoomTypesDocs = {
             area: { type: 'number', example: 28.0 },
             category: {
               type: 'string',
-              enum: ['RESIDENTIAL', 'SUITE', 'STUDIO', 'SHARED'],
-              example: 'RESIDENTIAL'
+              enum: ['residential', 'technical', 'common'],
+              example: 'residential'
             },
             equipment: {
               type: 'string',
