@@ -7,8 +7,9 @@ import { DeleteRoomTypeUseCase } from './use-cases/delete-room-type.use-case';
 import { PrismaService } from '@/prisma/prisma.service';
 import { PrismaModule } from '@/prisma/prisma.module';
 import { UserModule } from '@/modules/user/user.module';
+import { S3Module } from '@/libs/common/s3/s3.module';
 @Module({
-  imports: [PrismaModule, UserModule],
+  imports: [PrismaModule, UserModule, S3Module],
   controllers: [RoomTypesController],
   providers: [
     PrismaService,

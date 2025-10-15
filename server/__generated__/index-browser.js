@@ -20,12 +20,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.17.0
- * Query Engine version: c0aafc03b8ef6cdced8654b9a817999e02457d6a
+ * Prisma Client JS version: 6.17.1
+ * Query Engine version: 272a37d34178c2894197e17273bf937f25acdeac
  */
 Prisma.prismaVersion = {
-  client: "6.17.0",
-  engine: "c0aafc03b8ef6cdced8654b9a817999e02457d6a"
+  client: "6.17.1",
+  engine: "272a37d34178c2894197e17273bf937f25acdeac"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -134,6 +134,7 @@ exports.Prisma.UserScalarFieldEnum = {
   studentIdFront: 'studentIdFront',
   studentIdBack: 'studentIdBack',
   isActive: 'isActive',
+  language: 'language',
   startReservationDate: 'startReservationDate',
   endReservationDate: 'endReservationDate',
   dormitoryId: 'dormitoryId',
@@ -148,6 +149,12 @@ exports.Prisma.DormitoryAdminScalarFieldEnum = {
   dormitoryId: 'dormitoryId',
   role: 'role',
   createdAt: 'createdAt'
+};
+
+exports.Prisma.DormitoryManagerScalarFieldEnum = {
+  id: 'id',
+  dormitoryId: 'dormitoryId',
+  userId: 'userId'
 };
 
 exports.Prisma.ConfirmationScalarFieldEnum = {
@@ -194,7 +201,6 @@ exports.Prisma.DormitoryScalarFieldEnum = {
   groundFloorPhoneNumber: 'groundFloorPhoneNumber',
   status: 'status',
   photos: 'photos',
-  managerId: 'managerId',
   createdAt: 'createdAt'
 };
 
@@ -224,6 +230,7 @@ exports.Prisma.RoomTypeScalarFieldEnum = {
   capacity: 'capacity',
   equipment: 'equipment',
   typeCode: 'typeCode',
+  photos: 'photos',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -547,6 +554,7 @@ exports.NotificationPriority = exports.$Enums.NotificationPriority = {
 exports.Prisma.ModelName = {
   User: 'User',
   DormitoryAdmin: 'DormitoryAdmin',
+  DormitoryManager: 'DormitoryManager',
   Confirmation: 'Confirmation',
   Token: 'Token',
   AuditLog: 'AuditLog',
