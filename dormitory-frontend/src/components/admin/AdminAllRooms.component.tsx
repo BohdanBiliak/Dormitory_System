@@ -7,8 +7,9 @@ import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from "@headlessui/re
 import { Dormitory } from "@/types/dormitories.types";
 import { useGetActiveDormitories } from "@/hooks/dormitories.hook";
 import { useGetAvailableRoom, useGetRooms, useUpdateRoom } from "@/hooks/rooms.hook";
-import { AvailableRoomsRequest, Room } from "@/types/rooms.types";
+import {AvailableRoomsRequest, Room, RoomResident} from "@/types/rooms.types";
 import { CalendarOfAvailability2WVerComponent } from "@/components/ui/CalendarOfAvailability2WVer.component";
+import EvictionFlowDialogsComponent from "@/components/dialogs/admin/EvictionFlowDialogs.component";
 
 interface Filters {
     dateFrom: string;
@@ -59,7 +60,6 @@ export default function AllRoomsPage() {
     useEffect(() => {
         if (floorList && floorList.length > 0) {
             setCurrentFloor(floorList[0])
-            console.log("Floor set")
         } else {
             setCurrentFloor(null)
         }
@@ -69,7 +69,7 @@ export default function AllRoomsPage() {
         if (currentDormitory?.id && currentFloor !== null) {
             setRoomsOnCurrentFloor(generateRoomsForFloorOnDormitory(currentDormitory?.id, currentFloor, roomList));
         }
-    }, [currentFloor, currentDormitory]);
+    }, [currentFloor, currentDormitory, roomList]);
 
     useEffect(() => {
         if (roomsOnCurrentFloor && roomsOnCurrentFloor.length > 0) {
@@ -134,7 +134,6 @@ export default function AllRoomsPage() {
             console.log("Available rooms:", availableRooms)
         }
     }, [availableRooms]);
-
 
     const [showFilters, setShowFilters] = useState(true);
     const [showMobileRoomDetails, setShowMobileRoomDetails] = useState(false);
@@ -224,6 +223,25 @@ export default function AllRoomsPage() {
         setShowMobileRoomDetails(true);
     };
 
+    //eviction
+
+    const [showEvictionConfirmation, setShowEvictionConfirmation] = useState(false);
+    const [userToEvict, setUserToEvict] = useState<RoomResident>({
+        id: ``,
+        displayName: ``,
+        secondName: ``,
+        email: ``,
+    });
+
+    const closeEvictionConfirmation = () => {
+        setUserToEvict({
+            id: '',
+            displayName: '',
+            secondName: '',
+            email: '',
+        })
+        setShowEvictionConfirmation(false);
+    }
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
@@ -495,7 +513,7 @@ export default function AllRoomsPage() {
                                                             <div className="flex items-center space-x-1">
                                                                 <span className="text-xs">Payments</span>
                                                             </div>
-                                                            <button className="px-2 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700 transition-colors">
+                                                            <button name={`eviction${index}`} className="px-3 py-2 bg-red-600 text-white text-sm rounded-lg hover:bg-red-700 transition-colors" onClick={()=>{setUserToEvict(resident); setShowEvictionConfirmation(true)}}>
                                                                 Evict
                                                             </button>
                                                         </div>
@@ -509,6 +527,7 @@ export default function AllRoomsPage() {
                                             ))}
                                         </div>
                                     </div>
+                                    <EvictionFlowDialogsComponent userToEvict={userToEvict} showEvictionConfirmation={showEvictionConfirmation} closeEvictionConfirmation={closeEvictionConfirmation} roomInfo={selectedRoom}/>
                                 </>
                             ) : (
                                 <div className="px-4 py-8 text-center animate-in fade-in-0 zoom-in-50 duration-500">
@@ -604,9 +623,11 @@ export default function AllRoomsPage() {
                                                             <div className="flex items-center space-x-2">
                                                                 <span className="text-sm">Payments</span>
                                                             </div>
-                                                            <button className="px-3 py-2 bg-red-600 text-white text-sm rounded-lg hover:bg-red-700 transition-colors">
+                                                            <div onClick={(e)=>e.stopPropagation()}>
+                                                            <button name={`eviction${index}`} className="px-3 py-2 bg-red-600 text-white text-sm rounded-lg hover:bg-red-700 transition-colors" onClick={()=>{setUserToEvict(resident); setShowEvictionConfirmation(true)}}>
                                                                 Evict
                                                             </button>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>

@@ -15,7 +15,7 @@ export function UserProfileForm({userId}:UserProfileFormProps){
         displayName: '',
         lastName: '',
         email: '',
-        photo: null as File | null,
+        photo: '',
         role: 'user'
     })
 
@@ -28,7 +28,7 @@ export function UserProfileForm({userId}:UserProfileFormProps){
                 lastName: userProfileData.secondName,
                 email: userProfileData.email,
                 role: userProfileData.role,
-                photo: null as File | null,
+                photo: userProfileData.picture,
             })
         }
     }, [userProfileData]);
@@ -142,7 +142,7 @@ export function UserProfileForm({userId}:UserProfileFormProps){
                                     <div className="w-24 h-24 md:w-32 md:h-32 mx-auto bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center mb-4 overflow-hidden shadow-inner">
                                         {userProfileData?.picture ? (
                                             <img
-                                                src={userProfileData.picture}
+                                                src={profileData.photo}
                                                 alt="Profile"
                                                 className="w-full h-full object-cover"
                                             />

@@ -1,8 +1,8 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { authApi } from '@/app/lib/auth.api'
-import { LoginRequest, RegisterRequest, User } from '@/types/auth.types'
-import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
+import {useMutation, useQueryClient} from '@tanstack/react-query'
+import {authApi} from '@/app/lib/auth.api'
+import {LoginRequest, RegisterRequest, User, UserRole} from '@/types/auth.types'
+import {toast} from 'sonner'
+import {useRouter} from 'next/navigation'
 import {useState} from "react";
 
 export const useAuth = () => {
@@ -27,13 +27,12 @@ export const useAuth = () => {
 
       toast.success('Login successful!')
       queryClient.invalidateQueries({ queryKey: ['auth', 'currentUser'] })
-      console.log(user?.role)
       switch (user?.role){
-        case 'SuperAdmin': router.push('/admin/profile'); break;
-        case 'Admin': router.push('/admin/profile'); break;
-        case 'Regular': router.push('/profile');break;
-        case 'SignedInUser': router.push('/admin/profile'); break;
-        default: throw Error('Unidentified user role');
+        case UserRole.Admin: router.push('/admin/profile'); break;
+        case UserRole.Regular:
+        case UserRole.SignedInUser:
+        case UserRole.Resident: router.push('/profile');break;
+        default: router.push('/dormitories');
       }
     },
     onError: (error: any) => {
@@ -99,7 +98,8 @@ export const useAuth = () => {
     mutationFn: authApi.logout,
     onSuccess: () => {
       queryClient.setQueryData(['user', 'current'], null)
-      queryClient.removeQueries({ queryKey: ['user', 'current'] })
+      queryClient.invalidateQueries({ queryKey: ['user', 'current'] })
+      queryClient.invalidateQueries({ queryKey: ['admin', 'profile'] })
       toast.success('Logged out successfully!')
       router.push('/auth/login')
     },

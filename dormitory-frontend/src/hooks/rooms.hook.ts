@@ -47,6 +47,7 @@ export function useUpdateRoom(){
     const postRoomStatus = useMutation({
         mutationFn: ({roomId, statusData}:{roomId:string, statusData:CreateRoomStatusRequest})=>roomsApi.postRoomStatus(roomId, statusData),
         onSuccess: () => {
+
             queryClient.invalidateQueries({ queryKey: ["room"] })
             toast.success('Room status created successfully!')
         },
@@ -67,10 +68,23 @@ export function useUpdateRoom(){
     })
 
     const evictUser = useMutation({
-        mutationFn: ({roomId, message}:{roomId:string, message:EvictRequest})=>roomsApi.evictUser(roomId, message),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["room"] })
+        mutationFn: ({roomId, body}:{roomId:string, body:EvictRequest})=>roomsApi.evictUser(roomId, body),
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({ queryKey: ["room"], exact: false})
+            await queryClient.invalidateQueries({ queryKey: ["rooms"], exact: false})
+            await queryClient.invalidateQueries({ queryKey: ["dormitories"], exact: false})
             toast.success('User evicted successfully!')
+        },
+        onError: (err) => {
+            toast.error(err.message)
+        }
+    })
+
+    const uploadRoomPhoto = useMutation({
+        mutationFn: ({files}:{files:File[]})=>roomsApi.uploadRoomPhotos(files),
+        onSuccess: (urls:{urls:string[]}) => {
+            queryClient.invalidateQueries({ queryKey: ["room"] })
+            toast.success('Room photo uploaded successfully!')
         },
         onError: (err) => {
             toast.error(err.message)
@@ -86,5 +100,18 @@ export function useUpdateRoom(){
         removingRoomStatus: removeRoomStatus.isPending,
         evictUser: evictUser.mutate,
         evictingUser: evictUser.isPending,
+        uploadRoomPhoto: uploadRoomPhoto.mutate,
+        uploadingRoomPhoto: uploadRoomPhoto.isPending,
+    })
+}
+
+export const useUploadRoomPhoto = () => {
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: ({urls}:{urls:File[]}) => roomsApi.uploadRoomPhotos(urls),
+        onSuccess: (data) => {
+            console.log(data)
+        }
     })
 }

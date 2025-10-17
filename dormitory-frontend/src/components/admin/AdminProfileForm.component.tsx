@@ -35,61 +35,52 @@ export function AdminProfileForm() {
   }, [user, isEditing])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  const { name, value, files } = e.target
+    const { name, value, files } = e.target
 
-  if(name === 'photo' && files && files[0]) {
-    setSelectedFile(files[0])
-    const previewUrl = URL.createObjectURL(files[0])
-    setProfileData(prev => ({ ...prev, photo: previewUrl }))
-    return // Exit early to avoid the second setProfileData call
+    if(name === 'photo' && files && files[0]) {
+      setSelectedFile(files[0])
+      const previewUrl = URL.createObjectURL(files[0])
+
+      setProfileData(prev=>({...prev, photo: previewUrl}))
+      console.log('previewUrl', profileData.photo)
+    }
+    setProfileData(prev => ({ ...prev, [name]: value }))
   }
-  
-  setProfileData(prev => ({ ...prev, [name]: value }))
-}
 
   const handleSave = async () => {
-  try {
-    let uploadedImageUrl = profileData.photo
+    try {
+      if (selectedFile){
+        await uploadAvatar({
+          file: selectedFile,
+          userLastName: profileData.secondName
+        })
+        console.log("After upload avatar:", profileData.photo)
+      }
 
-    // Upload avatar first if a new file is selected
-    if (selectedFile) {
-      await uploadAvatar({
-        file: selectedFile,
-        userLastName: profileData.secondName
-      })
-      // The uploadAvatar function likely updates the user data directly
-      // so we'll use the current photo URL from profileData
-      uploadedImageUrl = profileData.photo
+      if (profileData.displayName || profileData.secondName || profileData.email || profileData.photo) {
+        await updateProfile({
+          displayName: profileData.displayName,
+          secondName: profileData.secondName,
+          email: profileData.email,
+          picture: profileData.photo,
+        })
+        console.log("After update profile:", profileData.photo)
+      }
+      setSelectedFile(null)
+      setProfileData(prev => ({ ...prev, photo: user?.picture || '' }))
+      console.log('After setProfile data: ', profileData.photo)
+      setIsEditing(false)
+    } catch (error) {
+      console.error('Save error:', error)
     }
-
-    // Update profile with the correct image URL
-    if (profileData.displayName || profileData.secondName || profileData.email) {
-      await updateProfile({
-        displayName: profileData.displayName,
-        secondName: profileData.secondName,
-        email: profileData.email,
-        picture: uploadedImageUrl, // Use the uploaded URL, not the local file path
-      })
-    }
-
-    // Clean up state
-    setSelectedFile(null)
-    if (selectedFile) {
-      // Revoke the preview URL to prevent memory leaks
-      URL.revokeObjectURL(profileData.photo)
-    }
-    setIsEditing(false)
-  } catch (error) {
-    console.error('Save error:', error)
   }
-}
 
   const handleCancel = () => {
   // Clean up preview URL if it exists
   if (selectedFile && profileData.photo.startsWith('blob:')) {
     URL.revokeObjectURL(profileData.photo)
   }
-  
+
   setProfileData({
     displayName: user?.displayName || '',
     secondName: user?.secondName || '',
@@ -106,7 +97,7 @@ export function AdminProfileForm() {
           <div className="bg-white shadow-lg rounded-lg p-8 max-w-md mx-4">
             <div className="flex items-center justify-center">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-              <span className="ml-3 text-gray-700 font-medium">Loading announcements...</span>
+              <span className="ml-3 text-gray-700 font-medium">Loading admin profile...</span>
             </div>
           </div>
         </div>
@@ -123,7 +114,7 @@ export function AdminProfileForm() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
                 </svg>
               </div>
-              <p className="text-gray-700 font-medium">Error loading announcements. Please try again.</p>
+              <p className="text-gray-700 font-medium">Error loading admin profile. Please try again.</p>
             </div>
           </div>
         </div>

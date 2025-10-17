@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import React, {useEffect, useState} from "react";
-import {AddressesTypes, Announcement, AnnouncementCreateRequest} from "@/types/announcements.types";
+import { Announcement, AnnouncementCreateRequest} from "@/types/announcements.types";
 import {useGetAnnouncementDetails, useMutateAnnouncement} from "@/hooks/announcements.hook";
 import {Dialog} from "@headlessui/react";
 import {useGetRooms} from "@/hooks/rooms.hook";
@@ -15,7 +15,7 @@ export interface AdminAnnouncementProps {
 
 export default function AdminAnnouncement({id}:AdminAnnouncementProps){
     const [attachedFiles, setAttachedFiles] = useState<File[]>([])
-    const [addresses, setAddresses] = useState<{id: string, label: string, type: AddressesTypes}[]>([])
+    const [addresses, setAddresses] = useState<{id: string, label: string}[]>([])
     const [addingAddresses, setAddingAddresses] = useState<boolean>(false)
 
     const [announcementDetails, setAnnouncementDetails] = useState<Announcement>({
@@ -62,22 +62,6 @@ export default function AdminAnnouncement({id}:AdminAnnouncementProps){
         }
     }, [announcement]);
 
-
-    {/*Dialog logic*/}
-    const {data: rooms, isLoading: loadingRooms, error: roomsError} = useGetRooms()
-    const {data: activeDorms, isLoading: loadingDormitories, error: dormsError} = useGetActiveDormitories()
-
-    const activeDormsIds: string[] = []
-
-    activeDorms?.data?.map((dorm) => {
-        activeDormsIds.push(dorm.id)
-    })
-
-    const activeRooms = rooms?.filter(room => activeDormsIds.includes(room.dormitoryId))
-
-    const multiLevelDropDownTree = {
-
-    }
 
 
     return (

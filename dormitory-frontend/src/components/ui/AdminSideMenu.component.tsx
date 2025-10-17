@@ -5,6 +5,7 @@ import {useAuth} from "@/hooks/auth.hook";
 import React, {useEffect, useState} from "react";
 import {useCurrentUserProfile} from "@/hooks/user.hook";
 import Link from "next/link";
+import {UserRole} from "@/types/auth.types";
 
 interface AdminSideMenuProps {
     children: React.ReactNode;
@@ -133,7 +134,7 @@ export function AdminSideMenu ({children}:AdminSideMenuProps){
     useEffect(() => {
         if(user){
             switch (user.role){
-                case "Admin": setCurrentMenuItems(AdminMenuItems); break;
+                case UserRole.Admin: setCurrentMenuItems(AdminMenuItems); break;
                 default: setCurrentMenuItems(GuestMenuItems);
             }
         }else{

@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { useAuth } from '@/hooks/auth.hook'
 import { toast } from 'sonner'
-import { LoginTutorial } from '../../app/tutorials/auth/login'
+import { LoginTutorial } from '@/app/[locale]/tutorials/auth/login'
 
 export function LoginForm() {
   const searchParams = useSearchParams()

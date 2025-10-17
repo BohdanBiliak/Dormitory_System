@@ -13,12 +13,7 @@ export interface Room{
         "name": string,
         "address": string
     },
-    "residents": [{
-        "id": string,
-        "displayName": string,
-        "secondName": string,
-        "email": string,
-    }],
+    "residents": RoomResident[],
     "price": {
         "pricePerDay": number,
         "pricePerMonth": number,
@@ -55,4 +50,11 @@ export interface CreateRoomStatusRequest {
 export interface EvictRequest {
     userId: string,
     description: string,
+}
+
+export interface RoomResident{
+    "id": string,
+    "displayName": string,
+    "secondName": string,
+    "email": string,
 }

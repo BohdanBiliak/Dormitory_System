@@ -1,13 +1,14 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import type { Confirmation } from '@/app/lib/confirmations.api'
+import {Description, Dialog, DialogBackdrop, DialogPanel, DialogTitle} from "@headlessui/react";
 
 interface IdentityVerificationModalProps {
   confirmation: Confirmation
   onClose: () => void
   onApprove: (id: string) => void
-  onReject: (id: string) => void
+  onReject: ({id, reason}:{id:string, reason: string}) => void
 }
 
 export function IdentityVerificationModal({
@@ -17,13 +18,25 @@ export function IdentityVerificationModal({
   onReject
 }: IdentityVerificationModalProps) {
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
+  const [showRejectionMenu, setShowRejectionMenu] = useState<boolean>(false)
+  const [rejectionReason, setRejectionReason] = useState<string>("")
 
   const handleApprove = () => {
     onApprove(confirmation.id)
   }
 
+  const openRejectionMenu = () => {
+    setShowRejectionMenu(true)
+    //onReject(confirmation.id)
+  }
+
   const handleReject = () => {
-    onReject(confirmation.id)
+    onReject({id:confirmation.id, reason: rejectionReason})
+  }
+
+  const closeRejectionMenu = () => {
+    setShowRejectionMenu(false)
+    setRejectionReason("")
   }
 
   const formatDate = (dateString: string) => {
@@ -252,7 +265,7 @@ export function IdentityVerificationModal({
           {confirmation.status === 'PENDING' && (
             <div className="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-4 p-6 border-t border-gray-200 bg-gray-50">
               <button
-                onClick={handleReject}
+                onClick={openRejectionMenu}
                 className="w-full sm:w-auto px-8 py-3 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-all font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
               >
                 <svg className="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -314,6 +327,55 @@ export function IdentityVerificationModal({
           </div>
         </div>
       )}
+
+
+      {/*Rejection dialog*/}
+      <Dialog onClose={closeRejectionMenu} open={showRejectionMenu} className="relative z-50">
+        <DialogBackdrop className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-all duration-300" />
+        <div className="fixed inset-0 flex items-center justify-center p-4">
+          <DialogPanel className="w-full max-w-lg bg-white rounded-2xl shadow-2xl animate-in zoom-in-95 fade-in-0 duration-300 slide-in-from-bottom-4">
+            <div className="px-6 py-4 bg-red-50 border-b border-red-200 animate-in fade-in-0 slide-in-from-top-2 duration-300">
+              <DialogTitle className="text-lg font-semibold text-red-900">
+                Rejection reason
+              </DialogTitle>
+              <Description className="text-red-700 text-sm mt-1">
+                Provide rejection reason for {confirmation.requester.displayName} {confirmation.requester.secondName}
+              </Description>
+            </div>
+
+            <div className="p-6 space-y-4">
+              <div className="animate-in fade-in-0 slide-in-from-left-2 duration-300 delay-150">
+                <label className="block text-sm font-medium text-slate-700 mb-2">
+                  Reason for rejection
+                </label>
+                <input
+                    name="description"
+                    type="text"
+                    value={rejectionReason}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {setRejectionReason(event.target.value)}}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-200 hover:shadow-sm"
+                    placeholder="Enter reason for eviction..."
+                />
+              </div>
+            </div>
+
+            <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex space-x-3 animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-250">
+              <button
+                  className= "flex-1 bg-red-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200 hover:scale-105 active:scale-95 hover:shadow-lg"
+                  onClick={handleReject}
+              >
+                Confirm rejection
+              </button>
+              <button
+                  className="flex-1 bg-slate-200 text-slate-700 py-2 px-4 rounded-lg font-medium hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transition-all duration-200 hover:scale-105 active:scale-95"
+                  onClick={closeRejectionMenu}
+              >
+                Cancel
+              </button>
+            </div>
+          </DialogPanel>
+        </div>
+      </Dialog>
     </>
   )
 }
