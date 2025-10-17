@@ -1,19 +1,19 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty } from "@nestjs/swagger";
 
 export enum RoomCategory {
-  RESIDENTIAL = 'residential',
-  TECHNICAL = 'technical',
-  COMMON = 'common'
+  RESIDENTIAL = "residential",
+  TECHNICAL = "technical",
+  COMMON = "common",
 }
 
 export class RoomType {
-  @ApiProperty({ example: '1' })
+  @ApiProperty({ example: "1" })
   id: string;
 
-  @ApiProperty({ example: 'Standard Double Room' })
+  @ApiProperty({ example: "Standard Double Room" })
   name: string;
 
-  @ApiProperty({ example: 'A standard room with 2 beds' })
+  @ApiProperty({ example: "A standard room with 2 beds" })
   description?: string;
 
   @ApiProperty({ example: 2 })
@@ -25,12 +25,15 @@ export class RoomType {
   @ApiProperty({ enum: RoomCategory, example: RoomCategory.RESIDENTIAL })
   category: RoomCategory;
 
-  @ApiProperty({ type: [String], example: ['lamp', 'table', 'chair', 'wardrobe'] })
+  @ApiProperty({
+    type: [String],
+    example: ["lamp", "table", "chair", "wardrobe"],
+  })
   equipment: string[];
 
-  @ApiProperty({ example: '2024-01-01T00:00:00Z' })
+  @ApiProperty({ example: "2024-01-01T00:00:00Z" })
   createdAt: Date;
 
-  @ApiProperty({ example: '2024-01-01T00:00:00Z' })
+  @ApiProperty({ example: "2024-01-01T00:00:00Z" })
   updatedAt: Date;
 }

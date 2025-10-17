@@ -1,0 +1,22 @@
+{
+  "devDependencies": {
+    "@eslint/js": "^9.37.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "prettier": "^3.6.2",
+    "typescript-eslint": "^8.46.1"
+  },
+  "scripts": {
+    "format": "prettier --write \"server/src/**/*.ts\" \"server/tests/**/*.ts\"",
+    "format:check": "prettier --check \"server/src/**/*.ts\" \"server/tests/**/*.ts\"",
+    "lint": "eslint \"server/src/**/*.ts\" \"server/tests/**/*.ts\" --fix",
+    "lint:check": "eslint \"server/src/**/*.ts\" \"server/tests/**/*.ts\"",
+    "prepare": "husky",
+    "commit": "cz",
+    "release": "semantic-release"
+  },
+  "dependencies": {
+    "@typescript-eslint/utils": "^8.46.1",
+    "globals": "^16.4.0"
+  }
+}

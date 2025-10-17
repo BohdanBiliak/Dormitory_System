@@ -1,9 +1,9 @@
 // Jest setup for TypeScript types
-import 'jest';
+import "jest";
 
 // Mock React email rendering to avoid dependencies in tests
-jest.mock('@react-email/components', () => ({
-  render: jest.fn(() => '<div>Mocked Email Template</div>')
+jest.mock("@react-email/components", () => ({
+  render: jest.fn(() => "<div>Mocked Email Template</div>"),
 }));
 
 // Extend global namespace for test utilities

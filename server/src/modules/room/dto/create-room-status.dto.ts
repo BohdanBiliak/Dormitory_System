@@ -1,13 +1,13 @@
-import { IsDateString, IsString, IsUUID, IsOptional } from "class-validator";
+import { IsDateString, IsString, IsOptional } from "class-validator";
 
 export class CreateRoomStatusDto {
-    @IsDateString()
-    dateOfStart: string;
+  @IsDateString()
+  dateOfStart: string;
 
-    @IsDateString()
-    @IsOptional()
-    dateOfEnd?: string;
+  @IsDateString()
+  @IsOptional()
+  dateOfEnd?: string;
 
-    @IsString()
-    description: string;
+  @IsString()
+  description: string;
 }

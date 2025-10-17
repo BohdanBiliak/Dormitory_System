@@ -1,17 +1,28 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsString, IsNumber, IsEnum, IsArray, IsOptional, Min, Max, ArrayMinSize } from 'class-validator';
-import { Transform } from 'class-transformer';
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import {
+  IsString,
+  IsNumber,
+  IsEnum,
+  IsArray,
+  IsOptional,
+  Min,
+  Max,
+  ArrayMinSize,
+} from "class-validator";
+import { Transform } from "class-transformer";
 
 export class CreateRoomTypeDto {
-  @ApiProperty({ example: 'Standard Double Room' })
+  @ApiProperty({ example: "Standard Double Room" })
   @IsString()
   name: string;
 
-  @ApiProperty({ example: 'STD-DBL' })
+  @ApiProperty({ example: "STD-DBL" })
   @IsString()
   typeCode: string;
 
-  @ApiPropertyOptional({ example: 'A standard room with 2 beds and basic amenities' })
+  @ApiPropertyOptional({
+    example: "A standard room with 2 beds and basic amenities",
+  })
   @IsOptional()
   @IsString()
   description?: string;
@@ -22,17 +33,17 @@ export class CreateRoomTypeDto {
   @Max(10)
   capacity: number;
 
-  @IsEnum(['residential', 'technical', 'common'])
-  category: 'residential' | 'technical' | 'common';
+  @IsEnum(["residential", "technical", "common"])
+  category: "residential" | "technical" | "common";
 
   @ApiProperty({
     type: [String],
-    example: ['lamp', 'table', 'chair', 'wardrobe', 'bed'],
-    description: 'List of equipment in the room'
+    example: ["lamp", "table", "chair", "wardrobe", "bed"],
+    description: "List of equipment in the room",
   })
   @Transform(({ value }) => {
-    if (typeof value === 'string') {
-      return value.split(',').map(item => item.trim());
+    if (typeof value === "string") {
+      return value.split(",").map((item) => item.trim());
     }
     if (Array.isArray(value)) {
       return value;
@@ -44,10 +55,13 @@ export class CreateRoomTypeDto {
   equipment: string[];
 
   @ApiPropertyOptional({
-    type: 'array',
-    items: { type: 'string', format: 'binary' },
-    description: 'Array of photo URLs (optional when uploading files)',
-    example: ['https://example.com/photo1.jpg', 'https://example.com/photo2.jpg']
+    type: "array",
+    items: { type: "string", format: "binary" },
+    description: "Array of photo URLs (optional when uploading files)",
+    example: [
+      "https://example.com/photo1.jpg",
+      "https://example.com/photo2.jpg",
+    ],
   })
   @IsOptional()
   @IsArray()

@@ -9,7 +9,6 @@ import {
 import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateAnnouncementDto {
-
   @ApiProperty()
   @IsString()
   title: string;

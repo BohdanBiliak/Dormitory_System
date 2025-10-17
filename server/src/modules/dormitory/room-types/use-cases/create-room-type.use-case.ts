@@ -1,18 +1,18 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaService } from '@/prisma/prisma.service';
-import { S3Service } from '@/libs/common/s3/s3.service';
-import { CreateRoomTypeDto } from '../dto/create-room-type.dto'; 
+import { Injectable } from "@nestjs/common";
+import { PrismaService } from "@/prisma/prisma.service";
+import { S3Service } from "@/libs/common/s3/s3.service";
+import { CreateRoomTypeDto } from "../dto/create-room-type.dto";
 
 @Injectable()
 export class CreateRoomTypeUseCase {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly s3Service: S3Service
+    private readonly s3Service: S3Service,
   ) {}
 
   async execute(dto: CreateRoomTypeDto, photoFiles?: Express.Multer.File[]) {
     const existingType = await this.prisma.roomType.findFirst({
-      where: { typeCode: dto.typeCode }
+      where: { typeCode: dto.typeCode },
     });
 
     if (existingType) {
@@ -26,7 +26,7 @@ export class CreateRoomTypeUseCase {
         photoFiles.map(async (file) => {
           const photoKey = `room-types/${dto.typeCode}/${Date.now()}-${file.originalname}`;
           return await this.s3Service.uploadFile(file, photoKey);
-        })
+        }),
       );
     }
 
@@ -40,8 +40,8 @@ export class CreateRoomTypeUseCase {
         capacity: dto.capacity,
         equipment: dto.equipment,
         typeCode: dto.typeCode,
-        photos: finalPhotos
-      }
+        photos: finalPhotos,
+      },
     });
   }
 }

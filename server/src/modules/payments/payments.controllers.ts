@@ -9,43 +9,52 @@ import {
   UseInterceptors,
   UploadedFile,
   Req,
-} from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { PaymentsService } from './payments.service';
-import { CreatePaymentDto, PaymentFilterDto, ConfirmPaymentDto, RejectPaymentDto } from './dto';
-import { Authorization } from '../../libs/common/decorators/auth.decorator';
-import { PaymentsDocs } from './payments.docs';
+} from "@nestjs/common";
+import { FileInterceptor } from "@nestjs/platform-express";
+import { PaymentsService } from "./payments.service";
+import {
+  CreatePaymentDto,
+  PaymentFilterDto,
+  ConfirmPaymentDto,
+  RejectPaymentDto,
+} from "./dto";
+import { Authorization } from "../../libs/common/decorators/auth.decorator";
+import { PaymentsDocs } from "./payments.docs";
 
 @PaymentsDocs.controller()
-@Controller('payments')
+@Controller("payments")
 export class PaymentsController {
   constructor(private readonly paymentsService: PaymentsService) {}
 
   // For Residents
-  @Get('my')
+  @Get("my")
   @Authorization()
   @PaymentsDocs.getMyPayments()
   async getMyPayments(
     @Req() req: any,
-    @Query('limit') limit?: number,
-    @Query('offset') offset?: number,
+    @Query("limit") limit?: number,
+    @Query("offset") offset?: number,
   ) {
-    return this.paymentsService.getPaymentsByUserId(req.user.id, limit ?? 10, offset ?? 0);
+    return this.paymentsService.getPaymentsByUserId(
+      req.user.id,
+      limit ?? 10,
+      offset ?? 0,
+    );
   }
 
-  @Get('my/stats')
+  @Get("my/stats")
   @Authorization()
   @PaymentsDocs.getMyStats()
   async getMyStats(@Req() req: any) {
     return this.paymentsService.getPaymentStats(req.user.id);
   }
 
-  @Post(':id/upload-proof')
+  @Post(":id/upload-proof")
   @Authorization()
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor("file"))
   @PaymentsDocs.uploadPaymentProof()
   async uploadPaymentProof(
-    @Param('id') paymentId: string,
+    @Param("id") paymentId: string,
     @UploadedFile() file: Express.Multer.File,
     @Req() req: any,
   ) {
@@ -64,25 +73,25 @@ export class PaymentsController {
     return this.paymentsService.createPayment(createPaymentDto);
   }
 
-  @Get('pending')
+  @Get("pending")
   @Authorization()
   @PaymentsDocs.getPendingPayments()
-  async getPendingPayments(@Query('dormitoryId') dormitoryId?: string) {
+  async getPendingPayments(@Query("dormitoryId") dormitoryId?: string) {
     return this.paymentsService.getPendingPayments(dormitoryId);
   }
 
-  @Get('awaiting-confirmation')
+  @Get("awaiting-confirmation")
   @Authorization()
   @PaymentsDocs.getAwaitingConfirmation()
-  async getAwaitingConfirmation(@Query('dormitoryId') dormitoryId?: string) {
+  async getAwaitingConfirmation(@Query("dormitoryId") dormitoryId?: string) {
     return this.paymentsService.getAwaitingConfirmation(dormitoryId);
-  }   
+  }
 
-  @Put(':id/confirm')
+  @Put(":id/confirm")
   @Authorization()
   @PaymentsDocs.confirmPayment()
   async confirmPayment(
-    @Param('id') paymentId: string,
+    @Param("id") paymentId: string,
     @Body() confirmDto: ConfirmPaymentDto,
     @Req() req: any,
   ) {
@@ -93,11 +102,11 @@ export class PaymentsController {
     });
   }
 
-  @Put(':id/reject')
+  @Put(":id/reject")
   @Authorization()
   @PaymentsDocs.rejectPayment()
   async rejectPayment(
-    @Param('id') paymentId: string,
+    @Param("id") paymentId: string,
     @Body() rejectDto: RejectPaymentDto,
     @Req() req: any,
   ) {
@@ -108,24 +117,24 @@ export class PaymentsController {
     });
   }
 
-  @Get('overdue')
+  @Get("overdue")
   @Authorization()
   @PaymentsDocs.getOverduePayments()
   async getOverduePayments() {
     return this.paymentsService.getOverduePayments();
   }
 
-  @Get('stats')
+  @Get("stats")
   @Authorization()
   @PaymentsDocs.getStats()
-  async getStats(@Query('dormitoryId') dormitoryId?: string) {
+  async getStats(@Query("dormitoryId") dormitoryId?: string) {
     return this.paymentsService.getPaymentStats(undefined, dormitoryId);
   }
 
-  @Get(':id')
+  @Get(":id")
   @Authorization()
   @PaymentsDocs.getPaymentById()
-  async getPaymentById(@Param('id') id: string) {
+  async getPaymentById(@Param("id") id: string) {
     return this.paymentsService.getPaymentById(id);
   }
 

@@ -3,7 +3,6 @@ import {
   ApiBearerAuth,
   ApiBody,
   ApiOperation,
-  ApiResponse,
   ApiParam,
   ApiOkResponse,
   ApiTags,
@@ -15,18 +14,13 @@ import {
 } from "@nestjs/swagger";
 import { UpdateAdminProfileDto } from "../dto/UpdateAdminProfile.dto";
 import { UpdateConfirmationStatusDto } from "@/modules/confirmation/dto/UpdateConfirmationStatus.dto";
-import { GetConfirmationsQueryDto } from "@/modules/confirmation/dto/GetConfirmationsQuery.dto";
 import { $Enums, ConfirmationStatus } from "../../../../__generated__";
 import ConfirmationType = $Enums.ConfirmationType;
 
-const ALLOWED_VERSIONS = ['original', 'mobile', 'tablet', 'desktop'] as const;
+const ALLOWED_VERSIONS = ["original", "mobile", "tablet", "desktop"] as const;
 
 export const AdminDocs = {
-  controller: () =>
-    applyDecorators(
-      ApiTags("Admin"),
-      ApiBearerAuth()
-    ),
+  controller: () => applyDecorators(ApiTags("Admin"), ApiBearerAuth()),
 
   getAllConfirmations: () =>
     applyDecorators(
@@ -89,7 +83,9 @@ export const AdminDocs = {
           },
         },
       }),
-      ApiForbiddenResponse({ description: "Unauthorized or insufficient role" })
+      ApiForbiddenResponse({
+        description: "Unauthorized or insufficient role",
+      }),
     ),
 
   updateConfirmationStatus: () =>
@@ -124,7 +120,7 @@ export const AdminDocs = {
         },
       }),
       ApiNotFoundResponse({ description: "Confirmation not found" }),
-      ApiBadRequestResponse({ description: "Invalid status value" })
+      ApiBadRequestResponse({ description: "Invalid status value" }),
     ),
 
   getMyProfile: () =>
@@ -147,8 +143,10 @@ export const AdminDocs = {
           },
         },
       }),
-      ApiForbiddenResponse({ description: "Unauthorized or insufficient role" }),
-      ApiNotFoundResponse({ description: "Admin profile not found" })
+      ApiForbiddenResponse({
+        description: "Unauthorized or insufficient role",
+      }),
+      ApiNotFoundResponse({ description: "Admin profile not found" }),
     ),
 
   updateMyProfile: () =>
@@ -166,7 +164,7 @@ export const AdminDocs = {
             summary: "Update display name",
             value: {
               displayName: "Updated Name",
-            }
+            },
           },
           updateComplete: {
             summary: "Update multiple fields",
@@ -174,9 +172,9 @@ export const AdminDocs = {
               displayName: "Joanna",
               secondName: "Updated Surname",
               email: "updated.email@pollub.com",
-            }
-          }
-        }
+            },
+          },
+        },
       }),
       ApiOkResponse({
         description: "Updated admin profile",
@@ -191,30 +189,33 @@ export const AdminDocs = {
           },
         },
       }),
-      ApiForbiddenResponse({ description: "Unauthorized or insufficient role" }),
+      ApiForbiddenResponse({
+        description: "Unauthorized or insufficient role",
+      }),
       ApiNotFoundResponse({ description: "Admin profile not found" }),
-      ApiBadRequestResponse({ description: "Invalid profile data" })
+      ApiBadRequestResponse({ description: "Invalid profile data" }),
     ),
 
   uploadAvatar: () =>
     applyDecorators(
       ApiOperation({
         summary: "Upload admin avatar",
-        description: "Uploads and updates the avatar for the current admin user"
+        description:
+          "Uploads and updates the avatar for the current admin user",
       }),
-      ApiConsumes('multipart/form-data'),
+      ApiConsumes("multipart/form-data"),
       ApiQuery({
-        name: 'version',
+        name: "version",
         required: false,
         enum: ALLOWED_VERSIONS,
-        description: 'Image version to generate',
-        example: 'original'
+        description: "Image version to generate",
+        example: "original",
       }),
       ApiBody({
         schema: {
-          type: 'object',
+          type: "object",
           properties: {
-            file: { type: 'string', format: 'binary' },
+            file: { type: "string", format: "binary" },
           },
         },
       }),
@@ -232,7 +233,9 @@ export const AdminDocs = {
         },
       }),
       ApiBadRequestResponse({ description: "Invalid file format or size" }),
-      ApiForbiddenResponse({ description: "Unauthorized or insufficient role" })
+      ApiForbiddenResponse({
+        description: "Unauthorized or insufficient role",
+      }),
     ),
 
   reject: () =>
@@ -249,11 +252,14 @@ export const AdminDocs = {
       }),
       ApiBody({
         schema: {
-          type: 'object',
+          type: "object",
           properties: {
-            reason: { type: 'string', example: 'The provided documents are invalid.' },
+            reason: {
+              type: "string",
+              example: "The provided documents are invalid.",
+            },
           },
-          required: ['reason'],
+          required: ["reason"],
         },
         description: "Reason for rejection",
       }),
@@ -274,6 +280,8 @@ export const AdminDocs = {
         },
       }),
       ApiNotFoundResponse({ description: "Confirmation not found" }),
-      ApiBadRequestResponse({ description: "Invalid reason or confirmation already processed" })
+      ApiBadRequestResponse({
+        description: "Invalid reason or confirmation already processed",
+      }),
     ),
 };

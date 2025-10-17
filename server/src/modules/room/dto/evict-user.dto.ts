@@ -1,9 +1,9 @@
 import { IsString, IsUUID } from "class-validator";
 
 export class EvictUserFromRoomDto {
-    @IsUUID()
-    userId: string;
+  @IsUUID()
+  userId: string;
 
-    @IsString()
-    description?: string;
+  @IsString()
+  description?: string;
 }

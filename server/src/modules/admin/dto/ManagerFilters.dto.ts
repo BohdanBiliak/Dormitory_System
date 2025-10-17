@@ -1,14 +1,14 @@
-import { IsOptional, IsString, IsBoolean, IsEnum, IsInt, Min } from 'class-validator';
-import { Transform, Type } from 'class-transformer';
-import { ApiProperty } from '@nestjs/swagger';
+import { IsOptional, IsString, IsInt, Min } from "class-validator";
+import { Type } from "class-transformer";
+import { ApiProperty } from "@nestjs/swagger";
 
 export class ManagerFiltersDto {
-  @ApiProperty({ required: false, example: 'Residents only' })
+  @ApiProperty({ required: false, example: "Residents only" })
   @IsOptional()
   @IsString()
   show?: string;
 
-  @ApiProperty({ required: false, example: 'Name' })
+  @ApiProperty({ required: false, example: "Name" })
   @IsOptional()
   @IsString()
   sortBy?: string;

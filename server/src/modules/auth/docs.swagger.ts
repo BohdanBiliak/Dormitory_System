@@ -1,6 +1,11 @@
 // src/modules/auth/docs.swagger.ts
 import { applyDecorators } from "@nestjs/common";
-import { ApiBody, ApiConsumes, ApiOperation, ApiResponse } from "@nestjs/swagger";
+import {
+  ApiBody,
+  ApiConsumes,
+  ApiOperation,
+  ApiResponse,
+} from "@nestjs/swagger";
 import { RegisterDto } from "@/modules/auth/dto/register.dto";
 import { LoginDto } from "@/modules/auth/dto/login.dto";
 
@@ -38,7 +43,10 @@ export function LoginDocs() {
     ApiBody({ type: LoginDto }),
     ApiResponse({ status: 200, description: "Logged in / 2FA initiated" }),
     ApiResponse({ status: 404, description: "Invalid email or password" }),
-    ApiResponse({ status: 401, description: "Email not verified or 2FA required" }),
+    ApiResponse({
+      status: 401,
+      description: "Email not verified or 2FA required",
+    }),
   );
 }
 

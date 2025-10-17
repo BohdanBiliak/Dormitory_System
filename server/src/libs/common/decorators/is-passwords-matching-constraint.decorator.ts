@@ -15,7 +15,7 @@ export class IsPasswordsMatchingConstraint
     return obj.password === passwordRepeat;
   }
 
-  public defaultMessage(validationArguments?: ValidationArguments) {
+  public defaultMessage() {
     return "Passwords is dismatching";
   }
 }

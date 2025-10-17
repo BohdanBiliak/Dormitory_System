@@ -3,12 +3,13 @@ import {
   Controller,
   Get,
   Param,
-  Patch, Post,
-  Query, UploadedFile,
+  Patch,
+  Post,
+  Query,
+  UploadedFile,
 } from "@nestjs/common";
 import { $Enums, ConfirmationStatus } from "../../../../__generated__";
 import { ConfirmationService } from "@/modules/confirmation/confirmation.service";
-import { UpdateConfirmationStatusDto } from "@/modules/confirmation/dto/UpdateConfirmationStatus.dto";
 import { GetConfirmationsQueryDto } from "@/modules/confirmation/dto/GetConfirmationsQuery.dto";
 import { CurrentUser } from "@/libs/common/decorators/current-user.decorator";
 import { UpdateAdminProfileDto } from "@/modules/admin/dto/UpdateAdminProfile.dto";
@@ -19,7 +20,7 @@ import { AdminDocs } from "../docs/admin.docs";
 import UserRole = $Enums.UserRole;
 import { RejectConfirmationDto } from "../dto/RejectConfirmation.dto";
 
-const ALLOWED_VERSIONS = ['original', 'mobile', 'tablet', 'desktop'] as const;
+const ALLOWED_VERSIONS = ["original", "mobile", "tablet", "desktop"] as const;
 type Version = (typeof ALLOWED_VERSIONS)[number];
 
 @AdminDocs.controller()
@@ -64,14 +65,14 @@ export class AdminController {
     return this.adminService.updateById(id, dto);
   }
 
-  @Post('upload-avatar')
+  @Post("upload-avatar")
   @Authorization(UserRole.Admin, UserRole.SuperAdmin)
   @UseAvatarInterceptor()
   @AdminDocs.uploadAvatar()
   uploadAvatarForAdmin(
-      @CurrentUser('id') adminId: string,
-      @UploadedFile() file: Express.Multer.File,
-      @Query('version') version: Version = 'original',
+    @CurrentUser("id") adminId: string,
+    @UploadedFile() file: Express.Multer.File,
+    @Query("version") version: Version = "original",
   ) {
     return this.adminService.uploadAndUpdateAvatar(adminId, file, version);
   }
@@ -79,7 +80,10 @@ export class AdminController {
   @Post("reject-confirmation/:id")
   @Authorization(UserRole.Admin, UserRole.SuperAdmin)
   @AdminDocs.reject()
-  rejectConfirmation(@Param("id") id: string, @Body() dto: RejectConfirmationDto) {
+  rejectConfirmation(
+    @Param("id") id: string,
+    @Body() dto: RejectConfirmationDto,
+  ) {
     return this.confirmationService.reject(id, dto.reason);
   }
 }

@@ -25,9 +25,7 @@ export class PasswordRecoveryService {
     const existingUser = await this.userService.findByEmail(dto.email);
 
     if (!existingUser) {
-      throw new NotFoundException(
-        "User not found. Please try again.",
-      );
+      throw new NotFoundException("User not found. Please try again.");
     }
 
     const passwordResetToken = await this.generatePasswordResetToken(
@@ -51,17 +49,13 @@ export class PasswordRecoveryService {
     });
 
     if (!existingToken) {
-      throw new NotFoundException(
-        "Token not found. Please try again.",
-      );
+      throw new NotFoundException("Token not found. Please try again.");
     }
 
     const hasExpired = new Date(existingToken.expiresIn) < new Date();
 
     if (hasExpired) {
-      throw new BadRequestException(
-        "Token is expired. Please try again.",
-      );
+      throw new BadRequestException("Token is expired. Please try again.");
     }
 
     const existingUser = await this.userService.findByEmail(
@@ -69,9 +63,7 @@ export class PasswordRecoveryService {
     );
 
     if (!existingUser) {
-      throw new NotFoundException(
-        "User not found. Please try again.",
-      );
+      throw new NotFoundException("User not found. Please try again.");
     }
 
     await this.prismaService.user.update({
@@ -83,7 +75,7 @@ export class PasswordRecoveryService {
       },
     });
 
-    await this.prismaService.token.                                   delete({
+    await this.prismaService.token.delete({
       where: {
         id: existingToken.id,
         type: TokenType.PASSWORD_RESET,

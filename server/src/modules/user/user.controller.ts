@@ -95,14 +95,20 @@ export class UserController {
   @UserDocs.deactivateUser()
   @Delete(":id/deactivate")
   @Authorization(UserRole.SuperAdmin, UserRole.Admin)
-  async deactivateUser(@Param("id") id: string, @CurrentUser("id") currentUserId: string) {
+  async deactivateUser(
+    @Param("id") id: string,
+    @CurrentUser("id") currentUserId: string,
+  ) {
     return this.userService.deactivateUser(id, currentUserId);
   }
 
   @UserDocs.activateUser()
   @Patch(":id/activate")
   @Authorization(UserRole.SuperAdmin, UserRole.Admin)
-  async activateUser(@Param("id") id: string, @CurrentUser("id") currentUserId: string) {
+  async activateUser(
+    @Param("id") id: string,
+    @CurrentUser("id") currentUserId: string,
+  ) {
     return this.userService.activateUser(id, currentUserId);
   }
 }

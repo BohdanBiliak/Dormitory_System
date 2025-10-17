@@ -1,13 +1,13 @@
-import { Module } from '@nestjs/common';
-import { RoomTypesController } from './room-types.controller';
-import { CreateRoomTypeUseCase } from './use-cases/create-room-type.use-case';
-import { GetRoomTypesUseCase } from './use-cases/get-room-types.use-case';
-import { UpdateRoomTypeUseCase } from './use-cases/update-room-type.use-case';
-import { DeleteRoomTypeUseCase } from './use-cases/delete-room-type.use-case';
-import { PrismaService } from '@/prisma/prisma.service';
-import { PrismaModule } from '@/prisma/prisma.module';
-import { UserModule } from '@/modules/user/user.module';
-import { S3Module } from '@/libs/common/s3/s3.module';
+import { Module } from "@nestjs/common";
+import { RoomTypesController } from "./room-types.controller";
+import { CreateRoomTypeUseCase } from "./use-cases/create-room-type.use-case";
+import { GetRoomTypesUseCase } from "./use-cases/get-room-types.use-case";
+import { UpdateRoomTypeUseCase } from "./use-cases/update-room-type.use-case";
+import { DeleteRoomTypeUseCase } from "./use-cases/delete-room-type.use-case";
+import { PrismaService } from "@/prisma/prisma.service";
+import { PrismaModule } from "@/prisma/prisma.module";
+import { UserModule } from "@/modules/user/user.module";
+import { S3Module } from "@/libs/common/s3/s3.module";
 @Module({
   imports: [PrismaModule, UserModule, S3Module],
   controllers: [RoomTypesController],
@@ -17,7 +17,6 @@ import { S3Module } from '@/libs/common/s3/s3.module';
     GetRoomTypesUseCase,
     UpdateRoomTypeUseCase,
     DeleteRoomTypeUseCase,
-    
   ],
   exports: [
     CreateRoomTypeUseCase,
@@ -26,4 +25,4 @@ import { S3Module } from '@/libs/common/s3/s3.module';
     DeleteRoomTypeUseCase,
   ],
 })
-export class RoomTypesModule { }
+export class RoomTypesModule {}

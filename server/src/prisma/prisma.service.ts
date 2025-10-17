@@ -1,5 +1,10 @@
-import {Global, Injectable, OnModuleDestroy, OnModuleInit} from "@nestjs/common";
-import { PrismaClient } from '../../__generated__';
+import {
+  Global,
+  Injectable,
+  OnModuleDestroy,
+  OnModuleInit,
+} from "@nestjs/common";
+import { PrismaClient } from "../../__generated__";
 
 @Global()
 @Injectable()

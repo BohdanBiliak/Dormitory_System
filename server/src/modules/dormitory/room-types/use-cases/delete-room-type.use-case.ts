@@ -1,5 +1,9 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
-import { PrismaService } from '@/prisma/prisma.service';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from "@nestjs/common";
+import { PrismaService } from "@/prisma/prisma.service";
 
 @Injectable()
 export class DeleteRoomTypeUseCase {
@@ -13,10 +17,10 @@ export class DeleteRoomTypeUseCase {
         _count: {
           select: {
             rooms: true,
-            floorRoomAssignments: true
-          }
-        }
-      }
+            floorRoomAssignments: true,
+          },
+        },
+      },
     });
 
     if (!roomType) {
@@ -26,19 +30,19 @@ export class DeleteRoomTypeUseCase {
     // Check if room type is in use
     if (roomType._count.rooms > 0) {
       throw new BadRequestException(
-        `Cannot delete room type "${roomType.name}" as it is currently used by ${roomType._count.rooms} room(s). Please reassign or remove these rooms first.`
+        `Cannot delete room type "${roomType.name}" as it is currently used by ${roomType._count.rooms} room(s). Please reassign or remove these rooms first.`,
       );
     }
 
     if (roomType._count.floorRoomAssignments > 0) {
       throw new BadRequestException(
-        `Cannot delete room type "${roomType.name}" as it has ${roomType._count.floorRoomAssignments} floor assignment(s). Please remove these assignments first.`
+        `Cannot delete room type "${roomType.name}" as it has ${roomType._count.floorRoomAssignments} floor assignment(s). Please remove these assignments first.`,
       );
     }
 
     // Safe to delete
     await this.prisma.roomType.delete({
-      where: { id }
+      where: { id },
     });
 
     return {
@@ -46,8 +50,8 @@ export class DeleteRoomTypeUseCase {
       deletedRoomType: {
         id: roomType.id,
         name: roomType.name,
-        typeCode: roomType.typeCode
-      }
+        typeCode: roomType.typeCode,
+      },
     };
   }
 }

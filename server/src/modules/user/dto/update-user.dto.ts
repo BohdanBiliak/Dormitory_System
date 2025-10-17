@@ -1,25 +1,24 @@
-
-import { IsBoolean, IsEmail, IsNotEmpty, IsString } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { IsBoolean, IsEmail, IsNotEmpty, IsString } from "class-validator";
+import { ApiProperty } from "@nestjs/swagger";
 
 export class UpdateUserDto {
-    @ApiProperty({ example: 'Bohdan', description: 'User\'s name' })
-    @IsString()
-    @IsNotEmpty()
-    displayName?: string;
-    
-    @ApiProperty({ example: 'Doe', description: 'User\'s second name' })
-    @IsString()
-    @IsNotEmpty()
-    secondName?: string;
-    
-    @ApiProperty({ example: 'user@example.com', description: 'User\'s email' })
-    @IsString()
-    @IsEmail()
-    @IsNotEmpty()
-    email?: string;
+  @ApiProperty({ example: "Bohdan", description: "User's name" })
+  @IsString()
+  @IsNotEmpty()
+  displayName?: string;
 
-    @ApiProperty({ example: true, description: 'Two-factor enabled or not' })
-    @IsBoolean()
-    isTwoFactorEnabled?: boolean;
+  @ApiProperty({ example: "Doe", description: "User's second name" })
+  @IsString()
+  @IsNotEmpty()
+  secondName?: string;
+
+  @ApiProperty({ example: "user@example.com", description: "User's email" })
+  @IsString()
+  @IsEmail()
+  @IsNotEmpty()
+  email?: string;
+
+  @ApiProperty({ example: true, description: "Two-factor enabled or not" })
+  @IsBoolean()
+  isTwoFactorEnabled?: boolean;
 }

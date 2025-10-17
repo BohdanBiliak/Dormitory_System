@@ -5,7 +5,11 @@ import {
   NotFoundException,
 } from "@nestjs/common";
 import { $Enums, PrismaClient, User } from "../../../__generated__";
-import { RoomRepository, RoomWithRelations, UpdateRoomData } from "./room.repository";
+import {
+  RoomRepository,
+  RoomWithRelations,
+  UpdateRoomData,
+} from "./room.repository";
 import { UpdateRoomDto } from "./dto/update-room.dto";
 import { AvailableRoomsDto } from "./dto/availableRooms.dto";
 import { BookRoomDto } from "@modules/room/dto/book-room.dto";
@@ -25,10 +29,14 @@ export class RoomService {
     private readonly auditService: AuditService,
     private readonly notificationService: NotificationsService,
     private readonly emailService: MailService,
-    private readonly s3: S3Service
-  ) { }
+    private readonly s3: S3Service,
+  ) {}
 
-  async updateRoom(id: string, updateRoomDto: UpdateRoomDto, userId: string): Promise<RoomWithRelations> {
+  async updateRoom(
+    id: string,
+    updateRoomDto: UpdateRoomDto,
+    userId: string,
+  ): Promise<RoomWithRelations> {
     // Validate room exists
     await this.validateRoomExists(id);
 
@@ -44,19 +52,24 @@ export class RoomService {
       // Log the update action
       await this.auditService.log({
         userId,
-        action: 'UPDATE_ROOM',
-        entity: 'Room',
+        action: "UPDATE_ROOM",
+        entity: "Room",
         entityId: id,
         meta: {
           updatedFields: Object.keys(updateData),
-          changes: updateData
+          changes: updateData,
         },
       });
 
       return updatedRoom;
     } catch (error) {
-      if (error && typeof error === 'object' && 'code' in error && error.code === 'P2002') {
-        throw new ConflictException('Room number already exists');
+      if (
+        error &&
+        typeof error === "object" &&
+        "code" in error &&
+        error.code === "P2002"
+      ) {
+        throw new ConflictException("Room number already exists");
       }
       throw error;
     }
@@ -68,19 +81,23 @@ export class RoomService {
     if (user.role === $Enums.UserRole.Admin) {
       rooms = await this.roomRepository.findAll();
     } else {
-      const assignments = await this.roomRepository.findDormitoryAdmins(user.id);
+      const assignments = await this.roomRepository.findDormitoryAdmins(
+        user.id,
+      );
       const dormitoryIds = assignments.map((a) => a.dormitoryId);
       rooms = await this.roomRepository.findAll(dormitoryIds);
     }
 
     // Add price information to each room
-    return await Promise.all(rooms.map(async (room) => {
-      const price = await this.getRoomPriceByCapacity(room.capacity);
-      return {
-        ...room,
-        price
-      };
-    }));
+    return await Promise.all(
+      rooms.map(async (room) => {
+        const price = await this.getRoomPriceByCapacity(room.capacity);
+        return {
+          ...room,
+          price,
+        };
+      }),
+    );
   }
 
   async findOne(id: string) {
@@ -89,7 +106,7 @@ export class RoomService {
 
     return {
       ...room,
-      price
+      price,
     };
   }
 
@@ -105,7 +122,7 @@ export class RoomService {
     return {
       ...room,
       ...statistics,
-      price
+      price,
     };
   }
 
@@ -120,32 +137,36 @@ export class RoomService {
     const prices = await this.roomRepository.findPrices({ from, to });
 
     // Create a map of capacity to price
-    prices.forEach(price => {
+    prices.forEach((price) => {
       capacityPriceMap.set(price.roomCapacity, {
         pricePerDay: price.pricePerDay,
-        pricePerMonth: price.pricePerMonth
+        pricePerMonth: price.pricePerMonth,
       });
     });
 
-    return Promise.all(rooms.map(async (room) => {
-      const isAvailable = !room.statuses.some(
-        (status) =>
-          !(
-            new Date(status.dateOfEnd ?? new Date(9999, 1, 1)) <= from ||
-            new Date(status.dateOfStart) >= to
-          ),
-      ) && room.residents.length < room.capacity;
+    return Promise.all(
+      rooms.map(async (room) => {
+        const isAvailable =
+          !room.statuses.some(
+            (status) =>
+              !(
+                new Date(status.dateOfEnd ?? new Date(9999, 1, 1)) <= from ||
+                new Date(status.dateOfStart) >= to
+              ),
+          ) && room.residents.length < room.capacity;
 
-      // Get price for this room capacity
-      const price = capacityPriceMap.get(room.capacity) ||
-        await this.getRoomPriceByCapacity(room.capacity);
+        // Get price for this room capacity
+        const price =
+          capacityPriceMap.get(room.capacity) ||
+          (await this.getRoomPriceByCapacity(room.capacity));
 
-      return {
-        ...room,
-        isAvailable,
-        price
-      };
-    }));
+        return {
+          ...room,
+          isAvailable,
+          price,
+        };
+      }),
+    );
   }
 
   async getRoomPriceByCapacity(capacity: number) {
@@ -155,13 +176,13 @@ export class RoomService {
       return {
         pricePerDay: 0,
         pricePerMonth: 0,
-        note: 'No price configured for this room capacity'
+        note: "No price configured for this room capacity",
       };
     }
 
     return {
       pricePerDay: price.pricePerDay,
-      pricePerMonth: price.pricePerMonth
+      pricePerMonth: price.pricePerMonth,
     };
   }
 
@@ -197,14 +218,15 @@ export class RoomService {
 
     // Get price for this room
     const price = await this.getRoomPriceByCapacity(room.capacity);
-    const totalAmount = diffDays <= 30
-      ? diffDays * price.pricePerDay
-      : price.pricePerMonth * (diffDays / 30);
+    const totalAmount =
+      diffDays <= 30
+        ? diffDays * price.pricePerDay
+        : price.pricePerMonth * (diffDays / 30);
 
     const booking = await this.roomRepository.createBooking({
       userId,
       roomId: room.id,
-      status: 'PENDING',
+      status: "PENDING",
       checkInDate: from,
       checkOutDate: to,
       totalAmount,
@@ -220,22 +242,29 @@ export class RoomService {
     await this.roomRepository.updateUserRoom(userId, room.id);
 
     try {
-      await this.sendBookingNotifications(booking, room, from, to, userId, totalAmount);
+      await this.sendBookingNotifications(
+        booking,
+        room,
+        from,
+        to,
+        userId,
+        totalAmount,
+      );
     } catch (notificationError) {
-      console.error('❌ Error sending notifications:', notificationError);
+      console.error("❌ Error sending notifications:", notificationError);
       // Don't throw - booking was successful, notifications are optional
     }
 
     await this.auditService.log({
       userId,
-      action: 'BOOK_ROOM',
-      entity: 'Booking',
+      action: "BOOK_ROOM",
+      entity: "Booking",
       entityId: booking.id,
       meta: {
         roomId: room.id,
         from: from.toISOString(),
         to: to.toISOString(),
-        totalAmount
+        totalAmount,
       },
     });
 
@@ -257,7 +286,11 @@ export class RoomService {
     const fromDate = new Date(from);
     const toDate = new Date(to);
 
-    const overlapping = await this.roomRepository.findRoomStatus(roomId, fromDate, toDate);
+    const overlapping = await this.roomRepository.findRoomStatus(
+      roomId,
+      fromDate,
+      toDate,
+    );
 
     if (overlapping) {
       throw new ConflictException("Room not available on selected dates");
@@ -271,7 +304,7 @@ export class RoomService {
       from: fromDate,
       to: toDate,
       roommateIds: roommateIds || [],
-      numberOfPeople: numberOfPeople || 1
+      numberOfPeople: numberOfPeople || 1,
     });
   }
 
@@ -288,8 +321,8 @@ export class RoomService {
       status: "PENDING",
       metadata: {
         moveOutDate: date.toISOString(),
-        currentRoomId: user.roomId
-      }
+        currentRoomId: user.roomId,
+      },
     });
   }
 
@@ -305,7 +338,12 @@ export class RoomService {
     return this.roomRepository.deleteRoomStatus(roomId, statusId);
   }
 
-  async assignUserToRoom(roomId: string, userId: string, startDate?: string, endDate?: string) {
+  async assignUserToRoom(
+    roomId: string,
+    userId: string,
+    startDate?: string,
+    endDate?: string,
+  ) {
     const room = await this.roomRepository.findById(roomId);
     if (!room) throw new NotFoundException("Room not found");
 
@@ -316,24 +354,29 @@ export class RoomService {
     const user = await this.roomRepository.findUserById(userId);
     if (!user) throw new NotFoundException("User not found");
 
-    const updatedUser = await this.roomRepository.updateUserRoom(userId, roomId, {
-      startDate: startDate ? new Date(startDate) : new Date(),
-      endDate: endDate ? new Date(endDate) : undefined,
-    });
+    const updatedUser = await this.roomRepository.updateUserRoom(
+      userId,
+      roomId,
+      {
+        startDate: startDate ? new Date(startDate) : new Date(),
+        endDate: endDate ? new Date(endDate) : undefined,
+      },
+    );
 
     this.createRoomStatus(roomId, {
       description: `Assigned user ${userId} to room`,
-      dateOfStart: startDate ? new Date(startDate).toISOString() : new Date().toISOString(),
+      dateOfStart: startDate
+        ? new Date(startDate).toISOString()
+        : new Date().toISOString(),
       dateOfEnd: endDate ? new Date(endDate).toISOString() : undefined,
-    }).catch(err => {
-      console.error('❌ Error creating room status for user assignment:', err);
+    }).catch((err) => {
+      console.error("❌ Error creating room status for user assignment:", err);
     });
-
 
     await this.auditService.log({
       userId,
-      action: 'ASSIGN_USER_TO_ROOM',
-      entity: 'User',
+      action: "ASSIGN_USER_TO_ROOM",
+      entity: "User",
       entityId: userId,
       meta: {
         roomId,
@@ -345,7 +388,6 @@ export class RoomService {
 
     return updatedUser;
   }
-
 
   async evictUserFromRoom(roomId: string, dto: EvictUserFromRoomDto) {
     const room = await this.roomRepository.findById(roomId);
@@ -360,22 +402,29 @@ export class RoomService {
     }
 
     // Set endDate for the user
-    const updatedUser = await this.roomRepository.updateUserRoom(dto.userId, null, {
-      endDate: new Date(), // Set the end date
-    });
+    const updatedUser = await this.roomRepository.updateUserRoom(
+      dto.userId,
+      null,
+      {
+        endDate: new Date(), // Set the end date
+      },
+    );
 
     // End any active room statuses for this user
     await this.roomRepository.endUserRoomStatuses(dto.userId, roomId);
 
     // Find and delete all statuses associated with this user in this room
     try {
-      const userStatuses = await this.roomRepository.findStatusesByUserAndRoom(dto.userId, roomId);
+      const userStatuses = await this.roomRepository.findStatusesByUserAndRoom(
+        dto.userId,
+        roomId,
+      );
 
       for (const status of userStatuses) {
         await this.deleteRoomStatus(roomId, status.id);
       }
     } catch (statusError) {
-      console.error('❌ Error deleting user statuses:', statusError);
+      console.error("❌ Error deleting user statuses:", statusError);
       // Don't throw - eviction was successful, status deletion is cleanup
     }
 
@@ -384,19 +433,22 @@ export class RoomService {
       await this.notificationService.createNotification({
         toUserId: dto.userId,
         type: $Enums.NotificationType.ACCOMMODATION_CHANGE_REJECTED,
-        title: 'Room Assignment Changed',
+        title: "Room Assignment Changed",
         message: `You have been removed from room ${room.number}`,
         roomId: roomId,
       });
     } catch (notificationError) {
-      console.error('❌ Error sending eviction notification:', notificationError);
+      console.error(
+        "❌ Error sending eviction notification:",
+        notificationError,
+      );
       // Don't throw - eviction was successful, notifications are optional
     }
 
     await this.auditService.log({
       userId: dto.userId,
-      action: 'EVICT_USER_FROM_ROOM',
-      entity: 'User',
+      action: "EVICT_USER_FROM_ROOM",
+      entity: "User",
       entityId: dto.userId,
       meta: {
         roomId,
@@ -408,9 +460,15 @@ export class RoomService {
     });
 
     if (dto.description) {
-      this.emailService.sendEvictionEmail(user.email, `You have been evicted from room ${room.number} in ${room.dormitory?.name || 'the dormitory'} because ${dto.description}. Please contact administration for more details.`);
+      this.emailService.sendEvictionEmail(
+        user.email,
+        `You have been evicted from room ${room.number} in ${room.dormitory?.name || "the dormitory"} because ${dto.description}. Please contact administration for more details.`,
+      );
     } else {
-      this.emailService.sendEvictionEmail(user.email, `You have been evicted from room ${room.number} in ${room.dormitory?.name || 'the dormitory'}. Please contact administration for more details.`);
+      this.emailService.sendEvictionEmail(
+        user.email,
+        `You have been evicted from room ${room.number} in ${room.dormitory?.name || "the dormitory"}. Please contact administration for more details.`,
+      );
     }
 
     return updatedUser;
@@ -434,12 +492,20 @@ export class RoomService {
     }
   }
 
-  private async validateUpdateRules(id: string, updateRoomDto: UpdateRoomDto): Promise<void> {
+  private async validateUpdateRules(
+    id: string,
+    updateRoomDto: UpdateRoomDto,
+  ): Promise<void> {
     // Check room number uniqueness
     if (updateRoomDto.number) {
-      const isUnique = await this.roomRepository.isRoomNumberUnique(updateRoomDto.number, id);
+      const isUnique = await this.roomRepository.isRoomNumberUnique(
+        updateRoomDto.number,
+        id,
+      );
       if (!isUnique) {
-        throw new ConflictException(`Room number ${updateRoomDto.number} already exists`);
+        throw new ConflictException(
+          `Room number ${updateRoomDto.number} already exists`,
+        );
       }
     }
 
@@ -449,16 +515,25 @@ export class RoomService {
     }
 
     // Validate floor and capacity combination
-    if (updateRoomDto.floor !== undefined && updateRoomDto.capacity !== undefined) {
-      this.validateFloorCapacityLogic(updateRoomDto.floor, updateRoomDto.capacity);
+    if (
+      updateRoomDto.floor !== undefined &&
+      updateRoomDto.capacity !== undefined
+    ) {
+      this.validateFloorCapacityLogic(
+        updateRoomDto.floor,
+        updateRoomDto.capacity,
+      );
     }
   }
 
-  private async validateCapacityNotBelowOccupancy(roomId: string, newCapacity: string): Promise<void> {
+  private async validateCapacityNotBelowOccupancy(
+    roomId: string,
+    newCapacity: string,
+  ): Promise<void> {
     const currentOccupancy = await this.roomRepository.countOccupants(roomId);
     if (Number(newCapacity) < currentOccupancy) {
       throw new BadRequestException(
-        `Cannot reduce capacity to ${newCapacity}. Room currently has ${currentOccupancy} occupants`
+        `Cannot reduce capacity to ${newCapacity}. Room currently has ${currentOccupancy} occupants`,
       );
     }
   }
@@ -467,21 +542,21 @@ export class RoomService {
     // Business logic: Higher floors might have capacity restrictions
     if (Number(floor) > 10 && Number(capacity) > 6) {
       throw new BadRequestException(
-        'Rooms above floor 10 cannot have more than 6 people for safety reasons'
+        "Rooms above floor 10 cannot have more than 6 people for safety reasons",
       );
     }
 
     // Ground floor might have different restrictions
     if (Number(floor) === 1 && Number(capacity) > 8) {
       throw new BadRequestException(
-        'Ground floor rooms cannot exceed 8 people capacity'
+        "Ground floor rooms cannot exceed 8 people capacity",
       );
     }
 
     // Emergency exit requirements for high capacity rooms
     if (Number(capacity) > 4 && Number(floor) > 5) {
       throw new BadRequestException(
-        'Rooms with more than 4 people cannot be above floor 5 for emergency evacuation'
+        "Rooms with more than 4 people cannot be above floor 5 for emergency evacuation",
       );
     }
   }
@@ -502,7 +577,9 @@ export class RoomService {
     }
 
     if (updateRoomDto.roomEquipment) {
-      updateData.roomEquipment = this.sanitizeEquipment(updateRoomDto.roomEquipment);
+      updateData.roomEquipment = this.sanitizeEquipment(
+        updateRoomDto.roomEquipment,
+      );
     }
 
     if (updateRoomDto.photos) {
@@ -518,28 +595,30 @@ export class RoomService {
 
   private sanitizeEquipment(equipment: string[]): string[] {
     return equipment
-      .filter(item => item && item.trim().length > 0)
-      .map(item => item.trim())
+      .filter((item) => item && item.trim().length > 0)
+      .map((item) => item.trim())
       .slice(0, 20);
   }
 
   private sanitizePhotoUrls(photos: string[]): string[] {
     const maxPhotos = 10;
     const allowedDomains = [
-      'imgur.com',
-      'cloudinary.com',
-      'amazonaws.com',
-      's3.amazonaws.com',
-      'storage.googleapis.com'
+      "imgur.com",
+      "cloudinary.com",
+      "amazonaws.com",
+      "s3.amazonaws.com",
+      "storage.googleapis.com",
     ];
 
     return photos
-      .filter(url => {
+      .filter((url) => {
         try {
           const urlObj = new URL(url);
-          return urlObj.protocol === 'https:' &&
-            allowedDomains.some(domain => urlObj.hostname.includes(domain)) &&
-            /\.(jpg|jpeg|png|webp)$/i.test(urlObj.pathname);
+          return (
+            urlObj.protocol === "https:" &&
+            allowedDomains.some((domain) => urlObj.hostname.includes(domain)) &&
+            /\.(jpg|jpeg|png|webp)$/i.test(urlObj.pathname)
+          );
         } catch {
           return false;
         }
@@ -547,25 +626,34 @@ export class RoomService {
       .slice(0, maxPhotos);
   }
 
-  private async sendBookingNotifications(booking: any, room: any, from: Date, to: Date, userId: string, totalAmount: number) {
+  private async sendBookingNotifications(
+    booking: any,
+    room: any,
+    from: Date,
+    to: Date,
+    userId: string,
+    totalAmount: number,
+  ) {
     await this.notificationService.createNotification({
       toUserId: String(userId),
       type: $Enums.NotificationType.ROOM_BOOKING_APPROVED,
-      title: 'Room Booking Confirmed',
-      message: `Your booking for room ${room.number} in ${room.dormitory?.name || 'Unknown Dormitory'} has been confirmed for ${from.toDateString()} to ${to.toDateString()}`,
+      title: "Room Booking Confirmed",
+      message: `Your booking for room ${room.number} in ${room.dormitory?.name || "Unknown Dormitory"} has been confirmed for ${from.toDateString()} to ${to.toDateString()}`,
       bookingId: String(booking.id),
       roomId: String(room.id),
     });
 
     // Notify dormitory admins
-    const dormitoryAdmins = await this.roomRepository.findDormitoryAdmins(room.dormitoryId);
+    const dormitoryAdmins = await this.roomRepository.findDormitoryAdmins(
+      room.dormitoryId,
+    );
 
     for (const admin of dormitoryAdmins) {
       await this.notificationService.createNotification({
         toUserId: admin.userId,
         fromUserId: userId,
         type: $Enums.NotificationType.ROOM_BOOKING_REQUEST,
-        title: 'New Room Booking',
+        title: "New Room Booking",
         message: `Room ${room.number} has been booked by a student for ${from.toDateString()} to ${to.toDateString()}`,
         bookingId: booking.id,
         roomId: room.id,
@@ -575,11 +663,11 @@ export class RoomService {
     // Send email notification
     await this.notificationService.sendEmailNotification({
       to: userId,
-      subject: 'Room Booking Confirmation',
-      template: 'room-booking-confirmation',
+      subject: "Room Booking Confirmation",
+      template: "room-booking-confirmation",
       data: {
         roomNumber: room.number,
-        dormitoryName: room.dormitory?.name || 'Unknown Dormitory',
+        dormitoryName: room.dormitory?.name || "Unknown Dormitory",
         checkIn: from.toDateString(),
         checkOut: to.toDateString(),
         bookingId: booking.id,
@@ -588,7 +676,10 @@ export class RoomService {
     });
   }
 
-  async uploadFiles(files: Express.Multer.File[], folder: string): Promise<string[]> {
-     return Promise.all(files.map(file => this.s3.uploadFile(file, folder)));
+  async uploadFiles(
+    files: Express.Multer.File[],
+    folder: string,
+  ): Promise<string[]> {
+    return Promise.all(files.map((file) => this.s3.uploadFile(file, folder)));
   }
 }

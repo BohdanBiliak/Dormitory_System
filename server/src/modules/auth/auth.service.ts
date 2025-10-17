@@ -14,7 +14,7 @@ import { LoginDto } from "@/modules/auth/dto/login.dto";
 import { verify } from "argon2";
 import { ConfigService } from "@nestjs/config";
 import { PrismaService } from "@/prisma/prisma.service";
-import * as multer from 'multer';
+import * as multer from "multer";
 
 interface FileUpload {
   avatar: Express.Multer.File[];
@@ -36,11 +36,7 @@ export class AuthService {
     private readonly s3Service: S3Service,
   ) {}
 
-  public async register(
-    req: Request,
-    dto: RegisterDto,
-    files: FileUpload,
-  ) {
+  public async register(req: Request, dto: RegisterDto, files: FileUpload) {
     const isExists = await this.userService.findByEmail(dto.email);
     if (isExists) {
       throw new ConflictException(

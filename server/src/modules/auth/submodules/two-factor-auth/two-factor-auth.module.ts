@@ -1,7 +1,7 @@
-import { Module } from '@nestjs/common';
-import { TwoFactorAuthService } from './services/two-factor-auth.service';
-import {MailService} from "@/libs/mail/mail.service";
-import {PrismaService} from "@/prisma/prisma.service";
+import { Module } from "@nestjs/common";
+import { TwoFactorAuthService } from "./services/two-factor-auth.service";
+import { MailService } from "@/libs/mail/mail.service";
+import { PrismaService } from "@/prisma/prisma.service";
 
 @Module({
   controllers: [],

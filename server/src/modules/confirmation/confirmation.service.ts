@@ -1,17 +1,16 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "@/prisma/prisma.service";
-import {
-  $Enums,
-  Confirmation,
-  ConfirmationType,
-} from "../../../__generated__";
+import { $Enums, Confirmation, ConfirmationType } from "../../../__generated__";
 import ConfirmationStatus = $Enums.ConfirmationStatus;
 import UserRole = $Enums.UserRole;
 import { MailService } from "@/libs/mail/mail.service";
 
 @Injectable()
 export class ConfirmationService {
-  constructor(private readonly prisma: PrismaService, private readonly mailService: MailService) { }
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly mailService: MailService,
+  ) {}
 
   async getAll(): Promise<Confirmation[]> {
     return this.prisma.confirmation.findMany({
@@ -107,7 +106,12 @@ export class ConfirmationService {
     });
 
     // Send rejection email to the requester
-    await this.sendRejectionEmail(user.email, user.displayName, reason, updated.type);
+    await this.sendRejectionEmail(
+      user.email,
+      user.displayName,
+      reason,
+      updated.type,
+    );
 
     return updated;
   }
@@ -116,11 +120,10 @@ export class ConfirmationService {
     email: string,
     name: string,
     reason: string,
-    type: ConfirmationType
+    type: ConfirmationType,
   ) {
-
-    const subject = `Your ${type.toLowerCase().replace('_', ' ')} request has been rejected`;
-    const template = 'confirmation-rejection'; // Create this template
+    const subject = `Your ${type.toLowerCase().replace("_", " ")} request has been rejected`;
+    const template = "confirmation-rejection"; // Create this template
 
     await this.mailService.sendRejectionEmail(email, name, reason, type);
   }

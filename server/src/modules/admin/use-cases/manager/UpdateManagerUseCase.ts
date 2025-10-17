@@ -1,6 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { ManagerRepository } from '../../manager.repository';
-import { UpdateManagerDto } from '../../dto/UpdateManager.dto';
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { ManagerRepository } from "../../manager.repository";
+import { UpdateManagerDto } from "../../dto/UpdateManager.dto";
 
 @Injectable()
 export class UpdateManagerUseCase {
@@ -9,7 +9,7 @@ export class UpdateManagerUseCase {
   async execute(id: string, dto: UpdateManagerDto) {
     const existingManager = await this.managerRepository.findById(id);
     if (!existingManager) {
-      throw new NotFoundException('Manager not found');
+      throw new NotFoundException("Manager not found");
     }
 
     return this.managerRepository.update(id, dto);

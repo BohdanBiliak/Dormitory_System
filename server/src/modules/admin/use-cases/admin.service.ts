@@ -6,7 +6,6 @@ import {
 import { UpdateAdminProfileDto } from "@/modules/admin/dto/UpdateAdminProfile.dto";
 import { PrismaService } from "@/prisma/prisma.service";
 import { S3Service } from "@/libs/common/s3/s3.service";
-import { UploadAvatarDto } from "@/modules/admin/dto/UploadAvatarDto";
 
 type Version = "original" | "mobile" | "tablet" | "desktop";
 

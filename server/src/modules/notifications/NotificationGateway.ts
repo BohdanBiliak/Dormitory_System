@@ -7,10 +7,10 @@ import {
   OnGatewayInit,
   OnGatewayConnection,
   OnGatewayDisconnect,
-} from '@nestjs/websockets';
-import { Server, Socket } from 'socket.io';
-import { Injectable, Logger } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+} from "@nestjs/websockets";
+import { Server, Socket } from "socket.io";
+import { Injectable, Logger } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 
 interface AuthenticatedSocket extends Socket {
   userId?: string;
@@ -20,14 +20,14 @@ interface AuthenticatedSocket extends Socket {
 @Injectable()
 @WebSocketGateway({
   cors: {
-    origin: process.env.CLIENT_URL || 'http://localhost:3000',
+    origin: process.env.CLIENT_URL || "http://localhost:3000",
     credentials: true,
   },
-  namespace: '/notifications',
+  namespace: "/notifications",
 })
-export class NotificationGateway 
-  implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
-  
+export class NotificationGateway
+  implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
+{
   @WebSocketServer()
   server!: Server;
 
@@ -37,26 +37,29 @@ export class NotificationGateway
 
   constructor(private configService: ConfigService) {}
 
-  afterInit(server: Server) {
-    this.logger.log('🔌 NotificationGateway initialized');
+  afterInit() {
+    this.logger.log("🔌 NotificationGateway initialized");
   }
 
   async handleConnection(client: AuthenticatedSocket) {
     try {
       // Extract session cookie from the connection
-      const cookies = this.parseCookies(client.handshake.headers.cookie || '');
-      const sessionName = this.configService.get('SESSION_NAME') || 'connect.sid';
+      const cookies = this.parseCookies(client.handshake.headers.cookie || "");
+      const sessionName =
+        this.configService.get("SESSION_NAME") || "connect.sid";
       const sessionCookie = cookies[sessionName];
 
       if (!sessionCookie) {
-        this.logger.warn(`❌ Client ${client.id} connected without session cookie`);
+        this.logger.warn(
+          `❌ Client ${client.id} connected without session cookie`,
+        );
         client.disconnect();
         return;
       }
 
       // Get session ID from cookie (remove signature if signed)
       const sessionId = this.extractSessionId(sessionCookie);
-      
+
       if (!sessionId) {
         this.logger.warn(`❌ Client ${client.id} has invalid session cookie`);
         client.disconnect();
@@ -65,9 +68,11 @@ export class NotificationGateway
 
       // Verify session exists and get user data
       const userData = await this.getSessionUserData(sessionId);
-      
+
       if (!userData || !userData.id) {
-        this.logger.warn(`❌ Client ${client.id} has invalid session or not authenticated`);
+        this.logger.warn(
+          `❌ Client ${client.id} has invalid session or not authenticated`,
+        );
         client.disconnect();
         return;
       }
@@ -81,15 +86,16 @@ export class NotificationGateway
       // Join user to their personal room
       await client.join(`user_${userData.id}`);
 
-      this.logger.log(`✅ User ${userData.id} connected with socket ${client.id}`);
+      this.logger.log(
+        `✅ User ${userData.id} connected with socket ${client.id}`,
+      );
 
       // Send connection confirmation
-      client.emit('connection_confirmed', {
-        message: 'Connected to notifications',
+      client.emit("connection_confirmed", {
+        message: "Connected to notifications",
         userId: userData.id,
         timestamp: new Date().toISOString(),
       });
-
     } catch (error) {
       this.logger.error(`❌ Connection error for ${client.id}:`, error);
       client.disconnect();
@@ -109,14 +115,14 @@ export class NotificationGateway
   // Parse cookies from header string
   private parseCookies(cookieHeader: string): Record<string, string> {
     const cookies: Record<string, string> = {};
-    
-    cookieHeader.split(';').forEach(cookie => {
-      const [name, ...rest] = cookie.trim().split('=');
+
+    cookieHeader.split(";").forEach((cookie) => {
+      const [name, ...rest] = cookie.trim().split("=");
       if (name && rest.length) {
-        cookies[name] = rest.join('=');
+        cookies[name] = rest.join("=");
       }
     });
-    
+
     return cookies;
   }
 
@@ -125,17 +131,17 @@ export class NotificationGateway
     try {
       // Handle URL-encoded cookie values
       const decoded = decodeURIComponent(cookieValue);
-      
+
       // If cookie is signed (starts with 's:'), extract the value before the signature
-      if (decoded.startsWith('s:')) {
+      if (decoded.startsWith("s:")) {
         const sessionPart = decoded.slice(2); // Remove 's:'
-        const dotIndex = sessionPart.lastIndexOf('.');
+        const dotIndex = sessionPart.lastIndexOf(".");
         return dotIndex > 0 ? sessionPart.slice(0, dotIndex) : sessionPart;
       }
-      
+
       return decoded;
     } catch (error) {
-      this.logger.error('Error extracting session ID:', error);
+      this.logger.error("Error extracting session ID:", error);
       return null;
     }
   }
@@ -146,7 +152,7 @@ export class NotificationGateway
       // Since you're using Redis for sessions, we need to access it
       // You might need to inject Redis client or PrismaService to verify session
       // For now, we'll use a placeholder - you'll need to implement this based on your Redis setup
-      
+
       // Option 1: Access Redis directly (if you expose Redis client)
       // const sessionKey = `${this.configService.get('SESSION_FOLDER')}:${sessionId}`;
       // const sessionData = await this.redisClient.get(sessionKey);
@@ -158,9 +164,8 @@ export class NotificationGateway
       // Option 2: For now, return null and implement Redis access
       // You'll need to inject Redis client in the constructor
       return null;
-      
     } catch (error) {
-      this.logger.error('Error getting session data:', error);
+      this.logger.error("Error getting session data:", error);
       return null;
     }
   }
@@ -172,7 +177,7 @@ export class NotificationGateway
 
     if (socketId) {
       // User is online - send real-time notification
-      this.server.to(`user_${userIdString}`).emit('new_notification', {
+      this.server.to(`user_${userIdString}`).emit("new_notification", {
         id: notification.id,
         type: notification.type,
         title: notification.title,
@@ -187,22 +192,33 @@ export class NotificationGateway
         isRead: notification.isRead,
       });
 
-      this.logger.log(`📧 Sent notification ${notification.id} to user ${userIdString}`);
+      this.logger.log(
+        `📧 Sent notification ${notification.id} to user ${userIdString}`,
+      );
       return true;
     } else {
-      this.logger.log(`👤 User ${userIdString} is offline - notification saved to DB only`);
+      this.logger.log(
+        `👤 User ${userIdString} is offline - notification saved to DB only`,
+      );
       return false;
     }
   }
 
   // Send notification to multiple users
-  async sendNotificationToUsers(userIds: (string | number)[], notification: any) {
+  async sendNotificationToUsers(
+    userIds: (string | number)[],
+    notification: any,
+  ) {
     const results = await Promise.all(
-      userIds.map(userId => this.sendNotificationToUser(userId, notification))
+      userIds.map((userId) =>
+        this.sendNotificationToUser(userId, notification),
+      ),
     );
 
     const onlineCount = results.filter(Boolean).length;
-    this.logger.log(`📧 Sent notification to ${onlineCount}/${userIds.length} online users`);
+    this.logger.log(
+      `📧 Sent notification to ${onlineCount}/${userIds.length} online users`,
+    );
 
     return { onlineCount, totalCount: userIds.length };
   }
@@ -215,53 +231,59 @@ export class NotificationGateway
 
   // Send to users in specific dormitory
   async sendToDormitoryUsers(dormitoryId: string, notification: any) {
-    this.server.to(`dormitory_${dormitoryId}`).emit('new_notification', notification);
+    this.server
+      .to(`dormitory_${dormitoryId}`)
+      .emit("new_notification", notification);
     this.logger.log(`🏠 Sent notification to dormitory ${dormitoryId}`);
   }
 
   // Handle client requesting to join dormitory room
-  @SubscribeMessage('join_dormitory')
+  @SubscribeMessage("join_dormitory")
   async handleJoinDormitory(
     @MessageBody() data: { dormitoryId: string },
     @ConnectedSocket() client: AuthenticatedSocket,
   ) {
     if (client.userId && data.dormitoryId) {
       await client.join(`dormitory_${data.dormitoryId}`);
-      this.logger.log(`User ${client.userId} joined dormitory ${data.dormitoryId}`);
-      
-      client.emit('dormitory_joined', {
+      this.logger.log(
+        `User ${client.userId} joined dormitory ${data.dormitoryId}`,
+      );
+
+      client.emit("dormitory_joined", {
         dormitoryId: data.dormitoryId,
-        message: 'Successfully joined dormitory notifications',
+        message: "Successfully joined dormitory notifications",
       });
     }
   }
 
   // Handle client requesting to leave dormitory room
-  @SubscribeMessage('leave_dormitory')
+  @SubscribeMessage("leave_dormitory")
   async handleLeaveDormitory(
     @MessageBody() data: { dormitoryId: string },
     @ConnectedSocket() client: AuthenticatedSocket,
   ) {
     if (client.userId && data.dormitoryId) {
       await client.leave(`dormitory_${data.dormitoryId}`);
-      this.logger.log(`User ${client.userId} left dormitory ${data.dormitoryId}`);
-      
-      client.emit('dormitory_left', {
+      this.logger.log(
+        `User ${client.userId} left dormitory ${data.dormitoryId}`,
+      );
+
+      client.emit("dormitory_left", {
         dormitoryId: data.dormitoryId,
-        message: 'Left dormitory notifications',
+        message: "Left dormitory notifications",
       });
     }
   }
 
   // Handle marking notification as read
-  @SubscribeMessage('mark_notification_read')
+  @SubscribeMessage("mark_notification_read")
   async handleMarkAsRead(
     @MessageBody() data: { notificationId: string },
     @ConnectedSocket() client: AuthenticatedSocket,
   ) {
     if (client.userId && data.notificationId) {
       // Emit confirmation back to client
-      client.emit('notification_marked_read', {
+      client.emit("notification_marked_read", {
         notificationId: data.notificationId,
         timestamp: new Date().toISOString(),
       });

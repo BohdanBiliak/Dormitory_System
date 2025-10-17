@@ -72,31 +72,37 @@ export class EmailConfirmationService {
         "Verification token expired. Please try again.",
       );
     }
-    const existingUser = await this.userService.findByEmail(existingToken.email)
-      if (!existingUser) {
-          throw new NotFoundException(' user with email not found. Please try again.');
-      }
-      await this.prismaService.user.update({
-          where: {
-              id: existingUser.id
-          },
-          data: {
-              isVerified: true,
-          }
-      })
-      await this.prismaService.token.delete({
-          where: {
-              id:existingToken.id,
-              type: TokenType.VERIFICATION,
-          }
-      })
-      return this.authService.saveSession(req, existingUser)
+    const existingUser = await this.userService.findByEmail(
+      existingToken.email,
+    );
+    if (!existingUser) {
+      throw new NotFoundException(
+        " user with email not found. Please try again.",
+      );
+    }
+    await this.prismaService.user.update({
+      where: {
+        id: existingUser.id,
+      },
+      data: {
+        isVerified: true,
+      },
+    });
+    await this.prismaService.token.delete({
+      where: {
+        id: existingToken.id,
+        type: TokenType.VERIFICATION,
+      },
+    });
+    return this.authService.saveSession(req, existingUser);
   }
 
   public async sendVerificationToken(user: User) {
-    const verificationToken = await this.generateVerificationToken(user.email)
-    await this.mailService.sendConfirmationEmail(verificationToken.email, verificationToken.token)
-    return true
-
+    const verificationToken = await this.generateVerificationToken(user.email);
+    await this.mailService.sendConfirmationEmail(
+      verificationToken.email,
+      verificationToken.token,
+    );
+    return true;
   }
 }

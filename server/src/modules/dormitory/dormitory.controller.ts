@@ -24,21 +24,23 @@ import { MultipartTransformInterceptor } from "@/libs/common/interceptors/Multip
 @DormitoryDocs.controller()
 @Controller("dormitories")
 export class DormitoryController {
-  constructor(private readonly dormitoryService: DormitoryService) { }
+  constructor(private readonly dormitoryService: DormitoryService) {}
 
   @Post()
   @UseInterceptors(MultipartTransformInterceptor)
   @DormitoryDocs.create()
-@UseInterceptors(FileFieldsInterceptor([
-  { name: "photos", maxCount: 10 },
-]))
-create(
-  @Body('floorAssignments', new ParseArrayPipe({ items: FloorRoomAssignmentDto })) floorAssignments: FloorRoomAssignmentDto[],
-  @UploadedFiles() files: { photos?: Express.Multer.File[] },
-  @Body() dto: Omit<CreateDormitoryDto, 'floorAssignments'>,
-) {
-  return this.dormitoryService.create({ ...dto, floorAssignments }, files);
-}
+  @UseInterceptors(FileFieldsInterceptor([{ name: "photos", maxCount: 10 }]))
+  create(
+    @Body(
+      "floorAssignments",
+      new ParseArrayPipe({ items: FloorRoomAssignmentDto }),
+    )
+    floorAssignments: FloorRoomAssignmentDto[],
+    @UploadedFiles() files: { photos?: Express.Multer.File[] },
+    @Body() dto: Omit<CreateDormitoryDto, "floorAssignments">,
+  ) {
+    return this.dormitoryService.create({ ...dto, floorAssignments }, files);
+  }
 
   @Get()
   @DormitoryDocs.findAll()

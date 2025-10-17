@@ -1,17 +1,14 @@
 import { IsString, IsUUID, IsOptional, IsDateString } from "class-validator";
 
 export class AssignUserToRoomDto {
-    @IsUUID()
-    userId: string;
+  @IsUUID()
+  userId: string;
 
+  @IsOptional()
+  @IsDateString()
+  startDate?: string;
 
-    @IsOptional()
-    @IsDateString()
-    startDate?: string; 
-
-    @IsOptional()
-    @IsDateString()
-    endDate?: string; 
-
-
+  @IsOptional()
+  @IsDateString()
+  endDate?: string;
 }

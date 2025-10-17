@@ -1,18 +1,16 @@
-import { Module } from '@nestjs/common';
-import { AnnouncementController } from './announcement.controller';
+import { Module } from "@nestjs/common";
+import { AnnouncementController } from "./announcement.controller";
 
-import { CreateAnnouncementUseCase } from './use-cases/create-announcement.use-case';
-import { GetAnnouncementsUseCase } from './use-cases/get-announcements.use-case';
-import { DeleteAnnouncementUseCase } from './use-cases/delete-announcement.use-case';
-import {AnnouncementRepository} from "@modules/announcement/announcement.repository";
-import {PrismaModule} from "@/prisma/prisma.module";
-import {S3Module} from "@libs/common/s3/s3.module";
-import {
-  UploadAnnouncementAttachmentsUseCase
-} from "@modules/announcement/use-cases/upload-announcement-attachments.use-case";
-import {GetAnnouncementByIdUseCase} from "@modules/announcement/use-cases/get-announcement-by-id.use-case";
-import {GetPublicAnnouncementsUseCase} from "@modules/announcement/use-cases/get-public-announcements.use-case";
-import {UserModule} from "@modules/user/user.module";
+import { CreateAnnouncementUseCase } from "./use-cases/create-announcement.use-case";
+import { GetAnnouncementsUseCase } from "./use-cases/get-announcements.use-case";
+import { DeleteAnnouncementUseCase } from "./use-cases/delete-announcement.use-case";
+import { AnnouncementRepository } from "@modules/announcement/announcement.repository";
+import { PrismaModule } from "@/prisma/prisma.module";
+import { S3Module } from "@libs/common/s3/s3.module";
+import { UploadAnnouncementAttachmentsUseCase } from "@modules/announcement/use-cases/upload-announcement-attachments.use-case";
+import { GetAnnouncementByIdUseCase } from "@modules/announcement/use-cases/get-announcement-by-id.use-case";
+import { GetPublicAnnouncementsUseCase } from "@modules/announcement/use-cases/get-public-announcements.use-case";
+import { UserModule } from "@modules/user/user.module";
 
 @Module({
   imports: [PrismaModule, S3Module, UserModule],
@@ -24,8 +22,7 @@ import {UserModule} from "@modules/user/user.module";
     DeleteAnnouncementUseCase,
     UploadAnnouncementAttachmentsUseCase,
     GetAnnouncementByIdUseCase,
-    GetPublicAnnouncementsUseCase
-
+    GetPublicAnnouncementsUseCase,
   ],
   exports: [
     AnnouncementRepository,
@@ -34,7 +31,7 @@ import {UserModule} from "@modules/user/user.module";
     DeleteAnnouncementUseCase,
     UploadAnnouncementAttachmentsUseCase,
     GetAnnouncementByIdUseCase,
-    GetPublicAnnouncementsUseCase
+    GetPublicAnnouncementsUseCase,
   ],
 })
 export class AnnouncementModule {}

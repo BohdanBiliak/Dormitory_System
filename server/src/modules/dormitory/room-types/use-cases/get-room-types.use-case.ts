@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaService } from '@/prisma/prisma.service';
+import { Injectable } from "@nestjs/common";
+import { PrismaService } from "@/prisma/prisma.service";
 
 @Injectable()
 export class GetRoomTypesUseCase {
@@ -14,24 +14,24 @@ export class GetRoomTypesUseCase {
             include: {
               floor: {
                 include: {
-                  dormitory: { select: { id: true, name: true } }
-                }
-              }
-            }
-          }
-        }
+                  dormitory: { select: { id: true, name: true } },
+                },
+              },
+            },
+          },
+        },
       });
     }
 
     return this.prisma.roomType.findMany({
-      orderBy: { typeCode: 'asc' },
+      orderBy: { typeCode: "asc" },
       include: {
         _count: {
           select: {
-            floorRoomAssignments: true
-          }
-        }
-      }
+            floorRoomAssignments: true,
+          },
+        },
+      },
     });
   }
 }

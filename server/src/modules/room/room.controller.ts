@@ -1,9 +1,20 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseInterceptors, UploadedFiles } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UseInterceptors,
+  UploadedFiles,
+} from "@nestjs/common";
 import { RoomService } from "./room.service";
 import { Authorized } from "@/libs/common/decorators/authtorized.decorator";
 import { $Enums, User } from "../../../__generated__";
 import { Authorization } from "@/libs/common/decorators/auth.decorator";
-import { AvailableRoomsDto } from "./dto/availableRooms.dto"
+import { AvailableRoomsDto } from "./dto/availableRooms.dto";
 import { BookRoomDto } from "@modules/room/dto/book-room.dto";
 import { RequestMoveOutDto } from "@modules/room/dto/request-moveout.dto";
 import { RequestAccommmodationDto } from "./dto/requestAccommmodation.dto";
@@ -19,10 +30,16 @@ import { RoomDocs } from "./room.docs";
 @RoomDocs.controller()
 @Controller("rooms")
 export class RoomController {
-  constructor(private roomService: RoomService) { }
+  constructor(private roomService: RoomService) {}
 
   @Get()
-  @Authorization(UserRole.Admin, UserRole.SignedInUser, UserRole.SuperAdmin, UserRole.Resident, UserRole.Regular)
+  @Authorization(
+    UserRole.Admin,
+    UserRole.SignedInUser,
+    UserRole.SuperAdmin,
+    UserRole.Resident,
+    UserRole.Regular,
+  )
   @RoomDocs.getRooms()
   async getRooms(@Authorized() user: User) {
     return this.roomService.findAll(user);
@@ -48,7 +65,7 @@ export class RoomController {
   async updateRoom(
     @Param("id") id: string,
     @Body() updateRoomDto: UpdateRoomDto,
-    @Authorized() user: User
+    @Authorized() user: User,
   ) {
     return this.roomService.updateRoom(id, updateRoomDto, user.id);
   }
@@ -107,7 +124,12 @@ export class RoomController {
     @Param("id") roomId: string,
     @Body() dto: AssignUserToRoomDto,
   ) {
-    return this.roomService.assignUserToRoom(roomId, dto.userId, dto.startDate, dto.endDate);
+    return this.roomService.assignUserToRoom(
+      roomId,
+      dto.userId,
+      dto.startDate,
+      dto.endDate,
+    );
   }
 
   @Patch(":id/evict-user")
@@ -127,12 +149,12 @@ export class RoomController {
     return this.roomService.setRoomPrice(dto);
   }
 
-  @Post('upload')
+  @Post("upload")
   @Authorization(UserRole.Admin, UserRole.SuperAdmin)
   @RoomDocs.upload()
-  @UseInterceptors(FilesInterceptor('files'))
+  @UseInterceptors(FilesInterceptor("files"))
   async upload(@UploadedFiles() files: Express.Multer.File[]) {
-    const urls = await this.roomService.uploadFiles(files, 'rooms');
+    const urls = await this.roomService.uploadFiles(files, "rooms");
 
     return { urls };
   }

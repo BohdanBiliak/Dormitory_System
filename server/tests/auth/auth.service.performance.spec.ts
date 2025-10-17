@@ -1,15 +1,12 @@
 /// <reference types="jest" />
-import { Test, TestingModule } from '@nestjs/testing';
-import { ConflictException, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 
 // Performance and load testing for AuthService
-describe('AuthService Performance Tests', () => {
-  
-  describe('Concurrent Operations', () => {
-    it('should handle multiple registration attempts concurrently', async () => {
+describe("AuthService Performance Tests", () => {
+  describe("Concurrent Operations", () => {
+    it("should handle multiple registration attempts concurrently", async () => {
       const mockUserService = {
         findByEmail: jest.fn(),
-        create: jest.fn()
+        create: jest.fn(),
       };
 
       // Simulate 100 concurrent registration attempts
@@ -22,27 +19,27 @@ describe('AuthService Performance Tests', () => {
       mockUserService.findByEmail.mockResolvedValue(undefined);
 
       const results = await Promise.all(registrationPromises);
-      
+
       expect(results).toHaveLength(100);
       expect(mockUserService.findByEmail).toHaveBeenCalledTimes(100);
-      results.forEach(result => {
+      results.forEach((result) => {
         expect(result).toBeUndefined();
       });
     });
 
-    it('should handle multiple login attempts concurrently', async () => {
+    it("should handle multiple login attempts concurrently", async () => {
       interface LoginResult {
         success: boolean;
         token?: string;
       }
 
       const mockAuthService = {
-        login: jest.fn()
+        login: jest.fn(),
       };
 
       const mockLoginData = {
-        email: 'test@example.com',
-        password: 'password123'
+        email: "test@example.com",
+        password: "password123",
       };
 
       mockAuthService.login.mockResolvedValue({ success: true } as LoginResult);
@@ -55,19 +52,19 @@ describe('AuthService Performance Tests', () => {
       }
 
       const results = await Promise.all(loginPromises);
-      
+
       expect(results).toHaveLength(50);
       expect(mockAuthService.login).toHaveBeenCalledTimes(50);
-      results.forEach(result => {
+      results.forEach((result) => {
         expect(result.success).toBe(true);
       });
     });
   });
 
-  describe('Memory and Performance Optimization', () => {
-    it('should handle large batch operations efficiently', async () => {
+  describe("Memory and Performance Optimization", () => {
+    it("should handle large batch operations efficiently", async () => {
       const mockUserService = {
-        findByEmail: jest.fn()
+        findByEmail: jest.fn(),
       };
 
       interface User {
@@ -80,7 +77,7 @@ describe('AuthService Performance Tests', () => {
       const largeUserSet: User[] = Array.from({ length: 1000 }, (_, i) => ({
         email: `user${i}@example.com`,
         name: `User ${i}`,
-        id: `user-${i}`
+        id: `user-${i}`,
       }));
 
       // Process in batches to avoid overwhelming the system
@@ -92,7 +89,9 @@ describe('AuthService Performance Tests', () => {
 
       const processingResults: any[] = [];
       for (const batch of batches) {
-        const batchPromises = batch.map(user => mockUserService.findByEmail(user.email));
+        const batchPromises = batch.map((user) =>
+          mockUserService.findByEmail(user.email),
+        );
         const batchResults = await Promise.all(batchPromises);
         processingResults.push(...batchResults);
       }
@@ -101,14 +100,14 @@ describe('AuthService Performance Tests', () => {
       expect(mockUserService.findByEmail).toHaveBeenCalledTimes(1000);
     });
 
-    it('should optimize memory usage during bulk operations', async () => {
+    it("should optimize memory usage during bulk operations", async () => {
       // Monitor memory usage simulation
       const startMemory = process.memoryUsage();
-      
+
       // Simulate processing large data sets
       const largeDataSet = Array.from({ length: 10000 }, (_, i) => ({
         id: i,
-        data: `large-data-item-${i}`.repeat(100)
+        data: `large-data-item-${i}`.repeat(100),
       }));
 
       // Process data in chunks to manage memory
@@ -117,9 +116,9 @@ describe('AuthService Performance Tests', () => {
 
       for (let i = 0; i < largeDataSet.length; i += chunkSize) {
         const chunk = largeDataSet.slice(i, i + chunkSize);
-        
+
         // Simulate processing
-        chunk.forEach(item => {
+        chunk.forEach((item) => {
           processedItems++;
         });
 
@@ -141,23 +140,23 @@ describe('AuthService Performance Tests', () => {
     });
   });
 
-  describe('Error Recovery and Resilience', () => {
-    it('should recover gracefully from database connection failures', async () => {
+  describe("Error Recovery and Resilience", () => {
+    it("should recover gracefully from database connection failures", async () => {
       let connectionAttempts = 0;
       const maxRetries = 3;
 
       const mockPrismaService = {
         $connect: jest.fn(),
         user: {
-          findUnique: jest.fn()
-        }
+          findUnique: jest.fn(),
+        },
       };
 
       // Simulate connection failures followed by success
       mockPrismaService.$connect.mockImplementation(async () => {
         connectionAttempts++;
         if (connectionAttempts < maxRetries) {
-          throw new Error('Connection failed');
+          throw new Error("Connection failed");
         }
         return true;
       });
@@ -172,7 +171,7 @@ describe('AuthService Performance Tests', () => {
               throw error;
             }
             // Wait before retrying
-            await new Promise(resolve => setTimeout(resolve, 100 * attempt));
+            await new Promise((resolve) => setTimeout(resolve, 100 * attempt));
           }
         }
         return false;
@@ -183,17 +182,17 @@ describe('AuthService Performance Tests', () => {
       expect(connectionAttempts).toBe(maxRetries);
     });
 
-    it('should handle service degradation gracefully', async () => {
+    it("should handle service degradation gracefully", async () => {
       const mockUserService = {
-        findByEmail: jest.fn()
+        findByEmail: jest.fn(),
       };
 
       // Simulate service that fails 30% of the time
       mockUserService.findByEmail.mockImplementation(async (email: string) => {
         if (Math.random() < 0.3) {
-          throw new Error('Service temporarily unavailable');
+          throw new Error("Service temporarily unavailable");
         }
-        return { id: 'user-123', email, verified: true };
+        return { id: "user-123", email, verified: true };
       });
 
       const attempts = 100;
@@ -202,9 +201,9 @@ describe('AuthService Performance Tests', () => {
 
       for (let i = 0; i < attempts; i++) {
         try {
-          const result = await mockUserService.findByEmail('test@example.com');
+          const result = await mockUserService.findByEmail("test@example.com");
           if (result?.id) {
-            expect(result.id).toBe('user-123');
+            expect(result.id).toBe("user-123");
             successCount++;
           }
         } catch (error) {
@@ -219,8 +218,8 @@ describe('AuthService Performance Tests', () => {
     });
   });
 
-  describe('Rate Limiting and Queue Management', () => {
-    it('should implement effective rate limiting', async () => {
+  describe("Rate Limiting and Queue Management", () => {
+    it("should implement effective rate limiting", async () => {
       interface RateLimitConfig {
         windowMs: number;
         maxRequests: number;
@@ -234,15 +233,17 @@ describe('AuthService Performance Tests', () => {
         isAllowed(identifier: string): boolean {
           const now = Date.now();
           const windowStart = now - this.config.windowMs;
-          
+
           if (!this.requests.has(identifier)) {
             this.requests.set(identifier, []);
           }
 
           const userRequests = this.requests.get(identifier)!;
-          
+
           // Remove old requests outside the window
-          const validRequests = userRequests.filter(requestTime => requestTime > windowStart);
+          const validRequests = userRequests.filter(
+            (requestTime) => requestTime > windowStart,
+          );
           this.requests.set(identifier, validRequests);
 
           // Check if user can make another request
@@ -257,7 +258,7 @@ describe('AuthService Performance Tests', () => {
       }
 
       const rateLimiter = new RateLimiter({ windowMs: 60000, maxRequests: 10 });
-      const userId = 'test-user';
+      const userId = "test-user";
 
       // First 10 requests should be allowed
       for (let i = 0; i < 10; i++) {
@@ -268,7 +269,7 @@ describe('AuthService Performance Tests', () => {
       expect(rateLimiter.isAllowed(userId)).toBe(false);
     });
 
-    it('should manage async task queues efficiently', async () => {
+    it("should manage async task queues efficiently", async () => {
       interface QueueTask {
         type: string;
         data: any;
@@ -290,7 +291,7 @@ describe('AuthService Performance Tests', () => {
 
           try {
             // Simulate task processing
-            await new Promise(resolve => setTimeout(resolve, 1));
+            await new Promise((resolve) => setTimeout(resolve, 1));
             processedTasks.push(`${task.type}-processed`);
           } catch (error) {
             if (task.retryCount < task.maxRetries) {
@@ -303,23 +304,23 @@ describe('AuthService Performance Tests', () => {
 
       // Add verification and 2FA tasks
       addToQueue({
-        type: 'verification',
-        data: { user: { id: 'user-123', email: 'test@example.com' } },
+        type: "verification",
+        data: { user: { id: "user-123", email: "test@example.com" } },
         retryCount: 0,
-        maxRetries: 3
+        maxRetries: 3,
       });
 
       addToQueue({
-        type: '2fa',
-        data: { email: 'test@example.com' },
+        type: "2fa",
+        data: { email: "test@example.com" },
         retryCount: 0,
-        maxRetries: 3
+        maxRetries: 3,
       });
 
       await processQueue();
 
-      expect(processedTasks).toContain('verification-processed');
-      expect(processedTasks).toContain('2fa-processed');
+      expect(processedTasks).toContain("verification-processed");
+      expect(processedTasks).toContain("2fa-processed");
       expect(mockQueue).toHaveLength(0);
     });
   });
