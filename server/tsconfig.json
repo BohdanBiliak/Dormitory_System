@@ -34,5 +34,5 @@
     "allowJs": true,
 
   },
-  "include": ["src", "src/types/**/*.d.ts", "test/**/*.ts"]
+  "include": ["src", "src/types/**/*.d.ts", "tests/**/*.ts"]
 }

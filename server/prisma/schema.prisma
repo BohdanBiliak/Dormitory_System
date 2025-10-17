@@ -181,6 +181,7 @@ model User {
   language           String     @default("en")
   startReservationDate          DateTime?  @map("start_date") 
   endReservationDate            DateTime?  @map("end_date")  
+
   // Foreign Keys
   dormitoryId String? @map("dormitory_id")
   roomId      String? @map("room_id")
@@ -215,7 +216,6 @@ model User {
   @@index([method, isVerified]) // Auth method filtering
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-
   @@map("users")
 }
 
@@ -262,9 +262,7 @@ model Confirmation {
   roomId        String?            @map("room_id")
   from          DateTime?
   to            DateTime?
-  roommateIds   String[]           @map("roommate_ids")
-  numberOfPeople Int?              @map("number_of_people")
-  metadata      Json?              // For flexible data storage
+  metadata      Json?            
   requester User @relation("UserConfirmations", fields: [userId], references: [id], onDelete: Cascade)
   @@index([status, createdAt]) // Pending confirmations queue
   @@index([type, status]) // Confirmation type filtering

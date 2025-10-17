@@ -14,6 +14,13 @@ import { LoginDto } from "@/modules/auth/dto/login.dto";
 import { verify } from "argon2";
 import { ConfigService } from "@nestjs/config";
 import { PrismaService } from "@/prisma/prisma.service";
+import * as multer from 'multer';
+
+interface FileUpload {
+  avatar: Express.Multer.File[];
+  studentIdFront: Express.Multer.File[];
+  studentIdBack: Express.Multer.File[];
+}
 import { EmailConfirmationService } from "@/modules/auth/submodules/email-confirmation/services/email-confirmation.service";
 import { TwoFactorAuthService } from "@/modules/auth/submodules/two-factor-auth/services/two-factor-auth.service";
 import { S3Service } from "@/libs/common/s3/s3.service";
@@ -32,11 +39,7 @@ export class AuthService {
   public async register(
     req: Request,
     dto: RegisterDto,
-    files: {
-      avatar: Express.Multer.File[];
-      studentIdFront: Express.Multer.File[];
-      studentIdBack: Express.Multer.File[];
-    },
+    files: FileUpload,
   ) {
     const isExists = await this.userService.findByEmail(dto.email);
     if (isExists) {
@@ -44,11 +47,6 @@ export class AuthService {
         "Registration not successfully. User already exists",
       );
     }
-    console.log("FILES:", {
-      avatar: files.avatar?.[0]?.originalname,
-      front: files.studentIdFront?.[0]?.originalname,
-      back: files.studentIdBack?.[0]?.originalname,
-    });
     const avatarFile = files.avatar?.[0];
     const frontFile = files.studentIdFront?.[0];
     const backFile = files.studentIdBack?.[0];
