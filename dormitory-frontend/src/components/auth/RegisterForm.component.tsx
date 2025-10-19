@@ -1,9 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import {useEffect, useState} from 'react'
 import Link from 'next/link'
 import { useAuth } from '@/hooks/auth.hook'
-import { RegisterFormTutorial } from '../../app/tutorials/auth/register'
+import { RegisterFormTutorial } from '@/app/tutorials/auth/register'
 
 export function RegisterForm() {
   const { register, isLoading } = useAuth()
@@ -17,7 +17,21 @@ export function RegisterForm() {
     studentIdFront: null as File | null,
     studentIdBack: null as File | null,
   })
-  const [errors, setErrors] = useState<Record<string, string>>({})
+
+  const [validationErrors, setValidationErrors] = useState({
+    name: '',
+    secondName: '',
+    email: '',
+    password: '',
+    passwordRepeat: '',
+    studentIdFront: '',
+  })
+
+  useEffect(() => {
+    setValid(validationErrors.name==='' && validationErrors.secondName==='' && validationErrors.email==='' && validationErrors.password==='' && validationErrors.passwordRepeat==='' && validationErrors.studentIdFront==='')
+  },[validationErrors])
+
+  const [valid, setValid] = useState<boolean>(false)
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, files } = e.target
@@ -28,32 +42,188 @@ export function RegisterForm() {
       setFormData(prev => ({ ...prev, [name]: value }))
     }
 
-    if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: '' }))
+    setValidationErrors(prevState => {
+      if(!prevState)return prevState;
+      return { ...prevState, [name]: '' }
+    })
+
+  }
+
+  const handleValidate = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    //first name validation
+    if(name === 'name'){
+      if(value.trim() === ''){
+        setValidationErrors(prevState => {
+          if(!prevState) return prevState;
+          return {
+            ...prevState,
+            name: 'Field should not be empty'
+          }
+        })
+      }else if(value.trim().length < 3){
+        setValidationErrors(prevState => {
+          if(!prevState) return prevState;
+          return {
+            ...prevState,
+            name: 'Field should be at least 3 characters long',
+          }
+        })
+      }else{
+        setValidationErrors(prevState => {
+          if(!prevState) return prevState;
+          return {
+            ...prevState,
+            name: '',
+          }
+        })
+      }
+    }
+
+    //second name validation
+    if(name === 'secondName'){
+      if(value.trim() === ''){
+        setValidationErrors(prevState => {
+          if(!prevState) return prevState;
+          return {
+            ...prevState,
+            secondName: 'Field should not be empty'
+          }
+        })
+      }else if(value.trim().length < 3){
+        setValidationErrors(prevState => {
+          if(!prevState) return prevState;
+          return {
+            ...prevState,
+            secondName: 'Field should be at least 3 characters long',
+          }
+        })
+      }else{
+        setValidationErrors(prevState => {
+          if(!prevState) return prevState;
+          return {
+            ...prevState,
+            secondName: '',
+          }
+        })
+      }
+    }
+    //email validation
+    const email_pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if(name === 'email'){
+      if(value.trim() === ''){
+        setValidationErrors(prevState => {
+          if(!prevState) return prevState;
+          return {
+            ...prevState,
+            email: 'Field should not be empty'
+          }
+        })
+      }else if(!email_pattern.test(value)){
+        setValidationErrors(prevState => {
+          if(!prevState) return prevState;
+          return {
+            ...prevState,
+            email: 'Email is invalid',
+          }
+        })
+      }else{
+        setValidationErrors(prevState => {
+          if(!prevState) return prevState;
+          return {
+            ...prevState,
+            email: ''
+          }
+        })
+      }
+    }
+
+    //password validation
+    if(name === 'password'){
+      if(value.trim() === ''){
+        setValidationErrors(prevState => {
+          if(!prevState) return prevState;
+          return {
+            ...prevState,
+            password: 'Field should not be empty'
+          }
+        })
+      }else if(value.trim().length < 6){
+        setValidationErrors(prevState => {
+          if(!prevState) return prevState;
+          return{
+            ...prevState,
+            password: "Password should be at least 6 characters long",
+          }
+        })
+      }else{
+        setValidationErrors(prevState => {
+          if(!prevState) return prevState;
+          return {
+            ...prevState,
+            password: ''
+          }
+        })
+      }
+    }
+
+    //password repeat validation
+    if(name === 'passwordRepeat'){
+      if(value.trim() === ''){
+        setValidationErrors(prevState => {
+          if(!prevState) return prevState;
+          return {
+            ...prevState,
+            passwordRepeat: 'Field should not be empty'
+          }
+        })
+      }else if(value.trim().length < 6){
+        setValidationErrors(prevState => {
+          if(!prevState) return prevState;
+          return{
+            ...prevState,
+            passwordRepeat: "Password should be at least 6 characters long",
+          }
+        })
+      }else if(value !==formData.password){
+        setValidationErrors(prevState => {
+          if(!prevState) return prevState;
+          return {
+            ...prevState,
+            passwordRepeat: 'Passwords do not match',
+          }
+        })
+      }else{
+        setValidationErrors(prevState => {
+          if(!prevState) return prevState;
+          return {
+            ...prevState,
+            passwordRepeat: '',
+          }
+        })
+      }
     }
   }
 
   const validateForm = () => {
-    const newErrors: Record<string, string> = {}
 
-    if (!formData.name.trim()) newErrors.name = 'Name is required'
-    if (!formData.secondName.trim()) newErrors.secondName = 'Second name is required'
-    if (!formData.email.trim()) newErrors.email = 'Email is required'
-    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Email is invalid'
-    if (!formData.password) newErrors.password = 'Password is required'
-    else if (formData.password.length < 6) newErrors.password = 'Password must be at least 6 characters'
-    if (!formData.passwordRepeat) newErrors.passwordRepeat = 'Please repeat your password'
-    else if (formData.password !== formData.passwordRepeat) newErrors.passwordRepeat = 'Passwords do not match'
-    if (!formData.studentIdFront) newErrors.studentIdFront = 'Student ID front image is required'
-
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
+    if (!formData.name.trim()) setValidationErrors(prevState=>{if(!prevState)return prevState; return {...prevState, name:'Name is required'}})
+    if (!formData.secondName.trim()) setValidationErrors(prevState=>{if(!prevState)return prevState; return {...prevState, secondName:'Second name is required'}})
+    if (!formData.email.trim()) setValidationErrors(prevState=>{if(!prevState)return prevState; return {...prevState, email:'Email is required'}})
+    else if (!/\S+@\S+\.\S+/.test(formData.email)) setValidationErrors(prevState=>{if(!prevState)return prevState; return {...prevState, email:'Email is invalid'}})
+    if (!formData.password) setValidationErrors(prevState=>{if(!prevState)return prevState; return {...prevState, password:'Password is required'}})
+    else if (formData.password.length < 6) setValidationErrors(prevState=>{if(!prevState)return prevState; return {...prevState, password:'Password must be at least 6 symbols long'}})
+    if (!formData.passwordRepeat) setValidationErrors(prevState=>{if(!prevState)return prevState; return {...prevState,passwordRepeat:'Please repeat your password'}})
+    else if (formData.password !== formData.passwordRepeat) setValidationErrors(prevState=>{if(!prevState)return prevState; return {...prevState,passwordRepeat:'Passwords do not match'}})
+    if (!formData.studentIdFront) setValidationErrors(prevState=>{if(!prevState)return prevState; return {...prevState,studentIdFront:'Student ID front image is required'}})
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
-    if (!validateForm()) return
+    validateForm()
+    if(!valid)return
 
     try {
       await register({
@@ -65,6 +235,17 @@ export function RegisterForm() {
     } catch (error) {
       console.error('Registration error:', error)
     }
+  }
+
+  //show/hide password
+  const [showPassword, setShowPassword] = useState(false);
+  const [showRepeatPassword, setShowRepeatPassword] = useState(false);
+
+  const handleChangePasswordVisibility = (e: React.MouseEvent<HTMLButtonElement>)=>{
+    setShowPassword(!showPassword)
+  }
+  const handleChangePasswordRepeatVisibility = (e: React.MouseEvent<HTMLButtonElement>)=>{
+    setShowRepeatPassword(!showRepeatPassword)
   }
 
   return (
@@ -96,17 +277,18 @@ export function RegisterForm() {
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
+                  onBlur={handleValidate}
                   disabled={isLoading}
                   className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 transition-colors text-sm sm:text-base ${
-                    errors.name ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
+                    validationErrors.name ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
                   }`}
                   placeholder="Enter your first name"
                 />
-                {errors.name && <p className="text-red-500 text-xs sm:text-sm mt-1 flex items-center">
+                {validationErrors.name && <p className="text-red-500 text-xs sm:text-sm mt-1 flex items-center">
                   <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                   </svg>
-                  {errors.name}
+                  {validationErrors.name}
                 </p>}
               </div>
 
@@ -119,17 +301,18 @@ export function RegisterForm() {
                   name="secondName"
                   value={formData.secondName}
                   onChange={handleInputChange}
+                  onBlur={handleValidate}
                   disabled={isLoading}
                   className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 transition-colors text-sm sm:text-base ${
-                    errors.secondName ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
+                    validationErrors.secondName ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
                   }`}
                   placeholder="Enter your last name"
                 />
-                {errors.secondName && <p className="text-red-500 text-xs sm:text-sm mt-1 flex items-center">
+                {validationErrors.secondName && <p className="text-red-500 text-xs sm:text-sm mt-1 flex items-center">
                   <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                   </svg>
-                  {errors.secondName}
+                  {validationErrors.secondName}
                 </p>}
               </div>
             </div>
@@ -143,17 +326,18 @@ export function RegisterForm() {
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
+                onBlur={handleValidate}
                 disabled={isLoading}
                 className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 transition-colors text-sm sm:text-base ${
-                  errors.email ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
+                  validationErrors.email? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
                 }`}
                 placeholder="Enter your email address"
               />
-              {errors.email && <p className="text-red-500 text-xs sm:text-sm mt-1 flex items-center">
+              {validationErrors.email && <p className="text-red-500 text-xs sm:text-sm mt-1 flex items-center">
                 <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                 </svg>
-                {errors.email}
+                {validationErrors.email}
               </p>}
             </div>
           </div>
@@ -171,46 +355,74 @@ export function RegisterForm() {
                 <label className="block text-sm sm:text-base font-medium text-gray-700 mb-1 sm:mb-2">
                   Password *
                 </label>
-                <input
-                  type="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  disabled={isLoading}
-                  className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 transition-colors text-sm sm:text-base ${
-                    errors.password ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
-                  }`}
-                  placeholder="Enter password"
-                />
-                {errors.password && <p className="text-red-500 text-xs sm:text-sm mt-1 flex items-center">
-                  <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                  </svg>
-                  {errors.password}
-                </p>}
+                <div className={`relative`}>
+                  <input
+                    type={showPassword ? 'text': "password"}
+                    name="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    onBlur={handleValidate}
+                    disabled={isLoading}
+                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 transition-colors text-sm sm:text-base ${
+                      validationErrors.password ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
+                    }`}
+                    placeholder="Enter password"
+                  />
+                  {validationErrors.password && <p className="text-red-500 text-xs sm:text-sm mt-1 flex items-center">
+                    <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                    </svg>
+                    {validationErrors.password}
+                  </p>}
+                  <button
+                      type="button"
+                      className="absolute z-10 top-2 right-2 p-1 hover:bg-gray-100 rounded transition-colors password-visibility-toggle"
+                      onClick={handleChangePasswordVisibility}
+                  >
+                    <img
+                        src={showPassword ? '/eye.svg' : '/eye-slash.svg'}
+                        alt={showPassword ? 'Hide password' : 'Show password'}
+                        className="h-6 w-6"
+                    />
+                  </button>
+                </div>
               </div>
 
               <div className="password-confirm-input">
                 <label className="block text-sm sm:text-base font-medium text-gray-700 mb-1 sm:mb-2">
                   Confirm Password *
                 </label>
-                <input
-                  type="password"
-                  name="passwordRepeat"
-                  value={formData.passwordRepeat}
-                  onChange={handleInputChange}
-                  disabled={isLoading}
-                  className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 transition-colors text-sm sm:text-base ${
-                    errors.passwordRepeat ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
-                  }`}
-                  placeholder="Confirm password"
-                />
-                {errors.passwordRepeat && <p className="text-red-500 text-xs sm:text-sm mt-1 flex items-center">
-                  <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                  </svg>
-                  {errors.passwordRepeat}
-                </p>}
+                <div className={`relative`}>
+                  <input
+                    type={showRepeatPassword? "text" : "password"}
+                    name="passwordRepeat"
+                    value={formData.passwordRepeat}
+                    onChange={handleInputChange}
+                    onBlur={handleValidate}
+                    disabled={isLoading}
+                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 transition-colors text-sm sm:text-base ${
+                      validationErrors.passwordRepeat ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
+                    }`}
+                    placeholder="Confirm password"
+                  />
+                  {validationErrors.passwordRepeat && <p className="text-red-500 text-xs sm:text-sm mt-1 flex items-center">
+                    <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                    </svg>
+                    {validationErrors.passwordRepeat}
+                  </p>}
+                  <button
+                      type="button"
+                      className="absolute z-10 top-2 right-2 p-1 hover:bg-gray-100 rounded transition-colors password-visibility-toggle"
+                      onClick={handleChangePasswordRepeatVisibility}
+                  >
+                    <img
+                        src={showPassword ? '/eye.svg' : '/eye-slash.svg'}
+                        alt={showPassword ? 'Hide password' : 'Show password'}
+                        className="h-6 w-6"
+                    />
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -262,15 +474,15 @@ export function RegisterForm() {
                     disabled={isLoading}
                     accept="image/*"
                     className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 text-sm sm:text-base file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-colors ${
-                      errors.studentIdFront ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
+                      validationErrors.studentIdFront ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
                     }`}
                   />
                 </div>
-                {errors.studentIdFront && <p className="text-red-500 text-xs sm:text-sm mt-1 flex items-center">
+                {validationErrors.studentIdFront && <p className="text-red-500 text-xs sm:text-sm mt-1 flex items-center">
                   <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                   </svg>
-                  {errors.studentIdFront}
+                  {validationErrors.studentIdFront}
                 </p>}
                 {formData.studentIdFront && (
                   <div className="mt-2 p-2 bg-green-50 border border-green-200 rounded-md">

@@ -1,11 +1,12 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import {useGetAdminProfile, useMutateAdminProfile} from '@/hooks/profile.hook'
+import {useGetAdminProfile, useMutateAdminProfile, useUploadAvatar} from '@/hooks/profile.hook'
 
 export function AdminProfileForm() {
 
-  const{updateProfile, uploadAvatar, isUpdatingProfile, isUploadingAvatar} = useMutateAdminProfile()
+  const{updateProfile, isUpdatingProfile} = useMutateAdminProfile()
+  const {data: url, mutateAsync: uploadAvatar, isPending: isUploadingAvatar} = useUploadAvatar()
 
   const [isEditing, setIsEditing] = useState(false)
   const [profileData, setProfileData] = useState<{
@@ -50,10 +51,10 @@ export function AdminProfileForm() {
   const handleSave = async () => {
     try {
       if (selectedFile){
-        await uploadAvatar({
-          file: selectedFile,
-          userLastName: profileData.secondName
-        })
+        // const {data} = await useUploadAvatar({file:selectedFile})
+        // if(data){
+        //   setProfileData(prevState => ({...prevState, photo: data?.url}))
+        // }
         console.log("After upload avatar:", profileData.photo)
       }
 

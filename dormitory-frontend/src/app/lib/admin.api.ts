@@ -1,20 +1,6 @@
 import { api } from './api.api'
+import {UpdateProfileRequest, User} from "@/types/user.types";
 
-export interface UpdateProfileRequest {
-  displayName?: string  // Changed to match DTO
-  secondName?: string   // Changed to match DTO  
-  email?: string
-  picture?: string      // Changed to match DTO
-}
-
-export interface User {
-  id: string
-  displayName: string
-  secondName?: string
-  email: string
-  picture?: string
-  role: string
-}
 
 export const adminApi = {
   // Get current admin profile

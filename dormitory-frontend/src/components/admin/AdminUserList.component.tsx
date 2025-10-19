@@ -6,7 +6,7 @@ import MultipleSelectDropdown from "@/components/ui/MultipleSelectDropdown.compo
 import Link from "next/link";
 import {useQuery} from "@tanstack/react-query";
 import {userListApi} from "@/app/lib/userList.api";
-import {UserListRequest} from "@/types/users.types";
+import {UserListRequest} from "@/types/user.types";
 import {useUserListQuery} from "@/hooks/userList.hook";
 
 
@@ -191,7 +191,7 @@ export function AdminUserList(){
                                                 <div className="flex-shrink-0">
                                                     <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
                                                         <span className="text-sm font-medium text-blue-800">
-                                                            {user.displayName?.charAt(0).toUpperCase() || 'U'}
+                                                            <img src={user.picture} className={'rounded-full'} alt={`${user.displayName} ${user.secondName}`}/>
                                                         </span>
                                                     </div>
                                                 </div>

@@ -1,13 +1,8 @@
 import { api } from './api.api'
 import { User } from "@/types/auth.types";
-import {UserListRequest} from "@/types/users.types";
+import {UserListRequest, UserListResponse} from "@/types/user.types";
 
-export interface UserListResponse {
-    data?: User[]
-    total: number,
-    page: number,
-    pageCount: number,
-}
+
 
 
 
@@ -16,7 +11,7 @@ export const userListApi = {
     async getUsers(filters?:UserListRequest):Promise<UserListResponse>{
         const params = new URLSearchParams()
 
-        if (filters?.role && filters.role !== 'All') {
+        if (filters?.role) {
             params.append('role', filters.role)
         }
 

@@ -1,7 +1,13 @@
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {dormitoryApi, DormitoryRequest, DormitoryUpdateRequest} from "@/app/lib/dorms.api";
+import {dormitoryApi} from "@/app/lib/dorms.api";
 import {toast} from "sonner";
-import { Dormitory } from "@/types/dormitories.types";
+import {
+    Dormitory,
+    DormitoryRequest,
+    DormitoriesResponse,
+    DormitoryUpdateRequest,
+    DormitoryPostData
+} from "@/types/dormitories.types";
 
 export function useGetActiveDormitories() {
     const {data, isLoading, error, refetch} = useQuery({
@@ -34,12 +40,13 @@ export function useDormitories() {
     const queryClient = useQueryClient();
 
     const createDormitory = useMutation({
-        mutationFn: ({newDormitory}:{newDormitory:DormitoryRequest})=>dormitoryApi.createDormitory(newDormitory),
+        mutationFn: ({newDormitory}:{newDormitory:DormitoryPostData})=>dormitoryApi.createDormitory(newDormitory),
         onSuccess: (result:Dormitory) => {
             queryClient.invalidateQueries({queryKey: ['dormitories']})
             toast.success("Dormitory has been created!")
         },
         onError: (error:any)=> {
+            console.log(error.message)
             toast.error(error?.response?.data?.message || "Failed to create dormitory");
         }
     })

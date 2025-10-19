@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import { userListApi } from "@/app/lib/userList.api"
-import { UserListRequest } from "@/types/users.types"
+import { UserListRequest } from "@/types/user.types"
 
 export function useUserListQuery(filters?: UserListRequest) {
     const { data, isLoading, error } = useQuery({

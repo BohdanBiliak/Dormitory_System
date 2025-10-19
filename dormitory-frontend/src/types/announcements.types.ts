@@ -47,3 +47,13 @@ export interface AnnouncementUpdateRequest {
     roomIds?: string[];
     floorNumbers?: number[];
 }
+
+export interface AnnouncementsResponse {
+    data: Announcement[];
+    pagination:{
+        total:number,
+        page:number,
+        limit:number,
+        totalPages:number,
+    }
+}

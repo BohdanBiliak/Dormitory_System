@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { useAuth } from '@/hooks/auth.hook'
 import { toast } from 'sonner'
-import { LoginTutorial } from '@/app/[locale]/tutorials/auth/login'
+import { LoginTutorial } from '@/app/tutorials/auth/login'
 
 export function LoginForm() {
   const searchParams = useSearchParams()
@@ -15,6 +15,10 @@ export function LoginForm() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
+  const [validationErrors, setValidationErrors] = useState({
+    email: '',
+    password: '',
+  })
 
   useEffect(() => {
     if (verified === 'true') {
@@ -22,19 +26,103 @@ export function LoginForm() {
     }
   }, [verified])
 
+  const handleValidate = (e: React.FocusEvent<HTMLInputElement>) => {
+    const {name, value} = e.target;
+
+    //email validation
+    if (name === 'email') {
+      const email_pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if(value.trim() === ''){
+        setValidationErrors(prevState => {
+          if(!prevState) return prevState;
+          return {
+            ...prevState,
+            email: "Field must not be empty",
+          }
+        })
+      }else if(email_pattern.test(value)) {
+        setValidationErrors(prevState => {
+          if(!prevState) return prevState;
+          return {
+            ...prevState,
+            email: ""
+          }
+        })
+      }else{
+        setValidationErrors(prevState => {
+          if(!prevState) return prevState;
+          return {
+            ...prevState,
+            email: "Email is invalid",
+          }
+        })
+      }
+    }
+
+    if(name === 'password') {
+      if(value === ''){
+        setValidationErrors(prevState => {
+          if(!prevState) return prevState;
+          return {
+            ...prevState,
+            password: "Field must not be empty",
+          }
+        })
+      }else if(value.length < 6) {
+        setValidationErrors(prevState => {
+          if(!prevState) return prevState;
+          return {
+            ...prevState,
+            password: "Password should be 6 symbols or longer"
+          }
+        })
+      }
+    }
+
+  }
+
+  const validateBeforeSubmit =()=>{
+    if(!email.trim()){setValidationErrors(prevState => {
+      if(!prevState)return prevState;
+      return{...prevState, email: 'Email is required'}})}
+    if(!password.trim()){setValidationErrors(prevState => {
+      if(!prevState)return prevState;
+      return{...prevState, password: 'Password is required'}})}
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    validateBeforeSubmit()
 
-    if (!email || !password) {
-      toast.error('Please fill in all fields')
-      return
+    if(email && password &&!validationErrors.email && !validationErrors.password){
+      try {
+        await Promise.all([login({ email, password })])
+      } catch (error) {
+        // Error is handled by the hook
+      }
     }
 
-    try {
-      await Promise.all([login({ email, password })])
-    } catch (error) {
-      // Error is handled by the hook
+  }
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    if(name === 'email') {
+      setEmail(value)
     }
+
+    if(name === 'password') {
+      setPassword(value)
+    }
+
+    setValidationErrors(prevState => {
+      if(!prevState) return prevState;
+      return {
+        ...prevState,
+        [name]: ''
+      }
+    })
   }
 
   const handleChangePasswordVisibility = () => {
@@ -65,24 +153,44 @@ export function LoginForm() {
         <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
           <div className="email-input">
             <input
+              name="email"
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
+              onChange={handleInputChange}
+              onBlur={handleValidate}
+              className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 transition-colors text-sm sm:text-base ${
+                  validationErrors.email ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
+              }`}
               placeholder="Email"
               required
             />
+            {validationErrors.email && <p className="text-red-500 text-xs sm:text-sm mt-1 flex items-center">
+              <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+              </svg>
+              {validationErrors.email}
+            </p>}
           </div>
 
           <div className="relative password-input">
             <input
+              name="password"
               type={showPassword ? 'text' : 'password'}
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="relative z-0 w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base pr-12"
+              onChange={handleInputChange}
+              onBlur={handleValidate}
+              className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 transition-colors text-sm sm:text-base ${
+                  validationErrors.password ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
+              }`}
               placeholder="Password"
               required
             />
+            {validationErrors.password && <p className="text-red-500 text-xs sm:text-sm mt-1 flex items-center">
+              <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+              </svg>
+              {validationErrors.password}
+            </p>}
             <button
               type="button"
               className="absolute z-10 top-2 right-2 p-1 hover:bg-gray-100 rounded transition-colors password-visibility-toggle"

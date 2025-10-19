@@ -1,8 +1,7 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
-import { adminApi, UpdateProfileRequest } from '@/app/lib/admin.api'
+import { adminApi } from '@/app/lib/admin.api'
 import { toast } from 'sonner'
-
-
+import {UpdateProfileRequest} from "@/types/user.types";
 
 export function useGetAdminProfile(){
   const {data, isLoading, error} = useQuery({
@@ -21,7 +20,7 @@ export function useMutateAdminProfile (){
     onSuccess: (updatedUser) => {
       // Update the cached user data
       queryClient.setQueryData(['admin', 'currentUser'], updatedUser)
-      queryClient.invalidateQueries({ queryKey: ['admin', 'currentUser'] })
+      queryClient.invalidateQueries({ queryKey: ['admin', 'profile'] })
       toast.success('Profile updated successfully!')
     },
     onError: (error: any) => {
@@ -30,10 +29,16 @@ export function useMutateAdminProfile (){
     },
   })
 
-  const uploadAvatar = useMutation({
-    mutationFn: ({ file, userLastName }: { file: File; userLastName: string }) => {return adminApi.uploadAvatar(file)}
-    ,
-    onSuccess: (response) => {
+  return {
+    updateProfile: updateProfile.mutate,
+    isUpdatingProfile: updateProfile.isPending,
+  }
+}
+
+export const useUploadAvatar = ()=>{
+  return useMutation({
+    mutationFn: ({file}: {file:File}) => adminApi.uploadAvatar(file),
+    onSuccess: (data) => {
       //queryClient.invalidateQueries({ queryKey: ['currentUser'] })
       toast.success('Avatar updated successfully!')
     },
@@ -42,11 +47,4 @@ export function useMutateAdminProfile (){
       toast.error('Avatar upload is temporarily disabled')
     },
   })
-
-  return {
-    updateProfile: updateProfile.mutate,
-    uploadAvatar: uploadAvatar.mutate,
-    isUpdatingProfile: updateProfile.isPending,
-    isUploadingAvatar: uploadAvatar.isPending,
-  }
 }

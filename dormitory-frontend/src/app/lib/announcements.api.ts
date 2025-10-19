@@ -1,15 +1,7 @@
 import {api} from "@/app/lib/api.api";
-import {Announcement, Attachment, Recipient, AnnouncementCreateRequest, AnnouncementUpdateRequest} from "@/types/announcements.types";
+import {Announcement, Attachment, Recipient, AnnouncementCreateRequest, AnnouncementUpdateRequest, AnnouncementsResponse} from "@/types/announcements.types";
 
-export interface AnnouncementsResponse {
-    data: Announcement[];
-    pagination:{
-        total:number,
-        page:number,
-        limit:number,
-        totalPages:number,
-    }
-}
+
 
 export const announcementsApi = {
     async getAnnouncements(filters:{

@@ -2,31 +2,15 @@
 
 import {useDormitories, useGetActiveDormitories, useGetDeactivatedDormitories} from "@/hooks/dormitories.hook";
 import {useEffect, useState} from "react";
-import {DormitoryRequest} from "@/app/lib/dorms.api";
-import {Description, Dialog, DialogBackdrop, DialogPanel, DialogTitle} from "@headlessui/react";
-import {Dormitory, RoomGenerationShema} from "@/types/dormitories.types";
+import {Dormitory, DormitoryPostData, RoomGenerationShema} from "@/types/dormitories.types";
 import {ChevronLeft, ChevronRight} from "lucide-react";
+import CreateDormitoryDialogComponent from "@/components/dialogs/admin/CreateDormitoryDialog.component";
 
 export function AdminDormitoriesList(){
     const{createDormitory, deactivateDormitory, updateDormitory, activateDormitory} = useDormitories();
 
     const {data: activeDorms, isLoading: isLoadingActiveDormitories, error: activeDormsError, refetch:refetchActiveDormitories}=useGetActiveDormitories();
     const {data: deactivatedDorms, isLoading: isLoadingDeactivatedDormitories, error: deactivatedDormsError, refetch: refetchDeactivatedDormitories}=useGetDeactivatedDormitories();
-
-    const [roomGeneration, setRoomGeneration] = useState<RoomGenerationShema>({
-        numberOfFloors: 1,
-        roomsPerFloor: 4,
-        pricePerDay: 50,
-        pricePerMonth: 700,
-    });
-
-    const [newDormitory, setNewDormitory] = useState<DormitoryRequest>({
-        name: '',
-        address: '',
-        groundFloorPhoneNumber: '',
-        roomGeneration: roomGeneration,
-        photos: [],
-    });
 
     const[activeDormitories, setActiveDormitories] = useState<Dormitory[]|undefined>(undefined)
     const[deactivatedDormitories, setDeactivatedDormitories] = useState<Dormitory[]|undefined>(undefined)
@@ -120,62 +104,9 @@ export function AdminDormitoriesList(){
 
     const handleCloseDormitoryCreationForm = () => {
         setDormitoryFormVisible(false);
-        // Reset form
-        setNewDormitory({
-            name: '',
-            address: '',
-            groundFloorPhoneNumber: '',
-            photos: [],
-            roomGeneration: {
-                numberOfFloors: 1,
-                roomsPerFloor: 4,
-                pricePerDay: 50,
-                pricePerMonth: 700,
-            },
-        });
-        setRoomGeneration({
-            numberOfFloors: 1,
-            roomsPerFloor: 4,
-            pricePerDay: 50,
-            pricePerMonth: 700,
-        });
-    };
-
-    useEffect(() => {
-        setNewDormitory(prevState => {
-            if(!prevState) return prevState;
-            return {
-                ...prevState,
-                roomGeneration: roomGeneration
-            }
-        })
-    }, [roomGeneration]);
-
-    const handleCreateDormitory = () => {
-        setNewDormitory(prev=>({
-            ...prev,
-            roomGeneration: roomGeneration
-        }));
-        console.log('Creating dormitory: ',newDormitory);
-        createDormitory({newDormitory})
-        handleCloseDormitoryCreationForm();
     }
 
-    const handleNewDormInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
 
-        if(name=="name" || name=="address" || name=="groundFloorPhoneNumber") {
-            setNewDormitory(prev => ({
-                ...prev,
-                [name]: value
-            }))
-        }else{
-             setRoomGeneration(prev => ({
-                 ...prev,
-                 [name]: value
-             }))
-        }
-    }
 
     const handleChosenDormInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -235,7 +166,6 @@ export function AdminDormitoriesList(){
         const photos = files ? Array.from(files) : []
 
         if(name === "photos"){
-            setNewDormitory(prev=>({...prev, photos: photos}));
         }
     }
 
@@ -649,214 +579,8 @@ export function AdminDormitoriesList(){
                 </div>
             </div>
 
-            {/* Enhanced Dialog */}
-            <Dialog open={dormitoryFormVisible} onClose={handleCloseDormitoryCreationForm} className="relative z-50">
-                <DialogBackdrop className="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity" />
-                <div className="fixed inset-0 flex items-center justify-center p-4">
-                    <DialogPanel className="w-full max-w-2xl max-h-[90vh] bg-white rounded-2xl shadow-2xl overflow-hidden">
-                        {/* Dialog Header */}
-                        <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center space-x-3">
-                                    <div className="p-2 bg-white/20 rounded-lg">
-                                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                        </svg>
-                                    </div>
-                                    <div>
-                                        <DialogTitle className="text-xl font-semibold text-white">
-                                            Create New Dormitory
-                                        </DialogTitle>
-                                        <Description className="text-blue-100 text-sm mt-1">
-                                            Add a new dormitory to the system with room configuration
-                                        </Description>
-                                    </div>
-                                </div>
-                                <button
-                                    onClick={handleCloseDormitoryCreationForm}
-                                    className="p-1 hover:bg-white/20 rounded-lg transition-colors"
-                                >
-                                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-
-                        {/* Dialog Content */}
-                        <div className="overflow-y-auto max-h-[calc(90vh-120px)]">
-                            <form className="p-6 space-y-6" onSubmit={(e)=>{e.preventDefault(); handleCreateDormitory()}}>
-                                {/* Basic Information */}
-                                <div className="space-y-4">
-                                    <h3 className="text-lg font-semibold text-gray-900 border-b pb-2">Basic Information</h3>
-                                    
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                Dormitory Name <span className="text-red-500">*</span>
-                                            </label>
-                                            <input
-                                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                                                type="text"
-                                                name="name"
-                                                placeholder="Enter dormitory name"
-                                                value={newDormitory.name}
-                                                onChange={handleNewDormInputChange}
-                                                required
-                                            />
-                                        </div>
-                                        
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                Ground Floor Phone <span className="text-red-500">*</span>
-                                            </label>
-                                            <input
-                                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                                                type="tel"
-                                                name="groundFloorPhoneNumber"
-                                                placeholder="Enter phone number"
-                                                value={newDormitory.groundFloorPhoneNumber}
-                                                onChange={handleNewDormInputChange}
-                                                required
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            Address <span className="text-red-500">*</span>
-                                        </label>
-                                        <input
-                                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                                            type="text"
-                                            name="address"
-                                            placeholder="Enter full address"
-                                            value={newDormitory.address}
-                                            onChange={handleNewDormInputChange}
-                                            required
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            Photos
-                                        </label>
-                                        <input
-                                            type="file"
-                                            name="photos"
-                                            multiple={true}
-                                            onChange={handleNewDormPhotoChange}
-                                        />
-                                    </div>
-                                </div>
-
-                                {/* Room Configuration */}
-                                <div className="space-y-4">
-                                    <h3 className="text-lg font-semibold text-gray-900 border-b pb-2">Room Configuration</h3>
-                                    
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                Number of Floors <span className="text-red-500">*</span>
-                                            </label>
-                                            <input
-                                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                                                type="number"
-                                                name="numberOfFloors"
-                                                min="1"
-                                                max="50"
-                                                value={roomGeneration.numberOfFloors}
-                                                onChange={handleNewDormInputChange}
-                                                required
-                                            />
-                                        </div>
-                                        
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                Rooms per Floor <span className="text-red-500">*</span>
-                                            </label>
-                                            <input
-                                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                                                type="number"
-                                                name="roomsPerFloor"
-                                                min="1"
-                                                max="100"
-                                                value={roomGeneration.roomsPerFloor}
-                                                onChange={handleNewDormInputChange}
-                                                required
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                Price per Day ($) <span className="text-red-500">*</span>
-                                            </label>
-                                            <input
-                                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                                                type="number"
-                                                name="pricePerDay"
-                                                min="0"
-                                                step="0.01"
-                                                value={roomGeneration.pricePerDay}
-                                                onChange={handleNewDormInputChange}
-                                                required
-                                            />
-                                        </div>
-                                        
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                Price per Month ($) <span className="text-red-500">*</span>
-                                            </label>
-                                            <input
-                                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                                                type="number"
-                                                name="pricePerMonth"
-                                                min="0"
-                                                step="0.01"
-                                                value={roomGeneration.pricePerMonth}
-                                                onChange={handleNewDormInputChange}
-                                                required
-                                            />
-                                        </div>
-                                    </div>
-
-                                    {/* Preview */}
-                                    <div className="bg-blue-50 p-4 rounded-lg">
-                                        <h4 className="font-medium text-blue-900 mb-2">Configuration Preview</h4>
-                                        <div className="text-sm text-blue-700 space-y-1">
-                                            <p>Total Rooms: <span className="font-medium">{roomGeneration.numberOfFloors * roomGeneration.roomsPerFloor}</span></p>
-                                            <p>Floors: <span className="font-medium">{roomGeneration.numberOfFloors}</span></p>
-                                            <p>Rooms per Floor: <span className="font-medium">{roomGeneration.roomsPerFloor}</span></p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Action Buttons */}
-                                <div className="flex flex-col-reverse sm:flex-row gap-3 pt-4 border-t">
-                                    <button
-                                        type="button"
-                                        onClick={handleCloseDormitoryCreationForm}
-                                        className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
-                                    >
-                                        Cancel
-                                    </button>
-                                    <button
-                                        type="submit"
-                                        className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center justify-center space-x-2"
-                                    >
-                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                        </svg>
-                                         <button type="submit">Create</button>
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </DialogPanel>
-                </div>
-            </Dialog>
+            {/* Dialog */}
+            <CreateDormitoryDialogComponent open={dormitoryFormVisible} onClose={handleCloseDormitoryCreationForm}/>
         </div>
     )
 }

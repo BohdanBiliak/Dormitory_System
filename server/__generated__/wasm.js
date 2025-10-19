@@ -5,28 +5,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 
 const {
-  PrismaClientKnownRequestError,
-  PrismaClientUnknownRequestError,
-  PrismaClientRustPanicError,
-  PrismaClientInitializationError,
-  PrismaClientValidationError,
-  getPrismaClient,
-  sqltag,
-  empty,
-  join,
-  raw,
-  skip,
   Decimal,
-  Debug,
   objectEnumValues,
   makeStrictEnum,
-  Extensions,
-  warnOnce,
-  defineDmmfProperty,
   Public,
   getRuntime,
-  createParam,
-} = require('./runtime/wasm-engine-edge.js')
+  skip
+} = require('./runtime/index-browser.js')
 
 
 const Prisma = {}
@@ -35,35 +20,79 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.17.1
- * Query Engine version: 272a37d34178c2894197e17273bf937f25acdeac
+ * Prisma Client JS version: 6.14.0
+ * Query Engine version: 717184b7b35ea05dfa71a3236b7af656013e1e49
  */
 Prisma.prismaVersion = {
-  client: "6.17.1",
-  engine: "272a37d34178c2894197e17273bf937f25acdeac"
+  client: "6.14.0",
+  engine: "717184b7b35ea05dfa71a3236b7af656013e1e49"
 }
 
-Prisma.PrismaClientKnownRequestError = PrismaClientKnownRequestError;
-Prisma.PrismaClientUnknownRequestError = PrismaClientUnknownRequestError
-Prisma.PrismaClientRustPanicError = PrismaClientRustPanicError
-Prisma.PrismaClientInitializationError = PrismaClientInitializationError
-Prisma.PrismaClientValidationError = PrismaClientValidationError
+Prisma.PrismaClientKnownRequestError = () => {
+  const runtimeName = getRuntime().prettyName;
+  throw new Error(`PrismaClientKnownRequestError is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
+In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
+)};
+Prisma.PrismaClientUnknownRequestError = () => {
+  const runtimeName = getRuntime().prettyName;
+  throw new Error(`PrismaClientUnknownRequestError is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
+In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
+)}
+Prisma.PrismaClientRustPanicError = () => {
+  const runtimeName = getRuntime().prettyName;
+  throw new Error(`PrismaClientRustPanicError is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
+In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
+)}
+Prisma.PrismaClientInitializationError = () => {
+  const runtimeName = getRuntime().prettyName;
+  throw new Error(`PrismaClientInitializationError is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
+In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
+)}
+Prisma.PrismaClientValidationError = () => {
+  const runtimeName = getRuntime().prettyName;
+  throw new Error(`PrismaClientValidationError is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
+In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
+)}
 Prisma.Decimal = Decimal
 
 /**
  * Re-export of sql-template-tag
  */
-Prisma.sql = sqltag
-Prisma.empty = empty
-Prisma.join = join
-Prisma.raw = raw
+Prisma.sql = () => {
+  const runtimeName = getRuntime().prettyName;
+  throw new Error(`sqltag is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
+In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
+)}
+Prisma.empty = () => {
+  const runtimeName = getRuntime().prettyName;
+  throw new Error(`empty is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
+In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
+)}
+Prisma.join = () => {
+  const runtimeName = getRuntime().prettyName;
+  throw new Error(`join is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
+In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
+)}
+Prisma.raw = () => {
+  const runtimeName = getRuntime().prettyName;
+  throw new Error(`raw is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
+In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
+)}
 Prisma.validator = Public.validator
 
 /**
 * Extensions
 */
-Prisma.getExtensionContext = Extensions.getExtensionContext
-Prisma.defineExtension = Extensions.defineExtension
+Prisma.getExtensionContext = () => {
+  const runtimeName = getRuntime().prettyName;
+  throw new Error(`Extensions.getExtensionContext is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
+In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
+)}
+Prisma.defineExtension = () => {
+  const runtimeName = getRuntime().prettyName;
+  throw new Error(`Extensions.defineExtension is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
+In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
+)}
 
 /**
  * Shorthand utilities for JSON filtering
@@ -80,11 +109,10 @@ Prisma.NullTypes = {
 
 
 
-
-
 /**
  * Enums
  */
+
 exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   ReadUncommitted: 'ReadUncommitted',
   ReadCommitted: 'ReadCommitted',
@@ -143,8 +171,6 @@ exports.Prisma.ConfirmationScalarFieldEnum = {
   roomId: 'roomId',
   from: 'from',
   to: 'to',
-  roommateIds: 'roommateIds',
-  numberOfPeople: 'numberOfPeople',
   metadata: 'metadata'
 };
 
@@ -393,24 +419,18 @@ exports.Prisma.JsonNullValueFilter = {
   JsonNull: Prisma.JsonNull,
   AnyNull: Prisma.AnyNull
 };
-exports.UserRole = exports.$Enums.UserRole = {
-  Regular: 'Regular',
-  Admin: 'Admin',
-  SignedInUser: 'SignedInUser',
-  SuperAdmin: 'SuperAdmin',
-  Resident: 'Resident'
-};
-
 exports.AuthMethod = exports.$Enums.AuthMethod = {
   CREDENTIALS: 'CREDENTIALS',
   GOOGLE: 'GOOGLE',
   LOCAL: 'LOCAL'
 };
 
-exports.TokenType = exports.$Enums.TokenType = {
-  VERIFICATION: 'VERIFICATION',
-  TWO_FACTOR: 'TWO_FACTOR',
-  PASSWORD_RESET: 'PASSWORD_RESET'
+exports.UserRole = exports.$Enums.UserRole = {
+  Regular: 'Regular',
+  Admin: 'Admin',
+  SignedInUser: 'SignedInUser',
+  SuperAdmin: 'SuperAdmin',
+  Resident: 'Resident'
 };
 
 exports.ConfirmationType = exports.$Enums.ConfirmationType = {
@@ -426,46 +446,10 @@ exports.ConfirmationStatus = exports.$Enums.ConfirmationStatus = {
   REJECTED: 'REJECTED'
 };
 
-exports.NotificationPriority = exports.$Enums.NotificationPriority = {
-  LOW: 'LOW',
-  NORMAL: 'NORMAL',
-  HIGH: 'HIGH',
-  URGENT: 'URGENT'
-};
-
-exports.NotificationType = exports.$Enums.NotificationType = {
-  ROOM_BOOKING_REQUEST: 'ROOM_BOOKING_REQUEST',
-  ROOM_BOOKING_APPROVED: 'ROOM_BOOKING_APPROVED',
-  ROOM_BOOKING_REJECTED: 'ROOM_BOOKING_REJECTED',
-  ROOM_ASSIGNMENT_UPDATED: 'ROOM_ASSIGNMENT_UPDATED',
-  ROOM_AVAILABLE: 'ROOM_AVAILABLE',
-  ACCOMMODATION_CHANGE_REQUEST: 'ACCOMMODATION_CHANGE_REQUEST',
-  ACCOMMODATION_CHANGE_APPROVED: 'ACCOMMODATION_CHANGE_APPROVED',
-  ACCOMMODATION_CHANGE_REJECTED: 'ACCOMMODATION_CHANGE_REJECTED',
-  MAINTENANCE_SCHEDULED: 'MAINTENANCE_SCHEDULED',
-  MAINTENANCE_COMPLETED: 'MAINTENANCE_COMPLETED',
-  MAINTENANCE_URGENT: 'MAINTENANCE_URGENT',
-  ADMIN_ANNOUNCEMENT: 'ADMIN_ANNOUNCEMENT',
-  POLICY_UPDATE: 'POLICY_UPDATE',
-  SYSTEM_MAINTENANCE: 'SYSTEM_MAINTENANCE',
-  STUDENT_MESSAGE: 'STUDENT_MESSAGE',
-  ROOMMATE_REQUEST: 'ROOMMATE_REQUEST',
-  ROOMMATE_APPROVED: 'ROOMMATE_APPROVED',
-  ACCOUNT_VERIFIED: 'ACCOUNT_VERIFIED',
-  PASSWORD_CHANGED: 'PASSWORD_CHANGED',
-  LOGIN_ALERT: 'LOGIN_ALERT',
-  ACCOUNT_SUSPENDED: 'ACCOUNT_SUSPENDED',
-  ACCOUNT_CREATED: 'ACCOUNT_CREATED',
-  PAYMENT_REJECTED: 'PAYMENT_REJECTED',
-  PAYMENT_CREATED: 'PAYMENT_CREATED',
-  PAYMENT_DUE: 'PAYMENT_DUE',
-  PAYMENT_RECEIVED: 'PAYMENT_RECEIVED',
-  PAYMENT_OVERDUE: 'PAYMENT_OVERDUE',
-  PAYMENT_FAILED: 'PAYMENT_FAILED',
-  PAYMENT_REMINDER: 'PAYMENT_REMINDER',
-  PAYMENT_CONFIRMATION_REQUIRED: 'PAYMENT_CONFIRMATION_REQUIRED',
-  PAYMENT_CONFIRMED: 'PAYMENT_CONFIRMED',
-  PAYMENT_REFUNDED: 'PAYMENT_REFUNDED'
+exports.TokenType = exports.$Enums.TokenType = {
+  VERIFICATION: 'VERIFICATION',
+  TWO_FACTOR: 'TWO_FACTOR',
+  PASSWORD_RESET: 'PASSWORD_RESET'
 };
 
 exports.BookingStatus = exports.$Enums.BookingStatus = {
@@ -523,11 +507,46 @@ exports.PaymentItemType = exports.$Enums.PaymentItemType = {
   OTHER: 'OTHER'
 };
 
-exports.RoomAvailabilityStatus = exports.$Enums.RoomAvailabilityStatus = {
-  AVAILABLE: 'AVAILABLE',
-  PART_EMPTY: 'PART_EMPTY',
-  FULL: 'FULL',
-  UNAVAILABLE: 'UNAVAILABLE'
+exports.NotificationType = exports.$Enums.NotificationType = {
+  ROOM_BOOKING_REQUEST: 'ROOM_BOOKING_REQUEST',
+  ROOM_BOOKING_APPROVED: 'ROOM_BOOKING_APPROVED',
+  ROOM_BOOKING_REJECTED: 'ROOM_BOOKING_REJECTED',
+  ROOM_ASSIGNMENT_UPDATED: 'ROOM_ASSIGNMENT_UPDATED',
+  ROOM_AVAILABLE: 'ROOM_AVAILABLE',
+  ACCOMMODATION_CHANGE_REQUEST: 'ACCOMMODATION_CHANGE_REQUEST',
+  ACCOMMODATION_CHANGE_APPROVED: 'ACCOMMODATION_CHANGE_APPROVED',
+  ACCOMMODATION_CHANGE_REJECTED: 'ACCOMMODATION_CHANGE_REJECTED',
+  MAINTENANCE_SCHEDULED: 'MAINTENANCE_SCHEDULED',
+  MAINTENANCE_COMPLETED: 'MAINTENANCE_COMPLETED',
+  MAINTENANCE_URGENT: 'MAINTENANCE_URGENT',
+  ADMIN_ANNOUNCEMENT: 'ADMIN_ANNOUNCEMENT',
+  POLICY_UPDATE: 'POLICY_UPDATE',
+  SYSTEM_MAINTENANCE: 'SYSTEM_MAINTENANCE',
+  STUDENT_MESSAGE: 'STUDENT_MESSAGE',
+  ROOMMATE_REQUEST: 'ROOMMATE_REQUEST',
+  ROOMMATE_APPROVED: 'ROOMMATE_APPROVED',
+  ACCOUNT_VERIFIED: 'ACCOUNT_VERIFIED',
+  PASSWORD_CHANGED: 'PASSWORD_CHANGED',
+  LOGIN_ALERT: 'LOGIN_ALERT',
+  ACCOUNT_SUSPENDED: 'ACCOUNT_SUSPENDED',
+  ACCOUNT_CREATED: 'ACCOUNT_CREATED',
+  PAYMENT_REJECTED: 'PAYMENT_REJECTED',
+  PAYMENT_CREATED: 'PAYMENT_CREATED',
+  PAYMENT_DUE: 'PAYMENT_DUE',
+  PAYMENT_RECEIVED: 'PAYMENT_RECEIVED',
+  PAYMENT_OVERDUE: 'PAYMENT_OVERDUE',
+  PAYMENT_FAILED: 'PAYMENT_FAILED',
+  PAYMENT_REMINDER: 'PAYMENT_REMINDER',
+  PAYMENT_CONFIRMATION_REQUIRED: 'PAYMENT_CONFIRMATION_REQUIRED',
+  PAYMENT_CONFIRMED: 'PAYMENT_CONFIRMED',
+  PAYMENT_REFUNDED: 'PAYMENT_REFUNDED'
+};
+
+exports.NotificationPriority = exports.$Enums.NotificationPriority = {
+  LOW: 'LOW',
+  NORMAL: 'NORMAL',
+  HIGH: 'HIGH',
+  URGENT: 'URGENT'
 };
 
 exports.Prisma.ModelName = {
@@ -555,87 +574,34 @@ exports.Prisma.ModelName = {
   Attachment: 'Attachment',
   AnnouncementRecipient: 'AnnouncementRecipient'
 };
+
 /**
- * Create the Client
+ * This is a stub Prisma Client that will error at runtime if called.
  */
-const config = {
-  "generator": {
-    "name": "client",
-    "provider": {
-      "fromEnvVar": null,
-      "value": "prisma-client-js"
-    },
-    "output": {
-      "value": "/home/bohdan/work/dormitory_system/server/__generated__",
-      "fromEnvVar": null
-    },
-    "config": {
-      "engineType": "library"
-    },
-    "binaryTargets": [
-      {
-        "fromEnvVar": null,
-        "value": "debian-openssl-3.0.x",
-        "native": true
-      },
-      {
-        "fromEnvVar": null,
-        "value": "debian-openssl-3.0.x"
-      }
-    ],
-    "previewFeatures": [],
-    "sourceFilePath": "/home/bohdan/work/dormitory_system/server/prisma/schema.prisma",
-    "isCustomOutput": true
-  },
-  "relativeEnvPaths": {
-    "rootEnvPath": null,
-    "schemaEnvPath": "../.env"
-  },
-  "relativePath": "../prisma",
-  "clientVersion": "6.17.1",
-  "engineVersion": "272a37d34178c2894197e17273bf937f25acdeac",
-  "datasourceNames": [
-    "db"
-  ],
-  "activeProvider": "postgresql",
-  "postinstall": false,
-  "inlineDatasources": {
-    "db": {
-      "url": {
-        "fromEnvVar": "POSTGRES_URI",
-        "value": null
-      }
-    }
-  },
-  "inlineSchema": "generator client {\n  provider      = \"prisma-client-js\"\n  output        = \"../__generated__\"\n  binaryTargets = [\"native\", \"debian-openssl-3.0.x\"]\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"POSTGRES_URI\")\n}\n\n// ==========================================\n// ENUMS\n// ==========================================\nenum UserRole {\n  Regular\n  Admin\n  SignedInUser\n  SuperAdmin\n  Resident\n}\n\nenum AuthMethod {\n  CREDENTIALS\n  GOOGLE\n  LOCAL\n}\n\nenum TokenType {\n  VERIFICATION\n  TWO_FACTOR\n  PASSWORD_RESET\n}\n\nenum ConfirmationType {\n  IDENTITY_VERIFICATION\n  ACCOMMODATION\n  ROOM_CHANGE\n  ROOM_VACATION\n}\n\nenum ConfirmationStatus {\n  PENDING\n  APPROVED\n  REJECTED\n}\n\nenum NotificationPriority {\n  LOW\n  NORMAL\n  HIGH\n  URGENT\n}\n\nenum NotificationType {\n  // Room related\n  ROOM_BOOKING_REQUEST\n  ROOM_BOOKING_APPROVED\n  ROOM_BOOKING_REJECTED\n  ROOM_ASSIGNMENT_UPDATED\n  ROOM_AVAILABLE\n\n  // Accommodation changes\n  ACCOMMODATION_CHANGE_REQUEST\n  ACCOMMODATION_CHANGE_APPROVED\n  ACCOMMODATION_CHANGE_REJECTED\n\n  // Maintenance\n  MAINTENANCE_SCHEDULED\n  MAINTENANCE_COMPLETED\n  MAINTENANCE_URGENT\n\n  // Administrative\n  ADMIN_ANNOUNCEMENT\n  POLICY_UPDATE\n  SYSTEM_MAINTENANCE\n\n  // Student interactions\n  STUDENT_MESSAGE\n  ROOMMATE_REQUEST\n  ROOMMATE_APPROVED\n\n  // System events\n  ACCOUNT_VERIFIED\n  PASSWORD_CHANGED\n  LOGIN_ALERT\n  ACCOUNT_SUSPENDED\n  ACCOUNT_CREATED\n\n  // Payment events\n  PAYMENT_REJECTED\n  PAYMENT_CREATED\n  PAYMENT_DUE\n  PAYMENT_RECEIVED\n  PAYMENT_OVERDUE\n  PAYMENT_FAILED\n  PAYMENT_REMINDER\n  PAYMENT_CONFIRMATION_REQUIRED\n  PAYMENT_CONFIRMED\n  PAYMENT_REFUNDED\n}\n\nenum BookingStatus {\n  PENDING\n  APPROVED\n  REJECTED\n  CANCELLED\n  COMPLETED\n}\n\nenum PaymentType {\n  MONTHLY_RENT\n  DAILY_RENT\n  SECURITY_DEPOSIT\n  UTILITIES\n  MAINTENANCE_FEE\n  LATE_FEE\n  CLEANING_FEE\n  OTHER\n}\n\nenum PaymentMethod {\n  STRIPE_CARD\n  CASH_TO_MANAGER\n  BANK_TRANSFER\n  OTHER\n}\n\nenum PaymentStatus {\n  PENDING // Admin created, waiting for resident payment\n  AWAITING_CONFIRMATION // Resident uploaded proof, waiting for admin review\n  PROCESSING // Admin is reviewing\n  PAID // Admin confirmed payment\n  FAILED // Technical failure\n  OVERDUE // Past due date\n  CANCELLED // Cancelled by admin\n  REFUNDED // Money returned\n  PARTIAL_REFUND // Partial money returned\n  REJECTED // Admin rejected the payment proof\n}\n\nenum RecurringFrequency {\n  MONTHLY\n  WEEKLY\n  CUSTOM\n}\n\nenum PaymentItemType {\n  RENT\n  SECURITY_DEPOSIT\n  UTILITIES\n  MAINTENANCE_FEE\n  LATE_FEE\n  CLEANING_FEE\n  OTHER\n}\n\nenum RoomAvailabilityStatus {\n  AVAILABLE\n  PART_EMPTY\n  FULL\n  UNAVAILABLE\n}\n\n// ==========================================\n// USER MODELS\n// ==========================================\nmodel User {\n  id                   String     @id @default(uuid())\n  email                String     @unique\n  password             String\n  displayName          String\n  picture              String\n  isVerified           Boolean    @default(false) @map(\"is_verified\")\n  isTwoFactorEnabled   Boolean    @default(false) @map(\"is_two_factor_enabled\")\n  method               AuthMethod\n  role                 UserRole   @default(Regular)\n  secondName           String     @map(\"second_name\")\n  studentIdFront       String     @map(\"student_id_front\")\n  studentIdBack        String?    @map(\"student_id_back\")\n  isActive             Boolean    @default(true) @map(\"is_active\")\n  language             String     @default(\"en\")\n  startReservationDate DateTime?  @map(\"start_date\")\n  endReservationDate   DateTime?  @map(\"end_date\")\n  // Foreign Keys\n  dormitoryId          String?    @map(\"dormitory_id\")\n  roomId               String?    @map(\"room_id\")\n\n  // Relations\n  confirmations               Confirmation[]          @relation(\"UserConfirmations\")\n  dormitoryAdminAssignments   DormitoryAdmin[]\n  dormitory                   Dormitory?              @relation(\"DormitoryResidents\", fields: [dormitoryId], references: [id])\n  dormitoryManagerAssignments DormitoryManager[]\n  room                        Room?                   @relation(fields: [roomId], references: [id])\n  announcements               Announcement[]          @relation(\"AnnouncementAuthor\")\n  announcementRecipients      AnnouncementRecipient[] @relation(\"AnnouncementRecipientUser\")\n  auditLogs                   AuditLog[]              @relation(\"UserAuditLogs\")\n\n  // Notification relations\n  sentNotifications     Notification[]        @relation(\"NotificationSender\")\n  receivedNotifications Notification[]        @relation(\"NotificationReceiver\")\n  notificationSettings  NotificationSettings?\n\n  // Booking and Payment relations\n  bookings          Booking[]         @relation(\"UserBookings\")\n  payments          Payment[]         @relation(\"UserPayments\")\n  confirmedPayments Payment[]         @relation(\"ManagerConfirmedPayments\")\n  paymentAuditLogs  PaymentAuditLog[]\n  createdAt         DateTime          @default(now()) @map(\"created_at\")\n  updatedAt         DateTime          @updatedAt @map(\"updated_at\")\n\n  @@index([email])\n  @@index([role, isActive]) // Filter active users by role\n  @@index([dormitoryId, isActive]) // Find active residents of a dormitory\n  @@index([roomId]) // Find roommates\n  @@index([isVerified, role]) // Auth queries\n  @@index([createdAt]) // Chronological queries\n  @@index([method, isVerified]) // Auth method filtering\n  @@map(\"users\")\n}\n\nmodel DormitoryAdmin {\n  id          String   @id @default(uuid())\n  userId      String   @map(\"user_id\")\n  dormitoryId String   @map(\"dormitory_id\")\n  role        String\n  createdAt   DateTime @default(now()) @map(\"created_at\")\n\n  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)\n  dormitory Dormitory @relation(fields: [dormitoryId], references: [id], onDelete: Cascade)\n\n  @@unique([userId, dormitoryId])\n  @@index([role, createdAt]) // Admin role analysis\n  @@index([dormitoryId, role]) // Dormitory admin hierarchy\n  @@map(\"dormitory_admins\")\n}\n\nmodel DormitoryManager {\n  id          String @id @default(uuid())\n  dormitoryId String\n  userId      String\n\n  dormitory Dormitory @relation(fields: [dormitoryId], references: [id], onDelete: Cascade)\n  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)\n\n  @@unique([dormitoryId, userId])\n}\n\nmodel Confirmation {\n  id              String             @id @default(uuid())\n  userId          String             @map(\"user_id\")\n  type            ConfirmationType\n  status          ConfirmationStatus @default(PENDING)\n  photo           String?\n  frontIdUrl      String?            @map(\"front_id_url\")\n  backIdUrl       String?            @map(\"back_id_url\")\n  createdAt       DateTime           @default(now()) @map(\"created_at\")\n  resolvedAt      DateTime?          @map(\"resolved_at\")\n  rejectionReason String?            @map(\"rejection_reason\")\n\n  roomId         String?   @map(\"room_id\")\n  from           DateTime?\n  to             DateTime?\n  roommateIds    String[]  @map(\"roommate_ids\")\n  numberOfPeople Int?      @map(\"number_of_people\")\n  metadata       Json? // For flexible data storage\n  requester      User      @relation(\"UserConfirmations\", fields: [userId], references: [id], onDelete: Cascade)\n\n  @@index([status, createdAt]) // Pending confirmations queue\n  @@index([type, status]) // Confirmation type filtering\n  @@index([userId, type, status]) // User confirmation history\n  @@index([resolvedAt]) // Resolved confirmations timeline\n  @@map(\"confirmations\")\n}\n\nmodel Token {\n  id        String    @id @default(uuid())\n  email     String\n  token     String    @unique\n  type      TokenType\n  expiresIn DateTime  @map(\"expires_in\")\n\n  @@index([email, type]) // Token lookup by email and type\n  @@index([expiresIn]) // Cleanup expired tokens\n  @@index([type, expiresIn]) // Active tokens by type\n  @@map(\"tokens\")\n}\n\nmodel AuditLog {\n  id        String   @id @default(uuid())\n  userId    String   @map(\"user_id\")\n  action    String\n  entity    String\n  entityId  String   @map(\"entity_id\")\n  meta      Json?\n  createdAt DateTime @default(now()) @map(\"created_at\")\n\n  user User @relation(\"UserAuditLogs\", fields: [userId], references: [id], onDelete: Cascade)\n\n  @@index([userId])\n  @@index([entity, entityId])\n  @@index([createdAt]) // Chronological audit trail\n  @@index([action, entity]) // Audit queries by action type\n  @@index([userId, createdAt]) // User activity timeline\n  @@index([entity, entityId, createdAt]) // Entity change history\n  @@map(\"audit_logs\")\n}\n\n// ==========================================\n// DORMITORY MODELS\n// ==========================================\nmodel Dormitory {\n  id                     String   @id @default(uuid())\n  name                   String\n  address                String\n  groundFloorPhoneNumber String   @map(\"ground_floor_phone_number\")\n  floors                 Floor[]\n  status                 String   @default(\"Active\")\n  photos                 String[]\n  createdAt              DateTime @default(now()) @map(\"created_at\")\n\n  admins    DormitoryAdmin[]\n  managers  DormitoryManager[]\n  residents User[]             @relation(\"DormitoryResidents\")\n  rooms     Room[]\n\n  @@index([status, name]) // List active/inactive dormitories alphabetically\n  @@index([createdAt]) // Chronological ordering\n  @@index([status, createdAt]) // Status with time-based filtering\n  @@map(\"dormitories\")\n}\n\nmodel Floor {\n  id                   String                @id @default(cuid())\n  floorNumber          Int\n  dormitoryId          String\n  dormitory            Dormitory             @relation(fields: [dormitoryId], references: [id])\n  rooms                Room[]\n  floorRoomAssignments FloorRoomAssignment[]\n\n  @@unique([dormitoryId, floorNumber])\n  @@map(\"floors\")\n}\n\nmodel Room {\n  id            String   @id @default(cuid())\n  number        String\n  floorId       String\n  capacity      Int\n  dormitoryId   String\n  roomEquipment String[]\n  photos        String[]\n  roomTypeId    String? // Add this field\n  createdAt     DateTime @default(now())\n  updatedAt     DateTime @updatedAt\n\n  // Relations\n  floor                  Floor                   @relation(fields: [floorId], references: [id], onDelete: Cascade)\n  dormitory              Dormitory               @relation(fields: [dormitoryId], references: [id], onDelete: Cascade)\n  roomType               RoomType?               @relation(fields: [roomTypeId], references: [id])\n  announcementRecipients AnnouncementRecipient[] @relation(\"AnnouncementRecipientRoom\")\n  notifications          Notification[]\n  bookings               Booking[]\n  statuses               RoomStatus[]\n  residents              User[]\n  prices                 Price[]\n\n  @@unique([floorId, number])\n  @@index([dormitoryId]) // Rooms by dormitory\n  @@index([dormitoryId, capacity]) // Rooms by dormitory and capacity\n  @@index([number, dormitoryId]) // Unique room identification\n  @@index([createdAt]) // Chronological queries\n  @@index([dormitoryId], map: \"rooms_dormitory_id_unique_idx\")\n  @@map(\"rooms\")\n}\n\nmodel RoomType {\n  id          String   @id @default(cuid())\n  name        String\n  description String?\n  capacity    Int\n  equipment   String[]\n  typeCode    String   @unique\n  photos      String[]\n  createdAt   DateTime @default(now())\n  updatedAt   DateTime @updatedAt\n\n  // Relations\n  rooms                Room[]\n  floorRoomAssignments FloorRoomAssignment[]\n\n  @@map(\"room_types\")\n}\n\nmodel FloorRoomAssignment {\n  id          String @id @default(cuid())\n  floorId     String\n  roomTypeId  String\n  roomNumbers Int[]\n\n  // Relations\n  floor    Floor    @relation(fields: [floorId], references: [id], onDelete: Cascade)\n  roomType RoomType @relation(fields: [roomTypeId], references: [id])\n\n  @@unique([floorId, roomTypeId])\n  @@map(\"floor_room_assignments\")\n}\n\nmodel RoomStatus {\n  id          String    @id @default(uuid())\n  roomId      String    @map(\"room_id\")\n  dateOfStart DateTime  @map(\"date_of_start\")\n  dateOfEnd   DateTime? @map(\"date_of_end\")\n  description String\n\n  room Room @relation(fields: [roomId], references: [id], onDelete: Cascade)\n\n  @@index([roomId])\n  @@index([dateOfStart, dateOfEnd]) // Status date ranges\n  @@index([roomId, dateOfStart]) // Room status history\n  @@index([dateOfEnd]) // Active statuses (NULL dateOfEnd)\n  @@map(\"room_statuses\")\n}\n\nmodel Price {\n  id            String    @id @default(uuid())\n  roomId        String?   @map(\"room_id\")\n  roomCapacity  Int       @map(\"room_capacity\")\n  pricePerMonth Float     @map(\"price_per_month\")\n  pricePerDay   Float     @map(\"price_per_day\")\n  dateFrom      DateTime  @map(\"date_from\")\n  dateTo        DateTime? @map(\"date_to\")\n\n  room     Room?     @relation(fields: [roomId], references: [id], onDelete: SetNull)\n  payments Payment[]\n\n  @@index([roomId])\n  @@index([dateFrom, dateTo])\n  @@index([roomCapacity, dateFrom, dateTo]) // Price lookups by capacity and date range\n  @@index([pricePerMonth, roomCapacity]) // Price comparison queries\n  @@index([dateTo]) // Find expired prices\n  @@index([roomId, dateFrom]) // Room-specific price history\n  @@map(\"prices\")\n}\n\n// ==========================================\n// BOOKING MODELS\n// ==========================================\nmodel Booking {\n  id           String        @id @default(uuid())\n  userId       String        @map(\"user_id\")\n  roomId       String        @map(\"room_id\")\n  status       BookingStatus @default(PENDING)\n  checkInDate  DateTime      @map(\"check_in_date\")\n  checkOutDate DateTime?     @map(\"check_out_date\")\n  totalAmount  Float         @map(\"total_amount\")\n  notes        String?\n\n  user              User               @relation(\"UserBookings\", fields: [userId], references: [id], onDelete: Cascade)\n  room              Room               @relation(fields: [roomId], references: [id], onDelete: Cascade)\n  notifications     Notification[]\n  payments          Payment[]\n  recurringPayments RecurringPayment[]\n\n  createdAt DateTime @default(now()) @map(\"created_at\")\n  updatedAt DateTime @updatedAt @map(\"updated_at\")\n\n  @@index([userId])\n  @@index([roomId])\n  @@index([status])\n  @@index([checkInDate, checkOutDate]) // Date range queries\n  @@index([status, checkInDate]) // Active bookings by date\n  @@index([userId, status, checkInDate]) // User's booking history\n  @@index([roomId, checkInDate, checkOutDate]) // Room availability checks\n  @@index([totalAmount]) // Financial reporting\n  @@index([createdAt, status]) // Recent bookings by status\n  @@map(\"bookings\")\n}\n\n// ==========================================\n// PAYMENT MODELS\n// ==========================================\nmodel Payment {\n  id            String        @id @default(uuid())\n  userId        String        @map(\"user_id\")\n  bookingId     String?       @map(\"booking_id\")\n  priceId       String?       @map(\"price_id\")\n  amount        Float\n  currency      String        @default(\"PLN\")\n  paymentType   PaymentType   @map(\"payment_type\")\n  paymentMethod PaymentMethod @map(\"payment_method\")\n  status        PaymentStatus @default(PENDING)\n  dueDate       DateTime      @map(\"due_date\")\n  paidAt        DateTime?     @map(\"paid_at\")\n  description   String?\n\n  paymentProofUrl        String?   @map(\"payment_proof_url\")\n  paymentProofFilename   String?   @map(\"payment_proof_filename\")\n  paymentProofUploadedAt DateTime? @map(\"payment_proof_uploaded_at\")\n\n  externalPaymentId  String?   @map(\"external_payment_id\")\n  failureReason      String?   @map(\"failure_reason\")\n  managerNotes       String?   @map(\"manager_notes\")\n  confirmedBy        String?   @map(\"confirmed_by\")\n  confirmedAt        DateTime? @map(\"confirmed_at\")\n  rejectedAt         DateTime? @map(\"rejected_at\")\n  rejectionReason    String?   @map(\"rejection_reason\")\n  recurringPaymentId String?   @map(\"recurring_payment_id\")\n\n  user                   User              @relation(\"UserPayments\", fields: [userId], references: [id], onDelete: Cascade)\n  booking                Booking?          @relation(fields: [bookingId], references: [id], onDelete: SetNull)\n  price                  Price?            @relation(fields: [priceId], references: [id], onDelete: SetNull)\n  confirmedByUser        User?             @relation(\"ManagerConfirmedPayments\", fields: [confirmedBy], references: [id], onDelete: SetNull)\n  generatedFromRecurring RecurringPayment? @relation(\"GeneratedFromRecurring\", fields: [recurringPaymentId], references: [id], onDelete: SetNull)\n  notifications          Notification[]\n  paymentItems           PaymentItem[]\n  recurringPayment       RecurringPayment? @relation(\"OriginalPayment\")\n  auditLogs              PaymentAuditLog[]\n\n  createdAt DateTime @default(now()) @map(\"created_at\")\n  updatedAt DateTime @updatedAt @map(\"updated_at\")\n\n  @@index([userId])\n  @@index([status])\n  @@index([dueDate])\n  @@index([paymentType])\n  @@index([bookingId])\n  @@index([status, dueDate]) // Overdue payments, payment processing\n  @@index([userId, status, dueDate]) // User payment dashboard\n  @@index([paymentMethod, status]) // Payment method analysis\n  @@index([currency, amount]) // Financial reporting\n  @@index([confirmedBy, confirmedAt]) // Manager activity tracking\n  @@index([createdAt, paymentType]) // Payment history by type\n  @@index([paidAt]) // Payment completion tracking\n  @@index([bookingId, paymentType]) // Booking-related payments\n  @@index([recurringPaymentId]) // Recurring payment tracking\n  @@map(\"payments\")\n}\n\nmodel RecurringPayment {\n  id            String             @id @default(uuid())\n  paymentId     String             @unique @map(\"payment_id\")\n  bookingId     String             @map(\"booking_id\")\n  frequency     RecurringFrequency @default(MONTHLY)\n  startDate     DateTime           @map(\"start_date\")\n  endDate       DateTime?          @map(\"end_date\")\n  dayOfMonth    Int                @map(\"day_of_month\")\n  isActive      Boolean            @default(true) @map(\"is_active\")\n  lastProcessed DateTime?          @map(\"last_processed\")\n  nextDueDate   DateTime           @map(\"next_due_date\")\n\n  payment           Payment   @relation(\"OriginalPayment\", fields: [paymentId], references: [id], onDelete: Cascade)\n  booking           Booking   @relation(fields: [bookingId], references: [id], onDelete: Cascade)\n  generatedPayments Payment[] @relation(\"GeneratedFromRecurring\")\n\n  createdAt DateTime @default(now()) @map(\"created_at\")\n  updatedAt DateTime @updatedAt @map(\"updated_at\")\n\n  @@index([nextDueDate])\n  @@index([isActive])\n  @@index([startDate, endDate]) // Active recurring payments\n  @@index([dayOfMonth, isActive]) // Monthly processing\n  @@index([bookingId, isActive]) // Booking recurring payments\n  @@index([lastProcessed]) // Processing optimization\n  @@index([frequency, nextDueDate]) // Scheduling queries\n  @@map(\"recurring_payments\")\n}\n\nmodel PaymentItem {\n  id          String          @id @default(uuid())\n  paymentId   String          @map(\"payment_id\")\n  itemType    PaymentItemType @map(\"item_type\")\n  description String\n  amount      Float\n  period      String?\n\n  payment Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade)\n\n  @@index([paymentId])\n  @@index([itemType, amount]) // Payment item analysis\n  @@index([paymentId, itemType]) // Payment breakdown\n  @@map(\"payment_items\")\n}\n\nmodel PaymentAuditLog {\n  id        String   @id @default(uuid())\n  paymentId String   @map(\"payment_id\")\n  userId    String   @map(\"user_id\")\n  action    String\n  oldValue  Json?    @map(\"old_value\")\n  newValue  Json?    @map(\"new_value\")\n  ipAddress String?  @map(\"ip_address\")\n  userAgent String?  @map(\"user_agent\")\n  createdAt DateTime @default(now()) @map(\"created_at\")\n\n  payment Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade)\n  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)\n\n  @@index([createdAt]) // Chronological payment audit\n  @@index([action, createdAt]) // Payment action timeline\n  @@index([paymentId, createdAt]) // Payment change history\n  @@index([userId, action, createdAt]) // User payment actions\n  @@index([paymentId])\n  @@index([userId])\n  @@map(\"payment_audit_logs\")\n}\n\n// ==========================================\n// NOTIFICATION MODELS\n// ==========================================\nmodel Notification {\n  id       String               @id @default(uuid())\n  type     NotificationType\n  title    String\n  message  String               @db.Text\n  priority NotificationPriority @default(NORMAL)\n\n  fromUserId String? @map(\"from_user_id\")\n  toUserId   String  @map(\"to_user_id\")\n  roomId     String? @map(\"room_id\")\n  bookingId  String? @map(\"booking_id\")\n  paymentId  String? @map(\"payment_id\")\n\n  isRead     Boolean   @default(false) @map(\"is_read\")\n  isArchived Boolean   @default(false) @map(\"is_archived\")\n  readAt     DateTime? @map(\"read_at\")\n  archivedAt DateTime? @map(\"archived_at\")\n  metadata   Json?\n\n  fromUser User?    @relation(\"NotificationSender\", fields: [fromUserId], references: [id], onDelete: SetNull)\n  toUser   User     @relation(\"NotificationReceiver\", fields: [toUserId], references: [id], onDelete: Cascade)\n  room     Room?    @relation(fields: [roomId], references: [id], onDelete: SetNull)\n  booking  Booking? @relation(fields: [bookingId], references: [id], onDelete: SetNull)\n  payment  Payment? @relation(fields: [paymentId], references: [id], onDelete: SetNull)\n\n  createdAt DateTime @default(now()) @map(\"created_at\")\n  updatedAt DateTime @updatedAt @map(\"updated_at\")\n\n  @@index([toUserId, isRead, priority, createdAt]) // User notification feed\n  @@index([type, createdAt, isArchived]) // Notification type analytics\n  @@index([fromUserId, createdAt]) // Sent notifications\n  @@index([roomId, type, createdAt]) // Room-specific notifications\n  @@index([bookingId, type]) // Booking-related notifications\n  @@index([paymentId, type]) // Payment-related notifications\n  @@index([priority, isRead, createdAt]) // Urgent unread notifications\n  @@index([toUserId, isArchived, createdAt])\n  @@index([type, createdAt])\n  @@index([isRead, toUserId])\n  @@map(\"notifications\")\n}\n\nmodel NotificationSettings {\n  id     String @id @default(uuid())\n  userId String @unique @map(\"user_id\")\n\n  emailNotifications    Boolean @default(true) @map(\"email_notifications\")\n  emailPaymentReminders Boolean @default(true) @map(\"email_payment_reminders\")\n  emailBookingUpdates   Boolean @default(true) @map(\"email_booking_updates\")\n  emailAnnouncements    Boolean @default(true) @map(\"email_announcements\")\n  inAppNotifications    Boolean @default(true) @map(\"in_app_notifications\")\n  markAsReadOnView      Boolean @default(true) @map(\"mark_as_read_on_view\")\n\n  user User @relation(fields: [userId], references: [id], onDelete: Cascade)\n\n  createdAt DateTime @default(now()) @map(\"created_at\")\n  updatedAt DateTime @updatedAt @map(\"updated_at\")\n\n  @@index([emailNotifications]) // Users with email enabled\n  @@index([inAppNotifications]) // Users with in-app enabled\n  @@map(\"notification_settings\")\n}\n\n// ==========================================\n// ANNOUNCEMENT MODELS\n// ==========================================\nmodel Announcement {\n  id        String   @id @default(uuid())\n  title     String\n  content   String   @db.Text\n  authorId  String   @map(\"author_id\")\n  isHidden  Boolean  @default(false) @map(\"is_hidden\")\n  postedAt  DateTime @default(now()) @map(\"posted_at\")\n  expiresAt DateTime @map(\"expires_at\")\n\n  author      User                    @relation(\"AnnouncementAuthor\", fields: [authorId], references: [id], onDelete: Cascade)\n  attachments Attachment[]\n  recipients  AnnouncementRecipient[]\n\n  @@index([isHidden, postedAt]) // Active announcements chronologically\n  @@index([expiresAt, isHidden]) // Expiring announcements\n  @@index([authorId, postedAt]) // Author's announcements\n  @@index([postedAt, expiresAt]) // Date range queries\n  @@index([authorId])\n  @@index([postedAt])\n  @@map(\"announcements\")\n}\n\nmodel Attachment {\n  id             String @id @default(uuid())\n  announcementId String @map(\"announcement_id\")\n  url            String\n  filename       String\n\n  announcement Announcement @relation(fields: [announcementId], references: [id], onDelete: Cascade)\n\n  @@index([announcementId])\n  @@index([filename])\n  @@map(\"attachments\")\n}\n\nmodel AnnouncementRecipient {\n  id             String  @id @default(uuid())\n  announcementId String  @map(\"announcement_id\")\n  userId         String? @map(\"user_id\")\n  roomId         String? @map(\"room_id\")\n  floor          Int?\n  forEveryone    Boolean @default(false) @map(\"for_everyone\")\n\n  announcement Announcement @relation(fields: [announcementId], references: [id], onDelete: Cascade)\n  user         User?        @relation(\"AnnouncementRecipientUser\", fields: [userId], references: [id], onDelete: Cascade)\n  room         Room?        @relation(\"AnnouncementRecipientRoom\", fields: [roomId], references: [id], onDelete: Cascade)\n\n  @@index([userId, announcementId]) // User-specific announcements\n  @@index([roomId, announcementId]) // Room-specific announcements\n  @@index([floor, announcementId]) // Floor-specific announcements\n  @@index([forEveryone]) // Global announcements\n  @@index([announcementId])\n  @@map(\"announcement_recipients\")\n}\n",
-  "inlineSchemaHash": "3216eacefe56b501f0b925b84182b5a5c904a51655828764b7ada99d513001cf",
-  "copyEngine": true
-}
-config.dirname = '/'
+class PrismaClient {
+  constructor() {
+    return new Proxy(this, {
+      get(target, prop) {
+        let message
+        const runtime = getRuntime()
+        if (runtime.isEdge) {
+          message = `PrismaClient is not configured to run in ${runtime.prettyName}. In order to run Prisma Client on edge runtime, either:
+- Use Prisma Accelerate: https://pris.ly/d/accelerate
+- Use Driver Adapters: https://pris.ly/d/driver-adapters
+`;
+        } else {
+          message = 'PrismaClient is unable to run in this browser environment, or has been bundled for the browser (running in `' + runtime.prettyName + '`).'
+        }
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"displayName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"picture\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isVerified\",\"kind\":\"scalar\",\"type\":\"Boolean\",\"dbName\":\"is_verified\"},{\"name\":\"isTwoFactorEnabled\",\"kind\":\"scalar\",\"type\":\"Boolean\",\"dbName\":\"is_two_factor_enabled\"},{\"name\":\"method\",\"kind\":\"enum\",\"type\":\"AuthMethod\"},{\"name\":\"role\",\"kind\":\"enum\",\"type\":\"UserRole\"},{\"name\":\"secondName\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"second_name\"},{\"name\":\"studentIdFront\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"student_id_front\"},{\"name\":\"studentIdBack\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"student_id_back\"},{\"name\":\"isActive\",\"kind\":\"scalar\",\"type\":\"Boolean\",\"dbName\":\"is_active\"},{\"name\":\"language\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"startReservationDate\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"start_date\"},{\"name\":\"endReservationDate\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"end_date\"},{\"name\":\"dormitoryId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"dormitory_id\"},{\"name\":\"roomId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"room_id\"},{\"name\":\"confirmations\",\"kind\":\"object\",\"type\":\"Confirmation\",\"relationName\":\"UserConfirmations\"},{\"name\":\"dormitoryAdminAssignments\",\"kind\":\"object\",\"type\":\"DormitoryAdmin\",\"relationName\":\"DormitoryAdminToUser\"},{\"name\":\"dormitory\",\"kind\":\"object\",\"type\":\"Dormitory\",\"relationName\":\"DormitoryResidents\"},{\"name\":\"dormitoryManagerAssignments\",\"kind\":\"object\",\"type\":\"DormitoryManager\",\"relationName\":\"DormitoryManagerToUser\"},{\"name\":\"room\",\"kind\":\"object\",\"type\":\"Room\",\"relationName\":\"RoomToUser\"},{\"name\":\"announcements\",\"kind\":\"object\",\"type\":\"Announcement\",\"relationName\":\"AnnouncementAuthor\"},{\"name\":\"announcementRecipients\",\"kind\":\"object\",\"type\":\"AnnouncementRecipient\",\"relationName\":\"AnnouncementRecipientUser\"},{\"name\":\"auditLogs\",\"kind\":\"object\",\"type\":\"AuditLog\",\"relationName\":\"UserAuditLogs\"},{\"name\":\"sentNotifications\",\"kind\":\"object\",\"type\":\"Notification\",\"relationName\":\"NotificationSender\"},{\"name\":\"receivedNotifications\",\"kind\":\"object\",\"type\":\"Notification\",\"relationName\":\"NotificationReceiver\"},{\"name\":\"notificationSettings\",\"kind\":\"object\",\"type\":\"NotificationSettings\",\"relationName\":\"NotificationSettingsToUser\"},{\"name\":\"bookings\",\"kind\":\"object\",\"type\":\"Booking\",\"relationName\":\"UserBookings\"},{\"name\":\"payments\",\"kind\":\"object\",\"type\":\"Payment\",\"relationName\":\"UserPayments\"},{\"name\":\"confirmedPayments\",\"kind\":\"object\",\"type\":\"Payment\",\"relationName\":\"ManagerConfirmedPayments\"},{\"name\":\"paymentAuditLogs\",\"kind\":\"object\",\"type\":\"PaymentAuditLog\",\"relationName\":\"PaymentAuditLogToUser\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"created_at\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"updated_at\"}],\"dbName\":\"users\"},\"DormitoryAdmin\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"user_id\"},{\"name\":\"dormitoryId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"dormitory_id\"},{\"name\":\"role\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"created_at\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"DormitoryAdminToUser\"},{\"name\":\"dormitory\",\"kind\":\"object\",\"type\":\"Dormitory\",\"relationName\":\"DormitoryToDormitoryAdmin\"}],\"dbName\":\"dormitory_admins\"},\"DormitoryManager\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"dormitoryId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"dormitory\",\"kind\":\"object\",\"type\":\"Dormitory\",\"relationName\":\"DormitoryToDormitoryManager\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"DormitoryManagerToUser\"}],\"dbName\":null},\"Confirmation\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"user_id\"},{\"name\":\"type\",\"kind\":\"enum\",\"type\":\"ConfirmationType\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"ConfirmationStatus\"},{\"name\":\"photo\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"frontIdUrl\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"front_id_url\"},{\"name\":\"backIdUrl\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"back_id_url\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"created_at\"},{\"name\":\"resolvedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"resolved_at\"},{\"name\":\"rejectionReason\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"rejection_reason\"},{\"name\":\"roomId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"room_id\"},{\"name\":\"from\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"to\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"roommateIds\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"roommate_ids\"},{\"name\":\"numberOfPeople\",\"kind\":\"scalar\",\"type\":\"Int\",\"dbName\":\"number_of_people\"},{\"name\":\"metadata\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"requester\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"UserConfirmations\"}],\"dbName\":\"confirmations\"},\"Token\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"token\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"type\",\"kind\":\"enum\",\"type\":\"TokenType\"},{\"name\":\"expiresIn\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"expires_in\"}],\"dbName\":\"tokens\"},\"AuditLog\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"user_id\"},{\"name\":\"action\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"entity\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"entityId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"entity_id\"},{\"name\":\"meta\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"created_at\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"UserAuditLogs\"}],\"dbName\":\"audit_logs\"},\"Dormitory\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"address\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"groundFloorPhoneNumber\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"ground_floor_phone_number\"},{\"name\":\"floors\",\"kind\":\"object\",\"type\":\"Floor\",\"relationName\":\"DormitoryToFloor\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"photos\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"created_at\"},{\"name\":\"admins\",\"kind\":\"object\",\"type\":\"DormitoryAdmin\",\"relationName\":\"DormitoryToDormitoryAdmin\"},{\"name\":\"managers\",\"kind\":\"object\",\"type\":\"DormitoryManager\",\"relationName\":\"DormitoryToDormitoryManager\"},{\"name\":\"residents\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"DormitoryResidents\"},{\"name\":\"rooms\",\"kind\":\"object\",\"type\":\"Room\",\"relationName\":\"DormitoryToRoom\"}],\"dbName\":\"dormitories\"},\"Floor\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"floorNumber\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"dormitoryId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"dormitory\",\"kind\":\"object\",\"type\":\"Dormitory\",\"relationName\":\"DormitoryToFloor\"},{\"name\":\"rooms\",\"kind\":\"object\",\"type\":\"Room\",\"relationName\":\"FloorToRoom\"},{\"name\":\"floorRoomAssignments\",\"kind\":\"object\",\"type\":\"FloorRoomAssignment\",\"relationName\":\"FloorToFloorRoomAssignment\"}],\"dbName\":\"floors\"},\"Room\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"number\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"floorId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"capacity\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"dormitoryId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"roomEquipment\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"photos\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"roomTypeId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"floor\",\"kind\":\"object\",\"type\":\"Floor\",\"relationName\":\"FloorToRoom\"},{\"name\":\"dormitory\",\"kind\":\"object\",\"type\":\"Dormitory\",\"relationName\":\"DormitoryToRoom\"},{\"name\":\"roomType\",\"kind\":\"object\",\"type\":\"RoomType\",\"relationName\":\"RoomToRoomType\"},{\"name\":\"announcementRecipients\",\"kind\":\"object\",\"type\":\"AnnouncementRecipient\",\"relationName\":\"AnnouncementRecipientRoom\"},{\"name\":\"notifications\",\"kind\":\"object\",\"type\":\"Notification\",\"relationName\":\"NotificationToRoom\"},{\"name\":\"bookings\",\"kind\":\"object\",\"type\":\"Booking\",\"relationName\":\"BookingToRoom\"},{\"name\":\"statuses\",\"kind\":\"object\",\"type\":\"RoomStatus\",\"relationName\":\"RoomToRoomStatus\"},{\"name\":\"residents\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"RoomToUser\"},{\"name\":\"prices\",\"kind\":\"object\",\"type\":\"Price\",\"relationName\":\"PriceToRoom\"}],\"dbName\":\"rooms\"},\"RoomType\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"capacity\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"equipment\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"typeCode\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"photos\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"rooms\",\"kind\":\"object\",\"type\":\"Room\",\"relationName\":\"RoomToRoomType\"},{\"name\":\"floorRoomAssignments\",\"kind\":\"object\",\"type\":\"FloorRoomAssignment\",\"relationName\":\"FloorRoomAssignmentToRoomType\"}],\"dbName\":\"room_types\"},\"FloorRoomAssignment\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"floorId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"roomTypeId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"roomNumbers\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"floor\",\"kind\":\"object\",\"type\":\"Floor\",\"relationName\":\"FloorToFloorRoomAssignment\"},{\"name\":\"roomType\",\"kind\":\"object\",\"type\":\"RoomType\",\"relationName\":\"FloorRoomAssignmentToRoomType\"}],\"dbName\":\"floor_room_assignments\"},\"RoomStatus\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"roomId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"room_id\"},{\"name\":\"dateOfStart\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"date_of_start\"},{\"name\":\"dateOfEnd\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"date_of_end\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"room\",\"kind\":\"object\",\"type\":\"Room\",\"relationName\":\"RoomToRoomStatus\"}],\"dbName\":\"room_statuses\"},\"Price\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"roomId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"room_id\"},{\"name\":\"roomCapacity\",\"kind\":\"scalar\",\"type\":\"Int\",\"dbName\":\"room_capacity\"},{\"name\":\"pricePerMonth\",\"kind\":\"scalar\",\"type\":\"Float\",\"dbName\":\"price_per_month\"},{\"name\":\"pricePerDay\",\"kind\":\"scalar\",\"type\":\"Float\",\"dbName\":\"price_per_day\"},{\"name\":\"dateFrom\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"date_from\"},{\"name\":\"dateTo\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"date_to\"},{\"name\":\"room\",\"kind\":\"object\",\"type\":\"Room\",\"relationName\":\"PriceToRoom\"},{\"name\":\"payments\",\"kind\":\"object\",\"type\":\"Payment\",\"relationName\":\"PaymentToPrice\"}],\"dbName\":\"prices\"},\"Booking\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"user_id\"},{\"name\":\"roomId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"room_id\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"BookingStatus\"},{\"name\":\"checkInDate\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"check_in_date\"},{\"name\":\"checkOutDate\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"check_out_date\"},{\"name\":\"totalAmount\",\"kind\":\"scalar\",\"type\":\"Float\",\"dbName\":\"total_amount\"},{\"name\":\"notes\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"UserBookings\"},{\"name\":\"room\",\"kind\":\"object\",\"type\":\"Room\",\"relationName\":\"BookingToRoom\"},{\"name\":\"notifications\",\"kind\":\"object\",\"type\":\"Notification\",\"relationName\":\"BookingToNotification\"},{\"name\":\"payments\",\"kind\":\"object\",\"type\":\"Payment\",\"relationName\":\"BookingToPayment\"},{\"name\":\"recurringPayments\",\"kind\":\"object\",\"type\":\"RecurringPayment\",\"relationName\":\"BookingToRecurringPayment\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"created_at\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"updated_at\"}],\"dbName\":\"bookings\"},\"Payment\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"user_id\"},{\"name\":\"bookingId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"booking_id\"},{\"name\":\"priceId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"price_id\"},{\"name\":\"amount\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"currency\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"paymentType\",\"kind\":\"enum\",\"type\":\"PaymentType\",\"dbName\":\"payment_type\"},{\"name\":\"paymentMethod\",\"kind\":\"enum\",\"type\":\"PaymentMethod\",\"dbName\":\"payment_method\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"PaymentStatus\"},{\"name\":\"dueDate\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"due_date\"},{\"name\":\"paidAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"paid_at\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"paymentProofUrl\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"payment_proof_url\"},{\"name\":\"paymentProofFilename\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"payment_proof_filename\"},{\"name\":\"paymentProofUploadedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"payment_proof_uploaded_at\"},{\"name\":\"externalPaymentId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"external_payment_id\"},{\"name\":\"failureReason\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"failure_reason\"},{\"name\":\"managerNotes\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"manager_notes\"},{\"name\":\"confirmedBy\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"confirmed_by\"},{\"name\":\"confirmedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"confirmed_at\"},{\"name\":\"rejectedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"rejected_at\"},{\"name\":\"rejectionReason\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"rejection_reason\"},{\"name\":\"recurringPaymentId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"recurring_payment_id\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"UserPayments\"},{\"name\":\"booking\",\"kind\":\"object\",\"type\":\"Booking\",\"relationName\":\"BookingToPayment\"},{\"name\":\"price\",\"kind\":\"object\",\"type\":\"Price\",\"relationName\":\"PaymentToPrice\"},{\"name\":\"confirmedByUser\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"ManagerConfirmedPayments\"},{\"name\":\"generatedFromRecurring\",\"kind\":\"object\",\"type\":\"RecurringPayment\",\"relationName\":\"GeneratedFromRecurring\"},{\"name\":\"notifications\",\"kind\":\"object\",\"type\":\"Notification\",\"relationName\":\"NotificationToPayment\"},{\"name\":\"paymentItems\",\"kind\":\"object\",\"type\":\"PaymentItem\",\"relationName\":\"PaymentToPaymentItem\"},{\"name\":\"recurringPayment\",\"kind\":\"object\",\"type\":\"RecurringPayment\",\"relationName\":\"OriginalPayment\"},{\"name\":\"auditLogs\",\"kind\":\"object\",\"type\":\"PaymentAuditLog\",\"relationName\":\"PaymentToPaymentAuditLog\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"created_at\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"updated_at\"}],\"dbName\":\"payments\"},\"RecurringPayment\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"paymentId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"payment_id\"},{\"name\":\"bookingId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"booking_id\"},{\"name\":\"frequency\",\"kind\":\"enum\",\"type\":\"RecurringFrequency\"},{\"name\":\"startDate\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"start_date\"},{\"name\":\"endDate\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"end_date\"},{\"name\":\"dayOfMonth\",\"kind\":\"scalar\",\"type\":\"Int\",\"dbName\":\"day_of_month\"},{\"name\":\"isActive\",\"kind\":\"scalar\",\"type\":\"Boolean\",\"dbName\":\"is_active\"},{\"name\":\"lastProcessed\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"last_processed\"},{\"name\":\"nextDueDate\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"next_due_date\"},{\"name\":\"payment\",\"kind\":\"object\",\"type\":\"Payment\",\"relationName\":\"OriginalPayment\"},{\"name\":\"booking\",\"kind\":\"object\",\"type\":\"Booking\",\"relationName\":\"BookingToRecurringPayment\"},{\"name\":\"generatedPayments\",\"kind\":\"object\",\"type\":\"Payment\",\"relationName\":\"GeneratedFromRecurring\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"created_at\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"updated_at\"}],\"dbName\":\"recurring_payments\"},\"PaymentItem\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"paymentId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"payment_id\"},{\"name\":\"itemType\",\"kind\":\"enum\",\"type\":\"PaymentItemType\",\"dbName\":\"item_type\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"amount\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"period\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"payment\",\"kind\":\"object\",\"type\":\"Payment\",\"relationName\":\"PaymentToPaymentItem\"}],\"dbName\":\"payment_items\"},\"PaymentAuditLog\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"paymentId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"payment_id\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"user_id\"},{\"name\":\"action\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"oldValue\",\"kind\":\"scalar\",\"type\":\"Json\",\"dbName\":\"old_value\"},{\"name\":\"newValue\",\"kind\":\"scalar\",\"type\":\"Json\",\"dbName\":\"new_value\"},{\"name\":\"ipAddress\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"ip_address\"},{\"name\":\"userAgent\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"user_agent\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"created_at\"},{\"name\":\"payment\",\"kind\":\"object\",\"type\":\"Payment\",\"relationName\":\"PaymentToPaymentAuditLog\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"PaymentAuditLogToUser\"}],\"dbName\":\"payment_audit_logs\"},\"Notification\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"type\",\"kind\":\"enum\",\"type\":\"NotificationType\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"message\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"priority\",\"kind\":\"enum\",\"type\":\"NotificationPriority\"},{\"name\":\"fromUserId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"from_user_id\"},{\"name\":\"toUserId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"to_user_id\"},{\"name\":\"roomId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"room_id\"},{\"name\":\"bookingId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"booking_id\"},{\"name\":\"paymentId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"payment_id\"},{\"name\":\"isRead\",\"kind\":\"scalar\",\"type\":\"Boolean\",\"dbName\":\"is_read\"},{\"name\":\"isArchived\",\"kind\":\"scalar\",\"type\":\"Boolean\",\"dbName\":\"is_archived\"},{\"name\":\"readAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"read_at\"},{\"name\":\"archivedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"archived_at\"},{\"name\":\"metadata\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"fromUser\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"NotificationSender\"},{\"name\":\"toUser\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"NotificationReceiver\"},{\"name\":\"room\",\"kind\":\"object\",\"type\":\"Room\",\"relationName\":\"NotificationToRoom\"},{\"name\":\"booking\",\"kind\":\"object\",\"type\":\"Booking\",\"relationName\":\"BookingToNotification\"},{\"name\":\"payment\",\"kind\":\"object\",\"type\":\"Payment\",\"relationName\":\"NotificationToPayment\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"created_at\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"updated_at\"}],\"dbName\":\"notifications\"},\"NotificationSettings\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"user_id\"},{\"name\":\"emailNotifications\",\"kind\":\"scalar\",\"type\":\"Boolean\",\"dbName\":\"email_notifications\"},{\"name\":\"emailPaymentReminders\",\"kind\":\"scalar\",\"type\":\"Boolean\",\"dbName\":\"email_payment_reminders\"},{\"name\":\"emailBookingUpdates\",\"kind\":\"scalar\",\"type\":\"Boolean\",\"dbName\":\"email_booking_updates\"},{\"name\":\"emailAnnouncements\",\"kind\":\"scalar\",\"type\":\"Boolean\",\"dbName\":\"email_announcements\"},{\"name\":\"inAppNotifications\",\"kind\":\"scalar\",\"type\":\"Boolean\",\"dbName\":\"in_app_notifications\"},{\"name\":\"markAsReadOnView\",\"kind\":\"scalar\",\"type\":\"Boolean\",\"dbName\":\"mark_as_read_on_view\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"NotificationSettingsToUser\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"created_at\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"updated_at\"}],\"dbName\":\"notification_settings\"},\"Announcement\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"content\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"authorId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"author_id\"},{\"name\":\"isHidden\",\"kind\":\"scalar\",\"type\":\"Boolean\",\"dbName\":\"is_hidden\"},{\"name\":\"postedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"posted_at\"},{\"name\":\"expiresAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"expires_at\"},{\"name\":\"author\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"AnnouncementAuthor\"},{\"name\":\"attachments\",\"kind\":\"object\",\"type\":\"Attachment\",\"relationName\":\"AnnouncementToAttachment\"},{\"name\":\"recipients\",\"kind\":\"object\",\"type\":\"AnnouncementRecipient\",\"relationName\":\"AnnouncementToAnnouncementRecipient\"}],\"dbName\":\"announcements\"},\"Attachment\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"announcementId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"announcement_id\"},{\"name\":\"url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"filename\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"announcement\",\"kind\":\"object\",\"type\":\"Announcement\",\"relationName\":\"AnnouncementToAttachment\"}],\"dbName\":\"attachments\"},\"AnnouncementRecipient\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"announcementId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"announcement_id\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"user_id\"},{\"name\":\"roomId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"room_id\"},{\"name\":\"floor\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"forEveryone\",\"kind\":\"scalar\",\"type\":\"Boolean\",\"dbName\":\"for_everyone\"},{\"name\":\"announcement\",\"kind\":\"object\",\"type\":\"Announcement\",\"relationName\":\"AnnouncementToAnnouncementRecipient\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"AnnouncementRecipientUser\"},{\"name\":\"room\",\"kind\":\"object\",\"type\":\"Room\",\"relationName\":\"AnnouncementRecipientRoom\"}],\"dbName\":\"announcement_recipients\"}},\"enums\":{},\"types\":{}}")
-defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
-config.engineWasm = {
-  getRuntime: async () => require('./query_engine_bg.js'),
-  getQueryEngineWasmModule: async () => {
-    const loader = (await import('#wasm-engine-loader')).default
-    const engine = (await loader).default
-    return engine
+        message += `
+If this is unexpected, please open an issue: https://pris.ly/prisma-prisma-bug-report`
+
+        throw new Error(message)
+      }
+    })
   }
 }
-config.compilerWasm = undefined
 
-config.injectableEdgeEnv = () => ({
-  parsed: {
-    POSTGRES_URI: typeof globalThis !== 'undefined' && globalThis['POSTGRES_URI'] || typeof process !== 'undefined' && process.env && process.env.POSTGRES_URI || undefined
-  }
-})
-
-if (typeof globalThis !== 'undefined' && globalThis['DEBUG'] || typeof process !== 'undefined' && process.env && process.env.DEBUG || undefined) {
-  Debug.enable(typeof globalThis !== 'undefined' && globalThis['DEBUG'] || typeof process !== 'undefined' && process.env && process.env.DEBUG || undefined)
-}
-
-const PrismaClient = getPrismaClient(config)
 exports.PrismaClient = PrismaClient
-Object.assign(exports, Prisma)
 
+Object.assign(exports, Prisma)

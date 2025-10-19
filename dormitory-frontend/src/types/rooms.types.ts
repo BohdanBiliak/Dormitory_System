@@ -7,6 +7,7 @@ export interface Room{
     "photos": string[],
     "dormitoryId": string,
     "createdAt": string,
+    "updatedAt": string,
     "statuses": RoomStatus[],
     "dormitory": {
         "id": string,

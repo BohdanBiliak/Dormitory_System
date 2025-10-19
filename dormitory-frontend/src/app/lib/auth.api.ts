@@ -3,13 +3,13 @@ import { LoginRequest, RegisterRequest, AuthResponse, User } from '@/types/auth.
 
 export const authApi = {
   login: async (data: LoginRequest): Promise<AuthResponse> => {
-    console.log('🔐 Login attempt with:', { email: data.email })
+    console.log('Login attempt with:', { email: data.email })
     try {
       const response = await api.post('/auth/login', data)
-      console.log('✅ Login response:', response.data)
+      console.log('Login response:', response.data)
       return response.data
     } catch (error: any) {
-      console.error('❌ Login error:', {
+      console.error('Login error:', {
         status: error.response?.status,
         data: error.response?.data,
         message: error.message,
@@ -20,7 +20,7 @@ export const authApi = {
   },
 
   register: async (data: RegisterRequest): Promise<AuthResponse> => {
-    console.log('📝 Register attempt:', { email: data.email })
+    console.log('Register attempt:', { email: data.email })
     const formData = new FormData()
     
     // Add text fields - match backend DTO exactly
@@ -41,10 +41,10 @@ export const authApi = {
           'Content-Type': 'multipart/form-data',
         },
       })
-      console.log('✅ Register response:', response.data)
+      console.log('Register response:', response.data)
       return response.data
     } catch (error: any) {
-      console.error('❌ Register error:', {
+      console.error('Register error:', {
         status: error.response?.status,
         data: error.response?.data,
         message: error.message
