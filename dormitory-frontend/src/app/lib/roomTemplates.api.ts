@@ -3,48 +3,28 @@ import {api} from "@/app/lib/api.api";
 
 export const roomTemplatesApi = {
     async postRoomTemplate(newTemplate: RoomTemplatePostData):Promise<RoomTemplate> {
-        const photosFilesData = new FormData();
+        const formData = new FormData();
 
-        newTemplate.photos.forEach(photo => {
-            photosFilesData.append('file', photo)
-        })
-
-        var photosUrls:string[] = [];
-
-        try{
-            const response = await api.post(`/rooms/upload`,photosFilesData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                }
+        if(newTemplate.photos.length > 0){
+            newTemplate.photos.forEach(photo => {
+                formData.append('photos', photo)
             })
-            console.log('Room template photos post response: ', response.data)
-            photosUrls = response.data;
-        }catch (error: any) {
-            console.error('Room template photo upload error:', {
-                status: error.response?.status,
-                data: error.response?.data,
-                message: error.message
-            })
-            throw error
         }
 
-        const templatePhotos:string[] = photosUrls;
-
-        const formData = new FormData();
         formData.append('name',newTemplate.name);
         formData.append('typeCode', newTemplate.typeCode);
         formData.append('description',newTemplate.description);
         formData.append('capacity', newTemplate.capacity.toString());
-        formData.append('area', newTemplate.area.toString());
         formData.append('category', 'residential');//not needed
-        newTemplate.equipment.forEach(equipment => {
-            formData.append('equipment', equipment);
-        })
-        templatePhotos.forEach(photo => {
-            formData.append('photos', photo);
-        })
-
+        if(newTemplate.equipment.length > 0) {
+            newTemplate.equipment.forEach(equipment => {
+                formData.append('equipment', equipment);
+            })
+        }else{
+            formData.append('equipment', "Bed");
+        }
         try{
+            console.log(formData)
             const response = await api.post('/room-types',formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -101,7 +81,7 @@ export const roomTemplatesApi = {
         formData.append('typeCode', newTemplate.typeCode);
         formData.append('description',newTemplate.description);
         formData.append('capacity', newTemplate.capacity.toString());
-        formData.append('area', newTemplate.area.toString());
+        formData.append('area', newTemplate.toString());
         formData.append('category', 'RESIDENTIAL');
         newTemplate.equipment.forEach(equipment => {
             formData.append('equipment', equipment);

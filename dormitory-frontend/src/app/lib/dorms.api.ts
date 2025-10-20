@@ -9,20 +9,17 @@ import {roomsApi} from "@/app/lib/rooms.api";
 
 export const dormitoryApi = {
 
-    //get all active dormitories
     async getDormitories(): Promise<DormitoriesResponse> {
         const response = await api.get('/dormitories');
         return response.data;
     },
 
-    //get dormitory by id
     async getDormitory(id:string): Promise<Dormitory> {
         const response = await api.get(`/dormitories/${id}`);
         return response.data;
     },
 
 
-    //post/create dormitory
     async createDormitory(newDormitory:DormitoryPostData): Promise<Dormitory> {
         const formData = new FormData();
         if (newDormitory.photos.length > 0){

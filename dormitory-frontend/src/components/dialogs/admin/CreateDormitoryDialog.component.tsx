@@ -1,7 +1,7 @@
 import {Description, Dialog, DialogBackdrop, DialogPanel, DialogTitle} from "@headlessui/react";
 import {AlertTriangle, ArrowBigLeftDash, ArrowBigRightDash, BuildingIcon, Pencil, Plus} from "lucide-react";
 import React, {useEffect, useState} from "react";
-import {useGetRoomTemplates} from "@/hooks/roomTemplates.hook";
+import {useGetRoomTemplates, useMutateRoomTemplate} from "@/hooks/roomTemplates.hook";
 import {DormitoryPostData, FloorAssignment, RoomTemplate, RoomTemplatePostData} from "@/types/dormitories.types";
 import {toast} from "sonner";
 import {useDormitories} from "@/hooks/dormitories.hook";
@@ -15,7 +15,7 @@ export interface CreateDormitoryDialogProps {
 export default function CreateDormitoryDialogComponent({open, onClose}: CreateDormitoryDialogProps) {
 
     const {createDormitory} = useDormitories()
-
+    const {createRoomTemplate} = useMutateRoomTemplate()
     const {data: roomTemplates, isLoading: loadingRoomTemplates, error: roomTemplatesErrors} = useGetRoomTemplates();
 
     const[activePart, setActivePart] = useState<'General Information' | 'Room Generation'>('General Information');
@@ -77,15 +77,28 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
 
     //room templates
     const[editRoomTemplate, setEditRoomTemplate] = useState<boolean>(false)
-    const[newRoomTemplatePhotos, setNewRoomTemplatePhotos] = useState<File[]>([])
+    const[roomTemplateNewPhotos, setRoomTemplatesNewPhotos] = useState<File[]>([])
 
     //new room template
     const[newRoomTemplate, setNewRoomTemplate] = useState<RoomTemplatePostData | null>(null)
+    const handleCreateNewRoomTemplate = (e: React.MouseEvent<HTMLButtonElement>) => {
+        if(newRoomTemplate){
+            createRoomTemplate(newRoomTemplate)
+        }
+    }
+
+    const handleUpdateNewRoomPhotos = (files: File[]) => {
+        setNewRoomTemplate(prevState => {
+            if(!prevState) return prevState;
+            return {...prevState, photos: files};
+        })
+    }
 
     //templates edit
     const[showTemplatePhotosEdit, setShowTemplatePhotosEdit] = useState<boolean>(false)
     const handleAddRoomTemplate = (e: React.MouseEvent<HTMLButtonElement>) => {
         setSelectedTemplate(null)
+        setEditRoomTemplate(true)
         if(!newRoomTemplate){
             setNewRoomTemplate({
                 name: '',
@@ -187,6 +200,8 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
             return {...prevState, photos: file}
         })
     }
+
+
 
     return(
         <Dialog open={open} onClose={onClose} className={`relative z-50`}>
@@ -303,7 +318,10 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                                             >
                                                 Add Images
                                             </button>
-                                            <ImageCarouselComponent photos={[]} newPhotos={newDormitory.photos} setNewPhotos={setNewPhotos} showEditMenu={showDormitoryPhotosEdit} closeEditMenu={closeDormitoryPhotosEdit} editionMenuLabels={{title: "New Dormitory Photos", description: "Here you can add photos of your future dormitory"}}/>
+                                            <ImageCarouselComponent
+                                                photos={[]}
+                                                newPhotos={newDormitory.photos}
+                                                setNewPhotos={setNewPhotos} showEditMenu={showDormitoryPhotosEdit} closeEditMenu={closeDormitoryPhotosEdit} editionMenuLabels={{title: "New Dormitory Photos", description: "Here you can add photos of your future dormitory"}}/>
                                         </div>
                                     </div>
                                 )}
@@ -388,7 +406,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                                                 <div className={`flex flex-row`}>
                                                     {roomTemplates && roomTemplates.map((item, index) => (
                                                         <div key={index} className={`px-1 border border-blue-600 ${selectedTemplate === item ? 'bg-gray-500' : ''}`}>
-                                                            <button onClick={()=>setSelectedTemplate(item)}>{item.typeCode}</button>
+                                                            <button onClick={()=>{setSelectedTemplate(item); setEditRoomTemplate(false)}}>{item.typeCode}</button>
                                                         </div>
                                                     ))}
                                                     <div className={`px-1 border border-blue-600 ${newRoomTemplate ? 'bg-gray-500' : ''}`}>
@@ -469,7 +487,14 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                                                                         <Pencil className={`w-6 h-6`} onClick={openTemplatePhotosEdit}/>
                                                                     </div>
                                                                 </div>
-                                                                <ImageCarouselComponent photos={selectedTemplate.photos} setPhotos={setTemplatePhotos} newPhotos={newRoomTemplatePhotos} setNewPhotos={setNewRoomTemplatePhotos} showEditMenu={showTemplatePhotosEdit} closeEditMenu={closeTemplatePhotosEdit} editionMenuLabels={{title:"Template Photos", description:`Here you can edit photos of template ${selectedTemplate.typeCode}`}}/>
+                                                                <ImageCarouselComponent
+                                                                    photos={selectedTemplate.photos}
+                                                                    setPhotos={setTemplatePhotos}
+                                                                    newPhotos={roomTemplateNewPhotos}
+                                                                    setNewPhotos={setRoomTemplatesNewPhotos}
+                                                                    showEditMenu={showTemplatePhotosEdit} closeEditMenu={closeTemplatePhotosEdit}
+                                                                    editionMenuLabels={{title:"Template Photos", description:`Here you can edit photos of template ${selectedTemplate.typeCode}`}}
+                                                                />
                                                             </div>
                                                             <div>
                                                                 <div>
@@ -489,6 +514,26 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        {!editRoomTemplate && (
+                                                            <div className={`flex flex-row`}>
+                                                                <button onClick={()=>setEditRoomTemplate(true)}>
+                                                                    Edit this template
+                                                                </button>
+                                                                <button>
+                                                                    Delete this template
+                                                                </button>
+                                                            </div>
+                                                        )}
+                                                        {editRoomTemplate && (
+                                                            <div className={`flex flex-row`}>
+                                                                <button>
+                                                                    Save changes
+                                                                </button>
+                                                                <button>
+                                                                    Cancel Changes
+                                                                </button>
+                                                            </div>
+                                                        )}
                                                     </div>
                                                 )}
 
@@ -520,7 +565,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                                                                     type="text"
                                                                     name="typeCode"
                                                                     value={newRoomTemplate.typeCode}
-                                                                    //disabled={!editRoomTemplate}
+                                                                    disabled={!editRoomTemplate}
                                                                     onChange={handleTemplateInputChange}
                                                                     className={`border border-blue-600 px-1`}
                                                                 />
@@ -562,7 +607,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                                                                         <Pencil className={`w-6 h-6`} onClick={openTemplatePhotosEdit}/>
                                                                     </div>
                                                                 </div>
-                                                                <ImageCarouselComponent photos={[]} newPhotos={newRoomTemplate.photos} setNewPhotos={setNewRoomTemplatePhotos} showEditMenu={showTemplatePhotosEdit} closeEditMenu={closeTemplatePhotosEdit} editionMenuLabels={{title:"Template Photos", description:`Here you can edit photos of new template`}}/>
+                                                                <ImageCarouselComponent photos={[]} newPhotos={newRoomTemplate.photos} setNewPhotos={handleUpdateNewRoomPhotos} showEditMenu={showTemplatePhotosEdit} closeEditMenu={closeTemplatePhotosEdit} editionMenuLabels={{title:"Template Photos", description:`Here you can edit photos of new template`}}/>
                                                             </div>
                                                             <div>
                                                                 <div>
@@ -581,8 +626,15 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                                                                     ))}
                                                                 </div>
                                                             </div>
+                                                            <div className={`flex flex-row`}>
+                                                                <button onClick={handleCreateNewRoomTemplate}>
+                                                                    Create Room Template
+                                                                </button>
+
+                                                            </div>
                                                         </div>
                                                     </div>
+
                                                 )}
                                             </div>
                                         </div>

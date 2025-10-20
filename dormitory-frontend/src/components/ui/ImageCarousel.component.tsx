@@ -5,7 +5,7 @@ import {Description, Dialog, DialogBackdrop, DialogPanel, DialogTitle} from "@he
 export interface ImageCarouselProps {
     photos:string[],
     setPhotos?: (photos: string[]) => void,
-    newPhotos:File[],
+    newPhotos: File[],
     setNewPhotos?: (newPhotos: File[]) => void,
     showEditMenu: boolean,
     closeEditMenu: () => void,

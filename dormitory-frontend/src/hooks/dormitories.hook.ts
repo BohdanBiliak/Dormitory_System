@@ -54,7 +54,8 @@ export function useDormitories() {
     const updateDormitory = useMutation({
         mutationFn: ({updatedInformation, id}:{updatedInformation:DormitoryUpdateRequest, id:string})=>dormitoryApi.updateDormitory(id,updatedInformation),
         onSuccess: (result:Dormitory) => {
-            queryClient.invalidateQueries({queryKey: ['dormitory']})
+            queryClient.invalidateQueries({queryKey: ['dormitory', result]})
+            queryClient.invalidateQueries({queryKey: ['dormitories']})
             toast.success("Dormitory has been updated!")
         },
         onError: (error:any)=> {
@@ -65,7 +66,8 @@ export function useDormitories() {
     const deactivateDormitory = useMutation({
         mutationFn: ({id}:{id:string})=>dormitoryApi.deactivateDormitory(id),
         onSuccess: (result:Dormitory) => {
-            queryClient.invalidateQueries({queryKey: ['dormitory']})
+            queryClient.invalidateQueries({queryKey: ['dormitories']})
+            queryClient.invalidateQueries({queryKey: ['dormitory', result]})
             toast.success("Dormitory has been deactivated!")
         },
         onError: (error:any)=> {
@@ -76,7 +78,7 @@ export function useDormitories() {
     const activateDormitory=useMutation({
         mutationFn: ({id}:{id:string})=>dormitoryApi.activateDormitory(id),
         onSuccess: (result:Dormitory) => {
-            queryClient.invalidateQueries({queryKey: ['dormitory']})
+            queryClient.invalidateQueries({queryKey: ['dormitory', result]})
             toast.success("Dormitory has been activated!")
         },
         onError: (error:any)=> {

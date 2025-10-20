@@ -23,12 +23,6 @@ export interface Dormitory {
             email: string;
         }
     }[],
-    residents:{ //WHY???
-        id: string;
-        displayName: string;
-        email: string;
-        roomId: string;
-    },
     statistics:{
         totalFloors: number;
         totalRooms: number;
@@ -95,6 +89,8 @@ export interface DormitoryRequest {
     "photos"?: File[];
 }
 
+
+//update dormitory update request
 export interface DormitoryUpdateRequest {
     "name": string;
     "address": string;
