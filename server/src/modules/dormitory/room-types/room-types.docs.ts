@@ -46,12 +46,6 @@ export const RoomTypesDocs = {
               maximum: 10,
               description: "Maximum number of residents",
             },
-            category: {
-              type: "string",
-              enum: ["residential", "technical", "common"],
-              example: "residential",
-              description: "Room category type",
-            },
             equipment: {
               type: "string",
               example: '["bed", "desk", "chair", "wardrobe"]',
@@ -69,7 +63,6 @@ export const RoomTypesDocs = {
             "name",
             "typeCode",
             "capacity",
-            "category",
             "equipment",
             "photos",
           ],
@@ -84,7 +77,6 @@ export const RoomTypesDocs = {
             typeCode: "STD-DBL",
             description: "A standard room with 2 beds and basic amenities",
             capacity: 2,
-            category: "residential",
             equipment: ["bed", "desk", "chair", "wardrobe"],
             photos: [
               "https://s3.example.com/room-types/STD-DBL/1729123456789-photo1.jpg",
@@ -104,7 +96,7 @@ export const RoomTypesDocs = {
               "At least one photo is required",
               "Room type with code 'STD-DBL' already exists",
               "capacity must be between 1 and 10",
-              "category must be one of the following values: residential, technical, common",
+
               "equipment must be an array",
               "Invalid file format for photos",
             ],
@@ -135,13 +127,6 @@ export const RoomTypesDocs = {
                 example: "A standard room with 2 beds",
               },
               capacity: { type: "number", example: 2 },
-              area: { type: "number", example: 25.5 },
-              category: { type: "string", example: "RESIDENTIAL" },
-              equipment: {
-                type: "array",
-                items: { type: "string" },
-                example: ["bed", "desk"],
-              },
               photos: {
                 type: "array",
                 items: { type: "string" },
@@ -178,8 +163,6 @@ export const RoomTypesDocs = {
             typeCode: "STD-DBL",
             description: "A standard room with 2 beds and basic amenities",
             capacity: 2,
-            area: 25.5,
-            category: "RESIDENTIAL",
             equipment: ["bed", "desk", "chair", "wardrobe"],
             photos: [
               "https://s3.example.com/room-types/STD-DBL/photo1.jpg",
@@ -225,12 +208,6 @@ export const RoomTypesDocs = {
             name: { type: "string", example: "Updated Double Room" },
             description: { type: "string", example: "Updated description" },
             capacity: { type: "number", example: 2 },
-            area: { type: "number", example: 28.0 },
-            category: {
-              type: "string",
-              enum: ["residential", "technical", "common"],
-              example: "residential",
-            },
             equipment: {
               type: "string",
               example: '["bed", "desk", "chair", "wardrobe", "mini-fridge"]',
@@ -253,8 +230,6 @@ export const RoomTypesDocs = {
             typeCode: "STD-DBL",
             description: "Updated description",
             capacity: 2,
-            area: 28.0,
-            category: "RESIDENTIAL",
             equipment: ["bed", "desk", "chair", "wardrobe", "mini-fridge"],
             photos: [
               "https://s3.example.com/room-types/STD-DBL/new-photo1.jpg",

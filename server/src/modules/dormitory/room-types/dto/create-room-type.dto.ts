@@ -32,10 +32,7 @@ export class CreateRoomTypeDto {
   @Min(1)
   @Max(10)
   capacity: number;
-
-  @IsEnum(["residential", "technical", "common"])
-  category: "residential" | "technical" | "common";
-
+  
   @ApiProperty({
     type: [String],
     example: ["lamp", "table", "chair", "wardrobe", "bed"],

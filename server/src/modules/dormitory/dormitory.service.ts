@@ -297,20 +297,6 @@ export class DormitoryService {
       where: { id },
       include: {
         floors: {
-          include: {
-            rooms: {
-              include: {
-                residents: {
-                  select: {
-                    id: true,
-                    displayName: true,
-                    email: true,
-                  },
-                  where: { isActive: true },
-                },
-              },
-            },
-          },
           orderBy: { floorNumber: "asc" },
         },
         managers: {
@@ -335,37 +321,30 @@ export class DormitoryService {
             },
           },
         },
-        residents: {
-          select: {
-            id: true,
-            displayName: true,
-            email: true,
-            roomId: true,
-          },
-          where: { isActive: true },
-        },
       },
     });
 
     if (!dormitory) {
       throw new NotFoundException(`Dormitory with ID ${id} not found`);
     }
+    let rooms = await this.prismaService.room.findMany({
+      where: { dormitoryId: id },
+      include: {
+        residents: true, // Include residents relation
+      },
+    });
+    let residents = await this.prismaService.user.findMany({
+      where: { dormitoryId: id },
+    });
+    
 
     // Calculate statistics
-    const totalRooms = dormitory.floors.reduce(
-      (acc, floor) => acc + floor.rooms.length,
-      0,
-    );
-    const occupiedRooms = dormitory.floors.reduce(
-      (acc, floor) =>
-        acc + floor.rooms.filter((room) => room.residents.length > 0).length,
-      0,
-    );
+    const totalRooms = rooms.length;
+    const occupiedRooms = rooms.filter((room) => room.residents.length > 0).length;
     const availableRooms = totalRooms - occupiedRooms;
-    const totalResidents = dormitory.residents.length;
-    const totalCapacity = dormitory.floors.reduce(
-      (acc, floor) =>
-        acc + floor.rooms.reduce((roomAcc, room) => roomAcc + room.capacity, 0),
+    const totalResidents = residents.length;
+    const totalCapacity = rooms.reduce(
+      (acc, room) => acc + room.capacity,
       0,
     );
 

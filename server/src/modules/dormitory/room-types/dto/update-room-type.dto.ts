@@ -11,13 +11,6 @@ import {
 } from "class-validator";
 import { Transform } from "class-transformer";
 
-enum RoomCategory {
-  RESIDENTIAL = "RESIDENTIAL",
-  SUITE = "SUITE",
-  STUDIO = "STUDIO",
-  SHARED = "SHARED",
-}
-
 export class UpdateRoomTypeDto {
   @ApiPropertyOptional({ example: "Updated Standard Double Room" })
   @IsOptional()
@@ -38,23 +31,6 @@ export class UpdateRoomTypeDto {
   @Max(6)
   capacity?: number;
 
-  @ApiPropertyOptional({
-    example: 28.0,
-    description: "Room area in square meters",
-  })
-  @IsOptional()
-  @IsNumber()
-  @Min(0)
-  area?: number;
-
-  @ApiPropertyOptional({
-    enum: RoomCategory,
-    example: "RESIDENTIAL",
-    description: "Room category type",
-  })
-  @IsOptional()
-  @IsEnum(RoomCategory)
-  category?: RoomCategory;
 
   @ApiPropertyOptional({
     oneOf: [
