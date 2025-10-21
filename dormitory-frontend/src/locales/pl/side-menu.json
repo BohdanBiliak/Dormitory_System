@@ -1,0 +1,27 @@
+{
+  "sideMenu": {
+    "profile": "Mój profil",
+    "myProfile": "Mój profil",
+    "dormitories": "Akademiki",
+    "dormitoriesInfo": "Informacje o akademikach",
+    "dormitoriesInformation": "Informacje o akademikach",
+    "dormitoryManagement": "Zarządzanie akademikami",
+    "dormitorySystem": "System Akademicki",
+    "information": "Informacje",
+    "availableRooms": "Dostępne pokoje",
+    "userProfiles": "Profile użytkowników",
+    "confirmations": "Potwierdzenia",
+    "payments": "Płatności",
+    "communication": "Komunikacja",
+    "announcements": "Ogłoszenia",
+    "messages": "Wiadomości",
+    "rooms": "Dostępne pokoje",
+    "notification": "Powiadomienia",
+    "signin": "Zaloguj się",
+    "signIn": "Zaloguj się",
+    "logout": "Wyloguj",
+    "loggingOut": "Wylogowywanie...",
+    "translateApp": "Przetłumacz aplikację",
+    "currentLanguage": "Aktualny"
+  }
+}

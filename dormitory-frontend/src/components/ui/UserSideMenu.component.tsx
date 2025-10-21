@@ -2,10 +2,12 @@
 
 import {MenuItem} from "@/types/ui.types";
 import {useAuth} from "@/hooks/auth.hook";
-import {useEffect, useState} from "react";
+import {useEffect, useState, useMemo} from "react";
 import {useCurrentUserProfile} from "@/hooks/user.hook";
 import Link from "next/link";
 import {UserRole} from "@/types/auth.types";
+import {useLanguage} from "@/providers/language.provider";
+import {TranslationButton} from "./TranslationButton.component";
 
 interface UserSideMenuProps {
     children: React.ReactNode;
@@ -13,6 +15,7 @@ interface UserSideMenuProps {
 
 export function UserSideMenu ({children}:UserSideMenuProps){
     const { logout, isLoggingOut } = useAuth()
+    const { t } = useLanguage()
     const [openMenu, setOpenMenu] = useState<string>()
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
@@ -32,109 +35,109 @@ export function UserSideMenu ({children}:UserSideMenuProps){
 
     const {data: user, isLoading, error} = useCurrentUserProfile()
 
-    const GuestMenuItems: MenuItem[] = [
+    const GuestMenuItems: MenuItem[] = useMemo(() => [
         {
             id: 'dormitories',
             image: '/workplace.svg',
-            label: 'Dormitories Information',
+            label: t('sideMenu.dormitoriesInfo'),
             href: "/dormitories",
         },
         {
             id: 'announcements',
             image: '/clipboard-check.svg',
-            label: 'Announcements',
+            label: t('sideMenu.announcements'),
             href: "/announcements-public"
         },
         {
             id: 'rooms',
             image: '/home.svg',
-            label: 'Available rooms',
+            label: t('sideMenu.rooms'),
             href: '/rooms',
         },
         {
             id: 'signin',
             image: '/user.svg',
-            label: 'Sign in',
+            label: t('sideMenu.signin'),
             href: "/auth/login",
         }
-    ]
+    ], [t])
 
-    const RegularMenuItems: MenuItem[] = [
+    const RegularMenuItems: MenuItem[] = useMemo(() => [
         {
             id: 'profile',
             image: '/user.svg',
-            label: 'My profile',
+            label: t('sideMenu.profile'),
             href: '/profile'
         },
         {
             id: 'dormitories',
             image: '/workplace.svg',
-            label: 'Dormitories Information',
+            label: t('sideMenu.dormitoriesInfo'),
             href: "/dormitories",
         },
         {
             id: 'announcements',
             image: '/clipboard-check.svg',
-            label: 'Announcements',
+            label: t('sideMenu.announcements'),
             href: "/announcements-public"
         },
         {
             id: 'rooms',
             image: '/home.svg',
-            label: 'Available rooms',
+            label: t('sideMenu.rooms'),
             href: "/rooms",
         },
         {
             id: 'signin',
             image: '/user.svg',
-            label: 'Sign in',
+            label: t('sideMenu.signin'),
             href: "/auth/login",
         }
-    ]
+    ], [t])
 
-    const SignedInMenuItems:MenuItem[] = [
+    const SignedInMenuItems:MenuItem[] = useMemo(() => [
         {
             id: 'profile',
             image: '/user.svg',
-            label: 'My profile',
+            label: t('sideMenu.profile'),
             href: '/profile'
         },
         {
             id: 'dormitories',
             image: '/workplace.svg',
-            label: 'Dormitories',
+            label: t('sideMenu.dormitories'),
             href: '/dormitories',
         },
         {
             id: 'announcements',
             image: '/clipboard-text.svg',
-            label: 'Announcements',
+            label: t('sideMenu.announcements'),
             href: '/announcements',
         },
         {
             id: 'messages',
             image: '/envelope.svg',
-            label: 'Messages',
+            label: t('sideMenu.messages'),
             href: '#',
         },
         {
             id:'rooms',
             image: '/home.svg',
-            label: 'Available rooms',
+            label: t('sideMenu.rooms'),
             href: '/rooms',
         },
         {
             id:'notification',
             image: '/bell.svg',
-            label: 'Notification',
+            label: t('sideMenu.notification'),
             href: '#',
         },
         {
             id:'logout',
             image:'/sign-out.svg',
-            label:'Logout',
+            label: t('sideMenu.logout'),
         }
-    ]
+    ], [t])
 
     const [currentMenuItems, setCurrentMenuItems] = useState<MenuItem[]>(GuestMenuItems)
 
@@ -151,7 +154,7 @@ export function UserSideMenu ({children}:UserSideMenuProps){
         }else{
             setCurrentMenuItems(GuestMenuItems);
         }
-    },[user])
+    },[user, GuestMenuItems, RegularMenuItems, SignedInMenuItems])
 
     return(
         <div className="min-h-screen bg-white flex flex-col md:flex-row">
@@ -268,7 +271,7 @@ export function UserSideMenu ({children}:UserSideMenuProps){
                                                 className="flex items-center space-x-3 px-3 py-2 md:py-3 hover:text-red-100 hover:bg-red-900 rounded transition-colors w-full disabled:opacity-50"
                                             >
                                                 <img src={item.image} alt={item.label} className="w-8 h-8 md:w-10 md:h-10 filter brightness-0 invert"/>
-                                                <span className="text-sm md:text-base">{isLoggingOut ? 'Logging out...' : 'Log out'}</span>
+                                                <span className="text-sm md:text-base">{isLoggingOut ? t('sideMenu.loggingOut') || 'Logging out...' : t('sideMenu.logout')}</span>
                                             </button>
                                         )
                                     }else return(
@@ -287,15 +290,8 @@ export function UserSideMenu ({children}:UserSideMenuProps){
                     ))}
                 </nav>
 
-                {/* Language Toggle */}
-                <div className="flex flex-row justify-center mb-8 md:mb-20 p-4 md:p-0">
-                    <button className="px-3 py-1 bg-white text-blue-900 text-sm font-medium rounded-l-md">
-                        Pol
-                    </button>
-                    <button className="px-3 py-1 text-white border border-white text-sm rounded-r-md">
-                        Eng
-                    </button>
-                </div>
+                {/* Language Toggle - Translate All Frontend */}
+                <TranslationButton variant="side-menu" />
             </div>
 
             {/* Overlay for mobile */}

@@ -49,6 +49,7 @@ export interface DormitoryFloor{
 export interface DormitoryPostData {
     name: string;
     address: string;
+    description: string;
     groundFloorPhoneNumber: string;
     pricePerDay: number;
     pricePerMonth: number;

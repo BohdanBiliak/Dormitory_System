@@ -2,9 +2,10 @@
 
 import React, { useState, useEffect } from 'react'
 import {useGetAdminProfile, useMutateAdminProfile, useUploadAvatar} from '@/hooks/profile.hook'
+import { useLanguage } from '@/providers/language.provider'
 
 export function AdminProfileForm() {
-
+  const { t } = useLanguage()
   const{updateProfile, isUpdatingProfile} = useMutateAdminProfile()
   const {data: url, mutateAsync: uploadAvatar, isPending: isUploadingAvatar} = useUploadAvatar()
 
@@ -98,7 +99,7 @@ export function AdminProfileForm() {
           <div className="bg-white shadow-lg rounded-lg p-8 max-w-md mx-4">
             <div className="flex items-center justify-center">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-              <span className="ml-3 text-gray-700 font-medium">Loading admin profile...</span>
+              <span className="ml-3 text-gray-700 font-medium">{t('profile.loadingAdminProfile')}</span>
             </div>
           </div>
         </div>
@@ -115,7 +116,7 @@ export function AdminProfileForm() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
                 </svg>
               </div>
-              <p className="text-gray-700 font-medium">Error loading admin profile. Please try again.</p>
+              <p className="text-gray-700 font-medium">{t('profile.errorLoadingProfile')}</p>
             </div>
           </div>
         </div>
@@ -135,10 +136,10 @@ export function AdminProfileForm() {
             </div>
             <div>
               <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900">
-                Admin Profile
+                {t('profile.adminProfile')}
               </h1>
               <p className="text-gray-600 text-sm md:text-base">
-                Manage your account settings and personal information
+                {t('profile.manageAccountSettings')}
               </p>
             </div>
           </div>
@@ -157,10 +158,10 @@ export function AdminProfileForm() {
                 </div>
                 <div>
                   <h2 className="text-lg md:text-xl font-semibold text-white">
-                    Personal Information
+                    {t('profile.personalInformation')}
                   </h2>
                   <p className="text-blue-100 text-sm">
-                    {isEditing ? 'Edit your profile details' : 'View your current information'}
+                    {isEditing ? t('profile.editProfileDetails') : t('profile.viewCurrentInformation')}
                   </p>
                 </div>
               </div>
@@ -169,7 +170,7 @@ export function AdminProfileForm() {
               <div className="mt-3 sm:mt-0">
                 <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
                   <div className="w-2 h-2 bg-green-400 rounded-full mr-2"></div>
-                  Active Admin
+                  {t('profile.activeAdmin')}
                 </span>
               </div>
             </div>
@@ -204,15 +205,15 @@ export function AdminProfileForm() {
                       )}
                     </div>
                     
-                    <h3 className="font-semibold text-gray-900 mb-1">Profile Photo</h3>
+                    <h3 className="font-semibold text-gray-900 mb-1">{t('profile.profilePhoto')}</h3>
                     <p className="text-sm text-gray-600 mb-4">
-                      {isUploadingAvatar ? 'Uploading...' : 'JPG, PNG up to 5MB'}
+                      {isUploadingAvatar ? t('profile.uploading') : t('profile.jpgPngUpTo5MB')}
                     </p>
                     
                     {isEditing && (
                       <div className="space-y-3">
                         <label className="block">
-                          <span className="sr-only">Choose profile photo</span>
+                          <span className="sr-only">{t('profile.chooseProfilePhoto')}</span>
                           <input
                             type="file"
                             name="photo"
@@ -233,17 +234,17 @@ export function AdminProfileForm() {
                 
                 {/* Personal Details */}
                 <div className="space-y-6">
-                  <div className="flex items-center space-x-2 pb-2 border-b border-gray-200">
+                                    <div className="flex items-center space-x-2 pb-2 border-b border-gray-200">
                     <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
-                    <h3 className="text-lg font-semibold text-gray-900">Personal Details</h3>
+                    <h3 className="text-lg font-semibold text-gray-900">{t('profile.personalDetails')}</h3>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <label className="block text-sm font-medium text-gray-700">
-                        Display Name
+                        {t('profile.displayName')}
                         {isEditing && <span className="text-blue-800 ml-1">*</span>}
                       </label>
                       <div className="relative">
@@ -254,7 +255,7 @@ export function AdminProfileForm() {
                           onChange={handleInputChange}
                           disabled={!isEditing || isLoading}
                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500 transition-colors"
-                          placeholder="Enter your display name"
+                          placeholder={t('profile.enterDisplayName')}
                         />
                         {isEditing && (
                           <div className="absolute inset-y-0 right-0 flex items-center pr-3">
@@ -268,7 +269,7 @@ export function AdminProfileForm() {
 
                     <div className="space-y-2">
                       <label className="block text-sm font-medium text-gray-700">
-                        Last Name
+                        {t('profile.lastName')}
                         {isEditing && <span className="text-blue-800 ml-1">*</span>}
                       </label>
                       <div className="relative">
@@ -279,7 +280,7 @@ export function AdminProfileForm() {
                           onChange={handleInputChange}
                           disabled={!isEditing || isLoading}
                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500 transition-colors"
-                          placeholder="Enter your last name"
+                          placeholder={t('profile.enterLastName')}
                         />
                         {isEditing && (
                           <div className="absolute inset-y-0 right-0 flex items-center pr-3">
@@ -294,7 +295,7 @@ export function AdminProfileForm() {
 
                   <div className="space-y-2">
                     <label className="block text-sm font-medium text-gray-700">
-                      Email Address
+                      {t('profile.emailAddress')}
                       {isEditing && <span className="text-blue-800 ml-1">*</span>}
                     </label>
                     <div className="relative">
@@ -305,7 +306,7 @@ export function AdminProfileForm() {
                         onChange={handleInputChange}
                         disabled={!isEditing || isLoading}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500 transition-colors"
-                        placeholder="Enter your email address"
+                        placeholder={t('profile.enterEmailAddress')}
                       />
                       {/*<div className="absolute inset-y-0 left-0 flex items-center pl-3">*/}
                       {/*  <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">*/}
@@ -329,7 +330,7 @@ export function AdminProfileForm() {
                     <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                     </svg>
-                    <h3 className="text-lg font-semibold text-gray-900">Account Information</h3>
+                    <h3 className="text-lg font-semibold text-gray-900">{t('profile.accountInformation')}</h3>
                   </div>
 
                   <div className="bg-gray-50 rounded-lg p-4">
@@ -341,12 +342,12 @@ export function AdminProfileForm() {
                           </svg>
                         </div>
                         <div>
-                          <p className="font-medium text-gray-900">Administrator Role</p>
-                          <p className="text-sm text-gray-600">Full system access and management permissions</p>
+                          <p className="font-medium text-gray-900">{t('profile.administratorRole')}</p>
+                          <p className="text-sm text-gray-600">{t('profile.fullSystemAccess')}</p>
                         </div>
                       </div>
                       <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                        {user?.role || 'Admin'}
+                        {user?.role || t('profile.admin')}
                       </span>
                     </div>
                   </div>
@@ -363,7 +364,7 @@ export function AdminProfileForm() {
                     disabled={isLoading}
                     className="w-full sm:w-auto px-6 py-3 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Cancel Changes
+                    {t('profile.cancelChanges')}
                   </button>
                   <button
                     onClick={handleSave}
@@ -373,7 +374,7 @@ export function AdminProfileForm() {
                     {isLoading && (
                       <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
                     )}
-                    <span>{isLoading ? 'Saving Changes...' : 'Save Changes'}</span>
+                    <span>{isLoading ? t('profile.saving') : t('profile.saveChanges')}</span>
                   </button>
                 </>
               ) : (
@@ -384,7 +385,7 @@ export function AdminProfileForm() {
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                   </svg>
-                  <span>Edit Profile</span>
+                  <span>{t('profile.editProfile')}</span>
                 </button>
               )}
             </div>

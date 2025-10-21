@@ -1,0 +1,12 @@
+{
+  "availableRooms": {
+    "title": "Available Rooms",
+    "search": "Search rooms...",
+    "filter": {
+      "all": "All",
+      "available": "Available",
+      "occupied": "Occupied"
+    },
+    "noRooms": "No rooms found"
+  }
+}

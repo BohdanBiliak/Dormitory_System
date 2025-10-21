@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "@/providers/query.provider";
+import { LanguageProvider } from "@/providers/language.provider";
 import { Toaster } from "sonner";
-import "./globals.css";
+import { TranslationButton } from "@/components/ui/TranslationButton.component";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -29,10 +31,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <QueryProvider>
-          {children}
-          <Toaster position="top-right" />
-        </QueryProvider>
+        <LanguageProvider>
+          <QueryProvider>
+            {children}
+            <TranslationButton variant="floating" />
+            <Toaster position="top-right" />
+          </QueryProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

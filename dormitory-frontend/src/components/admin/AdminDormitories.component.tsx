@@ -5,6 +5,7 @@ import {useEffect, useState} from "react";
 import {Dormitory, DormitoryPostData, RoomGenerationShema} from "@/types/dormitories.types";
 import {ChevronLeft, ChevronRight} from "lucide-react";
 import CreateDormitoryDialogComponent from "@/components/dialogs/admin/CreateDormitoryDialog.component";
+import {DormitoryListTutorial} from "@/app/tutorials/dormitory/dormitory-list";
 
 export function AdminDormitoriesList(){
     const{createDormitory, deactivateDormitory, updateDormitory, activateDormitory} = useDormitories();
@@ -188,20 +189,21 @@ export function AdminDormitoriesList(){
     }
 
     return(
-        <div className=" w-full bg-gradient-to-br from-gray-50 to-gray-100">
-            {/* Header */}
-            <div className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-10">
-                <div className="px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                        <div className="flex items-center space-x-3">
-                            <div className="p-2 sm:p-3 bg-blue-600 rounded-xl shadow-lg">
-                                <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                                </svg>
-                            </div>
-                            <div>
-                                <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">
-                                    Dormitories Management
+        <DormitoryListTutorial>
+            <div className=" w-full bg-gradient-to-br from-gray-50 to-gray-100">
+                {/* Header */}
+                <div className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-10 dormitory-management-header">
+                    <div className="px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                            <div className="flex items-center space-x-3">
+                                <div className="p-2 sm:p-3 bg-blue-600 rounded-xl shadow-lg">
+                                    <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">
+                                        Dormitories Management
                                 </h1>
                                 <p className="text-gray-600 text-xs sm:text-sm mt-1">
                                     Manage and configure dormitory facilities
@@ -209,7 +211,7 @@ export function AdminDormitoriesList(){
                             </div>
                         </div>
                         <button 
-                            className="px-3 py-2 sm:px-4 sm:py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2 text-sm sm:text-base"
+                            className="px-3 py-2 sm:px-4 sm:py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2 text-sm sm:text-base create-dormitory-header-button"
                             onClick={handleOpenDormitoryCreationForm}
                         >
                             <span className="text-lg">+</span>
@@ -226,7 +228,7 @@ export function AdminDormitoriesList(){
                     <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
                         
                         {/* Dormitory Selection */}
-                        <div className="xl:col-span-1">
+                        <div className="xl:col-span-1 dormitory-selection-panel">
                             <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden h-fit max-h-[calc(100vh-200px)]">
                                 <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-4 sm:px-6 py-3 sm:py-4">
                                     <div className="flex items-center justify-between">
@@ -246,7 +248,7 @@ export function AdminDormitoriesList(){
                                     <div className="p-4 sm:p-6 space-y-4">
                                         {/* Active Dormitories */}
                                         {activeDormitories && Array.isArray(activeDormitories) && activeDormitories.length > 0 && (
-                                            <div className="space-y-3">
+                                            <div className="space-y-3 active-dormitories-section">
                                                 <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider">Active Dormitories</h3>
                                                 <div className="space-y-2">
                                                     {activeDormitories.map((dormitory, index) => (
@@ -345,7 +347,7 @@ export function AdminDormitoriesList(){
                         </div>
 
                         {/* Dormitory Details */}
-                        <div className="xl:col-span-2">
+                        <div className="xl:col-span-2 dormitory-details-panel">
                             {chosenDormitory ? (
                                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                                     <div className="bg-gradient-to-r from-green-600 to-green-700 px-4 sm:px-6 py-3 sm:py-4">
@@ -362,7 +364,7 @@ export function AdminDormitoriesList(){
                                     <div className="p-4 sm:p-6">
                                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
                                             {/* Basic Information */}
-                                            <div className="space-y-4 lg:col-span-2">
+                                            <div className="space-y-4 lg:col-span-2 dormitory-basic-info">
                                                 <h3 className="text-base sm:text-lg font-semibold text-gray-900 border-b pb-2">
                                                     Basic Information
                                                 </h3>
@@ -427,7 +429,7 @@ export function AdminDormitoriesList(){
                                                         )}
                                                     </div>
                                                     {chosenDormitory.photos.length > 0 ? (
-                                                        <div>
+                                                        <div className="dormitory-photos">
                                                             <label className="block text-xs sm:text-sm font-medium text-gray-500 mb-1">Photos</label>
                                                             <div className="relative h-64 md:h-96 rounded-lg overflow-hidden">
                                                                 <img
@@ -482,7 +484,7 @@ export function AdminDormitoriesList(){
                                             </div>
 
                                             {/* Statistics */}
-                                            <div className="space-y-4">
+                                            <div className="space-y-4 dormitory-statistics">
                                                 <h3 className="text-base sm:text-lg font-semibold text-gray-900 border-b pb-2">
                                                     Statistics
                                                 </h3>
@@ -508,7 +510,7 @@ export function AdminDormitoriesList(){
                                         </div>
 
                                         {/* Action Buttons */}
-                                        <div className="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-gray-200">
+                                        <div className="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-gray-200 dormitory-actions">
                                             <div className="flex flex-wrap gap-2 sm:gap-3">
                                                 {!isEditing ? (
                                                     <button className="px-3 py-2 sm:px-4 sm:py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2 text-sm" onClick={handleBeginEditing}>
@@ -582,5 +584,6 @@ export function AdminDormitoriesList(){
             {/* Dialog */}
             <CreateDormitoryDialogComponent open={dormitoryFormVisible} onClose={handleCloseDormitoryCreationForm}/>
         </div>
+        </DormitoryListTutorial>
     )
 }

@@ -1,0 +1,119 @@
+{
+  "createDormitory": {
+    "title": "Create New Dormitory",
+    "subtitle": "Configure dormitory details and room templates",
+    "sections": {
+      "generalInformation": "General Information",
+      "roomGeneration": "Room Generation"
+    },
+    "fields": {
+      "name": {
+        "label": "Dormitory Name",
+        "placeholder": "Enter dormitory name..."
+      },
+      "address": {
+        "label": "Address",
+        "placeholder": "Enter full address"
+      },
+      "description": {
+        "label": "Description",
+        "placeholder": "Describe your dormitory..."
+      },
+      "phone": {
+        "label": "Phone Number",
+        "placeholder": "Enter phone number"
+      },
+      "pricePerMonth": {
+        "label": "Price per Month",
+        "placeholder": "0.00"
+      },
+      "pricePerDay": {
+        "label": "Price per Day",
+        "placeholder": "0.00"
+      },
+      "photos": {
+        "label": "Photos",
+        "addButton": "Add Images"
+      },
+      "floorNumber": {
+        "label": "Floor number",
+        "placeholder": "Floor number"
+      },
+      "roomNumbers": {
+        "label": "Room numbers (comma separated)",
+        "placeholder": "101, 102, 103, ..."
+      }
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "clearAll": "Clear All",
+      "create": "Create Dormitory",
+      "addFloor": "Add Floor",
+      "addRooms": "Add Rooms",
+      "previous": "Previous",
+      "next": "Next",
+      "new": "New",
+      "edit": "Edit",
+      "delete": "Delete",
+      "save": "Save",
+      "addTemplate": "Add Template",
+      "general": "General",
+      "rooms": "Rooms",
+      "tutorial": "Help"
+    },
+    "messages": {
+      "fillBasicInfo": "Fill in basic dormitory information",
+      "configureRooms": "Configure floors and room templates",
+      "allFieldsCleared": "All fields cleared successfully",
+      "roomsAdded": "Added {count} rooms to floor {floor}",
+      "selectFloor": "Please select a floor first",
+      "selectTemplate": "Please select a room template",
+      "enterRoomNumbers": "Please enter room numbers",
+      "invalidRoomNumbers": "Invalid room number format. Use comma-separated values (e.g., 101, 102, 103)",
+      "invalidRoomFormat": "Invalid room numbers: {rooms}",
+      "clearConfirm": "This will clear all entered data. Are you sure?",
+      "validationError": "Please correct the validation errors",
+      "roomsRequired": "At least one room configuration is required",
+      "roomsArrayError": "Room numbers must be provided as comma-separated values (e.g., 101,102,103)",
+      "roomsEmptyError": "Cannot have empty room numbers",
+      "roomsDuplicateError": "Duplicate room numbers found: {duplicates}",
+      "roomsInvalidFormatError": "Invalid room number format: {invalid}",
+      "floorsRequiredError": "Number of floors is required"
+    },
+    "sections_description": {
+      "floors": "Floors",
+      "roomTemplates": "Room Templates",
+      "templateInformation": "Template Information"
+    },
+    "tutorial": {
+      "welcome": {
+        "title": "Welcome to Dormitory Creation",
+        "description": "This guide will help you create a new dormitory step by step."
+      },
+      "header": {
+        "title": "Dialog Header",
+        "description": "This shows the current dialog title and has a close button to exit."
+      },
+      "navigation": {
+        "title": "Navigation Tabs",
+        "description": "Use these tabs to switch between different sections of the dormitory setup."
+      },
+      "name": {
+        "title": "Dormitory Name",
+        "description": "Enter a unique name for your dormitory. This will be displayed to users."
+      },
+      "photos": {
+        "title": "Dormitory Photos",
+        "description": "Upload photos to showcase your dormitory. These help users visualize the space."
+      },
+      "floors": {
+        "title": "Floor Configuration",
+        "description": "Specify the number of floors in your dormitory for room organization."
+      },
+      "templates": {
+        "title": "Room Templates",
+        "description": "Configure different room types and their layouts for this dormitory."
+      }
+    }
+  }
+}

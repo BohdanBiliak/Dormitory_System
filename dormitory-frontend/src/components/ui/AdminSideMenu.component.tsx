@@ -6,6 +6,8 @@ import React, {useEffect, useState} from "react";
 import {useCurrentUserProfile} from "@/hooks/user.hook";
 import Link from "next/link";
 import {UserRole} from "@/types/auth.types";
+import { useLanguage } from "@/providers/language.provider";
+import { TranslationButton } from "./TranslationButton.component";
 
 interface AdminSideMenuProps {
     children: React.ReactNode;
@@ -14,6 +16,7 @@ interface AdminSideMenuProps {
 
 export function AdminSideMenu ({children}:AdminSideMenuProps){
     const { logout, isLoggingOut } = useAuth()
+    const { t } = useLanguage()
     const [openMenu, setOpenMenu] = useState<string>()
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
@@ -37,41 +40,41 @@ export function AdminSideMenu ({children}:AdminSideMenuProps){
         {
             id: 'profile',
             image: '/user.svg',
-            label: 'My profile',
+            label: t('sideMenu.myProfile') || 'My profile',
             href: '/admin/profile'
         },
         {
             id: 'dormitories',
             image: '/workplace.svg',
-            label: 'Dormitory management',
+            label: t('sideMenu.dormitoryManagement') || 'Dormitory management',
             subMenu: [
                 {
                     id: 'dormsInfo',
-                    label: 'Information',
+                    label: t('sideMenu.information') || 'Information',
                     image: '/clipboard-text.svg',
                     href: '/admin/dormitories'
                 },
                 {
                     id: 'rooms',
-                    label: 'Available rooms',
+                    label: t('sideMenu.availableRooms') || 'Available rooms',
                     image: '/home.svg',
                     href: '/admin/rooms',
                 },
                 {
                     id: 'users',
-                    label: 'User profiles',
+                    label: t('sideMenu.userProfiles') || 'User profiles',
                     image: '/users.svg',
                     href: '/admin/users',
                 },
                 {
                     id:'confirmations',
-                    label: 'Confirmations',
+                    label: t('sideMenu.confirmations') || 'Confirmations',
                     image:'/clipboard-check.svg',
                     href: '/admin/confirmations',
                 },
                 {
                     id:'payments',
-                    label: 'Payments',
+                    label: t('sideMenu.payments') || 'Payments',
                     image: '/cash.svg',
                     href: '#'
                 }
@@ -80,17 +83,17 @@ export function AdminSideMenu ({children}:AdminSideMenuProps){
         {
             id: 'communication',
             image: '/comments.svg',
-            label: 'Communication',
+            label: t('sideMenu.communication') || 'Communication',
             subMenu: [
                 {
                     id: 'announcements',
-                    label: 'Announcements',
+                    label: t('sideMenu.announcements') || 'Announcements',
                     image:'/comments.svg',
                     href: '/admin/announcements'
                 },
                 {
                     id:'messages',
-                    label: 'Messages',
+                    label: t('sideMenu.messages') || 'Messages',
                     image:'/envelope.svg',
                     href: '#'
                 }
@@ -99,7 +102,7 @@ export function AdminSideMenu ({children}:AdminSideMenuProps){
         {
             id:'logout',
             image:'/sign-out.svg',
-            label:'Logout',
+            label: t('sideMenu.logout') || 'Logout',
         }
     ]
 
@@ -107,24 +110,24 @@ export function AdminSideMenu ({children}:AdminSideMenuProps){
         {
             id: 'dormitories',
             image: '/workplace.svg',
-            label: 'Dormitories Information',
+            label: t('sideMenu.dormitoriesInformation') || 'Dormitories Information',
             href: "/dormitories",
         },
         {
             id: 'announcements',
             image: '/clipboard-check.svg',
-            label: 'Announcements',
+            label: t('sideMenu.announcements') || 'Announcements',
             href: "/announcements-public"
         },
         {
             id: 'rooms',
             image: '/home.svg',
-            label: 'Available rooms'
+            label: t('sideMenu.availableRooms') || 'Available rooms'
         },
         {
             id: 'signin',
             image: '/user.svg',
-            label: 'Sign in',
+            label: t('sideMenu.signIn') || 'Sign in',
             href: "/auth/login",
         }
     ]
@@ -145,14 +148,14 @@ export function AdminSideMenu ({children}:AdminSideMenuProps){
     return(
         <div className="min-h-screen bg-white flex flex-col md:flex-row">
             {/* Mobile Header with Burger Menu */}
-            <div className="md:hidden bg-blue-900 text-white px-4 py-3 flex items-center justify-between">
+                <div className="md:hidden bg-blue-900 text-white px-4 py-3 flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                     <img
                         src="/icon.svg"
                         alt="Dormitory Logo"
                         className="w-8 h-8 filter brightness-0 invert"
                     />
-                    <h1 className="text-lg font-bold">Dormitory System</h1>
+                    <h1 className="text-lg font-bold">{t('sideMenu.dormitorySystem') || 'Dormitory System'}</h1>
                 </div>
                 <button
                     onClick={toggleMobileMenu}
@@ -184,7 +187,7 @@ export function AdminSideMenu ({children}:AdminSideMenuProps){
                             className="w-16 h-16 lg:w-24 lg:h-24 filter brightness-0 invert"
                         />
                     </div>
-                    <h1 className="text-lg lg:text-xl font-bold">Dormitory System</h1>
+                    <h1 className="text-lg lg:text-xl font-bold">{t('sideMenu.dormitorySystem') || 'Dormitory System'}</h1>
                 </div>
 
                 {/* Mobile Header inside sidebar */}
@@ -195,7 +198,7 @@ export function AdminSideMenu ({children}:AdminSideMenuProps){
                             alt="Dormitory Logo"
                             className="w-10 h-10 filter brightness-0 invert"
                         />
-                        <h1 className="text-lg font-bold">Dormitory System</h1>
+                        <h1 className="text-lg font-bold">{t('sideMenu.dormitorySystem') || 'Dormitory System'}</h1>
                     </div>
                     <button
                         onClick={toggleMobileMenu}
@@ -257,7 +260,7 @@ export function AdminSideMenu ({children}:AdminSideMenuProps){
                                                 className="flex items-center space-x-3 px-3 py-2 md:py-3 hover:text-red-100 hover:bg-red-900 rounded transition-colors w-full disabled:opacity-50"
                                             >
                                                 <img src={item.image} alt={item.label} className="w-8 h-8 md:w-10 md:h-10 filter brightness-0 invert"/>
-                                                <span className="text-sm md:text-base">{isLoggingOut ? 'Logging out...' : 'Log out'}</span>
+                                                <span className="text-sm md:text-base">{isLoggingOut ? (t('sideMenu.loggingOut') || 'Logging out...') : (t('sideMenu.logout') || 'Log out')}</span>
                                             </button>
                                         )
                                     }else return(
@@ -277,14 +280,7 @@ export function AdminSideMenu ({children}:AdminSideMenuProps){
                 </nav>
 
                 {/* Language Toggle */}
-                <div className="flex flex-row justify-center mb-8 md:mb-20 p-4 md:p-0">
-                    <button className="px-3 py-1 bg-white text-blue-900 text-sm font-medium rounded-l-md">
-                        Pol
-                    </button>
-                    <button className="px-3 py-1 text-white border border-white text-sm rounded-r-md">
-                        Eng
-                    </button>
-                </div>
+                <TranslationButton variant="side-menu" />
             </div>
 
             {/* Overlay for mobile */}

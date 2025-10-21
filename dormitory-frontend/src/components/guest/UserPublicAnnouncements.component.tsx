@@ -4,8 +4,10 @@ import Link from "next/link";
 import React, {useEffect} from "react";
 import {useGetPublicAnnouncements} from "@/hooks/announcements.hook";
 import { Announcement } from "@/types/announcements.types";
+import { useLanguage } from "@/providers/language.provider";
 
 export function UserPublicAnnouncements(){
+    const { t } = useLanguage()
     const [showExpired, setShowExpired] = React.useState(false);
     const [page, setPage] = React.useState(1);
     const limit = 10

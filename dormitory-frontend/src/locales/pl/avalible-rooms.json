@@ -1,0 +1,12 @@
+{
+  "availableRooms": {
+    "title": "Dostępne Pokoje",
+    "search": "Szukaj pokoi...",
+    "filter": {
+      "all": "Wszystkie",
+      "available": "Dostępne",
+      "occupied": "Zajęte"
+    },
+    "noRooms": "Nie znaleziono pokoi"
+  }
+}
