@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from "@headlessui/react";
 import {Dormitory, DormitoryFloor} from "@/types/dormitories.types";
 import {useGetActiveDormitories, useGetDormitoryById} from "@/hooks/dormitories.hook";
-import { useGetAvailableRoom, useGetRooms, useUpdateRoom } from "@/hooks/rooms.hook";
+import {useGetAvailableRoom, useGetRoom, useGetRooms, useUpdateRoom} from "@/hooks/rooms.hook";
 import {AvailableRoomsRequest, Room, RoomResident} from "@/types/rooms.types";
 import { CalendarOfAvailability2WVerComponent } from "@/components/ui/CalendarOfAvailability2WVer.component";
 import EvictionFlowDialogsComponent from "@/components/dialogs/admin/EvictionFlowDialogs.component";
@@ -24,9 +24,11 @@ export default function AllRoomsPage() {
     const [dormitoriesList, setDormitoriesList] = useState<Dormitory[]>([]);
     const [currentDormitory, setCurrentDormitory] = useState<Dormitory | null>(null);
     const [currentFloor, setCurrentFloor] = useState<DormitoryFloor|null>(null);
+    const [selectedRoomId, setSelectedRoomId] = useState<string>('');
     const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
 
     const { data: dormitories, isLoading: loadingDormitories, error: dormitoriesError } = useGetActiveDormitories();
+    const {data: room, isLoading: loadingRoom, error: roomError} = useGetRoom(selectedRoomId);
 
 
     useEffect(() => {
@@ -49,9 +51,15 @@ export default function AllRoomsPage() {
 
     useEffect(() => {
         if (currentFloor && currentFloor.rooms && currentFloor.rooms.length > 0) {
-            setSelectedRoom(currentFloor.rooms[0])
+            setSelectedRoomId(currentFloor.rooms[0].id)
         }
     }, [currentFloor]);
+
+    useEffect(() => {
+        if(room){
+            setSelectedRoom(room);
+        }
+    }, [room]);
 
 
     const [filters, setFilters] = useState<Filters>({
@@ -155,8 +163,8 @@ export default function AllRoomsPage() {
         setCurrentFloor(floor)
     }
 
-    const handleRoomSelect = (room: Room) => {
-        setSelectedRoom(room);
+    const handleRoomSelect = (roomId: string) => {
+        setSelectedRoomId(roomId);
         setShowMobileRoomDetails(true);
     };
 
@@ -366,7 +374,7 @@ export default function AllRoomsPage() {
                                             <div
                                                 className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center text-white text-xs font-medium cursor-pointer transition-all duration-200 hover:scale-110 active:scale-95 hover:shadow-md animate-in zoom-in-50 duration-300`}
                                                 style={{ animationDelay: `${index * 20}ms` }}
-                                                onClick={() => handleRoomSelect(room)}
+                                                onClick={() => handleRoomSelect(room.id)}
                                             >
                                                 <div className={`w-full h-full rounded-lg flex items-center justify-center ${getRoomColor(room)}`}>
                                                     {room.number.slice(-2)}
