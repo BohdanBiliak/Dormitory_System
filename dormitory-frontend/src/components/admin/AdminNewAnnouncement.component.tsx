@@ -30,7 +30,6 @@ export function AdminNewAnnouncement(){
 
     const {createAnnouncement, uploadAnnouncementAttachment} = useMutateAnnouncement()
     const {data: activeDormitories, isLoading: loadingDormitories, error: dormsErrors} = useGetActiveDormitories()
-    const {data: rooms, isLoading: loadingRooms, error: roomsErros} = useGetRooms()
 
     const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {

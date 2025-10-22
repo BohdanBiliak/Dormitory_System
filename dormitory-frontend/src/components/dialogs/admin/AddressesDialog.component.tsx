@@ -1,6 +1,6 @@
 import {Description, Dialog, DialogBackdrop, DialogPanel, DialogTitle} from "@headlessui/react";
 import {JSX, useEffect, useState} from "react";
-import { Dormitory } from "@/types/dormitories.types";
+import {Dormitory, DormitoryFloor} from "@/types/dormitories.types";
 import {Room, RoomResident} from "@/types/rooms.types";
 import { User } from "@/types/auth.types";
 import {useGetActiveDormitories} from "@/hooks/dormitories.hook";
@@ -22,35 +22,13 @@ export interface AddresseeItem {
     isChosen: boolean;
     showChildren: boolean;
     label: string;
-    type: AddresseeType;
-    resident?: ResidentItem;
-    room?: RoomItem;
-    floor?: FloorItem;
-    dormitory?: DormitoryItem;
-    children?: AddresseeItem[];
+    resident?: RoomResident;
+    room?: Room;
+    floor?: DormitoryFloor;
+    dormitory?: Dormitory;
 }
 
-interface ResidentItem{
-    user: RoomResident;
-}
 
-interface RoomItem {
-    room: Room;
-    residents: ResidentItem[];
-}
-
-interface FloorItem {
-    dormId: string;
-    label: number;
-    rooms: RoomItem[];
-}
-
-interface DormitoryItem {
-    id: string;
-    label: string;
-    dormitory: Dormitory;
-    floors: Set<FloorItem>;
-}
 
 export default function AddressesDialogComponent({open, onClose, onConfirm, preSelected}: AddressesDialogProps) {
 

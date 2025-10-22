@@ -48,7 +48,7 @@ export default function AllRoomsPage() {
     }, [currentDormitory]);
 
     useEffect(() => {
-        if (currentFloor && currentFloor.rooms.length > 0) {
+        if (currentFloor && currentFloor.rooms && currentFloor.rooms.length > 0) {
             setSelectedRoom(currentFloor.rooms[0])
         }
     }, [currentFloor]);
