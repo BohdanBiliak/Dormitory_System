@@ -14,7 +14,7 @@ export class DormitoryService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly s3Service: S3Service,
-  ) {}
+  ) { }
 
   async create(
     dto: CreateDormitoryDto & { floorAssignments: FloorRoomAssignmentDto[] },
@@ -56,10 +56,10 @@ export class DormitoryService {
     // Upload dormitory photos only
     const photoUrls = files.photos
       ? await Promise.all(
-          files.photos.map((file) =>
-            this.s3Service.uploadFile(file, "dormitories"),
-          ),
-        )
+        files.photos.map((file) =>
+          this.s3Service.uploadFile(file, "dormitories"),
+        ),
+      )
       : [];
 
     return this.prismaService.$transaction(async (tx) => {
@@ -218,50 +218,74 @@ export class DormitoryService {
 
   async findAll() {
     const dormitories = await this.prismaService.dormitory.findMany({
-      where: { status: "Active" },
-      orderBy: { name: "asc" },
+      where: { status: 'Active' },
+      orderBy: { name: 'asc' },
       include: {
-        _count: {
-          select: {
-            floors: true,
-            rooms: true,
+        floors: {
+          orderBy: { floorNumber: 'asc' },
+        },
+        rooms: {
+          include: {
             residents: {
               where: { isActive: true },
+            },
+          },
+        },
+        managers: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                displayName: true,
+                email: true,
+              },
+            },
+          },
+        },
+        admins: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                displayName: true,
+                email: true,
+              },
             },
           },
         },
       },
     });
 
-    // Calculate availability statistics
-    const enrichedDormitories = await Promise.all(
-      dormitories.map(async (dormitory) => {
-        const availableRoomsCount = await this.prismaService.room.count({
-          where: {
-            dormitoryId: dormitory.id,
-            residents: {
-              every: {
-                isActive: false,
-              },
-            },
-          },
-        });
+    // Enrich data with computed stats
+    const enrichedDormitories = dormitories.map((dormitory) => {
+      const roomCount = dormitory.rooms.length;
+      const floorCount = dormitory.floors.length;
 
-        return {
-          ...dormitory,
-          floorCount: dormitory._count.floors,
-          roomCount: dormitory._count.rooms,
-          availableRooms: availableRoomsCount,
-          totalResidents: dormitory._count.residents,
-        };
-      }),
-    );
+      const totalResidents = dormitory.rooms.reduce(
+        (sum, room) => sum + room.residents.length,
+        0,
+      );
+
+      // available = rooms with no active residents
+      const availableRooms = dormitory.rooms.filter(
+        (room) => room.residents.length === 0,
+      ).length;
+
+      return {
+        ...dormitory,
+        floorCount,
+        roomCount,
+        totalResidents,
+        availableRooms,
+      };
+    });
 
     return {
       data: enrichedDormitories,
       total: enrichedDormitories.length,
     };
   }
+
 
   async findDeactivated() {
     const [data, total] = await this.prismaService.$transaction([
@@ -336,7 +360,7 @@ export class DormitoryService {
     let residents = await this.prismaService.user.findMany({
       where: { dormitoryId: id },
     });
-    
+
 
     // Calculate statistics
     const totalRooms = rooms.length;

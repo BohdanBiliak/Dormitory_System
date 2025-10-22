@@ -1,12 +1,12 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import {useGetAdminProfile, useMutateAdminProfile} from '@/hooks/profile.hook'
+import { useGetAdminProfile, useMutateAdminProfile } from '@/hooks/profile.hook'
 import { useLanguage } from '@/providers/language.provider'
 
 export function AdminProfileForm() {
   const { t } = useLanguage()
-  const{updateProfile, isUpdatingProfile, uploadAvatar, uploadingAvatar} = useMutateAdminProfile()
+  const { updateProfile, isUpdatingProfile, uploadAvatar, uploadingAvatar } = useMutateAdminProfile()
 
   const [isEditing, setIsEditing] = useState(false)
   const [profileData, setProfileData] = useState<{
@@ -22,7 +22,7 @@ export function AdminProfileForm() {
   })
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
 
-  const {data: user, isLoading, error} = useGetAdminProfile()
+  const { data: user, isLoading, error } = useGetAdminProfile()
 
   useEffect(() => {
     if (user) {
@@ -38,11 +38,11 @@ export function AdminProfileForm() {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, files } = e.target
 
-    if(name === 'photo' && files && files[0]) {
+    if (name === 'photo' && files && files[0]) {
       setSelectedFile(files[0])
       const previewUrl = URL.createObjectURL(files[0])
 
-      setProfileData(prev=>({...prev, photo: previewUrl}))
+      setProfileData(prev => ({ ...prev, photo: previewUrl }))
       console.log('previewUrl', profileData.photo)
     }
     setProfileData(prev => ({ ...prev, [name]: value }))
@@ -50,19 +50,27 @@ export function AdminProfileForm() {
 
   const handleSave = async () => {
     try {
-      if (selectedFile){
-        const {url} = await uploadAvatar({file:selectedFile})
-        if(url){
-          setProfileData(prevState => ({...prevState, photo: url}))
+      let photoUrl = profileData.photo
+
+      if (selectedFile) {
+        const { url } = await uploadAvatar({ file: selectedFile })
+        if (url) {
+          setProfileData(prev => ({ ...prev, photo: url }))
+          photoUrl = url
         }
       }
 
-      if (profileData.displayName || profileData.secondName || profileData.email || profileData.photo) {
-        updateProfile({
+      if (
+        profileData.displayName ||
+        profileData.secondName ||
+        profileData.email ||
+        photoUrl
+      ) {
+        await updateProfile({
           displayName: profileData.displayName,
           secondName: profileData.secondName,
           email: profileData.email,
-          picture: profileData.photo,
+          picture: photoUrl,
         })
       }
 
@@ -73,49 +81,50 @@ export function AdminProfileForm() {
     }
   }
 
+
   const handleCancel = () => {
-  // Clean up preview URL if it exists
-  if (selectedFile && profileData.photo.startsWith('blob:')) {
-    URL.revokeObjectURL(profileData.photo)
+    // Clean up preview URL if it exists
+    if (selectedFile && profileData.photo.startsWith('blob:')) {
+      URL.revokeObjectURL(profileData.photo)
+    }
+
+    setProfileData({
+      displayName: user?.displayName || '',
+      secondName: user?.secondName || '',
+      email: user?.email || '',
+      photo: user?.picture || ''
+    })
+    setSelectedFile(null)
+    setIsEditing(false)
   }
 
-  setProfileData({
-    displayName: user?.displayName || '',
-    secondName: user?.secondName || '',
-    email: user?.email || '',
-    photo: user?.picture || ''
-  })
-  setSelectedFile(null)
-  setIsEditing(false)
-}
-
-  if(isLoading){
+  if (isLoading) {
     return (
-        <div className="w-full flex items-center justify-center bg-gray-50">
-          <div className="bg-white shadow-lg rounded-lg p-8 max-w-md mx-4">
-            <div className="flex items-center justify-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-              <span className="ml-3 text-gray-700 font-medium">{t('profile.loadingAdminProfile')}</span>
-            </div>
+      <div className="w-full flex items-center justify-center bg-gray-50">
+        <div className="bg-white shadow-lg rounded-lg p-8 max-w-md mx-4">
+          <div className="flex items-center justify-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            <span className="ml-3 text-gray-700 font-medium">{t('profile.loadingAdminProfile')}</span>
           </div>
         </div>
+      </div>
     )
   }
 
-  if(error){
+  if (error) {
     return (
-        <div className="w-full flex items-center justify-center bg-gray-50">
-          <div className="bg-white shadow-lg rounded-lg p-8 max-w-md mx-4">
-            <div className="text-center">
-              <div className="text-red-500 mb-3">
-                <svg className="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                </svg>
-              </div>
-              <p className="text-gray-700 font-medium">{t('profile.errorLoadingProfile')}</p>
+      <div className="w-full flex items-center justify-center bg-gray-50">
+        <div className="bg-white shadow-lg rounded-lg p-8 max-w-md mx-4">
+          <div className="text-center">
+            <div className="text-red-500 mb-3">
+              <svg className="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+              </svg>
             </div>
+            <p className="text-gray-700 font-medium">{t('profile.errorLoadingProfile')}</p>
           </div>
         </div>
+      </div>
     )
   }
 
@@ -161,7 +170,7 @@ export function AdminProfileForm() {
                   </p>
                 </div>
               </div>
-              
+
               {/* Status Badge */}
               <div className="mt-3 sm:mt-0">
                 <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
@@ -175,7 +184,7 @@ export function AdminProfileForm() {
           {/* Card Content */}
           <div className="p-6 md:p-8">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              
+
               {/* Profile Photo Section */}
               <div className="lg:col-span-1 order-first lg:order-last">
                 <div className="sticky top-8">
@@ -200,12 +209,12 @@ export function AdminProfileForm() {
                         </div>
                       )}
                     </div>
-                    
+
                     <h3 className="font-semibold text-gray-900 mb-1">{t('profile.profilePhoto')}</h3>
                     <p className="text-sm text-gray-600 mb-4">
                       {uploadingAvatar ? t('profile.uploading') : t('profile.jpgPngUpTo5MB')}
                     </p>
-                    
+
                     {isEditing && (
                       <div className="space-y-3">
                         <label className="block">
@@ -227,10 +236,10 @@ export function AdminProfileForm() {
 
               {/* Form Fields Section */}
               <div className="lg:col-span-2 space-y-6">
-                
+
                 {/* Personal Details */}
                 <div className="space-y-6">
-                                    <div className="flex items-center space-x-2 pb-2 border-b border-gray-200">
+                  <div className="flex items-center space-x-2 pb-2 border-b border-gray-200">
                     <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
