@@ -50,19 +50,21 @@ export function AdminProfileForm() {
 
   const handleSave = async () => {
     try {
+      let photoUrl = profileData.photo
       if (selectedFile){
         const {url} = await uploadAvatar({file:selectedFile})
         if(url){
           setProfileData(prevState => ({...prevState, photo: url}))
+          photoUrl = url
         }
       }
 
-      if (profileData.displayName || profileData.secondName || profileData.email || profileData.photo) {
+      if (profileData.displayName || profileData.secondName || profileData.email || photoUrl) {
         updateProfile({
           displayName: profileData.displayName,
           secondName: profileData.secondName,
           email: profileData.email,
-          picture: profileData.photo,
+          picture: photoUrl,
         })
       }
 
