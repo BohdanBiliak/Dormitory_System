@@ -1,13 +1,12 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import {useGetAdminProfile, useMutateAdminProfile, useUploadAvatar} from '@/hooks/profile.hook'
+import {useGetAdminProfile, useMutateAdminProfile} from '@/hooks/profile.hook'
 import { useLanguage } from '@/providers/language.provider'
 
 export function AdminProfileForm() {
   const { t } = useLanguage()
-  const{updateProfile, isUpdatingProfile} = useMutateAdminProfile()
-  const {data: url, mutateAsync: uploadAvatar, isPending: isUploadingAvatar} = useUploadAvatar()
+  const{updateProfile, isUpdatingProfile, uploadAvatar, uploadingAvatar} = useMutateAdminProfile()
 
   const [isEditing, setIsEditing] = useState(false)
   const [profileData, setProfileData] = useState<{
@@ -52,25 +51,22 @@ export function AdminProfileForm() {
   const handleSave = async () => {
     try {
       if (selectedFile){
-        // const {data} = await useUploadAvatar({file:selectedFile})
-        // if(data){
-        //   setProfileData(prevState => ({...prevState, photo: data?.url}))
-        // }
-        console.log("After upload avatar:", profileData.photo)
+        const {url} = await uploadAvatar({file:selectedFile})
+        if(url){
+          setProfileData(prevState => ({...prevState, photo: url}))
+        }
       }
 
       if (profileData.displayName || profileData.secondName || profileData.email || profileData.photo) {
-        await updateProfile({
+        updateProfile({
           displayName: profileData.displayName,
           secondName: profileData.secondName,
           email: profileData.email,
           picture: profileData.photo,
         })
-        console.log("After update profile:", profileData.photo)
       }
+
       setSelectedFile(null)
-      setProfileData(prev => ({ ...prev, photo: user?.picture || '' }))
-      console.log('After setProfile data: ', profileData.photo)
       setIsEditing(false)
     } catch (error) {
       console.error('Save error:', error)
@@ -198,7 +194,7 @@ export function AdminProfileForm() {
                           </svg>
                         )}
                       </div>
-                      {isUploadingAvatar && (
+                      {uploadingAvatar && (
                         <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center">
                           <div className="animate-spin rounded-full h-6 w-6 border-2 border-white border-t-transparent"></div>
                         </div>
@@ -207,7 +203,7 @@ export function AdminProfileForm() {
                     
                     <h3 className="font-semibold text-gray-900 mb-1">{t('profile.profilePhoto')}</h3>
                     <p className="text-sm text-gray-600 mb-4">
-                      {isUploadingAvatar ? t('profile.uploading') : t('profile.jpgPngUpTo5MB')}
+                      {uploadingAvatar ? t('profile.uploading') : t('profile.jpgPngUpTo5MB')}
                     </p>
                     
                     {isEditing && (

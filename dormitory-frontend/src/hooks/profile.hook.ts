@@ -29,22 +29,27 @@ export function useMutateAdminProfile (){
     },
   })
 
-  return {
-    updateProfile: updateProfile.mutate,
-    isUpdatingProfile: updateProfile.isPending,
-  }
-}
-
-export const useUploadAvatar = ()=>{
-  return useMutation({
+  const useUploadAvatar = useMutation({
     mutationFn: ({file}: {file:File}) => adminApi.uploadAvatar(file),
     onSuccess: (data) => {
-      //queryClient.invalidateQueries({ queryKey: ['currentUser'] })
+      queryClient.invalidateQueries({ queryKey: ['currentUser'] })
       toast.success('Avatar updated successfully!')
+      return data
     },
     onError: (error: any) => {
       console.error('Upload avatar error:', error)
       toast.error('Avatar upload is temporarily disabled')
     },
   })
+
+  return {
+    updateProfile: updateProfile.mutate,
+    isUpdatingProfile: updateProfile.isPending,
+    uploadAvatar: useUploadAvatar.mutateAsync,
+    uploadingAvatar: useUploadAvatar.isPending,
+  }
 }
+
+
+
+

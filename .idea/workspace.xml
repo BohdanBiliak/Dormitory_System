@@ -6,12 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="a2609a67-42b3-4399-bbcc-46f7339b9fb9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/lib/dorms.api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/lib/dorms.api.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/lib/roomTemplates.api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/lib/roomTemplates.api.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/dialogs/admin/CreateDormitoryDialog.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/dialogs/admin/CreateDormitoryDialog.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/ui/ImageCarousel.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/ui/ImageCarousel.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/hooks/dormitories.hook.ts" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/hooks/dormitories.hook.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/types/dormitories.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/types/dormitories.types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/AdminProfileForm.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/AdminProfileForm.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/hooks/profile.hook.ts" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/hooks/profile.hook.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -211,7 +207,9 @@
       <workItem from="1760879227887" duration="10152000" />
       <workItem from="1760891745989" duration="9246000" />
       <workItem from="1760973189119" duration="1115000" />
-      <workItem from="1760984962268" duration="3658000" />
+      <workItem from="1760984962268" duration="3779000" />
+      <workItem from="1761044776699" duration="370000" />
+      <workItem from="1761116498829" duration="1250000" />
     </task>
     <servers />
   </component>
