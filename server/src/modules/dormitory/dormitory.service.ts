@@ -223,11 +223,13 @@ export class DormitoryService {
       include: {
         floors: {
           orderBy: { floorNumber: 'asc' },
-        },
-        rooms: {
           include: {
-            residents: {
-              where: { isActive: true },
+            rooms: {
+              include: {
+                residents: {
+                  where: { isActive: true },
+                },
+              },
             },
           },
         },
@@ -256,18 +258,17 @@ export class DormitoryService {
       },
     });
 
-    // Enrich data with computed stats
     const enrichedDormitories = dormitories.map((dormitory) => {
-      const roomCount = dormitory.rooms.length;
       const floorCount = dormitory.floors.length;
 
-      const totalResidents = dormitory.rooms.reduce(
+      const allRooms = dormitory.floors.flatMap((floor) => floor.rooms);
+      const roomCount = allRooms.length;
+      const totalResidents = allRooms.reduce(
         (sum, room) => sum + room.residents.length,
         0,
       );
 
-      // available = rooms with no active residents
-      const availableRooms = dormitory.rooms.filter(
+      const availableRooms = allRooms.filter(
         (room) => room.residents.length === 0,
       ).length;
 
@@ -285,6 +286,7 @@ export class DormitoryService {
       total: enrichedDormitories.length,
     };
   }
+
 
 
   async findDeactivated() {
