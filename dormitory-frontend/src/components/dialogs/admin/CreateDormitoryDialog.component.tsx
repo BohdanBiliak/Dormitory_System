@@ -18,7 +18,7 @@ export interface CreateDormitoryDialogProps {
 export default function CreateDormitoryDialogComponent({open, onClose}: CreateDormitoryDialogProps) {
 
     const {createDormitory} = useDormitories()
-    const {createRoomTemplate} = useMutateRoomTemplate()
+    const {createRoomTemplate, updateRoomTemplate, deleteRoomTemplate} = useMutateRoomTemplate()
     const {data: roomTemplates, isLoading: loadingRoomTemplates, error: roomTemplatesErrors} = useGetRoomTemplates();
     const { t } = useLanguage();
 
@@ -117,8 +117,9 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
     //new room template
     const[newRoomTemplate, setNewRoomTemplate] = useState<RoomTemplatePostData | null>(null)
     const handleCreateNewRoomTemplate = (e: React.MouseEvent<HTMLButtonElement>) => {
-        if(newRoomTemplate){
-            createRoomTemplate(newRoomTemplate)
+        if(newRoomTemplate && newRoomTemplate.name !== '' && newRoomTemplate.typeCode !== '' && newRoomTemplate.description !== ''){
+            createRoomTemplate(newRoomTemplate);
+            setNewRoomTemplate(null);
         }
     }
 
@@ -129,8 +130,38 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
         })
     }
 
+
     //templates edit
     const[showTemplatePhotosEdit, setShowTemplatePhotosEdit] = useState<boolean>(false)
+    const handleEditTemplate = ({templateToEditId, editedTemplate}:{templateToEditId: string, editedTemplate: RoomTemplate}) => {
+        const editedTemplateData: RoomTemplatePostData = {
+            name: editedTemplate.name,
+            typeCode: editedTemplate.typeCode,
+            description: editedTemplate.description,
+            equipment: editedTemplate.equipment,
+            photos: roomTemplateNewPhotos,
+            capacity: editedTemplate.capacity,
+        }
+        updateRoomTemplate({templateId:templateToEditId, newTemplate:editedTemplateData})
+        setEditRoomTemplate(false)
+    }
+
+    const handleCancelTemplateChanges = (templateId: string) => {
+        if(roomTemplates){
+            const prevTemplate = roomTemplates.find(item => item.id === templateId);
+            if(prevTemplate){
+                setSelectedTemplate(prevTemplate)
+            }
+        }
+        setEditRoomTemplate(false)
+    }
+
+    const handleDeleteTemplate = (templateId: string) => {
+        deleteRoomTemplate(templateId)
+        if(roomTemplates && roomTemplates.length > 0){
+            setSelectedTemplate(roomTemplates[0])
+        }
+    }
 
     // Scroll handler for progress indicator
     useEffect(() => {
@@ -160,7 +191,6 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                 typeCode: '',
                 description: '',
                 capacity: 1,
-                category: '',
                 equipment: [],
                 photos: []
             })
@@ -169,10 +199,43 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
     }
     const handleTemplateInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target;
-        setNewRoomTemplate(prevState => {
-            if(!prevState) return prevState;
-            return{...prevState, [name]:value}
-        })
+
+        if (name.startsWith('equipment-')) {
+            const index = parseInt(name.split('-')[1]);
+            setSelectedTemplate(prevState =>
+                prevState ? {
+                    ...prevState,
+                    equipment: prevState.equipment.map((item, i) =>
+                        i === index ? value : item
+                    )
+                } : null
+            );
+        }else {
+            setSelectedTemplate(prevState => {
+                if (!prevState) return prevState;
+                return {...prevState, [name]: value}
+            })
+        }
+    }
+    const handleNewTemplateInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const {name, value} = e.target;
+
+        if (name.startsWith('equipment-')) {
+            const index = parseInt(name.split('-')[1]);
+            setNewRoomTemplate(prevState =>
+                prevState ? {
+                    ...prevState,
+                    equipment: prevState.equipment.map((item, i) =>
+                        i === index ? value : item
+                    )
+                } : null
+            );
+        }else{
+            setNewRoomTemplate(prevState => {
+                if(!prevState) return prevState;
+                return{...prevState, [name]:value}
+            })
+        }
     }
     const closeTemplatePhotosEdit = () => {
         setShowTemplatePhotosEdit(false);
@@ -189,7 +252,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
         }
     }
 
-    //sections managment
+    //sections management
     const nextSection = (e:React.MouseEvent<HTMLButtonElement>) => {
         if(activePart === 'General Information') setActivePart('Room Generation');
     }
@@ -290,7 +353,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
     }
 
 
-    //photos edit menus
+    //photo edit menus
     const[showDormitoryPhotosEdit, setShowDormitoryPhotosEdit] = useState(false);
     const closeDormitoryPhotosEdit = () => {
         setShowDormitoryPhotosEdit(false);
@@ -738,16 +801,24 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                                                                     >
                                                                         Edit
                                                                     </button>
-                                                                    <button className="px-3 py-1 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+                                                                    <button
+                                                                        onClick={()=>handleDeleteTemplate(selectedTemplate.id)}
+                                                                        className="px-3 py-1 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
                                                                         Delete
                                                                     </button>
                                                                 </div>
                                                             ) : (
                                                                 <div className="flex space-x-2">
-                                                                    <button className="px-3 py-1 text-sm bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                                                                    <button
+                                                                        onClick={()=>handleEditTemplate({templateToEditId: selectedTemplate.id, editedTemplate:selectedTemplate})}
+                                                                        className="px-3 py-1 text-sm bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                                                                    >
                                                                         Save
                                                                     </button>
-                                                                    <button className="px-3 py-1 text-sm bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
+                                                                    <button
+                                                                        className="px-3 py-1 text-sm bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                                                                        onClick={()=>handleCancelTemplateChanges(selectedTemplate?.id)}
+                                                                    >
                                                                         Cancel
                                                                     </button>
                                                                 </div>
@@ -815,6 +886,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                                                                         type="number"
                                                                         name="capacity"
                                                                         value={selectedTemplate.capacity}
+                                                                        min={1}
                                                                         disabled={!editRoomTemplate}
                                                                         onChange={handleTemplateInputChange}
                                                                         className={`w-full px-3 py-2 text-sm border rounded-lg transition-colors ${
@@ -857,20 +929,54 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                                                                     </label>
                                                                     <div className="space-y-2 max-h-32 overflow-y-auto bg-white border border-gray-200 rounded-lg p-3">
                                                                         {selectedTemplate.equipment.map((item, index) => (
-                                                                            <input
-                                                                                key={index}
-                                                                                type="text"
-                                                                                name={`equipment${index}`}
-                                                                                value={item}
-                                                                                disabled={!editRoomTemplate}
-                                                                                onChange={handleTemplateInputChange}
-                                                                                className={`w-full px-2 py-1 text-sm border rounded transition-colors ${
-                                                                                    editRoomTemplate 
-                                                                                        ? 'border-gray-300 focus:ring-1 focus:ring-blue-500 focus:border-blue-500' 
-                                                                                        : 'border-gray-200 bg-gray-50 text-gray-600'
-                                                                                }`}
-                                                                            />
+                                                                            <div className={`flex flex-row`} key={index}>
+                                                                                <input
+                                                                                    key={index}
+                                                                                    type="text"
+                                                                                    name={`equipment-${index}`}
+                                                                                    value={item}
+                                                                                    disabled={!editRoomTemplate}
+                                                                                    onChange={handleTemplateInputChange}
+                                                                                    className={`w-full px-2 py-1 text-sm border rounded transition-colors ${
+                                                                                        editRoomTemplate 
+                                                                                            ? 'border-gray-300 focus:ring-1 focus:ring-blue-500 focus:border-blue-500' 
+                                                                                            : 'border-gray-200 bg-gray-50 text-gray-600'
+                                                                                    }`}
+                                                                                />
+                                                                                {editRoomTemplate && (
+                                                                                    <button
+                                                                                        onClick={()=>
+                                                                                            setSelectedTemplate(prevState => {
+                                                                                                if(!prevState) return prevState;
+                                                                                                return {
+                                                                                                    ...prevState,
+                                                                                                    equipment: [...prevState.equipment.filter((_, itemIndex) => itemIndex !== index)]
+                                                                                                }
+                                                                                            })
+                                                                                        }
+                                                                                        className="flex-shrink-0 p-1.5 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                                                                                    >
+                                                                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                                                        </svg>
+                                                                                    </button>
+                                                                                )}
+                                                                            </div>
                                                                         ))}
+                                                                        {editRoomTemplate && (
+                                                                            <button
+                                                                                onClick={() => setSelectedTemplate(prevState => {
+                                                                                    if (!prevState) return prevState; // or return a default object
+                                                                                    return {
+                                                                                        ...prevState,
+                                                                                        equipment: [...prevState.equipment, ""]
+                                                                                    };
+                                                                                })}
+                                                                                className={`w-full px-2 py-1 text-sm border rounded transition-colors border-gray-300 focus:ring-1 focus:ring-green-500 focus:border-green-500`}
+                                                                            >
+                                                                                Add new position
+                                                                            </button>
+                                                                        )}
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -901,7 +1007,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                                                                         name="name"
                                                                         value={newRoomTemplate.name}
                                                                         disabled={!editRoomTemplate}
-                                                                        onChange={handleTemplateInputChange}
+                                                                        onChange={handleNewTemplateInputChange}
                                                                         placeholder="Enter template name"
                                                                         className={`w-full px-3 py-2 text-sm border rounded-lg transition-colors ${
                                                                             editRoomTemplate 
@@ -919,7 +1025,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                                                                         name="typeCode"
                                                                         value={newRoomTemplate.typeCode}
                                                                         disabled={!editRoomTemplate}
-                                                                        onChange={handleTemplateInputChange}
+                                                                        onChange={handleNewTemplateInputChange}
                                                                         placeholder="Enter template code"
                                                                         className={`w-full px-3 py-2 text-sm border rounded-lg transition-colors ${
                                                                             editRoomTemplate 
@@ -937,7 +1043,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                                                                         name="description"
                                                                         value={newRoomTemplate.description}
                                                                         disabled={!editRoomTemplate}
-                                                                        onChange={handleTemplateInputChange}
+                                                                        onChange={handleNewTemplateInputChange}
                                                                         placeholder="Enter description"
                                                                         className={`w-full px-3 py-2 text-sm border rounded-lg transition-colors ${
                                                                             editRoomTemplate 
@@ -953,9 +1059,10 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                                                                     <input
                                                                         type="number"
                                                                         name="capacity"
+                                                                        min={1}
                                                                         value={newRoomTemplate.capacity}
                                                                         disabled={!editRoomTemplate}
-                                                                        onChange={handleTemplateInputChange}
+                                                                        onChange={handleNewTemplateInputChange}
                                                                         placeholder="Enter capacity"
                                                                         className={`w-full px-3 py-2 text-sm border rounded-lg transition-colors ${
                                                                             editRoomTemplate 
@@ -983,7 +1090,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                                                                         newPhotos={newRoomTemplate.photos} 
                                                                         setNewPhotos={handleUpdateNewRoomPhotos} 
                                                                         showEditMenu={showTemplatePhotosEdit} 
-                                                                        closeEditMenu={closeTemplatePhotosEdit} 
+                                                                        closeEditMenu={closeTemplatePhotosEdit}
                                                                         editionMenuLabels={{
                                                                             title:"Template Photos", 
                                                                             description:"Here you can edit photos of new template"
@@ -996,20 +1103,49 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                                                                     </label>
                                                                     <div className="space-y-2 max-h-32 overflow-y-auto bg-white border border-gray-200 rounded-lg p-3">
                                                                         {newRoomTemplate.equipment.map((item, index) => (
-                                                                            <input
-                                                                                key={index}
-                                                                                type="text"
-                                                                                name={`equipment${index}`}
-                                                                                value={item}
-                                                                                disabled={!editRoomTemplate}
-                                                                                onChange={handleTemplateInputChange}
-                                                                                className={`w-full px-2 py-1 text-sm border rounded transition-colors ${
-                                                                                    editRoomTemplate 
-                                                                                        ? 'border-gray-300 focus:ring-1 focus:ring-green-500 focus:border-green-500' 
-                                                                                        : 'border-gray-200 bg-gray-50 text-gray-600'
-                                                                                }`}
-                                                                            />
+                                                                            <div className={`flex flex-row`} key={index}>
+                                                                                <input
+                                                                                    type="text"
+                                                                                    name={`equipment-${index}`}
+                                                                                    value={item}
+                                                                                    disabled={!editRoomTemplate}
+                                                                                    onChange={handleNewTemplateInputChange}
+                                                                                    className={`w-full px-2 py-1 text-sm border rounded transition-colors ${
+                                                                                        editRoomTemplate 
+                                                                                            ? 'border-gray-300 focus:ring-1 focus:ring-green-500 focus:border-green-500' 
+                                                                                            : 'border-gray-200 bg-gray-50 text-gray-600'
+                                                                                    }`}
+                                                                                />
+                                                                                <button
+                                                                                    onClick={()=>
+                                                                                        setNewRoomTemplate(prevState => {
+                                                                                            if(!prevState) return prevState;
+                                                                                            return {
+                                                                                                ...prevState,
+                                                                                                equipment: [...prevState.equipment.filter((_, itemIndex) => itemIndex !== index)]
+                                                                                            }
+                                                                                        })
+                                                                                    }
+                                                                                    className="flex-shrink-0 p-1.5 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                                                                                >
+                                                                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                                                    </svg>
+                                                                                </button>
+                                                                            </div>
                                                                         ))}
+                                                                        <button
+                                                                            onClick={() => setNewRoomTemplate(prevState => {
+                                                                                if (!prevState) return prevState; // or return a default object
+                                                                                return {
+                                                                                    ...prevState,
+                                                                                    equipment: [...prevState.equipment, ""]
+                                                                                };
+                                                                            })}
+                                                                            className={`w-full px-2 py-1 text-sm border rounded transition-colors border-gray-300 focus:ring-1 focus:ring-green-500 focus:border-green-500`}
+                                                                        >
+                                                                            Add new position
+                                                                        </button>
                                                                     </div>
                                                                 </div>
                                                             </div>

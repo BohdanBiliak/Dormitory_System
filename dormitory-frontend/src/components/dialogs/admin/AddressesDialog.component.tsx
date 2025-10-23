@@ -22,161 +22,135 @@ export interface AddresseeItem {
     isChosen: boolean;
     showChildren: boolean;
     label: string;
+    type: AddresseeType;
     resident?: RoomResident;
     room?: Room;
     floor?: DormitoryFloor;
     dormitory?: Dormitory;
+    children?: AddresseeItem[];
 }
 
 
 
 export default function AddressesDialogComponent({open, onClose, onConfirm, preSelected}: AddressesDialogProps) {
 
-    const [addressesShema, setAddressesShema] = useState<DormitoryItem[]>([]);
-    const [shownItems, setShownItems] = useState<AddresseeItem[]>([]);
-
     const {data: activeDorms, isLoading: loadingDormitories, error: dormitoriesError} = useGetActiveDormitories()
-    const {data: rooms, isLoading: loadingRooms, error: roomsError} = useGetRooms()
+
+    const [chosenAddresses, setChosenAddresses] = useState<AddresseeItem[]>([]);
+    const [shownAddresses, setShownAddresses] = useState<AddresseeItem[]>([]);
 
     useEffect(() => {
+        setShownAddresses([])
 
-        if (activeDorms && activeDorms.data && rooms) {
-            const newAddresses:DormitoryItem[] = [];
-            activeDorms.data.map((dorm) => (
-                newAddresses.push({
-                    id: dorm.id,
-                    label: dorm.name,
-                    dormitory: dorm,
-                    floors: new Set<FloorItem>()
+        if(activeDorms && activeDorms.data && activeDorms.data.length > 0){
+            activeDorms.data.forEach(dorm=>
+                setShownAddresses(prevState => {
+                    if(!prevState) return prevState;
+                    return [...prevState, {id:dorm.id, isChosen: false, showChildren: false, label:dorm.name, type:AddresseeType.Dormitory, dormitory:dorm,
+                        children: dorm.floors.map<AddresseeItem>(function(floor):AddresseeItem{ return  {id:floor.id, isChosen: false, showChildren:false, label: floor.floorNumber, type:AddresseeType.Floor, floor:floor,
+                            children: floor.rooms.map<AddresseeItem>(function (room):AddresseeItem{ return {id: room.id, isChosen: false, showChildren: false, label: room.number, type: AddresseeType.Room, room:room,
+                                children: room.residents.map<AddresseeItem>(function (resident):AddresseeItem{ return {id:resident.id, isChosen:false, showChildren: false, label: resident.displayName+" "+resident.secondName, type:AddresseeType.Resident, resident:resident}})
+                            }})
+                        }})
+                    }];
                 })
-            ));
-
-            rooms.forEach((room) =>(
-                newAddresses.forEach((dormAddressee) =>{
-                    if(dormAddressee.dormitory.id === room.dormitoryId){
-                        const floorExists = Array.from(dormAddressee.floors).some(floor => floor.label === room.floor);
-                        if(!floorExists){
-                            dormAddressee.floors.add({
-                                dormId: dormAddressee.dormitory.id,
-                                label: room.floor,
-                                rooms: []
-                            })
-                        }
-                    }
-                })
-            ))
-
-            rooms.forEach((room) =>(
-                newAddresses.forEach((dormAddressee) =>{
-                    if(dormAddressee.dormitory.id === room.dormitoryId){
-                        dormAddressee.floors.forEach((floor) =>{
-                                if(floor.label === room.floor){
-                                    const residents:ResidentItem[] = []
-                                    room.residents.forEach((resident) =>{
-                                        residents.push({user: resident})
-                                    })
-                                    floor.rooms.push({
-                                        room: room,
-                                        residents: residents
-                                    })
-                                }
-                            }
-                        )
-                    }
-                })
-            ))
-
-            setAddressesShema(newAddresses);
-
-            // Build complete tree structure
-            const startingShownAddressees: AddresseeItem[] = newAddresses.map((dormAddressee) => {
-                const floorItems = Array.from(dormAddressee.floors).map((floor, floorIndex) => {
-                    const roomItems = floor.rooms.map((roomItem, roomIndex) => {
-                        const residentItems = roomItem.residents.map((resident, residentIndex) => ({
-                            id: `resident-${dormAddressee.id}-${floor.label}-${roomItem.room.id}-${resident.user.id}`,
-                            isChosen: false,
-                            showChildren: false,
-                            label: resident.user.displayName || "Unknown Resident",
-                            type: AddresseeType.Resident,
-                            resident: resident,
-                            children: []
-                        }));
-
-                        return {
-                            id: `room-${dormAddressee.id}-${floor.label}-${roomItem.room.id}`,
-                            isChosen: false,
-                            showChildren: false,
-                            label: `Room ${roomItem.room.number}`,
-                            type: AddresseeType.Room,
-                            room: roomItem,
-                            children: residentItems
-                        };
-                    });
-
-                    return {
-                        id: `floor-${dormAddressee.id}-${floor.label}`,
-                        isChosen: false,
-                        showChildren: false,
-                        label: `Floor ${floor.label}`,
-                        type: AddresseeType.Floor,
-                        floor: floor,
-                        children: roomItems
-                    };
-                });
-
-                return {
-                    id: `dorm-${dormAddressee.id}`,
-                    isChosen: false,
-                    showChildren: false,
-                    label: dormAddressee.label,
-                    type: AddresseeType.Dormitory,
-                    dormitory: dormAddressee,
-                    children: floorItems
-                };
-            });
-
-            setShownItems(startingShownAddressees)
-        } else {
-            setAddressesShema([]);
-            setShownItems([])
+            )
         }
 
-    }, [activeDorms, rooms]);
+    }, [activeDorms]);
 
-    const toggleShowChildren = (id: string, items: AddresseeItem[]): AddresseeItem[] => {
-        return items.map(item => {
-            if (item.id === id) {
-                return {...item, showChildren: !item.showChildren};
-            }
-            if (item.children && item.children.length > 0) {
-                return {...item, children: toggleShowChildren(id, item.children)};
-            }
-            return item;
-        });
+
+    const toggleShowChildren = (item: AddresseeItem) => {
+        const updateItemVisibilityRecursively = (items: AddresseeItem[]): AddresseeItem[] => {
+            return items.map((addr) => {
+                // If this is the item we're looking for, toggle its showChildren
+                if (addr === item) {
+                    return {
+                        ...addr,
+                        showChildren: !addr.showChildren
+                    };
+                }
+
+                // If this item has children, recursively update them
+                if (addr.children && addr.children.length > 0) {
+                    return {
+                        ...addr,
+                        children: updateItemVisibilityRecursively(addr.children)
+                    };
+                }
+
+                // Otherwise, return the item unchanged
+                return addr;
+            });
+        };
+
+        setShownAddresses(prevState => {
+            if(!prevState) return prevState;
+            return updateItemVisibilityRecursively(prevState);
+        })
     }
 
-    const toggleItemChosen = (id: string, items: AddresseeItem[]): AddresseeItem[] => {
-        return items.map(item => {
-            if (item.id === id) {
-                return {...item, isChosen: !item.isChosen};
-            }
-            if (item.children && item.children.length > 0) {
-                return {...item, children: toggleItemChosen(id, item.children)};
-            }
-            return item;
+    const toggleItemChosen = (item: AddresseeItem) => {
+        const updateChosenItemRecursively = (items: AddresseeItem[]): AddresseeItem[] => {
+            return items.map((addr) => {
+                // If this is the item we're looking for, toggle its isChosen
+                if (addr === item) {
+                    const updatedItem = {
+                        ...addr,
+                        isChosen: !addr.isChosen
+                    };
+
+                    // Update chosenAddresses based on the new state
+                    if (updatedItem.isChosen) {
+                        // Add to chosen addresses
+                        setChosenAddresses(prev => {
+                            if (!prev) return [updatedItem];
+                            // Check if it's not already in the list
+                            if (!prev.some(chosen => chosen === item)) {
+                                return [...prev, updatedItem];
+                            }
+                            return prev;
+                        });
+                    } else {
+                        // Remove from chosen addresses
+                        setChosenAddresses(prev => {
+                            if (!prev) return prev;
+                            return prev.filter(chosen => chosen !== item);
+                        });
+                    }
+
+                    return updatedItem;
+                }
+
+                // If this item has children, recursively update them
+                if (addr.children && addr.children.length > 0) {
+                    return {
+                        ...addr,
+                        children: updateChosenItemRecursively(addr.children)
+                    };
+                }
+
+                // Otherwise, return the item unchanged
+                return addr;
+            });
+        };
+
+        setShownAddresses(prevState => {
+            if(!prevState) return prevState;
+            return updateChosenItemRecursively(prevState);
         });
     }
 
     const renderItemWithChildren = (item: AddresseeItem, depth: number = 0): JSX.Element => {
         const paddingLeft = depth * 20;
-        const hasChildren = item.children && item.children.length > 0;
+        const hasChildren= item.children && item.children.length > 0;
 
         return (
             <div key={item.id}>
                 <div className="flex items-center gap-2 py-2 px-3 hover:bg-gray-100 rounded transition-colors" style={{ paddingLeft: `${paddingLeft}px` }}>
                     {hasChildren && (
                         <button
-                            onClick={() => setShownItems(toggleShowChildren(item.id, shownItems))}
+                            onClick={() => (toggleShowChildren(item))}
                             className="flex-shrink-0 w-5 h-5 flex items-center justify-center hover:bg-gray-300 rounded"
                         >
                             <svg
@@ -194,7 +168,7 @@ export default function AddressesDialogComponent({open, onClose, onConfirm, preS
                     <input
                         type="checkbox"
                         checked={item.isChosen}
-                        onChange={() => setShownItems(toggleItemChosen(item.id, shownItems))}
+                        onChange={() => toggleItemChosen(item)}
                         className="w-4 h-4 cursor-pointer"
                     />
 
@@ -229,12 +203,12 @@ export default function AddressesDialogComponent({open, onClose, onConfirm, preS
         });
     }
 
-    useEffect(() => {
-        if (preSelected && preSelected.length > 0 && shownItems.length > 0) {
-            const updatedItems = setPreSelectedItems(shownItems, preSelected);
-            setShownItems(updatedItems);
-        }
-    }, [preSelected, open]);
+    // useEffect(() => {
+    //     if (preSelected && preSelected.length > 0 && shownItems.length > 0) {
+    //         const updatedItems = setPreSelectedItems(shownItems, preSelected);
+    //         setShownItems(updatedItems);
+    //     }
+    // }, [preSelected, open]);
 
     const getSelectedItems = (items: AddresseeItem[]): AddresseeItem[] => {
         let selected: AddresseeItem[] = [];
@@ -255,10 +229,7 @@ export default function AddressesDialogComponent({open, onClose, onConfirm, preS
     }
 
     const handleConfirm = () => {
-        const selectedItems = getSelectedItems(shownItems);
-        if (onConfirm) {
-            onConfirm(selectedItems);
-        }
+
         onClose();
     }
 
@@ -300,8 +271,8 @@ export default function AddressesDialogComponent({open, onClose, onConfirm, preS
                     {/*body*/}
                     <div className="overflow-y-auto max-h-[calc(90vh-120px)]">
                         <div className="p-4 bg-white space-y-1">
-                            {shownItems && shownItems.length > 0 ? (
-                                shownItems.map((item) => renderItemWithChildren(item))
+                            {shownAddresses && shownAddresses.length > 0 ? (
+                                shownAddresses.map((item) => renderItemWithChildren(item))
                             ) : (
                                 <div className="text-center py-8 text-gray-500">
                                     No dormitories available

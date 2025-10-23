@@ -27,11 +27,24 @@ export function useMutateRoomTemplate(){
         }
     })
 
+    const deleteRoomTemplate = useMutation({
+        mutationFn: (templateId:string) => roomTemplatesApi.deleteRoomTemplate(templateId),
+        onSuccess: (response) => {
+            queryClient.invalidateQueries({queryKey: ['roomTemplates']});
+            queryClient.invalidateQueries({queryKey: ['roomTemplate']});
+        },
+        onError: (error) => {
+            toast.error(error.message);
+        }
+    })
+
     return {
         createRoomTemplate: createRoomTemplate.mutate,
         creatingRoomTemplate: createRoomTemplate.isPending,
         updateRoomTemplate: updateRoomTemplate.mutate,
         updatingRoomTemplate: updateRoomTemplate.isPending,
+        deleteRoomTemplate: deleteRoomTemplate.mutate,
+        deletingRoomTemplate: deleteRoomTemplate.isPending,
     }
 
 }
