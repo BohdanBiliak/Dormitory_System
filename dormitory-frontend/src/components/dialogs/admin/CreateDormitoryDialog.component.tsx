@@ -160,7 +160,6 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                 typeCode: '',
                 description: '',
                 capacity: 1,
-                category: '',
                 equipment: [],
                 photos: []
             })

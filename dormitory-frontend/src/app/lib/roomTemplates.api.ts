@@ -15,7 +15,7 @@ export const roomTemplatesApi = {
         formData.append('typeCode', newTemplate.typeCode);
         formData.append('description',newTemplate.description);
         formData.append('capacity', newTemplate.capacity.toString());
-        formData.append('category', 'residential');//not needed
+
         if(newTemplate.equipment.length > 0) {
             newTemplate.equipment.forEach(equipment => {
                 formData.append('equipment', equipment);
@@ -81,8 +81,6 @@ export const roomTemplatesApi = {
         formData.append('typeCode', newTemplate.typeCode);
         formData.append('description',newTemplate.description);
         formData.append('capacity', newTemplate.capacity.toString());
-        formData.append('area', newTemplate.toString());
-        formData.append('category', 'RESIDENTIAL');
         newTemplate.equipment.forEach(equipment => {
             formData.append('equipment', equipment);
         });

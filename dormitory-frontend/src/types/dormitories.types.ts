@@ -104,7 +104,6 @@ export interface RoomTemplate {
     typeCode: string;
     description: string;
     capacity: number;
-    category: string; //'RESIDENTIAL'
     equipment: string[],
     photos: string[],
     createdAt: string;
@@ -116,7 +115,6 @@ export interface RoomTemplatePostData {
     typeCode: string;
     description: string;
     capacity: number;
-    category: string; //'RESIDENTIAL'
     equipment: string[],
     photos: File[]
 }
