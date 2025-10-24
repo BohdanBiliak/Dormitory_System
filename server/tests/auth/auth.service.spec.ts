@@ -34,7 +34,7 @@ describe("AuthService", () => {
     password: "hashed-password",
     isVerified: true,
     isTwoFactorEnabled: false,
-    role: "USER",
+    role: "REGULAR",
     displayName: "Test User",
     name: "Test",
     secondName: "User",

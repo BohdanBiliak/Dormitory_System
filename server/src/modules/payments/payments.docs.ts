@@ -63,20 +63,28 @@ export const PaymentsDocs = {
                     type: "string",
                     enum: [
                       "PENDING",
+                      "AWAITING_CONFIRMATION",
+                      "PROCESSING",
                       "PAID",
+                      "FAILED",
                       "OVERDUE",
                       "CANCELLED",
-                      "PROCESSING",
+                      "REFUNDED",
+                      "PARTIAL_REFUND",
+                      "REJECTED",
                     ],
                     example: "PENDING",
                   },
-                  type: {
+                  paymentType: {
                     type: "string",
                     enum: [
                       "MONTHLY_RENT",
+                      "DAILY_RENT",
                       "SECURITY_DEPOSIT",
                       "UTILITIES",
-                      "DAMAGE_FEE",
+                      "MAINTENANCE_FEE",
+                      "LATE_FEE",
+                      "CLEANING_FEE",
                       "OTHER",
                     ],
                     example: "MONTHLY_RENT",
@@ -90,26 +98,24 @@ export const PaymentsDocs = {
                     format: "date-time",
                     example: "2025-10-31T23:59:59.000Z",
                   },
-                  paidDate: {
+                  paidAt: {
                     type: "string",
                     format: "date-time",
                     nullable: true,
                     example: null,
                   },
-                  proofUrl: {
+                  paymentProofUrl: {
                     type: "string",
                     nullable: true,
                     example:
                       "https://s3.example.com/payment-proofs/proof123.pdf",
                   },
-                  roomAssignment: {
+                  user: {
                     type: "object",
                     properties: {
-                      roomNumber: { type: "string", example: "301" },
-                      dormitoryName: {
-                        type: "string",
-                        example: "East Wing Dormitory",
-                      },
+                      id: { type: "string", format: "uuid" },
+                      displayName: { type: "string", example: "John Doe" },
+                      email: { type: "string", example: "john.doe@university.edu" },
                     },
                   },
                   createdAt: {
@@ -117,7 +123,7 @@ export const PaymentsDocs = {
                     format: "date-time",
                     example: "2025-10-01T00:00:00.000Z",
                   },
-                  lastModified: {
+                  updatedAt: {
                     type: "string",
                     format: "date-time",
                     example: "2025-10-03T10:30:00.000Z",
@@ -290,7 +296,7 @@ export const PaymentsDocs = {
               format: "uuid",
               example: "123e4567-e89b-12d3-a456-426614174000",
             },
-            proofUrl: {
+            paymentProofUrl: {
               type: "string",
               example: "https://s3.example.com/payment-proofs/proof123.pdf",
             },
@@ -353,11 +359,10 @@ export const PaymentsDocs = {
             value: {
               userId: "123e4567-e89b-12d3-a456-426614174000",
               amount: 650.0,
-              currency: "USD",
-              type: "MONTHLY_RENT",
+              paymentType: "MONTHLY_RENT",
+              paymentMethod: "BANK_TRANSFER",
               description: "Monthly rent for October 2025",
               dueDate: "2025-10-31T23:59:59.000Z",
-              roomAssignmentId: "456e7890-e89b-12d3-a456-426614174001",
             },
           },
           securityDeposit: {
@@ -365,8 +370,8 @@ export const PaymentsDocs = {
             value: {
               userId: "123e4567-e89b-12d3-a456-426614174000",
               amount: 1300.0,
-              currency: "USD",
-              type: "SECURITY_DEPOSIT",
+              paymentType: "SECURITY_DEPOSIT",
+              paymentMethod: "CASH_TO_MANAGER",
               description: "Refundable security deposit",
               dueDate: "2025-10-15T23:59:59.000Z",
             },
@@ -386,7 +391,7 @@ export const PaymentsDocs = {
             amount: { type: "number", format: "decimal", example: 650.0 },
             currency: { type: "string", example: "USD" },
             status: { type: "string", example: "PENDING" },
-            type: { type: "string", example: "MONTHLY_RENT" },
+            paymentType: { type: "string", example: "MONTHLY_RENT" },
             description: {
               type: "string",
               example: "Monthly rent for October 2025",
@@ -443,7 +448,7 @@ export const PaymentsDocs = {
                 properties: {
                   id: { type: "string", format: "uuid" },
                   amount: { type: "number", format: "decimal", example: 650.0 },
-                  type: { type: "string", example: "MONTHLY_RENT" },
+                  paymentType: { type: "string", example: "MONTHLY_RENT" },
                   description: {
                     type: "string",
                     example: "Monthly rent for October 2025",
@@ -519,17 +524,17 @@ export const PaymentsDocs = {
                 properties: {
                   id: { type: "string", format: "uuid" },
                   amount: { type: "number", format: "decimal", example: 650.0 },
-                  type: { type: "string", example: "MONTHLY_RENT" },
+                  paymentType: { type: "string", example: "MONTHLY_RENT" },
                   description: {
                     type: "string",
                     example: "Monthly rent for October 2025",
                   },
-                  proofUrl: {
+                  paymentProofUrl: {
                     type: "string",
                     example:
                       "https://s3.example.com/payment-proofs/proof123.pdf",
                   },
-                  proofUploadedAt: {
+                  paymentProofUploadedAt: {
                     type: "string",
                     format: "date-time",
                     example: "2025-10-03T10:30:00.000Z",
@@ -598,9 +603,9 @@ export const PaymentsDocs = {
           confirm: {
             summary: "Confirm payment with note",
             value: {
-              adminNotes: "Payment confirmed. Bank transfer receipt verified.",
-              confirmedAmount: 650.0,
-              paymentMethod: "BANK_TRANSFER",
+              paymentId: "123e4567-e89b-12d3-a456-426614174000",
+              confirmedBy: "admin-456e7890-e89b-12d3-a456-426614174001",
+              managerNotes: "Payment confirmed. Bank transfer receipt verified.",
             },
           },
         },
@@ -630,12 +635,6 @@ export const PaymentsDocs = {
               type: "string",
               example: "Payment confirmed. Bank transfer receipt verified.",
             },
-            confirmedAmount: {
-              type: "number",
-              format: "decimal",
-              example: 650.0,
-            },
-            paymentMethod: { type: "string", example: "BANK_TRANSFER" },
             notificationSent: { type: "boolean", example: true },
             message: {
               type: "string",
@@ -672,9 +671,10 @@ export const PaymentsDocs = {
           reject: {
             summary: "Reject payment with reason",
             value: {
+              paymentId: "123e4567-e89b-12d3-a456-426614174000",
+              rejectedBy: "admin-456e7890-e89b-12d3-a456-426614174001",
               rejectionReason:
                 "Receipt is unclear and amount doesn't match. Please provide a clearer receipt showing the full amount of $650.00.",
-              allowResubmission: true,
             },
           },
         },
@@ -704,8 +704,7 @@ export const PaymentsDocs = {
               type: "string",
               example: "Receipt is unclear and amount doesn't match.",
             },
-            allowResubmission: { type: "boolean", example: true },
-            proofUrl: { type: "string", nullable: true, example: null },
+            paymentProofUrl: { type: "string", nullable: true, example: null },
             notificationSent: { type: "boolean", example: true },
             message: {
               type: "string",
@@ -741,7 +740,7 @@ export const PaymentsDocs = {
                 properties: {
                   id: { type: "string", format: "uuid" },
                   amount: { type: "number", format: "decimal", example: 650.0 },
-                  type: { type: "string", example: "MONTHLY_RENT" },
+                  paymentType: { type: "string", example: "MONTHLY_RENT" },
                   description: {
                     type: "string",
                     example: "Monthly rent for September 2025",
@@ -913,7 +912,7 @@ export const PaymentsDocs = {
             amount: { type: "number", format: "decimal", example: 650.0 },
             currency: { type: "string", example: "USD" },
             status: { type: "string", example: "PENDING" },
-            type: { type: "string", example: "MONTHLY_RENT" },
+            paymentType: { type: "string", example: "MONTHLY_RENT" },
             description: {
               type: "string",
               example: "Monthly rent for October 2025",
@@ -923,13 +922,13 @@ export const PaymentsDocs = {
               format: "date-time",
               example: "2025-10-31T23:59:59.000Z",
             },
-            paidDate: {
+            paidAt: {
               type: "string",
               format: "date-time",
               nullable: true,
               example: null,
             },
-            proofUrl: {
+            paymentProofUrl: {
               type: "string",
               nullable: true,
               example: "https://s3.example.com/payment-proofs/proof123.pdf",
@@ -940,17 +939,6 @@ export const PaymentsDocs = {
                 id: { type: "string", format: "uuid" },
                 displayName: { type: "string", example: "John Doe" },
                 email: { type: "string", example: "john.doe@university.edu" },
-              },
-            },
-            roomAssignment: {
-              type: "object",
-              nullable: true,
-              properties: {
-                roomNumber: { type: "string", example: "301" },
-                dormitoryName: {
-                  type: "string",
-                  example: "East Wing Dormitory",
-                },
               },
             },
             adminActions: {
@@ -1009,7 +997,7 @@ export const PaymentsDocs = {
                   id: { type: "string", format: "uuid" },
                   amount: { type: "number", format: "decimal", example: 650.0 },
                   status: { type: "string", example: "PENDING" },
-                  type: { type: "string", example: "MONTHLY_RENT" },
+                  paymentType: { type: "string", example: "MONTHLY_RENT" },
                   description: {
                     type: "string",
                     example: "Monthly rent for October 2025",

@@ -120,8 +120,8 @@ export class PaymentsService implements IPaymentService {
       const payment = await this.createPayment({
         userId: userPayment.userId,
         amount,
-        paymentType: data.paymentType,
-        paymentMethod: data.paymentMethod,
+        paymentType: data.paymentType as PaymentType,
+        paymentMethod: data.paymentMethod as PaymentMethod,
         dueDate: data.dueDate,
         description: data.description,
       });

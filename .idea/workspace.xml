@@ -6,7 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="a2609a67-42b3-4399-bbcc-46f7339b9fb9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/lib/roomTemplates.api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/lib/roomTemplates.api.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/AdminAllRooms.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/AdminAllRooms.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/dialogs/admin/AddressesDialog.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/dialogs/admin/AddressesDialog.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/dialogs/admin/CreateDormitoryDialog.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/dialogs/admin/CreateDormitoryDialog.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/hooks/roomTemplates.hook.ts" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/hooks/roomTemplates.hook.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/types/dormitories.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/types/dormitories.types.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -209,7 +214,11 @@
       <workItem from="1760984962268" duration="3779000" />
       <workItem from="1761044776699" duration="370000" />
       <workItem from="1761116498829" duration="4620000" />
-      <workItem from="1761121279264" duration="309000" />
+      <workItem from="1761121279264" duration="424000" />
+      <workItem from="1761121719075" duration="3000" />
+      <workItem from="1761126243465" duration="9214000" />
+      <workItem from="1761193039415" duration="4118000" />
+      <workItem from="1761209926776" duration="3345000" />
     </task>
     <servers />
   </component>

@@ -15,12 +15,12 @@ export const roomTemplatesApi = {
         formData.append('typeCode', newTemplate.typeCode);
         formData.append('description',newTemplate.description);
         formData.append('capacity', newTemplate.capacity.toString());
-
         if(newTemplate.equipment.length > 0) {
             newTemplate.equipment.forEach(equipment => {
-                formData.append('equipment', equipment);
+                equipment !== '' && formData.append('equipment', equipment);
             })
         }else{
+            formData.append('equipment', "Bed");
             formData.append('equipment', "Bed");
         }
         try{
@@ -53,39 +53,20 @@ export const roomTemplatesApi = {
     },
 
     async updateRoomTemplate(roomTemplateId:string, newTemplate:RoomTemplatePostData):Promise<RoomTemplate> {
-        var newPhotosUrls:string[] = [];
-        const photosFilesFormData = new FormData();
-        newTemplate.photos.forEach(photo => {
-            photosFilesFormData.append('file', photo)
-        })
+        const formData = new FormData();
 
-        try {
-            const response = await api.post(`/rooms/upload`,photosFilesFormData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                }
+        if(newTemplate.photos.length > 0){
+            newTemplate.photos.forEach(photo => {
+                formData.append('photos', photo)
             })
-            console.log('Room template photos post response: ', response.data)
-            newPhotosUrls = response.data;
-        }catch (error: any) {
-            console.error('Room template photo upload error:', {
-                status: error.response?.status,
-                data: error.response?.data,
-                message: error.message
-            })
-            throw error
         }
 
-        const formData = new FormData();
         formData.append('name',newTemplate.name);
         formData.append('typeCode', newTemplate.typeCode);
         formData.append('description',newTemplate.description);
         formData.append('capacity', newTemplate.capacity.toString());
         newTemplate.equipment.forEach(equipment => {
             formData.append('equipment', equipment);
-        });
-        newPhotosUrls.forEach(photo => {
-            formData.append('photos', photo);
         });
 
         try{
@@ -105,5 +86,16 @@ export const roomTemplatesApi = {
             throw error
         }
 
+    },
+
+    async deleteRoomTemplate(roomTemplateId:string):Promise<void> {
+        try {
+            const response = await api.delete(`/room-types/${roomTemplateId}`);
+            return response.data;
+        }catch (error) {
+            console.error('Template deletion error:', error);
+            throw error;
+
+        }
     }
 }

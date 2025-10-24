@@ -108,7 +108,7 @@ export default function AllRoomsPage() {
 
 
     const meetsSearchRequirements = (room: Room) => {
-        const availableSpace = room.capacity - room.residents.length;
+        const availableSpace = room.residents ? room.capacity - room.residents.length : room.capacity;
         const roommatesRequirement = filters.residents === "either" ? true : filters.residents === "occupied" ? room.residents.length > 0 : room.residents.length < 1;
 
         return availableRoomsIds.includes(room.id) && filters.groupSize<=availableSpace && roommatesRequirement;
@@ -438,7 +438,7 @@ export default function AllRoomsPage() {
                                     {/* Residents */}
                                     <div className="px-4 py-3">
                                         <h4 className="text-sm font-medium text-slate-900 mb-2">
-                                            Residents, {selectedRoom.residents.length}/{selectedRoom.capacity}:
+                                            Residents, {selectedRoom.residents ? selectedRoom.residents.length : 0}/{selectedRoom.capacity}:
                                         </h4>
                                         <div className="space-y-2">
                                             {selectedRoom.residents.map((resident, index) => (
