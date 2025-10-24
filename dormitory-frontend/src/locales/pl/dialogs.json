@@ -1,0 +1,119 @@
+{
+  "createDormitory": {
+    "title": "Utwórz Nowy Akademik",
+    "subtitle": "Skonfiguruj szczegóły akademika i szablony pokoi",
+    "sections": {
+      "generalInformation": "Informacje Ogólne",
+      "roomGeneration": "Generowanie Pokoi"
+    },
+    "fields": {
+      "name": {
+        "label": "Nazwa Akademika",
+        "placeholder": "Wprowadź nazwę akademika..."
+      },
+      "address": {
+        "label": "Adres",
+        "placeholder": "Wprowadź pełny adres"
+      },
+      "description": {
+        "label": "Opis",
+        "placeholder": "Opisz swój akademik..."
+      },
+      "phone": {
+        "label": "Numer Telefonu",
+        "placeholder": "Wprowadź numer telefonu"
+      },
+      "pricePerMonth": {
+        "label": "Cena za Miesiąc",
+        "placeholder": "0.00"
+      },
+      "pricePerDay": {
+        "label": "Cena za Dzień",
+        "placeholder": "0.00"
+      },
+      "photos": {
+        "label": "Zdjęcia",
+        "addButton": "Dodaj Zdjęcia"
+      },
+      "floorNumber": {
+        "label": "Numer piętra",
+        "placeholder": "Numer piętra"
+      },
+      "roomNumbers": {
+        "label": "Numery pokoi (oddzielone przecinkami)",
+        "placeholder": "101, 102, 103, ..."
+      }
+    },
+    "buttons": {
+      "cancel": "Anuluj",
+      "clearAll": "Wyczyść Wszystko",
+      "create": "Utwórz Akademik",
+      "addFloor": "Dodaj Piętro",
+      "addRooms": "Dodaj Pokoje",
+      "previous": "Poprzedni",
+      "next": "Następny",
+      "new": "Nowy",
+      "edit": "Edytuj",
+      "delete": "Usuń",
+      "save": "Zapisz",
+      "addTemplate": "Dodaj Szablon",
+      "general": "Ogólne",
+      "rooms": "Pokoje",
+      "tutorial": "Pomoc"
+    },
+    "messages": {
+      "fillBasicInfo": "Wypełnij podstawowe informacje o akademiku",
+      "configureRooms": "Skonfiguruj piętra i szablony pokoi",
+      "allFieldsCleared": "Wszystkie pola zostały wyczyszczone",
+      "roomsAdded": "Dodano {count} pokoi na piętro {floor}",
+      "selectFloor": "Najpierw wybierz piętro",
+      "selectTemplate": "Wybierz szablon pokoju",
+      "enterRoomNumbers": "Wprowadź numery pokoi",
+      "invalidRoomNumbers": "Nieprawidłowy format numerów pokoi. Użyj wartości oddzielonych przecinkami (np. 101, 102, 103)",
+      "invalidRoomFormat": "Nieprawidłowe numery pokoi: {rooms}",
+      "clearConfirm": "To wyczyści wszystkie wprowadzone dane. Czy jesteś pewien?",
+      "validationError": "Proszę poprawić błędy walidacji",
+      "roomsRequired": "Wymagana jest co najmniej jedna konfiguracja pokoju",
+      "roomsArrayError": "Numery pokoi muszą być podane jako wartości oddzielone przecinkami (np. 101,102,103)",
+      "roomsEmptyError": "Nie można mieć pustych numerów pokoi",
+      "roomsDuplicateError": "Znaleziono duplikaty numerów pokoi: {duplicates}",
+      "roomsInvalidFormatError": "Nieprawidłowy format numeru pokoju: {invalid}",
+      "floorsRequiredError": "Liczba pięter jest wymagana"
+    },
+    "sections_description": {
+      "floors": "Piętra",
+      "roomTemplates": "Szablony Pokoi",
+      "templateInformation": "Informacje o Szablonie"
+    },
+    "tutorial": {
+      "welcome": {
+        "title": "Witaj w tworzeniu akademika",
+        "description": "Ten przewodnik pomoże Ci utworzyć nowy akademik krok po kroku."
+      },
+      "header": {
+        "title": "Nagłówek dialogu",
+        "description": "To pokazuje tytuł bieżącego dialogu i ma przycisk zamknięcia."
+      },
+      "navigation": {
+        "title": "Zakładki nawigacji",
+        "description": "Użyj tych zakładek, aby przełączać się między różnymi sekcjami konfiguracji akademika."
+      },
+      "name": {
+        "title": "Nazwa akademika",
+        "description": "Wprowadź unikalną nazwę dla swojego akademika. Będzie ona wyświetlana użytkownikom."
+      },
+      "photos": {
+        "title": "Zdjęcia akademika",
+        "description": "Prześlij zdjęcia, aby zaprezentować swój akademik. Pomagają one użytkownikom wyobrazić sobie przestrzeń."
+      },
+      "floors": {
+        "title": "Konfiguracja pięter",
+        "description": "Określ liczbę pięter w swoim akademiku dla organizacji pokoi."
+      },
+      "templates": {
+        "title": "Szablony pokoi",
+        "description": "Skonfiguruj różne typy pokoi i ich układy dla tego akademika."
+      }
+    }
+  }
+}

@@ -1,0 +1,54 @@
+services:
+  backend:
+    build: .
+    container_name: backend
+    ports:
+      - 4000:4000
+      - 5555:5555
+    env_file:
+      - .env
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    depends_on:
+      - db
+      - redis
+    networks:
+      - backend
+
+  db:
+    container_name: postgres1
+    image: postgres:15.2
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - 5433:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  redis:
+    container_name: redis
+    image: redis:7.0
+    restart: always
+    ports:
+      - 6379:6379
+    command: redis-server --requirepass ${REDIS_PASSWORD}
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping", "-a", "${REDIS_PASSWORD}"]
+      interval: 5s
+      retries: 5
+    networks:
+      - backend
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  backend:

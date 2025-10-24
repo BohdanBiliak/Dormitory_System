@@ -1,0 +1,22 @@
+name: Prisma DB Push to Railway
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./server
+
+      - name: Push Prisma schema to Railway
+        run: npx prisma db push --accept-data-loss
+        working-directory: ./server
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}

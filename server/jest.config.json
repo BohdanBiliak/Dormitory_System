@@ -1,0 +1,27 @@
+{
+  "preset": "ts-jest",
+  "testEnvironment": "node",
+  "moduleFileExtensions": ["js", "json", "ts", "tsx"],
+  "testRegex": ".*\\.spec\\.ts$",
+  "collectCoverageFrom": ["src/**/*.(t|j)s"],
+  "coverageDirectory": "./coverage",
+  "moduleNameMapper": {
+    "^@/(.*)$": "<rootDir>/src/$1",
+    "^@libs/(.*)$": "<rootDir>/src/libs/$1",
+    "^@modules/(.*)$": "<rootDir>/src/modules/$1",
+    "^@config/(.*)$": "<rootDir>/src/config/$1"
+  },
+  "transformIgnorePatterns": [
+    "node_modules/(?!(@react-email|react)/)"
+  ],
+  "setupFilesAfterEnv": [],
+  "transform": {
+    "^.+\\.(ts|tsx)$": ["ts-jest", {
+      "tsconfig": "tsconfig.test.json"
+    }]
+  },
+  "testPathIgnorePatterns": [
+    "/node_modules/",
+    "/__generated__/"
+  ]
+}

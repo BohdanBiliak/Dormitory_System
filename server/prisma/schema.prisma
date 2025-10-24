@@ -1,0 +1,760 @@
+generator client {
+  provider      = "prisma-client-js"
+  output        = "../__generated__"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_URI")
+}
+
+// ==========================================
+// ENUMS
+// ==========================================
+enum UserRole {
+  Regular
+  Admin
+  SignedInUser
+  SuperAdmin
+  Resident
+}
+
+enum AuthMethod {
+  CREDENTIALS
+  GOOGLE
+  LOCAL
+}
+
+enum TokenType {
+  VERIFICATION
+  TWO_FACTOR
+  PASSWORD_RESET
+}
+
+enum ConfirmationType {
+  IDENTITY_VERIFICATION
+  ACCOMMODATION
+  ROOM_CHANGE
+  ROOM_VACATION
+}
+
+enum ConfirmationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum NotificationPriority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
+enum NotificationType {
+  // Room related
+  ROOM_BOOKING_REQUEST
+  ROOM_BOOKING_APPROVED
+  ROOM_BOOKING_REJECTED
+  ROOM_ASSIGNMENT_UPDATED
+  ROOM_AVAILABLE
+
+  // Accommodation changes
+  ACCOMMODATION_CHANGE_REQUEST
+  ACCOMMODATION_CHANGE_APPROVED
+  ACCOMMODATION_CHANGE_REJECTED
+
+  // Maintenance
+  MAINTENANCE_SCHEDULED
+  MAINTENANCE_COMPLETED
+  MAINTENANCE_URGENT
+
+  // Administrative
+  ADMIN_ANNOUNCEMENT
+  POLICY_UPDATE
+  SYSTEM_MAINTENANCE
+
+  // Student interactions
+  STUDENT_MESSAGE
+  ROOMMATE_REQUEST
+  ROOMMATE_APPROVED
+
+  // System events
+  ACCOUNT_VERIFIED
+  PASSWORD_CHANGED
+  LOGIN_ALERT
+  ACCOUNT_SUSPENDED
+  ACCOUNT_CREATED
+
+  // Payment events
+  PAYMENT_REJECTED
+  PAYMENT_CREATED
+  PAYMENT_DUE
+  PAYMENT_RECEIVED
+  PAYMENT_OVERDUE
+  PAYMENT_FAILED
+  PAYMENT_REMINDER
+  PAYMENT_CONFIRMATION_REQUIRED
+  PAYMENT_CONFIRMED
+  PAYMENT_REFUNDED
+}
+
+enum BookingStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+  COMPLETED
+}
+
+enum PaymentType {
+  MONTHLY_RENT
+  DAILY_RENT
+  SECURITY_DEPOSIT
+  UTILITIES
+  MAINTENANCE_FEE
+  LATE_FEE
+  CLEANING_FEE
+  OTHER
+}
+
+enum PaymentMethod {
+  STRIPE_CARD
+  CASH_TO_MANAGER
+  BANK_TRANSFER
+  OTHER
+}
+
+enum PaymentStatus {
+  PENDING // Admin created, waiting for resident payment
+  AWAITING_CONFIRMATION // Resident uploaded proof, waiting for admin review
+  PROCESSING // Admin is reviewing
+  PAID // Admin confirmed payment
+  FAILED // Technical failure
+  OVERDUE // Past due date
+  CANCELLED // Cancelled by admin
+  REFUNDED // Money returned
+  PARTIAL_REFUND // Partial money returned
+  REJECTED // Admin rejected the payment proof
+}
+
+enum RecurringFrequency {
+  MONTHLY
+  WEEKLY
+  CUSTOM
+}
+
+enum PaymentItemType {
+  RENT
+  SECURITY_DEPOSIT
+  UTILITIES
+  MAINTENANCE_FEE
+  LATE_FEE
+  CLEANING_FEE
+  OTHER
+}
+
+enum RoomAvailabilityStatus {
+  AVAILABLE
+  PART_EMPTY
+  FULL
+  UNAVAILABLE
+}
+
+// ==========================================
+// USER MODELS
+// ==========================================
+model User {
+  id                   String     @id @default(uuid())
+  email                String     @unique
+  password             String
+  displayName          String
+  picture              String
+  isVerified           Boolean    @default(false) @map("is_verified")
+  isTwoFactorEnabled   Boolean    @default(false) @map("is_two_factor_enabled")
+  method               AuthMethod
+  role                 UserRole   @default(Regular)
+  secondName           String     @map("second_name")
+  studentIdFront       String     @map("student_id_front")
+  studentIdBack        String?    @map("student_id_back")
+  isActive             Boolean    @default(true) @map("is_active")
+  language             String     @default("en")
+  startReservationDate DateTime?  @map("start_date")
+  endReservationDate   DateTime?  @map("end_date")
+
+  // Foreign Keys
+  dormitoryId String? @map("dormitory_id")
+  roomId      String? @map("room_id")
+
+  // Relations
+  confirmations               Confirmation[]          @relation("UserConfirmations")
+  dormitoryAdminAssignments   DormitoryAdmin[]
+  dormitory                   Dormitory?              @relation("DormitoryResidents", fields: [dormitoryId], references: [id])
+  dormitoryManagerAssignments DormitoryManager[]
+  room                        Room?                   @relation(fields: [roomId], references: [id])
+  announcements               Announcement[]          @relation("AnnouncementAuthor")
+  announcementRecipients      AnnouncementRecipient[] @relation("AnnouncementRecipientUser")
+  auditLogs                   AuditLog[]              @relation("UserAuditLogs")
+
+  // Notification relations
+  sentNotifications     Notification[]        @relation("NotificationSender")
+  receivedNotifications Notification[]        @relation("NotificationReceiver")
+  notificationSettings  NotificationSettings?
+
+  // Booking and Payment relations
+  bookings          Booking[]         @relation("UserBookings")
+  payments          Payment[]         @relation("UserPayments")
+  confirmedPayments Payment[]         @relation("ManagerConfirmedPayments")
+  paymentAuditLogs  PaymentAuditLog[]
+  createdAt         DateTime          @default(now()) @map("created_at")
+  updatedAt         DateTime          @updatedAt @map("updated_at")
+
+  @@index([email])
+  @@index([role, isActive]) // Filter active users by role
+  @@index([dormitoryId, isActive]) // Find active residents of a dormitory
+  @@index([roomId]) // Find roommates
+  @@index([isVerified, role]) // Auth queries
+  @@index([createdAt]) // Chronological queries
+  @@index([method, isVerified]) // Auth method filtering
+  @@map("users")
+}
+
+model DormitoryAdmin {
+  id          String   @id @default(uuid())
+  userId      String   @map("user_id")
+  dormitoryId String   @map("dormitory_id")
+  role        String
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  dormitory Dormitory @relation(fields: [dormitoryId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, dormitoryId])
+  @@index([role, createdAt]) // Admin role analysis
+  @@index([dormitoryId, role]) // Dormitory admin hierarchy
+  @@map("dormitory_admins")
+}
+
+model DormitoryManager {
+  id          String @id @default(uuid())
+  dormitoryId String
+  userId      String
+
+  dormitory Dormitory @relation(fields: [dormitoryId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([dormitoryId, userId])
+}
+
+model Confirmation {
+  id              String             @id @default(uuid())
+  userId          String             @map("user_id")
+  type            ConfirmationType
+  status          ConfirmationStatus @default(PENDING)
+  photo           String?
+  frontIdUrl      String?            @map("front_id_url")
+  backIdUrl       String?            @map("back_id_url")
+  createdAt       DateTime           @default(now()) @map("created_at")
+  resolvedAt      DateTime?          @map("resolved_at")
+  rejectionReason String?            @map("rejection_reason")
+
+  roomId    String?   @map("room_id")
+  from      DateTime?
+  to        DateTime?
+  metadata  Json?
+  requester User      @relation("UserConfirmations", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([status, createdAt]) // Pending confirmations queue
+  @@index([type, status]) // Confirmation type filtering
+  @@index([userId, type, status]) // User confirmation history
+  @@index([resolvedAt]) // Resolved confirmations timeline
+  @@map("confirmations")
+}
+
+model Token {
+  id        String    @id @default(uuid())
+  email     String
+  token     String    @unique
+  type      TokenType
+  expiresIn DateTime  @map("expires_in")
+
+  @@index([email, type]) // Token lookup by email and type
+  @@index([expiresIn]) // Cleanup expired tokens
+  @@index([type, expiresIn]) // Active tokens by type
+  @@map("tokens")
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  action    String
+  entity    String
+  entityId  String   @map("entity_id")
+  meta      Json?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation("UserAuditLogs", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([entity, entityId])
+  @@index([createdAt]) // Chronological audit trail
+  @@index([action, entity]) // Audit queries by action type
+  @@index([userId, createdAt]) // User activity timeline
+  @@index([entity, entityId, createdAt]) // Entity change history
+  @@map("audit_logs")
+}
+
+// ==========================================
+// DORMITORY MODELS
+// ==========================================
+model Dormitory {
+  id                     String   @id @default(uuid())
+  name                   String
+  address                String
+  groundFloorPhoneNumber String   @map("ground_floor_phone_number")
+  floors                 Floor[]
+  status                 String   @default("Active")
+  photos                 String[]
+  createdAt              DateTime @default(now()) @map("created_at")
+
+  admins    DormitoryAdmin[]
+  managers  DormitoryManager[]
+  residents User[]             @relation("DormitoryResidents")
+  rooms     Room[]
+
+  @@index([status, name]) // List active/inactive dormitories alphabetically
+  @@index([createdAt]) // Chronological ordering
+  @@index([status, createdAt]) // Status with time-based filtering
+  @@map("dormitories")
+}
+
+model Floor {
+  id                   String                @id @default(cuid())
+  floorNumber          Int
+  dormitoryId          String
+  dormitory            Dormitory             @relation(fields: [dormitoryId], references: [id])
+  rooms                Room[]
+  floorRoomAssignments FloorRoomAssignment[]
+
+  @@unique([dormitoryId, floorNumber])
+  @@map("floors")
+}
+
+model Room {
+  id              String   @id @default(cuid())
+  number          String
+  floorId         String
+  capacity        Int
+  dormitoryId     String
+  roomEquipment   String[]
+  photos          String[]
+  roomTypeId      String? // Add this field
+  priceCategoryId String?  @map("price_category_id")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  floor                  Floor                   @relation(fields: [floorId], references: [id], onDelete: Cascade)
+  dormitory              Dormitory               @relation(fields: [dormitoryId], references: [id], onDelete: Cascade)
+  roomType               RoomType?               @relation(fields: [roomTypeId], references: [id])
+  priceCategory          PriceCategory?          @relation("RoomPriceCategory", fields: [priceCategoryId], references: [id])
+  announcementRecipients AnnouncementRecipient[] @relation("AnnouncementRecipientRoom")
+  notifications          Notification[]
+  bookings               Booking[]
+  statuses               RoomStatus[]
+  residents              User[]
+  prices                 Price[]
+
+  @@unique([floorId, number])
+  @@index([dormitoryId]) // Rooms by dormitory
+  @@index([dormitoryId, capacity]) // Rooms by dormitory and capacity
+  @@index([number, dormitoryId]) // Unique room identification
+  @@index([createdAt]) // Chronological queries
+  @@index([priceCategoryId])
+  @@index([dormitoryId], map: "rooms_dormitory_id_unique_idx")
+  @@map("rooms")
+}
+
+model RoomType {
+  id              String   @id @default(cuid())
+  name            String
+  description     String?
+  capacity        Int
+  equipment       String[]
+  typeCode        String   @unique
+  photos          String[]
+  priceCategoryId String?  @map("price_category_id")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  rooms                Room[]
+  floorRoomAssignments FloorRoomAssignment[]
+  priceCategory        PriceCategory?        @relation("RoomTypePriceCategory", fields: [priceCategoryId], references: [id])
+
+  @@index([priceCategoryId])
+  @@map("room_types")
+}
+
+model FloorRoomAssignment {
+  id          String @id @default(cuid())
+  floorId     String
+  roomTypeId  String
+  roomNumbers Int[]
+
+  // Relations
+  floor    Floor    @relation(fields: [floorId], references: [id], onDelete: Cascade)
+  roomType RoomType @relation(fields: [roomTypeId], references: [id])
+
+  @@unique([floorId, roomTypeId])
+  @@map("floor_room_assignments")
+}
+
+model RoomStatus {
+  id          String    @id @default(uuid())
+  roomId      String    @map("room_id")
+  dateOfStart DateTime  @map("date_of_start")
+  dateOfEnd   DateTime? @map("date_of_end")
+  description String
+
+  room Room @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  @@index([roomId])
+  @@index([dateOfStart, dateOfEnd]) // Status date ranges
+  @@index([roomId, dateOfStart]) // Room status history
+  @@index([dateOfEnd]) // Active statuses (NULL dateOfEnd)
+  @@map("room_statuses")
+}
+
+model PriceCategory {
+  id            String   @id @default(uuid())
+  name          String   @unique
+  description   String?
+  pricePerMonth Float    @map("price_per_month")
+  pricePerDay   Float    @map("price_per_day")
+  isActive      Boolean  @default(true) @map("is_active")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  roomTypes RoomType[] @relation("RoomTypePriceCategory")
+  rooms     Room[]     @relation("RoomPriceCategory")
+  payments  Payment[]
+
+  @@index([isActive])
+  @@index([name])
+  @@index([pricePerMonth])
+  @@index([createdAt])
+  @@map("price_categories")
+}
+
+// Keep Price table for backward compatibility and migration purposes
+model Price {
+  id            String    @id @default(uuid())
+  roomId        String?   @map("room_id")
+  roomCapacity  Int       @map("room_capacity")
+  pricePerMonth Float     @map("price_per_month")
+  pricePerDay   Float     @map("price_per_day")
+  dateFrom      DateTime  @map("date_from")
+  dateTo        DateTime? @map("date_to")
+
+  room     Room?     @relation(fields: [roomId], references: [id], onDelete: SetNull)
+  payments Payment[]
+
+  @@index([roomId])
+  @@index([dateFrom, dateTo])
+  @@index([roomCapacity, dateFrom, dateTo]) // Price lookups by capacity and date range
+  @@index([pricePerMonth, roomCapacity]) // Price comparison queries
+  @@index([dateTo]) // Find expired prices
+  @@index([roomId, dateFrom]) // Room-specific price history
+  @@map("prices")
+}
+
+// ==========================================
+// BOOKING MODELS
+// ==========================================
+model Booking {
+  id           String        @id @default(uuid())
+  userId       String        @map("user_id")
+  roomId       String        @map("room_id")
+  status       BookingStatus @default(PENDING)
+  checkInDate  DateTime      @map("check_in_date")
+  checkOutDate DateTime?     @map("check_out_date")
+  totalAmount  Float         @map("total_amount")
+  notes        String?
+
+  user              User               @relation("UserBookings", fields: [userId], references: [id], onDelete: Cascade)
+  room              Room               @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  notifications     Notification[]
+  payments          Payment[]
+  recurringPayments RecurringPayment[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([userId])
+  @@index([roomId])
+  @@index([status])
+  @@index([checkInDate, checkOutDate]) // Date range queries
+  @@index([status, checkInDate]) // Active bookings by date
+  @@index([userId, status, checkInDate]) // User's booking history
+  @@index([roomId, checkInDate, checkOutDate]) // Room availability checks
+  @@index([totalAmount]) // Financial reporting
+  @@index([createdAt, status]) // Recent bookings by status
+  @@map("bookings")
+}
+
+// ==========================================
+// PAYMENT MODELS
+// ==========================================
+model Payment {
+  id              String        @id @default(uuid())
+  userId          String        @map("user_id")
+  bookingId       String?       @map("booking_id")
+  priceId         String?       @map("price_id")
+  priceCategoryId String?       @map("price_category_id")
+  amount          Float
+  currency        String        @default("PLN")
+  paymentType     PaymentType   @map("payment_type")
+  paymentMethod   PaymentMethod @map("payment_method")
+  status          PaymentStatus @default(PENDING)
+  dueDate         DateTime      @map("due_date")
+  paidAt          DateTime?     @map("paid_at")
+  description     String?
+
+  paymentProofUrl        String?   @map("payment_proof_url")
+  paymentProofFilename   String?   @map("payment_proof_filename")
+  paymentProofUploadedAt DateTime? @map("payment_proof_uploaded_at")
+
+  externalPaymentId  String?   @map("external_payment_id")
+  failureReason      String?   @map("failure_reason")
+  managerNotes       String?   @map("manager_notes")
+  confirmedBy        String?   @map("confirmed_by")
+  confirmedAt        DateTime? @map("confirmed_at")
+  rejectedAt         DateTime? @map("rejected_at")
+  rejectionReason    String?   @map("rejection_reason")
+  recurringPaymentId String?   @map("recurring_payment_id")
+
+  user                   User              @relation("UserPayments", fields: [userId], references: [id], onDelete: Cascade)
+  booking                Booking?          @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+  price                  Price?            @relation(fields: [priceId], references: [id], onDelete: SetNull)
+  priceCategory          PriceCategory?    @relation(fields: [priceCategoryId], references: [id], onDelete: SetNull)
+  confirmedByUser        User?             @relation("ManagerConfirmedPayments", fields: [confirmedBy], references: [id], onDelete: SetNull)
+  generatedFromRecurring RecurringPayment? @relation("GeneratedFromRecurring", fields: [recurringPaymentId], references: [id], onDelete: SetNull)
+  notifications          Notification[]
+  paymentItems           PaymentItem[]
+  recurringPayment       RecurringPayment? @relation("OriginalPayment")
+  auditLogs              PaymentAuditLog[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([userId])
+  @@index([status])
+  @@index([dueDate])
+  @@index([paymentType])
+  @@index([bookingId])
+  @@index([priceCategoryId])
+  @@index([status, dueDate]) // Overdue payments, payment processing
+  @@index([userId, status, dueDate]) // User payment dashboard
+  @@index([paymentMethod, status]) // Payment method analysis
+  @@index([currency, amount]) // Financial reporting
+  @@index([confirmedBy, confirmedAt]) // Manager activity tracking
+  @@index([createdAt, paymentType]) // Payment history by type
+  @@index([paidAt]) // Payment completion tracking
+  @@index([bookingId, paymentType]) // Booking-related payments
+  @@index([recurringPaymentId]) // Recurring payment tracking
+  @@map("payments")
+}
+
+model RecurringPayment {
+  id            String             @id @default(uuid())
+  paymentId     String             @unique @map("payment_id")
+  bookingId     String             @map("booking_id")
+  frequency     RecurringFrequency @default(MONTHLY)
+  startDate     DateTime           @map("start_date")
+  endDate       DateTime?          @map("end_date")
+  dayOfMonth    Int                @map("day_of_month")
+  isActive      Boolean            @default(true) @map("is_active")
+  lastProcessed DateTime?          @map("last_processed")
+  nextDueDate   DateTime           @map("next_due_date")
+
+  payment           Payment   @relation("OriginalPayment", fields: [paymentId], references: [id], onDelete: Cascade)
+  booking           Booking   @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  generatedPayments Payment[] @relation("GeneratedFromRecurring")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([nextDueDate])
+  @@index([isActive])
+  @@index([startDate, endDate]) // Active recurring payments
+  @@index([dayOfMonth, isActive]) // Monthly processing
+  @@index([bookingId, isActive]) // Booking recurring payments
+  @@index([lastProcessed]) // Processing optimization
+  @@index([frequency, nextDueDate]) // Scheduling queries
+  @@map("recurring_payments")
+}
+
+model PaymentItem {
+  id          String          @id @default(uuid())
+  paymentId   String          @map("payment_id")
+  itemType    PaymentItemType @map("item_type")
+  description String
+  amount      Float
+  period      String?
+
+  payment Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+
+  @@index([paymentId])
+  @@index([itemType, amount]) // Payment item analysis
+  @@index([paymentId, itemType]) // Payment breakdown
+  @@map("payment_items")
+}
+
+model PaymentAuditLog {
+  id        String   @id @default(uuid())
+  paymentId String   @map("payment_id")
+  userId    String   @map("user_id")
+  action    String
+  oldValue  Json?    @map("old_value")
+  newValue  Json?    @map("new_value")
+  ipAddress String?  @map("ip_address")
+  userAgent String?  @map("user_agent")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  payment Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([createdAt]) // Chronological payment audit
+  @@index([action, createdAt]) // Payment action timeline
+  @@index([paymentId, createdAt]) // Payment change history
+  @@index([userId, action, createdAt]) // User payment actions
+  @@index([paymentId])
+  @@index([userId])
+  @@map("payment_audit_logs")
+}
+
+// ==========================================
+// NOTIFICATION MODELS
+// ==========================================
+model Notification {
+  id       String               @id @default(uuid())
+  type     NotificationType
+  title    String
+  message  String               @db.Text
+  priority NotificationPriority @default(NORMAL)
+
+  fromUserId String? @map("from_user_id")
+  toUserId   String  @map("to_user_id")
+  roomId     String? @map("room_id")
+  bookingId  String? @map("booking_id")
+  paymentId  String? @map("payment_id")
+
+  isRead     Boolean   @default(false) @map("is_read")
+  isArchived Boolean   @default(false) @map("is_archived")
+  readAt     DateTime? @map("read_at")
+  archivedAt DateTime? @map("archived_at")
+  metadata   Json?
+
+  fromUser User?    @relation("NotificationSender", fields: [fromUserId], references: [id], onDelete: SetNull)
+  toUser   User     @relation("NotificationReceiver", fields: [toUserId], references: [id], onDelete: Cascade)
+  room     Room?    @relation(fields: [roomId], references: [id], onDelete: SetNull)
+  booking  Booking? @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+  payment  Payment? @relation(fields: [paymentId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([toUserId, isRead, priority, createdAt]) // User notification feed
+  @@index([type, createdAt, isArchived]) // Notification type analytics
+  @@index([fromUserId, createdAt]) // Sent notifications
+  @@index([roomId, type, createdAt]) // Room-specific notifications
+  @@index([bookingId, type]) // Booking-related notifications
+  @@index([paymentId, type]) // Payment-related notifications
+  @@index([priority, isRead, createdAt]) // Urgent unread notifications
+  @@index([toUserId, isArchived, createdAt])
+  @@index([type, createdAt])
+  @@index([isRead, toUserId])
+  @@map("notifications")
+}
+
+model NotificationSettings {
+  id     String @id @default(uuid())
+  userId String @unique @map("user_id")
+
+  emailNotifications    Boolean @default(true) @map("email_notifications")
+  emailPaymentReminders Boolean @default(true) @map("email_payment_reminders")
+  emailBookingUpdates   Boolean @default(true) @map("email_booking_updates")
+  emailAnnouncements    Boolean @default(true) @map("email_announcements")
+  inAppNotifications    Boolean @default(true) @map("in_app_notifications")
+  markAsReadOnView      Boolean @default(true) @map("mark_as_read_on_view")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([emailNotifications]) // Users with email enabled
+  @@index([inAppNotifications]) // Users with in-app enabled
+  @@map("notification_settings")
+}
+
+// ==========================================
+// ANNOUNCEMENT MODELS
+// ==========================================
+model Announcement {
+  id        String   @id @default(uuid())
+  title     String
+  content   String   @db.Text
+  authorId  String   @map("author_id")
+  isHidden  Boolean  @default(false) @map("is_hidden")
+  postedAt  DateTime @default(now()) @map("posted_at")
+  expiresAt DateTime @map("expires_at")
+
+  author      User                    @relation("AnnouncementAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+  attachments Attachment[]
+  recipients  AnnouncementRecipient[]
+
+  @@index([isHidden, postedAt]) // Active announcements chronologically
+  @@index([expiresAt, isHidden]) // Expiring announcements
+  @@index([authorId, postedAt]) // Author's announcements
+  @@index([postedAt, expiresAt]) // Date range queries
+  @@index([authorId])
+  @@index([postedAt])
+  @@map("announcements")
+}
+
+model Attachment {
+  id             String @id @default(uuid())
+  announcementId String @map("announcement_id")
+  url            String
+  filename       String
+
+  announcement Announcement @relation(fields: [announcementId], references: [id], onDelete: Cascade)
+
+  @@index([announcementId])
+  @@index([filename])
+  @@map("attachments")
+}
+
+model AnnouncementRecipient {
+  id             String  @id @default(uuid())
+  announcementId String  @map("announcement_id")
+  userId         String? @map("user_id")
+  roomId         String? @map("room_id")
+  floor          Int?
+  forEveryone    Boolean @default(false) @map("for_everyone")
+
+  announcement Announcement @relation(fields: [announcementId], references: [id], onDelete: Cascade)
+  user         User?        @relation("AnnouncementRecipientUser", fields: [userId], references: [id], onDelete: Cascade)
+  room         Room?        @relation("AnnouncementRecipientRoom", fields: [roomId], references: [id], onDelete: Cascade)
+
+  @@index([userId, announcementId]) // User-specific announcements
+  @@index([roomId, announcementId]) // Room-specific announcements
+  @@index([floor, announcementId]) // Floor-specific announcements
+  @@index([forEveryone]) // Global announcements
+  @@index([announcementId])
+  @@map("announcement_recipients")
+}

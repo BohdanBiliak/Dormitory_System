@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --border: 214.3 31.8% 91.4%;
+  }
+
+  * {
+    @apply border-gray-200;
+  }
+  
+  body {
+    @apply bg-white text-gray-900;
+  }
+}
+
+@layer components {
+  .touch-target {
+    @apply min-w-[44px] min-h-[44px];
+  }
+  
+  .touch-pan-y {
+    touch-action: pan-y;
+  }
+}
+
+@layer utilities {
+  @keyframes dash {
+    to {
+      stroke-dashoffset: -24;
+    }
+  }
+  
+  .animate-dash {
+    animation: dash 2s linear infinite;
+  }
+}

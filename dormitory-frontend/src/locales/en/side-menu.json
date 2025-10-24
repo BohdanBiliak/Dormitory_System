@@ -1,0 +1,27 @@
+{
+  "sideMenu": {
+    "profile": "My profile",
+    "myProfile": "My profile",
+    "dormitories": "Dormitories",
+    "dormitoriesInfo": "Dormitories Information",
+    "dormitoriesInformation": "Dormitories Information",
+    "dormitoryManagement": "Dormitory management",
+    "dormitorySystem": "Dormitory System",
+    "information": "Information",
+    "availableRooms": "Available rooms",
+    "userProfiles": "User profiles",
+    "confirmations": "Confirmations",
+    "payments": "Payments",
+    "communication": "Communication",
+    "announcements": "Announcements",
+    "messages": "Messages",
+    "rooms": "Available rooms",
+    "notification": "Notification",
+    "signin": "Sign in",
+    "signIn": "Sign in",
+    "logout": "Logout",
+    "loggingOut": "Logging out...",
+    "translateApp": "Translate App",
+    "currentLanguage": "Current"
+  }
+}
