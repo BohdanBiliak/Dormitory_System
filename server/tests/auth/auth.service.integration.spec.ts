@@ -50,7 +50,6 @@ class MockS3Service {
   async uploadFile(file: any, folder: string): Promise<string> {
     return `https://s3.amazonaws.com/${folder}/${file.originalname}`;
   }
-
   async uploadResponsiveImage(file: any, name: string, type: string) {
     return {
       original: `https://s3.amazonaws.com/${type}/${name}-original.jpg`,
@@ -80,7 +79,6 @@ class MockEmailConfirmationService {
     return true;
   }
 }
-
 class MockTwoFactorAuthService {
   private tokens: Map<string, string> = new Map();
 
@@ -151,7 +149,6 @@ class MockAuthService {
       frontUrl,
       backUrl,
     );
-
     await this.prismaService.confirmation.create({
       data: {
         type: "IDENTITY_VERIFICATION",
@@ -162,9 +159,7 @@ class MockAuthService {
         backIdUrl: backUrl,
       },
     });
-
     await this.emailConfirmationService.sendVerificationToken(newUser);
-
     return {
       message:
         "Register successfully. Please, approve your email. Mail was sent to your email address.",

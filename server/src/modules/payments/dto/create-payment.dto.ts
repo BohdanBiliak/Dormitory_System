@@ -2,6 +2,7 @@ import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import {
   IsArray,
   IsDate,
+  IsEnum,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -9,30 +10,8 @@ import {
   ValidateNested,
 } from "class-validator";
 import { Type } from "class-transformer";
-
-export class CreatePaymentItemDto {
-  @ApiProperty({ example: "RENT", description: "Type of payment item" })
-  @IsString()
-  @IsNotEmpty()
-  itemType: string;
-
-  @ApiProperty({
-    example: "Monthly dorm rent",
-    description: "Item description",
-  })
-  @IsString()
-  @IsNotEmpty()
-  description: string;
-
-  @ApiProperty({ example: 500, description: "Amount for this item" })
-  @IsNumber()
-  amount: number;
-
-  @ApiPropertyOptional({ example: "2025-07", description: "Period (optional)" })
-  @IsOptional()
-  @IsString()
-  period?: string;
-}
+import { PaymentType, PaymentMethod } from "../../../../__generated__";
+import { CreatePaymentItemDto } from "./create-payment-item.dto";
 
 export class CreatePaymentDto {
   @ApiProperty({ example: "uuid-user", description: "User ID" })
@@ -52,13 +31,25 @@ export class CreatePaymentDto {
   @IsNumber()
   amount: number;
 
-  @ApiProperty({ example: "ONLINE", description: "Payment type" })
+  @ApiProperty({ 
+    example: "MONTHLY_RENT", 
+    description: "Payment type",
+    enum: PaymentType,
+    enumName: 'PaymentType'
+  })
   @IsString()
-  paymentType: string;
+  @IsEnum(PaymentType)
+  paymentType: PaymentType;
 
-  @ApiProperty({ example: "CARD", description: "Payment method" })
+  @ApiProperty({ 
+    example: "BANK_TRANSFER", 
+    description: "Payment method",
+    enum: PaymentMethod,
+    enumName: 'PaymentMethod'
+  })
   @IsString()
-  paymentMethod: string;
+  @IsEnum(PaymentMethod)
+  paymentMethod: PaymentMethod;
 
   @ApiProperty({ example: "2025-08-01T00:00:00Z", description: "Due date" })
   @IsDate()
