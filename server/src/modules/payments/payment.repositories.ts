@@ -1,13 +1,16 @@
+import { Injectable } from "@nestjs/common";
 import {
   PrismaClient,
   Payment,
   PaymentStatus,
   Prisma,
 } from "../../../__generated__";
+import { PrismaService } from "../../prisma/prisma.service";
 import { IPaymentRepository } from "./interfaces/payments-repository.interfaces";
 
+@Injectable()
 export class PaymentRepository implements IPaymentRepository {
-  constructor(private prisma: PrismaClient) {}
+  constructor(private prisma: PrismaService) {}
 
   async create(data: Prisma.PaymentCreateInput): Promise<Payment> {
     return this.prisma.payment.create({

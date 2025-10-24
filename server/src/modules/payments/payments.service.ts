@@ -1,3 +1,4 @@
+import { Injectable, Inject } from "@nestjs/common";
 import {
   Payment,
   PaymentStatus,
@@ -19,8 +20,10 @@ import {
   ConfirmPaymentDto,
 } from "./dto";
 
+@Injectable()
 export class PaymentsService implements IPaymentService {
   constructor(
+    @Inject("IPaymentRepository")
     private readonly paymentRepository: IPaymentRepository,
     private readonly fileUploadService: S3Service,
     private readonly notificationService: NotificationsService,
