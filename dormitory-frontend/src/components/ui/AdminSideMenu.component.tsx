@@ -76,7 +76,7 @@ export function AdminSideMenu ({children}:AdminSideMenuProps){
                     id:'payments',
                     label: t('sideMenu.payments') || 'Payments',
                     image: '/cash.svg',
-                    href: '#'
+                    href: '/admin/payments'
                 }
             ]
         },

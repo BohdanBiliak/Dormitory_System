@@ -363,7 +363,8 @@ export function RoomPage({roomId}: RoomPageProps) {
 
     const handlePostStatus = () => {
         if(room && newStatusData && newStatusData.dateOfStart !== '' && newStatusData.dateOfEnd !== '' && newStatusData.description !== '') {
-          postRoomStatus({roomId: room.id, statusData: newStatusData})
+            postRoomStatus({roomId: room.id, statusData: newStatusData})
+            setShowStatusesDialog(false)
         }
     }
 

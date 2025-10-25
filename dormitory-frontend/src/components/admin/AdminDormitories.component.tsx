@@ -490,19 +490,19 @@ export function AdminDormitoriesList(){
                                                 </h3>
                                                 <div className="grid grid-cols-2 lg:grid-cols-1 gap-3 sm:gap-4">
                                                     <div className="bg-blue-50 p-3 sm:p-4 rounded-lg">
-                                                        <div className="text-xl sm:text-2xl font-bold text-blue-900">0</div>
+                                                        <div className="text-xl sm:text-2xl font-bold text-blue-900">{0}</div>
                                                         <div className="text-xs sm:text-sm text-blue-600">Total Rooms</div>
                                                     </div>
                                                     <div className="bg-green-50 p-3 sm:p-4 rounded-lg">
-                                                        <div className="text-xl sm:text-2xl font-bold text-green-900">0</div>
+                                                        <div className="text-xl sm:text-2xl font-bold text-green-900">{0}</div>
                                                         <div className="text-xs sm:text-sm text-green-600">Occupied</div>
                                                     </div>
                                                     <div className="bg-yellow-50 p-3 sm:p-4 rounded-lg">
-                                                        <div className="text-xl sm:text-2xl font-bold text-yellow-900">0</div>
+                                                        <div className="text-xl sm:text-2xl font-bold text-yellow-900">{0}</div>
                                                         <div className="text-xs sm:text-sm text-yellow-600">Available</div>
                                                     </div>
                                                     <div className="bg-purple-50 p-3 sm:p-4 rounded-lg">
-                                                        <div className="text-xl sm:text-2xl font-bold text-purple-900">0</div>
+                                                        <div className="text-xl sm:text-2xl font-bold text-purple-900">{0}</div>
                                                         <div className="text-xs sm:text-sm text-purple-600">Residents</div>
                                                     </div>
                                                 </div>

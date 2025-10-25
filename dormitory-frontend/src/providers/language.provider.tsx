@@ -64,11 +64,11 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const initializeLanguage = async () => {
       // Get saved language from localStorage or use default
-      const savedLanguage = localStorage.getItem('language') as Language
-      const initialLanguage = savedLanguage || 'en'
-      
-      await loadLanguageData(initialLanguage)
+      const savedLanguage = localStorage.getItem('language')
+      const initialLanguage = savedLanguage? savedLanguage as Language : 'en';
+
       setLanguageState(initialLanguage)
+      await loadLanguageData(initialLanguage)
     }
 
     initializeLanguage()

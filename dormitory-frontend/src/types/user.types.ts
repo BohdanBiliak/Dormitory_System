@@ -1,4 +1,4 @@
-import {UserRole} from "@/types/auth.types";
+import {User, UserRole} from "@/types/auth.types";
 
 
 export interface UserListRequest {
@@ -24,11 +24,3 @@ export interface UpdateProfileRequest {
     picture?: string      // Changed to match DTO
 }
 
-export interface User {
-    id: string
-    displayName: string
-    secondName?: string
-    email: string
-    picture?: string
-    role: string
-}

@@ -441,7 +441,7 @@ export default function AllRoomsPage() {
                                             Residents, {selectedRoom.residents ? selectedRoom.residents.length : 0}/{selectedRoom.capacity}:
                                         </h4>
                                         <div className="space-y-2">
-                                            {selectedRoom.residents.map((resident, index) => (
+                                            {selectedRoom.residents && selectedRoom.residents.map((resident, index) => (
                                                 <div
                                                     key={resident.id}
                                                     className="bg-slate-100 rounded-lg p-2 animate-in fade-in-0 slide-in-from-left-2 duration-300"
