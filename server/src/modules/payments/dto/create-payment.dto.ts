@@ -27,6 +27,22 @@ export class CreatePaymentDto {
   @IsString()
   bookingId?: string;
 
+  @ApiPropertyOptional({
+    example: "uuid-price",
+    description: "Price ID (legacy - optional)",
+  })
+  @IsOptional()
+  @IsString()
+  priceId?: string;
+
+  @ApiPropertyOptional({
+    example: "uuid-price-category",
+    description: "Price Category ID (new system - optional)",
+  })
+  @IsOptional()
+  @IsString()
+  priceCategoryId?: string;
+
   @ApiProperty({ example: 500, description: "Total payment amount" })
   @IsNumber()
   amount: number;

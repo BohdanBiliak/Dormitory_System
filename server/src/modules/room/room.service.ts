@@ -16,12 +16,13 @@ import { BookRoomDto } from "@modules/room/dto/book-room.dto";
 import { RequestAccommmodationDto } from "./dto/requestAccommmodation.dto";
 import { RequestMoveOutDto } from "@modules/room/dto/request-moveout.dto";
 import { CreateRoomStatusDto } from "@modules/room/dto/create-room-status.dto";
-import { SetPriceDto } from "@modules/room/dto/set-price.dto";
 import { AuditService } from "@modules/audit/audit.service";
 import { NotificationsService } from "@modules/notifications/notifications.service";
 import { MailService } from "@libs/mail/mail.service";
 import { EvictUserFromRoomDto } from "./dto/evict-user.dto";
+import { AssignPriceCategoryDto } from "./dto/assign-price-category.dto";
 import { S3Service } from "@libs/common/s3/s3.service";
+import { PricingService } from "@/modules/pricing/pricing.service";
 @Injectable()
 export class RoomService {
   constructor(
@@ -30,6 +31,7 @@ export class RoomService {
     private readonly notificationService: NotificationsService,
     private readonly emailService: MailService,
     private readonly s3: S3Service,
+    private readonly pricingService: PricingService,
   ) {}
 
   async updateRoom(
@@ -91,23 +93,47 @@ export class RoomService {
     // Add price information to each room
     return await Promise.all(
       rooms.map(async (room) => {
-        const price = await this.getRoomPriceByCapacity(room.capacity);
-        return {
-          ...room,
-          price,
-        };
+        try {
+          const pricing = await this.pricingService.getRoomPricing(room.id);
+          return {
+            ...room,
+            pricing,
+          };
+        } catch (error) {
+          console.error(`Error getting pricing for room ${room.id}:`, error);
+          return {
+            ...room,
+            pricing: {
+              pricePerDay: 0,
+              pricePerMonth: 0,
+              source: 'no_pricing',
+            },
+          };
+        }
       }),
     );
   }
 
   async findOne(id: string) {
     const room = await this.roomRepository.findByIdOrThrow(id);
-    const price = await this.getRoomPriceByCapacity(room.capacity);
-
-    return {
-      ...room,
-      price,
-    };
+    
+    try {
+      const pricing = await this.pricingService.getRoomPricing(id);
+      return {
+        ...room,
+        pricing,
+      };
+    } catch (error) {
+      console.error(`Error getting pricing for room ${id}:`, error);
+      return {
+        ...room,
+        pricing: {
+          pricePerDay: 0,
+          pricePerMonth: 0,
+          source: 'no_pricing',
+        },
+      };
+    }
   }
 
   async getRoomWithOccupancy(id: string) {
@@ -117,13 +143,26 @@ export class RoomService {
     }
 
     const statistics = await this.roomRepository.getRoomStatistics(id);
-    const price = await this.getRoomPriceByCapacity(room.capacity);
-
-    return {
-      ...room,
-      ...statistics,
-      price,
-    };
+    
+    try {
+      const pricing = await this.pricingService.getRoomPricing(id);
+      return {
+        ...room,
+        ...statistics,
+        pricing,
+      };
+    } catch (error) {
+      console.error(`Error getting pricing for room ${id}:`, error);
+      return {
+        ...room,
+        ...statistics,
+        pricing: {
+          pricePerDay: 0,
+          pricePerMonth: 0,
+          source: 'no_pricing',
+        },
+      };
+    }
   }
 
   async findAvailableRooms(dto: AvailableRoomsDto) {
@@ -131,18 +170,6 @@ export class RoomService {
     const to = new Date(dto.to);
 
     const rooms = await this.roomRepository.findAvailableRooms(dto);
-
-    // Get current prices for each room capacity
-    const capacityPriceMap = new Map();
-    const prices = await this.roomRepository.findPrices({ from, to });
-
-    // Create a map of capacity to price
-    prices.forEach((price) => {
-      capacityPriceMap.set(price.roomCapacity, {
-        pricePerDay: price.pricePerDay,
-        pricePerMonth: price.pricePerMonth,
-      });
-    });
 
     return Promise.all(
       rooms.map(async (room) => {
@@ -155,15 +182,23 @@ export class RoomService {
               ),
           ) && room.residents.length < room.capacity;
 
-        // Get price for this room capacity
-        const price =
-          capacityPriceMap.get(room.capacity) ||
-          (await this.getRoomPriceByCapacity(room.capacity));
+        // Get price for this room using centralized pricing service
+        let pricing;
+        try {
+          pricing = await this.pricingService.getRoomPricing(room.id);
+        } catch (error) {
+          console.error(`Error getting pricing for room ${room.id}:`, error);
+          pricing = {
+            pricePerDay: 0,
+            pricePerMonth: 0,
+            source: 'no_pricing',
+          };
+        }
 
         return {
           ...room,
           isAvailable,
-          price,
+          pricing,
         };
       }),
     );
@@ -184,6 +219,20 @@ export class RoomService {
       pricePerDay: price.pricePerDay,
       pricePerMonth: price.pricePerMonth,
     };
+  }
+
+  /**
+   * Get room pricing from centralized pricing service
+   */
+  async getRoomPricing(roomId: string) {
+    return this.pricingService.getRoomPricing(roomId);
+  }
+
+  /**
+   * Get detailed room pricing information
+   */
+  async getRoomPricingDetails(roomId: string) {
+    return this.pricingService.getRoomPricingDetails(roomId);
   }
 
   async bookRoom(dto: BookRoomDto, userId: string) {
@@ -217,11 +266,12 @@ export class RoomService {
       throw new ConflictException("Room already booked or unavailable");
 
     // Get price for this room
-    const price = await this.getRoomPriceByCapacity(room.capacity);
-    const totalAmount =
-      diffDays <= 30
-        ? diffDays * price.pricePerDay
-        : price.pricePerMonth * (diffDays / 30);
+    const pricingDetails = await this.pricingService.calculatePaymentAmount(
+      room.id, 
+      from, 
+      to
+    );
+    const totalAmount = pricingDetails.amount;
 
     const booking = await this.roomRepository.createBooking({
       userId,
@@ -474,14 +524,40 @@ export class RoomService {
     return updatedUser;
   }
 
-  async setRoomPrice(dto: SetPriceDto) {
-    return this.roomRepository.createPrice({
-      roomCapacity: dto.roomCapacity,
-      pricePerDay: dto.pricePerDay,
-      pricePerMonth: dto.pricePerMonth,
-      dateFrom: new Date(dto.dateFrom),
-      dateTo: dto.dateTo ? new Date(dto.dateTo) : null,
+  async assignPriceCategory(roomId: string, priceCategoryId: string) {
+    // Validate room exists
+    const room = await this.roomRepository.findById(roomId);
+    if (!room) {
+      throw new NotFoundException(`Room with ID ${roomId} not found`);
+    }
+
+    // Update room with price category
+    const updatedRoom = await this.roomRepository.update(roomId, {
+      priceCategoryId,
     });
+
+    return {
+      message: "Price category assigned successfully",
+      room: updatedRoom,
+    };
+  }
+
+  async unassignPriceCategory(roomId: string) {
+    // Validate room exists
+    const room = await this.roomRepository.findById(roomId);
+    if (!room) {
+      throw new NotFoundException(`Room with ID ${roomId} not found`);
+    }
+
+    // Remove price category from room
+    const updatedRoom = await this.roomRepository.update(roomId, {
+      priceCategoryId: null,
+    });
+
+    return {
+      message: "Price category unassigned successfully",
+      room: updatedRoom,
+    };
   }
 
   // Private helper methods

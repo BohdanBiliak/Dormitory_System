@@ -59,6 +59,9 @@ export class PaymentsService implements IPaymentService {
       dueDate: data.dueDate,
       description: data.description,
       status: PaymentStatus.PENDING,
+      // Support both old price system and new price categories
+      price: data.priceId ? { connect: { id: data.priceId } } : undefined,
+      priceCategory: data.priceCategoryId ? { connect: { id: data.priceCategoryId } } : undefined,
       paymentItems: data.paymentItems
         ? {
             create: data.paymentItems.map((item) => ({
@@ -283,4 +286,56 @@ export class PaymentsService implements IPaymentService {
     paymentId: string,
     frequency: string,
   ): Promise<void> {}
+
+  /**
+   * Create payment based on room's price category
+   */
+  async createPaymentFromRoom(
+    userId: string, 
+    roomId: string, 
+    paymentType: PaymentType,
+    paymentMethod: PaymentMethod,
+    dueDate: Date,
+    periodInDays?: number
+  ): Promise<Payment> {
+    // Get room with price category
+    const room = await this.paymentRepository.findRoomWithPricing(roomId);
+    if (!room) {
+      throw new Error("Room not found");
+    }
+
+    let amount = 0;
+    let priceCategoryId: string | undefined;
+    let priceId: string | undefined;
+
+    // Try to get pricing from price category first (new system)
+    if (room.priceCategoryId && room.priceCategory) {
+      priceCategoryId = room.priceCategoryId;
+      amount = periodInDays && periodInDays <= 30 
+        ? periodInDays * room.priceCategory.pricePerDay 
+        : room.priceCategory.pricePerMonth;
+    } else {
+      // Fallback to old price system
+      const price = await this.paymentRepository.findPriceByCapacity(room.capacity);
+      if (price) {
+        priceId = price.id;
+        amount = periodInDays && periodInDays <= 30 
+          ? periodInDays * price.pricePerDay 
+          : price.pricePerMonth;
+      } else {
+        throw new Error("No pricing information found for this room");
+      }
+    }
+
+    return this.createPayment({
+      userId,
+      amount,
+      paymentType,
+      paymentMethod,
+      dueDate,
+      priceCategoryId,
+      priceId,
+      description: `${paymentType} for room ${room.number}`,
+    });
+  }
 }

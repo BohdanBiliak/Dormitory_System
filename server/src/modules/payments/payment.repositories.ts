@@ -308,4 +308,28 @@ export class PaymentRepository implements IPaymentRepository {
 
     return { total, paid, pending, overdue };
   }
+
+  async findRoomWithPricing(roomId: string): Promise<any> {
+    return this.prisma.room.findUnique({
+      where: { id: roomId },
+      include: {
+        priceCategory: true,
+        roomType: true,
+        dormitory: true,
+      },
+    });
+  }
+
+  async findPriceByCapacity(capacity: number): Promise<any> {
+    return this.prisma.price.findFirst({
+      where: {
+        roomCapacity: capacity,
+        OR: [
+          { dateTo: null },
+          { dateTo: { gte: new Date() } }
+        ],
+      },
+      orderBy: { dateFrom: 'desc' },
+    });
+  }
 }

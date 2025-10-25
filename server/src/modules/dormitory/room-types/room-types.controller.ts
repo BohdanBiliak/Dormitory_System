@@ -10,7 +10,7 @@ import {
   UploadedFiles,
   UseInterceptors,
 } from "@nestjs/common";
-import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
+import { ApiTags, ApiBearerAuth, ApiOperation, ApiParam, ApiResponse } from "@nestjs/swagger";
 import { Authorization } from "@/libs/common/decorators/auth.decorator";
 import { $Enums } from "../../../../__generated__";
 import { CreateRoomTypeUseCase } from "./use-cases/create-room-type.use-case";
@@ -21,6 +21,8 @@ import { CreateRoomTypeDto } from "./dto/create-room-type.dto";
 import { UpdateRoomTypeDto } from "./dto/update-room-type.dto";
 import { FilesInterceptor } from "@nestjs/platform-express/multer/interceptors/files.interceptor";
 import { RoomTypesDocs } from "./room-types.docs";
+import { AssignPriceCategoryToRoomTypeUseCase } from "./use-cases/assign-price-category.use-case";
+import { AssignPriceCategoryDto } from "./dto/assign-price-category.dto";
 
 @ApiTags("Room Types")
 @ApiBearerAuth()
@@ -31,6 +33,7 @@ export class RoomTypesController {
     private readonly getRoomTypesUseCase: GetRoomTypesUseCase,
     private readonly updateRoomTypeUseCase: UpdateRoomTypeUseCase,
     private readonly deleteRoomTypeUseCase: DeleteRoomTypeUseCase,
+    private readonly assignPriceCategoryUseCase: AssignPriceCategoryToRoomTypeUseCase,
   ) {}
 
   @Post()
@@ -85,5 +88,34 @@ export class RoomTypesController {
   @RoomTypesDocs.delete()
   async remove(@Param("id") id: string) {
     return this.deleteRoomTypeUseCase.execute(id);
+  }
+
+  @Patch(":id/assign-price-category")
+  @Authorization($Enums.UserRole.Admin, $Enums.UserRole.SuperAdmin)
+  @ApiOperation({ 
+    summary: "Assign price category to room type", 
+    description: "Assigns a price category to a room type. All existing rooms of this type will automatically inherit the category's pricing." 
+  })
+  @ApiParam({ name: "id", description: "Room type ID" })
+  @ApiResponse({ status: 200, description: "Price category assigned successfully" })
+  @ApiResponse({ status: 404, description: "Room type or price category not found" })
+  async assignPriceCategory(
+    @Param("id") roomTypeId: string,
+    @Body() dto: AssignPriceCategoryDto,
+  ) {
+    return this.assignPriceCategoryUseCase.execute(roomTypeId, dto.priceCategoryId);
+  }
+
+  @Delete(":id/unassign-price-category")
+  @Authorization($Enums.UserRole.Admin, $Enums.UserRole.SuperAdmin)
+  @ApiOperation({ 
+    summary: "Remove price category from room type", 
+    description: "Removes the price category assignment from a room type. Rooms will fall back to legacy pricing." 
+  })
+  @ApiParam({ name: "id", description: "Room type ID" })
+  @ApiResponse({ status: 200, description: "Price category unassigned successfully" })
+  @ApiResponse({ status: 404, description: "Room type not found" })
+  async unassignPriceCategory(@Param("id") roomTypeId: string) {
+    return this.assignPriceCategoryUseCase.execute(roomTypeId, null);
   }
 }

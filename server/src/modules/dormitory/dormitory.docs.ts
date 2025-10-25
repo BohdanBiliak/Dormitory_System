@@ -39,16 +39,7 @@ export const DormitoryDocs = {
               type: "string",
               example: "+380123456789",
             },
-            pricePerDay: {
-              type: "string",
-              example: "30",
-              description: "Will be converted to number",
-            },
-            pricePerMonth: {
-              type: "string",
-              example: "600",
-              description: "Will be converted to number",
-            },
+
             "floorAssignments[0][floorNumber]": {
               type: "string",
               example: "1",
@@ -102,8 +93,6 @@ export const DormitoryDocs = {
             "name",
             "address",
             "groundFloorPhoneNumber",
-            "pricePerDay",
-            "pricePerMonth",
             "floorAssignments[0][floorNumber]",
             "floorAssignments[0][roomAssignments][0][roomTypeId]",
             "floorAssignments[0][roomAssignments][0][roomNumbers]",
@@ -356,8 +345,8 @@ export const DormitoryDocs = {
                 },
               ],
               priceConfiguration: {
-                pricePerDay: 30,
-                pricePerMonth: 600,
+                message: "Prices are now managed through price categories assigned to room types",
+                note: "See price-categories API for pricing configuration"
               },
               photoInheritance: {
                 message: "Room photos automatically inherited from room types",
@@ -426,8 +415,8 @@ export const DormitoryDocs = {
                 type: "string",
                 example: "+380123456789",
               },
-              pricePerDay: { type: "number", example: 30 },
-              pricePerMonth: { type: "number", example: 600 },
+              pricePerDay: { type: "number", example: 30, description: "Price per day from price category" },
+              pricePerMonth: { type: "number", example: 600, description: "Price per month from price category" },
               photos: {
                 type: "array",
                 items: { type: "string" },
@@ -465,8 +454,8 @@ export const DormitoryDocs = {
                 type: "string",
                 example: "+380987654321",
               },
-              pricePerDay: { type: "number", example: 25 },
-              pricePerMonth: { type: "number", example: 500 },
+              pricePerDay: { type: "number", example: 25, description: "Price per day from price category" },
+              pricePerMonth: { type: "number", example: 500, description: "Price per month from price category" },
               photos: {
                 type: "array",
                 items: { type: "string" },

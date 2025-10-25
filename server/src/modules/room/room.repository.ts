@@ -41,6 +41,7 @@ export interface UpdateRoomData {
   capacity?: number;
   roomEquipment?: string[];
   photos?: string[];
+  priceCategoryId?: string | null;
   updatedAt?: Date;
 }
 
@@ -499,6 +500,21 @@ export class RoomRepository {
       },
       data: {
         dateOfEnd: new Date(),
+      },
+    });
+  }
+
+  async findRoomWithPricing(roomId: string): Promise<any> {
+    return this.prisma.room.findUnique({
+      where: { id: roomId },
+      include: {
+        priceCategory: true,
+        roomType: {
+          include: {
+            priceCategory: true,
+          },
+        },
+        dormitory: true,
       },
     });
   }
