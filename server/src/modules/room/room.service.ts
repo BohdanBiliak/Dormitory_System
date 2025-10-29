@@ -62,8 +62,7 @@ export class RoomService {
           changes: updateData,
         },
       });
-
-      return updatedRoom;
+      return await this.roomRepository.findByIdOrThrow(id);
     } catch (error) {
       if (
         error &&

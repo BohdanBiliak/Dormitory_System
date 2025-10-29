@@ -22,10 +22,6 @@ export class DormitoryService {
     dto: CreateDormitoryDto & { floorAssignments: FloorRoomAssignmentDto[] },
     files: { photos?: Express.Multer.File[] }, // Removed roomPhotos since we'll use room type photos
   ) {
-    // Add debugging logs
-    console.log("=== DORMITORY CREATION DEBUG ===");
-    console.log("DTO received:", JSON.stringify(dto, null, 2));
-    console.log("Floor assignments count:", dto.floorAssignments?.length);
 
     dto.floorAssignments?.forEach((floor, floorIndex) => {
       console.log(`Floor ${floorIndex + 1}:`, {

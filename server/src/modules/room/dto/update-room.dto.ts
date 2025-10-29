@@ -43,4 +43,9 @@ export class UpdateRoomDto {
   @IsString({ each: true })
   @IsOptional()
   photos!: string[];
+
+  @ApiPropertyOptional({ description: "Price category ID" })
+  @IsOptional()
+  @IsString()
+  priceCategoryId?: string;
 }

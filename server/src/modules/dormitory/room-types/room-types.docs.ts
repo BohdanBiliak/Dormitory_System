@@ -58,6 +58,12 @@ export const RoomTypesDocs = {
                 "Room type photos (required, max 10 files). These photos will be inherited by all rooms of this type.",
               maxItems: 10,
             },
+            priceCategoryId:{
+              type: "string",
+              example: "pcgjauk7z0000qy01d5g4j8jp",
+              description: "Optional ID of the price category to assign to this room type upon creation",
+            }
+          
           },
           required: [
             "name",
@@ -218,6 +224,11 @@ export const RoomTypesDocs = {
               items: { type: "string", format: "binary" },
               description: "New photos to replace existing ones (optional)",
             },
+            priceCategoryId: {
+              type: "string",
+              example: "pcgjauk7z0000qy01d5g4j8jp",
+              description: "Optional ID of the price category to assign to this room type upon update",
+            }
           },
         },
       }),
