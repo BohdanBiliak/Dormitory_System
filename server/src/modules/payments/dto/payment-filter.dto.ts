@@ -1,7 +1,7 @@
 import { ApiPropertyOptional } from "@nestjs/swagger";
 import { IsDate, IsNumber, IsOptional, IsString } from "class-validator";
 import { Type } from "class-transformer";
-
+import { PaymentStatus } from "../../../../__generated__";
 export class PaymentFilterDto {
   @ApiPropertyOptional({ example: "uuid-user" })
   @IsOptional()
@@ -13,10 +13,10 @@ export class PaymentFilterDto {
   @IsString()
   dormitoryId?: string;
 
-  @ApiPropertyOptional({ example: "PAID", description: "Filter by status" })
+  @ApiPropertyOptional({ example: PaymentStatus.PAID, description: "Filter by status" })
   @IsOptional()
   @IsString()
-  status?: string;
+  status?: PaymentStatus;
 
   @ApiPropertyOptional({ example: "2025-07-01T00:00:00Z" })
   @IsOptional()
