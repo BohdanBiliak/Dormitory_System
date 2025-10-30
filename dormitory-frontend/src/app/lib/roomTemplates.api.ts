@@ -97,5 +97,15 @@ export const roomTemplatesApi = {
             throw error;
 
         }
+    },
+
+    async assignRoomTemplate(roomTemplateId:string, priceCategoryId:string) {
+        try {
+            const response = await api.patch(`/room-types/${roomTemplateId}/assign-price-category`,{"priceCategoryId":priceCategoryId});
+            return response.data;
+        }catch (error) {
+            console.error('Patch room template error:', error);
+            throw error;
+        }
     }
 }

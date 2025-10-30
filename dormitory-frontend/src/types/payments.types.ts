@@ -8,11 +8,15 @@ export enum Currencies {
     'USD' = 'USD','PLN'='PLN'
 }
 
+export enum PaymentMethod {
+    "STRIPE_CARD"= "STRIPE_CARD", "CASH_TO_MANAGER"="CASH_TO_MANAGER", "BANK_TRANSFER"="BANK_TRANSFER", "OTHER"="OTHER"
+}
+
 export interface Payment{
     id: string;
     amount: number;
     status: string; //enum
-    type: PaymentType;
+    paymentType: PaymentType;
     description: string;
     dueDate: string;
     user: User
@@ -21,11 +25,11 @@ export interface Payment{
 export interface PaymentPostData {
     userId: string;
     amount: number;
-    currency: Currencies; //enum?
-    type: PaymentType
+    paymentType: PaymentType
     description: string;
     dueDate: string;
     roomAssignmentId?: string;
+    paymentMethod: PaymentMethod;
 }
 
 export interface PaymentsFilters {

@@ -90,8 +90,6 @@ export interface DormitoryRequest {
     "photos"?: File[];
 }
 
-
-//update dormitory update request
 export interface DormitoryUpdateRequest {
     "name": string;
     "address": string;
@@ -106,6 +104,7 @@ export interface RoomTemplate {
     capacity: number;
     equipment: string[],
     photos: string[],
+    priceCategoryId?: string | null;
     createdAt: string;
     updatedAt: string;
 }
@@ -117,4 +116,29 @@ export interface RoomTemplatePostData {
     capacity: number;
     equipment: string[],
     photos: File[]
+    priceCategoryId?: string | null;
+}
+
+export interface PriceCategory {
+    id: string;
+    name: string;
+    description: string;
+    pricePerMonth: number;
+    pricePerDay: number;
+    isActive: boolean;
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface PriceCategoryPostData {
+    name: string;
+    description: string;
+    pricePerMonth: number;
+    pricePerDay: number;
+    isActive: boolean;
+}
+
+export interface PriceCategoryUpdateData {
+    pricePerMonth: number;
+    pricePerDay: number;
 }

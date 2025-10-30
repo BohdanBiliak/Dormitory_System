@@ -5,15 +5,18 @@ import {HandCoins, Search} from "lucide-react";
 import {useGetPayments} from "@/hooks/payment.hook";
 import {Payment} from "@/types/payments.types";
 import IntroducePaymentComponentDialog from "@/components/dialogs/admin/IntroducePayment.componentDialog";
+import {useUserProfile} from "@/hooks/userList.hook";
 
 export function PaymentsListPage(){
 
     const[payments, setPayments] = useState<Payment[]>([]);
     const[searchText, setSearchText] = useState('');
     const [page, setPage] = useState(1);
+    const [searchStatus, setSearchStatus] = useState('');
     const limit = 10;
 
     const {data: paymentsList, isLoading: loadingPayments, error: paymentsError}  = useGetPayments({
+        status: searchStatus,
         offset: (page-1)*limit,
         limit: limit,
     })
@@ -52,11 +55,14 @@ export function PaymentsListPage(){
                     <div className={`px-2`}>
                         <p>Status:</p>
                     </div>
-                    <select>
-                        <option>All</option>
-                        <option>Paid</option>
-                        <option>Unpaid</option>
-                        <option>Pending</option>
+                    <select
+                        value={searchStatus}
+                        onChange={(e) => setSearchStatus(e.target.value)}
+                    >
+                        <option value={""}>All</option>
+                        <option value={"PAID"}>Paid</option>
+                        <option value={"UNPAID"}>Unpaid</option>
+                        <option value={"PENDING"}>Pending</option>
                     </select>
                 </div>
             </div>
@@ -69,15 +75,8 @@ export function PaymentsListPage(){
                             <div>
                                 {payment.status}
                             </div>
-
                             <div>
-                                {payment.user.displayName}
-                            </div>
-                            <div>
-                                {payment.user.roomNumber}
-                            </div>
-                            <div>
-                                {payment.dueDate}
+                                {payment.dueDate.substring(0, payment.dueDate.indexOf("T"))}
                             </div>
                         </div>
                     ))

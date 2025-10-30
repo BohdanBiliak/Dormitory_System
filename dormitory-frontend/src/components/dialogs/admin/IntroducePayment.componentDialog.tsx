@@ -1,8 +1,10 @@
 import {Description, Dialog, DialogBackdrop, DialogPanel, DialogTitle} from "@headlessui/react";
-import {Currencies, PaymentPostData, PaymentType} from "@/types/payments.types";
-import React, {useState} from "react";
+import {PaymentMethod, PaymentPostData, PaymentType} from "@/types/payments.types";
+import React, {useEffect, useState} from "react";
 import {Receipt} from "lucide-react";
 import {useUpdatePayments} from "@/hooks/payment.hook";
+import {User} from "@/types/auth.types";
+import {useUserListQuery} from "@/hooks/userList.hook";
 
 export interface IntroducePaymentProps {
     open: boolean;
@@ -12,13 +14,35 @@ export interface IntroducePaymentProps {
 export default function IntroducePaymentComponentDialog({open, onClose}: IntroducePaymentProps) {
     const {createPayment} = useUpdatePayments();
 
+    const {data: users, isLoading: loadingUsers, error: usersError} = useUserListQuery();
+
+    useEffect(() => {
+        if(users && users.data && users.data.length > 0) {
+            setUserList(users.data)
+        }
+    }, [users]);
+    const[userList, setUserList] = useState<User[]>([]);
+
+    useEffect(() => {
+        if(userList && userList.length > 0){
+            setNewPayment(prevState => {
+                if(!prevState) return prevState;
+                return {
+                    ...prevState,
+                    userId: userList[0].id
+                }
+            })
+        }
+    }, [userList]);
+
+
     const[newPayment, setNewPayment] = useState<PaymentPostData>({
         userId: '',
         amount: 0,
-        currency: Currencies.USD,
-        type: PaymentType.MONTHLY_RENT,
+        paymentType: PaymentType.MONTHLY_RENT,
         description: '',
         dueDate: '',
+        paymentMethod: PaymentMethod.OTHER
     })
 
     //inputChanges
@@ -38,10 +62,10 @@ export default function IntroducePaymentComponentDialog({open, onClose}: Introdu
             return {
                 userId: '',
                 amount: 0,
-                currency: Currencies.USD,
-                type: PaymentType.MONTHLY_RENT,
+                paymentType: PaymentType.MONTHLY_RENT,
                 description: '',
                 dueDate: '',
+                paymentMethod: PaymentMethod.OTHER,
             };
             }
         )
@@ -133,21 +157,10 @@ export default function IntroducePaymentComponentDialog({open, onClose}: Introdu
                                                 name="amount"
                                                 type={'number'}
                                                 onChange={handleInputChange}
-                                                value={newPayment.description}
-                                                placeholder={'Payment Description'}
+                                                value={newPayment.amount}
+                                                placeholder={'Payment amount'}
 
                                             />
-                                            <select
-                                                value={newPayment.currency}
-                                                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {setNewPayment(prevState => {
-                                                    if(!prevState) return prevState;
-                                                    return {...prevState, currency: e.target.value as Currencies}
-                                                })}}
-                                            >
-                                                {Object.values(Currencies).map(value => (
-                                                    <option key={value} value={value}>{value}</option>
-                                                ))}
-                                            </select>
                                         </div>
                                     </div>
                                     <div className={`flex flex-row`}>
@@ -156,10 +169,10 @@ export default function IntroducePaymentComponentDialog({open, onClose}: Introdu
                                         </div>
                                         <div>
                                             <select
-                                                value={newPayment.type}
+                                                value={newPayment.paymentType}
                                                 onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {setNewPayment(prevState => {
                                                     if(!prevState) return prevState;
-                                                    return {...prevState, type: e.target.value as PaymentType}
+                                                    return {...prevState, paymentType: e.target.value as PaymentType}
                                                 })}}
                                             >
                                                 {Object.values(PaymentType).map(value => (
@@ -181,6 +194,38 @@ export default function IntroducePaymentComponentDialog({open, onClose}: Introdu
                                                 min={new Date().toISOString().split('T')[0]}
                                             />
                                         </div>
+                                    </div>
+                                    <div>
+                                        <div>
+                                            Payer:
+                                        </div>
+                                        <select
+                                            value={newPayment.userId}
+                                            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {setNewPayment(prevState => {
+                                                if(!prevState) return prevState;
+                                                return {...prevState, userId: e.target.value}
+                                            })}}
+                                        >
+                                            {userList.map((item) => (
+                                                <option key={item.id} value={item.id}>{item.displayName+" "+item.secondName}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <div>
+                                            Payer:
+                                        </div>
+                                        <select
+                                            value={newPayment.paymentMethod}
+                                            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {setNewPayment(prevState => {
+                                                if(!prevState) return prevState;
+                                                return {...prevState, paymentMethod: e.target.value as PaymentMethod}
+                                            })}}
+                                        >
+                                            {Object.values(PaymentMethod).map((item) => (
+                                                <option key={item} value={item}>{item.replace(/_/g, ' ')}</option>
+                                            ))}
+                                        </select>
                                     </div>
                                 </div>
 

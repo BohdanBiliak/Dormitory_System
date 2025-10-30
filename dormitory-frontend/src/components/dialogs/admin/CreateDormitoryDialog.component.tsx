@@ -2,13 +2,20 @@ import {Description, Dialog, DialogBackdrop, DialogPanel, DialogTitle} from "@he
 import {AlertTriangle, ArrowBigLeftDash, ArrowBigRightDash, BuildingIcon, Pencil, Plus} from "lucide-react";
 import React, {useEffect, useState, useRef} from "react";
 import {useGetRoomTemplates, useMutateRoomTemplate} from "@/hooks/roomTemplates.hook";
-import {DormitoryPostData, FloorAssignment, RoomTemplate, RoomTemplatePostData} from "@/types/dormitories.types";
+import {
+    DormitoryPostData,
+    FloorAssignment,
+    PriceCategory, PriceCategoryPostData, PriceCategoryUpdateData,
+    RoomTemplate,
+    RoomTemplatePostData
+} from "@/types/dormitories.types";
 import {toast} from "sonner";
 import {useDormitories} from "@/hooks/dormitories.hook";
 import {ImageCarouselComponent} from "@/components/ui/ImageCarousel.component";
 import {CreateDormitoryTutorial} from "@/app/tutorials/dormitory/create-dormitory";
 import {useLanguage, LanguageSelector} from "@/providers/language.provider";
 import {DialogTutorial, DialogTutorialButton} from "@/components/ui/DialogTutorial.component";
+import {useGetPriceCategories, useUpdatePriceCategory} from "@/hooks/priceCategories.hook";
 
 export interface CreateDormitoryDialogProps {
     open: boolean;
@@ -22,7 +29,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
     const {data: roomTemplates, isLoading: loadingRoomTemplates, error: roomTemplatesErrors} = useGetRoomTemplates();
     const { t } = useLanguage();
 
-    const[activePart, setActivePart] = useState<'General Information' | 'Room Generation'>('General Information');
+    const[activePart, setActivePart] = useState<'General Information' | 'Room Generation' | 'Price categories'>('General Information');
     const[newDormitory, setNewDormitory] = useState<DormitoryPostData>({
         name: '',
         address: '',
@@ -163,6 +170,31 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
         }
     }
 
+    const handleSaveTemplate = (templateId: string) => {
+    }
+
+    const changeSelectedTemplateCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const {value} = e.target;
+
+        if(selectedTemplate){
+            setSelectedTemplate(prevState => {
+                if(!prevState) return prevState;
+                return {...prevState, priceCategoryId: value === '' ? null : value};
+            })
+        }
+    }
+
+   const changeNewTemplateCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const {value} = e.target;
+
+        if(newRoomTemplate){
+            setNewRoomTemplate(prevState => {
+                if(!prevState) return prevState;
+                return {...prevState, priceCategoryId: value === '' ? null : value};
+            });
+        }
+   }
+
     // Scroll handler for progress indicator
     useEffect(() => {
         const handleScroll = () => {
@@ -255,10 +287,12 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
     //sections management
     const nextSection = (e:React.MouseEvent<HTMLButtonElement>) => {
         if(activePart === 'General Information') setActivePart('Room Generation');
+        if(activePart === 'Room Generation') setActivePart('Price categories');
     }
 
     const previousSection = (e:React.MouseEvent<HTMLButtonElement>) => {
         if(activePart === 'Room Generation') setActivePart('General Information');
+        if(activePart == 'Price categories') setActivePart('Room Generation');
     }
 
     const handleAddFloor = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -367,6 +401,91 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
             return {...prevState, photos: file}
         })
     }
+
+
+    /*Price category*/
+    const {data: priceCategories, isLoading: loadingPriceCategories, error: priceCategoriesError} = useGetPriceCategories();
+
+    const {createPriceCategory, updatePriceCategory, deletePriceCategory, assigningRoomTemplate, assignRoom} = useUpdatePriceCategory()
+
+    const [editPCategory, setEditPCategory] = useState<boolean>(false)
+    const [pCategoriesList, setPCategoriesList] = useState<PriceCategory[]>([]);
+    const [selectedPCategory, setSelectedPCategory] = useState<PriceCategory | null>(null);
+    const [newPCategory, setNewPCategory] = useState<PriceCategoryPostData | null>(null);
+
+    const addNewPCategory = (e: React.MouseEvent<HTMLButtonElement>) => {
+        setNewPCategory({
+            name: '',
+            description: '',
+            pricePerDay: 0,
+            pricePerMonth: 0,
+            isActive: true,
+        })
+        setSelectedPCategory(null)
+        setEditPCategory(true)
+    }
+
+
+    useEffect(() => {
+        if(priceCategories) {
+            setPCategoriesList([...priceCategories])
+        }
+    }, [priceCategories]);
+
+    const handleChangePriceCategoryInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+
+        setSelectedPCategory(prevState => {
+                if(!prevState) return prevState;
+                return {
+                    ...prevState,
+                    [name]: value
+                }
+        })
+    }
+
+    const handleChangeNewPriceCategoryInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+
+        setNewPCategory(prevState => {
+            if(!prevState) return prevState;
+            return {
+                ...prevState,
+                [name]: value
+            }
+        })
+    }
+
+    const handleCancelEditionPCategory = (id:string) => {
+        if(pCategoriesList){
+            const oldCategory = pCategoriesList.find((c) => c.id === id)
+            if(oldCategory){
+                setSelectedPCategory(oldCategory)
+            }
+        }
+        setEditPCategory(false)
+    }
+
+    const handleDeletePCategory = (id:string) => {
+        deletePriceCategory(id)
+        if(pCategoriesList && pCategoriesList.filter(item => item.id !== id).length>0){
+            setSelectedPCategory(pCategoriesList.filter(item => item.id !== id)[0])
+        }else {
+            setSelectedPCategory(null)
+        }
+
+    }
+
+    const handleSaveEditionPCategory = (id:string, newChanges: PriceCategoryPostData) => {
+        const updateRequest:PriceCategoryUpdateData = {
+            pricePerMonth: newChanges.pricePerMonth,
+            pricePerDay: newChanges.pricePerDay,
+        }
+        updatePriceCategory({categoryId: id, categoryUpdate: updateRequest});
+        setEditPCategory(false)
+    }
+
+
 
     // In-dialog tutorial state
     const [showTutorial, setShowTutorial] = useState(false);
@@ -512,11 +631,21 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                                             <span className="hidden sm:inline">{t('createDormitory.sections.roomGeneration')}</span>
                                             <span className="sm:hidden">{t('createDormitory.buttons.rooms')}</span>
                                         </button>
+                                        <button
+                                            onClick={()=>setActivePart('Price categories')}
+                                            className={`px-3 sm:px-3 py-2.5 sm:py-2 text-xs sm:text-sm font-medium rounded-lg transition-colors min-h-[44px] sm:min-h-[40px] flex items-center justify-center ${
+                                                activePart === 'Price categories'
+                                                    ? 'bg-blue-600 text-white shadow-sm'
+                                                    : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 active:bg-gray-100'
+                                            }`}
+                                        >
+                                            Price categories
+                                        </button>
                                     </div>
                                     
                                     <button 
                                         onClick={nextSection} 
-                                        disabled={activePart==='Room Generation'}
+                                        disabled={activePart==='Price categories'}
                                         className={`p-2 sm:p-2 rounded-lg transition-colors min-w-[44px] min-h-[44px] sm:min-w-[40px] sm:min-h-[40px] flex items-center justify-center ${
                                             activePart==='Room Generation' 
                                                 ? 'text-gray-300 cursor-not-allowed' 
@@ -538,6 +667,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                                         style={{ width: `${scrollProgress}%` }}
                                     ></div>
                                 </div>
+                                <div className={`flex flex-row`}>
                                 {activePart === 'General Information' && (
                                     <div id="general" className="dormitory-form-content p-3 sm:p-6 space-y-6">
                                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
@@ -763,7 +893,12 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                                                     </div>
                                                 </div>
                                             )}
-
+                                        </div>
+                                    </div>
+                                )}
+                                {(activePart === 'Room Generation' || activePart === 'Price categories')&& (
+                                    <div>
+                                        <div>
                                             {/*Room Templates*/}
                                             <div className="space-y-4 room-templates-section">
                                                 <h3 className="text-lg font-semibold text-gray-900 border-b pb-2">
@@ -912,6 +1047,33 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                                                                         }`}
                                                                     />
                                                                 </div>
+                                                                <div>
+                                                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                                        Price category:
+                                                                    </label>
+                                                                    <select
+                                                                        name={`priceCategoryId`}
+                                                                    >
+                                                                        <option value={``}>---</option>
+                                                                        {pCategoriesList.map(category => (
+                                                                            <option value={category.id}>{category.name}</option>
+                                                                        ))}
+                                                                    </select>
+                                                                    <input
+                                                                        type="number"
+                                                                        name="capacity"
+                                                                        value={selectedTemplate.capacity}
+                                                                        min={1}
+                                                                        disabled={!editRoomTemplate}
+                                                                        onChange={handleTemplateInputChange}
+                                                                        className={`w-full px-3 py-2 text-sm border rounded-lg transition-colors ${
+                                                                            editRoomTemplate
+                                                                                ? 'border-gray-300 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                                                                                : 'border-gray-200 bg-gray-50 text-gray-600'
+                                                                        }`}
+                                                                    />
+                                                                </div>
+                                                            </div>
                                                             </div>
                                                             <div className="space-y-4">
                                                                 <div>
@@ -994,11 +1156,23 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                                                                             </button>
                                                                         )}
                                                                     </div>
+                                                                    <div>
+                                                                        <label>Room category</label>
+                                                                        <select
+                                                                            value={selectedTemplate.priceCategoryId !== null? selectedTemplate.priceCategoryId : ''}
+                                                                            onChange={changeSelectedTemplateCategory}
+                                                                            disabled={!editRoomTemplate}
+                                                                        >
+                                                                            <option value={""}>--None--</option>
+                                                                            {pCategoriesList.map(item=>
+                                                                                <option value={item.id}>{item.name}</option>
+                                                                            )}
+                                                                        </select>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        </div>)}
                                                     </div>
-                                                )}
 
                                                 {(newRoomTemplate && !selectedTemplate) && (
                                                     <div className="bg-green-50 border border-green-200 rounded-lg p-4 space-y-4">
@@ -1163,15 +1337,221 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                                                                             Add new position
                                                                         </button>
                                                                     </div>
+                                                                    <div>
+                                                                        <label>Room category</label>
+                                                                        <select
+                                                                            value={newRoomTemplate.priceCategoryId !== null ? newRoomTemplate.priceCategoryId : ''}
+                                                                            onChange={changeNewTemplateCategory}
+                                                                            disabled={!editRoomTemplate}
+                                                                        >
+                                                                            <option value={""}>--None--</option>
+                                                                            {pCategoriesList.map(item=>
+                                                                                <option value={item.id}>{item.name}</option>
+                                                                            )}
+                                                                        </select>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 )}
                                             </div>
+                                        </div>)}
+                                    </div>
+
+
+
+                                {activePart === 'Price categories' && (
+                                    <div className={`flex flex-row`}>
+                                        {/*Selected category*/}
+                                        <div>
+                                            {selectedPCategory && (
+                                                <div className={`flex flex-col space-y-4`}>
+                                                    <div className={`flex flex-row space-x-6`}>
+                                                        <div>
+                                                            Selected Category:
+                                                        </div>
+                                                        {!editPCategory &&(
+                                                            <div className={`flex flex-row space-x-1`}>
+                                                                <button
+                                                                    className="px-3 py-1 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                                                                    onClick={()=>setEditPCategory(true)}
+                                                                >
+                                                                    Edit
+                                                                </button>
+                                                                <button
+                                                                    onClick={()=>handleDeletePCategory(selectedPCategory.id)}
+                                                                    className={"px-3 py-1 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"}
+                                                                >
+                                                                    Delete
+                                                                </button>
+                                                            </div>)}
+                                                        {editPCategory &&(
+                                                            <div className={`flex flex-row space-x-1`}>
+                                                                <button
+                                                                    onClick={()=>handleCancelEditionPCategory(selectedPCategory.id)}
+                                                                    className={"px-3 py-1 text-sm bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"}
+                                                                >
+                                                                    Cancel
+                                                                </button>
+                                                                <button
+                                                                    onClick={()=>handleSaveEditionPCategory(selectedPCategory.id, selectedPCategory)}
+                                                                    className={"px-3 py-1 text-sm bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"}
+                                                                >
+                                                                    Save
+                                                                </button>
+                                                            </div>)}
+                                                    </div>
+
+                                                    <div className={`flex flex-row`}>
+                                                        <div>Category name:</div>
+                                                        <div>
+                                                            <input
+                                                                name={'name'}
+                                                                value={selectedPCategory.name}
+                                                                onChange={handleChangePriceCategoryInput}
+                                                                disabled={!editPCategory}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <div className={`flex flex-row`}>
+                                                        <div>Description:</div>
+                                                        <div>
+                                                            <input
+                                                                name={'description'}
+                                                                value={selectedPCategory.description}
+                                                                onChange={handleChangePriceCategoryInput}
+                                                                disabled={!editPCategory}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <div className={`flex flex-row`}>
+                                                        <div>Price per month:</div>
+                                                        <div>
+                                                            <input
+                                                                name={'pricePerMonth'}
+                                                                value={selectedPCategory.pricePerMonth}
+                                                                onChange={handleChangePriceCategoryInput}
+                                                                disabled={!editPCategory}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <div className={`flex flex-row`}>
+                                                        <div>Price per day:</div>
+                                                        <div>
+                                                            <input
+                                                                name={'pricePerDay'}
+                                                                value={selectedPCategory.pricePerDay}
+                                                                onChange={handleChangePriceCategoryInput}
+                                                                disabled={!editPCategory}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
+                                            {(newPCategory && !selectedPCategory) && (
+                                                <div className={`flex flex-col space-y-4`}>
+                                                    <div className={`flex flex-row w-full`}>
+                                                        <div className={`grow`}>
+                                                            New Price Category:
+                                                        </div>
+                                                        <button
+                                                            onClick={()=>{createPriceCategory(newPCategory); setNewPCategory(null); setSelectedPCategory(pCategoriesList[0])}}
+                                                            className="px-4 py-2 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700 transition-colors"
+                                                        >
+                                                            Save price category
+                                                        </button>
+                                                    </div>
+                                                    <div className={`flex flex-row space-x-4`}>
+                                                        <div>Name:</div>
+                                                        <div>
+                                                            <input
+                                                                type={`text`}
+                                                                name={'name'}
+                                                                value={newPCategory.name}
+                                                                placeholder={`price category name`}
+                                                                onChange={handleChangeNewPriceCategoryInput}
+                                                                disabled={!editPCategory}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <div className={`flex flex-row space-x-4`}>
+                                                        <div>Description:</div>
+                                                        <div>
+                                                            <input
+                                                                type={`text`}
+                                                                name={'description'}
+                                                                value={newPCategory.description}
+                                                                placeholder={`price category description`}
+                                                                onChange={handleChangeNewPriceCategoryInput}
+                                                                disabled={!editPCategory}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <div className={`flex flex-row space-x-4`}>
+                                                        <div>Price per month:</div>
+                                                        <div>
+                                                            <input
+                                                                type={`number`}
+                                                                name={'pricePerMonth'}
+                                                                value={newPCategory.pricePerMonth}
+                                                                min={0}
+                                                                onChange={handleChangeNewPriceCategoryInput}
+                                                                disabled={!editPCategory}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <div className={`flex flex-row space-x-4`}>
+                                                        <div>Price per day:</div>
+                                                        <div>
+                                                            <input
+                                                                type={`number`}
+                                                                name={'pricePerDay'}
+                                                                value={newPCategory.pricePerDay}
+                                                                min={0}
+                                                                onChange={handleChangeNewPriceCategoryInput}
+                                                                disabled={!editPCategory}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        {/*category list*/}
+                                        <div className={`flex flex-col`}>
+                                            {pCategoriesList.map((item, index) => (
+                                                <button
+                                                    onClick={() => {
+                                                        setSelectedPCategory(item)
+                                                        setNewPCategory(null)
+                                                        setEditPCategory(false)
+                                                    }}
+                                                    className={`px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${
+                                                        selectedPCategory === item
+                                                            ? 'bg-blue-600 text-white border-blue-600'
+                                                            : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                                                    }`}
+                                                >
+                                                    {item.name}
+                                                </button>
+                                            ))}
+                                            <button
+                                                className={`px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${
+                                                        newPCategory ? 'bg-blue-600 text-white border-blue-600'
+                                                        : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                                                }`}
+                                                onClick={addNewPCategory}
+                                            >
+                                                <div className={`flex flex-row`}>
+                                                    <Plus/>
+                                                    {newPCategory && newPCategory.name.length > 0 ? `${newPCategory.name}` : `New price category`}
+                                                </div>
+                                            </button>
                                         </div>
                                     </div>
                                 )}
+                                </div>
                             </div>
 
                             {/* Footer with Create Button */}
@@ -1210,20 +1590,19 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </DialogPanel>
-            </div>
+                    </DialogPanel>
+                </div>
             
-            {/* In-Dialog Tutorial */}
-            {showTutorial && (
-                <DialogTutorial
-                    isOpen={showTutorial}
-                    currentSection={activePart}
-                    steps={tutorialSteps}
-                    onClose={() => setShowTutorial(false)}
-                />
-            )}
-        </Dialog>
+                {/* In-Dialog Tutorial */}
+                {showTutorial && (
+                    <DialogTutorial
+                        isOpen={showTutorial}
+                        currentSection={activePart}
+                        steps={tutorialSteps}
+                        onClose={() => setShowTutorial(false)}
+                    />
+                )}
+            </Dialog>
         </CreateDormitoryTutorial>
     )
 }
