@@ -48,6 +48,12 @@ export class DormitoryController {
     return this.dormitoryService.findAll();
   }
 
+  @Get("with-pricing")
+  @Authorization()
+  findAllWithPricing() {
+    return this.dormitoryService.findAllWithPricing();
+  }
+
   @Get("deactivated")
   @Authorization(UserRole.Admin, UserRole.SuperAdmin)
   @DormitoryDocs.findDeactivated()
@@ -59,6 +65,12 @@ export class DormitoryController {
   @DormitoryDocs.findOne()
   findOne(@Param("id") id: string) {
     return this.dormitoryService.findOne(id);
+  }
+
+  @Get(":id/pricing")
+  @Authorization()
+  getPricing(@Param("id") id: string) {
+    return this.dormitoryService.getDormitoryPricing(id);
   }
 
   @Patch(":id")

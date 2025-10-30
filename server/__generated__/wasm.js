@@ -217,6 +217,7 @@ exports.Prisma.RoomScalarFieldEnum = {
   roomEquipment: 'roomEquipment',
   photos: 'photos',
   roomTypeId: 'roomTypeId',
+  priceCategoryId: 'priceCategoryId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -229,6 +230,7 @@ exports.Prisma.RoomTypeScalarFieldEnum = {
   equipment: 'equipment',
   typeCode: 'typeCode',
   photos: 'photos',
+  priceCategoryId: 'priceCategoryId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -246,6 +248,17 @@ exports.Prisma.RoomStatusScalarFieldEnum = {
   dateOfStart: 'dateOfStart',
   dateOfEnd: 'dateOfEnd',
   description: 'description'
+};
+
+exports.Prisma.PriceCategoryScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  pricePerMonth: 'pricePerMonth',
+  pricePerDay: 'pricePerDay',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.PriceScalarFieldEnum = {
@@ -276,6 +289,7 @@ exports.Prisma.PaymentScalarFieldEnum = {
   userId: 'userId',
   bookingId: 'bookingId',
   priceId: 'priceId',
+  priceCategoryId: 'priceCategoryId',
   amount: 'amount',
   currency: 'currency',
   paymentType: 'paymentType',
@@ -562,6 +576,7 @@ exports.Prisma.ModelName = {
   RoomType: 'RoomType',
   FloorRoomAssignment: 'FloorRoomAssignment',
   RoomStatus: 'RoomStatus',
+  PriceCategory: 'PriceCategory',
   Price: 'Price',
   Booking: 'Booking',
   Payment: 'Payment',

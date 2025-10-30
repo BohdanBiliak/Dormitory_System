@@ -1,6 +1,6 @@
 'use client'
 
-import {User} from "../../types/auth.types";
+import {User, UserRole} from "../../types/auth.types";
 import {useEffect, useState} from "react";
 import MultipleSelectDropdown from "@/components/ui/MultipleSelectDropdown.component";
 import Link from "next/link";
@@ -19,7 +19,7 @@ export function AdminUserList(){
     const [loading, setLoading] = useState(true);
     const [users, setUsers] = useState<User[]>([]);
     const [sortBy, setSortBy] = useState<'Name'|'Id'|'Room'>('Name');
-    const [roleFilter, setRoleFilter] = useState<'All'|'Regular'|'SignedInUser'>('All');
+    const [roleFilter, setRoleFilter] = useState<UserRole | 'All'>('All');
     const [selectedRoomFloors, setSelectedRoomFloors] = useState<string[]>(roomFloors);
     const [selectedPaymentsStatuses, setSelectedPaymentsStatuses] = useState<'Paid'|'Awaiting'|'All'|'Overdue'>('All');
     const [pagesCount, setPagesCount] = useState(1);
@@ -30,13 +30,16 @@ export function AdminUserList(){
     const { data: userList, isLoading } = useUserListQuery({
         page,
         limit,
-        role: roleFilter,
+        role: roleFilter === 'All' ? undefined: roleFilter,
         paymentStatus: selectedPaymentsStatuses,
         roomFlor: selectedRoomFloors,
         sortBy
     })
 
     useEffect(() => {
+        if(userList && userList.data && userList.data.length > 0){
+            setUsers([...userList.data])
+        }
         setUsers(userList?.data || []);
         setPagesCount(userList?.pageCount || 1);
         setLoading(isLoading)
@@ -117,7 +120,7 @@ export function AdminUserList(){
                             <select 
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm"
                                 value={roleFilter}
-                                onChange={(e) => setRoleFilter(e.target.value as 'All'|'SignedInUser' |'Regular')}
+                                onChange={(e) => setRoleFilter(e.target.value as UserRole)}
                             >
                                 <option value='All'>All Users</option>
                                 <option value='SignedInUser'>Non-residents</option>

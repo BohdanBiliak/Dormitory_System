@@ -1,13 +1,16 @@
+import { Injectable } from "@nestjs/common";
 import {
   PrismaClient,
   Payment,
   PaymentStatus,
   Prisma,
 } from "../../../__generated__";
+import { PrismaService } from "../../prisma/prisma.service";
 import { IPaymentRepository } from "./interfaces/payments-repository.interfaces";
 
+@Injectable()
 export class PaymentRepository implements IPaymentRepository {
-  constructor(private prisma: PrismaClient) {}
+  constructor(private prisma: PrismaService) {}
 
   async create(data: Prisma.PaymentCreateInput): Promise<Payment> {
     return this.prisma.payment.create({
@@ -304,5 +307,29 @@ export class PaymentRepository implements IPaymentRepository {
     ]);
 
     return { total, paid, pending, overdue };
+  }
+
+  async findRoomWithPricing(roomId: string): Promise<any> {
+    return this.prisma.room.findUnique({
+      where: { id: roomId },
+      include: {
+        priceCategory: true,
+        roomType: true,
+        dormitory: true,
+      },
+    });
+  }
+
+  async findPriceByCapacity(capacity: number): Promise<any> {
+    return this.prisma.price.findFirst({
+      where: {
+        roomCapacity: capacity,
+        OR: [
+          { dateTo: null },
+          { dateTo: { gte: new Date() } }
+        ],
+      },
+      orderBy: { dateFrom: 'desc' },
+    });
   }
 }

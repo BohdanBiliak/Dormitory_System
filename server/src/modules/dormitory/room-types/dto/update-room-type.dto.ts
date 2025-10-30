@@ -33,32 +33,22 @@ export class UpdateRoomTypeDto {
 
 
   @ApiPropertyOptional({
-    oneOf: [
-      { type: "array", items: { type: "string" } },
-      { type: "string", description: "JSON string of equipment array" },
-    ],
-    example: [
-      "Bed",
-      "Desk",
-      "Chair",
-      "Wardrobe",
-      "Air Conditioner",
-      "Mini Fridge",
-    ],
-    description: "Updated list of equipment/furniture in this room type",
-  })
-  @IsOptional()
-  @Transform(({ value }) => {
-    if (typeof value === "string") {
-      try {
-        return JSON.parse(value);
-      } catch {
+      type: [String],
+      example: ["lamp", "table", "chair", "wardrobe", "bed"],
+      description: "List of equipment in the room",
+    })
+    @Transform(({ value }) => {
+      if (typeof value === "string") {
+        return value.split(",").map((item) => item.trim());
+      }
+      if (Array.isArray(value)) {
         return value;
       }
-    }
-    return value;
-  })
-  equipment?: string[] | string;
+      return [];
+    })
+    @IsArray()
+    @IsString({ each: true })
+    equipment: string[];
 
   @ApiPropertyOptional({
     example: "B",
@@ -67,4 +57,9 @@ export class UpdateRoomTypeDto {
   @IsOptional()
   @IsString()
   typeCode?: string;
+
+  @ApiPropertyOptional({ description: "Price category ID" })
+  @IsOptional()
+  @IsString()
+  priceCategoryId?: string;
 }

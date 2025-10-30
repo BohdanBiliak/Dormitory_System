@@ -16,9 +16,10 @@ import { DeactivateManagerUseCase } from "./use-cases/manager/DeactivateManagerU
 import { DormitoryModule } from "@/modules/dormitory/dormitory.module";
 import { DormitoryService } from "../dormitory/dormitory.service";
 import { ManagerController } from "./controllers/manager.controller";
+import { PricingModule } from "@/modules/pricing/pricing.module";
 
 @Module({
-  imports: [PrismaModule, UserModule, DormitoryModule, UserModule],
+  imports: [PrismaModule, UserModule, DormitoryModule, PricingModule],
   controllers: [AdminController, ManagerController],
   providers: [
     AdminService,

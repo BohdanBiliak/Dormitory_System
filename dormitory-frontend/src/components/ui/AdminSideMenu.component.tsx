@@ -76,7 +76,7 @@ export function AdminSideMenu ({children}:AdminSideMenuProps){
                     id:'payments',
                     label: t('sideMenu.payments') || 'Payments',
                     image: '/cash.svg',
-                    href: '#'
+                    href: '/admin/payments'
                 }
             ]
         },
@@ -92,10 +92,10 @@ export function AdminSideMenu ({children}:AdminSideMenuProps){
                     href: '/admin/announcements'
                 },
                 {
-                    id:'messages',
+                    id:'notifications',
                     label: t('sideMenu.messages') || 'Messages',
                     image:'/envelope.svg',
-                    href: '#'
+                    href: '/admin/notifications'
                 }
             ]
         },

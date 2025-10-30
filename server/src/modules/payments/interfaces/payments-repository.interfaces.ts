@@ -36,6 +36,10 @@ export interface IPaymentRepository {
     rejectionReason: string,
   ): Promise<Payment>;
 
+  // New methods for price category support
+  findRoomWithPricing(roomId: string): Promise<any>;
+  findPriceByCapacity(capacity: number): Promise<any>;
+
   getPaymentStats(
     userId?: string,
     dormitoryId?: string,

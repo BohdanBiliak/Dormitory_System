@@ -21,7 +21,6 @@ import { RequestAccommmodationDto } from "./dto/requestAccommmodation.dto";
 import { RequestMoveOutDto } from "./dto/request-moveout.dto";
 import { CreateRoomStatusDto } from "./dto/create-room-status.dto";
 import { AssignUserToRoomDto } from "./dto/assign-user.dto";
-import { SetPriceDto } from "./dto/set-price.dto";
 import { EvictUserFromRoomDto } from "./dto/evict-user.dto";
 
 export const RoomDocs = {
@@ -798,54 +797,6 @@ export const RoomDocs = {
       }),
     ),
 
-  setPrice: () =>
-    applyDecorators(
-      ApiOperation({
-        summary: "Set pricing for room capacity (Admin only)",
-        description:
-          "Creates a new pricing configuration for rooms based on capacity and date range",
-      }),
-      ApiBody({
-        type: SetPriceDto,
-        examples: {
-          example1: {
-            value: {
-              roomCapacity: 2,
-              pricePerMonth: 700,
-              pricePerDay: 35,
-              dateFrom: "2025-09-01",
-              dateTo: "2026-08-31",
-            },
-          },
-          indefinite: {
-            value: {
-              roomCapacity: 1,
-              pricePerMonth: 900,
-              pricePerDay: 45,
-              dateFrom: "2025-09-01",
-            },
-          },
-        },
-      }),
-      ApiCreatedResponse({
-        description: "Price created",
-        schema: {
-          type: "object",
-          properties: {
-            id: { type: "string", format: "uuid" },
-            roomCapacity: { type: "integer" },
-            pricePerDay: { type: "number" },
-            pricePerMonth: { type: "number" },
-            dateFrom: { type: "string", format: "date-time" },
-            dateTo: { type: "string", format: "date-time", nullable: true },
-          },
-        },
-      }),
-      ApiForbiddenResponse({
-        description: "Forbidden - User does not have admin privileges",
-      }),
-    ),
-
   upload: () =>
     applyDecorators(
       ApiOperation({ summary: "Upload room files" }),
@@ -873,5 +824,121 @@ export const RoomDocs = {
           },
         },
       }),
+    ),
+
+  assignPriceCategory: () =>
+    applyDecorators(
+      ApiOperation({
+        summary: "Assign price category to room",
+        description: "Assigns a price category to a specific room. This room will use the category's pricing instead of room type pricing.",
+      }),
+      ApiParam({ name: "id", description: "Room ID" }),
+      ApiBody({
+        description: "Price category assignment data",
+        schema: {
+          type: "object",
+          properties: {
+            priceCategoryId: {
+              type: "string",
+              format: "uuid",
+              description: "ID of the price category to assign",
+              example: "price-category-id-123",
+            },
+          },
+          required: ["priceCategoryId"],
+        },
+      }),
+      ApiOkResponse({
+        description: "Price category assigned successfully",
+        schema: {
+          type: "object",
+          properties: {
+            message: { type: "string", example: "Price category assigned successfully" },
+            room: {
+              type: "object",
+              properties: {
+                id: { type: "string", format: "uuid" },
+                number: { type: "string" },
+                priceCategoryId: { type: "string", format: "uuid" },
+                priceCategory: {
+                  type: "object",
+                  properties: {
+                    id: { type: "string", format: "uuid" },
+                    name: { type: "string" },
+                    pricePerMonth: { type: "number" },
+                    pricePerDay: { type: "number" },
+                  },
+                },
+              },
+            },
+          },
+        },
+      }),
+      ApiNotFoundResponse({ description: "Room or price category not found" }),
+      ApiForbiddenResponse({ description: "Access denied" }),
+    ),
+
+  unassignPriceCategory: () =>
+    applyDecorators(
+      ApiOperation({
+        summary: "Remove price category from room",
+        description: "Removes the price category assignment from a room. The room will fall back to room type pricing.",
+      }),
+      ApiParam({ name: "id", description: "Room ID" }),
+      ApiOkResponse({
+        description: "Price category unassigned successfully",
+        schema: {
+          type: "object",
+          properties: {
+            message: { type: "string", example: "Price category unassigned successfully" },
+            room: {
+              type: "object",
+              properties: {
+                id: { type: "string", format: "uuid" },
+                number: { type: "string" },
+                priceCategoryId: { type: "null" },
+              },
+            },
+          },
+        },
+      }),
+      ApiNotFoundResponse({ description: "Room not found" }),
+      ApiForbiddenResponse({ description: "Access denied" }),
+    ),
+
+  getRoomPricing: () =>
+    applyDecorators(
+      ApiOperation({
+        summary: "Get room pricing information",
+        description: "Returns the current pricing for a room, including price source (room-specific, room type, or legacy).",
+      }),
+      ApiParam({ name: "id", description: "Room ID" }),
+      ApiOkResponse({
+        description: "Room pricing information",
+        schema: {
+          type: "object",
+          properties: {
+            roomId: { type: "string", format: "uuid" },
+            pricePerMonth: { type: "number", example: 500 },
+            pricePerDay: { type: "number", example: 20 },
+            source: {
+              type: "string",
+              enum: ["room_price_category", "room_type_price_category", "legacy_pricing"],
+              description: "Source of the pricing information",
+            },
+            priceCategory: {
+              type: "object",
+              nullable: true,
+              properties: {
+                id: { type: "string", format: "uuid" },
+                name: { type: "string" },
+                description: { type: "string", nullable: true },
+              },
+            },
+          },
+        },
+      }),
+      ApiNotFoundResponse({ description: "Room not found" }),
+      ApiForbiddenResponse({ description: "Access denied" }),
     ),
 };

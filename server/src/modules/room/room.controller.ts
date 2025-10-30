@@ -20,12 +20,12 @@ import { RequestMoveOutDto } from "@modules/room/dto/request-moveout.dto";
 import { RequestAccommmodationDto } from "./dto/requestAccommmodation.dto";
 import { CreateRoomStatusDto } from "@modules/room/dto/create-room-status.dto";
 import { AssignUserToRoomDto } from "@/modules/room/dto/assign-user.dto";
-import { SetPriceDto } from "@modules/room/dto/set-price.dto";
 import { UpdateRoomDto } from "@modules/room/dto/update-room.dto";
 import UserRole = $Enums.UserRole;
 import { EvictUserFromRoomDto } from "./dto/evict-user.dto";
 import { FilesInterceptor } from "@nestjs/platform-express";
 import { RoomDocs } from "./room.docs";
+import { AssignPriceCategoryDto } from "./dto/assign-price-category.dto";
 
 @RoomDocs.controller()
 @Controller("rooms")
@@ -142,11 +142,34 @@ export class RoomController {
     return this.roomService.evictUserFromRoom(roomId, dto);
   }
 
-  @Post("/prices")
-  @Authorization(UserRole.Admin)
-  @RoomDocs.setPrice()
-  async setPrice(@Body() dto: SetPriceDto) {
-    return this.roomService.setRoomPrice(dto);
+  @Patch(":id/assign-price-category")
+  @Authorization(UserRole.Admin, UserRole.SuperAdmin)
+  @RoomDocs.assignPriceCategory()
+  async assignPriceCategory(
+    @Param("id") roomId: string,
+    @Body() dto: AssignPriceCategoryDto,
+  ) {
+    return this.roomService.assignPriceCategory(roomId, dto.priceCategoryId);
+  }
+
+  @Delete(":id/unassign-price-category")
+  @Authorization(UserRole.Admin, UserRole.SuperAdmin)
+  @RoomDocs.unassignPriceCategory()
+  async unassignPriceCategory(@Param("id") roomId: string) {
+    return this.roomService.unassignPriceCategory(roomId);
+  }
+
+  @Get(":id/pricing")
+  @Authorization()
+  @RoomDocs.getRoomPricing()
+  async getRoomPricing(@Param("id") roomId: string) {
+    return this.roomService.getRoomPricingDetails(roomId);
+  }
+
+  @Get(":id/pricing/detailed")
+  @Authorization()
+  async getRoomPricingDetailed(@Param("id") roomId: string) {
+    return this.roomService.getRoomPricingDetails(roomId);
   }
 
   @Post("upload")

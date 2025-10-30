@@ -64,4 +64,9 @@ export class CreateRoomTypeDto {
   @IsArray()
   @IsString({ each: true })
   photos?: string[];
+
+  @ApiPropertyOptional({ description: "Price category ID" })
+  @IsOptional()
+  @IsString()
+  priceCategoryId?: string;
 }

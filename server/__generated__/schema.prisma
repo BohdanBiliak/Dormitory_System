@@ -342,21 +342,23 @@ model Floor {
 }
 
 model Room {
-  id            String   @id @default(cuid())
-  number        String
-  floorId       String
-  capacity      Int
-  dormitoryId   String
-  roomEquipment String[]
-  photos        String[]
-  roomTypeId    String? // Add this field
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id              String   @id @default(cuid())
+  number          String
+  floorId         String
+  capacity        Int
+  dormitoryId     String
+  roomEquipment   String[]
+  photos          String[]
+  roomTypeId      String? // Add this field
+  priceCategoryId String?  @map("price_category_id")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
   // Relations
   floor                  Floor                   @relation(fields: [floorId], references: [id], onDelete: Cascade)
   dormitory              Dormitory               @relation(fields: [dormitoryId], references: [id], onDelete: Cascade)
   roomType               RoomType?               @relation(fields: [roomTypeId], references: [id])
+  priceCategory          PriceCategory?          @relation("RoomPriceCategory", fields: [priceCategoryId], references: [id])
   announcementRecipients AnnouncementRecipient[] @relation("AnnouncementRecipientRoom")
   notifications          Notification[]
   bookings               Booking[]
@@ -369,25 +371,29 @@ model Room {
   @@index([dormitoryId, capacity]) // Rooms by dormitory and capacity
   @@index([number, dormitoryId]) // Unique room identification
   @@index([createdAt]) // Chronological queries
+  @@index([priceCategoryId])
   @@index([dormitoryId], map: "rooms_dormitory_id_unique_idx")
   @@map("rooms")
 }
 
 model RoomType {
-  id          String   @id @default(cuid())
-  name        String
-  description String?
-  capacity    Int
-  equipment   String[]
-  typeCode    String   @unique
-  photos      String[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id              String   @id @default(cuid())
+  name            String
+  description     String?
+  capacity        Int
+  equipment       String[]
+  typeCode        String   @unique
+  photos          String[]
+  priceCategoryId String?  @map("price_category_id")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
   // Relations
   rooms                Room[]
   floorRoomAssignments FloorRoomAssignment[]
+  priceCategory        PriceCategory?        @relation("RoomTypePriceCategory", fields: [priceCategoryId], references: [id])
 
+  @@index([priceCategoryId])
   @@map("room_types")
 }
 
@@ -421,6 +427,29 @@ model RoomStatus {
   @@map("room_statuses")
 }
 
+model PriceCategory {
+  id            String   @id @default(uuid())
+  name          String   @unique
+  description   String?
+  pricePerMonth Float    @map("price_per_month")
+  pricePerDay   Float    @map("price_per_day")
+  isActive      Boolean  @default(true) @map("is_active")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  roomTypes RoomType[] @relation("RoomTypePriceCategory")
+  rooms     Room[]     @relation("RoomPriceCategory")
+  payments  Payment[]
+
+  @@index([isActive])
+  @@index([name])
+  @@index([pricePerMonth])
+  @@index([createdAt])
+  @@map("price_categories")
+}
+
+// Keep Price table for backward compatibility and migration purposes
 model Price {
   id            String    @id @default(uuid())
   roomId        String?   @map("room_id")
@@ -480,18 +509,19 @@ model Booking {
 // PAYMENT MODELS
 // ==========================================
 model Payment {
-  id            String        @id @default(uuid())
-  userId        String        @map("user_id")
-  bookingId     String?       @map("booking_id")
-  priceId       String?       @map("price_id")
-  amount        Float
-  currency      String        @default("PLN")
-  paymentType   PaymentType   @map("payment_type")
-  paymentMethod PaymentMethod @map("payment_method")
-  status        PaymentStatus @default(PENDING)
-  dueDate       DateTime      @map("due_date")
-  paidAt        DateTime?     @map("paid_at")
-  description   String?
+  id              String        @id @default(uuid())
+  userId          String        @map("user_id")
+  bookingId       String?       @map("booking_id")
+  priceId         String?       @map("price_id")
+  priceCategoryId String?       @map("price_category_id")
+  amount          Float
+  currency        String        @default("PLN")
+  paymentType     PaymentType   @map("payment_type")
+  paymentMethod   PaymentMethod @map("payment_method")
+  status          PaymentStatus @default(PENDING)
+  dueDate         DateTime      @map("due_date")
+  paidAt          DateTime?     @map("paid_at")
+  description     String?
 
   paymentProofUrl        String?   @map("payment_proof_url")
   paymentProofFilename   String?   @map("payment_proof_filename")
@@ -509,6 +539,7 @@ model Payment {
   user                   User              @relation("UserPayments", fields: [userId], references: [id], onDelete: Cascade)
   booking                Booking?          @relation(fields: [bookingId], references: [id], onDelete: SetNull)
   price                  Price?            @relation(fields: [priceId], references: [id], onDelete: SetNull)
+  priceCategory          PriceCategory?    @relation(fields: [priceCategoryId], references: [id], onDelete: SetNull)
   confirmedByUser        User?             @relation("ManagerConfirmedPayments", fields: [confirmedBy], references: [id], onDelete: SetNull)
   generatedFromRecurring RecurringPayment? @relation("GeneratedFromRecurring", fields: [recurringPaymentId], references: [id], onDelete: SetNull)
   notifications          Notification[]
@@ -524,6 +555,7 @@ model Payment {
   @@index([dueDate])
   @@index([paymentType])
   @@index([bookingId])
+  @@index([priceCategoryId])
   @@index([status, dueDate]) // Overdue payments, payment processing
   @@index([userId, status, dueDate]) // User payment dashboard
   @@index([paymentMethod, status]) // Payment method analysis

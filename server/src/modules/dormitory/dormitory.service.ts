@@ -8,22 +8,20 @@ import { CreateDormitoryDto } from "@/modules/dormitory/dto/create-dormitory.dto
 import { UpdateDormitoryDto } from "@/modules/dormitory/dto/update-dormitory.dto";
 import { S3Service } from "@/libs/common/s3/s3.service";
 import { FloorRoomAssignmentDto } from "./dto/room-assignment.dto";
+import { PricingService } from "@/modules/pricing/pricing.service";
 
 @Injectable()
 export class DormitoryService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly s3Service: S3Service,
+    private readonly pricingService: PricingService,
   ) { }
 
   async create(
     dto: CreateDormitoryDto & { floorAssignments: FloorRoomAssignmentDto[] },
     files: { photos?: Express.Multer.File[] }, // Removed roomPhotos since we'll use room type photos
   ) {
-    // Add debugging logs
-    console.log("=== DORMITORY CREATION DEBUG ===");
-    console.log("DTO received:", JSON.stringify(dto, null, 2));
-    console.log("Floor assignments count:", dto.floorAssignments?.length);
 
     dto.floorAssignments?.forEach((floor, floorIndex) => {
       console.log(`Floor ${floorIndex + 1}:`, {
@@ -156,32 +154,7 @@ export class DormitoryService {
         }
       }
 
-      // Create pricing
-      const uniqueCapacities = new Set<number>();
-      for (const floorAssignment of dto.floorAssignments) {
-        for (const roomAssignment of floorAssignment.roomAssignments) {
-          const roomType = await tx.roomType.findUnique({
-            where: { id: roomAssignment.roomTypeId },
-            select: { capacity: true },
-          });
-          if (roomType) {
-            uniqueCapacities.add(roomType.capacity);
-          }
-        }
-      }
-
-      const prices = Array.from(uniqueCapacities).map((capacity) => ({
-        roomId: null,
-        roomCapacity: capacity,
-        pricePerMonth: +dto.pricePerMonth,
-        pricePerDay: +dto.pricePerDay,
-        dateFrom: new Date(),
-        dateTo: null,
-      }));
-
-      await tx.price.createMany({ data: prices });
-
-      console.log("Pricing created");
+      console.log("Rooms and floors created successfully");
 
       // Return dormitory with created structure
       const result = await tx.dormitory.findUnique({
@@ -458,5 +431,54 @@ export class DormitoryService {
         status: "Deactivated",
       },
     });
+  }
+
+  /**
+   * Get price information for a dormitory using the centralized pricing service
+   */
+  async getDormitoryPricing(dormitoryId: string) {
+    return this.pricingService.getDormitoryRoomsPricing(dormitoryId);
+  }
+
+  /**
+   * Enhanced findAll that includes pricing information
+   */
+  async findAllWithPricing() {
+    const dormitories = await this.findAll();
+    
+    const enrichedDormitories = await Promise.all(
+      dormitories.data.map(async (dormitory) => {
+        try {
+          const pricing = await this.getDormitoryPricing(dormitory.id);
+          return {
+            ...dormitory,
+            pricing: {
+              averagePricePerDay: pricing.averagePricePerDay,
+              averagePricePerMonth: pricing.averagePricePerMonth,
+              roomsWithPricing: pricing.roomsWithPricing,
+              roomsWithoutPricing: pricing.roomsWithoutPricing,
+              pricingSources: pricing.pricingSources,
+            },
+          };
+        } catch (error) {
+          console.error(`Error getting pricing for dormitory ${dormitory.id}:`, error);
+          return {
+            ...dormitory,
+            pricing: {
+              averagePricePerDay: 0,
+              averagePricePerMonth: 0,
+              roomsWithPricing: 0,
+              roomsWithoutPricing: dormitory.roomCount,
+              pricingSources: {},
+            },
+          };
+        }
+      }),
+    );
+
+    return {
+      data: enrichedDormitories,
+      total: enrichedDormitories.length,
+    };
   }
 }

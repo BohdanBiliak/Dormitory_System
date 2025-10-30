@@ -127,16 +127,16 @@ enum PaymentMethod {
 }
 
 enum PaymentStatus {
-  PENDING                 // Admin created, waiting for resident payment
-  AWAITING_CONFIRMATION   // Resident uploaded proof, waiting for admin review
-  PROCESSING              // Admin is reviewing
-  PAID                   // Admin confirmed payment
-  FAILED                 // Technical failure
-  OVERDUE                // Past due date
-  CANCELLED              // Cancelled by admin
-  REFUNDED              // Money returned
-  PARTIAL_REFUND        // Partial money returned
-  REJECTED              // Admin rejected the payment proof
+  PENDING // Admin created, waiting for resident payment
+  AWAITING_CONFIRMATION // Resident uploaded proof, waiting for admin review
+  PROCESSING // Admin is reviewing
+  PAID // Admin confirmed payment
+  FAILED // Technical failure
+  OVERDUE // Past due date
+  CANCELLED // Cancelled by admin
+  REFUNDED // Money returned
+  PARTIAL_REFUND // Partial money returned
+  REJECTED // Admin rejected the payment proof
 }
 
 enum RecurringFrequency {
@@ -154,6 +154,7 @@ enum PaymentItemType {
   CLEANING_FEE
   OTHER
 }
+
 enum RoomAvailabilityStatus {
   AVAILABLE
   PART_EMPTY
@@ -165,36 +166,36 @@ enum RoomAvailabilityStatus {
 // USER MODELS
 // ==========================================
 model User {
-  id                 String     @id @default(uuid())
-  email              String     @unique
-  password           String
-  displayName        String
-  picture            String
-  isVerified         Boolean    @default(false) @map("is_verified")
-  isTwoFactorEnabled Boolean    @default(false) @map("is_two_factor_enabled")
-  method             AuthMethod
-  role               UserRole   @default(Regular)
-  secondName         String     @map("second_name")
-  studentIdFront     String     @map("student_id_front")
-  studentIdBack      String?    @map("student_id_back")
-  isActive           Boolean    @default(true) @map("is_active")
-  language           String     @default("en")
-  startReservationDate          DateTime?  @map("start_date") 
-  endReservationDate            DateTime?  @map("end_date")  
+  id                   String     @id @default(uuid())
+  email                String     @unique
+  password             String
+  displayName          String
+  picture              String
+  isVerified           Boolean    @default(false) @map("is_verified")
+  isTwoFactorEnabled   Boolean    @default(false) @map("is_two_factor_enabled")
+  method               AuthMethod
+  role                 UserRole   @default(Regular)
+  secondName           String     @map("second_name")
+  studentIdFront       String     @map("student_id_front")
+  studentIdBack        String?    @map("student_id_back")
+  isActive             Boolean    @default(true) @map("is_active")
+  language             String     @default("en")
+  startReservationDate DateTime?  @map("start_date")
+  endReservationDate   DateTime?  @map("end_date")
 
   // Foreign Keys
   dormitoryId String? @map("dormitory_id")
   roomId      String? @map("room_id")
 
   // Relations
-  confirmations             Confirmation[]          @relation("UserConfirmations")
-  dormitoryAdminAssignments DormitoryAdmin[]
-  dormitory                 Dormitory?              @relation("DormitoryResidents", fields: [dormitoryId], references: [id])
+  confirmations               Confirmation[]          @relation("UserConfirmations")
+  dormitoryAdminAssignments   DormitoryAdmin[]
+  dormitory                   Dormitory?              @relation("DormitoryResidents", fields: [dormitoryId], references: [id])
   dormitoryManagerAssignments DormitoryManager[]
-  room                      Room?                   @relation(fields: [roomId], references: [id])
-  announcements             Announcement[]          @relation("AnnouncementAuthor")
-  announcementRecipients    AnnouncementRecipient[] @relation("AnnouncementRecipientUser")
-  auditLogs                 AuditLog[]              @relation("UserAuditLogs")
+  room                        Room?                   @relation(fields: [roomId], references: [id])
+  announcements               Announcement[]          @relation("AnnouncementAuthor")
+  announcementRecipients      AnnouncementRecipient[] @relation("AnnouncementRecipientUser")
+  auditLogs                   AuditLog[]              @relation("UserAuditLogs")
 
   // Notification relations
   sentNotifications     Notification[]        @relation("NotificationSender")
@@ -202,32 +203,32 @@ model User {
   notificationSettings  NotificationSettings?
 
   // Booking and Payment relations
-  bookings              Booking[]           @relation("UserBookings")
-  payments              Payment[]           @relation("UserPayments")
-  confirmedPayments     Payment[]           @relation("ManagerConfirmedPayments")
-  paymentAuditLogs      PaymentAuditLog[]
-  
-  @@index([email]) 
+  bookings          Booking[]         @relation("UserBookings")
+  payments          Payment[]         @relation("UserPayments")
+  confirmedPayments Payment[]         @relation("ManagerConfirmedPayments")
+  paymentAuditLogs  PaymentAuditLog[]
+  createdAt         DateTime          @default(now()) @map("created_at")
+  updatedAt         DateTime          @updatedAt @map("updated_at")
+
+  @@index([email])
   @@index([role, isActive]) // Filter active users by role
   @@index([dormitoryId, isActive]) // Find active residents of a dormitory
   @@index([roomId]) // Find roommates
   @@index([isVerified, role]) // Auth queries
   @@index([createdAt]) // Chronological queries
   @@index([method, isVerified]) // Auth method filtering
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
   @@map("users")
 }
 
 model DormitoryAdmin {
-  id          String    @id @default(uuid())
-  userId      String    @map("user_id")
-  dormitoryId String    @map("dormitory_id")
+  id          String   @id @default(uuid())
+  userId      String   @map("user_id")
+  dormitoryId String   @map("dormitory_id")
   role        String
-  createdAt   DateTime  @default(now()) @map("created_at")
-  
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  dormitory   Dormitory @relation(fields: [dormitoryId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  dormitory Dormitory @relation(fields: [dormitoryId], references: [id], onDelete: Cascade)
 
   @@unique([userId, dormitoryId])
   @@index([role, createdAt]) // Admin role analysis
@@ -236,7 +237,7 @@ model DormitoryAdmin {
 }
 
 model DormitoryManager {
-  id          String     @id @default(uuid())
+  id          String @id @default(uuid())
   dormitoryId String
   userId      String
 
@@ -246,24 +247,24 @@ model DormitoryManager {
   @@unique([dormitoryId, userId])
 }
 
-
 model Confirmation {
-  id         String             @id @default(uuid())
-  userId     String             @map("user_id")
-  type       ConfirmationType
-  status     ConfirmationStatus @default(PENDING)
-  photo      String?
-  frontIdUrl String?            @map("front_id_url")
-  backIdUrl  String?            @map("back_id_url")
-  createdAt  DateTime           @default(now()) @map("created_at")
-  resolvedAt DateTime?          @map("resolved_at")
-  rejectionReason String?       @map("rejection_reason")
+  id              String             @id @default(uuid())
+  userId          String             @map("user_id")
+  type            ConfirmationType
+  status          ConfirmationStatus @default(PENDING)
+  photo           String?
+  frontIdUrl      String?            @map("front_id_url")
+  backIdUrl       String?            @map("back_id_url")
+  createdAt       DateTime           @default(now()) @map("created_at")
+  resolvedAt      DateTime?          @map("resolved_at")
+  rejectionReason String?            @map("rejection_reason")
 
-  roomId        String?            @map("room_id")
-  from          DateTime?
-  to            DateTime?
-  metadata      Json?            
-  requester User @relation("UserConfirmations", fields: [userId], references: [id], onDelete: Cascade)
+  roomId    String?   @map("room_id")
+  from      DateTime?
+  to        DateTime?
+  metadata  Json?
+  requester User      @relation("UserConfirmations", fields: [userId], references: [id], onDelete: Cascade)
+
   @@index([status, createdAt]) // Pending confirmations queue
   @@index([type, status]) // Confirmation type filtering
   @@index([userId, type, status]) // User confirmation history
@@ -277,6 +278,7 @@ model Token {
   token     String    @unique
   type      TokenType
   expiresIn DateTime  @map("expires_in")
+
   @@index([email, type]) // Token lookup by email and type
   @@index([expiresIn]) // Cleanup expired tokens
   @@index([type, expiresIn]) // Active tokens by type
@@ -291,7 +293,7 @@ model AuditLog {
   entityId  String   @map("entity_id")
   meta      Json?
   createdAt DateTime @default(now()) @map("created_at")
-  
+
   user User @relation("UserAuditLogs", fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
@@ -307,82 +309,91 @@ model AuditLog {
 // DORMITORY MODELS
 // ==========================================
 model Dormitory {
-  id                     String           @id @default(uuid())
+  id                     String   @id @default(uuid())
   name                   String
   address                String
-  groundFloorPhoneNumber String           @map("ground_floor_phone_number")
-  floors      Floor[]
-  status                 String           @default("Active")
+  groundFloorPhoneNumber String   @map("ground_floor_phone_number")
+  floors                 Floor[]
+  status                 String   @default("Active")
   photos                 String[]
-  createdAt              DateTime         @default(now()) @map("created_at")
-  
+  createdAt              DateTime @default(now()) @map("created_at")
+
   admins    DormitoryAdmin[]
   managers  DormitoryManager[]
   residents User[]             @relation("DormitoryResidents")
   rooms     Room[]
-  
+
   @@index([status, name]) // List active/inactive dormitories alphabetically
   @@index([createdAt]) // Chronological ordering
   @@index([status, createdAt]) // Status with time-based filtering
   @@map("dormitories")
 }
+
 model Floor {
-  id           String     @id @default(cuid())
-  floorNumber  Int        
-  dormitoryId  String
-  dormitory    Dormitory  @relation(fields: [dormitoryId], references: [id])
-  rooms        Room[]
+  id                   String                @id @default(cuid())
+  floorNumber          Int
+  dormitoryId          String
+  dormitory            Dormitory             @relation(fields: [dormitoryId], references: [id])
+  rooms                Room[]
   floorRoomAssignments FloorRoomAssignment[]
-  
+
   @@unique([dormitoryId, floorNumber])
   @@map("floors")
 }
 
 model Room {
-  id            String   @id @default(cuid())
-  number        String
-  floorId       String
-  capacity      Int
-  dormitoryId   String
-  roomEquipment String[]
-  photos        String[]
-  roomTypeId    String?  // Add this field
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id              String   @id @default(cuid())
+  number          String
+  floorId         String
+  capacity        Int
+  dormitoryId     String
+  roomEquipment   String[]
+  photos          String[]
+  roomTypeId      String? // Add this field
+  priceCategoryId String?  @map("price_category_id")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
   // Relations
-  floor     Floor     @relation(fields: [floorId], references: [id], onDelete: Cascade)
-  dormitory Dormitory @relation(fields: [dormitoryId], references: [id], onDelete: Cascade)
-  roomType  RoomType? @relation(fields: [roomTypeId], references: [id])
+  floor                  Floor                   @relation(fields: [floorId], references: [id], onDelete: Cascade)
+  dormitory              Dormitory               @relation(fields: [dormitoryId], references: [id], onDelete: Cascade)
+  roomType               RoomType?               @relation(fields: [roomTypeId], references: [id])
+  priceCategory          PriceCategory?          @relation("RoomPriceCategory", fields: [priceCategoryId], references: [id])
   announcementRecipients AnnouncementRecipient[] @relation("AnnouncementRecipientRoom")
   notifications          Notification[]
   bookings               Booking[]
   statuses               RoomStatus[]
-  residents User[]
-  prices    Price[]
+  residents              User[]
+  prices                 Price[]
+
   @@unique([floorId, number])
   @@index([dormitoryId]) // Rooms by dormitory
   @@index([dormitoryId, capacity]) // Rooms by dormitory and capacity
   @@index([number, dormitoryId]) // Unique room identification
   @@index([createdAt]) // Chronological queries
+  @@index([priceCategoryId])
   @@index([dormitoryId], map: "rooms_dormitory_id_unique_idx")
   @@map("rooms")
 }
+
 model RoomType {
-  id          String   @id @default(cuid())
-  name        String
-  description String?
-  capacity    Int
-  equipment   String[]
-  typeCode    String   @unique 
-  photos      String[] 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id              String   @id @default(cuid())
+  name            String
+  description     String?
+  capacity        Int
+  equipment       String[]
+  typeCode        String   @unique
+  photos          String[]
+  priceCategoryId String?  @map("price_category_id")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
   // Relations
-  rooms                 Room[]
+  rooms                Room[]
   floorRoomAssignments FloorRoomAssignment[]
+  priceCategory        PriceCategory?        @relation("RoomTypePriceCategory", fields: [priceCategoryId], references: [id])
 
+  @@index([priceCategoryId])
   @@map("room_types")
 }
 
@@ -390,14 +401,16 @@ model FloorRoomAssignment {
   id          String @id @default(cuid())
   floorId     String
   roomTypeId  String
-  roomNumbers Int[]  
+  roomNumbers Int[]
 
   // Relations
   floor    Floor    @relation(fields: [floorId], references: [id], onDelete: Cascade)
   roomType RoomType @relation(fields: [roomTypeId], references: [id])
+
   @@unique([floorId, roomTypeId])
   @@map("floor_room_assignments")
 }
+
 model RoomStatus {
   id          String    @id @default(uuid())
   roomId      String    @map("room_id")
@@ -414,6 +427,29 @@ model RoomStatus {
   @@map("room_statuses")
 }
 
+model PriceCategory {
+  id            String   @id @default(uuid())
+  name          String   @unique
+  description   String?
+  pricePerMonth Float    @map("price_per_month")
+  pricePerDay   Float    @map("price_per_day")
+  isActive      Boolean  @default(true) @map("is_active")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  roomTypes RoomType[] @relation("RoomTypePriceCategory")
+  rooms     Room[]     @relation("RoomPriceCategory")
+  payments  Payment[]
+
+  @@index([isActive])
+  @@index([name])
+  @@index([pricePerMonth])
+  @@index([createdAt])
+  @@map("price_categories")
+}
+
+// Keep Price table for backward compatibility and migration purposes
 model Price {
   id            String    @id @default(uuid())
   roomId        String?   @map("room_id")
@@ -448,11 +484,11 @@ model Booking {
   totalAmount  Float         @map("total_amount")
   notes        String?
 
-  user                User                @relation("UserBookings", fields: [userId], references: [id], onDelete: Cascade)
-  room                Room                @relation(fields: [roomId], references: [id], onDelete: Cascade)
-  notifications       Notification[]
-  payments            Payment[]
-  recurringPayments   RecurringPayment[]
+  user              User               @relation("UserBookings", fields: [userId], references: [id], onDelete: Cascade)
+  room              Room               @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  notifications     Notification[]
+  payments          Payment[]
+  recurringPayments RecurringPayment[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -473,43 +509,43 @@ model Booking {
 // PAYMENT MODELS
 // ==========================================
 model Payment {
-   id                      String        @id @default(uuid())
-  userId                  String        @map("user_id")
-  bookingId               String?       @map("booking_id")
-  priceId                 String?       @map("price_id")
-  amount                  Float
-  currency                String        @default("PLN")
-  paymentType             PaymentType   @map("payment_type")
-  paymentMethod           PaymentMethod @map("payment_method")
-  status                  PaymentStatus @default(PENDING)
-  dueDate                 DateTime      @map("due_date")
-  paidAt                  DateTime?     @map("paid_at")
-  description             String?
+  id              String        @id @default(uuid())
+  userId          String        @map("user_id")
+  bookingId       String?       @map("booking_id")
+  priceId         String?       @map("price_id")
+  priceCategoryId String?       @map("price_category_id")
+  amount          Float
+  currency        String        @default("PLN")
+  paymentType     PaymentType   @map("payment_type")
+  paymentMethod   PaymentMethod @map("payment_method")
+  status          PaymentStatus @default(PENDING)
+  dueDate         DateTime      @map("due_date")
+  paidAt          DateTime?     @map("paid_at")
+  description     String?
 
-  paymentProofUrl         String?       @map("payment_proof_url")
-  paymentProofFilename    String?       @map("payment_proof_filename")
-  paymentProofUploadedAt  DateTime?     @map("payment_proof_uploaded_at")
-  
-  externalPaymentId       String?       @map("external_payment_id")
-  failureReason           String?       @map("failure_reason")
-  managerNotes            String?       @map("manager_notes")
-  confirmedBy             String?       @map("confirmed_by")
-  confirmedAt             DateTime?     @map("confirmed_at")
-  rejectedAt              DateTime?     @map("rejected_at")
-  rejectionReason         String?       @map("rejection_reason")
-  recurringPaymentId      String?       @map("recurring_payment_id")
+  paymentProofUrl        String?   @map("payment_proof_url")
+  paymentProofFilename   String?   @map("payment_proof_filename")
+  paymentProofUploadedAt DateTime? @map("payment_proof_uploaded_at")
 
+  externalPaymentId  String?   @map("external_payment_id")
+  failureReason      String?   @map("failure_reason")
+  managerNotes       String?   @map("manager_notes")
+  confirmedBy        String?   @map("confirmed_by")
+  confirmedAt        DateTime? @map("confirmed_at")
+  rejectedAt         DateTime? @map("rejected_at")
+  rejectionReason    String?   @map("rejection_reason")
+  recurringPaymentId String?   @map("recurring_payment_id")
 
-  user                User                 @relation("UserPayments", fields: [userId], references: [id], onDelete: Cascade)
-  booking             Booking?             @relation(fields: [bookingId], references: [id], onDelete: SetNull)
-  price               Price?               @relation(fields: [priceId], references: [id], onDelete: SetNull)
-  confirmedByUser     User?                @relation("ManagerConfirmedPayments", fields: [confirmedBy], references: [id], onDelete: SetNull)
+  user                   User              @relation("UserPayments", fields: [userId], references: [id], onDelete: Cascade)
+  booking                Booking?          @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+  price                  Price?            @relation(fields: [priceId], references: [id], onDelete: SetNull)
+  priceCategory          PriceCategory?    @relation(fields: [priceCategoryId], references: [id], onDelete: SetNull)
+  confirmedByUser        User?             @relation("ManagerConfirmedPayments", fields: [confirmedBy], references: [id], onDelete: SetNull)
   generatedFromRecurring RecurringPayment? @relation("GeneratedFromRecurring", fields: [recurringPaymentId], references: [id], onDelete: SetNull)
-  notifications       Notification[]
-  paymentItems        PaymentItem[]
-  recurringPayment    RecurringPayment?    @relation("OriginalPayment")
-  auditLogs           PaymentAuditLog[]
-
+  notifications          Notification[]
+  paymentItems           PaymentItem[]
+  recurringPayment       RecurringPayment? @relation("OriginalPayment")
+  auditLogs              PaymentAuditLog[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -519,6 +555,7 @@ model Payment {
   @@index([dueDate])
   @@index([paymentType])
   @@index([bookingId])
+  @@index([priceCategoryId])
   @@index([status, dueDate]) // Overdue payments, payment processing
   @@index([userId, status, dueDate]) // User payment dashboard
   @@index([paymentMethod, status]) // Payment method analysis
@@ -532,16 +569,16 @@ model Payment {
 }
 
 model RecurringPayment {
-  id            String              @id @default(uuid())
-  paymentId     String              @unique @map("payment_id")
-  bookingId     String              @map("booking_id")
-  frequency     RecurringFrequency  @default(MONTHLY)
-  startDate     DateTime            @map("start_date")
-  endDate       DateTime?           @map("end_date")
-  dayOfMonth    Int                 @map("day_of_month")
-  isActive      Boolean             @default(true) @map("is_active")
-  lastProcessed DateTime?           @map("last_processed")
-  nextDueDate   DateTime            @map("next_due_date")
+  id            String             @id @default(uuid())
+  paymentId     String             @unique @map("payment_id")
+  bookingId     String             @map("booking_id")
+  frequency     RecurringFrequency @default(MONTHLY)
+  startDate     DateTime           @map("start_date")
+  endDate       DateTime?          @map("end_date")
+  dayOfMonth    Int                @map("day_of_month")
+  isActive      Boolean            @default(true) @map("is_active")
+  lastProcessed DateTime?          @map("last_processed")
+  nextDueDate   DateTime           @map("next_due_date")
 
   payment           Payment   @relation("OriginalPayment", fields: [paymentId], references: [id], onDelete: Cascade)
   booking           Booking   @relation(fields: [bookingId], references: [id], onDelete: Cascade)
@@ -577,18 +614,19 @@ model PaymentItem {
 }
 
 model PaymentAuditLog {
-  id        String    @id @default(uuid())
-  paymentId String    @map("payment_id")
-  userId    String    @map("user_id")
+  id        String   @id @default(uuid())
+  paymentId String   @map("payment_id")
+  userId    String   @map("user_id")
   action    String
-  oldValue  Json?     @map("old_value")
-  newValue  Json?     @map("new_value")
-  ipAddress String?   @map("ip_address")
-  userAgent String?   @map("user_agent")
-  createdAt DateTime  @default(now()) @map("created_at")
+  oldValue  Json?    @map("old_value")
+  newValue  Json?    @map("new_value")
+  ipAddress String?  @map("ip_address")
+  userAgent String?  @map("user_agent")
+  createdAt DateTime @default(now()) @map("created_at")
 
   payment Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade)
   user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@index([createdAt]) // Chronological payment audit
   @@index([action, createdAt]) // Payment action timeline
   @@index([paymentId, createdAt]) // Payment change history
@@ -628,6 +666,7 @@ model Notification {
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+
   @@index([toUserId, isRead, priority, createdAt]) // User notification feed
   @@index([type, createdAt, isArchived]) // Notification type analytics
   @@index([fromUserId, createdAt]) // Sent notifications
@@ -656,9 +695,9 @@ model NotificationSettings {
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+
   @@index([emailNotifications]) // Users with email enabled
   @@index([inAppNotifications]) // Users with in-app enabled
-
   @@map("notification_settings")
 }
 
@@ -677,6 +716,7 @@ model Announcement {
   author      User                    @relation("AnnouncementAuthor", fields: [authorId], references: [id], onDelete: Cascade)
   attachments Attachment[]
   recipients  AnnouncementRecipient[]
+
   @@index([isHidden, postedAt]) // Active announcements chronologically
   @@index([expiresAt, isHidden]) // Expiring announcements
   @@index([authorId, postedAt]) // Author's announcements
@@ -710,6 +750,7 @@ model AnnouncementRecipient {
   announcement Announcement @relation(fields: [announcementId], references: [id], onDelete: Cascade)
   user         User?        @relation("AnnouncementRecipientUser", fields: [userId], references: [id], onDelete: Cascade)
   room         Room?        @relation("AnnouncementRecipientRoom", fields: [roomId], references: [id], onDelete: Cascade)
+
   @@index([userId, announcementId]) // User-specific announcements
   @@index([roomId, announcementId]) // Room-specific announcements
   @@index([floor, announcementId]) // Floor-specific announcements

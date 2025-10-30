@@ -11,8 +11,9 @@ import { RoomRepository } from "@/modules/room/room.repository";
 import { MailModule } from "@libs/mail/mail.module";
 import { S3Module } from "@libs/common/s3/s3.module";
 import { S3Service } from "@libs/common/s3/s3.service";
+import { PricingModule } from "@/modules/pricing/pricing.module";
 @Module({
-  imports: [UserModule, MailModule, S3Module],
+  imports: [UserModule, MailModule, S3Module, PricingModule],
   controllers: [RoomController],
   providers: [
     RoomService,

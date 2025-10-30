@@ -1,3 +1,4 @@
+import { Injectable, Inject } from "@nestjs/common";
 import {
   Payment,
   PaymentStatus,
@@ -19,8 +20,10 @@ import {
   ConfirmPaymentDto,
 } from "./dto";
 
+@Injectable()
 export class PaymentsService implements IPaymentService {
   constructor(
+    @Inject("IPaymentRepository")
     private readonly paymentRepository: IPaymentRepository,
     private readonly fileUploadService: S3Service,
     private readonly notificationService: NotificationsService,
@@ -56,7 +59,9 @@ export class PaymentsService implements IPaymentService {
       dueDate: data.dueDate,
       description: data.description,
       status: PaymentStatus.PENDING,
-    paymentItems: data.paymentItems
+      price: data.priceId ? { connect: { id: data.priceId } } : undefined,
+      priceCategory: data.priceCategoryId ? { connect: { id: data.priceCategoryId } } : undefined,
+      paymentItems: data.paymentItems
         ? {
             create: data.paymentItems.map((item) => ({
               itemType: item.itemType as PaymentItemType,
@@ -98,17 +103,37 @@ export class PaymentsService implements IPaymentService {
     return this.paymentRepository.findByUserId(userId, limit, offset);
   }
   async getPaymentsWithFilters(filters: PaymentFilterDto): Promise<Payment[]> {
-    const { startDate, endDate, userId, dormitoryId, limit, offset } = filters;
+    const { startDate, endDate, userId, dormitoryId, limit, offset, status } = filters;
 
     return this.paymentRepository.find({
       where: {
-        ...(startDate &&
-          endDate && { createdAt: { gte: startDate, lte: endDate } }),
+        ...(startDate && endDate && { createdAt: { gte: startDate, lte: endDate } }),
         ...(userId && { userId }),
         ...(dormitoryId && { dormitoryId }),
+        ...(status && { status: status as PaymentStatus }),
       },
       take: limit,
       skip: offset,
+
+      include:{
+        user:{
+          select:{
+            displayName:true,
+            secondName:true,
+            email:true,
+            room:{
+              select:{
+                number:true,
+                dormitory:{
+                  select:{
+                    name:true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     });
   }
 
@@ -281,4 +306,56 @@ export class PaymentsService implements IPaymentService {
     paymentId: string,
     frequency: string,
   ): Promise<void> {}
+
+  /**
+   * Create payment based on room's price category
+   */
+  async createPaymentFromRoom(
+    userId: string, 
+    roomId: string, 
+    paymentType: PaymentType,
+    paymentMethod: PaymentMethod,
+    dueDate: Date,
+    periodInDays?: number
+  ): Promise<Payment> {
+    // Get room with price category
+    const room = await this.paymentRepository.findRoomWithPricing(roomId);
+    if (!room) {
+      throw new Error("Room not found");
+    }
+
+    let amount = 0;
+    let priceCategoryId: string | undefined;
+    let priceId: string | undefined;
+
+    // Try to get pricing from price category first (new system)
+    if (room.priceCategoryId && room.priceCategory) {
+      priceCategoryId = room.priceCategoryId;
+      amount = periodInDays && periodInDays <= 30 
+        ? periodInDays * room.priceCategory.pricePerDay 
+        : room.priceCategory.pricePerMonth;
+    } else {
+      // Fallback to old price system
+      const price = await this.paymentRepository.findPriceByCapacity(room.capacity);
+      if (price) {
+        priceId = price.id;
+        amount = periodInDays && periodInDays <= 30 
+          ? periodInDays * price.pricePerDay 
+          : price.pricePerMonth;
+      } else {
+        throw new Error("No pricing information found for this room");
+      }
+    }
+
+    return this.createPayment({
+      userId,
+      amount,
+      paymentType,
+      paymentMethod,
+      dueDate,
+      priceCategoryId,
+      priceId,
+      description: `${paymentType} for room ${room.number}`,
+    });
+  }
 }

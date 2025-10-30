@@ -74,6 +74,11 @@ export type FloorRoomAssignment = $Result.DefaultSelection<Prisma.$FloorRoomAssi
  */
 export type RoomStatus = $Result.DefaultSelection<Prisma.$RoomStatusPayload>
 /**
+ * Model PriceCategory
+ * 
+ */
+export type PriceCategory = $Result.DefaultSelection<Prisma.$PriceCategoryPayload>
+/**
  * Model Price
  * 
  */
@@ -606,6 +611,16 @@ export class PrismaClient<
     * ```
     */
   get roomStatus(): Prisma.RoomStatusDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.priceCategory`: Exposes CRUD operations for the **PriceCategory** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PriceCategories
+    * const priceCategories = await prisma.priceCategory.findMany()
+    * ```
+    */
+  get priceCategory(): Prisma.PriceCategoryDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.price`: Exposes CRUD operations for the **Price** model.
@@ -1168,6 +1183,7 @@ export namespace Prisma {
     RoomType: 'RoomType',
     FloorRoomAssignment: 'FloorRoomAssignment',
     RoomStatus: 'RoomStatus',
+    PriceCategory: 'PriceCategory',
     Price: 'Price',
     Booking: 'Booking',
     Payment: 'Payment',
@@ -1197,7 +1213,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "dormitoryAdmin" | "dormitoryManager" | "confirmation" | "token" | "auditLog" | "dormitory" | "floor" | "room" | "roomType" | "floorRoomAssignment" | "roomStatus" | "price" | "booking" | "payment" | "recurringPayment" | "paymentItem" | "paymentAuditLog" | "notification" | "notificationSettings" | "announcement" | "attachment" | "announcementRecipient"
+      modelProps: "user" | "dormitoryAdmin" | "dormitoryManager" | "confirmation" | "token" | "auditLog" | "dormitory" | "floor" | "room" | "roomType" | "floorRoomAssignment" | "roomStatus" | "priceCategory" | "price" | "booking" | "payment" | "recurringPayment" | "paymentItem" | "paymentAuditLog" | "notification" | "notificationSettings" | "announcement" | "attachment" | "announcementRecipient"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2086,6 +2102,80 @@ export namespace Prisma {
           count: {
             args: Prisma.RoomStatusCountArgs<ExtArgs>
             result: $Utils.Optional<RoomStatusCountAggregateOutputType> | number
+          }
+        }
+      }
+      PriceCategory: {
+        payload: Prisma.$PriceCategoryPayload<ExtArgs>
+        fields: Prisma.PriceCategoryFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PriceCategoryFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PriceCategoryPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PriceCategoryFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PriceCategoryPayload>
+          }
+          findFirst: {
+            args: Prisma.PriceCategoryFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PriceCategoryPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PriceCategoryFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PriceCategoryPayload>
+          }
+          findMany: {
+            args: Prisma.PriceCategoryFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PriceCategoryPayload>[]
+          }
+          create: {
+            args: Prisma.PriceCategoryCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PriceCategoryPayload>
+          }
+          createMany: {
+            args: Prisma.PriceCategoryCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PriceCategoryCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PriceCategoryPayload>[]
+          }
+          delete: {
+            args: Prisma.PriceCategoryDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PriceCategoryPayload>
+          }
+          update: {
+            args: Prisma.PriceCategoryUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PriceCategoryPayload>
+          }
+          deleteMany: {
+            args: Prisma.PriceCategoryDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PriceCategoryUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PriceCategoryUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PriceCategoryPayload>[]
+          }
+          upsert: {
+            args: Prisma.PriceCategoryUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PriceCategoryPayload>
+          }
+          aggregate: {
+            args: Prisma.PriceCategoryAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePriceCategory>
+          }
+          groupBy: {
+            args: Prisma.PriceCategoryGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PriceCategoryGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PriceCategoryCountArgs<ExtArgs>
+            result: $Utils.Optional<PriceCategoryCountAggregateOutputType> | number
           }
         }
       }
@@ -3007,6 +3097,7 @@ export namespace Prisma {
     roomType?: RoomTypeOmit
     floorRoomAssignment?: FloorRoomAssignmentOmit
     roomStatus?: RoomStatusOmit
+    priceCategory?: PriceCategoryOmit
     price?: PriceOmit
     booking?: BookingOmit
     payment?: PaymentOmit
@@ -3443,6 +3534,55 @@ export namespace Prisma {
    */
   export type RoomTypeCountOutputTypeCountFloorRoomAssignmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: FloorRoomAssignmentWhereInput
+  }
+
+
+  /**
+   * Count Type PriceCategoryCountOutputType
+   */
+
+  export type PriceCategoryCountOutputType = {
+    roomTypes: number
+    rooms: number
+    payments: number
+  }
+
+  export type PriceCategoryCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    roomTypes?: boolean | PriceCategoryCountOutputTypeCountRoomTypesArgs
+    rooms?: boolean | PriceCategoryCountOutputTypeCountRoomsArgs
+    payments?: boolean | PriceCategoryCountOutputTypeCountPaymentsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * PriceCategoryCountOutputType without action
+   */
+  export type PriceCategoryCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PriceCategoryCountOutputType
+     */
+    select?: PriceCategoryCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * PriceCategoryCountOutputType without action
+   */
+  export type PriceCategoryCountOutputTypeCountRoomTypesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RoomTypeWhereInput
+  }
+
+  /**
+   * PriceCategoryCountOutputType without action
+   */
+  export type PriceCategoryCountOutputTypeCountRoomsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RoomWhereInput
+  }
+
+  /**
+   * PriceCategoryCountOutputType without action
+   */
+  export type PriceCategoryCountOutputTypeCountPaymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PaymentWhereInput
   }
 
 
@@ -13017,6 +13157,7 @@ export namespace Prisma {
     capacity: number | null
     dormitoryId: string | null
     roomTypeId: string | null
+    priceCategoryId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -13028,6 +13169,7 @@ export namespace Prisma {
     capacity: number | null
     dormitoryId: string | null
     roomTypeId: string | null
+    priceCategoryId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -13041,6 +13183,7 @@ export namespace Prisma {
     roomEquipment: number
     photos: number
     roomTypeId: number
+    priceCategoryId: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -13062,6 +13205,7 @@ export namespace Prisma {
     capacity?: true
     dormitoryId?: true
     roomTypeId?: true
+    priceCategoryId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -13073,6 +13217,7 @@ export namespace Prisma {
     capacity?: true
     dormitoryId?: true
     roomTypeId?: true
+    priceCategoryId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -13086,6 +13231,7 @@ export namespace Prisma {
     roomEquipment?: true
     photos?: true
     roomTypeId?: true
+    priceCategoryId?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -13186,6 +13332,7 @@ export namespace Prisma {
     roomEquipment: string[]
     photos: string[]
     roomTypeId: string | null
+    priceCategoryId: string | null
     createdAt: Date
     updatedAt: Date
     _count: RoomCountAggregateOutputType | null
@@ -13218,11 +13365,13 @@ export namespace Prisma {
     roomEquipment?: boolean
     photos?: boolean
     roomTypeId?: boolean
+    priceCategoryId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     floor?: boolean | FloorDefaultArgs<ExtArgs>
     dormitory?: boolean | DormitoryDefaultArgs<ExtArgs>
     roomType?: boolean | Room$roomTypeArgs<ExtArgs>
+    priceCategory?: boolean | Room$priceCategoryArgs<ExtArgs>
     announcementRecipients?: boolean | Room$announcementRecipientsArgs<ExtArgs>
     notifications?: boolean | Room$notificationsArgs<ExtArgs>
     bookings?: boolean | Room$bookingsArgs<ExtArgs>
@@ -13241,11 +13390,13 @@ export namespace Prisma {
     roomEquipment?: boolean
     photos?: boolean
     roomTypeId?: boolean
+    priceCategoryId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     floor?: boolean | FloorDefaultArgs<ExtArgs>
     dormitory?: boolean | DormitoryDefaultArgs<ExtArgs>
     roomType?: boolean | Room$roomTypeArgs<ExtArgs>
+    priceCategory?: boolean | Room$priceCategoryArgs<ExtArgs>
   }, ExtArgs["result"]["room"]>
 
   export type RoomSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -13257,11 +13408,13 @@ export namespace Prisma {
     roomEquipment?: boolean
     photos?: boolean
     roomTypeId?: boolean
+    priceCategoryId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     floor?: boolean | FloorDefaultArgs<ExtArgs>
     dormitory?: boolean | DormitoryDefaultArgs<ExtArgs>
     roomType?: boolean | Room$roomTypeArgs<ExtArgs>
+    priceCategory?: boolean | Room$priceCategoryArgs<ExtArgs>
   }, ExtArgs["result"]["room"]>
 
   export type RoomSelectScalar = {
@@ -13273,15 +13426,17 @@ export namespace Prisma {
     roomEquipment?: boolean
     photos?: boolean
     roomTypeId?: boolean
+    priceCategoryId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type RoomOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "number" | "floorId" | "capacity" | "dormitoryId" | "roomEquipment" | "photos" | "roomTypeId" | "createdAt" | "updatedAt", ExtArgs["result"]["room"]>
+  export type RoomOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "number" | "floorId" | "capacity" | "dormitoryId" | "roomEquipment" | "photos" | "roomTypeId" | "priceCategoryId" | "createdAt" | "updatedAt", ExtArgs["result"]["room"]>
   export type RoomInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     floor?: boolean | FloorDefaultArgs<ExtArgs>
     dormitory?: boolean | DormitoryDefaultArgs<ExtArgs>
     roomType?: boolean | Room$roomTypeArgs<ExtArgs>
+    priceCategory?: boolean | Room$priceCategoryArgs<ExtArgs>
     announcementRecipients?: boolean | Room$announcementRecipientsArgs<ExtArgs>
     notifications?: boolean | Room$notificationsArgs<ExtArgs>
     bookings?: boolean | Room$bookingsArgs<ExtArgs>
@@ -13294,11 +13449,13 @@ export namespace Prisma {
     floor?: boolean | FloorDefaultArgs<ExtArgs>
     dormitory?: boolean | DormitoryDefaultArgs<ExtArgs>
     roomType?: boolean | Room$roomTypeArgs<ExtArgs>
+    priceCategory?: boolean | Room$priceCategoryArgs<ExtArgs>
   }
   export type RoomIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     floor?: boolean | FloorDefaultArgs<ExtArgs>
     dormitory?: boolean | DormitoryDefaultArgs<ExtArgs>
     roomType?: boolean | Room$roomTypeArgs<ExtArgs>
+    priceCategory?: boolean | Room$priceCategoryArgs<ExtArgs>
   }
 
   export type $RoomPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -13307,6 +13464,7 @@ export namespace Prisma {
       floor: Prisma.$FloorPayload<ExtArgs>
       dormitory: Prisma.$DormitoryPayload<ExtArgs>
       roomType: Prisma.$RoomTypePayload<ExtArgs> | null
+      priceCategory: Prisma.$PriceCategoryPayload<ExtArgs> | null
       announcementRecipients: Prisma.$AnnouncementRecipientPayload<ExtArgs>[]
       notifications: Prisma.$NotificationPayload<ExtArgs>[]
       bookings: Prisma.$BookingPayload<ExtArgs>[]
@@ -13323,6 +13481,7 @@ export namespace Prisma {
       roomEquipment: string[]
       photos: string[]
       roomTypeId: string | null
+      priceCategoryId: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["room"]>
@@ -13722,6 +13881,7 @@ export namespace Prisma {
     floor<T extends FloorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, FloorDefaultArgs<ExtArgs>>): Prisma__FloorClient<$Result.GetResult<Prisma.$FloorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     dormitory<T extends DormitoryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DormitoryDefaultArgs<ExtArgs>>): Prisma__DormitoryClient<$Result.GetResult<Prisma.$DormitoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     roomType<T extends Room$roomTypeArgs<ExtArgs> = {}>(args?: Subset<T, Room$roomTypeArgs<ExtArgs>>): Prisma__RoomTypeClient<$Result.GetResult<Prisma.$RoomTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    priceCategory<T extends Room$priceCategoryArgs<ExtArgs> = {}>(args?: Subset<T, Room$priceCategoryArgs<ExtArgs>>): Prisma__PriceCategoryClient<$Result.GetResult<Prisma.$PriceCategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     announcementRecipients<T extends Room$announcementRecipientsArgs<ExtArgs> = {}>(args?: Subset<T, Room$announcementRecipientsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnouncementRecipientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notifications<T extends Room$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, Room$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     bookings<T extends Room$bookingsArgs<ExtArgs> = {}>(args?: Subset<T, Room$bookingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -13765,6 +13925,7 @@ export namespace Prisma {
     readonly roomEquipment: FieldRef<"Room", 'String[]'>
     readonly photos: FieldRef<"Room", 'String[]'>
     readonly roomTypeId: FieldRef<"Room", 'String'>
+    readonly priceCategoryId: FieldRef<"Room", 'String'>
     readonly createdAt: FieldRef<"Room", 'DateTime'>
     readonly updatedAt: FieldRef<"Room", 'DateTime'>
   }
@@ -14182,6 +14343,25 @@ export namespace Prisma {
   }
 
   /**
+   * Room.priceCategory
+   */
+  export type Room$priceCategoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PriceCategory
+     */
+    select?: PriceCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PriceCategory
+     */
+    omit?: PriceCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PriceCategoryInclude<ExtArgs> | null
+    where?: PriceCategoryWhereInput
+  }
+
+  /**
    * Room.announcementRecipients
    */
   export type Room$announcementRecipientsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -14370,6 +14550,7 @@ export namespace Prisma {
     description: string | null
     capacity: number | null
     typeCode: string | null
+    priceCategoryId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -14380,6 +14561,7 @@ export namespace Prisma {
     description: string | null
     capacity: number | null
     typeCode: string | null
+    priceCategoryId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -14392,6 +14574,7 @@ export namespace Prisma {
     equipment: number
     typeCode: number
     photos: number
+    priceCategoryId: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -14412,6 +14595,7 @@ export namespace Prisma {
     description?: true
     capacity?: true
     typeCode?: true
+    priceCategoryId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -14422,6 +14606,7 @@ export namespace Prisma {
     description?: true
     capacity?: true
     typeCode?: true
+    priceCategoryId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -14434,6 +14619,7 @@ export namespace Prisma {
     equipment?: true
     typeCode?: true
     photos?: true
+    priceCategoryId?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -14533,6 +14719,7 @@ export namespace Prisma {
     equipment: string[]
     typeCode: string
     photos: string[]
+    priceCategoryId: string | null
     createdAt: Date
     updatedAt: Date
     _count: RoomTypeCountAggregateOutputType | null
@@ -14564,10 +14751,12 @@ export namespace Prisma {
     equipment?: boolean
     typeCode?: boolean
     photos?: boolean
+    priceCategoryId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     rooms?: boolean | RoomType$roomsArgs<ExtArgs>
     floorRoomAssignments?: boolean | RoomType$floorRoomAssignmentsArgs<ExtArgs>
+    priceCategory?: boolean | RoomType$priceCategoryArgs<ExtArgs>
     _count?: boolean | RoomTypeCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["roomType"]>
 
@@ -14579,8 +14768,10 @@ export namespace Prisma {
     equipment?: boolean
     typeCode?: boolean
     photos?: boolean
+    priceCategoryId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    priceCategory?: boolean | RoomType$priceCategoryArgs<ExtArgs>
   }, ExtArgs["result"]["roomType"]>
 
   export type RoomTypeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -14591,8 +14782,10 @@ export namespace Prisma {
     equipment?: boolean
     typeCode?: boolean
     photos?: boolean
+    priceCategoryId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    priceCategory?: boolean | RoomType$priceCategoryArgs<ExtArgs>
   }, ExtArgs["result"]["roomType"]>
 
   export type RoomTypeSelectScalar = {
@@ -14603,24 +14796,31 @@ export namespace Prisma {
     equipment?: boolean
     typeCode?: boolean
     photos?: boolean
+    priceCategoryId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type RoomTypeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "capacity" | "equipment" | "typeCode" | "photos" | "createdAt" | "updatedAt", ExtArgs["result"]["roomType"]>
+  export type RoomTypeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "capacity" | "equipment" | "typeCode" | "photos" | "priceCategoryId" | "createdAt" | "updatedAt", ExtArgs["result"]["roomType"]>
   export type RoomTypeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     rooms?: boolean | RoomType$roomsArgs<ExtArgs>
     floorRoomAssignments?: boolean | RoomType$floorRoomAssignmentsArgs<ExtArgs>
+    priceCategory?: boolean | RoomType$priceCategoryArgs<ExtArgs>
     _count?: boolean | RoomTypeCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type RoomTypeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type RoomTypeIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type RoomTypeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    priceCategory?: boolean | RoomType$priceCategoryArgs<ExtArgs>
+  }
+  export type RoomTypeIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    priceCategory?: boolean | RoomType$priceCategoryArgs<ExtArgs>
+  }
 
   export type $RoomTypePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "RoomType"
     objects: {
       rooms: Prisma.$RoomPayload<ExtArgs>[]
       floorRoomAssignments: Prisma.$FloorRoomAssignmentPayload<ExtArgs>[]
+      priceCategory: Prisma.$PriceCategoryPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -14630,6 +14830,7 @@ export namespace Prisma {
       equipment: string[]
       typeCode: string
       photos: string[]
+      priceCategoryId: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["roomType"]>
@@ -15028,6 +15229,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     rooms<T extends RoomType$roomsArgs<ExtArgs> = {}>(args?: Subset<T, RoomType$roomsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoomPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     floorRoomAssignments<T extends RoomType$floorRoomAssignmentsArgs<ExtArgs> = {}>(args?: Subset<T, RoomType$floorRoomAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FloorRoomAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    priceCategory<T extends RoomType$priceCategoryArgs<ExtArgs> = {}>(args?: Subset<T, RoomType$priceCategoryArgs<ExtArgs>>): Prisma__PriceCategoryClient<$Result.GetResult<Prisma.$PriceCategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -15064,6 +15266,7 @@ export namespace Prisma {
     readonly equipment: FieldRef<"RoomType", 'String[]'>
     readonly typeCode: FieldRef<"RoomType", 'String'>
     readonly photos: FieldRef<"RoomType", 'String[]'>
+    readonly priceCategoryId: FieldRef<"RoomType", 'String'>
     readonly createdAt: FieldRef<"RoomType", 'DateTime'>
     readonly updatedAt: FieldRef<"RoomType", 'DateTime'>
   }
@@ -15315,6 +15518,10 @@ export namespace Prisma {
      */
     data: RoomTypeCreateManyInput | RoomTypeCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomTypeIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -15385,6 +15592,10 @@ export namespace Prisma {
      * Limit how many RoomTypes to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomTypeIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -15499,6 +15710,25 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: FloorRoomAssignmentScalarFieldEnum | FloorRoomAssignmentScalarFieldEnum[]
+  }
+
+  /**
+   * RoomType.priceCategory
+   */
+  export type RoomType$priceCategoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PriceCategory
+     */
+    select?: PriceCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PriceCategory
+     */
+    omit?: PriceCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PriceCategoryInclude<ExtArgs> | null
+    where?: PriceCategoryWhereInput
   }
 
   /**
@@ -17658,6 +17888,1209 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: RoomStatusInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PriceCategory
+   */
+
+  export type AggregatePriceCategory = {
+    _count: PriceCategoryCountAggregateOutputType | null
+    _avg: PriceCategoryAvgAggregateOutputType | null
+    _sum: PriceCategorySumAggregateOutputType | null
+    _min: PriceCategoryMinAggregateOutputType | null
+    _max: PriceCategoryMaxAggregateOutputType | null
+  }
+
+  export type PriceCategoryAvgAggregateOutputType = {
+    pricePerMonth: number | null
+    pricePerDay: number | null
+  }
+
+  export type PriceCategorySumAggregateOutputType = {
+    pricePerMonth: number | null
+    pricePerDay: number | null
+  }
+
+  export type PriceCategoryMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    description: string | null
+    pricePerMonth: number | null
+    pricePerDay: number | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PriceCategoryMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    description: string | null
+    pricePerMonth: number | null
+    pricePerDay: number | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PriceCategoryCountAggregateOutputType = {
+    id: number
+    name: number
+    description: number
+    pricePerMonth: number
+    pricePerDay: number
+    isActive: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type PriceCategoryAvgAggregateInputType = {
+    pricePerMonth?: true
+    pricePerDay?: true
+  }
+
+  export type PriceCategorySumAggregateInputType = {
+    pricePerMonth?: true
+    pricePerDay?: true
+  }
+
+  export type PriceCategoryMinAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    pricePerMonth?: true
+    pricePerDay?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PriceCategoryMaxAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    pricePerMonth?: true
+    pricePerDay?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PriceCategoryCountAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    pricePerMonth?: true
+    pricePerDay?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type PriceCategoryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PriceCategory to aggregate.
+     */
+    where?: PriceCategoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PriceCategories to fetch.
+     */
+    orderBy?: PriceCategoryOrderByWithRelationInput | PriceCategoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PriceCategoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PriceCategories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PriceCategories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PriceCategories
+    **/
+    _count?: true | PriceCategoryCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PriceCategoryAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PriceCategorySumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PriceCategoryMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PriceCategoryMaxAggregateInputType
+  }
+
+  export type GetPriceCategoryAggregateType<T extends PriceCategoryAggregateArgs> = {
+        [P in keyof T & keyof AggregatePriceCategory]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePriceCategory[P]>
+      : GetScalarType<T[P], AggregatePriceCategory[P]>
+  }
+
+
+
+
+  export type PriceCategoryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PriceCategoryWhereInput
+    orderBy?: PriceCategoryOrderByWithAggregationInput | PriceCategoryOrderByWithAggregationInput[]
+    by: PriceCategoryScalarFieldEnum[] | PriceCategoryScalarFieldEnum
+    having?: PriceCategoryScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PriceCategoryCountAggregateInputType | true
+    _avg?: PriceCategoryAvgAggregateInputType
+    _sum?: PriceCategorySumAggregateInputType
+    _min?: PriceCategoryMinAggregateInputType
+    _max?: PriceCategoryMaxAggregateInputType
+  }
+
+  export type PriceCategoryGroupByOutputType = {
+    id: string
+    name: string
+    description: string | null
+    pricePerMonth: number
+    pricePerDay: number
+    isActive: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: PriceCategoryCountAggregateOutputType | null
+    _avg: PriceCategoryAvgAggregateOutputType | null
+    _sum: PriceCategorySumAggregateOutputType | null
+    _min: PriceCategoryMinAggregateOutputType | null
+    _max: PriceCategoryMaxAggregateOutputType | null
+  }
+
+  type GetPriceCategoryGroupByPayload<T extends PriceCategoryGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PriceCategoryGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PriceCategoryGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PriceCategoryGroupByOutputType[P]>
+            : GetScalarType<T[P], PriceCategoryGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PriceCategorySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    pricePerMonth?: boolean
+    pricePerDay?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    roomTypes?: boolean | PriceCategory$roomTypesArgs<ExtArgs>
+    rooms?: boolean | PriceCategory$roomsArgs<ExtArgs>
+    payments?: boolean | PriceCategory$paymentsArgs<ExtArgs>
+    _count?: boolean | PriceCategoryCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["priceCategory"]>
+
+  export type PriceCategorySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    pricePerMonth?: boolean
+    pricePerDay?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["priceCategory"]>
+
+  export type PriceCategorySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    pricePerMonth?: boolean
+    pricePerDay?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["priceCategory"]>
+
+  export type PriceCategorySelectScalar = {
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    pricePerMonth?: boolean
+    pricePerDay?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type PriceCategoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "pricePerMonth" | "pricePerDay" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["priceCategory"]>
+  export type PriceCategoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    roomTypes?: boolean | PriceCategory$roomTypesArgs<ExtArgs>
+    rooms?: boolean | PriceCategory$roomsArgs<ExtArgs>
+    payments?: boolean | PriceCategory$paymentsArgs<ExtArgs>
+    _count?: boolean | PriceCategoryCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type PriceCategoryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type PriceCategoryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $PriceCategoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PriceCategory"
+    objects: {
+      roomTypes: Prisma.$RoomTypePayload<ExtArgs>[]
+      rooms: Prisma.$RoomPayload<ExtArgs>[]
+      payments: Prisma.$PaymentPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      description: string | null
+      pricePerMonth: number
+      pricePerDay: number
+      isActive: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["priceCategory"]>
+    composites: {}
+  }
+
+  type PriceCategoryGetPayload<S extends boolean | null | undefined | PriceCategoryDefaultArgs> = $Result.GetResult<Prisma.$PriceCategoryPayload, S>
+
+  type PriceCategoryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PriceCategoryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PriceCategoryCountAggregateInputType | true
+    }
+
+  export interface PriceCategoryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PriceCategory'], meta: { name: 'PriceCategory' } }
+    /**
+     * Find zero or one PriceCategory that matches the filter.
+     * @param {PriceCategoryFindUniqueArgs} args - Arguments to find a PriceCategory
+     * @example
+     * // Get one PriceCategory
+     * const priceCategory = await prisma.priceCategory.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PriceCategoryFindUniqueArgs>(args: SelectSubset<T, PriceCategoryFindUniqueArgs<ExtArgs>>): Prisma__PriceCategoryClient<$Result.GetResult<Prisma.$PriceCategoryPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PriceCategory that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PriceCategoryFindUniqueOrThrowArgs} args - Arguments to find a PriceCategory
+     * @example
+     * // Get one PriceCategory
+     * const priceCategory = await prisma.priceCategory.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PriceCategoryFindUniqueOrThrowArgs>(args: SelectSubset<T, PriceCategoryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PriceCategoryClient<$Result.GetResult<Prisma.$PriceCategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PriceCategory that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PriceCategoryFindFirstArgs} args - Arguments to find a PriceCategory
+     * @example
+     * // Get one PriceCategory
+     * const priceCategory = await prisma.priceCategory.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PriceCategoryFindFirstArgs>(args?: SelectSubset<T, PriceCategoryFindFirstArgs<ExtArgs>>): Prisma__PriceCategoryClient<$Result.GetResult<Prisma.$PriceCategoryPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PriceCategory that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PriceCategoryFindFirstOrThrowArgs} args - Arguments to find a PriceCategory
+     * @example
+     * // Get one PriceCategory
+     * const priceCategory = await prisma.priceCategory.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PriceCategoryFindFirstOrThrowArgs>(args?: SelectSubset<T, PriceCategoryFindFirstOrThrowArgs<ExtArgs>>): Prisma__PriceCategoryClient<$Result.GetResult<Prisma.$PriceCategoryPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PriceCategories that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PriceCategoryFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PriceCategories
+     * const priceCategories = await prisma.priceCategory.findMany()
+     * 
+     * // Get first 10 PriceCategories
+     * const priceCategories = await prisma.priceCategory.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const priceCategoryWithIdOnly = await prisma.priceCategory.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PriceCategoryFindManyArgs>(args?: SelectSubset<T, PriceCategoryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PriceCategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PriceCategory.
+     * @param {PriceCategoryCreateArgs} args - Arguments to create a PriceCategory.
+     * @example
+     * // Create one PriceCategory
+     * const PriceCategory = await prisma.priceCategory.create({
+     *   data: {
+     *     // ... data to create a PriceCategory
+     *   }
+     * })
+     * 
+     */
+    create<T extends PriceCategoryCreateArgs>(args: SelectSubset<T, PriceCategoryCreateArgs<ExtArgs>>): Prisma__PriceCategoryClient<$Result.GetResult<Prisma.$PriceCategoryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PriceCategories.
+     * @param {PriceCategoryCreateManyArgs} args - Arguments to create many PriceCategories.
+     * @example
+     * // Create many PriceCategories
+     * const priceCategory = await prisma.priceCategory.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PriceCategoryCreateManyArgs>(args?: SelectSubset<T, PriceCategoryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PriceCategories and returns the data saved in the database.
+     * @param {PriceCategoryCreateManyAndReturnArgs} args - Arguments to create many PriceCategories.
+     * @example
+     * // Create many PriceCategories
+     * const priceCategory = await prisma.priceCategory.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PriceCategories and only return the `id`
+     * const priceCategoryWithIdOnly = await prisma.priceCategory.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PriceCategoryCreateManyAndReturnArgs>(args?: SelectSubset<T, PriceCategoryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PriceCategoryPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PriceCategory.
+     * @param {PriceCategoryDeleteArgs} args - Arguments to delete one PriceCategory.
+     * @example
+     * // Delete one PriceCategory
+     * const PriceCategory = await prisma.priceCategory.delete({
+     *   where: {
+     *     // ... filter to delete one PriceCategory
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PriceCategoryDeleteArgs>(args: SelectSubset<T, PriceCategoryDeleteArgs<ExtArgs>>): Prisma__PriceCategoryClient<$Result.GetResult<Prisma.$PriceCategoryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PriceCategory.
+     * @param {PriceCategoryUpdateArgs} args - Arguments to update one PriceCategory.
+     * @example
+     * // Update one PriceCategory
+     * const priceCategory = await prisma.priceCategory.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PriceCategoryUpdateArgs>(args: SelectSubset<T, PriceCategoryUpdateArgs<ExtArgs>>): Prisma__PriceCategoryClient<$Result.GetResult<Prisma.$PriceCategoryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PriceCategories.
+     * @param {PriceCategoryDeleteManyArgs} args - Arguments to filter PriceCategories to delete.
+     * @example
+     * // Delete a few PriceCategories
+     * const { count } = await prisma.priceCategory.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PriceCategoryDeleteManyArgs>(args?: SelectSubset<T, PriceCategoryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PriceCategories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PriceCategoryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PriceCategories
+     * const priceCategory = await prisma.priceCategory.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PriceCategoryUpdateManyArgs>(args: SelectSubset<T, PriceCategoryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PriceCategories and returns the data updated in the database.
+     * @param {PriceCategoryUpdateManyAndReturnArgs} args - Arguments to update many PriceCategories.
+     * @example
+     * // Update many PriceCategories
+     * const priceCategory = await prisma.priceCategory.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PriceCategories and only return the `id`
+     * const priceCategoryWithIdOnly = await prisma.priceCategory.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PriceCategoryUpdateManyAndReturnArgs>(args: SelectSubset<T, PriceCategoryUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PriceCategoryPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PriceCategory.
+     * @param {PriceCategoryUpsertArgs} args - Arguments to update or create a PriceCategory.
+     * @example
+     * // Update or create a PriceCategory
+     * const priceCategory = await prisma.priceCategory.upsert({
+     *   create: {
+     *     // ... data to create a PriceCategory
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PriceCategory we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PriceCategoryUpsertArgs>(args: SelectSubset<T, PriceCategoryUpsertArgs<ExtArgs>>): Prisma__PriceCategoryClient<$Result.GetResult<Prisma.$PriceCategoryPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PriceCategories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PriceCategoryCountArgs} args - Arguments to filter PriceCategories to count.
+     * @example
+     * // Count the number of PriceCategories
+     * const count = await prisma.priceCategory.count({
+     *   where: {
+     *     // ... the filter for the PriceCategories we want to count
+     *   }
+     * })
+    **/
+    count<T extends PriceCategoryCountArgs>(
+      args?: Subset<T, PriceCategoryCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PriceCategoryCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PriceCategory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PriceCategoryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PriceCategoryAggregateArgs>(args: Subset<T, PriceCategoryAggregateArgs>): Prisma.PrismaPromise<GetPriceCategoryAggregateType<T>>
+
+    /**
+     * Group by PriceCategory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PriceCategoryGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PriceCategoryGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PriceCategoryGroupByArgs['orderBy'] }
+        : { orderBy?: PriceCategoryGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PriceCategoryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPriceCategoryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PriceCategory model
+   */
+  readonly fields: PriceCategoryFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PriceCategory.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PriceCategoryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    roomTypes<T extends PriceCategory$roomTypesArgs<ExtArgs> = {}>(args?: Subset<T, PriceCategory$roomTypesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoomTypePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    rooms<T extends PriceCategory$roomsArgs<ExtArgs> = {}>(args?: Subset<T, PriceCategory$roomsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoomPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    payments<T extends PriceCategory$paymentsArgs<ExtArgs> = {}>(args?: Subset<T, PriceCategory$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PriceCategory model
+   */
+  interface PriceCategoryFieldRefs {
+    readonly id: FieldRef<"PriceCategory", 'String'>
+    readonly name: FieldRef<"PriceCategory", 'String'>
+    readonly description: FieldRef<"PriceCategory", 'String'>
+    readonly pricePerMonth: FieldRef<"PriceCategory", 'Float'>
+    readonly pricePerDay: FieldRef<"PriceCategory", 'Float'>
+    readonly isActive: FieldRef<"PriceCategory", 'Boolean'>
+    readonly createdAt: FieldRef<"PriceCategory", 'DateTime'>
+    readonly updatedAt: FieldRef<"PriceCategory", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PriceCategory findUnique
+   */
+  export type PriceCategoryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PriceCategory
+     */
+    select?: PriceCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PriceCategory
+     */
+    omit?: PriceCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PriceCategoryInclude<ExtArgs> | null
+    /**
+     * Filter, which PriceCategory to fetch.
+     */
+    where: PriceCategoryWhereUniqueInput
+  }
+
+  /**
+   * PriceCategory findUniqueOrThrow
+   */
+  export type PriceCategoryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PriceCategory
+     */
+    select?: PriceCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PriceCategory
+     */
+    omit?: PriceCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PriceCategoryInclude<ExtArgs> | null
+    /**
+     * Filter, which PriceCategory to fetch.
+     */
+    where: PriceCategoryWhereUniqueInput
+  }
+
+  /**
+   * PriceCategory findFirst
+   */
+  export type PriceCategoryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PriceCategory
+     */
+    select?: PriceCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PriceCategory
+     */
+    omit?: PriceCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PriceCategoryInclude<ExtArgs> | null
+    /**
+     * Filter, which PriceCategory to fetch.
+     */
+    where?: PriceCategoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PriceCategories to fetch.
+     */
+    orderBy?: PriceCategoryOrderByWithRelationInput | PriceCategoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PriceCategories.
+     */
+    cursor?: PriceCategoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PriceCategories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PriceCategories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PriceCategories.
+     */
+    distinct?: PriceCategoryScalarFieldEnum | PriceCategoryScalarFieldEnum[]
+  }
+
+  /**
+   * PriceCategory findFirstOrThrow
+   */
+  export type PriceCategoryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PriceCategory
+     */
+    select?: PriceCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PriceCategory
+     */
+    omit?: PriceCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PriceCategoryInclude<ExtArgs> | null
+    /**
+     * Filter, which PriceCategory to fetch.
+     */
+    where?: PriceCategoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PriceCategories to fetch.
+     */
+    orderBy?: PriceCategoryOrderByWithRelationInput | PriceCategoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PriceCategories.
+     */
+    cursor?: PriceCategoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PriceCategories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PriceCategories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PriceCategories.
+     */
+    distinct?: PriceCategoryScalarFieldEnum | PriceCategoryScalarFieldEnum[]
+  }
+
+  /**
+   * PriceCategory findMany
+   */
+  export type PriceCategoryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PriceCategory
+     */
+    select?: PriceCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PriceCategory
+     */
+    omit?: PriceCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PriceCategoryInclude<ExtArgs> | null
+    /**
+     * Filter, which PriceCategories to fetch.
+     */
+    where?: PriceCategoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PriceCategories to fetch.
+     */
+    orderBy?: PriceCategoryOrderByWithRelationInput | PriceCategoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PriceCategories.
+     */
+    cursor?: PriceCategoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PriceCategories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PriceCategories.
+     */
+    skip?: number
+    distinct?: PriceCategoryScalarFieldEnum | PriceCategoryScalarFieldEnum[]
+  }
+
+  /**
+   * PriceCategory create
+   */
+  export type PriceCategoryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PriceCategory
+     */
+    select?: PriceCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PriceCategory
+     */
+    omit?: PriceCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PriceCategoryInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PriceCategory.
+     */
+    data: XOR<PriceCategoryCreateInput, PriceCategoryUncheckedCreateInput>
+  }
+
+  /**
+   * PriceCategory createMany
+   */
+  export type PriceCategoryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PriceCategories.
+     */
+    data: PriceCategoryCreateManyInput | PriceCategoryCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PriceCategory createManyAndReturn
+   */
+  export type PriceCategoryCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PriceCategory
+     */
+    select?: PriceCategorySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PriceCategory
+     */
+    omit?: PriceCategoryOmit<ExtArgs> | null
+    /**
+     * The data used to create many PriceCategories.
+     */
+    data: PriceCategoryCreateManyInput | PriceCategoryCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PriceCategory update
+   */
+  export type PriceCategoryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PriceCategory
+     */
+    select?: PriceCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PriceCategory
+     */
+    omit?: PriceCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PriceCategoryInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PriceCategory.
+     */
+    data: XOR<PriceCategoryUpdateInput, PriceCategoryUncheckedUpdateInput>
+    /**
+     * Choose, which PriceCategory to update.
+     */
+    where: PriceCategoryWhereUniqueInput
+  }
+
+  /**
+   * PriceCategory updateMany
+   */
+  export type PriceCategoryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PriceCategories.
+     */
+    data: XOR<PriceCategoryUpdateManyMutationInput, PriceCategoryUncheckedUpdateManyInput>
+    /**
+     * Filter which PriceCategories to update
+     */
+    where?: PriceCategoryWhereInput
+    /**
+     * Limit how many PriceCategories to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PriceCategory updateManyAndReturn
+   */
+  export type PriceCategoryUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PriceCategory
+     */
+    select?: PriceCategorySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PriceCategory
+     */
+    omit?: PriceCategoryOmit<ExtArgs> | null
+    /**
+     * The data used to update PriceCategories.
+     */
+    data: XOR<PriceCategoryUpdateManyMutationInput, PriceCategoryUncheckedUpdateManyInput>
+    /**
+     * Filter which PriceCategories to update
+     */
+    where?: PriceCategoryWhereInput
+    /**
+     * Limit how many PriceCategories to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PriceCategory upsert
+   */
+  export type PriceCategoryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PriceCategory
+     */
+    select?: PriceCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PriceCategory
+     */
+    omit?: PriceCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PriceCategoryInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PriceCategory to update in case it exists.
+     */
+    where: PriceCategoryWhereUniqueInput
+    /**
+     * In case the PriceCategory found by the `where` argument doesn't exist, create a new PriceCategory with this data.
+     */
+    create: XOR<PriceCategoryCreateInput, PriceCategoryUncheckedCreateInput>
+    /**
+     * In case the PriceCategory was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PriceCategoryUpdateInput, PriceCategoryUncheckedUpdateInput>
+  }
+
+  /**
+   * PriceCategory delete
+   */
+  export type PriceCategoryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PriceCategory
+     */
+    select?: PriceCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PriceCategory
+     */
+    omit?: PriceCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PriceCategoryInclude<ExtArgs> | null
+    /**
+     * Filter which PriceCategory to delete.
+     */
+    where: PriceCategoryWhereUniqueInput
+  }
+
+  /**
+   * PriceCategory deleteMany
+   */
+  export type PriceCategoryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PriceCategories to delete
+     */
+    where?: PriceCategoryWhereInput
+    /**
+     * Limit how many PriceCategories to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PriceCategory.roomTypes
+   */
+  export type PriceCategory$roomTypesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoomType
+     */
+    select?: RoomTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoomType
+     */
+    omit?: RoomTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomTypeInclude<ExtArgs> | null
+    where?: RoomTypeWhereInput
+    orderBy?: RoomTypeOrderByWithRelationInput | RoomTypeOrderByWithRelationInput[]
+    cursor?: RoomTypeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RoomTypeScalarFieldEnum | RoomTypeScalarFieldEnum[]
+  }
+
+  /**
+   * PriceCategory.rooms
+   */
+  export type PriceCategory$roomsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Room
+     */
+    select?: RoomSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Room
+     */
+    omit?: RoomOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomInclude<ExtArgs> | null
+    where?: RoomWhereInput
+    orderBy?: RoomOrderByWithRelationInput | RoomOrderByWithRelationInput[]
+    cursor?: RoomWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RoomScalarFieldEnum | RoomScalarFieldEnum[]
+  }
+
+  /**
+   * PriceCategory.payments
+   */
+  export type PriceCategory$paymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Payment
+     */
+    select?: PaymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Payment
+     */
+    omit?: PaymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentInclude<ExtArgs> | null
+    where?: PaymentWhereInput
+    orderBy?: PaymentOrderByWithRelationInput | PaymentOrderByWithRelationInput[]
+    cursor?: PaymentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PaymentScalarFieldEnum | PaymentScalarFieldEnum[]
+  }
+
+  /**
+   * PriceCategory without action
+   */
+  export type PriceCategoryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PriceCategory
+     */
+    select?: PriceCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PriceCategory
+     */
+    omit?: PriceCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PriceCategoryInclude<ExtArgs> | null
   }
 
 
@@ -20112,6 +21545,7 @@ export namespace Prisma {
     userId: string | null
     bookingId: string | null
     priceId: string | null
+    priceCategoryId: string | null
     amount: number | null
     currency: string | null
     paymentType: $Enums.PaymentType | null
@@ -20140,6 +21574,7 @@ export namespace Prisma {
     userId: string | null
     bookingId: string | null
     priceId: string | null
+    priceCategoryId: string | null
     amount: number | null
     currency: string | null
     paymentType: $Enums.PaymentType | null
@@ -20168,6 +21603,7 @@ export namespace Prisma {
     userId: number
     bookingId: number
     priceId: number
+    priceCategoryId: number
     amount: number
     currency: number
     paymentType: number
@@ -20206,6 +21642,7 @@ export namespace Prisma {
     userId?: true
     bookingId?: true
     priceId?: true
+    priceCategoryId?: true
     amount?: true
     currency?: true
     paymentType?: true
@@ -20234,6 +21671,7 @@ export namespace Prisma {
     userId?: true
     bookingId?: true
     priceId?: true
+    priceCategoryId?: true
     amount?: true
     currency?: true
     paymentType?: true
@@ -20262,6 +21700,7 @@ export namespace Prisma {
     userId?: true
     bookingId?: true
     priceId?: true
+    priceCategoryId?: true
     amount?: true
     currency?: true
     paymentType?: true
@@ -20377,6 +21816,7 @@ export namespace Prisma {
     userId: string
     bookingId: string | null
     priceId: string | null
+    priceCategoryId: string | null
     amount: number
     currency: string
     paymentType: $Enums.PaymentType
@@ -20424,6 +21864,7 @@ export namespace Prisma {
     userId?: boolean
     bookingId?: boolean
     priceId?: boolean
+    priceCategoryId?: boolean
     amount?: boolean
     currency?: boolean
     paymentType?: boolean
@@ -20448,6 +21889,7 @@ export namespace Prisma {
     user?: boolean | UserDefaultArgs<ExtArgs>
     booking?: boolean | Payment$bookingArgs<ExtArgs>
     price?: boolean | Payment$priceArgs<ExtArgs>
+    priceCategory?: boolean | Payment$priceCategoryArgs<ExtArgs>
     confirmedByUser?: boolean | Payment$confirmedByUserArgs<ExtArgs>
     generatedFromRecurring?: boolean | Payment$generatedFromRecurringArgs<ExtArgs>
     notifications?: boolean | Payment$notificationsArgs<ExtArgs>
@@ -20462,6 +21904,7 @@ export namespace Prisma {
     userId?: boolean
     bookingId?: boolean
     priceId?: boolean
+    priceCategoryId?: boolean
     amount?: boolean
     currency?: boolean
     paymentType?: boolean
@@ -20486,6 +21929,7 @@ export namespace Prisma {
     user?: boolean | UserDefaultArgs<ExtArgs>
     booking?: boolean | Payment$bookingArgs<ExtArgs>
     price?: boolean | Payment$priceArgs<ExtArgs>
+    priceCategory?: boolean | Payment$priceCategoryArgs<ExtArgs>
     confirmedByUser?: boolean | Payment$confirmedByUserArgs<ExtArgs>
     generatedFromRecurring?: boolean | Payment$generatedFromRecurringArgs<ExtArgs>
   }, ExtArgs["result"]["payment"]>
@@ -20495,6 +21939,7 @@ export namespace Prisma {
     userId?: boolean
     bookingId?: boolean
     priceId?: boolean
+    priceCategoryId?: boolean
     amount?: boolean
     currency?: boolean
     paymentType?: boolean
@@ -20519,6 +21964,7 @@ export namespace Prisma {
     user?: boolean | UserDefaultArgs<ExtArgs>
     booking?: boolean | Payment$bookingArgs<ExtArgs>
     price?: boolean | Payment$priceArgs<ExtArgs>
+    priceCategory?: boolean | Payment$priceCategoryArgs<ExtArgs>
     confirmedByUser?: boolean | Payment$confirmedByUserArgs<ExtArgs>
     generatedFromRecurring?: boolean | Payment$generatedFromRecurringArgs<ExtArgs>
   }, ExtArgs["result"]["payment"]>
@@ -20528,6 +21974,7 @@ export namespace Prisma {
     userId?: boolean
     bookingId?: boolean
     priceId?: boolean
+    priceCategoryId?: boolean
     amount?: boolean
     currency?: boolean
     paymentType?: boolean
@@ -20551,11 +21998,12 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type PaymentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "bookingId" | "priceId" | "amount" | "currency" | "paymentType" | "paymentMethod" | "status" | "dueDate" | "paidAt" | "description" | "paymentProofUrl" | "paymentProofFilename" | "paymentProofUploadedAt" | "externalPaymentId" | "failureReason" | "managerNotes" | "confirmedBy" | "confirmedAt" | "rejectedAt" | "rejectionReason" | "recurringPaymentId" | "createdAt" | "updatedAt", ExtArgs["result"]["payment"]>
+  export type PaymentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "bookingId" | "priceId" | "priceCategoryId" | "amount" | "currency" | "paymentType" | "paymentMethod" | "status" | "dueDate" | "paidAt" | "description" | "paymentProofUrl" | "paymentProofFilename" | "paymentProofUploadedAt" | "externalPaymentId" | "failureReason" | "managerNotes" | "confirmedBy" | "confirmedAt" | "rejectedAt" | "rejectionReason" | "recurringPaymentId" | "createdAt" | "updatedAt", ExtArgs["result"]["payment"]>
   export type PaymentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     booking?: boolean | Payment$bookingArgs<ExtArgs>
     price?: boolean | Payment$priceArgs<ExtArgs>
+    priceCategory?: boolean | Payment$priceCategoryArgs<ExtArgs>
     confirmedByUser?: boolean | Payment$confirmedByUserArgs<ExtArgs>
     generatedFromRecurring?: boolean | Payment$generatedFromRecurringArgs<ExtArgs>
     notifications?: boolean | Payment$notificationsArgs<ExtArgs>
@@ -20568,6 +22016,7 @@ export namespace Prisma {
     user?: boolean | UserDefaultArgs<ExtArgs>
     booking?: boolean | Payment$bookingArgs<ExtArgs>
     price?: boolean | Payment$priceArgs<ExtArgs>
+    priceCategory?: boolean | Payment$priceCategoryArgs<ExtArgs>
     confirmedByUser?: boolean | Payment$confirmedByUserArgs<ExtArgs>
     generatedFromRecurring?: boolean | Payment$generatedFromRecurringArgs<ExtArgs>
   }
@@ -20575,6 +22024,7 @@ export namespace Prisma {
     user?: boolean | UserDefaultArgs<ExtArgs>
     booking?: boolean | Payment$bookingArgs<ExtArgs>
     price?: boolean | Payment$priceArgs<ExtArgs>
+    priceCategory?: boolean | Payment$priceCategoryArgs<ExtArgs>
     confirmedByUser?: boolean | Payment$confirmedByUserArgs<ExtArgs>
     generatedFromRecurring?: boolean | Payment$generatedFromRecurringArgs<ExtArgs>
   }
@@ -20585,6 +22035,7 @@ export namespace Prisma {
       user: Prisma.$UserPayload<ExtArgs>
       booking: Prisma.$BookingPayload<ExtArgs> | null
       price: Prisma.$PricePayload<ExtArgs> | null
+      priceCategory: Prisma.$PriceCategoryPayload<ExtArgs> | null
       confirmedByUser: Prisma.$UserPayload<ExtArgs> | null
       generatedFromRecurring: Prisma.$RecurringPaymentPayload<ExtArgs> | null
       notifications: Prisma.$NotificationPayload<ExtArgs>[]
@@ -20597,6 +22048,7 @@ export namespace Prisma {
       userId: string
       bookingId: string | null
       priceId: string | null
+      priceCategoryId: string | null
       amount: number
       currency: string
       paymentType: $Enums.PaymentType
@@ -21015,6 +22467,7 @@ export namespace Prisma {
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     booking<T extends Payment$bookingArgs<ExtArgs> = {}>(args?: Subset<T, Payment$bookingArgs<ExtArgs>>): Prisma__BookingClient<$Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     price<T extends Payment$priceArgs<ExtArgs> = {}>(args?: Subset<T, Payment$priceArgs<ExtArgs>>): Prisma__PriceClient<$Result.GetResult<Prisma.$PricePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    priceCategory<T extends Payment$priceCategoryArgs<ExtArgs> = {}>(args?: Subset<T, Payment$priceCategoryArgs<ExtArgs>>): Prisma__PriceCategoryClient<$Result.GetResult<Prisma.$PriceCategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     confirmedByUser<T extends Payment$confirmedByUserArgs<ExtArgs> = {}>(args?: Subset<T, Payment$confirmedByUserArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     generatedFromRecurring<T extends Payment$generatedFromRecurringArgs<ExtArgs> = {}>(args?: Subset<T, Payment$generatedFromRecurringArgs<ExtArgs>>): Prisma__RecurringPaymentClient<$Result.GetResult<Prisma.$RecurringPaymentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     notifications<T extends Payment$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, Payment$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -21054,6 +22507,7 @@ export namespace Prisma {
     readonly userId: FieldRef<"Payment", 'String'>
     readonly bookingId: FieldRef<"Payment", 'String'>
     readonly priceId: FieldRef<"Payment", 'String'>
+    readonly priceCategoryId: FieldRef<"Payment", 'String'>
     readonly amount: FieldRef<"Payment", 'Float'>
     readonly currency: FieldRef<"Payment", 'String'>
     readonly paymentType: FieldRef<"Payment", 'PaymentType'>
@@ -21506,6 +22960,25 @@ export namespace Prisma {
      */
     include?: PriceInclude<ExtArgs> | null
     where?: PriceWhereInput
+  }
+
+  /**
+   * Payment.priceCategory
+   */
+  export type Payment$priceCategoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PriceCategory
+     */
+    select?: PriceCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PriceCategory
+     */
+    omit?: PriceCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PriceCategoryInclude<ExtArgs> | null
+    where?: PriceCategoryWhereInput
   }
 
   /**
@@ -31014,6 +32487,7 @@ export namespace Prisma {
     roomEquipment: 'roomEquipment',
     photos: 'photos',
     roomTypeId: 'roomTypeId',
+    priceCategoryId: 'priceCategoryId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -31029,6 +32503,7 @@ export namespace Prisma {
     equipment: 'equipment',
     typeCode: 'typeCode',
     photos: 'photos',
+    priceCategoryId: 'priceCategoryId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -31055,6 +32530,20 @@ export namespace Prisma {
   };
 
   export type RoomStatusScalarFieldEnum = (typeof RoomStatusScalarFieldEnum)[keyof typeof RoomStatusScalarFieldEnum]
+
+
+  export const PriceCategoryScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    description: 'description',
+    pricePerMonth: 'pricePerMonth',
+    pricePerDay: 'pricePerDay',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type PriceCategoryScalarFieldEnum = (typeof PriceCategoryScalarFieldEnum)[keyof typeof PriceCategoryScalarFieldEnum]
 
 
   export const PriceScalarFieldEnum: {
@@ -31091,6 +32580,7 @@ export namespace Prisma {
     userId: 'userId',
     bookingId: 'bookingId',
     priceId: 'priceId',
+    priceCategoryId: 'priceCategoryId',
     amount: 'amount',
     currency: 'currency',
     paymentType: 'paymentType',
@@ -32184,11 +33674,13 @@ export namespace Prisma {
     roomEquipment?: StringNullableListFilter<"Room">
     photos?: StringNullableListFilter<"Room">
     roomTypeId?: StringNullableFilter<"Room"> | string | null
+    priceCategoryId?: StringNullableFilter<"Room"> | string | null
     createdAt?: DateTimeFilter<"Room"> | Date | string
     updatedAt?: DateTimeFilter<"Room"> | Date | string
     floor?: XOR<FloorScalarRelationFilter, FloorWhereInput>
     dormitory?: XOR<DormitoryScalarRelationFilter, DormitoryWhereInput>
     roomType?: XOR<RoomTypeNullableScalarRelationFilter, RoomTypeWhereInput> | null
+    priceCategory?: XOR<PriceCategoryNullableScalarRelationFilter, PriceCategoryWhereInput> | null
     announcementRecipients?: AnnouncementRecipientListRelationFilter
     notifications?: NotificationListRelationFilter
     bookings?: BookingListRelationFilter
@@ -32206,11 +33698,13 @@ export namespace Prisma {
     roomEquipment?: SortOrder
     photos?: SortOrder
     roomTypeId?: SortOrderInput | SortOrder
+    priceCategoryId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     floor?: FloorOrderByWithRelationInput
     dormitory?: DormitoryOrderByWithRelationInput
     roomType?: RoomTypeOrderByWithRelationInput
+    priceCategory?: PriceCategoryOrderByWithRelationInput
     announcementRecipients?: AnnouncementRecipientOrderByRelationAggregateInput
     notifications?: NotificationOrderByRelationAggregateInput
     bookings?: BookingOrderByRelationAggregateInput
@@ -32232,11 +33726,13 @@ export namespace Prisma {
     roomEquipment?: StringNullableListFilter<"Room">
     photos?: StringNullableListFilter<"Room">
     roomTypeId?: StringNullableFilter<"Room"> | string | null
+    priceCategoryId?: StringNullableFilter<"Room"> | string | null
     createdAt?: DateTimeFilter<"Room"> | Date | string
     updatedAt?: DateTimeFilter<"Room"> | Date | string
     floor?: XOR<FloorScalarRelationFilter, FloorWhereInput>
     dormitory?: XOR<DormitoryScalarRelationFilter, DormitoryWhereInput>
     roomType?: XOR<RoomTypeNullableScalarRelationFilter, RoomTypeWhereInput> | null
+    priceCategory?: XOR<PriceCategoryNullableScalarRelationFilter, PriceCategoryWhereInput> | null
     announcementRecipients?: AnnouncementRecipientListRelationFilter
     notifications?: NotificationListRelationFilter
     bookings?: BookingListRelationFilter
@@ -32254,6 +33750,7 @@ export namespace Prisma {
     roomEquipment?: SortOrder
     photos?: SortOrder
     roomTypeId?: SortOrderInput | SortOrder
+    priceCategoryId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: RoomCountOrderByAggregateInput
@@ -32275,6 +33772,7 @@ export namespace Prisma {
     roomEquipment?: StringNullableListFilter<"Room">
     photos?: StringNullableListFilter<"Room">
     roomTypeId?: StringNullableWithAggregatesFilter<"Room"> | string | null
+    priceCategoryId?: StringNullableWithAggregatesFilter<"Room"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Room"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Room"> | Date | string
   }
@@ -32290,10 +33788,12 @@ export namespace Prisma {
     equipment?: StringNullableListFilter<"RoomType">
     typeCode?: StringFilter<"RoomType"> | string
     photos?: StringNullableListFilter<"RoomType">
+    priceCategoryId?: StringNullableFilter<"RoomType"> | string | null
     createdAt?: DateTimeFilter<"RoomType"> | Date | string
     updatedAt?: DateTimeFilter<"RoomType"> | Date | string
     rooms?: RoomListRelationFilter
     floorRoomAssignments?: FloorRoomAssignmentListRelationFilter
+    priceCategory?: XOR<PriceCategoryNullableScalarRelationFilter, PriceCategoryWhereInput> | null
   }
 
   export type RoomTypeOrderByWithRelationInput = {
@@ -32304,10 +33804,12 @@ export namespace Prisma {
     equipment?: SortOrder
     typeCode?: SortOrder
     photos?: SortOrder
+    priceCategoryId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     rooms?: RoomOrderByRelationAggregateInput
     floorRoomAssignments?: FloorRoomAssignmentOrderByRelationAggregateInput
+    priceCategory?: PriceCategoryOrderByWithRelationInput
   }
 
   export type RoomTypeWhereUniqueInput = Prisma.AtLeast<{
@@ -32321,10 +33823,12 @@ export namespace Prisma {
     capacity?: IntFilter<"RoomType"> | number
     equipment?: StringNullableListFilter<"RoomType">
     photos?: StringNullableListFilter<"RoomType">
+    priceCategoryId?: StringNullableFilter<"RoomType"> | string | null
     createdAt?: DateTimeFilter<"RoomType"> | Date | string
     updatedAt?: DateTimeFilter<"RoomType"> | Date | string
     rooms?: RoomListRelationFilter
     floorRoomAssignments?: FloorRoomAssignmentListRelationFilter
+    priceCategory?: XOR<PriceCategoryNullableScalarRelationFilter, PriceCategoryWhereInput> | null
   }, "id" | "typeCode">
 
   export type RoomTypeOrderByWithAggregationInput = {
@@ -32335,6 +33839,7 @@ export namespace Prisma {
     equipment?: SortOrder
     typeCode?: SortOrder
     photos?: SortOrder
+    priceCategoryId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: RoomTypeCountOrderByAggregateInput
@@ -32355,6 +33860,7 @@ export namespace Prisma {
     equipment?: StringNullableListFilter<"RoomType">
     typeCode?: StringWithAggregatesFilter<"RoomType"> | string
     photos?: StringNullableListFilter<"RoomType">
+    priceCategoryId?: StringNullableWithAggregatesFilter<"RoomType"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"RoomType"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"RoomType"> | Date | string
   }
@@ -32468,6 +33974,84 @@ export namespace Prisma {
     dateOfStart?: DateTimeWithAggregatesFilter<"RoomStatus"> | Date | string
     dateOfEnd?: DateTimeNullableWithAggregatesFilter<"RoomStatus"> | Date | string | null
     description?: StringWithAggregatesFilter<"RoomStatus"> | string
+  }
+
+  export type PriceCategoryWhereInput = {
+    AND?: PriceCategoryWhereInput | PriceCategoryWhereInput[]
+    OR?: PriceCategoryWhereInput[]
+    NOT?: PriceCategoryWhereInput | PriceCategoryWhereInput[]
+    id?: StringFilter<"PriceCategory"> | string
+    name?: StringFilter<"PriceCategory"> | string
+    description?: StringNullableFilter<"PriceCategory"> | string | null
+    pricePerMonth?: FloatFilter<"PriceCategory"> | number
+    pricePerDay?: FloatFilter<"PriceCategory"> | number
+    isActive?: BoolFilter<"PriceCategory"> | boolean
+    createdAt?: DateTimeFilter<"PriceCategory"> | Date | string
+    updatedAt?: DateTimeFilter<"PriceCategory"> | Date | string
+    roomTypes?: RoomTypeListRelationFilter
+    rooms?: RoomListRelationFilter
+    payments?: PaymentListRelationFilter
+  }
+
+  export type PriceCategoryOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    pricePerMonth?: SortOrder
+    pricePerDay?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    roomTypes?: RoomTypeOrderByRelationAggregateInput
+    rooms?: RoomOrderByRelationAggregateInput
+    payments?: PaymentOrderByRelationAggregateInput
+  }
+
+  export type PriceCategoryWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    name?: string
+    AND?: PriceCategoryWhereInput | PriceCategoryWhereInput[]
+    OR?: PriceCategoryWhereInput[]
+    NOT?: PriceCategoryWhereInput | PriceCategoryWhereInput[]
+    description?: StringNullableFilter<"PriceCategory"> | string | null
+    pricePerMonth?: FloatFilter<"PriceCategory"> | number
+    pricePerDay?: FloatFilter<"PriceCategory"> | number
+    isActive?: BoolFilter<"PriceCategory"> | boolean
+    createdAt?: DateTimeFilter<"PriceCategory"> | Date | string
+    updatedAt?: DateTimeFilter<"PriceCategory"> | Date | string
+    roomTypes?: RoomTypeListRelationFilter
+    rooms?: RoomListRelationFilter
+    payments?: PaymentListRelationFilter
+  }, "id" | "name">
+
+  export type PriceCategoryOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    pricePerMonth?: SortOrder
+    pricePerDay?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: PriceCategoryCountOrderByAggregateInput
+    _avg?: PriceCategoryAvgOrderByAggregateInput
+    _max?: PriceCategoryMaxOrderByAggregateInput
+    _min?: PriceCategoryMinOrderByAggregateInput
+    _sum?: PriceCategorySumOrderByAggregateInput
+  }
+
+  export type PriceCategoryScalarWhereWithAggregatesInput = {
+    AND?: PriceCategoryScalarWhereWithAggregatesInput | PriceCategoryScalarWhereWithAggregatesInput[]
+    OR?: PriceCategoryScalarWhereWithAggregatesInput[]
+    NOT?: PriceCategoryScalarWhereWithAggregatesInput | PriceCategoryScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PriceCategory"> | string
+    name?: StringWithAggregatesFilter<"PriceCategory"> | string
+    description?: StringNullableWithAggregatesFilter<"PriceCategory"> | string | null
+    pricePerMonth?: FloatWithAggregatesFilter<"PriceCategory"> | number
+    pricePerDay?: FloatWithAggregatesFilter<"PriceCategory"> | number
+    isActive?: BoolWithAggregatesFilter<"PriceCategory"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"PriceCategory"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"PriceCategory"> | Date | string
   }
 
   export type PriceWhereInput = {
@@ -32642,6 +34226,7 @@ export namespace Prisma {
     userId?: StringFilter<"Payment"> | string
     bookingId?: StringNullableFilter<"Payment"> | string | null
     priceId?: StringNullableFilter<"Payment"> | string | null
+    priceCategoryId?: StringNullableFilter<"Payment"> | string | null
     amount?: FloatFilter<"Payment"> | number
     currency?: StringFilter<"Payment"> | string
     paymentType?: EnumPaymentTypeFilter<"Payment"> | $Enums.PaymentType
@@ -32666,6 +34251,7 @@ export namespace Prisma {
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     booking?: XOR<BookingNullableScalarRelationFilter, BookingWhereInput> | null
     price?: XOR<PriceNullableScalarRelationFilter, PriceWhereInput> | null
+    priceCategory?: XOR<PriceCategoryNullableScalarRelationFilter, PriceCategoryWhereInput> | null
     confirmedByUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     generatedFromRecurring?: XOR<RecurringPaymentNullableScalarRelationFilter, RecurringPaymentWhereInput> | null
     notifications?: NotificationListRelationFilter
@@ -32679,6 +34265,7 @@ export namespace Prisma {
     userId?: SortOrder
     bookingId?: SortOrderInput | SortOrder
     priceId?: SortOrderInput | SortOrder
+    priceCategoryId?: SortOrderInput | SortOrder
     amount?: SortOrder
     currency?: SortOrder
     paymentType?: SortOrder
@@ -32703,6 +34290,7 @@ export namespace Prisma {
     user?: UserOrderByWithRelationInput
     booking?: BookingOrderByWithRelationInput
     price?: PriceOrderByWithRelationInput
+    priceCategory?: PriceCategoryOrderByWithRelationInput
     confirmedByUser?: UserOrderByWithRelationInput
     generatedFromRecurring?: RecurringPaymentOrderByWithRelationInput
     notifications?: NotificationOrderByRelationAggregateInput
@@ -32719,6 +34307,7 @@ export namespace Prisma {
     userId?: StringFilter<"Payment"> | string
     bookingId?: StringNullableFilter<"Payment"> | string | null
     priceId?: StringNullableFilter<"Payment"> | string | null
+    priceCategoryId?: StringNullableFilter<"Payment"> | string | null
     amount?: FloatFilter<"Payment"> | number
     currency?: StringFilter<"Payment"> | string
     paymentType?: EnumPaymentTypeFilter<"Payment"> | $Enums.PaymentType
@@ -32743,6 +34332,7 @@ export namespace Prisma {
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     booking?: XOR<BookingNullableScalarRelationFilter, BookingWhereInput> | null
     price?: XOR<PriceNullableScalarRelationFilter, PriceWhereInput> | null
+    priceCategory?: XOR<PriceCategoryNullableScalarRelationFilter, PriceCategoryWhereInput> | null
     confirmedByUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     generatedFromRecurring?: XOR<RecurringPaymentNullableScalarRelationFilter, RecurringPaymentWhereInput> | null
     notifications?: NotificationListRelationFilter
@@ -32756,6 +34346,7 @@ export namespace Prisma {
     userId?: SortOrder
     bookingId?: SortOrderInput | SortOrder
     priceId?: SortOrderInput | SortOrder
+    priceCategoryId?: SortOrderInput | SortOrder
     amount?: SortOrder
     currency?: SortOrder
     paymentType?: SortOrder
@@ -32792,6 +34383,7 @@ export namespace Prisma {
     userId?: StringWithAggregatesFilter<"Payment"> | string
     bookingId?: StringNullableWithAggregatesFilter<"Payment"> | string | null
     priceId?: StringNullableWithAggregatesFilter<"Payment"> | string | null
+    priceCategoryId?: StringNullableWithAggregatesFilter<"Payment"> | string | null
     amount?: FloatWithAggregatesFilter<"Payment"> | number
     currency?: StringWithAggregatesFilter<"Payment"> | string
     paymentType?: EnumPaymentTypeWithAggregatesFilter<"Payment"> | $Enums.PaymentType
@@ -34147,6 +35739,7 @@ export namespace Prisma {
     floor: FloorCreateNestedOneWithoutRoomsInput
     dormitory: DormitoryCreateNestedOneWithoutRoomsInput
     roomType?: RoomTypeCreateNestedOneWithoutRoomsInput
+    priceCategory?: PriceCategoryCreateNestedOneWithoutRoomsInput
     announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutRoomInput
     notifications?: NotificationCreateNestedManyWithoutRoomInput
     bookings?: BookingCreateNestedManyWithoutRoomInput
@@ -34164,6 +35757,7 @@ export namespace Prisma {
     roomEquipment?: RoomCreateroomEquipmentInput | string[]
     photos?: RoomCreatephotosInput | string[]
     roomTypeId?: string | null
+    priceCategoryId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutRoomInput
@@ -34185,6 +35779,7 @@ export namespace Prisma {
     floor?: FloorUpdateOneRequiredWithoutRoomsNestedInput
     dormitory?: DormitoryUpdateOneRequiredWithoutRoomsNestedInput
     roomType?: RoomTypeUpdateOneWithoutRoomsNestedInput
+    priceCategory?: PriceCategoryUpdateOneWithoutRoomsNestedInput
     announcementRecipients?: AnnouncementRecipientUpdateManyWithoutRoomNestedInput
     notifications?: NotificationUpdateManyWithoutRoomNestedInput
     bookings?: BookingUpdateManyWithoutRoomNestedInput
@@ -34202,6 +35797,7 @@ export namespace Prisma {
     roomEquipment?: RoomUpdateroomEquipmentInput | string[]
     photos?: RoomUpdatephotosInput | string[]
     roomTypeId?: NullableStringFieldUpdateOperationsInput | string | null
+    priceCategoryId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutRoomNestedInput
@@ -34221,6 +35817,7 @@ export namespace Prisma {
     roomEquipment?: RoomCreateroomEquipmentInput | string[]
     photos?: RoomCreatephotosInput | string[]
     roomTypeId?: string | null
+    priceCategoryId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -34244,6 +35841,7 @@ export namespace Prisma {
     roomEquipment?: RoomUpdateroomEquipmentInput | string[]
     photos?: RoomUpdatephotosInput | string[]
     roomTypeId?: NullableStringFieldUpdateOperationsInput | string | null
+    priceCategoryId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -34260,6 +35858,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     rooms?: RoomCreateNestedManyWithoutRoomTypeInput
     floorRoomAssignments?: FloorRoomAssignmentCreateNestedManyWithoutRoomTypeInput
+    priceCategory?: PriceCategoryCreateNestedOneWithoutRoomTypesInput
   }
 
   export type RoomTypeUncheckedCreateInput = {
@@ -34270,6 +35869,7 @@ export namespace Prisma {
     equipment?: RoomTypeCreateequipmentInput | string[]
     typeCode: string
     photos?: RoomTypeCreatephotosInput | string[]
+    priceCategoryId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     rooms?: RoomUncheckedCreateNestedManyWithoutRoomTypeInput
@@ -34288,6 +35888,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     rooms?: RoomUpdateManyWithoutRoomTypeNestedInput
     floorRoomAssignments?: FloorRoomAssignmentUpdateManyWithoutRoomTypeNestedInput
+    priceCategory?: PriceCategoryUpdateOneWithoutRoomTypesNestedInput
   }
 
   export type RoomTypeUncheckedUpdateInput = {
@@ -34298,6 +35899,7 @@ export namespace Prisma {
     equipment?: RoomTypeUpdateequipmentInput | string[]
     typeCode?: StringFieldUpdateOperationsInput | string
     photos?: RoomTypeUpdatephotosInput | string[]
+    priceCategoryId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     rooms?: RoomUncheckedUpdateManyWithoutRoomTypeNestedInput
@@ -34312,6 +35914,7 @@ export namespace Prisma {
     equipment?: RoomTypeCreateequipmentInput | string[]
     typeCode: string
     photos?: RoomTypeCreatephotosInput | string[]
+    priceCategoryId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -34336,6 +35939,7 @@ export namespace Prisma {
     equipment?: RoomTypeUpdateequipmentInput | string[]
     typeCode?: StringFieldUpdateOperationsInput | string
     photos?: RoomTypeUpdatephotosInput | string[]
+    priceCategoryId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -34440,6 +36044,95 @@ export namespace Prisma {
     dateOfStart?: DateTimeFieldUpdateOperationsInput | Date | string
     dateOfEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     description?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PriceCategoryCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    pricePerMonth: number
+    pricePerDay: number
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    roomTypes?: RoomTypeCreateNestedManyWithoutPriceCategoryInput
+    rooms?: RoomCreateNestedManyWithoutPriceCategoryInput
+    payments?: PaymentCreateNestedManyWithoutPriceCategoryInput
+  }
+
+  export type PriceCategoryUncheckedCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    pricePerMonth: number
+    pricePerDay: number
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    roomTypes?: RoomTypeUncheckedCreateNestedManyWithoutPriceCategoryInput
+    rooms?: RoomUncheckedCreateNestedManyWithoutPriceCategoryInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutPriceCategoryInput
+  }
+
+  export type PriceCategoryUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    pricePerMonth?: FloatFieldUpdateOperationsInput | number
+    pricePerDay?: FloatFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    roomTypes?: RoomTypeUpdateManyWithoutPriceCategoryNestedInput
+    rooms?: RoomUpdateManyWithoutPriceCategoryNestedInput
+    payments?: PaymentUpdateManyWithoutPriceCategoryNestedInput
+  }
+
+  export type PriceCategoryUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    pricePerMonth?: FloatFieldUpdateOperationsInput | number
+    pricePerDay?: FloatFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    roomTypes?: RoomTypeUncheckedUpdateManyWithoutPriceCategoryNestedInput
+    rooms?: RoomUncheckedUpdateManyWithoutPriceCategoryNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutPriceCategoryNestedInput
+  }
+
+  export type PriceCategoryCreateManyInput = {
+    id?: string
+    name: string
+    description?: string | null
+    pricePerMonth: number
+    pricePerDay: number
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PriceCategoryUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    pricePerMonth?: FloatFieldUpdateOperationsInput | number
+    pricePerDay?: FloatFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PriceCategoryUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    pricePerMonth?: FloatFieldUpdateOperationsInput | number
+    pricePerDay?: FloatFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PriceCreateInput = {
@@ -34640,6 +36333,7 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutPaymentsInput
     booking?: BookingCreateNestedOneWithoutPaymentsInput
     price?: PriceCreateNestedOneWithoutPaymentsInput
+    priceCategory?: PriceCategoryCreateNestedOneWithoutPaymentsInput
     confirmedByUser?: UserCreateNestedOneWithoutConfirmedPaymentsInput
     generatedFromRecurring?: RecurringPaymentCreateNestedOneWithoutGeneratedPaymentsInput
     notifications?: NotificationCreateNestedManyWithoutPaymentInput
@@ -34653,6 +36347,7 @@ export namespace Prisma {
     userId: string
     bookingId?: string | null
     priceId?: string | null
+    priceCategoryId?: string | null
     amount: number
     currency?: string
     paymentType: $Enums.PaymentType
@@ -34704,6 +36399,7 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutPaymentsNestedInput
     booking?: BookingUpdateOneWithoutPaymentsNestedInput
     price?: PriceUpdateOneWithoutPaymentsNestedInput
+    priceCategory?: PriceCategoryUpdateOneWithoutPaymentsNestedInput
     confirmedByUser?: UserUpdateOneWithoutConfirmedPaymentsNestedInput
     generatedFromRecurring?: RecurringPaymentUpdateOneWithoutGeneratedPaymentsNestedInput
     notifications?: NotificationUpdateManyWithoutPaymentNestedInput
@@ -34717,6 +36413,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     bookingId?: NullableStringFieldUpdateOperationsInput | string | null
     priceId?: NullableStringFieldUpdateOperationsInput | string | null
+    priceCategoryId?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: FloatFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
     paymentType?: EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
@@ -34749,6 +36446,7 @@ export namespace Prisma {
     userId: string
     bookingId?: string | null
     priceId?: string | null
+    priceCategoryId?: string | null
     amount: number
     currency?: string
     paymentType: $Enums.PaymentType
@@ -34800,6 +36498,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     bookingId?: NullableStringFieldUpdateOperationsInput | string | null
     priceId?: NullableStringFieldUpdateOperationsInput | string | null
+    priceCategoryId?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: FloatFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
     paymentType?: EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
@@ -36243,6 +37942,11 @@ export namespace Prisma {
     isNot?: RoomTypeWhereInput | null
   }
 
+  export type PriceCategoryNullableScalarRelationFilter = {
+    is?: PriceCategoryWhereInput | null
+    isNot?: PriceCategoryWhereInput | null
+  }
+
   export type RoomStatusListRelationFilter = {
     every?: RoomStatusWhereInput
     some?: RoomStatusWhereInput
@@ -36277,6 +37981,7 @@ export namespace Prisma {
     roomEquipment?: SortOrder
     photos?: SortOrder
     roomTypeId?: SortOrder
+    priceCategoryId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -36292,6 +37997,7 @@ export namespace Prisma {
     capacity?: SortOrder
     dormitoryId?: SortOrder
     roomTypeId?: SortOrder
+    priceCategoryId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -36303,6 +38009,7 @@ export namespace Prisma {
     capacity?: SortOrder
     dormitoryId?: SortOrder
     roomTypeId?: SortOrder
+    priceCategoryId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -36319,6 +38026,7 @@ export namespace Prisma {
     equipment?: SortOrder
     typeCode?: SortOrder
     photos?: SortOrder
+    priceCategoryId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -36333,6 +38041,7 @@ export namespace Prisma {
     description?: SortOrder
     capacity?: SortOrder
     typeCode?: SortOrder
+    priceCategoryId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -36343,6 +38052,7 @@ export namespace Prisma {
     description?: SortOrder
     capacity?: SortOrder
     typeCode?: SortOrder
+    priceCategoryId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -36436,6 +38146,75 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
+  export type RoomTypeListRelationFilter = {
+    every?: RoomTypeWhereInput
+    some?: RoomTypeWhereInput
+    none?: RoomTypeWhereInput
+  }
+
+  export type RoomTypeOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PriceCategoryCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    pricePerMonth?: SortOrder
+    pricePerDay?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PriceCategoryAvgOrderByAggregateInput = {
+    pricePerMonth?: SortOrder
+    pricePerDay?: SortOrder
+  }
+
+  export type PriceCategoryMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    pricePerMonth?: SortOrder
+    pricePerDay?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PriceCategoryMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    pricePerMonth?: SortOrder
+    pricePerDay?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PriceCategorySumOrderByAggregateInput = {
+    pricePerMonth?: SortOrder
+    pricePerDay?: SortOrder
+  }
+
+  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
+  }
+
   export type PriceCountOrderByAggregateInput = {
     id?: SortOrder
     roomId?: SortOrder
@@ -36476,22 +38255,6 @@ export namespace Prisma {
     roomCapacity?: SortOrder
     pricePerMonth?: SortOrder
     pricePerDay?: SortOrder
-  }
-
-  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedFloatFilter<$PrismaModel>
-    _min?: NestedFloatFilter<$PrismaModel>
-    _max?: NestedFloatFilter<$PrismaModel>
   }
 
   export type EnumBookingStatusFilter<$PrismaModel = never> = {
@@ -36624,6 +38387,7 @@ export namespace Prisma {
     userId?: SortOrder
     bookingId?: SortOrder
     priceId?: SortOrder
+    priceCategoryId?: SortOrder
     amount?: SortOrder
     currency?: SortOrder
     paymentType?: SortOrder
@@ -36656,6 +38420,7 @@ export namespace Prisma {
     userId?: SortOrder
     bookingId?: SortOrder
     priceId?: SortOrder
+    priceCategoryId?: SortOrder
     amount?: SortOrder
     currency?: SortOrder
     paymentType?: SortOrder
@@ -36684,6 +38449,7 @@ export namespace Prisma {
     userId?: SortOrder
     bookingId?: SortOrder
     priceId?: SortOrder
+    priceCategoryId?: SortOrder
     amount?: SortOrder
     currency?: SortOrder
     paymentType?: SortOrder
@@ -38212,6 +39978,12 @@ export namespace Prisma {
     connect?: RoomTypeWhereUniqueInput
   }
 
+  export type PriceCategoryCreateNestedOneWithoutRoomsInput = {
+    create?: XOR<PriceCategoryCreateWithoutRoomsInput, PriceCategoryUncheckedCreateWithoutRoomsInput>
+    connectOrCreate?: PriceCategoryCreateOrConnectWithoutRoomsInput
+    connect?: PriceCategoryWhereUniqueInput
+  }
+
   export type AnnouncementRecipientCreateNestedManyWithoutRoomInput = {
     create?: XOR<AnnouncementRecipientCreateWithoutRoomInput, AnnouncementRecipientUncheckedCreateWithoutRoomInput> | AnnouncementRecipientCreateWithoutRoomInput[] | AnnouncementRecipientUncheckedCreateWithoutRoomInput[]
     connectOrCreate?: AnnouncementRecipientCreateOrConnectWithoutRoomInput | AnnouncementRecipientCreateOrConnectWithoutRoomInput[]
@@ -38330,6 +40102,16 @@ export namespace Prisma {
     delete?: RoomTypeWhereInput | boolean
     connect?: RoomTypeWhereUniqueInput
     update?: XOR<XOR<RoomTypeUpdateToOneWithWhereWithoutRoomsInput, RoomTypeUpdateWithoutRoomsInput>, RoomTypeUncheckedUpdateWithoutRoomsInput>
+  }
+
+  export type PriceCategoryUpdateOneWithoutRoomsNestedInput = {
+    create?: XOR<PriceCategoryCreateWithoutRoomsInput, PriceCategoryUncheckedCreateWithoutRoomsInput>
+    connectOrCreate?: PriceCategoryCreateOrConnectWithoutRoomsInput
+    upsert?: PriceCategoryUpsertWithoutRoomsInput
+    disconnect?: PriceCategoryWhereInput | boolean
+    delete?: PriceCategoryWhereInput | boolean
+    connect?: PriceCategoryWhereUniqueInput
+    update?: XOR<XOR<PriceCategoryUpdateToOneWithWhereWithoutRoomsInput, PriceCategoryUpdateWithoutRoomsInput>, PriceCategoryUncheckedUpdateWithoutRoomsInput>
   }
 
   export type AnnouncementRecipientUpdateManyWithoutRoomNestedInput = {
@@ -38522,6 +40304,12 @@ export namespace Prisma {
     connect?: FloorRoomAssignmentWhereUniqueInput | FloorRoomAssignmentWhereUniqueInput[]
   }
 
+  export type PriceCategoryCreateNestedOneWithoutRoomTypesInput = {
+    create?: XOR<PriceCategoryCreateWithoutRoomTypesInput, PriceCategoryUncheckedCreateWithoutRoomTypesInput>
+    connectOrCreate?: PriceCategoryCreateOrConnectWithoutRoomTypesInput
+    connect?: PriceCategoryWhereUniqueInput
+  }
+
   export type RoomUncheckedCreateNestedManyWithoutRoomTypeInput = {
     create?: XOR<RoomCreateWithoutRoomTypeInput, RoomUncheckedCreateWithoutRoomTypeInput> | RoomCreateWithoutRoomTypeInput[] | RoomUncheckedCreateWithoutRoomTypeInput[]
     connectOrCreate?: RoomCreateOrConnectWithoutRoomTypeInput | RoomCreateOrConnectWithoutRoomTypeInput[]
@@ -38572,6 +40360,16 @@ export namespace Prisma {
     update?: FloorRoomAssignmentUpdateWithWhereUniqueWithoutRoomTypeInput | FloorRoomAssignmentUpdateWithWhereUniqueWithoutRoomTypeInput[]
     updateMany?: FloorRoomAssignmentUpdateManyWithWhereWithoutRoomTypeInput | FloorRoomAssignmentUpdateManyWithWhereWithoutRoomTypeInput[]
     deleteMany?: FloorRoomAssignmentScalarWhereInput | FloorRoomAssignmentScalarWhereInput[]
+  }
+
+  export type PriceCategoryUpdateOneWithoutRoomTypesNestedInput = {
+    create?: XOR<PriceCategoryCreateWithoutRoomTypesInput, PriceCategoryUncheckedCreateWithoutRoomTypesInput>
+    connectOrCreate?: PriceCategoryCreateOrConnectWithoutRoomTypesInput
+    upsert?: PriceCategoryUpsertWithoutRoomTypesInput
+    disconnect?: PriceCategoryWhereInput | boolean
+    delete?: PriceCategoryWhereInput | boolean
+    connect?: PriceCategoryWhereUniqueInput
+    update?: XOR<XOR<PriceCategoryUpdateToOneWithWhereWithoutRoomTypesInput, PriceCategoryUpdateWithoutRoomTypesInput>, PriceCategoryUncheckedUpdateWithoutRoomTypesInput>
   }
 
   export type RoomUncheckedUpdateManyWithoutRoomTypeNestedInput = {
@@ -38653,6 +40451,140 @@ export namespace Prisma {
     update?: XOR<XOR<RoomUpdateToOneWithWhereWithoutStatusesInput, RoomUpdateWithoutStatusesInput>, RoomUncheckedUpdateWithoutStatusesInput>
   }
 
+  export type RoomTypeCreateNestedManyWithoutPriceCategoryInput = {
+    create?: XOR<RoomTypeCreateWithoutPriceCategoryInput, RoomTypeUncheckedCreateWithoutPriceCategoryInput> | RoomTypeCreateWithoutPriceCategoryInput[] | RoomTypeUncheckedCreateWithoutPriceCategoryInput[]
+    connectOrCreate?: RoomTypeCreateOrConnectWithoutPriceCategoryInput | RoomTypeCreateOrConnectWithoutPriceCategoryInput[]
+    createMany?: RoomTypeCreateManyPriceCategoryInputEnvelope
+    connect?: RoomTypeWhereUniqueInput | RoomTypeWhereUniqueInput[]
+  }
+
+  export type RoomCreateNestedManyWithoutPriceCategoryInput = {
+    create?: XOR<RoomCreateWithoutPriceCategoryInput, RoomUncheckedCreateWithoutPriceCategoryInput> | RoomCreateWithoutPriceCategoryInput[] | RoomUncheckedCreateWithoutPriceCategoryInput[]
+    connectOrCreate?: RoomCreateOrConnectWithoutPriceCategoryInput | RoomCreateOrConnectWithoutPriceCategoryInput[]
+    createMany?: RoomCreateManyPriceCategoryInputEnvelope
+    connect?: RoomWhereUniqueInput | RoomWhereUniqueInput[]
+  }
+
+  export type PaymentCreateNestedManyWithoutPriceCategoryInput = {
+    create?: XOR<PaymentCreateWithoutPriceCategoryInput, PaymentUncheckedCreateWithoutPriceCategoryInput> | PaymentCreateWithoutPriceCategoryInput[] | PaymentUncheckedCreateWithoutPriceCategoryInput[]
+    connectOrCreate?: PaymentCreateOrConnectWithoutPriceCategoryInput | PaymentCreateOrConnectWithoutPriceCategoryInput[]
+    createMany?: PaymentCreateManyPriceCategoryInputEnvelope
+    connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+  }
+
+  export type RoomTypeUncheckedCreateNestedManyWithoutPriceCategoryInput = {
+    create?: XOR<RoomTypeCreateWithoutPriceCategoryInput, RoomTypeUncheckedCreateWithoutPriceCategoryInput> | RoomTypeCreateWithoutPriceCategoryInput[] | RoomTypeUncheckedCreateWithoutPriceCategoryInput[]
+    connectOrCreate?: RoomTypeCreateOrConnectWithoutPriceCategoryInput | RoomTypeCreateOrConnectWithoutPriceCategoryInput[]
+    createMany?: RoomTypeCreateManyPriceCategoryInputEnvelope
+    connect?: RoomTypeWhereUniqueInput | RoomTypeWhereUniqueInput[]
+  }
+
+  export type RoomUncheckedCreateNestedManyWithoutPriceCategoryInput = {
+    create?: XOR<RoomCreateWithoutPriceCategoryInput, RoomUncheckedCreateWithoutPriceCategoryInput> | RoomCreateWithoutPriceCategoryInput[] | RoomUncheckedCreateWithoutPriceCategoryInput[]
+    connectOrCreate?: RoomCreateOrConnectWithoutPriceCategoryInput | RoomCreateOrConnectWithoutPriceCategoryInput[]
+    createMany?: RoomCreateManyPriceCategoryInputEnvelope
+    connect?: RoomWhereUniqueInput | RoomWhereUniqueInput[]
+  }
+
+  export type PaymentUncheckedCreateNestedManyWithoutPriceCategoryInput = {
+    create?: XOR<PaymentCreateWithoutPriceCategoryInput, PaymentUncheckedCreateWithoutPriceCategoryInput> | PaymentCreateWithoutPriceCategoryInput[] | PaymentUncheckedCreateWithoutPriceCategoryInput[]
+    connectOrCreate?: PaymentCreateOrConnectWithoutPriceCategoryInput | PaymentCreateOrConnectWithoutPriceCategoryInput[]
+    createMany?: PaymentCreateManyPriceCategoryInputEnvelope
+    connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+  }
+
+  export type FloatFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type RoomTypeUpdateManyWithoutPriceCategoryNestedInput = {
+    create?: XOR<RoomTypeCreateWithoutPriceCategoryInput, RoomTypeUncheckedCreateWithoutPriceCategoryInput> | RoomTypeCreateWithoutPriceCategoryInput[] | RoomTypeUncheckedCreateWithoutPriceCategoryInput[]
+    connectOrCreate?: RoomTypeCreateOrConnectWithoutPriceCategoryInput | RoomTypeCreateOrConnectWithoutPriceCategoryInput[]
+    upsert?: RoomTypeUpsertWithWhereUniqueWithoutPriceCategoryInput | RoomTypeUpsertWithWhereUniqueWithoutPriceCategoryInput[]
+    createMany?: RoomTypeCreateManyPriceCategoryInputEnvelope
+    set?: RoomTypeWhereUniqueInput | RoomTypeWhereUniqueInput[]
+    disconnect?: RoomTypeWhereUniqueInput | RoomTypeWhereUniqueInput[]
+    delete?: RoomTypeWhereUniqueInput | RoomTypeWhereUniqueInput[]
+    connect?: RoomTypeWhereUniqueInput | RoomTypeWhereUniqueInput[]
+    update?: RoomTypeUpdateWithWhereUniqueWithoutPriceCategoryInput | RoomTypeUpdateWithWhereUniqueWithoutPriceCategoryInput[]
+    updateMany?: RoomTypeUpdateManyWithWhereWithoutPriceCategoryInput | RoomTypeUpdateManyWithWhereWithoutPriceCategoryInput[]
+    deleteMany?: RoomTypeScalarWhereInput | RoomTypeScalarWhereInput[]
+  }
+
+  export type RoomUpdateManyWithoutPriceCategoryNestedInput = {
+    create?: XOR<RoomCreateWithoutPriceCategoryInput, RoomUncheckedCreateWithoutPriceCategoryInput> | RoomCreateWithoutPriceCategoryInput[] | RoomUncheckedCreateWithoutPriceCategoryInput[]
+    connectOrCreate?: RoomCreateOrConnectWithoutPriceCategoryInput | RoomCreateOrConnectWithoutPriceCategoryInput[]
+    upsert?: RoomUpsertWithWhereUniqueWithoutPriceCategoryInput | RoomUpsertWithWhereUniqueWithoutPriceCategoryInput[]
+    createMany?: RoomCreateManyPriceCategoryInputEnvelope
+    set?: RoomWhereUniqueInput | RoomWhereUniqueInput[]
+    disconnect?: RoomWhereUniqueInput | RoomWhereUniqueInput[]
+    delete?: RoomWhereUniqueInput | RoomWhereUniqueInput[]
+    connect?: RoomWhereUniqueInput | RoomWhereUniqueInput[]
+    update?: RoomUpdateWithWhereUniqueWithoutPriceCategoryInput | RoomUpdateWithWhereUniqueWithoutPriceCategoryInput[]
+    updateMany?: RoomUpdateManyWithWhereWithoutPriceCategoryInput | RoomUpdateManyWithWhereWithoutPriceCategoryInput[]
+    deleteMany?: RoomScalarWhereInput | RoomScalarWhereInput[]
+  }
+
+  export type PaymentUpdateManyWithoutPriceCategoryNestedInput = {
+    create?: XOR<PaymentCreateWithoutPriceCategoryInput, PaymentUncheckedCreateWithoutPriceCategoryInput> | PaymentCreateWithoutPriceCategoryInput[] | PaymentUncheckedCreateWithoutPriceCategoryInput[]
+    connectOrCreate?: PaymentCreateOrConnectWithoutPriceCategoryInput | PaymentCreateOrConnectWithoutPriceCategoryInput[]
+    upsert?: PaymentUpsertWithWhereUniqueWithoutPriceCategoryInput | PaymentUpsertWithWhereUniqueWithoutPriceCategoryInput[]
+    createMany?: PaymentCreateManyPriceCategoryInputEnvelope
+    set?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    disconnect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    delete?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    update?: PaymentUpdateWithWhereUniqueWithoutPriceCategoryInput | PaymentUpdateWithWhereUniqueWithoutPriceCategoryInput[]
+    updateMany?: PaymentUpdateManyWithWhereWithoutPriceCategoryInput | PaymentUpdateManyWithWhereWithoutPriceCategoryInput[]
+    deleteMany?: PaymentScalarWhereInput | PaymentScalarWhereInput[]
+  }
+
+  export type RoomTypeUncheckedUpdateManyWithoutPriceCategoryNestedInput = {
+    create?: XOR<RoomTypeCreateWithoutPriceCategoryInput, RoomTypeUncheckedCreateWithoutPriceCategoryInput> | RoomTypeCreateWithoutPriceCategoryInput[] | RoomTypeUncheckedCreateWithoutPriceCategoryInput[]
+    connectOrCreate?: RoomTypeCreateOrConnectWithoutPriceCategoryInput | RoomTypeCreateOrConnectWithoutPriceCategoryInput[]
+    upsert?: RoomTypeUpsertWithWhereUniqueWithoutPriceCategoryInput | RoomTypeUpsertWithWhereUniqueWithoutPriceCategoryInput[]
+    createMany?: RoomTypeCreateManyPriceCategoryInputEnvelope
+    set?: RoomTypeWhereUniqueInput | RoomTypeWhereUniqueInput[]
+    disconnect?: RoomTypeWhereUniqueInput | RoomTypeWhereUniqueInput[]
+    delete?: RoomTypeWhereUniqueInput | RoomTypeWhereUniqueInput[]
+    connect?: RoomTypeWhereUniqueInput | RoomTypeWhereUniqueInput[]
+    update?: RoomTypeUpdateWithWhereUniqueWithoutPriceCategoryInput | RoomTypeUpdateWithWhereUniqueWithoutPriceCategoryInput[]
+    updateMany?: RoomTypeUpdateManyWithWhereWithoutPriceCategoryInput | RoomTypeUpdateManyWithWhereWithoutPriceCategoryInput[]
+    deleteMany?: RoomTypeScalarWhereInput | RoomTypeScalarWhereInput[]
+  }
+
+  export type RoomUncheckedUpdateManyWithoutPriceCategoryNestedInput = {
+    create?: XOR<RoomCreateWithoutPriceCategoryInput, RoomUncheckedCreateWithoutPriceCategoryInput> | RoomCreateWithoutPriceCategoryInput[] | RoomUncheckedCreateWithoutPriceCategoryInput[]
+    connectOrCreate?: RoomCreateOrConnectWithoutPriceCategoryInput | RoomCreateOrConnectWithoutPriceCategoryInput[]
+    upsert?: RoomUpsertWithWhereUniqueWithoutPriceCategoryInput | RoomUpsertWithWhereUniqueWithoutPriceCategoryInput[]
+    createMany?: RoomCreateManyPriceCategoryInputEnvelope
+    set?: RoomWhereUniqueInput | RoomWhereUniqueInput[]
+    disconnect?: RoomWhereUniqueInput | RoomWhereUniqueInput[]
+    delete?: RoomWhereUniqueInput | RoomWhereUniqueInput[]
+    connect?: RoomWhereUniqueInput | RoomWhereUniqueInput[]
+    update?: RoomUpdateWithWhereUniqueWithoutPriceCategoryInput | RoomUpdateWithWhereUniqueWithoutPriceCategoryInput[]
+    updateMany?: RoomUpdateManyWithWhereWithoutPriceCategoryInput | RoomUpdateManyWithWhereWithoutPriceCategoryInput[]
+    deleteMany?: RoomScalarWhereInput | RoomScalarWhereInput[]
+  }
+
+  export type PaymentUncheckedUpdateManyWithoutPriceCategoryNestedInput = {
+    create?: XOR<PaymentCreateWithoutPriceCategoryInput, PaymentUncheckedCreateWithoutPriceCategoryInput> | PaymentCreateWithoutPriceCategoryInput[] | PaymentUncheckedCreateWithoutPriceCategoryInput[]
+    connectOrCreate?: PaymentCreateOrConnectWithoutPriceCategoryInput | PaymentCreateOrConnectWithoutPriceCategoryInput[]
+    upsert?: PaymentUpsertWithWhereUniqueWithoutPriceCategoryInput | PaymentUpsertWithWhereUniqueWithoutPriceCategoryInput[]
+    createMany?: PaymentCreateManyPriceCategoryInputEnvelope
+    set?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    disconnect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    delete?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    update?: PaymentUpdateWithWhereUniqueWithoutPriceCategoryInput | PaymentUpdateWithWhereUniqueWithoutPriceCategoryInput[]
+    updateMany?: PaymentUpdateManyWithWhereWithoutPriceCategoryInput | PaymentUpdateManyWithWhereWithoutPriceCategoryInput[]
+    deleteMany?: PaymentScalarWhereInput | PaymentScalarWhereInput[]
+  }
+
   export type RoomCreateNestedOneWithoutPricesInput = {
     create?: XOR<RoomCreateWithoutPricesInput, RoomUncheckedCreateWithoutPricesInput>
     connectOrCreate?: RoomCreateOrConnectWithoutPricesInput
@@ -38671,14 +40603,6 @@ export namespace Prisma {
     connectOrCreate?: PaymentCreateOrConnectWithoutPriceInput | PaymentCreateOrConnectWithoutPriceInput[]
     createMany?: PaymentCreateManyPriceInputEnvelope
     connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
-  }
-
-  export type FloatFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type RoomUpdateOneWithoutPricesNestedInput = {
@@ -38895,6 +40819,12 @@ export namespace Prisma {
     connect?: PriceWhereUniqueInput
   }
 
+  export type PriceCategoryCreateNestedOneWithoutPaymentsInput = {
+    create?: XOR<PriceCategoryCreateWithoutPaymentsInput, PriceCategoryUncheckedCreateWithoutPaymentsInput>
+    connectOrCreate?: PriceCategoryCreateOrConnectWithoutPaymentsInput
+    connect?: PriceCategoryWhereUniqueInput
+  }
+
   export type UserCreateNestedOneWithoutConfirmedPaymentsInput = {
     create?: XOR<UserCreateWithoutConfirmedPaymentsInput, UserUncheckedCreateWithoutConfirmedPaymentsInput>
     connectOrCreate?: UserCreateOrConnectWithoutConfirmedPaymentsInput
@@ -38999,6 +40929,16 @@ export namespace Prisma {
     delete?: PriceWhereInput | boolean
     connect?: PriceWhereUniqueInput
     update?: XOR<XOR<PriceUpdateToOneWithWhereWithoutPaymentsInput, PriceUpdateWithoutPaymentsInput>, PriceUncheckedUpdateWithoutPaymentsInput>
+  }
+
+  export type PriceCategoryUpdateOneWithoutPaymentsNestedInput = {
+    create?: XOR<PriceCategoryCreateWithoutPaymentsInput, PriceCategoryUncheckedCreateWithoutPaymentsInput>
+    connectOrCreate?: PriceCategoryCreateOrConnectWithoutPaymentsInput
+    upsert?: PriceCategoryUpsertWithoutPaymentsInput
+    disconnect?: PriceCategoryWhereInput | boolean
+    delete?: PriceCategoryWhereInput | boolean
+    connect?: PriceCategoryWhereUniqueInput
+    update?: XOR<XOR<PriceCategoryUpdateToOneWithWhereWithoutPaymentsInput, PriceCategoryUpdateWithoutPaymentsInput>, PriceCategoryUncheckedUpdateWithoutPaymentsInput>
   }
 
   export type UserUpdateOneWithoutConfirmedPaymentsNestedInput = {
@@ -40102,6 +42042,7 @@ export namespace Prisma {
     floor: FloorCreateNestedOneWithoutRoomsInput
     dormitory: DormitoryCreateNestedOneWithoutRoomsInput
     roomType?: RoomTypeCreateNestedOneWithoutRoomsInput
+    priceCategory?: PriceCategoryCreateNestedOneWithoutRoomsInput
     announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutRoomInput
     notifications?: NotificationCreateNestedManyWithoutRoomInput
     bookings?: BookingCreateNestedManyWithoutRoomInput
@@ -40118,6 +42059,7 @@ export namespace Prisma {
     roomEquipment?: RoomCreateroomEquipmentInput | string[]
     photos?: RoomCreatephotosInput | string[]
     roomTypeId?: string | null
+    priceCategoryId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutRoomInput
@@ -40406,6 +42348,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     booking?: BookingCreateNestedOneWithoutPaymentsInput
     price?: PriceCreateNestedOneWithoutPaymentsInput
+    priceCategory?: PriceCategoryCreateNestedOneWithoutPaymentsInput
     confirmedByUser?: UserCreateNestedOneWithoutConfirmedPaymentsInput
     generatedFromRecurring?: RecurringPaymentCreateNestedOneWithoutGeneratedPaymentsInput
     notifications?: NotificationCreateNestedManyWithoutPaymentInput
@@ -40418,6 +42361,7 @@ export namespace Prisma {
     id?: string
     bookingId?: string | null
     priceId?: string | null
+    priceCategoryId?: string | null
     amount: number
     currency?: string
     paymentType: $Enums.PaymentType
@@ -40479,6 +42423,7 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutPaymentsInput
     booking?: BookingCreateNestedOneWithoutPaymentsInput
     price?: PriceCreateNestedOneWithoutPaymentsInput
+    priceCategory?: PriceCategoryCreateNestedOneWithoutPaymentsInput
     generatedFromRecurring?: RecurringPaymentCreateNestedOneWithoutGeneratedPaymentsInput
     notifications?: NotificationCreateNestedManyWithoutPaymentInput
     paymentItems?: PaymentItemCreateNestedManyWithoutPaymentInput
@@ -40491,6 +42436,7 @@ export namespace Prisma {
     userId: string
     bookingId?: string | null
     priceId?: string | null
+    priceCategoryId?: string | null
     amount: number
     currency?: string
     paymentType: $Enums.PaymentType
@@ -40708,6 +42654,7 @@ export namespace Prisma {
     floor?: FloorUpdateOneRequiredWithoutRoomsNestedInput
     dormitory?: DormitoryUpdateOneRequiredWithoutRoomsNestedInput
     roomType?: RoomTypeUpdateOneWithoutRoomsNestedInput
+    priceCategory?: PriceCategoryUpdateOneWithoutRoomsNestedInput
     announcementRecipients?: AnnouncementRecipientUpdateManyWithoutRoomNestedInput
     notifications?: NotificationUpdateManyWithoutRoomNestedInput
     bookings?: BookingUpdateManyWithoutRoomNestedInput
@@ -40724,6 +42671,7 @@ export namespace Prisma {
     roomEquipment?: RoomUpdateroomEquipmentInput | string[]
     photos?: RoomUpdatephotosInput | string[]
     roomTypeId?: NullableStringFieldUpdateOperationsInput | string | null
+    priceCategoryId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutRoomNestedInput
@@ -40965,6 +42913,7 @@ export namespace Prisma {
     userId?: StringFilter<"Payment"> | string
     bookingId?: StringNullableFilter<"Payment"> | string | null
     priceId?: StringNullableFilter<"Payment"> | string | null
+    priceCategoryId?: StringNullableFilter<"Payment"> | string | null
     amount?: FloatFilter<"Payment"> | number
     currency?: StringFilter<"Payment"> | string
     paymentType?: EnumPaymentTypeFilter<"Payment"> | $Enums.PaymentType
@@ -41961,6 +43910,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     floor: FloorCreateNestedOneWithoutRoomsInput
     roomType?: RoomTypeCreateNestedOneWithoutRoomsInput
+    priceCategory?: PriceCategoryCreateNestedOneWithoutRoomsInput
     announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutRoomInput
     notifications?: NotificationCreateNestedManyWithoutRoomInput
     bookings?: BookingCreateNestedManyWithoutRoomInput
@@ -41977,6 +43927,7 @@ export namespace Prisma {
     roomEquipment?: RoomCreateroomEquipmentInput | string[]
     photos?: RoomCreatephotosInput | string[]
     roomTypeId?: string | null
+    priceCategoryId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutRoomInput
@@ -42124,6 +44075,7 @@ export namespace Prisma {
     roomEquipment?: StringNullableListFilter<"Room">
     photos?: StringNullableListFilter<"Room">
     roomTypeId?: StringNullableFilter<"Room"> | string | null
+    priceCategoryId?: StringNullableFilter<"Room"> | string | null
     createdAt?: DateTimeFilter<"Room"> | Date | string
     updatedAt?: DateTimeFilter<"Room"> | Date | string
   }
@@ -42171,6 +44123,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     dormitory: DormitoryCreateNestedOneWithoutRoomsInput
     roomType?: RoomTypeCreateNestedOneWithoutRoomsInput
+    priceCategory?: PriceCategoryCreateNestedOneWithoutRoomsInput
     announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutRoomInput
     notifications?: NotificationCreateNestedManyWithoutRoomInput
     bookings?: BookingCreateNestedManyWithoutRoomInput
@@ -42187,6 +44140,7 @@ export namespace Prisma {
     roomEquipment?: RoomCreateroomEquipmentInput | string[]
     photos?: RoomCreatephotosInput | string[]
     roomTypeId?: string | null
+    priceCategoryId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutRoomInput
@@ -42373,6 +44327,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     floorRoomAssignments?: FloorRoomAssignmentCreateNestedManyWithoutRoomTypeInput
+    priceCategory?: PriceCategoryCreateNestedOneWithoutRoomTypesInput
   }
 
   export type RoomTypeUncheckedCreateWithoutRoomsInput = {
@@ -42383,6 +44338,7 @@ export namespace Prisma {
     equipment?: RoomTypeCreateequipmentInput | string[]
     typeCode: string
     photos?: RoomTypeCreatephotosInput | string[]
+    priceCategoryId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     floorRoomAssignments?: FloorRoomAssignmentUncheckedCreateNestedManyWithoutRoomTypeInput
@@ -42391,6 +44347,37 @@ export namespace Prisma {
   export type RoomTypeCreateOrConnectWithoutRoomsInput = {
     where: RoomTypeWhereUniqueInput
     create: XOR<RoomTypeCreateWithoutRoomsInput, RoomTypeUncheckedCreateWithoutRoomsInput>
+  }
+
+  export type PriceCategoryCreateWithoutRoomsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    pricePerMonth: number
+    pricePerDay: number
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    roomTypes?: RoomTypeCreateNestedManyWithoutPriceCategoryInput
+    payments?: PaymentCreateNestedManyWithoutPriceCategoryInput
+  }
+
+  export type PriceCategoryUncheckedCreateWithoutRoomsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    pricePerMonth: number
+    pricePerDay: number
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    roomTypes?: RoomTypeUncheckedCreateNestedManyWithoutPriceCategoryInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutPriceCategoryInput
+  }
+
+  export type PriceCategoryCreateOrConnectWithoutRoomsInput = {
+    where: PriceCategoryWhereUniqueInput
+    create: XOR<PriceCategoryCreateWithoutRoomsInput, PriceCategoryUncheckedCreateWithoutRoomsInput>
   }
 
   export type AnnouncementRecipientCreateWithoutRoomInput = {
@@ -42727,6 +44714,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     floorRoomAssignments?: FloorRoomAssignmentUpdateManyWithoutRoomTypeNestedInput
+    priceCategory?: PriceCategoryUpdateOneWithoutRoomTypesNestedInput
   }
 
   export type RoomTypeUncheckedUpdateWithoutRoomsInput = {
@@ -42737,9 +44725,47 @@ export namespace Prisma {
     equipment?: RoomTypeUpdateequipmentInput | string[]
     typeCode?: StringFieldUpdateOperationsInput | string
     photos?: RoomTypeUpdatephotosInput | string[]
+    priceCategoryId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     floorRoomAssignments?: FloorRoomAssignmentUncheckedUpdateManyWithoutRoomTypeNestedInput
+  }
+
+  export type PriceCategoryUpsertWithoutRoomsInput = {
+    update: XOR<PriceCategoryUpdateWithoutRoomsInput, PriceCategoryUncheckedUpdateWithoutRoomsInput>
+    create: XOR<PriceCategoryCreateWithoutRoomsInput, PriceCategoryUncheckedCreateWithoutRoomsInput>
+    where?: PriceCategoryWhereInput
+  }
+
+  export type PriceCategoryUpdateToOneWithWhereWithoutRoomsInput = {
+    where?: PriceCategoryWhereInput
+    data: XOR<PriceCategoryUpdateWithoutRoomsInput, PriceCategoryUncheckedUpdateWithoutRoomsInput>
+  }
+
+  export type PriceCategoryUpdateWithoutRoomsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    pricePerMonth?: FloatFieldUpdateOperationsInput | number
+    pricePerDay?: FloatFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    roomTypes?: RoomTypeUpdateManyWithoutPriceCategoryNestedInput
+    payments?: PaymentUpdateManyWithoutPriceCategoryNestedInput
+  }
+
+  export type PriceCategoryUncheckedUpdateWithoutRoomsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    pricePerMonth?: FloatFieldUpdateOperationsInput | number
+    pricePerDay?: FloatFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    roomTypes?: RoomTypeUncheckedUpdateManyWithoutPriceCategoryNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutPriceCategoryNestedInput
   }
 
   export type AnnouncementRecipientUpsertWithWhereUniqueWithoutRoomInput = {
@@ -42872,6 +44898,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     floor: FloorCreateNestedOneWithoutRoomsInput
     dormitory: DormitoryCreateNestedOneWithoutRoomsInput
+    priceCategory?: PriceCategoryCreateNestedOneWithoutRoomsInput
     announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutRoomInput
     notifications?: NotificationCreateNestedManyWithoutRoomInput
     bookings?: BookingCreateNestedManyWithoutRoomInput
@@ -42888,6 +44915,7 @@ export namespace Prisma {
     dormitoryId: string
     roomEquipment?: RoomCreateroomEquipmentInput | string[]
     photos?: RoomCreatephotosInput | string[]
+    priceCategoryId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutRoomInput
@@ -42930,6 +44958,37 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type PriceCategoryCreateWithoutRoomTypesInput = {
+    id?: string
+    name: string
+    description?: string | null
+    pricePerMonth: number
+    pricePerDay: number
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    rooms?: RoomCreateNestedManyWithoutPriceCategoryInput
+    payments?: PaymentCreateNestedManyWithoutPriceCategoryInput
+  }
+
+  export type PriceCategoryUncheckedCreateWithoutRoomTypesInput = {
+    id?: string
+    name: string
+    description?: string | null
+    pricePerMonth: number
+    pricePerDay: number
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    rooms?: RoomUncheckedCreateNestedManyWithoutPriceCategoryInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutPriceCategoryInput
+  }
+
+  export type PriceCategoryCreateOrConnectWithoutRoomTypesInput = {
+    where: PriceCategoryWhereUniqueInput
+    create: XOR<PriceCategoryCreateWithoutRoomTypesInput, PriceCategoryUncheckedCreateWithoutRoomTypesInput>
+  }
+
   export type RoomUpsertWithWhereUniqueWithoutRoomTypeInput = {
     where: RoomWhereUniqueInput
     update: XOR<RoomUpdateWithoutRoomTypeInput, RoomUncheckedUpdateWithoutRoomTypeInput>
@@ -42962,6 +45021,43 @@ export namespace Prisma {
     data: XOR<FloorRoomAssignmentUpdateManyMutationInput, FloorRoomAssignmentUncheckedUpdateManyWithoutRoomTypeInput>
   }
 
+  export type PriceCategoryUpsertWithoutRoomTypesInput = {
+    update: XOR<PriceCategoryUpdateWithoutRoomTypesInput, PriceCategoryUncheckedUpdateWithoutRoomTypesInput>
+    create: XOR<PriceCategoryCreateWithoutRoomTypesInput, PriceCategoryUncheckedCreateWithoutRoomTypesInput>
+    where?: PriceCategoryWhereInput
+  }
+
+  export type PriceCategoryUpdateToOneWithWhereWithoutRoomTypesInput = {
+    where?: PriceCategoryWhereInput
+    data: XOR<PriceCategoryUpdateWithoutRoomTypesInput, PriceCategoryUncheckedUpdateWithoutRoomTypesInput>
+  }
+
+  export type PriceCategoryUpdateWithoutRoomTypesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    pricePerMonth?: FloatFieldUpdateOperationsInput | number
+    pricePerDay?: FloatFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rooms?: RoomUpdateManyWithoutPriceCategoryNestedInput
+    payments?: PaymentUpdateManyWithoutPriceCategoryNestedInput
+  }
+
+  export type PriceCategoryUncheckedUpdateWithoutRoomTypesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    pricePerMonth?: FloatFieldUpdateOperationsInput | number
+    pricePerDay?: FloatFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rooms?: RoomUncheckedUpdateManyWithoutPriceCategoryNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutPriceCategoryNestedInput
+  }
+
   export type FloorCreateWithoutFloorRoomAssignmentsInput = {
     id?: string
     floorNumber: number
@@ -42992,6 +45088,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     rooms?: RoomCreateNestedManyWithoutRoomTypeInput
+    priceCategory?: PriceCategoryCreateNestedOneWithoutRoomTypesInput
   }
 
   export type RoomTypeUncheckedCreateWithoutFloorRoomAssignmentsInput = {
@@ -43002,6 +45099,7 @@ export namespace Prisma {
     equipment?: RoomTypeCreateequipmentInput | string[]
     typeCode: string
     photos?: RoomTypeCreatephotosInput | string[]
+    priceCategoryId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     rooms?: RoomUncheckedCreateNestedManyWithoutRoomTypeInput
@@ -43059,6 +45157,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     rooms?: RoomUpdateManyWithoutRoomTypeNestedInput
+    priceCategory?: PriceCategoryUpdateOneWithoutRoomTypesNestedInput
   }
 
   export type RoomTypeUncheckedUpdateWithoutFloorRoomAssignmentsInput = {
@@ -43069,6 +45168,7 @@ export namespace Prisma {
     equipment?: RoomTypeUpdateequipmentInput | string[]
     typeCode?: StringFieldUpdateOperationsInput | string
     photos?: RoomTypeUpdatephotosInput | string[]
+    priceCategoryId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     rooms?: RoomUncheckedUpdateManyWithoutRoomTypeNestedInput
@@ -43085,6 +45185,7 @@ export namespace Prisma {
     floor: FloorCreateNestedOneWithoutRoomsInput
     dormitory: DormitoryCreateNestedOneWithoutRoomsInput
     roomType?: RoomTypeCreateNestedOneWithoutRoomsInput
+    priceCategory?: PriceCategoryCreateNestedOneWithoutRoomsInput
     announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutRoomInput
     notifications?: NotificationCreateNestedManyWithoutRoomInput
     bookings?: BookingCreateNestedManyWithoutRoomInput
@@ -43101,6 +45202,7 @@ export namespace Prisma {
     roomEquipment?: RoomCreateroomEquipmentInput | string[]
     photos?: RoomCreatephotosInput | string[]
     roomTypeId?: string | null
+    priceCategoryId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutRoomInput
@@ -43137,6 +45239,7 @@ export namespace Prisma {
     floor?: FloorUpdateOneRequiredWithoutRoomsNestedInput
     dormitory?: DormitoryUpdateOneRequiredWithoutRoomsNestedInput
     roomType?: RoomTypeUpdateOneWithoutRoomsNestedInput
+    priceCategory?: PriceCategoryUpdateOneWithoutRoomsNestedInput
     announcementRecipients?: AnnouncementRecipientUpdateManyWithoutRoomNestedInput
     notifications?: NotificationUpdateManyWithoutRoomNestedInput
     bookings?: BookingUpdateManyWithoutRoomNestedInput
@@ -43153,6 +45256,7 @@ export namespace Prisma {
     roomEquipment?: RoomUpdateroomEquipmentInput | string[]
     photos?: RoomUpdatephotosInput | string[]
     roomTypeId?: NullableStringFieldUpdateOperationsInput | string | null
+    priceCategoryId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutRoomNestedInput
@@ -43160,6 +45264,230 @@ export namespace Prisma {
     bookings?: BookingUncheckedUpdateManyWithoutRoomNestedInput
     residents?: UserUncheckedUpdateManyWithoutRoomNestedInput
     prices?: PriceUncheckedUpdateManyWithoutRoomNestedInput
+  }
+
+  export type RoomTypeCreateWithoutPriceCategoryInput = {
+    id?: string
+    name: string
+    description?: string | null
+    capacity: number
+    equipment?: RoomTypeCreateequipmentInput | string[]
+    typeCode: string
+    photos?: RoomTypeCreatephotosInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    rooms?: RoomCreateNestedManyWithoutRoomTypeInput
+    floorRoomAssignments?: FloorRoomAssignmentCreateNestedManyWithoutRoomTypeInput
+  }
+
+  export type RoomTypeUncheckedCreateWithoutPriceCategoryInput = {
+    id?: string
+    name: string
+    description?: string | null
+    capacity: number
+    equipment?: RoomTypeCreateequipmentInput | string[]
+    typeCode: string
+    photos?: RoomTypeCreatephotosInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    rooms?: RoomUncheckedCreateNestedManyWithoutRoomTypeInput
+    floorRoomAssignments?: FloorRoomAssignmentUncheckedCreateNestedManyWithoutRoomTypeInput
+  }
+
+  export type RoomTypeCreateOrConnectWithoutPriceCategoryInput = {
+    where: RoomTypeWhereUniqueInput
+    create: XOR<RoomTypeCreateWithoutPriceCategoryInput, RoomTypeUncheckedCreateWithoutPriceCategoryInput>
+  }
+
+  export type RoomTypeCreateManyPriceCategoryInputEnvelope = {
+    data: RoomTypeCreateManyPriceCategoryInput | RoomTypeCreateManyPriceCategoryInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RoomCreateWithoutPriceCategoryInput = {
+    id?: string
+    number: string
+    capacity: number
+    roomEquipment?: RoomCreateroomEquipmentInput | string[]
+    photos?: RoomCreatephotosInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    floor: FloorCreateNestedOneWithoutRoomsInput
+    dormitory: DormitoryCreateNestedOneWithoutRoomsInput
+    roomType?: RoomTypeCreateNestedOneWithoutRoomsInput
+    announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutRoomInput
+    notifications?: NotificationCreateNestedManyWithoutRoomInput
+    bookings?: BookingCreateNestedManyWithoutRoomInput
+    statuses?: RoomStatusCreateNestedManyWithoutRoomInput
+    residents?: UserCreateNestedManyWithoutRoomInput
+    prices?: PriceCreateNestedManyWithoutRoomInput
+  }
+
+  export type RoomUncheckedCreateWithoutPriceCategoryInput = {
+    id?: string
+    number: string
+    floorId: string
+    capacity: number
+    dormitoryId: string
+    roomEquipment?: RoomCreateroomEquipmentInput | string[]
+    photos?: RoomCreatephotosInput | string[]
+    roomTypeId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutRoomInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutRoomInput
+    bookings?: BookingUncheckedCreateNestedManyWithoutRoomInput
+    statuses?: RoomStatusUncheckedCreateNestedManyWithoutRoomInput
+    residents?: UserUncheckedCreateNestedManyWithoutRoomInput
+    prices?: PriceUncheckedCreateNestedManyWithoutRoomInput
+  }
+
+  export type RoomCreateOrConnectWithoutPriceCategoryInput = {
+    where: RoomWhereUniqueInput
+    create: XOR<RoomCreateWithoutPriceCategoryInput, RoomUncheckedCreateWithoutPriceCategoryInput>
+  }
+
+  export type RoomCreateManyPriceCategoryInputEnvelope = {
+    data: RoomCreateManyPriceCategoryInput | RoomCreateManyPriceCategoryInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PaymentCreateWithoutPriceCategoryInput = {
+    id?: string
+    amount: number
+    currency?: string
+    paymentType: $Enums.PaymentType
+    paymentMethod: $Enums.PaymentMethod
+    status?: $Enums.PaymentStatus
+    dueDate: Date | string
+    paidAt?: Date | string | null
+    description?: string | null
+    paymentProofUrl?: string | null
+    paymentProofFilename?: string | null
+    paymentProofUploadedAt?: Date | string | null
+    externalPaymentId?: string | null
+    failureReason?: string | null
+    managerNotes?: string | null
+    confirmedAt?: Date | string | null
+    rejectedAt?: Date | string | null
+    rejectionReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutPaymentsInput
+    booking?: BookingCreateNestedOneWithoutPaymentsInput
+    price?: PriceCreateNestedOneWithoutPaymentsInput
+    confirmedByUser?: UserCreateNestedOneWithoutConfirmedPaymentsInput
+    generatedFromRecurring?: RecurringPaymentCreateNestedOneWithoutGeneratedPaymentsInput
+    notifications?: NotificationCreateNestedManyWithoutPaymentInput
+    paymentItems?: PaymentItemCreateNestedManyWithoutPaymentInput
+    recurringPayment?: RecurringPaymentCreateNestedOneWithoutPaymentInput
+    auditLogs?: PaymentAuditLogCreateNestedManyWithoutPaymentInput
+  }
+
+  export type PaymentUncheckedCreateWithoutPriceCategoryInput = {
+    id?: string
+    userId: string
+    bookingId?: string | null
+    priceId?: string | null
+    amount: number
+    currency?: string
+    paymentType: $Enums.PaymentType
+    paymentMethod: $Enums.PaymentMethod
+    status?: $Enums.PaymentStatus
+    dueDate: Date | string
+    paidAt?: Date | string | null
+    description?: string | null
+    paymentProofUrl?: string | null
+    paymentProofFilename?: string | null
+    paymentProofUploadedAt?: Date | string | null
+    externalPaymentId?: string | null
+    failureReason?: string | null
+    managerNotes?: string | null
+    confirmedBy?: string | null
+    confirmedAt?: Date | string | null
+    rejectedAt?: Date | string | null
+    rejectionReason?: string | null
+    recurringPaymentId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    notifications?: NotificationUncheckedCreateNestedManyWithoutPaymentInput
+    paymentItems?: PaymentItemUncheckedCreateNestedManyWithoutPaymentInput
+    recurringPayment?: RecurringPaymentUncheckedCreateNestedOneWithoutPaymentInput
+    auditLogs?: PaymentAuditLogUncheckedCreateNestedManyWithoutPaymentInput
+  }
+
+  export type PaymentCreateOrConnectWithoutPriceCategoryInput = {
+    where: PaymentWhereUniqueInput
+    create: XOR<PaymentCreateWithoutPriceCategoryInput, PaymentUncheckedCreateWithoutPriceCategoryInput>
+  }
+
+  export type PaymentCreateManyPriceCategoryInputEnvelope = {
+    data: PaymentCreateManyPriceCategoryInput | PaymentCreateManyPriceCategoryInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RoomTypeUpsertWithWhereUniqueWithoutPriceCategoryInput = {
+    where: RoomTypeWhereUniqueInput
+    update: XOR<RoomTypeUpdateWithoutPriceCategoryInput, RoomTypeUncheckedUpdateWithoutPriceCategoryInput>
+    create: XOR<RoomTypeCreateWithoutPriceCategoryInput, RoomTypeUncheckedCreateWithoutPriceCategoryInput>
+  }
+
+  export type RoomTypeUpdateWithWhereUniqueWithoutPriceCategoryInput = {
+    where: RoomTypeWhereUniqueInput
+    data: XOR<RoomTypeUpdateWithoutPriceCategoryInput, RoomTypeUncheckedUpdateWithoutPriceCategoryInput>
+  }
+
+  export type RoomTypeUpdateManyWithWhereWithoutPriceCategoryInput = {
+    where: RoomTypeScalarWhereInput
+    data: XOR<RoomTypeUpdateManyMutationInput, RoomTypeUncheckedUpdateManyWithoutPriceCategoryInput>
+  }
+
+  export type RoomTypeScalarWhereInput = {
+    AND?: RoomTypeScalarWhereInput | RoomTypeScalarWhereInput[]
+    OR?: RoomTypeScalarWhereInput[]
+    NOT?: RoomTypeScalarWhereInput | RoomTypeScalarWhereInput[]
+    id?: StringFilter<"RoomType"> | string
+    name?: StringFilter<"RoomType"> | string
+    description?: StringNullableFilter<"RoomType"> | string | null
+    capacity?: IntFilter<"RoomType"> | number
+    equipment?: StringNullableListFilter<"RoomType">
+    typeCode?: StringFilter<"RoomType"> | string
+    photos?: StringNullableListFilter<"RoomType">
+    priceCategoryId?: StringNullableFilter<"RoomType"> | string | null
+    createdAt?: DateTimeFilter<"RoomType"> | Date | string
+    updatedAt?: DateTimeFilter<"RoomType"> | Date | string
+  }
+
+  export type RoomUpsertWithWhereUniqueWithoutPriceCategoryInput = {
+    where: RoomWhereUniqueInput
+    update: XOR<RoomUpdateWithoutPriceCategoryInput, RoomUncheckedUpdateWithoutPriceCategoryInput>
+    create: XOR<RoomCreateWithoutPriceCategoryInput, RoomUncheckedCreateWithoutPriceCategoryInput>
+  }
+
+  export type RoomUpdateWithWhereUniqueWithoutPriceCategoryInput = {
+    where: RoomWhereUniqueInput
+    data: XOR<RoomUpdateWithoutPriceCategoryInput, RoomUncheckedUpdateWithoutPriceCategoryInput>
+  }
+
+  export type RoomUpdateManyWithWhereWithoutPriceCategoryInput = {
+    where: RoomScalarWhereInput
+    data: XOR<RoomUpdateManyMutationInput, RoomUncheckedUpdateManyWithoutPriceCategoryInput>
+  }
+
+  export type PaymentUpsertWithWhereUniqueWithoutPriceCategoryInput = {
+    where: PaymentWhereUniqueInput
+    update: XOR<PaymentUpdateWithoutPriceCategoryInput, PaymentUncheckedUpdateWithoutPriceCategoryInput>
+    create: XOR<PaymentCreateWithoutPriceCategoryInput, PaymentUncheckedCreateWithoutPriceCategoryInput>
+  }
+
+  export type PaymentUpdateWithWhereUniqueWithoutPriceCategoryInput = {
+    where: PaymentWhereUniqueInput
+    data: XOR<PaymentUpdateWithoutPriceCategoryInput, PaymentUncheckedUpdateWithoutPriceCategoryInput>
+  }
+
+  export type PaymentUpdateManyWithWhereWithoutPriceCategoryInput = {
+    where: PaymentScalarWhereInput
+    data: XOR<PaymentUpdateManyMutationInput, PaymentUncheckedUpdateManyWithoutPriceCategoryInput>
   }
 
   export type RoomCreateWithoutPricesInput = {
@@ -43173,6 +45501,7 @@ export namespace Prisma {
     floor: FloorCreateNestedOneWithoutRoomsInput
     dormitory: DormitoryCreateNestedOneWithoutRoomsInput
     roomType?: RoomTypeCreateNestedOneWithoutRoomsInput
+    priceCategory?: PriceCategoryCreateNestedOneWithoutRoomsInput
     announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutRoomInput
     notifications?: NotificationCreateNestedManyWithoutRoomInput
     bookings?: BookingCreateNestedManyWithoutRoomInput
@@ -43189,6 +45518,7 @@ export namespace Prisma {
     roomEquipment?: RoomCreateroomEquipmentInput | string[]
     photos?: RoomCreatephotosInput | string[]
     roomTypeId?: string | null
+    priceCategoryId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutRoomInput
@@ -43226,6 +45556,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutPaymentsInput
     booking?: BookingCreateNestedOneWithoutPaymentsInput
+    priceCategory?: PriceCategoryCreateNestedOneWithoutPaymentsInput
     confirmedByUser?: UserCreateNestedOneWithoutConfirmedPaymentsInput
     generatedFromRecurring?: RecurringPaymentCreateNestedOneWithoutGeneratedPaymentsInput
     notifications?: NotificationCreateNestedManyWithoutPaymentInput
@@ -43238,6 +45569,7 @@ export namespace Prisma {
     id?: string
     userId: string
     bookingId?: string | null
+    priceCategoryId?: string | null
     amount: number
     currency?: string
     paymentType: $Enums.PaymentType
@@ -43297,6 +45629,7 @@ export namespace Prisma {
     floor?: FloorUpdateOneRequiredWithoutRoomsNestedInput
     dormitory?: DormitoryUpdateOneRequiredWithoutRoomsNestedInput
     roomType?: RoomTypeUpdateOneWithoutRoomsNestedInput
+    priceCategory?: PriceCategoryUpdateOneWithoutRoomsNestedInput
     announcementRecipients?: AnnouncementRecipientUpdateManyWithoutRoomNestedInput
     notifications?: NotificationUpdateManyWithoutRoomNestedInput
     bookings?: BookingUpdateManyWithoutRoomNestedInput
@@ -43313,6 +45646,7 @@ export namespace Prisma {
     roomEquipment?: RoomUpdateroomEquipmentInput | string[]
     photos?: RoomUpdatephotosInput | string[]
     roomTypeId?: NullableStringFieldUpdateOperationsInput | string | null
+    priceCategoryId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutRoomNestedInput
@@ -43424,6 +45758,7 @@ export namespace Prisma {
     floor: FloorCreateNestedOneWithoutRoomsInput
     dormitory: DormitoryCreateNestedOneWithoutRoomsInput
     roomType?: RoomTypeCreateNestedOneWithoutRoomsInput
+    priceCategory?: PriceCategoryCreateNestedOneWithoutRoomsInput
     announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutRoomInput
     notifications?: NotificationCreateNestedManyWithoutRoomInput
     statuses?: RoomStatusCreateNestedManyWithoutRoomInput
@@ -43440,6 +45775,7 @@ export namespace Prisma {
     roomEquipment?: RoomCreateroomEquipmentInput | string[]
     photos?: RoomCreatephotosInput | string[]
     roomTypeId?: string | null
+    priceCategoryId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutRoomInput
@@ -43525,6 +45861,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutPaymentsInput
     price?: PriceCreateNestedOneWithoutPaymentsInput
+    priceCategory?: PriceCategoryCreateNestedOneWithoutPaymentsInput
     confirmedByUser?: UserCreateNestedOneWithoutConfirmedPaymentsInput
     generatedFromRecurring?: RecurringPaymentCreateNestedOneWithoutGeneratedPaymentsInput
     notifications?: NotificationCreateNestedManyWithoutPaymentInput
@@ -43537,6 +45874,7 @@ export namespace Prisma {
     id?: string
     userId: string
     priceId?: string | null
+    priceCategoryId?: string | null
     amount: number
     currency?: string
     paymentType: $Enums.PaymentType
@@ -43717,6 +46055,7 @@ export namespace Prisma {
     floor?: FloorUpdateOneRequiredWithoutRoomsNestedInput
     dormitory?: DormitoryUpdateOneRequiredWithoutRoomsNestedInput
     roomType?: RoomTypeUpdateOneWithoutRoomsNestedInput
+    priceCategory?: PriceCategoryUpdateOneWithoutRoomsNestedInput
     announcementRecipients?: AnnouncementRecipientUpdateManyWithoutRoomNestedInput
     notifications?: NotificationUpdateManyWithoutRoomNestedInput
     statuses?: RoomStatusUpdateManyWithoutRoomNestedInput
@@ -43733,6 +46072,7 @@ export namespace Prisma {
     roomEquipment?: RoomUpdateroomEquipmentInput | string[]
     photos?: RoomUpdatephotosInput | string[]
     roomTypeId?: NullableStringFieldUpdateOperationsInput | string | null
+    priceCategoryId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutRoomNestedInput
@@ -43941,6 +46281,37 @@ export namespace Prisma {
   export type PriceCreateOrConnectWithoutPaymentsInput = {
     where: PriceWhereUniqueInput
     create: XOR<PriceCreateWithoutPaymentsInput, PriceUncheckedCreateWithoutPaymentsInput>
+  }
+
+  export type PriceCategoryCreateWithoutPaymentsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    pricePerMonth: number
+    pricePerDay: number
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    roomTypes?: RoomTypeCreateNestedManyWithoutPriceCategoryInput
+    rooms?: RoomCreateNestedManyWithoutPriceCategoryInput
+  }
+
+  export type PriceCategoryUncheckedCreateWithoutPaymentsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    pricePerMonth: number
+    pricePerDay: number
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    roomTypes?: RoomTypeUncheckedCreateNestedManyWithoutPriceCategoryInput
+    rooms?: RoomUncheckedCreateNestedManyWithoutPriceCategoryInput
+  }
+
+  export type PriceCategoryCreateOrConnectWithoutPaymentsInput = {
+    where: PriceCategoryWhereUniqueInput
+    create: XOR<PriceCategoryCreateWithoutPaymentsInput, PriceCategoryUncheckedCreateWithoutPaymentsInput>
   }
 
   export type UserCreateWithoutConfirmedPaymentsInput = {
@@ -44347,6 +46718,43 @@ export namespace Prisma {
     dateTo?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
+  export type PriceCategoryUpsertWithoutPaymentsInput = {
+    update: XOR<PriceCategoryUpdateWithoutPaymentsInput, PriceCategoryUncheckedUpdateWithoutPaymentsInput>
+    create: XOR<PriceCategoryCreateWithoutPaymentsInput, PriceCategoryUncheckedCreateWithoutPaymentsInput>
+    where?: PriceCategoryWhereInput
+  }
+
+  export type PriceCategoryUpdateToOneWithWhereWithoutPaymentsInput = {
+    where?: PriceCategoryWhereInput
+    data: XOR<PriceCategoryUpdateWithoutPaymentsInput, PriceCategoryUncheckedUpdateWithoutPaymentsInput>
+  }
+
+  export type PriceCategoryUpdateWithoutPaymentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    pricePerMonth?: FloatFieldUpdateOperationsInput | number
+    pricePerDay?: FloatFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    roomTypes?: RoomTypeUpdateManyWithoutPriceCategoryNestedInput
+    rooms?: RoomUpdateManyWithoutPriceCategoryNestedInput
+  }
+
+  export type PriceCategoryUncheckedUpdateWithoutPaymentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    pricePerMonth?: FloatFieldUpdateOperationsInput | number
+    pricePerDay?: FloatFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    roomTypes?: RoomTypeUncheckedUpdateManyWithoutPriceCategoryNestedInput
+    rooms?: RoomUncheckedUpdateManyWithoutPriceCategoryNestedInput
+  }
+
   export type UserUpsertWithoutConfirmedPaymentsInput = {
     update: XOR<UserUpdateWithoutConfirmedPaymentsInput, UserUncheckedUpdateWithoutConfirmedPaymentsInput>
     create: XOR<UserCreateWithoutConfirmedPaymentsInput, UserUncheckedCreateWithoutConfirmedPaymentsInput>
@@ -44594,6 +47002,7 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutPaymentsInput
     booking?: BookingCreateNestedOneWithoutPaymentsInput
     price?: PriceCreateNestedOneWithoutPaymentsInput
+    priceCategory?: PriceCategoryCreateNestedOneWithoutPaymentsInput
     confirmedByUser?: UserCreateNestedOneWithoutConfirmedPaymentsInput
     generatedFromRecurring?: RecurringPaymentCreateNestedOneWithoutGeneratedPaymentsInput
     notifications?: NotificationCreateNestedManyWithoutPaymentInput
@@ -44606,6 +47015,7 @@ export namespace Prisma {
     userId: string
     bookingId?: string | null
     priceId?: string | null
+    priceCategoryId?: string | null
     amount: number
     currency?: string
     paymentType: $Enums.PaymentType
@@ -44696,6 +47106,7 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutPaymentsInput
     booking?: BookingCreateNestedOneWithoutPaymentsInput
     price?: PriceCreateNestedOneWithoutPaymentsInput
+    priceCategory?: PriceCategoryCreateNestedOneWithoutPaymentsInput
     confirmedByUser?: UserCreateNestedOneWithoutConfirmedPaymentsInput
     notifications?: NotificationCreateNestedManyWithoutPaymentInput
     paymentItems?: PaymentItemCreateNestedManyWithoutPaymentInput
@@ -44708,6 +47119,7 @@ export namespace Prisma {
     userId: string
     bookingId?: string | null
     priceId?: string | null
+    priceCategoryId?: string | null
     amount: number
     currency?: string
     paymentType: $Enums.PaymentType
@@ -44779,6 +47191,7 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutPaymentsNestedInput
     booking?: BookingUpdateOneWithoutPaymentsNestedInput
     price?: PriceUpdateOneWithoutPaymentsNestedInput
+    priceCategory?: PriceCategoryUpdateOneWithoutPaymentsNestedInput
     confirmedByUser?: UserUpdateOneWithoutConfirmedPaymentsNestedInput
     generatedFromRecurring?: RecurringPaymentUpdateOneWithoutGeneratedPaymentsNestedInput
     notifications?: NotificationUpdateManyWithoutPaymentNestedInput
@@ -44791,6 +47204,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     bookingId?: NullableStringFieldUpdateOperationsInput | string | null
     priceId?: NullableStringFieldUpdateOperationsInput | string | null
+    priceCategoryId?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: FloatFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
     paymentType?: EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
@@ -44898,6 +47312,7 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutPaymentsInput
     booking?: BookingCreateNestedOneWithoutPaymentsInput
     price?: PriceCreateNestedOneWithoutPaymentsInput
+    priceCategory?: PriceCategoryCreateNestedOneWithoutPaymentsInput
     confirmedByUser?: UserCreateNestedOneWithoutConfirmedPaymentsInput
     generatedFromRecurring?: RecurringPaymentCreateNestedOneWithoutGeneratedPaymentsInput
     notifications?: NotificationCreateNestedManyWithoutPaymentInput
@@ -44910,6 +47325,7 @@ export namespace Prisma {
     userId: string
     bookingId?: string | null
     priceId?: string | null
+    priceCategoryId?: string | null
     amount: number
     currency?: string
     paymentType: $Enums.PaymentType
@@ -44976,6 +47392,7 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutPaymentsNestedInput
     booking?: BookingUpdateOneWithoutPaymentsNestedInput
     price?: PriceUpdateOneWithoutPaymentsNestedInput
+    priceCategory?: PriceCategoryUpdateOneWithoutPaymentsNestedInput
     confirmedByUser?: UserUpdateOneWithoutConfirmedPaymentsNestedInput
     generatedFromRecurring?: RecurringPaymentUpdateOneWithoutGeneratedPaymentsNestedInput
     notifications?: NotificationUpdateManyWithoutPaymentNestedInput
@@ -44988,6 +47405,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     bookingId?: NullableStringFieldUpdateOperationsInput | string | null
     priceId?: NullableStringFieldUpdateOperationsInput | string | null
+    priceCategoryId?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: FloatFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
     paymentType?: EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
@@ -45038,6 +47456,7 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutPaymentsInput
     booking?: BookingCreateNestedOneWithoutPaymentsInput
     price?: PriceCreateNestedOneWithoutPaymentsInput
+    priceCategory?: PriceCategoryCreateNestedOneWithoutPaymentsInput
     confirmedByUser?: UserCreateNestedOneWithoutConfirmedPaymentsInput
     generatedFromRecurring?: RecurringPaymentCreateNestedOneWithoutGeneratedPaymentsInput
     notifications?: NotificationCreateNestedManyWithoutPaymentInput
@@ -45050,6 +47469,7 @@ export namespace Prisma {
     userId: string
     bookingId?: string | null
     priceId?: string | null
+    priceCategoryId?: string | null
     amount: number
     currency?: string
     paymentType: $Enums.PaymentType
@@ -45191,6 +47611,7 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutPaymentsNestedInput
     booking?: BookingUpdateOneWithoutPaymentsNestedInput
     price?: PriceUpdateOneWithoutPaymentsNestedInput
+    priceCategory?: PriceCategoryUpdateOneWithoutPaymentsNestedInput
     confirmedByUser?: UserUpdateOneWithoutConfirmedPaymentsNestedInput
     generatedFromRecurring?: RecurringPaymentUpdateOneWithoutGeneratedPaymentsNestedInput
     notifications?: NotificationUpdateManyWithoutPaymentNestedInput
@@ -45203,6 +47624,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     bookingId?: NullableStringFieldUpdateOperationsInput | string | null
     priceId?: NullableStringFieldUpdateOperationsInput | string | null
+    priceCategoryId?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: FloatFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
     paymentType?: EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
@@ -45471,6 +47893,7 @@ export namespace Prisma {
     floor: FloorCreateNestedOneWithoutRoomsInput
     dormitory: DormitoryCreateNestedOneWithoutRoomsInput
     roomType?: RoomTypeCreateNestedOneWithoutRoomsInput
+    priceCategory?: PriceCategoryCreateNestedOneWithoutRoomsInput
     announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutRoomInput
     bookings?: BookingCreateNestedManyWithoutRoomInput
     statuses?: RoomStatusCreateNestedManyWithoutRoomInput
@@ -45487,6 +47910,7 @@ export namespace Prisma {
     roomEquipment?: RoomCreateroomEquipmentInput | string[]
     photos?: RoomCreatephotosInput | string[]
     roomTypeId?: string | null
+    priceCategoryId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutRoomInput
@@ -45560,6 +47984,7 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutPaymentsInput
     booking?: BookingCreateNestedOneWithoutPaymentsInput
     price?: PriceCreateNestedOneWithoutPaymentsInput
+    priceCategory?: PriceCategoryCreateNestedOneWithoutPaymentsInput
     confirmedByUser?: UserCreateNestedOneWithoutConfirmedPaymentsInput
     generatedFromRecurring?: RecurringPaymentCreateNestedOneWithoutGeneratedPaymentsInput
     paymentItems?: PaymentItemCreateNestedManyWithoutPaymentInput
@@ -45572,6 +47997,7 @@ export namespace Prisma {
     userId: string
     bookingId?: string | null
     priceId?: string | null
+    priceCategoryId?: string | null
     amount: number
     currency?: string
     paymentType: $Enums.PaymentType
@@ -45787,6 +48213,7 @@ export namespace Prisma {
     floor?: FloorUpdateOneRequiredWithoutRoomsNestedInput
     dormitory?: DormitoryUpdateOneRequiredWithoutRoomsNestedInput
     roomType?: RoomTypeUpdateOneWithoutRoomsNestedInput
+    priceCategory?: PriceCategoryUpdateOneWithoutRoomsNestedInput
     announcementRecipients?: AnnouncementRecipientUpdateManyWithoutRoomNestedInput
     bookings?: BookingUpdateManyWithoutRoomNestedInput
     statuses?: RoomStatusUpdateManyWithoutRoomNestedInput
@@ -45803,6 +48230,7 @@ export namespace Prisma {
     roomEquipment?: RoomUpdateroomEquipmentInput | string[]
     photos?: RoomUpdatephotosInput | string[]
     roomTypeId?: NullableStringFieldUpdateOperationsInput | string | null
+    priceCategoryId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutRoomNestedInput
@@ -45888,6 +48316,7 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutPaymentsNestedInput
     booking?: BookingUpdateOneWithoutPaymentsNestedInput
     price?: PriceUpdateOneWithoutPaymentsNestedInput
+    priceCategory?: PriceCategoryUpdateOneWithoutPaymentsNestedInput
     confirmedByUser?: UserUpdateOneWithoutConfirmedPaymentsNestedInput
     generatedFromRecurring?: RecurringPaymentUpdateOneWithoutGeneratedPaymentsNestedInput
     paymentItems?: PaymentItemUpdateManyWithoutPaymentNestedInput
@@ -45900,6 +48329,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     bookingId?: NullableStringFieldUpdateOperationsInput | string | null
     priceId?: NullableStringFieldUpdateOperationsInput | string | null
+    priceCategoryId?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: FloatFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
     paymentType?: EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
@@ -46501,6 +48931,7 @@ export namespace Prisma {
     floor: FloorCreateNestedOneWithoutRoomsInput
     dormitory: DormitoryCreateNestedOneWithoutRoomsInput
     roomType?: RoomTypeCreateNestedOneWithoutRoomsInput
+    priceCategory?: PriceCategoryCreateNestedOneWithoutRoomsInput
     notifications?: NotificationCreateNestedManyWithoutRoomInput
     bookings?: BookingCreateNestedManyWithoutRoomInput
     statuses?: RoomStatusCreateNestedManyWithoutRoomInput
@@ -46517,6 +48948,7 @@ export namespace Prisma {
     roomEquipment?: RoomCreateroomEquipmentInput | string[]
     photos?: RoomCreatephotosInput | string[]
     roomTypeId?: string | null
+    priceCategoryId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     notifications?: NotificationUncheckedCreateNestedManyWithoutRoomInput
@@ -46667,6 +49099,7 @@ export namespace Prisma {
     floor?: FloorUpdateOneRequiredWithoutRoomsNestedInput
     dormitory?: DormitoryUpdateOneRequiredWithoutRoomsNestedInput
     roomType?: RoomTypeUpdateOneWithoutRoomsNestedInput
+    priceCategory?: PriceCategoryUpdateOneWithoutRoomsNestedInput
     notifications?: NotificationUpdateManyWithoutRoomNestedInput
     bookings?: BookingUpdateManyWithoutRoomNestedInput
     statuses?: RoomStatusUpdateManyWithoutRoomNestedInput
@@ -46683,6 +49116,7 @@ export namespace Prisma {
     roomEquipment?: RoomUpdateroomEquipmentInput | string[]
     photos?: RoomUpdatephotosInput | string[]
     roomTypeId?: NullableStringFieldUpdateOperationsInput | string | null
+    priceCategoryId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     notifications?: NotificationUncheckedUpdateManyWithoutRoomNestedInput
@@ -46800,6 +49234,7 @@ export namespace Prisma {
     id?: string
     bookingId?: string | null
     priceId?: string | null
+    priceCategoryId?: string | null
     amount: number
     currency?: string
     paymentType: $Enums.PaymentType
@@ -46828,6 +49263,7 @@ export namespace Prisma {
     userId: string
     bookingId?: string | null
     priceId?: string | null
+    priceCategoryId?: string | null
     amount: number
     currency?: string
     paymentType: $Enums.PaymentType
@@ -47206,6 +49642,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     booking?: BookingUpdateOneWithoutPaymentsNestedInput
     price?: PriceUpdateOneWithoutPaymentsNestedInput
+    priceCategory?: PriceCategoryUpdateOneWithoutPaymentsNestedInput
     confirmedByUser?: UserUpdateOneWithoutConfirmedPaymentsNestedInput
     generatedFromRecurring?: RecurringPaymentUpdateOneWithoutGeneratedPaymentsNestedInput
     notifications?: NotificationUpdateManyWithoutPaymentNestedInput
@@ -47218,6 +49655,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     bookingId?: NullableStringFieldUpdateOperationsInput | string | null
     priceId?: NullableStringFieldUpdateOperationsInput | string | null
+    priceCategoryId?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: FloatFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
     paymentType?: EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
@@ -47249,6 +49687,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     bookingId?: NullableStringFieldUpdateOperationsInput | string | null
     priceId?: NullableStringFieldUpdateOperationsInput | string | null
+    priceCategoryId?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: FloatFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
     paymentType?: EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
@@ -47296,6 +49735,7 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutPaymentsNestedInput
     booking?: BookingUpdateOneWithoutPaymentsNestedInput
     price?: PriceUpdateOneWithoutPaymentsNestedInput
+    priceCategory?: PriceCategoryUpdateOneWithoutPaymentsNestedInput
     generatedFromRecurring?: RecurringPaymentUpdateOneWithoutGeneratedPaymentsNestedInput
     notifications?: NotificationUpdateManyWithoutPaymentNestedInput
     paymentItems?: PaymentItemUpdateManyWithoutPaymentNestedInput
@@ -47308,6 +49748,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     bookingId?: NullableStringFieldUpdateOperationsInput | string | null
     priceId?: NullableStringFieldUpdateOperationsInput | string | null
+    priceCategoryId?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: FloatFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
     paymentType?: EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
@@ -47339,6 +49780,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     bookingId?: NullableStringFieldUpdateOperationsInput | string | null
     priceId?: NullableStringFieldUpdateOperationsInput | string | null
+    priceCategoryId?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: FloatFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
     paymentType?: EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
@@ -47441,6 +49883,7 @@ export namespace Prisma {
     roomEquipment?: RoomCreateroomEquipmentInput | string[]
     photos?: RoomCreatephotosInput | string[]
     roomTypeId?: string | null
+    priceCategoryId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -47602,6 +50045,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     floor?: FloorUpdateOneRequiredWithoutRoomsNestedInput
     roomType?: RoomTypeUpdateOneWithoutRoomsNestedInput
+    priceCategory?: PriceCategoryUpdateOneWithoutRoomsNestedInput
     announcementRecipients?: AnnouncementRecipientUpdateManyWithoutRoomNestedInput
     notifications?: NotificationUpdateManyWithoutRoomNestedInput
     bookings?: BookingUpdateManyWithoutRoomNestedInput
@@ -47618,6 +50062,7 @@ export namespace Prisma {
     roomEquipment?: RoomUpdateroomEquipmentInput | string[]
     photos?: RoomUpdatephotosInput | string[]
     roomTypeId?: NullableStringFieldUpdateOperationsInput | string | null
+    priceCategoryId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutRoomNestedInput
@@ -47636,6 +50081,7 @@ export namespace Prisma {
     roomEquipment?: RoomUpdateroomEquipmentInput | string[]
     photos?: RoomUpdatephotosInput | string[]
     roomTypeId?: NullableStringFieldUpdateOperationsInput | string | null
+    priceCategoryId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -47648,6 +50094,7 @@ export namespace Prisma {
     roomEquipment?: RoomCreateroomEquipmentInput | string[]
     photos?: RoomCreatephotosInput | string[]
     roomTypeId?: string | null
+    priceCategoryId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -47668,6 +50115,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dormitory?: DormitoryUpdateOneRequiredWithoutRoomsNestedInput
     roomType?: RoomTypeUpdateOneWithoutRoomsNestedInput
+    priceCategory?: PriceCategoryUpdateOneWithoutRoomsNestedInput
     announcementRecipients?: AnnouncementRecipientUpdateManyWithoutRoomNestedInput
     notifications?: NotificationUpdateManyWithoutRoomNestedInput
     bookings?: BookingUpdateManyWithoutRoomNestedInput
@@ -47684,6 +50132,7 @@ export namespace Prisma {
     roomEquipment?: RoomUpdateroomEquipmentInput | string[]
     photos?: RoomUpdatephotosInput | string[]
     roomTypeId?: NullableStringFieldUpdateOperationsInput | string | null
+    priceCategoryId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutRoomNestedInput
@@ -47702,6 +50151,7 @@ export namespace Prisma {
     roomEquipment?: RoomUpdateroomEquipmentInput | string[]
     photos?: RoomUpdatephotosInput | string[]
     roomTypeId?: NullableStringFieldUpdateOperationsInput | string | null
+    priceCategoryId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -48074,6 +50524,7 @@ export namespace Prisma {
     dormitoryId: string
     roomEquipment?: RoomCreateroomEquipmentInput | string[]
     photos?: RoomCreatephotosInput | string[]
+    priceCategoryId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -48094,6 +50545,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     floor?: FloorUpdateOneRequiredWithoutRoomsNestedInput
     dormitory?: DormitoryUpdateOneRequiredWithoutRoomsNestedInput
+    priceCategory?: PriceCategoryUpdateOneWithoutRoomsNestedInput
     announcementRecipients?: AnnouncementRecipientUpdateManyWithoutRoomNestedInput
     notifications?: NotificationUpdateManyWithoutRoomNestedInput
     bookings?: BookingUpdateManyWithoutRoomNestedInput
@@ -48110,6 +50562,7 @@ export namespace Prisma {
     dormitoryId?: StringFieldUpdateOperationsInput | string
     roomEquipment?: RoomUpdateroomEquipmentInput | string[]
     photos?: RoomUpdatephotosInput | string[]
+    priceCategoryId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutRoomNestedInput
@@ -48128,6 +50581,7 @@ export namespace Prisma {
     dormitoryId?: StringFieldUpdateOperationsInput | string
     roomEquipment?: RoomUpdateroomEquipmentInput | string[]
     photos?: RoomUpdatephotosInput | string[]
+    priceCategoryId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -48150,10 +50604,247 @@ export namespace Prisma {
     roomNumbers?: FloorRoomAssignmentUpdateroomNumbersInput | number[]
   }
 
+  export type RoomTypeCreateManyPriceCategoryInput = {
+    id?: string
+    name: string
+    description?: string | null
+    capacity: number
+    equipment?: RoomTypeCreateequipmentInput | string[]
+    typeCode: string
+    photos?: RoomTypeCreatephotosInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RoomCreateManyPriceCategoryInput = {
+    id?: string
+    number: string
+    floorId: string
+    capacity: number
+    dormitoryId: string
+    roomEquipment?: RoomCreateroomEquipmentInput | string[]
+    photos?: RoomCreatephotosInput | string[]
+    roomTypeId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PaymentCreateManyPriceCategoryInput = {
+    id?: string
+    userId: string
+    bookingId?: string | null
+    priceId?: string | null
+    amount: number
+    currency?: string
+    paymentType: $Enums.PaymentType
+    paymentMethod: $Enums.PaymentMethod
+    status?: $Enums.PaymentStatus
+    dueDate: Date | string
+    paidAt?: Date | string | null
+    description?: string | null
+    paymentProofUrl?: string | null
+    paymentProofFilename?: string | null
+    paymentProofUploadedAt?: Date | string | null
+    externalPaymentId?: string | null
+    failureReason?: string | null
+    managerNotes?: string | null
+    confirmedBy?: string | null
+    confirmedAt?: Date | string | null
+    rejectedAt?: Date | string | null
+    rejectionReason?: string | null
+    recurringPaymentId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RoomTypeUpdateWithoutPriceCategoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    capacity?: IntFieldUpdateOperationsInput | number
+    equipment?: RoomTypeUpdateequipmentInput | string[]
+    typeCode?: StringFieldUpdateOperationsInput | string
+    photos?: RoomTypeUpdatephotosInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rooms?: RoomUpdateManyWithoutRoomTypeNestedInput
+    floorRoomAssignments?: FloorRoomAssignmentUpdateManyWithoutRoomTypeNestedInput
+  }
+
+  export type RoomTypeUncheckedUpdateWithoutPriceCategoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    capacity?: IntFieldUpdateOperationsInput | number
+    equipment?: RoomTypeUpdateequipmentInput | string[]
+    typeCode?: StringFieldUpdateOperationsInput | string
+    photos?: RoomTypeUpdatephotosInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rooms?: RoomUncheckedUpdateManyWithoutRoomTypeNestedInput
+    floorRoomAssignments?: FloorRoomAssignmentUncheckedUpdateManyWithoutRoomTypeNestedInput
+  }
+
+  export type RoomTypeUncheckedUpdateManyWithoutPriceCategoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    capacity?: IntFieldUpdateOperationsInput | number
+    equipment?: RoomTypeUpdateequipmentInput | string[]
+    typeCode?: StringFieldUpdateOperationsInput | string
+    photos?: RoomTypeUpdatephotosInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RoomUpdateWithoutPriceCategoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    number?: StringFieldUpdateOperationsInput | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    roomEquipment?: RoomUpdateroomEquipmentInput | string[]
+    photos?: RoomUpdatephotosInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    floor?: FloorUpdateOneRequiredWithoutRoomsNestedInput
+    dormitory?: DormitoryUpdateOneRequiredWithoutRoomsNestedInput
+    roomType?: RoomTypeUpdateOneWithoutRoomsNestedInput
+    announcementRecipients?: AnnouncementRecipientUpdateManyWithoutRoomNestedInput
+    notifications?: NotificationUpdateManyWithoutRoomNestedInput
+    bookings?: BookingUpdateManyWithoutRoomNestedInput
+    statuses?: RoomStatusUpdateManyWithoutRoomNestedInput
+    residents?: UserUpdateManyWithoutRoomNestedInput
+    prices?: PriceUpdateManyWithoutRoomNestedInput
+  }
+
+  export type RoomUncheckedUpdateWithoutPriceCategoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    number?: StringFieldUpdateOperationsInput | string
+    floorId?: StringFieldUpdateOperationsInput | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    dormitoryId?: StringFieldUpdateOperationsInput | string
+    roomEquipment?: RoomUpdateroomEquipmentInput | string[]
+    photos?: RoomUpdatephotosInput | string[]
+    roomTypeId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutRoomNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutRoomNestedInput
+    bookings?: BookingUncheckedUpdateManyWithoutRoomNestedInput
+    statuses?: RoomStatusUncheckedUpdateManyWithoutRoomNestedInput
+    residents?: UserUncheckedUpdateManyWithoutRoomNestedInput
+    prices?: PriceUncheckedUpdateManyWithoutRoomNestedInput
+  }
+
+  export type RoomUncheckedUpdateManyWithoutPriceCategoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    number?: StringFieldUpdateOperationsInput | string
+    floorId?: StringFieldUpdateOperationsInput | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    dormitoryId?: StringFieldUpdateOperationsInput | string
+    roomEquipment?: RoomUpdateroomEquipmentInput | string[]
+    photos?: RoomUpdatephotosInput | string[]
+    roomTypeId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentUpdateWithoutPriceCategoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    paymentType?: EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
+    paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+    status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    externalPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    failureReason?: NullableStringFieldUpdateOperationsInput | string | null
+    managerNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutPaymentsNestedInput
+    booking?: BookingUpdateOneWithoutPaymentsNestedInput
+    price?: PriceUpdateOneWithoutPaymentsNestedInput
+    confirmedByUser?: UserUpdateOneWithoutConfirmedPaymentsNestedInput
+    generatedFromRecurring?: RecurringPaymentUpdateOneWithoutGeneratedPaymentsNestedInput
+    notifications?: NotificationUpdateManyWithoutPaymentNestedInput
+    paymentItems?: PaymentItemUpdateManyWithoutPaymentNestedInput
+    recurringPayment?: RecurringPaymentUpdateOneWithoutPaymentNestedInput
+    auditLogs?: PaymentAuditLogUpdateManyWithoutPaymentNestedInput
+  }
+
+  export type PaymentUncheckedUpdateWithoutPriceCategoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    bookingId?: NullableStringFieldUpdateOperationsInput | string | null
+    priceId?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: FloatFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    paymentType?: EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
+    paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+    status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    externalPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    failureReason?: NullableStringFieldUpdateOperationsInput | string | null
+    managerNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    recurringPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notifications?: NotificationUncheckedUpdateManyWithoutPaymentNestedInput
+    paymentItems?: PaymentItemUncheckedUpdateManyWithoutPaymentNestedInput
+    recurringPayment?: RecurringPaymentUncheckedUpdateOneWithoutPaymentNestedInput
+    auditLogs?: PaymentAuditLogUncheckedUpdateManyWithoutPaymentNestedInput
+  }
+
+  export type PaymentUncheckedUpdateManyWithoutPriceCategoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    bookingId?: NullableStringFieldUpdateOperationsInput | string | null
+    priceId?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: FloatFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    paymentType?: EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
+    paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+    status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    externalPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    failureReason?: NullableStringFieldUpdateOperationsInput | string | null
+    managerNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    recurringPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type PaymentCreateManyPriceInput = {
     id?: string
     userId: string
     bookingId?: string | null
+    priceCategoryId?: string | null
     amount: number
     currency?: string
     paymentType: $Enums.PaymentType
@@ -48200,6 +50891,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutPaymentsNestedInput
     booking?: BookingUpdateOneWithoutPaymentsNestedInput
+    priceCategory?: PriceCategoryUpdateOneWithoutPaymentsNestedInput
     confirmedByUser?: UserUpdateOneWithoutConfirmedPaymentsNestedInput
     generatedFromRecurring?: RecurringPaymentUpdateOneWithoutGeneratedPaymentsNestedInput
     notifications?: NotificationUpdateManyWithoutPaymentNestedInput
@@ -48212,6 +50904,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     bookingId?: NullableStringFieldUpdateOperationsInput | string | null
+    priceCategoryId?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: FloatFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
     paymentType?: EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
@@ -48243,6 +50936,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     bookingId?: NullableStringFieldUpdateOperationsInput | string | null
+    priceCategoryId?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: FloatFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
     paymentType?: EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
@@ -48289,6 +50983,7 @@ export namespace Prisma {
     id?: string
     userId: string
     priceId?: string | null
+    priceCategoryId?: string | null
     amount: number
     currency?: string
     paymentType: $Enums.PaymentType
@@ -48406,6 +51101,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutPaymentsNestedInput
     price?: PriceUpdateOneWithoutPaymentsNestedInput
+    priceCategory?: PriceCategoryUpdateOneWithoutPaymentsNestedInput
     confirmedByUser?: UserUpdateOneWithoutConfirmedPaymentsNestedInput
     generatedFromRecurring?: RecurringPaymentUpdateOneWithoutGeneratedPaymentsNestedInput
     notifications?: NotificationUpdateManyWithoutPaymentNestedInput
@@ -48418,6 +51114,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     priceId?: NullableStringFieldUpdateOperationsInput | string | null
+    priceCategoryId?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: FloatFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
     paymentType?: EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
@@ -48449,6 +51146,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     priceId?: NullableStringFieldUpdateOperationsInput | string | null
+    priceCategoryId?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: FloatFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
     paymentType?: EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
@@ -48673,6 +51371,7 @@ export namespace Prisma {
     userId: string
     bookingId?: string | null
     priceId?: string | null
+    priceCategoryId?: string | null
     amount: number
     currency?: string
     paymentType: $Enums.PaymentType
@@ -48719,6 +51418,7 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutPaymentsNestedInput
     booking?: BookingUpdateOneWithoutPaymentsNestedInput
     price?: PriceUpdateOneWithoutPaymentsNestedInput
+    priceCategory?: PriceCategoryUpdateOneWithoutPaymentsNestedInput
     confirmedByUser?: UserUpdateOneWithoutConfirmedPaymentsNestedInput
     notifications?: NotificationUpdateManyWithoutPaymentNestedInput
     paymentItems?: PaymentItemUpdateManyWithoutPaymentNestedInput
@@ -48731,6 +51431,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     bookingId?: NullableStringFieldUpdateOperationsInput | string | null
     priceId?: NullableStringFieldUpdateOperationsInput | string | null
+    priceCategoryId?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: FloatFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
     paymentType?: EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
@@ -48762,6 +51463,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     bookingId?: NullableStringFieldUpdateOperationsInput | string | null
     priceId?: NullableStringFieldUpdateOperationsInput | string | null
+    priceCategoryId?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: FloatFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
     paymentType?: EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType

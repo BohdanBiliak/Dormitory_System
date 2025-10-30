@@ -5,10 +5,14 @@ import {
 } from "@nestjs/common";
 import { PrismaService } from "@/prisma/prisma.service";
 import { UpdateRoomTypeDto } from "../dto/update-room-type.dto";
+import { S3Service } from "@/libs/common/s3/s3.service";
 
 @Injectable()
 export class UpdateRoomTypeUseCase {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly s3: S3Service
+  ) {}
 
   async execute(
     id: string,
@@ -40,8 +44,6 @@ export class UpdateRoomTypeUseCase {
     // Handle photo uploads if provided
     let photoUrls = existingRoomType.photos;
     if (photos && photos.length > 0) {
-      // TODO: Implement photo upload logic (S3, local storage, etc.)
-      // For now, we'll just create placeholder URLs
       photoUrls = photos.map(
         (photo, index) =>
           `https://s3.example.com/room-types/${dto.typeCode || existingRoomType.typeCode}/photo-${Date.now()}-${index}.jpg`,
@@ -99,6 +101,14 @@ export class UpdateRoomTypeUseCase {
       });
     }
 
+
     return updatedRoomType;
+  }
+
+   async uploadFiles(
+    files: Express.Multer.File[],
+    folder: string,
+  ): Promise<string[]> {
+    return Promise.all(files.map((file) => this.s3.uploadFile(file, folder)));
   }
 }

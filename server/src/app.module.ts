@@ -20,6 +20,7 @@ import { SentryUserMiddleware } from "@libs/common/middleware/sentry-action-logg
 import { NotificationsModule } from "./modules/notifications/notifications.module";
 import { PaymentsModule } from "./modules/payments/payments.module";
 import { RoomTypesModule } from "./modules/dormitory/room-types/room-types.module";
+import { PriceCategoryModule } from "./modules/price-categories/price-category.module";
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { RoomTypesModule } from "./modules/dormitory/room-types/room-types.modul
     NotificationsModule,
     PaymentsModule,
     RoomTypesModule,
+    PriceCategoryModule,
   ],
   controllers: [],
   providers: [

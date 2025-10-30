@@ -4,9 +4,9 @@ import { useState, useEffect } from "react";
 import { Calendar, Users, Filter, X, Plus, ChevronUp, ChevronDown, Search, Building, MapPin, Menu } from "lucide-react";
 import Link from "next/link";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from "@headlessui/react";
-import { Dormitory } from "@/types/dormitories.types";
-import { useGetActiveDormitories } from "@/hooks/dormitories.hook";
-import { useGetAvailableRoom, useGetRooms, useUpdateRoom } from "@/hooks/rooms.hook";
+import {Dormitory, DormitoryFloor} from "@/types/dormitories.types";
+import {useGetActiveDormitories, useGetDormitoryById} from "@/hooks/dormitories.hook";
+import {useGetAvailableRoom, useGetRoom, useGetRooms, useUpdateRoom} from "@/hooks/rooms.hook";
 import {AvailableRoomsRequest, Room, RoomResident} from "@/types/rooms.types";
 import { CalendarOfAvailability2WVerComponent } from "@/components/ui/CalendarOfAvailability2WVer.component";
 import EvictionFlowDialogsComponent from "@/components/dialogs/admin/EvictionFlowDialogs.component";
@@ -18,19 +18,16 @@ interface Filters {
     groupSize: number;
 }
 
-export default function UserAllRoomsPage() {
+export default function AllRoomsPage() {
 
     // Dormitories, floors and rooms
     const [dormitoriesList, setDormitoriesList] = useState<Dormitory[]>([]);
     const [currentDormitory, setCurrentDormitory] = useState<Dormitory | null>(null);
-    const [roomList, setRoomList] = useState<Room[]>([]);
-    const [floorList, setFloorList] = useState<number[]>([]);
-    const [currentFloor, setCurrentFloor] = useState<number | null>(null);
-    const [roomsOnCurrentFloor, setRoomsOnCurrentFloor] = useState<Room[]>([]);
+    const [currentFloor, setCurrentFloor] = useState<DormitoryFloor|null>(null);
+    const [selectedRoomId, setSelectedRoomId] = useState<string>('');
     const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
 
     const { data: dormitories, isLoading: loadingDormitories, error: dormitoriesError } = useGetActiveDormitories();
-    const { data: rooms, isLoading: loadingRooms, error: roomsError } = useGetRooms();
 
 
     useEffect(() => {
@@ -46,66 +43,18 @@ export default function UserAllRoomsPage() {
     }, [dormitoriesList]);
 
     useEffect(() => {
-        if (rooms) {
-            setRoomList(rooms)
+        if (currentDormitory && currentDormitory.floors.length > 0) {
+            setCurrentFloor(currentDormitory.floors[0])
         }
-    }, [rooms]);
+    }, [currentDormitory]);
 
     useEffect(() => {
-        if (currentDormitory) {
-            setFloorList(generateFloorsForDormitory(currentDormitory?.id, roomList))
+        if (currentFloor && currentFloor.rooms && currentFloor.rooms.length > 0) {
+            setSelectedRoomId(currentFloor.rooms[0].id)
         }
-    }, [currentDormitory, roomList]);
-
-    useEffect(() => {
-        if (floorList && floorList.length > 0) {
-            setCurrentFloor(floorList[0])
-        } else {
-            setCurrentFloor(null)
-        }
-    }, [floorList]);
-
-    useEffect(() => {
-        if (currentDormitory?.id && currentFloor !== null) {
-            setRoomsOnCurrentFloor(generateRoomsForFloorOnDormitory(currentDormitory?.id, currentFloor, roomList));
-        }
-    }, [currentFloor, currentDormitory, roomList]);
-
-    useEffect(() => {
-        if (roomsOnCurrentFloor && roomsOnCurrentFloor.length > 0) {
-            setSelectedRoom(null)
-        }
-    }, [roomsOnCurrentFloor]);
+    }, [currentFloor]);
 
 
-    //room generation
-    const generateFloorsForDormitory = (dormitoryId: string, onRooms: Room[]) => {
-        const floors = new Set<number>([])
-
-        onRooms.forEach(room => {
-            if (room.dormitoryId === dormitoryId) {
-                floors.add(room.floor)
-            }
-        })
-
-        const floorArray = Array.from(floors);
-
-        floorArray.sort()
-
-        return floorArray
-    }
-
-    const generateRoomsForFloorOnDormitory = (dormitoryId: string, floor: number, onRooms: Room[]) => {
-        const roomsOnThisFloor: Room[] = []
-
-        onRooms.forEach(room => {
-            if (room.dormitoryId === dormitoryId && room.floor === floor) {
-                roomsOnThisFloor.push(room)
-            }
-        })
-
-        return roomsOnThisFloor
-    }
 
     const [filters, setFilters] = useState<Filters>({
         dateFrom: '',
@@ -153,7 +102,7 @@ export default function UserAllRoomsPage() {
 
 
     const meetsSearchRequirements = (room: Room) => {
-        const availableSpace = room.capacity - room.residents.length;
+        const availableSpace = room.residents ? room.capacity - room.residents.length : room.capacity;
         const roommatesRequirement = filters.residents === "either" ? true : filters.residents === "occupied" ? room.residents.length > 0 : room.residents.length < 1;
 
         return availableRoomsIds.includes(room.id) && filters.groupSize<=availableSpace && roommatesRequirement;
@@ -204,25 +153,34 @@ export default function UserAllRoomsPage() {
         }
     }
 
-    const handleFloorChange = (event: React.MouseEvent<HTMLButtonElement>) => {
-        const { value } = event.currentTarget;
-
-        try {
-            const floor_number = Number(value);
-            if (floorList.includes(floor_number)) {
-                setCurrentFloor(floor_number);
-            }
-        } catch (e) {
-            console.error("Parsing error? :", e);
-        }
-
+    const handleFloorChange = (floor: DormitoryFloor) => {
+        setCurrentFloor(floor)
     }
 
-    const handleRoomSelect = (room: Room) => {
-        setSelectedRoom(room);
+    const handleRoomSelect = (roomId: string) => {
+        setSelectedRoomId(roomId);
         setShowMobileRoomDetails(true);
     };
 
+    //eviction
+
+    const [showEvictionConfirmation, setShowEvictionConfirmation] = useState(false);
+    const [userToEvict, setUserToEvict] = useState<RoomResident>({
+        id: ``,
+        displayName: ``,
+        secondName: ``,
+        email: ``,
+    });
+
+    const closeEvictionConfirmation = () => {
+        setUserToEvict({
+            id: '',
+            displayName: '',
+            secondName: '',
+            email: '',
+        })
+        setShowEvictionConfirmation(false);
+    }
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
@@ -374,18 +332,17 @@ export default function UserAllRoomsPage() {
                                 <div className="space-y-2">
                                     <span className="text-sm font-medium text-slate-700">Floor:</span>
                                     <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-2">
-                                        {floorList && floorList.length > 0 ? (
-                                            floorList.map((floor) => (
+                                        {currentDormitory && currentDormitory.floors &&  currentDormitory.floors.length > 0 ? (
+                                            currentDormitory.floors.map((floor, index) => (
                                                 <button
-                                                    key={floor}
-                                                    value={floor}
-                                                    onClick={handleFloorChange}
+                                                    key={index}
+                                                    onClick={()=>handleFloorChange(floor)}
                                                     className={`px-2 py-1 text-xs sm:text-sm font-medium rounded-lg transition-all duration-200 hover:scale-105 active:scale-95 ${currentFloor === floor
                                                         ? 'bg-blue-600 text-white shadow-md'
                                                         : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                                                     }`}
                                                 >
-                                                    {floor}
+                                                    {floor.floorNumber}
                                                 </button>
                                             ))
                                         ) : (
@@ -406,12 +363,12 @@ export default function UserAllRoomsPage() {
                             <div className="p-3 sm:p-4">
                                 {/* Compact Grid */}
                                 <div className="grid grid-cols-5 sm:grid-cols-8 gap-2 sm:gap-3">
-                                    {roomsOnCurrentFloor.map((room, index) => (
+                                    {currentFloor && currentFloor.rooms && currentFloor.rooms.length>0 && currentFloor.rooms.map((room, index) => (
                                         <div key={room.id} className="flex flex-col items-center space-y-1">
                                             <div
                                                 className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center text-white text-xs font-medium cursor-pointer transition-all duration-200 hover:scale-110 active:scale-95 hover:shadow-md animate-in zoom-in-50 duration-300`}
                                                 style={{ animationDelay: `${index * 20}ms` }}
-                                                onClick={() => handleRoomSelect(room)}
+                                                onClick={() => handleRoomSelect(room.id)}
                                             >
                                                 <div className={`w-full h-full rounded-lg flex items-center justify-center ${getRoomColor(room)}`}>
                                                     {room.number.slice(-2)}
@@ -471,7 +428,7 @@ export default function UserAllRoomsPage() {
 
                                     {/* Availability Calendar */}
                                     <CalendarOfAvailability2WVerComponent statuses={selectedRoom.statuses} showLegend={false} />
-                                </>
+                                    </>
                             ) : (
                                 <div className="px-4 py-8 text-center animate-in fade-in-0 zoom-in-50 duration-500">
                                     <Building className="mx-auto h-10 w-10 text-slate-300 animate-pulse" />
@@ -565,6 +522,11 @@ export default function UserAllRoomsPage() {
                                                         <div className="flex items-center justify-between">
                                                             <div className="flex items-center space-x-2">
                                                                 <span className="text-sm">Payments</span>
+                                                            </div>
+                                                            <div onClick={(e)=>e.stopPropagation()}>
+                                                                <button name={`eviction${index}`} className="px-3 py-2 bg-red-600 text-white text-sm rounded-lg hover:bg-red-700 transition-colors" onClick={()=>{setUserToEvict(resident); setShowEvictionConfirmation(true)}}>
+                                                                    Evict
+                                                                </button>
                                                             </div>
                                                         </div>
                                                     </div>
