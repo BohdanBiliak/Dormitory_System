@@ -19,7 +19,12 @@ export interface Payment{
     paymentType: PaymentType;
     description: string;
     dueDate: string;
-    user: User
+    user: {
+        displayName: string;
+        secondName: string;
+        email: string;
+        room: string|null;
+    }
 }
 
 export interface PaymentPostData {

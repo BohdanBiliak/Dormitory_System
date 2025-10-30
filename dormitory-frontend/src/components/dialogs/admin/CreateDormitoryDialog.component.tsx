@@ -1047,32 +1047,6 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                                                                         }`}
                                                                     />
                                                                 </div>
-                                                                <div>
-                                                                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                                        Price category:
-                                                                    </label>
-                                                                    <select
-                                                                        name={`priceCategoryId`}
-                                                                    >
-                                                                        <option value={``}>---</option>
-                                                                        {pCategoriesList.map(category => (
-                                                                            <option value={category.id}>{category.name}</option>
-                                                                        ))}
-                                                                    </select>
-                                                                    <input
-                                                                        type="number"
-                                                                        name="capacity"
-                                                                        value={selectedTemplate.capacity}
-                                                                        min={1}
-                                                                        disabled={!editRoomTemplate}
-                                                                        onChange={handleTemplateInputChange}
-                                                                        className={`w-full px-3 py-2 text-sm border rounded-lg transition-colors ${
-                                                                            editRoomTemplate
-                                                                                ? 'border-gray-300 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
-                                                                                : 'border-gray-200 bg-gray-50 text-gray-600'
-                                                                        }`}
-                                                                    />
-                                                                </div>
                                                             </div>
                                                             </div>
                                                             <div className="space-y-4">
@@ -1157,7 +1131,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                                                                         )}
                                                                     </div>
                                                                     <div>
-                                                                        <label>Room category</label>
+                                                                        <label>Room category:</label>
                                                                         <select
                                                                             value={selectedTemplate.priceCategoryId !== null? selectedTemplate.priceCategoryId : ''}
                                                                             onChange={changeSelectedTemplateCategory}
@@ -1338,7 +1312,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                                                                         </button>
                                                                     </div>
                                                                     <div>
-                                                                        <label>Room category</label>
+                                                                        <label>Room category:</label>
                                                                         <select
                                                                             value={newRoomTemplate.priceCategoryId !== null ? newRoomTemplate.priceCategoryId : ''}
                                                                             onChange={changeNewTemplateCategory}

@@ -5,7 +5,7 @@ import {toast} from "sonner";
 
 export function useGetPayments(filters:PaymentsFilters){
     const{data, isLoading, error} = useQuery({
-        queryKey: ["payments"],
+        queryKey: ["payments", filters.limit, filters.offset, filters.status],
         queryFn: ()=> paymentsApi.getPayments(filters),
         staleTime: 30 * 1000,
     })

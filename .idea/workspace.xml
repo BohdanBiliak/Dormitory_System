@@ -5,24 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a2609a67-42b3-4399-bbcc-46f7339b9fb9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/lib/priceCategories.api.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/hooks/priceCategories.hook.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/admin/notifications/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/lib/notifications.api.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/AdminNotifications.component.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/hooks/notifications.hook.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/types/notifications.types.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/lib/payments.api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/lib/payments.api.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/lib/roomTemplates.api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/lib/roomTemplates.api.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/PaymentsList.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/PaymentsList.component.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/dialogs/admin/CreateDormitoryDialog.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/dialogs/admin/CreateDormitoryDialog.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/dialogs/admin/IntroducePayment.componentDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/dialogs/admin/IntroducePayment.componentDialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/types/dormitories.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/types/dormitories.types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/ui/AdminSideMenu.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/ui/AdminSideMenu.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/hooks/payment.hook.ts" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/hooks/payment.hook.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/types/payments.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/types/payments.types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/default.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/default.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/edge.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/edge.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/index-browser.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/index-browser.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/index.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/libquery_engine-debian-openssl-3.0.x.so.node" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/libquery_engine-debian-openssl-3.0.x.so.node" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/wasm.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/wasm.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/__generated__/wasm.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/__generated__/wasm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/tailwind.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/tailwind.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -243,6 +239,8 @@
       <workItem from="1761569666107" duration="2110000" />
       <workItem from="1761655087560" duration="2816000" />
       <workItem from="1761671361387" duration="5025000" />
+      <workItem from="1761793888212" duration="4246000" />
+      <workItem from="1761798352133" duration="6630000" />
     </task>
     <servers />
   </component>

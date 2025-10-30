@@ -16,7 +16,7 @@ export const paymentsApi={
         if(paymentFilters.dormitoryId){
             params.append("dormitoryId", paymentFilters.dormitoryId);
         }
-        if(paymentFilters.status){
+        if(paymentFilters.status && paymentFilters.status!==""){
             params.append("status", paymentFilters.status);
         }
         if(paymentFilters.startDate){

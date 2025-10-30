@@ -92,10 +92,10 @@ export function AdminSideMenu ({children}:AdminSideMenuProps){
                     href: '/admin/announcements'
                 },
                 {
-                    id:'messages',
+                    id:'notifications',
                     label: t('sideMenu.messages') || 'Messages',
                     image:'/envelope.svg',
-                    href: '#'
+                    href: '/admin/notifications'
                 }
             ]
         },

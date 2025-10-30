@@ -22,6 +22,7 @@ export function PaymentsListPage(){
     })
 
     useEffect(() => {
+        console.log("HUH", searchStatus);
         if(paymentsList){
             setPayments(paymentsList);
         }
@@ -68,14 +69,20 @@ export function PaymentsListPage(){
             </div>
 
             {/*Body*/}
-            <div className={`w-full flex flex-col space-y-4`}>
+            <div className={`w-full flex flex-col space-3-4 py-3`}>
                 {payments.length>0 && (
                     payments.map(((payment, index) => (
-                        <div key={index} className={`flex flex-row w-full items-stretch`}>
-                            <div>
+                        <div key={index} className={`flex flex-row w-full items-stretch space-x-4 border-gray-500 border`}>
+                            <div className={`flex-1`}>
                                 {payment.status}
                             </div>
-                            <div>
+                            <div className={`flex-1`}>
+                                {payment.user.displayName}
+                            </div>
+                            <div className={`flex-1`}>
+                                {payment.user.secondName}
+                            </div>
+                            <div className={`flex-1`}>
                                 {payment.dueDate.substring(0, payment.dueDate.indexOf("T"))}
                             </div>
                         </div>

@@ -23,6 +23,9 @@ export const roomTemplatesApi = {
             formData.append('equipment', "Bed");
             formData.append('equipment', "Bed");
         }
+        if(newTemplate.priceCategoryId){
+            formData.append('priceCategoryId', newTemplate.priceCategoryId);
+        }
         try{
             console.log(formData)
             const response = await api.post('/room-types',formData, {
@@ -68,6 +71,9 @@ export const roomTemplatesApi = {
         newTemplate.equipment.forEach(equipment => {
             formData.append('equipment', equipment);
         });
+        if(newTemplate.priceCategoryId){
+            formData.append('priceCategoryId', newTemplate.priceCategoryId);
+        }
 
         try{
             const responseFinal = await api.patch(`room-types/${roomTemplateId}`,formData, {
@@ -98,14 +104,4 @@ export const roomTemplatesApi = {
 
         }
     },
-
-    async assignRoomTemplate(roomTemplateId:string, priceCategoryId:string) {
-        try {
-            const response = await api.patch(`/room-types/${roomTemplateId}/assign-price-category`,{"priceCategoryId":priceCategoryId});
-            return response.data;
-        }catch (error) {
-            console.error('Patch room template error:', error);
-            throw error;
-        }
-    }
 }
