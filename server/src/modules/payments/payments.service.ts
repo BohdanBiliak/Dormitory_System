@@ -56,7 +56,7 @@ export class PaymentsService implements IPaymentService {
       dueDate: data.dueDate,
       description: data.description,
       status: PaymentStatus.PENDING,
-      paymentItems: data.paymentItems
+    paymentItems: data.paymentItems
         ? {
             create: data.paymentItems.map((item) => ({
               itemType: item.itemType as PaymentItemType,
@@ -66,7 +66,7 @@ export class PaymentsService implements IPaymentService {
             })),
           }
         : undefined,
-    };
+    };  
     const payment = await this.paymentRepository.create(paymentData);
 
     await this.notificationService.createNotification({
@@ -85,6 +85,7 @@ export class PaymentsService implements IPaymentService {
 
     return payment;
   }
+  
   async getPaymentById(id: string): Promise<Payment | null> {
     return this.paymentRepository.findById(id);
   }
