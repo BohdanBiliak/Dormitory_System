@@ -20,15 +20,13 @@ export class CreateRoomTypeUseCase {
     }
 
     // Upload photos to S3 if provided
-    let photoUrls: string[] = [];
-    if (photoFiles && photoFiles.length > 0) {
-      photoUrls = await Promise.all(
-        photoFiles.map(async (file) => {
-          const photoKey = `room-types/${dto.typeCode}/${Date.now()}-${file.originalname}`;
-          return await this.s3Service.uploadFile(file, photoKey);
-        }),
-      );
-    }
+    const photoUrls = photoFiles
+      ? await Promise.all(
+          photoFiles.map((file) =>
+            this.s3Service.uploadFile(file, "room-types/" + dto.typeCode),
+          ),
+        )
+      : [];
 
     // Use uploaded photo URLs or provided URLs from DTO
     const finalPhotos = photoUrls.length > 0 ? photoUrls : dto.photos;
@@ -40,6 +38,9 @@ export class CreateRoomTypeUseCase {
         capacity: dto.capacity,
         equipment: dto.equipment,
         typeCode: dto.typeCode,
+        priceCategory: dto.priceCategoryId
+          ? { connect: { id: dto.priceCategoryId } }
+          : undefined,
         photos: finalPhotos,
       },
     });

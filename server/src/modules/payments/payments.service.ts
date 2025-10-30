@@ -59,7 +59,6 @@ export class PaymentsService implements IPaymentService {
       dueDate: data.dueDate,
       description: data.description,
       status: PaymentStatus.PENDING,
-      // Support both old price system and new price categories
       price: data.priceId ? { connect: { id: data.priceId } } : undefined,
       priceCategory: data.priceCategoryId ? { connect: { id: data.priceCategoryId } } : undefined,
       paymentItems: data.paymentItems
@@ -103,17 +102,37 @@ export class PaymentsService implements IPaymentService {
     return this.paymentRepository.findByUserId(userId, limit, offset);
   }
   async getPaymentsWithFilters(filters: PaymentFilterDto): Promise<Payment[]> {
-    const { startDate, endDate, userId, dormitoryId, limit, offset } = filters;
+    const { startDate, endDate, userId, dormitoryId, limit, offset, status } = filters;
 
     return this.paymentRepository.find({
       where: {
-        ...(startDate &&
-          endDate && { createdAt: { gte: startDate, lte: endDate } }),
+        ...(startDate && endDate && { createdAt: { gte: startDate, lte: endDate } }),
         ...(userId && { userId }),
         ...(dormitoryId && { dormitoryId }),
+        ...(status && { status: status as PaymentStatus }),
       },
       take: limit,
       skip: offset,
+
+      include:{
+        user:{
+          select:{
+            displayName:true,
+            secondName:true,
+            email:true,
+            room:{
+              select:{
+                number:true,
+                dormitory:{
+                  select:{
+                    name:true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     });
   }
 

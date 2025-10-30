@@ -37,7 +37,7 @@ export type RoomWithRelations = Prisma.RoomGetPayload<{
 
 export interface UpdateRoomData {
   number?: string;
-  floorId?: string; // Changed from floor to floorId
+  floorId?: string; 
   capacity?: number;
   roomEquipment?: string[];
   photos?: string[];
@@ -253,7 +253,7 @@ export class RoomRepository {
     });
   }
 
-  async update(id: string, data: UpdateRoomData): Promise<RoomWithRelations> {
+  async update(id: string, data: UpdateRoomData) {
     return this.prisma.room.update({
       where: { id },
       data: {
@@ -264,6 +264,12 @@ export class RoomRepository {
           roomEquipment: { set: data.roomEquipment },
         }),
         ...(data.photos && { photos: { set: data.photos } }),
+       ...(data.priceCategoryId && {
+      priceCategory: { connect: { id: data.priceCategoryId } },
+}),
+
+
+
       },
       include: {
         residents: {
