@@ -118,7 +118,7 @@ export function UserSideMenu ({children}:UserSideMenuProps){
             id: 'messages',
             image: '/envelope.svg',
             label: t('sideMenu.messages'),
-            href: '#',
+            href: '/messaging',
         },
         {
             id:'rooms',

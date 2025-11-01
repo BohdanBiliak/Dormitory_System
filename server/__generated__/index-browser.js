@@ -20,12 +20,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.14.0
- * Query Engine version: 717184b7b35ea05dfa71a3236b7af656013e1e49
+ * Prisma Client JS version: 6.18.0
+ * Query Engine version: 34b5a692b7bd79939a9a2c3ef97d816e749cda2f
  */
 Prisma.prismaVersion = {
-  client: "6.14.0",
-  engine: "717184b7b35ea05dfa71a3236b7af656013e1e49"
+  client: "6.18.0",
+  engine: "34b5a692b7bd79939a9a2c3ef97d816e749cda2f"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -408,6 +408,49 @@ exports.Prisma.AnnouncementRecipientScalarFieldEnum = {
   forEveryone: 'forEveryone'
 };
 
+exports.Prisma.ConversationScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  isGroup: 'isGroup',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ConversationParticipantScalarFieldEnum = {
+  id: 'id',
+  conversationId: 'conversationId',
+  userId: 'userId',
+  joinedAt: 'joinedAt',
+  leftAt: 'leftAt',
+  isAdmin: 'isAdmin',
+  lastReadAt: 'lastReadAt'
+};
+
+exports.Prisma.MessageScalarFieldEnum = {
+  id: 'id',
+  conversationId: 'conversationId',
+  senderId: 'senderId',
+  content: 'content',
+  messageType: 'messageType',
+  attachmentUrl: 'attachmentUrl',
+  attachmentName: 'attachmentName',
+  isEdited: 'isEdited',
+  editedAt: 'editedAt',
+  isDeleted: 'isDeleted',
+  deletedAt: 'deletedAt',
+  replyToId: 'replyToId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.MessageReadScalarFieldEnum = {
+  id: 'id',
+  messageId: 'messageId',
+  userId: 'userId',
+  readAt: 'readAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -587,7 +630,11 @@ exports.Prisma.ModelName = {
   NotificationSettings: 'NotificationSettings',
   Announcement: 'Announcement',
   Attachment: 'Attachment',
-  AnnouncementRecipient: 'AnnouncementRecipient'
+  AnnouncementRecipient: 'AnnouncementRecipient',
+  Conversation: 'Conversation',
+  ConversationParticipant: 'ConversationParticipant',
+  Message: 'Message',
+  MessageRead: 'MessageRead'
 };
 
 /**
