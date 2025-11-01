@@ -125,131 +125,191 @@ export default function IntroducePaymentComponentDialog({open, onClose}: Introdu
                         </div>
 
                         {/*Dialog Body*/}
-                        <div className={`flex flex-col w-full`}>
-                            {/*Main inputs*/}
-                            <div className={`flex flex-row space-x-10 my-4 mx-6`}>
+                        <div className="flex-1 overflow-y-auto min-h-0 p-6">
+                            <div className="max-w-4xl mx-auto">
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                    
+                                    {/* Payment Information Card */}
+                                    <div className="bg-slate-50 rounded-xl p-6 border border-slate-200 animate-in fade-in-0 slide-in-from-left-4 duration-500">
+                                        <h3 className="text-xl font-semibold text-slate-900 mb-6 flex items-center">
+                                            <Receipt className="w-5 h-5 mr-2 text-blue-600" />
+                                            Payment Information
+                                        </h3>
+                                        
+                                        <div className="space-y-6">
+                                            {/* Description */}
+                                            <div className="animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-100">
+                                                <label className="block text-sm font-medium text-slate-700 mb-2">
+                                                    Description
+                                                </label>
+                                                <input
+                                                    name="description"
+                                                    type="text"
+                                                    onChange={handleInputChange}
+                                                    value={newPayment.description}
+                                                    placeholder="Enter payment description..."
+                                                    className="w-full px-4 py-3 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:shadow-sm"
+                                                />
+                                            </div>
 
-                                <div className={`flex flex-col bg-gray-300 h-full px-10 py-5 space-y-3`}>
-                                    <div className={`text-2xl`}>
-                                        Payment Info
-                                    </div>
-                                    <div className={`flex flex-row`}>
-                                        <div className={`px-2`}>
-                                            Description:
-                                        </div>
-                                        <div>
-                                            <input
-                                                name="description"
-                                                type={'text'}
-                                                onChange={handleInputChange}
-                                                value={newPayment.description}
-                                                placeholder={'Payment Description'}
+                                            {/* Amount */}
+                                            <div className="animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-150">
+                                                <label className="block text-sm font-medium text-slate-700 mb-2">
+                                                    Amount ($)
+                                                </label>
+                                                <input
+                                                    name="amount"
+                                                    type="number"
+                                                    min="0"
+                                                    step="0.01"
+                                                    onChange={handleInputChange}
+                                                    value={newPayment.amount}
+                                                    placeholder="0.00"
+                                                    className="w-full px-4 py-3 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:shadow-sm"
+                                                />
+                                            </div>
 
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className={`flex flex-row`}>
-                                        <div className={`px-2`}>
-                                            Amount:
-                                        </div>
-                                        <div className={`flex flex-row space-x-1`}>
-                                            <input
-                                                name="amount"
-                                                type={'number'}
-                                                onChange={handleInputChange}
-                                                value={newPayment.amount}
-                                                placeholder={'Payment amount'}
+                                            {/* Payment Type */}
+                                            <div className="animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-200">
+                                                <label className="block text-sm font-medium text-slate-700 mb-2">
+                                                    Payment Type
+                                                </label>
+                                                <select
+                                                    value={newPayment.paymentType}
+                                                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                                                        setNewPayment(prevState => {
+                                                            if (!prevState) return prevState;
+                                                            return { ...prevState, paymentType: e.target.value as PaymentType }
+                                                        })
+                                                    }}
+                                                    className="w-full px-4 py-3 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:shadow-sm bg-white"
+                                                >
+                                                    {Object.values(PaymentType).map(value => (
+                                                        <option key={value} value={value}>
+                                                            {value.replace(/_/g, ' ')}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </div>
 
-                                            />
+                                            {/* Due Date */}
+                                            <div className="animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-250">
+                                                <label className="block text-sm font-medium text-slate-700 mb-2">
+                                                    Due Date
+                                                </label>
+                                                <input
+                                                    name="dueDate"
+                                                    type="date"
+                                                    onChange={handleInputChange}
+                                                    value={newPayment.dueDate}
+                                                    min={new Date().toISOString().split('T')[0]}
+                                                    className="w-full px-4 py-3 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:shadow-sm"
+                                                />
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className={`flex flex-row`}>
-                                        <div className={`px-2`}>
-                                            Type:
+
+                                    {/* Payer and Method Information Card */}
+                                    <div className="bg-slate-50 rounded-xl p-6 border border-slate-200 animate-in fade-in-0 slide-in-from-right-4 duration-500 delay-100">
+                                        <h3 className="text-xl font-semibold text-slate-900 mb-6 flex items-center">
+                                            <Receipt className="w-5 h-5 mr-2 text-blue-600" />
+                                            Payer Details
+                                        </h3>
+                                        
+                                        <div className="space-y-6">
+                                            {/* Payer Selection */}
+                                            <div className="animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-300">
+                                                <label className="block text-sm font-medium text-slate-700 mb-2">
+                                                    Select Payer
+                                                </label>
+                                                {loadingUsers ? (
+                                                    <div className="flex items-center justify-center py-8">
+                                                        <div className="animate-spin rounded-full h-6 w-6 border-2 border-blue-500 border-t-transparent"></div>
+                                                        <span className="ml-2 text-slate-600">Loading users...</span>
+                                                    </div>
+                                                ) : (
+                                                    <select
+                                                        value={newPayment.userId}
+                                                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                                                            setNewPayment(prevState => {
+                                                                if (!prevState) return prevState;
+                                                                return { ...prevState, userId: e.target.value }
+                                                            })
+                                                        }}
+                                                        className="w-full px-4 py-3 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:shadow-sm bg-white"
+                                                    >
+                                                        {userList.map((item) => (
+                                                            <option key={item.id} value={item.id}>
+                                                                {item.displayName} {item.secondName}
+                                                            </option>
+                                                        ))}
+                                                    </select>
+                                                )}
+                                            </div>
+
+                                            {/* Payment Method */}
+                                            <div className="animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-350">
+                                                <label className="block text-sm font-medium text-slate-700 mb-2">
+                                                    Payment Method
+                                                </label>
+                                                <select
+                                                    value={newPayment.paymentMethod}
+                                                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                                                        setNewPayment(prevState => {
+                                                            if (!prevState) return prevState;
+                                                            return { ...prevState, paymentMethod: e.target.value as PaymentMethod }
+                                                        })
+                                                    }}
+                                                    className="w-full px-4 py-3 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:shadow-sm bg-white"
+                                                >
+                                                    {Object.values(PaymentMethod).map((item) => (
+                                                        <option key={item} value={item}>
+                                                            {item.replace(/_/g, ' ')}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </div>
+
+                                            {/* Payment Summary */}
+                                            <div className="bg-white rounded-lg p-4 border border-slate-200 animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-400">
+                                                <h4 className="text-sm font-medium text-slate-700 mb-3">Payment Summary</h4>
+                                                <div className="space-y-2 text-sm">
+                                                    <div className="flex justify-between">
+                                                        <span className="text-slate-600">Amount:</span>
+                                                        <span className="font-medium">${newPayment.amount || '0.00'}</span>
+                                                    </div>
+                                                    <div className="flex justify-between">
+                                                        <span className="text-slate-600">Type:</span>
+                                                        <span className="font-medium">{newPayment.paymentType.replace(/_/g, ' ')}</span>
+                                                    </div>
+                                                    <div className="flex justify-between">
+                                                        <span className="text-slate-600">Due Date:</span>
+                                                        <span className="font-medium">
+                                                            {newPayment.dueDate ? new Date(newPayment.dueDate).toLocaleDateString() : 'Not set'}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <select
-                                                value={newPayment.paymentType}
-                                                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {setNewPayment(prevState => {
-                                                    if(!prevState) return prevState;
-                                                    return {...prevState, paymentType: e.target.value as PaymentType}
-                                                })}}
-                                            >
-                                                {Object.values(PaymentType).map(value => (
-                                                    <option key={value} value={value}>{value}</option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className={`flex flex-row`}>
-                                        <div className={`px-2`}>
-                                            Due Date:
-                                        </div>
-                                        <div>
-                                            <input
-                                                name="dueDate"
-                                                type={'date'}
-                                                onChange={handleInputChange}
-                                                value={newPayment.dueDate}
-                                                min={new Date().toISOString().split('T')[0]}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div>
-                                            Payer:
-                                        </div>
-                                        <select
-                                            value={newPayment.userId}
-                                            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {setNewPayment(prevState => {
-                                                if(!prevState) return prevState;
-                                                return {...prevState, userId: e.target.value}
-                                            })}}
-                                        >
-                                            {userList.map((item) => (
-                                                <option key={item.id} value={item.id}>{item.displayName+" "+item.secondName}</option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <div>
-                                            Payer:
-                                        </div>
-                                        <select
-                                            value={newPayment.paymentMethod}
-                                            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {setNewPayment(prevState => {
-                                                if(!prevState) return prevState;
-                                                return {...prevState, paymentMethod: e.target.value as PaymentMethod}
-                                            })}}
-                                        >
-                                            {Object.values(PaymentMethod).map((item) => (
-                                                <option key={item} value={item}>{item.replace(/_/g, ' ')}</option>
-                                            ))}
-                                        </select>
                                     </div>
                                 </div>
 
-
-                                <div className={`flex flex-col bg-gray-500 h-full`}>
-
+                                {/* Action Buttons */}
+                                <div className="flex flex-col sm:flex-row gap-3 justify-end mt-8 pt-6 border-t border-slate-200 animate-in fade-in-0 slide-in-from-bottom-4 duration-500 delay-500">
+                                    <button
+                                        onClick={handleCancel}
+                                        className="px-6 py-3 bg-slate-200 text-slate-700 text-sm font-medium rounded-lg hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transition-all duration-200 hover:scale-105 active:scale-95 transform"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        onClick={handleSubmit}
+                                        disabled={!newPayment.userId || !newPayment.amount || !newPayment.dueDate}
+                                        className="px-6 py-3 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 hover:scale-105 active:scale-95 transform hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                                    >
+                                        Create Payment
+                                    </button>
                                 </div>
-                            </div>
-
-
-                            {/*Buttons*/}
-                            <div className={`flex flex-row-reverse right-0 w-full px-10`}>
-                                <button
-                                    onClick={handleSubmit}
-                                    className={`bg-blue-600 border border-white px-5 py-2 text-white`}
-                                >
-                                    Submit
-                                </button>
-                                <button
-                                    onClick={handleCancel}
-                                    className={`bg-gray-500 border border-black px-5 py-2`}
-                                >
-                                    Cancel
-                                </button>
                             </div>
                         </div>
                     </div>

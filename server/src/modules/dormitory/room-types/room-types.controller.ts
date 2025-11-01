@@ -34,7 +34,7 @@ export class RoomTypesController {
     private readonly updateRoomTypeUseCase: UpdateRoomTypeUseCase,
     private readonly deleteRoomTypeUseCase: DeleteRoomTypeUseCase,
     private readonly assignPriceCategoryUseCase: AssignPriceCategoryToRoomTypeUseCase,
-  ) {}
+  ) { }
 
   @Post()
   @Authorization($Enums.UserRole.Admin, $Enums.UserRole.SuperAdmin)
@@ -44,7 +44,6 @@ export class RoomTypesController {
     @Body() dto: CreateRoomTypeDto,
     @UploadedFiles() photos?: Express.Multer.File[],
   ) {
-    // Validate that at least one photo is provided (either uploaded or URLs)
     if (
       (!photos || photos.length === 0) &&
       (!dto.photos || dto.photos.length === 0)
@@ -92,9 +91,9 @@ export class RoomTypesController {
 
   @Patch(":id/assign-price-category")
   @Authorization($Enums.UserRole.Admin, $Enums.UserRole.SuperAdmin)
-  @ApiOperation({ 
-    summary: "Assign price category to room type", 
-    description: "Assigns a price category to a room type. All existing rooms of this type will automatically inherit the category's pricing." 
+  @ApiOperation({
+    summary: "Assign price category to room type",
+    description: "Assigns a price category to a room type. All existing rooms of this type will automatically inherit the category's pricing."
   })
   @ApiParam({ name: "id", description: "Room type ID" })
   @ApiResponse({ status: 200, description: "Price category assigned successfully" })
@@ -108,9 +107,9 @@ export class RoomTypesController {
 
   @Delete(":id/unassign-price-category")
   @Authorization($Enums.UserRole.Admin, $Enums.UserRole.SuperAdmin)
-  @ApiOperation({ 
-    summary: "Remove price category from room type", 
-    description: "Removes the price category assignment from a room type. Rooms will fall back to legacy pricing." 
+  @ApiOperation({
+    summary: "Remove price category from room type",
+    description: "Removes the price category assignment from a room type. Rooms will fall back to legacy pricing."
   })
   @ApiParam({ name: "id", description: "Room type ID" })
   @ApiResponse({ status: 200, description: "Price category unassigned successfully" })
