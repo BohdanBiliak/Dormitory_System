@@ -1,12 +1,17 @@
 'use client'
 
 import {useEffect, useState} from "react";
-import {HandCoins, Search} from "lucide-react";
+import {HandCoins, Search, Users, Eye, Check, X, Download} from "lucide-react";
 import {useGetPayments} from "@/hooks/payment.hook";
-import {Payment} from "@/types/payments.types";
+import {Payment, PaymentStatus} from "@/types/payments.types";
 import IntroducePaymentComponentDialog from "@/components/dialogs/admin/IntroducePayment.componentDialog";
+import CreateBulkPaymentDialog from "@/components/dialogs/admin/CreateBulkPayment.componentDialog";
 import {useUserProfile} from "@/hooks/userList.hook";
 import { PaymentStatusBadge } from "@/components/ui/StatusBadge.component";
+import { Button } from "@/components/ui/button";
+import { paymentsApi } from "@/app/lib/payments.api";
+import { toast } from "sonner";
+import { api } from "@/app/lib/api.api";
 
 export function PaymentsListPage(){
 
@@ -31,6 +36,61 @@ export function PaymentsListPage(){
 
     //Introduce payment dialog
     const [showCreateDialog, setShowCreateDialog] = useState(false);
+    const [showBulkCreateDialog, setShowBulkCreateDialog] = useState(false);
+    const [processingPaymentId, setProcessingPaymentId] = useState<string | null>(null);
+
+    const handleApprovePayment = async (paymentId: string) => {
+        try {
+            setProcessingPaymentId(paymentId);
+            await api.put(`/payments/${paymentId}/confirm`, {
+                managerNotes: "Payment proof approved"
+            });
+            toast.success("Payment approved successfully");
+            // Refresh the list
+            window.location.reload();
+        } catch (error: any) {
+            toast.error("Failed to approve payment", {
+                description: error.response?.data?.message || error.message
+            });
+        } finally {
+            setProcessingPaymentId(null);
+        }
+    };
+
+    const handleRejectPayment = async (paymentId: string) => {
+        try {
+            setProcessingPaymentId(paymentId);
+            await api.put(`/payments/${paymentId}/reject`, {
+                rejectionReason: "Payment proof rejected - please re-upload"
+            });
+            toast.success("Payment rejected successfully");
+            // Refresh the list
+            window.location.reload();
+        } catch (error: any) {
+            toast.error("Failed to reject payment", {
+                description: error.response?.data?.message || error.message
+            });
+        } finally {
+            setProcessingPaymentId(null);
+        }
+    };
+
+    const handleDownloadProof = async (paymentId: string) => {
+        try {
+            const blob = await paymentsApi.downloadPaymentProof(paymentId);
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `payment-proof-${paymentId}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+            toast.success('Payment proof downloaded');
+        } catch (error) {
+            toast.error('Failed to download payment proof');
+        }
+    };
 
 
     return (
@@ -47,13 +107,22 @@ export function PaymentsListPage(){
                             <p className="text-slate-600 mt-1 text-xs xs:text-sm sm:text-base">Manage and track all payment records</p>
                         </div>
                         <div className="animate-in fade-in-0 slide-in-from-right-4 duration-500 w-full lg:w-auto">
-                            <button 
-                                onClick={() => setShowCreateDialog(true)}
-                                className="w-full lg:w-auto inline-flex items-center justify-center px-3 xs:px-4 sm:px-6 py-2.5 xs:py-3 bg-blue-600 text-white text-xs xs:text-sm font-medium rounded-lg xs:rounded-xl hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 hover:scale-105 active:scale-95 transform hover:shadow-lg"
-                            >
-                                <HandCoins className="w-3 h-3 xs:w-4 xs:h-4 sm:w-5 sm:h-5 mr-1.5 xs:mr-2 transition-transform duration-200 group-hover:rotate-12" />
-                                <span className="whitespace-nowrap text-xs xs:text-sm">Create New Payment</span>
-                            </button>
+                            <div className="flex flex-col xs:flex-row gap-2">
+                                <button 
+                                    onClick={() => setShowBulkCreateDialog(true)}
+                                    className="w-full lg:w-auto inline-flex items-center justify-center px-3 xs:px-4 sm:px-6 py-2.5 xs:py-3 bg-emerald-600 text-white text-xs xs:text-sm font-medium rounded-lg xs:rounded-xl hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 transition-all duration-200 hover:scale-105 active:scale-95 transform hover:shadow-lg"
+                                >
+                                    <Users className="w-3 h-3 xs:w-4 xs:h-4 sm:w-5 sm:h-5 mr-1.5 xs:mr-2 transition-transform duration-200 group-hover:rotate-12" />
+                                    <span className="whitespace-nowrap text-xs xs:text-sm">Bulk Create</span>
+                                </button>
+                                <button 
+                                    onClick={() => setShowCreateDialog(true)}
+                                    className="w-full lg:w-auto inline-flex items-center justify-center px-3 xs:px-4 sm:px-6 py-2.5 xs:py-3 bg-blue-600 text-white text-xs xs:text-sm font-medium rounded-lg xs:rounded-xl hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 hover:scale-105 active:scale-95 transform hover:shadow-lg"
+                                >
+                                    <HandCoins className="w-3 h-3 xs:w-4 xs:h-4 sm:w-5 sm:h-5 mr-1.5 xs:mr-2 transition-transform duration-200 group-hover:rotate-12" />
+                                    <span className="whitespace-nowrap text-xs xs:text-sm">Create New Payment</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -112,11 +181,12 @@ export function PaymentsListPage(){
                     <div className="bg-white rounded-lg xs:rounded-xl shadow-sm border border-slate-200 overflow-hidden animate-in fade-in-0 slide-in-from-bottom-4 duration-500">
                         {/* Table Header - Hidden on mobile */}
                         <div className="hidden md:block bg-slate-50 px-3 xs:px-4 sm:px-6 py-3 xs:py-4 border-b border-slate-200">
-                            <div className="grid grid-cols-4 gap-2 xs:gap-4 font-medium text-slate-700 text-sm xs:text-base">
+                            <div className="grid grid-cols-5 gap-2 xs:gap-4 font-medium text-slate-700 text-sm xs:text-base">
                                 <div>Status</div>
                                 <div>Payer Name</div>
                                 <div>Amount</div>
                                 <div>Due Date</div>
+                                <div className="text-right">Actions</div>
                             </div>
                         </div>
                         
@@ -129,7 +199,7 @@ export function PaymentsListPage(){
                                     style={{ animationDelay: `${index * 50}ms` }}
                                 >
                                     {/* Desktop Layout */}
-                                    <div className="hidden md:grid md:grid-cols-4 md:gap-2 lg:gap-4 md:items-center">
+                                    <div className="hidden md:grid md:grid-cols-5 md:gap-2 lg:gap-4 md:items-center">
                                         {/* Status */}
                                         <div>
                                             <PaymentStatusBadge status={payment.status} size="sm" />
@@ -148,6 +218,46 @@ export function PaymentsListPage(){
                                         {/* Due Date */}
                                         <div className="text-slate-600 text-sm lg:text-base">
                                             {payment.dueDate ? new Date(payment.dueDate).toLocaleDateString() : 'N/A'}
+                                        </div>
+
+                                        {/* Actions */}
+                                        <div className="flex gap-2 justify-end">
+                                            {payment.status === PaymentStatus.AWAITING_CONFIRMATION && (
+                                                <>
+                                                    {payment.paymentProofUrl && (
+                                                        <Button
+                                                            variant="default"
+                                                            size="sm"
+                                                            onClick={() => handleDownloadProof(payment.id)}
+                                                            disabled={processingPaymentId === payment.id}
+                                                            className="!bg-blue-50 !text-blue-600 hover:!bg-blue-100 border border-blue-200"
+                                                            title="Download proof"
+                                                        >
+                                                            <Download className="w-4 h-4" />
+                                                        </Button>
+                                                    )}
+                                                    <Button
+                                                        variant="default"
+                                                        size="sm"
+                                                        onClick={() => handleApprovePayment(payment.id)}
+                                                        disabled={processingPaymentId === payment.id}
+                                                        className="!bg-green-50 !text-green-600 hover:!bg-green-100 border border-green-200"
+                                                        title="Approve payment"
+                                                    >
+                                                        <Check className="w-4 h-4" />
+                                                    </Button>
+                                                    <Button
+                                                        variant="default"
+                                                        size="sm"
+                                                        onClick={() => handleRejectPayment(payment.id)}
+                                                        disabled={processingPaymentId === payment.id}
+                                                        className="!bg-red-50 !text-red-600 hover:!bg-red-100 border border-red-200"
+                                                        title="Reject payment"
+                                                    >
+                                                        <X className="w-4 h-4" />
+                                                    </Button>
+                                                </>
+                                            )}
                                         </div>
                                     </div>
 
@@ -171,6 +281,43 @@ export function PaymentsListPage(){
                                                 </span>
                                             </div>
                                         </div>
+                                        {/* Mobile Actions */}
+                                        {payment.status === PaymentStatus.AWAITING_CONFIRMATION && (
+                                            <div className="flex gap-2 pt-2 border-t border-slate-100">
+                                                {payment.paymentProofUrl && (
+                                                    <Button
+                                                        variant="default"
+                                                        size="sm"
+                                                        onClick={() => handleDownloadProof(payment.id)}
+                                                        disabled={processingPaymentId === payment.id}
+                                                        className="!bg-blue-50 !text-blue-600 hover:!bg-blue-100 border border-blue-200 flex-1"
+                                                    >
+                                                        <Download className="w-4 h-4 mr-1" />
+                                                        <span className="text-xs">Proof</span>
+                                                    </Button>
+                                                )}
+                                                <Button
+                                                    variant="default"
+                                                    size="sm"
+                                                    onClick={() => handleApprovePayment(payment.id)}
+                                                    disabled={processingPaymentId === payment.id}
+                                                    className="!bg-green-50 !text-green-600 hover:!bg-green-100 border border-green-200 flex-1"
+                                                >
+                                                    <Check className="w-4 h-4 mr-1" />
+                                                    <span className="text-xs">Approve</span>
+                                                </Button>
+                                                <Button
+                                                    variant="default"
+                                                    size="sm"
+                                                    onClick={() => handleRejectPayment(payment.id)}
+                                                    disabled={processingPaymentId === payment.id}
+                                                    className="!bg-red-50 !text-red-600 hover:!bg-red-100 border border-red-200 flex-1"
+                                                >
+                                                    <X className="w-4 h-4 mr-1" />
+                                                    <span className="text-xs">Reject</span>
+                                                </Button>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             ))}
@@ -193,6 +340,7 @@ export function PaymentsListPage(){
             </div>
 
             <IntroducePaymentComponentDialog open={showCreateDialog} onClose={() => setShowCreateDialog(false)} />
+            <CreateBulkPaymentDialog open={showBulkCreateDialog} onClose={() => setShowBulkCreateDialog(false)} />
         </div>
     )
 }

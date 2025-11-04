@@ -33,7 +33,10 @@ export interface IPaymentService {
 
   // Recurring payments
 
-  createBulkPayments(data: CreateBulkPaymentDto): Promise<Payment[]>;
+  createBulkPayments(data: CreateBulkPaymentDto): Promise<{
+    payments: Payment[];
+    errors?: Array<{ userId: string; error: string }>;
+  }>;
   processRecurringPayments(): Promise<void>;
   createRecurringPayment(paymentId: string, frequency: string): Promise<void>;
 }

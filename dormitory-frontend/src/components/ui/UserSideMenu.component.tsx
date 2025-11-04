@@ -127,6 +127,12 @@ export function UserSideMenu ({children}:UserSideMenuProps){
             href: '/rooms',
         },
         {
+            id:'payments',
+            image: '/cash.svg',
+            label: t('sideMenu.payments'),
+            href: '/payments',
+        },
+        {
             id:'notification',
             image: '/bell.svg',
             label: t('sideMenu.notification'),

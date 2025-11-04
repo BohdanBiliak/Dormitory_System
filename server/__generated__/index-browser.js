@@ -169,6 +169,7 @@ exports.Prisma.ConfirmationScalarFieldEnum = {
   resolvedAt: 'resolvedAt',
   rejectionReason: 'rejectionReason',
   roomId: 'roomId',
+  paymentId: 'paymentId',
   from: 'from',
   to: 'to',
   metadata: 'metadata'
@@ -494,7 +495,8 @@ exports.ConfirmationType = exports.$Enums.ConfirmationType = {
   IDENTITY_VERIFICATION: 'IDENTITY_VERIFICATION',
   ACCOMMODATION: 'ACCOMMODATION',
   ROOM_CHANGE: 'ROOM_CHANGE',
-  ROOM_VACATION: 'ROOM_VACATION'
+  ROOM_VACATION: 'ROOM_VACATION',
+  PAYMENT_PROOF: 'PAYMENT_PROOF'
 };
 
 exports.ConfirmationStatus = exports.$Enums.ConfirmationStatus = {

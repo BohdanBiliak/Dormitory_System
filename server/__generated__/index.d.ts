@@ -191,7 +191,8 @@ export const ConfirmationType: {
   IDENTITY_VERIFICATION: 'IDENTITY_VERIFICATION',
   ACCOMMODATION: 'ACCOMMODATION',
   ROOM_CHANGE: 'ROOM_CHANGE',
-  ROOM_VACATION: 'ROOM_VACATION'
+  ROOM_VACATION: 'ROOM_VACATION',
+  PAYMENT_PROOF: 'PAYMENT_PROOF'
 };
 
 export type ConfirmationType = (typeof ConfirmationType)[keyof typeof ConfirmationType]
@@ -4079,12 +4080,14 @@ export namespace Prisma {
     notifications: number
     paymentItems: number
     auditLogs: number
+    confirmations: number
   }
 
   export type PaymentCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     notifications?: boolean | PaymentCountOutputTypeCountNotificationsArgs
     paymentItems?: boolean | PaymentCountOutputTypeCountPaymentItemsArgs
     auditLogs?: boolean | PaymentCountOutputTypeCountAuditLogsArgs
+    confirmations?: boolean | PaymentCountOutputTypeCountConfirmationsArgs
   }
 
   // Custom InputTypes
@@ -4117,6 +4120,13 @@ export namespace Prisma {
    */
   export type PaymentCountOutputTypeCountAuditLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PaymentAuditLogWhereInput
+  }
+
+  /**
+   * PaymentCountOutputType without action
+   */
+  export type PaymentCountOutputTypeCountConfirmationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ConfirmationWhereInput
   }
 
 
@@ -8175,6 +8185,7 @@ export namespace Prisma {
     resolvedAt: Date | null
     rejectionReason: string | null
     roomId: string | null
+    paymentId: string | null
     from: Date | null
     to: Date | null
   }
@@ -8191,6 +8202,7 @@ export namespace Prisma {
     resolvedAt: Date | null
     rejectionReason: string | null
     roomId: string | null
+    paymentId: string | null
     from: Date | null
     to: Date | null
   }
@@ -8207,6 +8219,7 @@ export namespace Prisma {
     resolvedAt: number
     rejectionReason: number
     roomId: number
+    paymentId: number
     from: number
     to: number
     metadata: number
@@ -8226,6 +8239,7 @@ export namespace Prisma {
     resolvedAt?: true
     rejectionReason?: true
     roomId?: true
+    paymentId?: true
     from?: true
     to?: true
   }
@@ -8242,6 +8256,7 @@ export namespace Prisma {
     resolvedAt?: true
     rejectionReason?: true
     roomId?: true
+    paymentId?: true
     from?: true
     to?: true
   }
@@ -8258,6 +8273,7 @@ export namespace Prisma {
     resolvedAt?: true
     rejectionReason?: true
     roomId?: true
+    paymentId?: true
     from?: true
     to?: true
     metadata?: true
@@ -8348,6 +8364,7 @@ export namespace Prisma {
     resolvedAt: Date | null
     rejectionReason: string | null
     roomId: string | null
+    paymentId: string | null
     from: Date | null
     to: Date | null
     metadata: JsonValue | null
@@ -8382,10 +8399,12 @@ export namespace Prisma {
     resolvedAt?: boolean
     rejectionReason?: boolean
     roomId?: boolean
+    paymentId?: boolean
     from?: boolean
     to?: boolean
     metadata?: boolean
     requester?: boolean | UserDefaultArgs<ExtArgs>
+    payment?: boolean | Confirmation$paymentArgs<ExtArgs>
   }, ExtArgs["result"]["confirmation"]>
 
   export type ConfirmationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -8400,10 +8419,12 @@ export namespace Prisma {
     resolvedAt?: boolean
     rejectionReason?: boolean
     roomId?: boolean
+    paymentId?: boolean
     from?: boolean
     to?: boolean
     metadata?: boolean
     requester?: boolean | UserDefaultArgs<ExtArgs>
+    payment?: boolean | Confirmation$paymentArgs<ExtArgs>
   }, ExtArgs["result"]["confirmation"]>
 
   export type ConfirmationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -8418,10 +8439,12 @@ export namespace Prisma {
     resolvedAt?: boolean
     rejectionReason?: boolean
     roomId?: boolean
+    paymentId?: boolean
     from?: boolean
     to?: boolean
     metadata?: boolean
     requester?: boolean | UserDefaultArgs<ExtArgs>
+    payment?: boolean | Confirmation$paymentArgs<ExtArgs>
   }, ExtArgs["result"]["confirmation"]>
 
   export type ConfirmationSelectScalar = {
@@ -8436,26 +8459,31 @@ export namespace Prisma {
     resolvedAt?: boolean
     rejectionReason?: boolean
     roomId?: boolean
+    paymentId?: boolean
     from?: boolean
     to?: boolean
     metadata?: boolean
   }
 
-  export type ConfirmationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "type" | "status" | "photo" | "frontIdUrl" | "backIdUrl" | "createdAt" | "resolvedAt" | "rejectionReason" | "roomId" | "from" | "to" | "metadata", ExtArgs["result"]["confirmation"]>
+  export type ConfirmationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "type" | "status" | "photo" | "frontIdUrl" | "backIdUrl" | "createdAt" | "resolvedAt" | "rejectionReason" | "roomId" | "paymentId" | "from" | "to" | "metadata", ExtArgs["result"]["confirmation"]>
   export type ConfirmationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     requester?: boolean | UserDefaultArgs<ExtArgs>
+    payment?: boolean | Confirmation$paymentArgs<ExtArgs>
   }
   export type ConfirmationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     requester?: boolean | UserDefaultArgs<ExtArgs>
+    payment?: boolean | Confirmation$paymentArgs<ExtArgs>
   }
   export type ConfirmationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     requester?: boolean | UserDefaultArgs<ExtArgs>
+    payment?: boolean | Confirmation$paymentArgs<ExtArgs>
   }
 
   export type $ConfirmationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Confirmation"
     objects: {
       requester: Prisma.$UserPayload<ExtArgs>
+      payment: Prisma.$PaymentPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -8469,6 +8497,7 @@ export namespace Prisma {
       resolvedAt: Date | null
       rejectionReason: string | null
       roomId: string | null
+      paymentId: string | null
       from: Date | null
       to: Date | null
       metadata: Prisma.JsonValue | null
@@ -8867,6 +8896,7 @@ export namespace Prisma {
   export interface Prisma__ConfirmationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     requester<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    payment<T extends Confirmation$paymentArgs<ExtArgs> = {}>(args?: Subset<T, Confirmation$paymentArgs<ExtArgs>>): Prisma__PaymentClient<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8907,6 +8937,7 @@ export namespace Prisma {
     readonly resolvedAt: FieldRef<"Confirmation", 'DateTime'>
     readonly rejectionReason: FieldRef<"Confirmation", 'String'>
     readonly roomId: FieldRef<"Confirmation", 'String'>
+    readonly paymentId: FieldRef<"Confirmation", 'String'>
     readonly from: FieldRef<"Confirmation", 'DateTime'>
     readonly to: FieldRef<"Confirmation", 'DateTime'>
     readonly metadata: FieldRef<"Confirmation", 'Json'>
@@ -9303,6 +9334,25 @@ export namespace Prisma {
      * Limit how many Confirmations to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Confirmation.payment
+   */
+  export type Confirmation$paymentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Payment
+     */
+    select?: PaymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Payment
+     */
+    omit?: PaymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentInclude<ExtArgs> | null
+    where?: PaymentWhereInput
   }
 
   /**
@@ -22493,6 +22543,7 @@ export namespace Prisma {
     paymentItems?: boolean | Payment$paymentItemsArgs<ExtArgs>
     recurringPayment?: boolean | Payment$recurringPaymentArgs<ExtArgs>
     auditLogs?: boolean | Payment$auditLogsArgs<ExtArgs>
+    confirmations?: boolean | Payment$confirmationsArgs<ExtArgs>
     _count?: boolean | PaymentCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["payment"]>
 
@@ -22607,6 +22658,7 @@ export namespace Prisma {
     paymentItems?: boolean | Payment$paymentItemsArgs<ExtArgs>
     recurringPayment?: boolean | Payment$recurringPaymentArgs<ExtArgs>
     auditLogs?: boolean | Payment$auditLogsArgs<ExtArgs>
+    confirmations?: boolean | Payment$confirmationsArgs<ExtArgs>
     _count?: boolean | PaymentCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type PaymentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -22639,6 +22691,7 @@ export namespace Prisma {
       paymentItems: Prisma.$PaymentItemPayload<ExtArgs>[]
       recurringPayment: Prisma.$RecurringPaymentPayload<ExtArgs> | null
       auditLogs: Prisma.$PaymentAuditLogPayload<ExtArgs>[]
+      confirmations: Prisma.$ConfirmationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -23071,6 +23124,7 @@ export namespace Prisma {
     paymentItems<T extends Payment$paymentItemsArgs<ExtArgs> = {}>(args?: Subset<T, Payment$paymentItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     recurringPayment<T extends Payment$recurringPaymentArgs<ExtArgs> = {}>(args?: Subset<T, Payment$recurringPaymentArgs<ExtArgs>>): Prisma__RecurringPaymentClient<$Result.GetResult<Prisma.$RecurringPaymentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     auditLogs<T extends Payment$auditLogsArgs<ExtArgs> = {}>(args?: Subset<T, Payment$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    confirmations<T extends Payment$confirmationsArgs<ExtArgs> = {}>(args?: Subset<T, Payment$confirmationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConfirmationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -23705,6 +23759,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: PaymentAuditLogScalarFieldEnum | PaymentAuditLogScalarFieldEnum[]
+  }
+
+  /**
+   * Payment.confirmations
+   */
+  export type Payment$confirmationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Confirmation
+     */
+    select?: ConfirmationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Confirmation
+     */
+    omit?: ConfirmationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConfirmationInclude<ExtArgs> | null
+    where?: ConfirmationWhereInput
+    orderBy?: ConfirmationOrderByWithRelationInput | ConfirmationOrderByWithRelationInput[]
+    cursor?: ConfirmationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ConfirmationScalarFieldEnum | ConfirmationScalarFieldEnum[]
   }
 
   /**
@@ -37563,6 +37641,7 @@ export namespace Prisma {
     resolvedAt: 'resolvedAt',
     rejectionReason: 'rejectionReason',
     roomId: 'roomId',
+    paymentId: 'paymentId',
     from: 'from',
     to: 'to',
     metadata: 'metadata'
@@ -38535,10 +38614,12 @@ export namespace Prisma {
     resolvedAt?: DateTimeNullableFilter<"Confirmation"> | Date | string | null
     rejectionReason?: StringNullableFilter<"Confirmation"> | string | null
     roomId?: StringNullableFilter<"Confirmation"> | string | null
+    paymentId?: StringNullableFilter<"Confirmation"> | string | null
     from?: DateTimeNullableFilter<"Confirmation"> | Date | string | null
     to?: DateTimeNullableFilter<"Confirmation"> | Date | string | null
     metadata?: JsonNullableFilter<"Confirmation">
     requester?: XOR<UserScalarRelationFilter, UserWhereInput>
+    payment?: XOR<PaymentNullableScalarRelationFilter, PaymentWhereInput> | null
   }
 
   export type ConfirmationOrderByWithRelationInput = {
@@ -38553,10 +38634,12 @@ export namespace Prisma {
     resolvedAt?: SortOrderInput | SortOrder
     rejectionReason?: SortOrderInput | SortOrder
     roomId?: SortOrderInput | SortOrder
+    paymentId?: SortOrderInput | SortOrder
     from?: SortOrderInput | SortOrder
     to?: SortOrderInput | SortOrder
     metadata?: SortOrderInput | SortOrder
     requester?: UserOrderByWithRelationInput
+    payment?: PaymentOrderByWithRelationInput
   }
 
   export type ConfirmationWhereUniqueInput = Prisma.AtLeast<{
@@ -38574,10 +38657,12 @@ export namespace Prisma {
     resolvedAt?: DateTimeNullableFilter<"Confirmation"> | Date | string | null
     rejectionReason?: StringNullableFilter<"Confirmation"> | string | null
     roomId?: StringNullableFilter<"Confirmation"> | string | null
+    paymentId?: StringNullableFilter<"Confirmation"> | string | null
     from?: DateTimeNullableFilter<"Confirmation"> | Date | string | null
     to?: DateTimeNullableFilter<"Confirmation"> | Date | string | null
     metadata?: JsonNullableFilter<"Confirmation">
     requester?: XOR<UserScalarRelationFilter, UserWhereInput>
+    payment?: XOR<PaymentNullableScalarRelationFilter, PaymentWhereInput> | null
   }, "id">
 
   export type ConfirmationOrderByWithAggregationInput = {
@@ -38592,6 +38677,7 @@ export namespace Prisma {
     resolvedAt?: SortOrderInput | SortOrder
     rejectionReason?: SortOrderInput | SortOrder
     roomId?: SortOrderInput | SortOrder
+    paymentId?: SortOrderInput | SortOrder
     from?: SortOrderInput | SortOrder
     to?: SortOrderInput | SortOrder
     metadata?: SortOrderInput | SortOrder
@@ -38615,6 +38701,7 @@ export namespace Prisma {
     resolvedAt?: DateTimeNullableWithAggregatesFilter<"Confirmation"> | Date | string | null
     rejectionReason?: StringNullableWithAggregatesFilter<"Confirmation"> | string | null
     roomId?: StringNullableWithAggregatesFilter<"Confirmation"> | string | null
+    paymentId?: StringNullableWithAggregatesFilter<"Confirmation"> | string | null
     from?: DateTimeNullableWithAggregatesFilter<"Confirmation"> | Date | string | null
     to?: DateTimeNullableWithAggregatesFilter<"Confirmation"> | Date | string | null
     metadata?: JsonNullableWithAggregatesFilter<"Confirmation">
@@ -39464,6 +39551,7 @@ export namespace Prisma {
     paymentItems?: PaymentItemListRelationFilter
     recurringPayment?: XOR<RecurringPaymentNullableScalarRelationFilter, RecurringPaymentWhereInput> | null
     auditLogs?: PaymentAuditLogListRelationFilter
+    confirmations?: ConfirmationListRelationFilter
   }
 
   export type PaymentOrderByWithRelationInput = {
@@ -39503,6 +39591,7 @@ export namespace Prisma {
     paymentItems?: PaymentItemOrderByRelationAggregateInput
     recurringPayment?: RecurringPaymentOrderByWithRelationInput
     auditLogs?: PaymentAuditLogOrderByRelationAggregateInput
+    confirmations?: ConfirmationOrderByRelationAggregateInput
   }
 
   export type PaymentWhereUniqueInput = Prisma.AtLeast<{
@@ -39545,6 +39634,7 @@ export namespace Prisma {
     paymentItems?: PaymentItemListRelationFilter
     recurringPayment?: XOR<RecurringPaymentNullableScalarRelationFilter, RecurringPaymentWhereInput> | null
     auditLogs?: PaymentAuditLogListRelationFilter
+    confirmations?: ConfirmationListRelationFilter
   }, "id">
 
   export type PaymentOrderByWithAggregationInput = {
@@ -40884,6 +40974,7 @@ export namespace Prisma {
     to?: Date | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     requester: UserCreateNestedOneWithoutConfirmationsInput
+    payment?: PaymentCreateNestedOneWithoutConfirmationsInput
   }
 
   export type ConfirmationUncheckedCreateInput = {
@@ -40898,6 +40989,7 @@ export namespace Prisma {
     resolvedAt?: Date | string | null
     rejectionReason?: string | null
     roomId?: string | null
+    paymentId?: string | null
     from?: Date | string | null
     to?: Date | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
@@ -40918,6 +41010,7 @@ export namespace Prisma {
     to?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     requester?: UserUpdateOneRequiredWithoutConfirmationsNestedInput
+    payment?: PaymentUpdateOneWithoutConfirmationsNestedInput
   }
 
   export type ConfirmationUncheckedUpdateInput = {
@@ -40932,6 +41025,7 @@ export namespace Prisma {
     resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentId?: NullableStringFieldUpdateOperationsInput | string | null
     from?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     to?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
@@ -40949,6 +41043,7 @@ export namespace Prisma {
     resolvedAt?: Date | string | null
     rejectionReason?: string | null
     roomId?: string | null
+    paymentId?: string | null
     from?: Date | string | null
     to?: Date | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
@@ -40982,6 +41077,7 @@ export namespace Prisma {
     resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentId?: NullableStringFieldUpdateOperationsInput | string | null
     from?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     to?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
@@ -41863,6 +41959,7 @@ export namespace Prisma {
     paymentItems?: PaymentItemCreateNestedManyWithoutPaymentInput
     recurringPayment?: RecurringPaymentCreateNestedOneWithoutPaymentInput
     auditLogs?: PaymentAuditLogCreateNestedManyWithoutPaymentInput
+    confirmations?: ConfirmationCreateNestedManyWithoutPaymentInput
   }
 
   export type PaymentUncheckedCreateInput = {
@@ -41896,6 +41993,7 @@ export namespace Prisma {
     paymentItems?: PaymentItemUncheckedCreateNestedManyWithoutPaymentInput
     recurringPayment?: RecurringPaymentUncheckedCreateNestedOneWithoutPaymentInput
     auditLogs?: PaymentAuditLogUncheckedCreateNestedManyWithoutPaymentInput
+    confirmations?: ConfirmationUncheckedCreateNestedManyWithoutPaymentInput
   }
 
   export type PaymentUpdateInput = {
@@ -41929,6 +42027,7 @@ export namespace Prisma {
     paymentItems?: PaymentItemUpdateManyWithoutPaymentNestedInput
     recurringPayment?: RecurringPaymentUpdateOneWithoutPaymentNestedInput
     auditLogs?: PaymentAuditLogUpdateManyWithoutPaymentNestedInput
+    confirmations?: ConfirmationUpdateManyWithoutPaymentNestedInput
   }
 
   export type PaymentUncheckedUpdateInput = {
@@ -41962,6 +42061,7 @@ export namespace Prisma {
     paymentItems?: PaymentItemUncheckedUpdateManyWithoutPaymentNestedInput
     recurringPayment?: RecurringPaymentUncheckedUpdateOneWithoutPaymentNestedInput
     auditLogs?: PaymentAuditLogUncheckedUpdateManyWithoutPaymentNestedInput
+    confirmations?: ConfirmationUncheckedUpdateManyWithoutPaymentNestedInput
   }
 
   export type PaymentCreateManyInput = {
@@ -43506,6 +43606,11 @@ export namespace Prisma {
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
+  export type PaymentNullableScalarRelationFilter = {
+    is?: PaymentWhereInput | null
+    isNot?: PaymentWhereInput | null
+  }
+
   export type ConfirmationCountOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
@@ -43518,6 +43623,7 @@ export namespace Prisma {
     resolvedAt?: SortOrder
     rejectionReason?: SortOrder
     roomId?: SortOrder
+    paymentId?: SortOrder
     from?: SortOrder
     to?: SortOrder
     metadata?: SortOrder
@@ -43535,6 +43641,7 @@ export namespace Prisma {
     resolvedAt?: SortOrder
     rejectionReason?: SortOrder
     roomId?: SortOrder
+    paymentId?: SortOrder
     from?: SortOrder
     to?: SortOrder
   }
@@ -43551,6 +43658,7 @@ export namespace Prisma {
     resolvedAt?: SortOrder
     rejectionReason?: SortOrder
     roomId?: SortOrder
+    paymentId?: SortOrder
     from?: SortOrder
     to?: SortOrder
   }
@@ -44555,11 +44663,6 @@ export namespace Prisma {
     in?: $Enums.NotificationPriority[] | ListEnumNotificationPriorityFieldRefInput<$PrismaModel>
     notIn?: $Enums.NotificationPriority[] | ListEnumNotificationPriorityFieldRefInput<$PrismaModel>
     not?: NestedEnumNotificationPriorityFilter<$PrismaModel> | $Enums.NotificationPriority
-  }
-
-  export type PaymentNullableScalarRelationFilter = {
-    is?: PaymentWhereInput | null
-    isNot?: PaymentWhereInput | null
   }
 
   export type NotificationCountOrderByAggregateInput = {
@@ -45787,6 +45890,12 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type PaymentCreateNestedOneWithoutConfirmationsInput = {
+    create?: XOR<PaymentCreateWithoutConfirmationsInput, PaymentUncheckedCreateWithoutConfirmationsInput>
+    connectOrCreate?: PaymentCreateOrConnectWithoutConfirmationsInput
+    connect?: PaymentWhereUniqueInput
+  }
+
   export type EnumConfirmationTypeFieldUpdateOperationsInput = {
     set?: $Enums.ConfirmationType
   }
@@ -45801,6 +45910,16 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutConfirmationsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutConfirmationsInput, UserUpdateWithoutConfirmationsInput>, UserUncheckedUpdateWithoutConfirmationsInput>
+  }
+
+  export type PaymentUpdateOneWithoutConfirmationsNestedInput = {
+    create?: XOR<PaymentCreateWithoutConfirmationsInput, PaymentUncheckedCreateWithoutConfirmationsInput>
+    connectOrCreate?: PaymentCreateOrConnectWithoutConfirmationsInput
+    upsert?: PaymentUpsertWithoutConfirmationsInput
+    disconnect?: PaymentWhereInput | boolean
+    delete?: PaymentWhereInput | boolean
+    connect?: PaymentWhereUniqueInput
+    update?: XOR<XOR<PaymentUpdateToOneWithWhereWithoutConfirmationsInput, PaymentUpdateWithoutConfirmationsInput>, PaymentUncheckedUpdateWithoutConfirmationsInput>
   }
 
   export type EnumTokenTypeFieldUpdateOperationsInput = {
@@ -47058,6 +47177,13 @@ export namespace Prisma {
     connect?: PaymentAuditLogWhereUniqueInput | PaymentAuditLogWhereUniqueInput[]
   }
 
+  export type ConfirmationCreateNestedManyWithoutPaymentInput = {
+    create?: XOR<ConfirmationCreateWithoutPaymentInput, ConfirmationUncheckedCreateWithoutPaymentInput> | ConfirmationCreateWithoutPaymentInput[] | ConfirmationUncheckedCreateWithoutPaymentInput[]
+    connectOrCreate?: ConfirmationCreateOrConnectWithoutPaymentInput | ConfirmationCreateOrConnectWithoutPaymentInput[]
+    createMany?: ConfirmationCreateManyPaymentInputEnvelope
+    connect?: ConfirmationWhereUniqueInput | ConfirmationWhereUniqueInput[]
+  }
+
   export type NotificationUncheckedCreateNestedManyWithoutPaymentInput = {
     create?: XOR<NotificationCreateWithoutPaymentInput, NotificationUncheckedCreateWithoutPaymentInput> | NotificationCreateWithoutPaymentInput[] | NotificationUncheckedCreateWithoutPaymentInput[]
     connectOrCreate?: NotificationCreateOrConnectWithoutPaymentInput | NotificationCreateOrConnectWithoutPaymentInput[]
@@ -47083,6 +47209,13 @@ export namespace Prisma {
     connectOrCreate?: PaymentAuditLogCreateOrConnectWithoutPaymentInput | PaymentAuditLogCreateOrConnectWithoutPaymentInput[]
     createMany?: PaymentAuditLogCreateManyPaymentInputEnvelope
     connect?: PaymentAuditLogWhereUniqueInput | PaymentAuditLogWhereUniqueInput[]
+  }
+
+  export type ConfirmationUncheckedCreateNestedManyWithoutPaymentInput = {
+    create?: XOR<ConfirmationCreateWithoutPaymentInput, ConfirmationUncheckedCreateWithoutPaymentInput> | ConfirmationCreateWithoutPaymentInput[] | ConfirmationUncheckedCreateWithoutPaymentInput[]
+    connectOrCreate?: ConfirmationCreateOrConnectWithoutPaymentInput | ConfirmationCreateOrConnectWithoutPaymentInput[]
+    createMany?: ConfirmationCreateManyPaymentInputEnvelope
+    connect?: ConfirmationWhereUniqueInput | ConfirmationWhereUniqueInput[]
   }
 
   export type EnumPaymentTypeFieldUpdateOperationsInput = {
@@ -47207,6 +47340,20 @@ export namespace Prisma {
     deleteMany?: PaymentAuditLogScalarWhereInput | PaymentAuditLogScalarWhereInput[]
   }
 
+  export type ConfirmationUpdateManyWithoutPaymentNestedInput = {
+    create?: XOR<ConfirmationCreateWithoutPaymentInput, ConfirmationUncheckedCreateWithoutPaymentInput> | ConfirmationCreateWithoutPaymentInput[] | ConfirmationUncheckedCreateWithoutPaymentInput[]
+    connectOrCreate?: ConfirmationCreateOrConnectWithoutPaymentInput | ConfirmationCreateOrConnectWithoutPaymentInput[]
+    upsert?: ConfirmationUpsertWithWhereUniqueWithoutPaymentInput | ConfirmationUpsertWithWhereUniqueWithoutPaymentInput[]
+    createMany?: ConfirmationCreateManyPaymentInputEnvelope
+    set?: ConfirmationWhereUniqueInput | ConfirmationWhereUniqueInput[]
+    disconnect?: ConfirmationWhereUniqueInput | ConfirmationWhereUniqueInput[]
+    delete?: ConfirmationWhereUniqueInput | ConfirmationWhereUniqueInput[]
+    connect?: ConfirmationWhereUniqueInput | ConfirmationWhereUniqueInput[]
+    update?: ConfirmationUpdateWithWhereUniqueWithoutPaymentInput | ConfirmationUpdateWithWhereUniqueWithoutPaymentInput[]
+    updateMany?: ConfirmationUpdateManyWithWhereWithoutPaymentInput | ConfirmationUpdateManyWithWhereWithoutPaymentInput[]
+    deleteMany?: ConfirmationScalarWhereInput | ConfirmationScalarWhereInput[]
+  }
+
   export type NotificationUncheckedUpdateManyWithoutPaymentNestedInput = {
     create?: XOR<NotificationCreateWithoutPaymentInput, NotificationUncheckedCreateWithoutPaymentInput> | NotificationCreateWithoutPaymentInput[] | NotificationUncheckedCreateWithoutPaymentInput[]
     connectOrCreate?: NotificationCreateOrConnectWithoutPaymentInput | NotificationCreateOrConnectWithoutPaymentInput[]
@@ -47257,6 +47404,20 @@ export namespace Prisma {
     update?: PaymentAuditLogUpdateWithWhereUniqueWithoutPaymentInput | PaymentAuditLogUpdateWithWhereUniqueWithoutPaymentInput[]
     updateMany?: PaymentAuditLogUpdateManyWithWhereWithoutPaymentInput | PaymentAuditLogUpdateManyWithWhereWithoutPaymentInput[]
     deleteMany?: PaymentAuditLogScalarWhereInput | PaymentAuditLogScalarWhereInput[]
+  }
+
+  export type ConfirmationUncheckedUpdateManyWithoutPaymentNestedInput = {
+    create?: XOR<ConfirmationCreateWithoutPaymentInput, ConfirmationUncheckedCreateWithoutPaymentInput> | ConfirmationCreateWithoutPaymentInput[] | ConfirmationUncheckedCreateWithoutPaymentInput[]
+    connectOrCreate?: ConfirmationCreateOrConnectWithoutPaymentInput | ConfirmationCreateOrConnectWithoutPaymentInput[]
+    upsert?: ConfirmationUpsertWithWhereUniqueWithoutPaymentInput | ConfirmationUpsertWithWhereUniqueWithoutPaymentInput[]
+    createMany?: ConfirmationCreateManyPaymentInputEnvelope
+    set?: ConfirmationWhereUniqueInput | ConfirmationWhereUniqueInput[]
+    disconnect?: ConfirmationWhereUniqueInput | ConfirmationWhereUniqueInput[]
+    delete?: ConfirmationWhereUniqueInput | ConfirmationWhereUniqueInput[]
+    connect?: ConfirmationWhereUniqueInput | ConfirmationWhereUniqueInput[]
+    update?: ConfirmationUpdateWithWhereUniqueWithoutPaymentInput | ConfirmationUpdateWithWhereUniqueWithoutPaymentInput[]
+    updateMany?: ConfirmationUpdateManyWithWhereWithoutPaymentInput | ConfirmationUpdateManyWithWhereWithoutPaymentInput[]
+    deleteMany?: ConfirmationScalarWhereInput | ConfirmationScalarWhereInput[]
   }
 
   export type PaymentCreateNestedOneWithoutRecurringPaymentInput = {
@@ -48402,6 +48563,7 @@ export namespace Prisma {
     from?: Date | string | null
     to?: Date | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    payment?: PaymentCreateNestedOneWithoutConfirmationsInput
   }
 
   export type ConfirmationUncheckedCreateWithoutRequesterInput = {
@@ -48415,6 +48577,7 @@ export namespace Prisma {
     resolvedAt?: Date | string | null
     rejectionReason?: string | null
     roomId?: string | null
+    paymentId?: string | null
     from?: Date | string | null
     to?: Date | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
@@ -48831,6 +48994,7 @@ export namespace Prisma {
     paymentItems?: PaymentItemCreateNestedManyWithoutPaymentInput
     recurringPayment?: RecurringPaymentCreateNestedOneWithoutPaymentInput
     auditLogs?: PaymentAuditLogCreateNestedManyWithoutPaymentInput
+    confirmations?: ConfirmationCreateNestedManyWithoutPaymentInput
   }
 
   export type PaymentUncheckedCreateWithoutUserInput = {
@@ -48863,6 +49027,7 @@ export namespace Prisma {
     paymentItems?: PaymentItemUncheckedCreateNestedManyWithoutPaymentInput
     recurringPayment?: RecurringPaymentUncheckedCreateNestedOneWithoutPaymentInput
     auditLogs?: PaymentAuditLogUncheckedCreateNestedManyWithoutPaymentInput
+    confirmations?: ConfirmationUncheckedCreateNestedManyWithoutPaymentInput
   }
 
   export type PaymentCreateOrConnectWithoutUserInput = {
@@ -48905,6 +49070,7 @@ export namespace Prisma {
     paymentItems?: PaymentItemCreateNestedManyWithoutPaymentInput
     recurringPayment?: RecurringPaymentCreateNestedOneWithoutPaymentInput
     auditLogs?: PaymentAuditLogCreateNestedManyWithoutPaymentInput
+    confirmations?: ConfirmationCreateNestedManyWithoutPaymentInput
   }
 
   export type PaymentUncheckedCreateWithoutConfirmedByUserInput = {
@@ -48937,6 +49103,7 @@ export namespace Prisma {
     paymentItems?: PaymentItemUncheckedCreateNestedManyWithoutPaymentInput
     recurringPayment?: RecurringPaymentUncheckedCreateNestedOneWithoutPaymentInput
     auditLogs?: PaymentAuditLogUncheckedCreateNestedManyWithoutPaymentInput
+    confirmations?: ConfirmationUncheckedCreateNestedManyWithoutPaymentInput
   }
 
   export type PaymentCreateOrConnectWithoutConfirmedByUserInput = {
@@ -49138,6 +49305,7 @@ export namespace Prisma {
     resolvedAt?: DateTimeNullableFilter<"Confirmation"> | Date | string | null
     rejectionReason?: StringNullableFilter<"Confirmation"> | string | null
     roomId?: StringNullableFilter<"Confirmation"> | string | null
+    paymentId?: StringNullableFilter<"Confirmation"> | string | null
     from?: DateTimeNullableFilter<"Confirmation"> | Date | string | null
     to?: DateTimeNullableFilter<"Confirmation"> | Date | string | null
     metadata?: JsonNullableFilter<"Confirmation">
@@ -50276,6 +50444,77 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutConfirmationsInput, UserUncheckedCreateWithoutConfirmationsInput>
   }
 
+  export type PaymentCreateWithoutConfirmationsInput = {
+    id?: string
+    amount: number
+    currency?: string
+    paymentType: $Enums.PaymentType
+    paymentMethod: $Enums.PaymentMethod
+    status?: $Enums.PaymentStatus
+    dueDate: Date | string
+    paidAt?: Date | string | null
+    description?: string | null
+    paymentProofUrl?: string | null
+    paymentProofFilename?: string | null
+    paymentProofUploadedAt?: Date | string | null
+    externalPaymentId?: string | null
+    failureReason?: string | null
+    managerNotes?: string | null
+    confirmedAt?: Date | string | null
+    rejectedAt?: Date | string | null
+    rejectionReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutPaymentsInput
+    booking?: BookingCreateNestedOneWithoutPaymentsInput
+    price?: PriceCreateNestedOneWithoutPaymentsInput
+    priceCategory?: PriceCategoryCreateNestedOneWithoutPaymentsInput
+    confirmedByUser?: UserCreateNestedOneWithoutConfirmedPaymentsInput
+    generatedFromRecurring?: RecurringPaymentCreateNestedOneWithoutGeneratedPaymentsInput
+    notifications?: NotificationCreateNestedManyWithoutPaymentInput
+    paymentItems?: PaymentItemCreateNestedManyWithoutPaymentInput
+    recurringPayment?: RecurringPaymentCreateNestedOneWithoutPaymentInput
+    auditLogs?: PaymentAuditLogCreateNestedManyWithoutPaymentInput
+  }
+
+  export type PaymentUncheckedCreateWithoutConfirmationsInput = {
+    id?: string
+    userId: string
+    bookingId?: string | null
+    priceId?: string | null
+    priceCategoryId?: string | null
+    amount: number
+    currency?: string
+    paymentType: $Enums.PaymentType
+    paymentMethod: $Enums.PaymentMethod
+    status?: $Enums.PaymentStatus
+    dueDate: Date | string
+    paidAt?: Date | string | null
+    description?: string | null
+    paymentProofUrl?: string | null
+    paymentProofFilename?: string | null
+    paymentProofUploadedAt?: Date | string | null
+    externalPaymentId?: string | null
+    failureReason?: string | null
+    managerNotes?: string | null
+    confirmedBy?: string | null
+    confirmedAt?: Date | string | null
+    rejectedAt?: Date | string | null
+    rejectionReason?: string | null
+    recurringPaymentId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    notifications?: NotificationUncheckedCreateNestedManyWithoutPaymentInput
+    paymentItems?: PaymentItemUncheckedCreateNestedManyWithoutPaymentInput
+    recurringPayment?: RecurringPaymentUncheckedCreateNestedOneWithoutPaymentInput
+    auditLogs?: PaymentAuditLogUncheckedCreateNestedManyWithoutPaymentInput
+  }
+
+  export type PaymentCreateOrConnectWithoutConfirmationsInput = {
+    where: PaymentWhereUniqueInput
+    create: XOR<PaymentCreateWithoutConfirmationsInput, PaymentUncheckedCreateWithoutConfirmationsInput>
+  }
+
   export type UserUpsertWithoutConfirmationsInput = {
     update: XOR<UserUpdateWithoutConfirmationsInput, UserUncheckedUpdateWithoutConfirmationsInput>
     create: XOR<UserCreateWithoutConfirmationsInput, UserUncheckedCreateWithoutConfirmationsInput>
@@ -50363,6 +50602,83 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     readMessages?: MessageReadUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type PaymentUpsertWithoutConfirmationsInput = {
+    update: XOR<PaymentUpdateWithoutConfirmationsInput, PaymentUncheckedUpdateWithoutConfirmationsInput>
+    create: XOR<PaymentCreateWithoutConfirmationsInput, PaymentUncheckedCreateWithoutConfirmationsInput>
+    where?: PaymentWhereInput
+  }
+
+  export type PaymentUpdateToOneWithWhereWithoutConfirmationsInput = {
+    where?: PaymentWhereInput
+    data: XOR<PaymentUpdateWithoutConfirmationsInput, PaymentUncheckedUpdateWithoutConfirmationsInput>
+  }
+
+  export type PaymentUpdateWithoutConfirmationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    paymentType?: EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
+    paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+    status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    externalPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    failureReason?: NullableStringFieldUpdateOperationsInput | string | null
+    managerNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutPaymentsNestedInput
+    booking?: BookingUpdateOneWithoutPaymentsNestedInput
+    price?: PriceUpdateOneWithoutPaymentsNestedInput
+    priceCategory?: PriceCategoryUpdateOneWithoutPaymentsNestedInput
+    confirmedByUser?: UserUpdateOneWithoutConfirmedPaymentsNestedInput
+    generatedFromRecurring?: RecurringPaymentUpdateOneWithoutGeneratedPaymentsNestedInput
+    notifications?: NotificationUpdateManyWithoutPaymentNestedInput
+    paymentItems?: PaymentItemUpdateManyWithoutPaymentNestedInput
+    recurringPayment?: RecurringPaymentUpdateOneWithoutPaymentNestedInput
+    auditLogs?: PaymentAuditLogUpdateManyWithoutPaymentNestedInput
+  }
+
+  export type PaymentUncheckedUpdateWithoutConfirmationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    bookingId?: NullableStringFieldUpdateOperationsInput | string | null
+    priceId?: NullableStringFieldUpdateOperationsInput | string | null
+    priceCategoryId?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: FloatFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    paymentType?: EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
+    paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+    status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    externalPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    failureReason?: NullableStringFieldUpdateOperationsInput | string | null
+    managerNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    recurringPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notifications?: NotificationUncheckedUpdateManyWithoutPaymentNestedInput
+    paymentItems?: PaymentItemUncheckedUpdateManyWithoutPaymentNestedInput
+    recurringPayment?: RecurringPaymentUncheckedUpdateOneWithoutPaymentNestedInput
+    auditLogs?: PaymentAuditLogUncheckedUpdateManyWithoutPaymentNestedInput
   }
 
   export type UserCreateWithoutAuditLogsInput = {
@@ -52183,6 +52499,7 @@ export namespace Prisma {
     paymentItems?: PaymentItemCreateNestedManyWithoutPaymentInput
     recurringPayment?: RecurringPaymentCreateNestedOneWithoutPaymentInput
     auditLogs?: PaymentAuditLogCreateNestedManyWithoutPaymentInput
+    confirmations?: ConfirmationCreateNestedManyWithoutPaymentInput
   }
 
   export type PaymentUncheckedCreateWithoutPriceCategoryInput = {
@@ -52215,6 +52532,7 @@ export namespace Prisma {
     paymentItems?: PaymentItemUncheckedCreateNestedManyWithoutPaymentInput
     recurringPayment?: RecurringPaymentUncheckedCreateNestedOneWithoutPaymentInput
     auditLogs?: PaymentAuditLogUncheckedCreateNestedManyWithoutPaymentInput
+    confirmations?: ConfirmationUncheckedCreateNestedManyWithoutPaymentInput
   }
 
   export type PaymentCreateOrConnectWithoutPriceCategoryInput = {
@@ -52364,6 +52682,7 @@ export namespace Prisma {
     paymentItems?: PaymentItemCreateNestedManyWithoutPaymentInput
     recurringPayment?: RecurringPaymentCreateNestedOneWithoutPaymentInput
     auditLogs?: PaymentAuditLogCreateNestedManyWithoutPaymentInput
+    confirmations?: ConfirmationCreateNestedManyWithoutPaymentInput
   }
 
   export type PaymentUncheckedCreateWithoutPriceInput = {
@@ -52396,6 +52715,7 @@ export namespace Prisma {
     paymentItems?: PaymentItemUncheckedCreateNestedManyWithoutPaymentInput
     recurringPayment?: RecurringPaymentUncheckedCreateNestedOneWithoutPaymentInput
     auditLogs?: PaymentAuditLogUncheckedCreateNestedManyWithoutPaymentInput
+    confirmations?: ConfirmationUncheckedCreateNestedManyWithoutPaymentInput
   }
 
   export type PaymentCreateOrConnectWithoutPriceInput = {
@@ -52677,6 +52997,7 @@ export namespace Prisma {
     paymentItems?: PaymentItemCreateNestedManyWithoutPaymentInput
     recurringPayment?: RecurringPaymentCreateNestedOneWithoutPaymentInput
     auditLogs?: PaymentAuditLogCreateNestedManyWithoutPaymentInput
+    confirmations?: ConfirmationCreateNestedManyWithoutPaymentInput
   }
 
   export type PaymentUncheckedCreateWithoutBookingInput = {
@@ -52709,6 +53030,7 @@ export namespace Prisma {
     paymentItems?: PaymentItemUncheckedCreateNestedManyWithoutPaymentInput
     recurringPayment?: RecurringPaymentUncheckedCreateNestedOneWithoutPaymentInput
     auditLogs?: PaymentAuditLogUncheckedCreateNestedManyWithoutPaymentInput
+    confirmations?: ConfirmationUncheckedCreateNestedManyWithoutPaymentInput
   }
 
   export type PaymentCreateOrConnectWithoutBookingInput = {
@@ -53398,6 +53720,50 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ConfirmationCreateWithoutPaymentInput = {
+    id?: string
+    type: $Enums.ConfirmationType
+    status?: $Enums.ConfirmationStatus
+    photo?: string | null
+    frontIdUrl?: string | null
+    backIdUrl?: string | null
+    createdAt?: Date | string
+    resolvedAt?: Date | string | null
+    rejectionReason?: string | null
+    roomId?: string | null
+    from?: Date | string | null
+    to?: Date | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    requester: UserCreateNestedOneWithoutConfirmationsInput
+  }
+
+  export type ConfirmationUncheckedCreateWithoutPaymentInput = {
+    id?: string
+    userId: string
+    type: $Enums.ConfirmationType
+    status?: $Enums.ConfirmationStatus
+    photo?: string | null
+    frontIdUrl?: string | null
+    backIdUrl?: string | null
+    createdAt?: Date | string
+    resolvedAt?: Date | string | null
+    rejectionReason?: string | null
+    roomId?: string | null
+    from?: Date | string | null
+    to?: Date | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+  }
+
+  export type ConfirmationCreateOrConnectWithoutPaymentInput = {
+    where: ConfirmationWhereUniqueInput
+    create: XOR<ConfirmationCreateWithoutPaymentInput, ConfirmationUncheckedCreateWithoutPaymentInput>
+  }
+
+  export type ConfirmationCreateManyPaymentInputEnvelope = {
+    data: ConfirmationCreateManyPaymentInput | ConfirmationCreateManyPaymentInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserUpsertWithoutPaymentsInput = {
     update: XOR<UserUpdateWithoutPaymentsInput, UserUncheckedUpdateWithoutPaymentsInput>
     create: XOR<UserCreateWithoutPaymentsInput, UserUncheckedCreateWithoutPaymentsInput>
@@ -53827,6 +54193,22 @@ export namespace Prisma {
     data: XOR<PaymentAuditLogUpdateManyMutationInput, PaymentAuditLogUncheckedUpdateManyWithoutPaymentInput>
   }
 
+  export type ConfirmationUpsertWithWhereUniqueWithoutPaymentInput = {
+    where: ConfirmationWhereUniqueInput
+    update: XOR<ConfirmationUpdateWithoutPaymentInput, ConfirmationUncheckedUpdateWithoutPaymentInput>
+    create: XOR<ConfirmationCreateWithoutPaymentInput, ConfirmationUncheckedCreateWithoutPaymentInput>
+  }
+
+  export type ConfirmationUpdateWithWhereUniqueWithoutPaymentInput = {
+    where: ConfirmationWhereUniqueInput
+    data: XOR<ConfirmationUpdateWithoutPaymentInput, ConfirmationUncheckedUpdateWithoutPaymentInput>
+  }
+
+  export type ConfirmationUpdateManyWithWhereWithoutPaymentInput = {
+    where: ConfirmationScalarWhereInput
+    data: XOR<ConfirmationUpdateManyMutationInput, ConfirmationUncheckedUpdateManyWithoutPaymentInput>
+  }
+
   export type PaymentCreateWithoutRecurringPaymentInput = {
     id?: string
     amount: number
@@ -53857,6 +54239,7 @@ export namespace Prisma {
     notifications?: NotificationCreateNestedManyWithoutPaymentInput
     paymentItems?: PaymentItemCreateNestedManyWithoutPaymentInput
     auditLogs?: PaymentAuditLogCreateNestedManyWithoutPaymentInput
+    confirmations?: ConfirmationCreateNestedManyWithoutPaymentInput
   }
 
   export type PaymentUncheckedCreateWithoutRecurringPaymentInput = {
@@ -53889,6 +54272,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedCreateNestedManyWithoutPaymentInput
     paymentItems?: PaymentItemUncheckedCreateNestedManyWithoutPaymentInput
     auditLogs?: PaymentAuditLogUncheckedCreateNestedManyWithoutPaymentInput
+    confirmations?: ConfirmationUncheckedCreateNestedManyWithoutPaymentInput
   }
 
   export type PaymentCreateOrConnectWithoutRecurringPaymentInput = {
@@ -53961,6 +54345,7 @@ export namespace Prisma {
     paymentItems?: PaymentItemCreateNestedManyWithoutPaymentInput
     recurringPayment?: RecurringPaymentCreateNestedOneWithoutPaymentInput
     auditLogs?: PaymentAuditLogCreateNestedManyWithoutPaymentInput
+    confirmations?: ConfirmationCreateNestedManyWithoutPaymentInput
   }
 
   export type PaymentUncheckedCreateWithoutGeneratedFromRecurringInput = {
@@ -53993,6 +54378,7 @@ export namespace Prisma {
     paymentItems?: PaymentItemUncheckedCreateNestedManyWithoutPaymentInput
     recurringPayment?: RecurringPaymentUncheckedCreateNestedOneWithoutPaymentInput
     auditLogs?: PaymentAuditLogUncheckedCreateNestedManyWithoutPaymentInput
+    confirmations?: ConfirmationUncheckedCreateNestedManyWithoutPaymentInput
   }
 
   export type PaymentCreateOrConnectWithoutGeneratedFromRecurringInput = {
@@ -54046,6 +54432,7 @@ export namespace Prisma {
     notifications?: NotificationUpdateManyWithoutPaymentNestedInput
     paymentItems?: PaymentItemUpdateManyWithoutPaymentNestedInput
     auditLogs?: PaymentAuditLogUpdateManyWithoutPaymentNestedInput
+    confirmations?: ConfirmationUpdateManyWithoutPaymentNestedInput
   }
 
   export type PaymentUncheckedUpdateWithoutRecurringPaymentInput = {
@@ -54078,6 +54465,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutPaymentNestedInput
     paymentItems?: PaymentItemUncheckedUpdateManyWithoutPaymentNestedInput
     auditLogs?: PaymentAuditLogUncheckedUpdateManyWithoutPaymentNestedInput
+    confirmations?: ConfirmationUncheckedUpdateManyWithoutPaymentNestedInput
   }
 
   export type BookingUpsertWithoutRecurringPaymentsInput = {
@@ -54167,6 +54555,7 @@ export namespace Prisma {
     notifications?: NotificationCreateNestedManyWithoutPaymentInput
     recurringPayment?: RecurringPaymentCreateNestedOneWithoutPaymentInput
     auditLogs?: PaymentAuditLogCreateNestedManyWithoutPaymentInput
+    confirmations?: ConfirmationCreateNestedManyWithoutPaymentInput
   }
 
   export type PaymentUncheckedCreateWithoutPaymentItemsInput = {
@@ -54199,6 +54588,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedCreateNestedManyWithoutPaymentInput
     recurringPayment?: RecurringPaymentUncheckedCreateNestedOneWithoutPaymentInput
     auditLogs?: PaymentAuditLogUncheckedCreateNestedManyWithoutPaymentInput
+    confirmations?: ConfirmationUncheckedCreateNestedManyWithoutPaymentInput
   }
 
   export type PaymentCreateOrConnectWithoutPaymentItemsInput = {
@@ -54247,6 +54637,7 @@ export namespace Prisma {
     notifications?: NotificationUpdateManyWithoutPaymentNestedInput
     recurringPayment?: RecurringPaymentUpdateOneWithoutPaymentNestedInput
     auditLogs?: PaymentAuditLogUpdateManyWithoutPaymentNestedInput
+    confirmations?: ConfirmationUpdateManyWithoutPaymentNestedInput
   }
 
   export type PaymentUncheckedUpdateWithoutPaymentItemsInput = {
@@ -54279,6 +54670,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutPaymentNestedInput
     recurringPayment?: RecurringPaymentUncheckedUpdateOneWithoutPaymentNestedInput
     auditLogs?: PaymentAuditLogUncheckedUpdateManyWithoutPaymentNestedInput
+    confirmations?: ConfirmationUncheckedUpdateManyWithoutPaymentNestedInput
   }
 
   export type PaymentCreateWithoutAuditLogsInput = {
@@ -54311,6 +54703,7 @@ export namespace Prisma {
     notifications?: NotificationCreateNestedManyWithoutPaymentInput
     paymentItems?: PaymentItemCreateNestedManyWithoutPaymentInput
     recurringPayment?: RecurringPaymentCreateNestedOneWithoutPaymentInput
+    confirmations?: ConfirmationCreateNestedManyWithoutPaymentInput
   }
 
   export type PaymentUncheckedCreateWithoutAuditLogsInput = {
@@ -54343,6 +54736,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedCreateNestedManyWithoutPaymentInput
     paymentItems?: PaymentItemUncheckedCreateNestedManyWithoutPaymentInput
     recurringPayment?: RecurringPaymentUncheckedCreateNestedOneWithoutPaymentInput
+    confirmations?: ConfirmationUncheckedCreateNestedManyWithoutPaymentInput
   }
 
   export type PaymentCreateOrConnectWithoutAuditLogsInput = {
@@ -54474,6 +54868,7 @@ export namespace Prisma {
     notifications?: NotificationUpdateManyWithoutPaymentNestedInput
     paymentItems?: PaymentItemUpdateManyWithoutPaymentNestedInput
     recurringPayment?: RecurringPaymentUpdateOneWithoutPaymentNestedInput
+    confirmations?: ConfirmationUpdateManyWithoutPaymentNestedInput
   }
 
   export type PaymentUncheckedUpdateWithoutAuditLogsInput = {
@@ -54506,6 +54901,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutPaymentNestedInput
     paymentItems?: PaymentItemUncheckedUpdateManyWithoutPaymentNestedInput
     recurringPayment?: RecurringPaymentUncheckedUpdateOneWithoutPaymentNestedInput
+    confirmations?: ConfirmationUncheckedUpdateManyWithoutPaymentNestedInput
   }
 
   export type UserUpsertWithoutPaymentAuditLogsInput = {
@@ -54871,6 +55267,7 @@ export namespace Prisma {
     paymentItems?: PaymentItemCreateNestedManyWithoutPaymentInput
     recurringPayment?: RecurringPaymentCreateNestedOneWithoutPaymentInput
     auditLogs?: PaymentAuditLogCreateNestedManyWithoutPaymentInput
+    confirmations?: ConfirmationCreateNestedManyWithoutPaymentInput
   }
 
   export type PaymentUncheckedCreateWithoutNotificationsInput = {
@@ -54903,6 +55300,7 @@ export namespace Prisma {
     paymentItems?: PaymentItemUncheckedCreateNestedManyWithoutPaymentInput
     recurringPayment?: RecurringPaymentUncheckedCreateNestedOneWithoutPaymentInput
     auditLogs?: PaymentAuditLogUncheckedCreateNestedManyWithoutPaymentInput
+    confirmations?: ConfirmationUncheckedCreateNestedManyWithoutPaymentInput
   }
 
   export type PaymentCreateOrConnectWithoutNotificationsInput = {
@@ -55219,6 +55617,7 @@ export namespace Prisma {
     paymentItems?: PaymentItemUpdateManyWithoutPaymentNestedInput
     recurringPayment?: RecurringPaymentUpdateOneWithoutPaymentNestedInput
     auditLogs?: PaymentAuditLogUpdateManyWithoutPaymentNestedInput
+    confirmations?: ConfirmationUpdateManyWithoutPaymentNestedInput
   }
 
   export type PaymentUncheckedUpdateWithoutNotificationsInput = {
@@ -55251,6 +55650,7 @@ export namespace Prisma {
     paymentItems?: PaymentItemUncheckedUpdateManyWithoutPaymentNestedInput
     recurringPayment?: RecurringPaymentUncheckedUpdateOneWithoutPaymentNestedInput
     auditLogs?: PaymentAuditLogUncheckedUpdateManyWithoutPaymentNestedInput
+    confirmations?: ConfirmationUncheckedUpdateManyWithoutPaymentNestedInput
   }
 
   export type UserCreateWithoutNotificationSettingsInput = {
@@ -57264,6 +57664,7 @@ export namespace Prisma {
     resolvedAt?: Date | string | null
     rejectionReason?: string | null
     roomId?: string | null
+    paymentId?: string | null
     from?: Date | string | null
     to?: Date | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
@@ -57477,6 +57878,7 @@ export namespace Prisma {
     from?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     to?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    payment?: PaymentUpdateOneWithoutConfirmationsNestedInput
   }
 
   export type ConfirmationUncheckedUpdateWithoutRequesterInput = {
@@ -57490,6 +57892,7 @@ export namespace Prisma {
     resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentId?: NullableStringFieldUpdateOperationsInput | string | null
     from?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     to?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
@@ -57506,6 +57909,7 @@ export namespace Prisma {
     resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentId?: NullableStringFieldUpdateOperationsInput | string | null
     from?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     to?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
@@ -57815,6 +58219,7 @@ export namespace Prisma {
     paymentItems?: PaymentItemUpdateManyWithoutPaymentNestedInput
     recurringPayment?: RecurringPaymentUpdateOneWithoutPaymentNestedInput
     auditLogs?: PaymentAuditLogUpdateManyWithoutPaymentNestedInput
+    confirmations?: ConfirmationUpdateManyWithoutPaymentNestedInput
   }
 
   export type PaymentUncheckedUpdateWithoutUserInput = {
@@ -57847,6 +58252,7 @@ export namespace Prisma {
     paymentItems?: PaymentItemUncheckedUpdateManyWithoutPaymentNestedInput
     recurringPayment?: RecurringPaymentUncheckedUpdateOneWithoutPaymentNestedInput
     auditLogs?: PaymentAuditLogUncheckedUpdateManyWithoutPaymentNestedInput
+    confirmations?: ConfirmationUncheckedUpdateManyWithoutPaymentNestedInput
   }
 
   export type PaymentUncheckedUpdateManyWithoutUserInput = {
@@ -57907,6 +58313,7 @@ export namespace Prisma {
     paymentItems?: PaymentItemUpdateManyWithoutPaymentNestedInput
     recurringPayment?: RecurringPaymentUpdateOneWithoutPaymentNestedInput
     auditLogs?: PaymentAuditLogUpdateManyWithoutPaymentNestedInput
+    confirmations?: ConfirmationUpdateManyWithoutPaymentNestedInput
   }
 
   export type PaymentUncheckedUpdateWithoutConfirmedByUserInput = {
@@ -57939,6 +58346,7 @@ export namespace Prisma {
     paymentItems?: PaymentItemUncheckedUpdateManyWithoutPaymentNestedInput
     recurringPayment?: RecurringPaymentUncheckedUpdateOneWithoutPaymentNestedInput
     auditLogs?: PaymentAuditLogUncheckedUpdateManyWithoutPaymentNestedInput
+    confirmations?: ConfirmationUncheckedUpdateManyWithoutPaymentNestedInput
   }
 
   export type PaymentUncheckedUpdateManyWithoutConfirmedByUserInput = {
@@ -59085,6 +59493,7 @@ export namespace Prisma {
     paymentItems?: PaymentItemUpdateManyWithoutPaymentNestedInput
     recurringPayment?: RecurringPaymentUpdateOneWithoutPaymentNestedInput
     auditLogs?: PaymentAuditLogUpdateManyWithoutPaymentNestedInput
+    confirmations?: ConfirmationUpdateManyWithoutPaymentNestedInput
   }
 
   export type PaymentUncheckedUpdateWithoutPriceCategoryInput = {
@@ -59117,6 +59526,7 @@ export namespace Prisma {
     paymentItems?: PaymentItemUncheckedUpdateManyWithoutPaymentNestedInput
     recurringPayment?: RecurringPaymentUncheckedUpdateOneWithoutPaymentNestedInput
     auditLogs?: PaymentAuditLogUncheckedUpdateManyWithoutPaymentNestedInput
+    confirmations?: ConfirmationUncheckedUpdateManyWithoutPaymentNestedInput
   }
 
   export type PaymentUncheckedUpdateManyWithoutPriceCategoryInput = {
@@ -59205,6 +59615,7 @@ export namespace Prisma {
     paymentItems?: PaymentItemUpdateManyWithoutPaymentNestedInput
     recurringPayment?: RecurringPaymentUpdateOneWithoutPaymentNestedInput
     auditLogs?: PaymentAuditLogUpdateManyWithoutPaymentNestedInput
+    confirmations?: ConfirmationUpdateManyWithoutPaymentNestedInput
   }
 
   export type PaymentUncheckedUpdateWithoutPriceInput = {
@@ -59237,6 +59648,7 @@ export namespace Prisma {
     paymentItems?: PaymentItemUncheckedUpdateManyWithoutPaymentNestedInput
     recurringPayment?: RecurringPaymentUncheckedUpdateOneWithoutPaymentNestedInput
     auditLogs?: PaymentAuditLogUncheckedUpdateManyWithoutPaymentNestedInput
+    confirmations?: ConfirmationUncheckedUpdateManyWithoutPaymentNestedInput
   }
 
   export type PaymentUncheckedUpdateManyWithoutPriceInput = {
@@ -59415,6 +59827,7 @@ export namespace Prisma {
     paymentItems?: PaymentItemUpdateManyWithoutPaymentNestedInput
     recurringPayment?: RecurringPaymentUpdateOneWithoutPaymentNestedInput
     auditLogs?: PaymentAuditLogUpdateManyWithoutPaymentNestedInput
+    confirmations?: ConfirmationUpdateManyWithoutPaymentNestedInput
   }
 
   export type PaymentUncheckedUpdateWithoutBookingInput = {
@@ -59447,6 +59860,7 @@ export namespace Prisma {
     paymentItems?: PaymentItemUncheckedUpdateManyWithoutPaymentNestedInput
     recurringPayment?: RecurringPaymentUncheckedUpdateOneWithoutPaymentNestedInput
     auditLogs?: PaymentAuditLogUncheckedUpdateManyWithoutPaymentNestedInput
+    confirmations?: ConfirmationUncheckedUpdateManyWithoutPaymentNestedInput
   }
 
   export type PaymentUncheckedUpdateManyWithoutBookingInput = {
@@ -59557,6 +59971,23 @@ export namespace Prisma {
     ipAddress?: string | null
     userAgent?: string | null
     createdAt?: Date | string
+  }
+
+  export type ConfirmationCreateManyPaymentInput = {
+    id?: string
+    userId: string
+    type: $Enums.ConfirmationType
+    status?: $Enums.ConfirmationStatus
+    photo?: string | null
+    frontIdUrl?: string | null
+    backIdUrl?: string | null
+    createdAt?: Date | string
+    resolvedAt?: Date | string | null
+    rejectionReason?: string | null
+    roomId?: string | null
+    from?: Date | string | null
+    to?: Date | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type NotificationUpdateWithoutPaymentInput = {
@@ -59673,6 +60104,57 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ConfirmationUpdateWithoutPaymentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumConfirmationTypeFieldUpdateOperationsInput | $Enums.ConfirmationType
+    status?: EnumConfirmationStatusFieldUpdateOperationsInput | $Enums.ConfirmationStatus
+    photo?: NullableStringFieldUpdateOperationsInput | string | null
+    frontIdUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    backIdUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    from?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    to?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    requester?: UserUpdateOneRequiredWithoutConfirmationsNestedInput
+  }
+
+  export type ConfirmationUncheckedUpdateWithoutPaymentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    type?: EnumConfirmationTypeFieldUpdateOperationsInput | $Enums.ConfirmationType
+    status?: EnumConfirmationStatusFieldUpdateOperationsInput | $Enums.ConfirmationStatus
+    photo?: NullableStringFieldUpdateOperationsInput | string | null
+    frontIdUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    backIdUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    from?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    to?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+  }
+
+  export type ConfirmationUncheckedUpdateManyWithoutPaymentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    type?: EnumConfirmationTypeFieldUpdateOperationsInput | $Enums.ConfirmationType
+    status?: EnumConfirmationStatusFieldUpdateOperationsInput | $Enums.ConfirmationStatus
+    photo?: NullableStringFieldUpdateOperationsInput | string | null
+    frontIdUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    backIdUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    from?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    to?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+  }
+
   export type PaymentCreateManyGeneratedFromRecurringInput = {
     id?: string
     userId: string
@@ -59731,6 +60213,7 @@ export namespace Prisma {
     paymentItems?: PaymentItemUpdateManyWithoutPaymentNestedInput
     recurringPayment?: RecurringPaymentUpdateOneWithoutPaymentNestedInput
     auditLogs?: PaymentAuditLogUpdateManyWithoutPaymentNestedInput
+    confirmations?: ConfirmationUpdateManyWithoutPaymentNestedInput
   }
 
   export type PaymentUncheckedUpdateWithoutGeneratedFromRecurringInput = {
@@ -59763,6 +60246,7 @@ export namespace Prisma {
     paymentItems?: PaymentItemUncheckedUpdateManyWithoutPaymentNestedInput
     recurringPayment?: RecurringPaymentUncheckedUpdateOneWithoutPaymentNestedInput
     auditLogs?: PaymentAuditLogUncheckedUpdateManyWithoutPaymentNestedInput
+    confirmations?: ConfirmationUncheckedUpdateManyWithoutPaymentNestedInput
   }
 
   export type PaymentUncheckedUpdateManyWithoutGeneratedFromRecurringInput = {

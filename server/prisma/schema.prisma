@@ -37,6 +37,7 @@ enum ConfirmationType {
   ACCOMMODATION
   ROOM_CHANGE
   ROOM_VACATION
+  PAYMENT_PROOF
 }
 
 enum ConfirmationStatus {
@@ -267,10 +268,12 @@ model Confirmation {
   rejectionReason String?            @map("rejection_reason")
 
   roomId    String?   @map("room_id")
+  paymentId String?   @map("payment_id")
   from      DateTime?
   to        DateTime?
   metadata  Json?
   requester User      @relation("UserConfirmations", fields: [userId], references: [id], onDelete: Cascade)
+  payment   Payment?  @relation("PaymentConfirmations", fields: [paymentId], references: [id], onDelete: SetNull)
 
   @@index([status, createdAt]) // Pending confirmations queue
   @@index([type, status]) // Confirmation type filtering
@@ -553,6 +556,7 @@ model Payment {
   paymentItems           PaymentItem[]
   recurringPayment       RecurringPayment? @relation("OriginalPayment")
   auditLogs              PaymentAuditLog[]
+  confirmations          Confirmation[]    @relation("PaymentConfirmations")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
