@@ -46,13 +46,6 @@ export const NotificationsDocs = {
         },
       }),
       ApiQuery({
-        name: "isRead",
-        type: String,
-        required: false,
-        description: "Filter by read status (true/false)",
-        example: "false",
-      }),
-      ApiQuery({
         name: "startDate",
         type: String,
         required: false,

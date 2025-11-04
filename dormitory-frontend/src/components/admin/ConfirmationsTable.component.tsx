@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { IdentityVerificationModal } from './IdentityVerificationModal.component'
 import { useConfirmations } from '@/hooks/confirmations.hook'
-import type { Confirmation } from '@/app/lib/confirmations.api'
+import type { Confirmation } from '@/types/confirmations.types'
 
 export function ConfirmationsTable() {
   const [selectedConfirmation, setSelectedConfirmation] = useState<Confirmation | null>(null)

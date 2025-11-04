@@ -33,7 +33,7 @@ export class NotificationsService {
     private prisma: PrismaService,
     private emailService: MailService,
     private notificationGateway: NotificationGateway,
-  ) {}
+  ) { }
 
   async createNotification(data: CreateNotificationDto) {
     try {
@@ -92,58 +92,37 @@ export class NotificationsService {
     }
   }
 
-  async getUserNotifications(filters: NotificationFilters) {
-    const {
-      userId,
-      type,
-      isRead,
-      isArchived = false, // Default to not archived
-      startDate,
-      endDate,
-      priority,
-    } = filters;
+async getUserNotifications(filters: NotificationFilters) {
+  const { userId, type, isArchived = false, startDate, endDate, priority } = filters;
 
-    const where: Prisma.NotificationWhereInput = {
-      toUserId: String(userId),
-      isArchived,
-    };
+  const where: Prisma.NotificationWhereInput = {
+    toUserId: String(userId),
+    isArchived,
+  };
+  const user = await this.getUserById(userId);
+  if (!user) throw new Error("User not found");
 
-    if (type) where.type = type;
-    if (isRead !== undefined) where.isRead = isRead;
-    if (priority) where.priority = priority;
-    if (startDate || endDate) {
-      where.createdAt = {};
-      if (startDate) where.createdAt.gte = startDate;
-      if (endDate) where.createdAt.lte = endDate;
-    }
 
-    const notifications = await this.prisma.notification.findMany({
-      where,
-      include: {
-        fromUser: {
-          select: {
-            id: true,
-            email: true,
-          },
-        },
-        room: {
-          select: {
-            id: true,
-            number: true,
-            dormitory: {
-              select: {
-                name: true,
-              },
-            },
-          },
-        },
-      },
-      orderBy: [{ priority: "desc" }, { createdAt: "desc" }],
-      take: 50, // Limit for optimization
-    });
-
-    return notifications;
+  if (type) where.type = type;
+  if (priority) where.priority = priority;
+  if (startDate || endDate) {
+    where.createdAt = {};
+    if (startDate) where.createdAt.gte = startDate;
+    if (endDate) where.createdAt.lte = endDate;
   }
+
+  return this.prisma.notification.findMany({
+    where,
+    include: {
+      fromUser: true,
+      toUser: true,
+    },
+    orderBy: [{ createdAt: "desc" }],
+  });
+}
+
+
+
 
   async markAsRead(notificationId: string, userId: string) {
     const notification = await this.prisma.notification.findFirst({
@@ -157,7 +136,6 @@ export class NotificationsService {
       throw new Error("Notification not found");
     }
 
-    // Mark as read and auto-archive based on user settings
     const user = await this.prisma.user.findUnique({
       where: { id: String(userId) },
       include: { notificationSettings: true },
@@ -456,4 +434,10 @@ export class NotificationsService {
       throw error;
     }
   }
+  async getUserById(userId: string) {
+  return this.prisma.user.findUnique({
+    where: { id: String(userId) },
+  });
 }
+}
+
