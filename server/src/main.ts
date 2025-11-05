@@ -39,7 +39,7 @@ async function bootstrap() {
   } as any);
   await redisClient.connect();
 
-  // express-session with improved security
+  // express-session 
   const sessionConfig = securityConfig.getSessionConfig();
   app.use(
     session({
@@ -57,7 +57,6 @@ async function bootstrap() {
   // cookie parser
   app.use(cookieParser(config.getOrThrow("COOKIE_SECRET")));
 
-  // req.user ← з req.session.user (remove in production)
   if (config.get("NODE_ENV") === "development") {
     app.use((req, res, next) => {
       if (req.session?.user) {

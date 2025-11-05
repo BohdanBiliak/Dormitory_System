@@ -59,7 +59,6 @@ class MockS3Service {
     };
   }
 }
-
 class MockPrismaService {
   confirmation = {
     async create(data: any) {
@@ -117,11 +116,9 @@ class MockAuthService {
         "Registration not successfully. User already exists",
       );
     }
-
     const avatarFile = files.avatar?.[0];
     const frontFile = files.studentIdFront?.[0];
     const backFile = files.studentIdBack?.[0];
-
     const avatarUrls = avatarFile
       ? await this.s3Service.uploadResponsiveImage(
           avatarFile,
@@ -129,15 +126,12 @@ class MockAuthService {
           "avatar",
         )
       : null;
-
     const frontUrl = frontFile
       ? await this.s3Service.uploadFile(frontFile, "users/studentIdFront")
       : "";
-
     const backUrl = backFile
       ? await this.s3Service.uploadFile(backFile, "users/studentIdBack")
       : "";
-
     const newUser = await this.userService.create(
       dto.email,
       dto.password,
