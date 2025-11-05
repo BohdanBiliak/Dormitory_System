@@ -80,7 +80,6 @@ export class S3Service {
 
     return `https://${process.env.S3_BUCKET}.s3.${process.env.S3_REGION}.amazonaws.com/${key}`;
   }
-
   private async uploadToS3(
     buffer: Buffer,
     key: string,
