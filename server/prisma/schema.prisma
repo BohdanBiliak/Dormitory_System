@@ -37,6 +37,7 @@ enum ConfirmationType {
   ACCOMMODATION
   ROOM_CHANGE
   ROOM_VACATION
+  PAYMENT_PROOF
 }
 
 enum ConfirmationStatus {
@@ -207,6 +208,13 @@ model User {
   payments          Payment[]         @relation("UserPayments")
   confirmedPayments Payment[]         @relation("ManagerConfirmedPayments")
   paymentAuditLogs  PaymentAuditLog[]
+
+  // Messaging relations
+  createdConversations   Conversation[]            @relation("ConversationCreatedBy")
+  conversationParticipants ConversationParticipant[] @relation("ConversationParticipantUser")
+  sentMessages          Message[]                 @relation("MessageSender")
+  readMessages          MessageRead[]             @relation("MessageReadBy")
+
   createdAt         DateTime          @default(now()) @map("created_at")
   updatedAt         DateTime          @updatedAt @map("updated_at")
 
@@ -260,10 +268,12 @@ model Confirmation {
   rejectionReason String?            @map("rejection_reason")
 
   roomId    String?   @map("room_id")
+  paymentId String?   @map("payment_id")
   from      DateTime?
   to        DateTime?
   metadata  Json?
   requester User      @relation("UserConfirmations", fields: [userId], references: [id], onDelete: Cascade)
+  payment   Payment?  @relation("PaymentConfirmations", fields: [paymentId], references: [id], onDelete: SetNull)
 
   @@index([status, createdAt]) // Pending confirmations queue
   @@index([type, status]) // Confirmation type filtering
@@ -546,6 +556,7 @@ model Payment {
   paymentItems           PaymentItem[]
   recurringPayment       RecurringPayment? @relation("OriginalPayment")
   auditLogs              PaymentAuditLog[]
+  confirmations          Confirmation[]    @relation("PaymentConfirmations")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -757,4 +768,93 @@ model AnnouncementRecipient {
   @@index([forEveryone]) // Global announcements
   @@index([announcementId])
   @@map("announcement_recipients")
+}
+
+// ==========================================
+// MESSAGING MODELS
+// ==========================================
+model Conversation {
+  id          String   @id @default(uuid())
+  title       String?
+  isGroup     Boolean  @default(false) @map("is_group")
+  createdById String   @map("created_by_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  createdBy    User                    @relation("ConversationCreatedBy", fields: [createdById], references: [id], onDelete: Cascade)
+  participants ConversationParticipant[]
+  messages     Message[]
+
+  @@index([createdById])
+  @@index([isGroup])
+  @@index([createdAt])
+  @@map("conversations")
+}
+
+model ConversationParticipant {
+  id             String    @id @default(uuid())
+  conversationId String    @map("conversation_id")
+  userId         String    @map("user_id")
+  joinedAt       DateTime  @default(now()) @map("joined_at")
+  leftAt         DateTime? @map("left_at")
+  isAdmin        Boolean   @default(false) @map("is_admin")
+  lastReadAt     DateTime? @map("last_read_at")
+
+  // Relations
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  user         User         @relation("ConversationParticipantUser", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([conversationId, userId])
+  @@index([userId])
+  @@index([conversationId, leftAt]) // Active participants
+  @@index([lastReadAt]) // Unread message tracking
+  @@map("conversation_participants")
+}
+
+model Message {
+  id             String    @id @default(uuid())
+  conversationId String    @map("conversation_id")
+  senderId       String    @map("sender_id")
+  content        String    @db.Text
+  messageType    String    @default("text") @map("message_type") // text, image, file
+  attachmentUrl  String?   @map("attachment_url")
+  attachmentName String?   @map("attachment_name")
+  isEdited       Boolean   @default(false) @map("is_edited")
+  editedAt       DateTime? @map("edited_at")
+  isDeleted      Boolean   @default(false) @map("is_deleted")
+  deletedAt      DateTime? @map("deleted_at")
+  replyToId      String?   @map("reply_to_id")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender       User         @relation("MessageSender", fields: [senderId], references: [id], onDelete: Cascade)
+  replyTo      Message?     @relation("MessageReply", fields: [replyToId], references: [id], onDelete: SetNull)
+  replies      Message[]    @relation("MessageReply")
+  readBy       MessageRead[]
+
+  @@index([conversationId, createdAt]) // Conversation message timeline
+  @@index([senderId])
+  @@index([messageType])
+  @@index([isDeleted, conversationId, createdAt]) // Active messages
+  @@index([replyToId])
+  @@map("messages")
+}
+
+model MessageRead {
+  id        String   @id @default(uuid())
+  messageId String   @map("message_id")
+  userId    String   @map("user_id")
+  readAt    DateTime @default(now()) @map("read_at")
+
+  // Relations
+  message Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  user    User    @relation("MessageReadBy", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([messageId, userId])
+  @@index([userId, readAt]) // User read history
+  @@index([messageId]) // Message read status
+  @@map("message_reads")
 }

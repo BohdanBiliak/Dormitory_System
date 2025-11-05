@@ -12,7 +12,7 @@ export function CalendarOfAvailability2WVerComponent({ statuses, showLegend }: C
     const currentDate = new Date();
     const [chosenDate, setChosenDate] = useState(new Date());
     const [chosenDateStatuses, setChosenDateStatuses] = useState<RoomStatus[]>([]);
-    const [unavailableDateRanges, setUnavailableDateRanges] = useState(statuses);
+    const [unavailableDateRanges, setUnavailableDateRanges] = useState<RoomStatus[]>(statuses || []);
 
     const daysArray = Array.from(
         { length: 14 },
@@ -50,7 +50,7 @@ export function CalendarOfAvailability2WVerComponent({ statuses, showLegend }: C
     };
 
     useEffect(() => {
-        setUnavailableDateRanges(statuses);
+        setUnavailableDateRanges(statuses || []);
     }, [statuses]);
 
     return (

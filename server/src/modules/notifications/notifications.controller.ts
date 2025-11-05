@@ -19,7 +19,7 @@ import { NotificationsDocs } from "./notifications.docs";
 @NotificationsDocs.controller()
 @Controller("notifications")
 export class NotificationsController {
-  constructor(private notificationsService: NotificationsService) {}
+  constructor(private notificationsService: NotificationsService) { }
 
   @Get()
   @Authorization()
@@ -27,7 +27,7 @@ export class NotificationsController {
   async getNotifications(
     @Req() req: any,
     @Query("type") type?: $Enums.NotificationType,
-    @Query("isRead") isRead?: string,
+    @Query("isArchived") isArchived?: string,
     @Query("startDate") startDate?: string,
     @Query("endDate") endDate?: string,
     @Query("priority") priority?: $Enums.NotificationPriority,
@@ -35,14 +35,15 @@ export class NotificationsController {
     const filters: NotificationFilters = {
       userId: req.user.id,
       type,
-      isRead: isRead ? isRead === "true" : undefined,
+      isArchived: isArchived === "true",
       startDate: startDate ? new Date(startDate) : undefined,
       endDate: endDate ? new Date(endDate) : undefined,
       priority,
     };
 
-    return await this.notificationsService.getUserNotifications(filters);
+    return this.notificationsService.getUserNotifications(filters);
   }
+
 
   @Get("unread-count")
   @Authorization()

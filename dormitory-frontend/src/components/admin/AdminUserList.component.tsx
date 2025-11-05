@@ -47,11 +47,11 @@ export function AdminUserList(){
 
     if (loading) {
         return (
-            <div className=" w-full flex items-center justify-center bg-gray-50">
-                <div className="bg-white shadow-lg rounded-lg p-8 max-w-md mx-4">
+            <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center">
+                <div className="bg-white shadow-xl rounded-2xl p-8 max-w-md mx-4 border border-slate-200 animate-pulse">
                     <div className="flex items-center justify-center">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-                        <span className="ml-3 text-gray-700 font-medium">Loading user list...</span>
+                        <div className="animate-spin rounded-full h-10 w-10 border-4 border-blue-500 border-t-transparent"></div>
+                        <span className="ml-4 text-slate-700 font-medium text-lg">Loading user list...</span>
                     </div>
                 </div>
             </div>
@@ -60,15 +60,16 @@ export function AdminUserList(){
 
     if (error) {
         return (
-            <div className=" w-full flex items-center justify-center bg-gray-50">
-                <div className="bg-white shadow-lg rounded-lg p-8 max-w-md mx-4">
+            <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center">
+                <div className="bg-white shadow-xl rounded-2xl p-8 max-w-md mx-4 border border-red-200 animate-in slide-in-from-bottom-4 duration-300">
                     <div className="text-center">
-                        <div className="text-red-500 mb-3">
-                            <svg className="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div className="text-red-500 mb-4 animate-in zoom-in-50 duration-500 delay-150">
+                            <svg className="mx-auto h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
                             </svg>
                         </div>
-                        <p className="text-gray-700 font-medium">Error loading user list. Please try again.</p>
+                        <h3 className="text-xl font-semibold text-slate-800 mb-2 animate-in fade-in duration-300 delay-200">Error Loading Users</h3>
+                        <p className="text-slate-600 animate-in fade-in duration-300 delay-300">Unable to load user list. Please try again later.</p>
                     </div>
                 </div>
             </div>
@@ -76,33 +77,31 @@ export function AdminUserList(){
     }
 
     return (
-        <div className=" w-full bg-gray-50">
+        <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
             {/* Header */}
-            <div className="bg-white shadow-sm">
-                <div className="px-4 py-6 md:px-6 md:py-8 border-b border-gray-200">
-                    <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 text-center">
-                        User Management
-                    </h1>
-                    <p className="text-gray-600 text-center mt-2">
-                        Manage dormitory residents and their information
-                    </p>
+            <div className="bg-white border-b border-slate-200 shadow-sm animate-in slide-in-from-top-4 duration-500">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                    <div className="text-center animate-in fade-in-0 slide-in-from-bottom-4 duration-500">
+                        <h1 className="text-3xl font-bold text-slate-900">
+                            User Management
+                        </h1>
+                        <p className="text-slate-600 mt-1">Manage dormitory residents and their information</p>
+                    </div>
                 </div>
             </div>
 
             {/* Filters */}
-            <div className="bg-white shadow-sm border-b border-gray-200">
-                <div className="px-4 py-3 md:px-6 md:py-4 border-b border-gray-200">
-                    <h2 className="text-lg font-semibold text-gray-900">Filters</h2>
-                </div>
-                <div className="px-4 py-4 md:px-6 md:py-6">
+            <div className="bg-white border-b border-slate-200 shadow-sm animate-in slide-in-from-top-4 duration-500 delay-100">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                    <h2 className="text-lg font-semibold text-slate-900 mb-4">Filters</h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         {/* Sort By */}
-                        <div className="space-y-2">
-                            <label className="block text-sm font-medium text-gray-700">
+                        <div className="space-y-2 animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-200">
+                            <label className="block text-sm font-medium text-slate-700">
                                 Sort by
                             </label>
                             <select 
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm"
+                                className="w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm transition-all duration-200 hover:shadow-md"
                                 value={sortBy}
                                 onChange={(e) => setSortBy(e.target.value as 'Name'|'Id'|'Room')}
                             >
@@ -113,12 +112,12 @@ export function AdminUserList(){
                         </div>
 
                         {/* Role Filter */}
-                        <div className="space-y-2">
-                            <label className="block text-sm font-medium text-gray-700">
+                        <div className="space-y-2 animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-250">
+                            <label className="block text-sm font-medium text-slate-700">
                                 User Type
                             </label>
                             <select 
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm"
+                                className="w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm transition-all duration-200 hover:shadow-md"
                                 value={roleFilter}
                                 onChange={(e) => setRoleFilter(e.target.value as UserRole)}
                             >
@@ -129,8 +128,8 @@ export function AdminUserList(){
                         </div>
 
                         {/* Room Floor */}
-                        <div className="space-y-2">
-                            <label className="block text-sm font-medium text-gray-700">
+                        <div className="space-y-2 animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-300">
+                            <label className="block text-sm font-medium text-slate-700">
                                 Room Floor
                             </label>
                             <div className="w-full">
@@ -146,12 +145,12 @@ export function AdminUserList(){
                         </div>
 
                         {/* Payment Status */}
-                        <div className="space-y-2">
-                            <label className="block text-sm font-medium text-gray-700">
+                        <div className="space-y-2 animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-350">
+                            <label className="block text-sm font-medium text-slate-700">
                                 Payment Status
                             </label>
                             <select 
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm"
+                                className="w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm transition-all duration-200 hover:shadow-md"
                                 value={selectedPaymentsStatuses}
                                 onChange={(e) => setSelectedPaymentsStatuses(e.target.value as 'Paid'|'Awaiting'|'All'|'Overdue')}
                             >
@@ -166,120 +165,139 @@ export function AdminUserList(){
             </div>
 
             {/* User List */}
-            <div className="bg-white flex-1">
-                <div className="px-4 py-3 md:px-6 md:py-4 border-b border-gray-200">
-                    <h2 className="text-lg font-semibold text-gray-900">
-                        Users ({users.length} found)
-                    </h2>
-                </div>
-                
-                {users.length === 0 ? (
-                    <div className="p-12 text-center">
-                        <div className="text-gray-400 mb-4">
-                            <svg className="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                            </svg>
-                        </div>
-                        <p className="text-gray-500 text-lg">No users found</p>
-                        <p className="text-gray-400 text-sm mt-1">Try adjusting your filters</p>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden animate-in fade-in-0 slide-in-from-bottom-4 duration-500 delay-200">
+                    <div className="px-6 py-4 bg-slate-50 border-b border-slate-200">
+                        <h2 className="text-lg font-semibold text-slate-900">
+                            Users ({users.length} found)
+                        </h2>
                     </div>
-                ) : (
-                    <div className="divide-y divide-gray-200">
-                        {users.map((user, index) => (
-                            <Link key={user.id} href={`/admin/users/${user.id}`}>
-                                <div className="px-4 py-4 md:px-6 hover:bg-gray-50 transition-colors duration-150 cursor-pointer">
-                                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                                        <div className="flex-1 min-w-0">
-                                            <div className="flex items-center space-x-4">
-                                                <div className="flex-shrink-0">
-                                                    <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
-                                                        <span className="text-sm font-medium text-blue-800">
-                                                            <img src={user.picture} className={'rounded-full'} alt={`${user.displayName} ${user.secondName}`}/>
-                                                        </span>
+                    
+                    {users.length === 0 ? (
+                        <div className="p-12 text-center animate-in fade-in-0 zoom-in-50 duration-500">
+                            <div className="text-slate-300 mb-4">
+                                <svg className="mx-auto h-16 w-16 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                            </div>
+                            <h3 className="text-xl font-semibold text-slate-900 mb-2">No users found</h3>
+                            <p className="text-slate-600">Try adjusting your filters to see more results</p>
+                        </div>
+                    ) : (
+                        <div className="divide-y divide-slate-200">
+                            {users.map((user, index) => (
+                                <Link key={user.id} href={`/admin/users/${user.id}`}>
+                                    <div 
+                                        className="px-6 py-4 hover:bg-slate-50 transition-all duration-200 cursor-pointer hover:scale-[1.01] hover:shadow-sm animate-in fade-in-0 slide-in-from-left-2 duration-300"
+                                        style={{ animationDelay: `${index * 50}ms` }}
+                                    >
+                                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                                            <div className="flex-1 min-w-0">
+                                                <div className="flex items-center space-x-4">
+                                                    <div className="flex-shrink-0">
+                                                        <div className="h-12 w-12 rounded-full bg-gradient-to-br from-blue-100 to-blue-200 border-2 border-white shadow-sm overflow-hidden">
+                                                            {user.picture ? (
+                                                                <img 
+                                                                    src={user.picture} 
+                                                                    className="w-full h-full object-cover" 
+                                                                    alt={`${user.displayName} ${user.secondName}`}
+                                                                />
+                                                            ) : (
+                                                                <div className="w-full h-full flex items-center justify-center">
+                                                                    <span className="text-sm font-medium text-blue-800">
+                                                                        {user.displayName?.charAt(0)}{user.secondName?.charAt(0)}
+                                                                    </span>
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex-1 min-w-0">
+                                                        <p className="text-base font-semibold text-slate-900 truncate">
+                                                            {user.displayName} {user.secondName}
+                                                        </p>
+                                                        <p className="text-sm text-slate-500 truncate">
+                                                            {user.email}
+                                                        </p>
+                                                        <div className="flex items-center mt-1 space-x-2">
+                                                            <span className="inline-flex px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">
+                                                                ID: {user.id}
+                                                            </span>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div className="flex-1 min-w-0">
-                                                    <p className="text-sm font-medium text-gray-900 truncate">
-                                                        {user.displayName} {user.secondName}
-                                                    </p>
-                                                    <p className="text-sm text-gray-500 truncate">
-                                                        {user.email}
-                                                    </p>
-                                                </div>
                                             </div>
-                                        </div>
-                                        <div className="mt-2 sm:mt-0 sm:ml-4 flex-shrink-0">
-                                            <div className="flex items-center space-x-4 text-sm text-gray-500">
-                                                <span>ID: {user.id}</span>
-                                                <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                                </svg>
+                                            <div className="mt-3 sm:mt-0 sm:ml-4 flex-shrink-0">
+                                                <div className="flex items-center text-slate-400 hover:text-blue-600 transition-colors duration-200">
+                                                    <svg className="h-5 w-5 transform transition-transform duration-200 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                                    </svg>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </Link>
-                        ))}
-                    </div>
-                )}
-            </div>
+                                </Link>
+                            ))}
+                        </div>
+                    )}
+                </div>
 
-            {/* Pagination */}
-            {pagesCount > 1 && (
-                <div className="bg-white border-t border-gray-200">
-                    <div className="px-4 py-4 md:px-6">
-                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                            <div className="text-sm text-gray-700 mb-4 sm:mb-0">
-                                Page {page} of {pagesCount}
-                            </div>
-                            <div className="flex flex-wrap justify-center sm:justify-end gap-1">
-                                <button
-                                    onClick={() => setPage(Math.max(1, page - 1))}
-                                    disabled={page === 1}
-                                    className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                                >
-                                    Previous
-                                </button>
-                                
-                                {Array.from({ length: Math.min(pagesCount, 5) }, (_, i) => {
-                                    let pageNum;
-                                    if (pagesCount <= 5) {
-                                        pageNum = i + 1;
-                                    } else if (page <= 3) {
-                                        pageNum = i + 1;
-                                    } else if (page >= pagesCount - 2) {
-                                        pageNum = pagesCount - 4 + i;
-                                    } else {
-                                        pageNum = page - 2 + i;
-                                    }
+                {/* Pagination */}
+                {pagesCount > 1 && (
+                    <div className="mt-8 animate-in fade-in-0 slide-in-from-bottom-4 duration-500 delay-400">
+                        <div className="bg-white rounded-xl shadow-sm border border-slate-200 px-6 py-4">
+                            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                                <div className="text-sm text-slate-700 mb-4 sm:mb-0">
+                                    Page {page} of {pagesCount}
+                                </div>
+                                <div className="flex flex-wrap justify-center sm:justify-end gap-1">
+                                    <button
+                                        onClick={() => setPage(Math.max(1, page - 1))}
+                                        disabled={page === 1}
+                                        className="px-4 py-2 text-sm font-medium text-slate-500 bg-white border border-slate-300 rounded-l-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 hover:scale-105 active:scale-95"
+                                    >
+                                        Previous
+                                    </button>
                                     
-                                    return (
-                                        <button
-                                            key={pageNum}
-                                            onClick={() => setPage(pageNum)}
-                                            className={`px-3 py-2 text-sm font-medium border transition-colors ${
-                                                page === pageNum
-                                                    ? 'bg-blue-600 text-white border-blue-600 hover:bg-blue-700'
-                                                    : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
-                                            }`}
-                                        >
-                                            {pageNum}
-                                        </button>
-                                    );
-                                })}
-                                
-                                <button
-                                    onClick={() => setPage(Math.min(pagesCount, page + 1))}
-                                    disabled={page === pagesCount}
-                                    className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                                >
-                                    Next
-                                </button>
+                                    {Array.from({ length: Math.min(pagesCount, 5) }, (_, i) => {
+                                        let pageNum;
+                                        if (pagesCount <= 5) {
+                                            pageNum = i + 1;
+                                        } else if (page <= 3) {
+                                            pageNum = i + 1;
+                                        } else if (page >= pagesCount - 2) {
+                                            pageNum = pagesCount - 4 + i;
+                                        } else {
+                                            pageNum = page - 2 + i;
+                                        }
+                                        
+                                        return (
+                                            <button
+                                                key={pageNum}
+                                                onClick={() => setPage(pageNum)}
+                                                className={`px-4 py-2 text-sm font-medium border transition-all duration-200 hover:scale-105 active:scale-95 ${
+                                                    page === pageNum
+                                                        ? 'bg-blue-600 text-white border-blue-600 hover:bg-blue-700 shadow-md'
+                                                        : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
+                                                }`}
+                                            >
+                                                {pageNum}
+                                            </button>
+                                        );
+                                    })}
+                                    
+                                    <button
+                                        onClick={() => setPage(Math.min(pagesCount, page + 1))}
+                                        disabled={page === pagesCount}
+                                        className="px-4 py-2 text-sm font-medium text-slate-500 bg-white border border-slate-300 rounded-r-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 hover:scale-105 active:scale-95"
+                                    >
+                                        Next
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            )}
+                )}
+            </div>
         </div>
     )
 }

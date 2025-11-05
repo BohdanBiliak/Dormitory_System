@@ -80,6 +80,29 @@ export class S3Service {
 
     return `https://${process.env.S3_BUCKET}.s3.${process.env.S3_REGION}.amazonaws.com/${key}`;
   }
+
+  async downloadFile(fileUrl: string): Promise<Buffer> {
+    try {
+      // Extract key from URL
+      const url = new URL(fileUrl);
+      const key = url.pathname.substring(1); // Remove leading slash
+
+      const result = await this.s3
+        .getObject({
+          Bucket: process.env.S3_BUCKET as string,
+          Key: key,
+        })
+        .promise();
+
+      return result.Body as Buffer;
+    } catch (error: any) {
+      if (error.code === 'NoSuchKey') {
+        throw new Error(`File not found in S3: ${fileUrl}`);
+      }
+      throw error;
+    }
+  }
+
   private async uploadToS3(
     buffer: Buffer,
     key: string,

@@ -16,6 +16,17 @@ export class ConfirmationService {
     return this.prisma.confirmation.findMany({
       include: {
         requester: true,
+        payment: {
+          include: {
+            user: {
+              select: {
+                displayName: true,
+                secondName: true,
+                email: true,
+              },
+            },
+          },
+        },
       },
       orderBy: { createdAt: "desc" },
     });
@@ -24,20 +35,35 @@ export class ConfirmationService {
   async updateStatus(id: string, status: ConfirmationStatus) {
     const updated = await this.prisma.confirmation.update({
       where: { id },
-      include: { requester: true },
+      include: { 
+        requester: true,
+        payment: true,
+      },
       data: {
         status,
         resolvedAt: new Date(),
       },
     });
-    if (
-      status === ConfirmationStatus.APPROVED &&
-      updated.type === ConfirmationType.IDENTITY_VERIFICATION
-    ) {
-      await this.prisma.user.update({
-        where: { id: updated.userId },
-        data: { role: UserRole.SignedInUser },
-      });
+    
+    if (status === ConfirmationStatus.APPROVED) {
+      // Handle identity verification
+      if (updated.type === ConfirmationType.IDENTITY_VERIFICATION) {
+        await this.prisma.user.update({
+          where: { id: updated.userId },
+          data: { role: UserRole.SignedInUser },
+        });
+      }
+      
+      // Handle payment proof confirmation
+      if (updated.type === ConfirmationType.PAYMENT_PROOF && updated.paymentId) {
+        await this.prisma.payment.update({
+          where: { id: updated.paymentId },
+          data: {
+            status: 'PAID' as any,
+            paidAt: new Date(),
+          },
+        });
+      }
     }
 
     return updated;
@@ -65,7 +91,20 @@ export class ConfirmationService {
     const [data, total] = await this.prisma.$transaction([
       this.prisma.confirmation.findMany({
         where,
-        include: { requester: true },
+        include: { 
+          requester: true,
+          payment: {
+            include: {
+              user: {
+                select: {
+                  displayName: true,
+                  secondName: true,
+                  email: true,
+                },
+              },
+            },
+          },
+        },
         orderBy: { createdAt: "desc" },
         skip: (page - 1) * limit,
         take: limit,
@@ -82,15 +121,16 @@ export class ConfirmationService {
   }
 
   async reject(id: string, reason: string) {
-    const userId = await this.prisma.confirmation
-      .findUnique({ where: { id } })
-      .then((conf) => conf?.userId);
+    const confirmation = await this.prisma.confirmation.findUnique({ 
+      where: { id },
+      include: { payment: true },
+    });
 
-    if (!userId) {
+    if (!confirmation) {
       throw new Error("Confirmation not found");
     }
 
-    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    const user = await this.prisma.user.findUnique({ where: { id: confirmation.userId } });
 
     if (!user) {
       throw new Error("User not found");
@@ -104,6 +144,17 @@ export class ConfirmationService {
         rejectionReason: reason,
       },
     });
+
+    // If it's a payment proof rejection, update payment status
+    if (confirmation.type === ConfirmationType.PAYMENT_PROOF && confirmation.paymentId) {
+      await this.prisma.payment.update({
+        where: { id: confirmation.paymentId },
+        data: {
+          status: 'REJECTED' as any,
+          rejectionReason: reason,
+        },
+      });
+    }
 
     // Send rejection email to the requester
     await this.sendRejectionEmail(

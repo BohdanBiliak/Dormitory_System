@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@typescript-eslint/utils": "^8.46.1",
+    "framer-motion": "^12.23.24",
     "globals": "^16.4.0"
   }
 }

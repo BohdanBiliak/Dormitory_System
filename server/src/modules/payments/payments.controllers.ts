@@ -9,11 +9,15 @@ import {
   UseInterceptors,
   UploadedFile,
   Req,
+  Res,
+  StreamableFile,
 } from "@nestjs/common";
+import { Response } from 'express';
 import { FileInterceptor } from "@nestjs/platform-express";
 import { PaymentsService } from "./payments.service";
 import {
   CreatePaymentDto,
+  CreateBulkPaymentDto,
   PaymentFilterDto,
   ConfirmPaymentDto,
   RejectPaymentDto,
@@ -65,12 +69,43 @@ export class PaymentsController {
     });
   }
 
+  @Get(":id/download-proof")
+  @Authorization()
+  async downloadPaymentProof(
+    @Param("id") paymentId: string,
+    @Req() req: any,
+    @Res() res: Response,
+  ) {
+    const fileData = await this.paymentsService.downloadPaymentProof(
+      paymentId,
+      req.user.id,
+      req.user.role,
+    );
+    
+    res.setHeader('Content-Type', fileData.contentType);
+    res.setHeader('Content-Disposition', `attachment; filename="${fileData.filename}"`);
+    res.send(fileData.buffer);
+  }
+
   // For Admins
   @Post()
   @Authorization()
   @PaymentsDocs.createPayment()
   async createPayment(@Body() createPaymentDto: CreatePaymentDto) {
     return this.paymentsService.createPayment(createPaymentDto);
+  }
+
+  @Post("bulk")
+  @Authorization()
+  @PaymentsDocs.createBulkPayments()
+  async createBulkPayments(@Body() createBulkPaymentDto: CreateBulkPaymentDto) {
+    return this.paymentsService.createBulkPayments(createBulkPaymentDto);
+  }
+
+  @Get("occupied-rooms")
+  @Authorization()
+  async getOccupiedRooms(@Query("dormitoryId") dormitoryId?: string) {
+    return this.paymentsService.getOccupiedRooms(dormitoryId);
   }
 
   @Get("pending")
@@ -115,6 +150,21 @@ export class PaymentsController {
       paymentId,
       rejectedBy: req.user.id,
     });
+  }
+
+  @Put(":id/status")
+  @Authorization()
+  async updatePaymentStatus(
+    @Param("id") paymentId: string,
+    @Body() body: { status: string; notes?: string },
+    @Req() req: any,
+  ) {
+    return this.paymentsService.updatePaymentStatus(
+      paymentId,
+      body.status,
+      req.user.id,
+      body.notes,
+    );
   }
 
   @Get("overdue")

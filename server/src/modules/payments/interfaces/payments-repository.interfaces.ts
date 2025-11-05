@@ -36,9 +36,42 @@ export interface IPaymentRepository {
     rejectionReason: string,
   ): Promise<Payment>;
 
+  updatePaymentStatus(
+    id: string,
+    status: PaymentStatus,
+    notes?: string,
+  ): Promise<Payment>;
+
+  createAuditLog(data: {
+    paymentId: string;
+    userId: string;
+    action: string;
+    oldValue?: string;
+    newValue?: string;
+    notes?: string;
+  }): Promise<any>;
+
   // New methods for price category support
   findRoomWithPricing(roomId: string): Promise<any>;
   findPriceByCapacity(capacity: number): Promise<any>;
+  findUsersByRoomIds(roomIds: string[]): Promise<any[]>;
+  findPriceCategoryById(id: string): Promise<any>;
+  findOccupiedRooms(dormitoryId?: string): Promise<any[]>;
+  findExistingPayments(
+    userId: string,
+    paymentType: string,
+    startDate: Date,
+    endDate: Date,
+  ): Promise<Payment[]>;
+  findAdminUsers(): Promise<Array<{ id: string; email: string; displayName: string }>>;
+
+  createConfirmation(data: {
+    userId: string;
+    type: string;
+    paymentId: string;
+    status: string;
+    metadata?: any;
+  }): Promise<any>;
 
   getPaymentStats(
     userId?: string,

@@ -21,6 +21,7 @@ import { NotificationsModule } from "./modules/notifications/notifications.modul
 import { PaymentsModule } from "./modules/payments/payments.module";
 import { RoomTypesModule } from "./modules/dormitory/room-types/room-types.module";
 import { PriceCategoryModule } from "./modules/price-categories/price-category.module";
+import { MessagingModule } from "./modules/messaging/messaging.module";
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { PriceCategoryModule } from "./modules/price-categories/price-category.m
     PaymentsModule,
     RoomTypesModule,
     PriceCategoryModule,
+    MessagingModule,
   ],
   controllers: [],
   providers: [

@@ -270,6 +270,52 @@ export class PaymentRepository implements IPaymentRepository {
     });
   }
 
+  async updatePaymentStatus(
+    id: string,
+    status: PaymentStatus,
+    notes?: string,
+  ): Promise<Payment> {
+    const updateData: Prisma.PaymentUpdateInput = {
+      status,
+    };
+
+    if (notes) {
+      updateData.managerNotes = notes;
+    }
+
+    if (status === PaymentStatus.PAID) {
+      updateData.paidAt = new Date();
+    }
+
+    return this.prisma.payment.update({
+      where: { id },
+      data: updateData,
+      include: {
+        user: true,
+        confirmedByUser: true,
+      },
+    });
+  }
+
+  async createAuditLog(data: {
+    paymentId: string;
+    userId: string;
+    action: string;
+    oldValue?: string;
+    newValue?: string;
+    notes?: string;
+  }): Promise<any> {
+    return this.prisma.paymentAuditLog.create({
+      data: {
+        paymentId: data.paymentId,
+        userId: data.userId,
+        action: data.action,
+        oldValue: data.oldValue,
+        newValue: data.newValue,
+      },
+    });
+  }
+
   async getPaymentStats(
     userId?: string,
     dormitoryId?: string,
@@ -330,6 +376,128 @@ export class PaymentRepository implements IPaymentRepository {
         ],
       },
       orderBy: { dateFrom: 'desc' },
+    });
+  }
+
+  async findUsersByRoomIds(roomIds: string[]): Promise<any[]> {
+    return this.prisma.user.findMany({
+      where: {
+        roomId: { in: roomIds },
+        isActive: true,
+      },
+      select: {
+        id: true,
+        roomId: true,
+        email: true,
+        displayName: true,
+      },
+    });
+  }
+
+  async findPriceCategoryById(id: string): Promise<any> {
+    return this.prisma.priceCategory.findUnique({
+      where: { id },
+    });
+  }
+
+  async findOccupiedRooms(dormitoryId?: string): Promise<any[]> {
+    const whereClause: any = {
+      residents: {
+        some: {
+          isActive: true,
+        },
+      },
+    };
+
+    if (dormitoryId) {
+      whereClause.dormitoryId = dormitoryId;
+    }
+
+    return this.prisma.room.findMany({
+      where: whereClause,
+      include: {
+        residents: {
+          where: { isActive: true },
+          select: {
+            id: true,
+            displayName: true,
+            email: true,
+          },
+        },
+        dormitory: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    });
+  }
+
+  async findExistingPayments(
+    userId: string,
+    paymentType: string,
+    startDate: Date,
+    endDate: Date,
+  ): Promise<Payment[]> {
+    return this.prisma.payment.findMany({
+      where: {
+        userId,
+        paymentType: paymentType as any,
+        dueDate: {
+          gte: startDate,
+          lte: endDate,
+        },
+        status: {
+          not: PaymentStatus.CANCELLED,
+        },
+      },
+    });
+  }
+
+  async findAdminUsers(): Promise<Array<{ id: string; email: string; displayName: string }>> {
+    return this.prisma.user.findMany({
+      where: {
+        OR: [
+          { role: 'Admin' as any },
+          { role: 'SuperAdmin' as any },
+        ],
+        isActive: true,
+      },
+      select: {
+        id: true,
+        email: true,
+        displayName: true,
+      },
+    });
+  }
+
+  async createConfirmation(data: {
+    userId: string;
+    type: string;
+    paymentId: string;
+    status: string;
+    metadata?: any;
+  }): Promise<any> {
+    return this.prisma.confirmation.create({
+      data: {
+        userId: data.userId,
+        type: data.type as any,
+        status: data.status as any,
+        paymentId: data.paymentId,
+        metadata: data.metadata,
+      },
+      include: {
+        requester: {
+          select: {
+            id: true,
+            email: true,
+            displayName: true,
+            secondName: true,
+          },
+        },
+        payment: true,
+      },
     });
   }
 }
