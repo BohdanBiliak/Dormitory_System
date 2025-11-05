@@ -33,6 +33,8 @@ async function bootstrap() {
   );
 
   // Redis client
+
+  
   const redisClient = createClient({
     url: config.getOrThrow("REDIS_URI"),
     legacyMode: true,
@@ -46,7 +48,7 @@ async function bootstrap() {
       store: new RedisStore({
         client: redisClient,
         prefix: config.getOrThrow<string>("SESSION_FOLDER") + ":",
-        ttl: sessionConfig.cookie.maxAge / 1000, // Convert to seconds
+        ttl: sessionConfig.cookie.maxAge / 1000, 
         disableTouch: false,
         disableTTL: false,
       }),

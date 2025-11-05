@@ -39,7 +39,7 @@ interface ConnectionAttempt {
     methods: ['GET', 'POST'],
   },
   namespace: '/messaging',
-  transports: ['polling', 'websocket'], // Allow both transports
+  transports: ['polling', 'websocket'],
 })
 export class MessagingGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()

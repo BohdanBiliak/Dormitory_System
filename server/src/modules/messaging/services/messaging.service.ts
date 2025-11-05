@@ -24,7 +24,7 @@ export class MessagingService {
 
     console.log('All participant IDs:', allParticipantIds);
 
-    // For direct conversations, check if one already exists
+    // For direct conversations
     if (!isGroup && allParticipantIds.length === 2) {
       const existingConversation = await this.findDirectConversation(allParticipantIds[0], allParticipantIds[1]);
       if (existingConversation) {
@@ -246,7 +246,6 @@ export class MessagingService {
       },
     });
 
-    // Update conversation updatedAt
     await this.prisma.conversation.update({
       where: { id: conversationId },
       data: { updatedAt: new Date() },
@@ -290,7 +289,6 @@ export class MessagingService {
     // Verify user is in conversation
     await this.verifyUserInConversation(conversationId, userId);
 
-    // Update participant's lastReadAt
     await this.prisma.conversationParticipant.updateMany({
       where: {
         conversationId,
@@ -360,13 +358,11 @@ export class MessagingService {
       throw new ForbiddenException('Only conversation creator or admin can delete this conversation');
     }
 
-    // Soft delete: mark participant as left
     await this.prisma.conversationParticipant.update({
       where: { id: participant.id },
       data: { leftAt: new Date() },
     });
 
-    // If user is the creator, delete the entire conversation
     if (isCreator) {
       await this.prisma.conversation.delete({
         where: { id: conversationId },

@@ -70,12 +70,9 @@ export class RedisSessionService implements OnModuleInit, OnModuleDestroy {
 
   extractSessionIdFromCookie(cookieValue: string): string | null {
     try {
-      // Handle URL-encoded cookie values
       const decoded = decodeURIComponent(cookieValue);
-
-      // If cookie is signed (starts with 's:'), extract the value before the signature
       if (decoded.startsWith('s:')) {
-        const sessionPart = decoded.slice(2); // Remove 's:'
+        const sessionPart = decoded.slice(2); 
         const dotIndex = sessionPart.lastIndexOf('.');
         return dotIndex > 0 ? sessionPart.slice(0, dotIndex) : sessionPart;
       }

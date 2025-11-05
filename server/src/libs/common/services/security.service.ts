@@ -6,7 +6,6 @@ export class SecurityService {
   constructor(private prismaService: PrismaService) {}
 
   // Check for suspicious login attempts
-
   async checkSuspiciousActivity(email: string): Promise<boolean> {
     const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
 

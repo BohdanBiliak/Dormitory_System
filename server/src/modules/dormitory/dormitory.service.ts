@@ -20,38 +20,16 @@ export class DormitoryService {
 
   async create(
     dto: CreateDormitoryDto & { floorAssignments: FloorRoomAssignmentDto[] },
-    files: { photos?: Express.Multer.File[] }, // Removed roomPhotos since we'll use room type photos
+    files: { photos?: Express.Multer.File[] },
   ) {
-
-    dto.floorAssignments?.forEach((floor, floorIndex) => {
-      console.log(`Floor ${floorIndex + 1}:`, {
-        floorNumber: floor.floorNumber,
-        roomAssignmentsCount: floor.roomAssignments?.length,
-      });
-
-      floor.roomAssignments?.forEach((roomAssignment, roomIndex) => {
-        console.log(`  Room assignment ${roomIndex + 1}:`, {
-          roomTypeId: roomAssignment.roomTypeId,
-          roomNumbers: roomAssignment.roomNumbers,
-          roomNumbersType: typeof roomAssignment.roomNumbers,
-          roomNumbersLength: Array.isArray(roomAssignment.roomNumbers)
-            ? roomAssignment.roomNumbers.length
-            : "not array",
-        });
-      });
-    });
-
     const existingDormitory = await this.prismaService.dormitory.findFirst({
       where: { name: dto.name },
     });
-
     if (existingDormitory) {
       throw new BadRequestException(
         `Dormitory with name "${dto.name}" already exists`,
       );
     }
-
-    // Upload dormitory photos only
     const photoUrls = files.photos
       ? await Promise.all(
         files.photos.map((file) =>
@@ -59,9 +37,8 @@ export class DormitoryService {
         ),
       )
       : [];
-
     return this.prismaService.$transaction(async (tx) => {
-      // Create the dormitory
+
       const dormitory = await tx.dormitory.create({
         data: {
           name: dto.name,
@@ -71,13 +48,7 @@ export class DormitoryService {
         },
       });
 
-      console.log("Dormitory created:", dormitory.id);
-
-      // Create floors and rooms based on assignments
       for (const floorAssignment of dto.floorAssignments) {
-        console.log(`Creating floor ${floorAssignment.floorNumber}`);
-
-        // Create floor
         const floor = await tx.floor.create({
           data: {
             floorNumber: floorAssignment.floorNumber,
@@ -85,16 +56,7 @@ export class DormitoryService {
           },
         });
 
-        console.log(`Floor created with ID: ${floor.id}`);
-
-        // Process room assignments for this floor
         for (const roomAssignment of floorAssignment.roomAssignments) {
-          console.log(`Processing room assignment:`, {
-            roomTypeId: roomAssignment.roomTypeId,
-            roomNumbers: roomAssignment.roomNumbers,
-          });
-
-          // Get room type details INCLUDING PHOTOS
           const roomType = await tx.roomType.findUnique({
             where: { id: roomAssignment.roomTypeId },
             select: {
@@ -102,24 +64,14 @@ export class DormitoryService {
               typeCode: true,
               capacity: true,
               equipment: true,
-              photos: true, // Include photos from room type
+              photos: true, 
             },
           });
-
           if (!roomType) {
             throw new BadRequestException(
               `Room type ${roomAssignment.roomTypeId} not found`,
             );
           }
-
-          console.log(`Room type found:`, {
-            id: roomType.id,
-            typeCode: roomType.typeCode,
-            capacity: roomType.capacity,
-            photosCount: roomType.photos?.length || 0,
-          });
-
-          // Create floor room assignment record
           await tx.floorRoomAssignment.create({
             data: {
               floorId: floor.id,
@@ -127,36 +79,19 @@ export class DormitoryService {
               roomNumbers: roomAssignment.roomNumbers,
             },
           });
-
-          console.log("Floor room assignment created");
-
-          // Create individual rooms using room type photos
           const rooms = roomAssignment.roomNumbers.map((roomNumber) => ({
             number: `${floorAssignment.floorNumber}${roomNumber.toString().padStart(2, "0")}`,
             floorId: floor.id,
             capacity: roomType.capacity,
             dormitoryId: dormitory.id,
             roomEquipment: roomType.equipment,
-            photos: roomType.photos || [], // Use room type photos directly
+            photos: roomType.photos || [], 
             roomTypeId: roomType.id,
           }));
 
-          console.log(
-            `Creating ${rooms.length} rooms:`,
-            rooms.map((r) => ({
-              number: r.number,
-              photosCount: r.photos.length,
-            })),
-          );
-
           const result = await tx.room.createMany({ data: rooms });
-          console.log(`Rooms created successfully, count: ${result.count}`);
         }
       }
-
-      console.log("Rooms and floors created successfully");
-
-      // Return dormitory with created structure
       const result = await tx.dormitory.findUnique({
         where: { id: dormitory.id },
         include: {
@@ -177,14 +112,6 @@ export class DormitoryService {
           },
         },
       });
-
-      console.log("Final result floors:", result?.floors?.length);
-      console.log(
-        "Total rooms created:",
-        result?.floors?.reduce((acc, floor) => acc + floor.rooms.length, 0),
-      );
-      console.log("=== END DEBUG ===");
-
       return result;
     });
   }
