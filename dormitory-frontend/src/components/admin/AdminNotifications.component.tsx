@@ -1,9 +1,17 @@
 'use client'
 
 import {useGetNotification, useNotifications} from "@/hooks/notifications.hook";
-import {isReadValues, Notification, NotificationGetRequest, NotificationType} from "@/types/notifications.types";
+import {
+    isReadValues,
+    Notification,
+    NotificationGetRequest,
+    NotificationPriority,
+    NotificationType
+} from "@/types/notifications.types";
 import {useEffect, useState} from "react";
 import {notificationsApi} from "@/app/lib/notifications.api";
+import AdminNotificationDetailsDialogComponent
+    from "@/components/dialogs/admin/AdminNotificationDetailsDialog.component";
 
 export function AdminNotifications() {
     const {markAsRead} = useNotifications();
@@ -16,6 +24,7 @@ export function AdminNotifications() {
         priority: ''
     });
     const[notificationsList, setNotificationsList] = useState<Notification[]>([]);
+    const[selectedNotification, setSelectedNotification] = useState<Notification | null>(null);
 
     const {data: notifications, isLoading: loadingNotifications, error: notificationsError} = useGetNotification(
         notificationsFilters
@@ -26,6 +35,26 @@ export function AdminNotifications() {
             setNotificationsList(notifications);
         }
     }, [notifications]);
+
+    const [showNotificationDialog, setShowNotificationDialog] = useState<boolean>(false);
+    const handleCloseNotificationDialog = () => {
+        setShowNotificationDialog(false);
+    }
+
+    const handleCreateNewNotification = () => {
+        setSelectedNotification(null);
+        setShowNotificationDialog(true);
+    }
+
+    const handleOpenNotificationDetails = (e: React.MouseEvent<HTMLButtonElement>) => {
+        const {value} = e.currentTarget;
+
+        const notification = notificationsList.find(item => item.id === value);
+        if(notification) {
+            setSelectedNotification(notification);
+        }
+        setShowNotificationDialog(true);
+    }
 
     return(
         <div className="flex-col border border-gray-600 w-full">
@@ -80,6 +109,34 @@ export function AdminNotifications() {
                     </select>
                 </div>
 
+                <div className={`flex flex-row border-black border`}>
+                    <div className={`px-1`}>
+                        Priority:
+                    </div>
+                    <select
+                        name="priority"
+                        value={notificationsFilters.priority.toString()}
+                        onChange={(e: React.ChangeEvent<HTMLSelectElement>)=>setNotificationsFilters(prevState => {
+                            if(!prevState) return prevState;
+                            return {
+                                ...prevState,
+                                priority: e.target.value as NotificationPriority
+                            }
+                        })}
+                    >
+                        {Object.values(NotificationPriority).map((priorityValue,index) => (
+                            <option value={priorityValue} key={index}>{priorityValue}</option>
+                        ))}
+                    </select>
+                </div>
+
+                {/*<button*/}
+                {/*    onClick={handleCreateNewNotification}*/}
+                {/*    className={`px-2 bg-green-600 border-black border`}*/}
+                {/*>*/}
+                {/*    Create Notification*/}
+                {/*</button>*/}
+
             </div>
 
             {/*Notifications*/}
@@ -111,6 +168,8 @@ export function AdminNotifications() {
                     ))
                 )}
             </div>
+
+            <AdminNotificationDetailsDialogComponent show={showNotificationDialog} onClose={handleCloseNotificationDialog} notification={selectedNotification}/>
 
         </div>
     )

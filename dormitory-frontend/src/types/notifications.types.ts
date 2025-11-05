@@ -40,5 +40,5 @@ export interface NotificationGetRequest {
 export interface NotificationPostData {
     title: string;
     message: string;
-    targetUserIds: string[];
+    targetUserIds: string;
 }

@@ -1139,7 +1139,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                                                                         >
                                                                             <option value={""}>--None--</option>
                                                                             {pCategoriesList.map(item=>
-                                                                                <option value={item.id}>{item.name}</option>
+                                                                                <option key={item.id} value={item.id}>{item.name}</option>
                                                                             )}
                                                                         </select>
                                                                     </div>
@@ -1496,6 +1496,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                                         <div className={`flex flex-col`}>
                                             {pCategoriesList.map((item, index) => (
                                                 <button
+                                                    key={index}
                                                     onClick={() => {
                                                         setSelectedPCategory(item)
                                                         setNewPCategory(null)

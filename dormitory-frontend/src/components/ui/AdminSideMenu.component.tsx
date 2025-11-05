@@ -94,7 +94,7 @@ export function AdminSideMenu ({children}:AdminSideMenuProps){
                 {
                     id:'notifications',
                     label: t('sideMenu.messages') || 'Messages',
-                    image:'/envelope.svg',
+                    image:'/bell.svg',
                     href: '/admin/notifications'
                 }
             ]
