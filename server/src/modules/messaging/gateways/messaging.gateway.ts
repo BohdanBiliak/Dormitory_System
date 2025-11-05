@@ -77,12 +77,7 @@ export class MessagingGateway implements OnGatewayConnection, OnGatewayDisconnec
   async handleConnection(client: AuthenticatedSocket) {
     const clientIP = client.handshake.address;
     const startTime = Date.now();
-
     try {
-      if (!this.isLocalOrDevelopmentIP(clientIP)) {
-        this.logger.debug(`New connection attempt from ${clientIP} (${client.id})`);
-      }
-      
       if (!this.checkRateLimit(clientIP, client.id)) {
         this.logger.warn(`Rate limit exceeded for IP ${clientIP}`);
         client.emit('error', { 
@@ -92,10 +87,8 @@ export class MessagingGateway implements OnGatewayConnection, OnGatewayDisconnec
         client.disconnect();
         return;
       }
-
       const sessionId = this.extractSessionFromSocket(client);
       if (!sessionId) {
-        this.logger.warn(`No valid session found for client ${client.id} from ${clientIP}`);
         client.emit('error', { 
           message: 'Authentication required. Please log in.',
           code: 'NO_SESSION'
@@ -103,11 +96,8 @@ export class MessagingGateway implements OnGatewayConnection, OnGatewayDisconnec
         client.disconnect();
         return;
       }
-
-      // Get user from session
       const userId = await this.getUserFromSession(sessionId);
       if (!userId) {
-        this.logger.warn(`Invalid or expired session ${sessionId.substring(0, 8)}... for client ${client.id}`);
         client.emit('error', { 
           message: 'Session expired. Please log in again.',
           code: 'INVALID_SESSION'
@@ -116,7 +106,6 @@ export class MessagingGateway implements OnGatewayConnection, OnGatewayDisconnec
         return;
       }
 
-      // Check if user exists
       const user = await this.userService.findById(userId);
       if (!user) {
         this.logger.warn(`User ${userId} not found for client ${client.id}`);
@@ -128,7 +117,6 @@ export class MessagingGateway implements OnGatewayConnection, OnGatewayDisconnec
         return;
       }
 
-      // Check connection limit per user
       const userConnections = this.connectedUsers.get(userId);
       if (userConnections && userConnections.size >= this.MAX_CONNECTIONS_PER_USER) {
         this.logger.warn(`User ${userId} exceeded max connections (${this.MAX_CONNECTIONS_PER_USER})`);
@@ -140,22 +128,18 @@ export class MessagingGateway implements OnGatewayConnection, OnGatewayDisconnec
         return;
       }
 
-      // Set socket properties
       client.userId = userId;
       client.user = user;
       client.sessionId = sessionId;
       this.socketUsers.set(client.id, userId);
 
-      // Add user to connected users map
       if (!this.connectedUsers.has(userId)) {
         this.connectedUsers.set(userId, new Set());
       }
       this.connectedUsers.get(userId)?.add(client.id);
 
-      // Join user to their conversation rooms
       await this.joinUserConversations(client, userId);
 
-      // Notify others that user is online
       this.broadcastUserOnlineStatus(userId, true);
 
       const connectionTime = Date.now() - startTime;
@@ -163,7 +147,6 @@ export class MessagingGateway implements OnGatewayConnection, OnGatewayDisconnec
       
       this.logger.log(`User ${userId} connected successfully (socket: ${client.id}, connections: ${connectionCount}, time: ${connectionTime}ms)`);
       
-      // Send success response
       client.emit('connected', { 
         userId: userId,
         connectionCount: connectionCount,
@@ -195,13 +178,11 @@ export class MessagingGateway implements OnGatewayConnection, OnGatewayDisconnec
         if (userSockets) {
           userSockets.delete(client.id);
           
-          // If user has no more connections, mark as offline
           if (userSockets.size === 0) {
             this.connectedUsers.delete(userId);
             this.broadcastUserOnlineStatus(userId, false);
             this.logger.log(`User ${userId} went offline (socket: ${client.id})`);
           } else {
-            // Only log in development if there are multiple connections
             const nodeEnv = this.configService.get('NODE_ENV');
             if (nodeEnv === 'development' || nodeEnv === 'dev') {
               this.logger.debug(`User ${userId} disconnected one socket (${client.id}), ${userSockets.size} remaining`);
@@ -224,7 +205,6 @@ export class MessagingGateway implements OnGatewayConnection, OnGatewayDisconnec
     try {
       if (!client.userId) return;
 
-      // Verify user is participant in the conversation
       const conversations = await this.messagingService.getUserConversations(client.userId);
       const conversation = conversations.find(c => c.id === data.conversationId);
       
@@ -266,10 +246,8 @@ export class MessagingGateway implements OnGatewayConnection, OnGatewayDisconnec
         },
       );
 
-      // Emit message to all participants in the conversation
       this.server.to(data.conversationId).emit('new_message', message);
 
-      // Send delivery confirmation to sender
       client.emit('message_sent', { messageId: message.id });
 
     } catch (error) {
@@ -294,7 +272,6 @@ export class MessagingGateway implements OnGatewayConnection, OnGatewayDisconnec
       const conversation = await this.messagingService.createConversation(client.userId, data);
       this.logger.log(`Conversation created successfully: ${conversation.id}`);
 
-      // Join all participants to the conversation room
       for (const participant of conversation.participants) {
         const participantSockets = this.connectedUsers.get(participant.userId);
         if (participantSockets) {
@@ -304,10 +281,7 @@ export class MessagingGateway implements OnGatewayConnection, OnGatewayDisconnec
         }
       }
 
-      // Notify all participants about the new conversation
       this.server.to(conversation.id).emit('new_conversation', conversation);
-      
-      // Also emit to the creator
       client.emit('conversation_created', conversation);
 
     } catch (error) {
@@ -331,7 +305,6 @@ export class MessagingGateway implements OnGatewayConnection, OnGatewayDisconnec
 
       await this.messagingService.markMessageAsRead(data.messageId, client.userId);
 
-      // Optionally notify others that message was read
       client.emit('message_read', { messageId: data.messageId });
 
     } catch (error) {
@@ -384,30 +357,25 @@ export class MessagingGateway implements OnGatewayConnection, OnGatewayDisconnec
     });
   }
 
-  // Utility methods
   private checkRateLimit(clientIP: string, socketId: string): boolean {
     const now = Date.now();
     
-    // Skip rate limiting for local/development IPs
     if (this.isLocalOrDevelopmentIP(clientIP)) {
       this.logger.debug(`Skipping rate limit for development IP: ${clientIP}`);
       return true;
     }
     
     const attempts = this.connectionAttempts.get(clientIP) || [];
-    
-    // Remove old attempts outside the window
+
     const recentAttempts = attempts.filter(
       attempt => now - attempt.timestamp <= this.RATE_LIMIT_WINDOW
     );
-    
-    // Check if rate limit exceeded
+
     if (recentAttempts.length >= this.CONNECTION_RATE_LIMIT) {
       this.logger.warn(`Rate limit exceeded for IP ${clientIP}: ${recentAttempts.length}/${this.CONNECTION_RATE_LIMIT} connections in last minute`);
       return false;
     }
-    
-    // Add current attempt
+
     recentAttempts.push({
       socketId,
       timestamp: now
@@ -418,7 +386,6 @@ export class MessagingGateway implements OnGatewayConnection, OnGatewayDisconnec
   }
 
   private isLocalOrDevelopmentIP(clientIP: string): boolean {
-    // Common local/development IPs
     const developmentIPs = [
       '::1',           // IPv6 localhost
       '127.0.0.1',     // IPv4 localhost
@@ -458,14 +425,12 @@ export class MessagingGateway implements OnGatewayConnection, OnGatewayDisconnec
 
   private extractSessionFromSocket(client: AuthenticatedSocket): string | null {
     try {
-      // Extract session cookie from socket handshake
       const cookies = client.handshake.headers.cookie;
       
       if (!cookies) {
         return null;
       }
 
-      // Parse cookies to find session cookie
       const sessionCookieName = this.configService.get('SESSION_NAME') || 'connect.sid';
       const parsedCookies = this.redisSessionService.parseCookies(cookies);
       const sessionCookie = parsedCookies[sessionCookieName];
@@ -474,7 +439,6 @@ export class MessagingGateway implements OnGatewayConnection, OnGatewayDisconnec
         return null;
       }
       
-      // Extract session ID from cookie
       return this.redisSessionService.extractSessionIdFromCookie(sessionCookie);
     } catch (error) {
       console.error('Error extracting session from socket:', error);
@@ -512,7 +476,6 @@ export class MessagingGateway implements OnGatewayConnection, OnGatewayDisconnec
     });
   }
 
-  // Public method to send notifications from other services
   public async sendNotificationToUser(userId: string, notification: any) {
     const userSockets = this.connectedUsers.get(userId);
     if (userSockets) {
@@ -522,7 +485,6 @@ export class MessagingGateway implements OnGatewayConnection, OnGatewayDisconnec
     }
   }
 
-  // Public method to broadcast to conversation
   public async broadcastToConversation(conversationId: string, event: string, data: any) {
     this.server.to(conversationId).emit(event, data);
   }

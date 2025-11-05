@@ -13,7 +13,6 @@ export class MessagingService {
     
     const { title, isGroup, participantIds } = createConversationDto;
 
-    // Validate participant IDs
     if (!participantIds || participantIds.length === 0) {
       throw new Error('At least one participant is required');
     }
@@ -24,7 +23,6 @@ export class MessagingService {
 
     console.log('All participant IDs:', allParticipantIds);
 
-    // For direct conversations
     if (!isGroup && allParticipantIds.length === 2) {
       const existingConversation = await this.findDirectConversation(allParticipantIds[0], allParticipantIds[1]);
       if (existingConversation) {
@@ -33,7 +31,6 @@ export class MessagingService {
       }
     }
 
-    console.log('Creating new conversation in database...');
     const conversation = await this.prisma.conversation.create({
       data: {
         title,
@@ -64,7 +61,6 @@ export class MessagingService {
       },
     });
 
-    console.log('Conversation created successfully:', conversation.id);
     return this.formatConversationData(conversation);
   }
 
@@ -160,7 +156,6 @@ export class MessagingService {
     page: number = 1,
     limit: number = 50,
   ): Promise<{ messages: MessageData[]; hasMore: boolean }> {
-    // Check if user is participant
     await this.verifyUserInConversation(conversationId, userId);
 
     const skip = (page - 1) * limit;
@@ -192,16 +187,16 @@ export class MessagingService {
       },
       orderBy: { createdAt: 'desc' },
       skip,
-      take: limit + 1, // Get one extra to check if there are more
+      take: limit + 1, 
     });
 
     const hasMore = messages.length > limit;
     if (hasMore) {
-      messages.pop(); // Remove the extra message
+      messages.pop();
     }
 
     return {
-      messages: messages.reverse().map(this.formatMessageData), // Reverse to get chronological order
+      messages: messages.reverse().map(this.formatMessageData),
       hasMore,
     };
   }
@@ -211,7 +206,6 @@ export class MessagingService {
     senderId: string,
     createMessageDto: CreateMessageDto,
   ): Promise<MessageData> {
-    // Verify user is in conversation
     await this.verifyUserInConversation(conversationId, senderId);
 
     const message = await this.prisma.message.create({
@@ -264,10 +258,8 @@ export class MessagingService {
       throw new NotFoundException('Message not found');
     }
 
-    // Verify user is in conversation
     await this.verifyUserInConversation(message.conversationId, userId);
 
-    // Create or update read status
     await this.prisma.messageRead.upsert({
       where: {
         messageId_userId: {
@@ -286,7 +278,6 @@ export class MessagingService {
   }
 
   async markConversationAsRead(conversationId: string, userId: string): Promise<void> {
-    // Verify user is in conversation
     await this.verifyUserInConversation(conversationId, userId);
 
     await this.prisma.conversationParticipant.updateMany({
@@ -328,7 +319,6 @@ export class MessagingService {
   }
 
   async deleteConversation(conversationId: string, userId: string): Promise<void> {
-    // Verify user is in conversation
     const participant = await this.prisma.conversationParticipant.findFirst({
       where: {
         conversationId,
@@ -341,7 +331,6 @@ export class MessagingService {
       throw new ForbiddenException('You are not a participant in this conversation');
     }
 
-    // Check if user is admin or creator
     const conversation = await this.prisma.conversation.findUnique({
       where: { id: conversationId },
       select: { createdById: true },
@@ -377,12 +366,9 @@ export class MessagingService {
     page: number = 1,
     limit: number = 20,
   ): Promise<{ messages: MessageData[]; hasMore: boolean; total: number }> {
-    // Verify user is in conversation
     await this.verifyUserInConversation(conversationId, userId);
 
     const skip = (page - 1) * limit;
-
-    // Count total matching messages
     const total = await this.prisma.message.count({
       where: {
         conversationId,
@@ -394,7 +380,6 @@ export class MessagingService {
       },
     });
 
-    // Get paginated results
     const messages = await this.prisma.message.findMany({
       where: {
         conversationId,

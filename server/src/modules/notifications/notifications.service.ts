@@ -71,19 +71,12 @@ export class NotificationsService {
         },
       });
 
-      // Send real-time notification via WebSocket
       await this.notificationGateway.sendNotificationToUser(
         data.toUserId,
         notification,
       );
 
-      // Send email if user has email notifications enabled
       await this.sendEmailIfEnabled(notification);
-
-      // Log notification creation
-      console.log(
-        `📧 Notification created: ${data.type} for user ${data.toUserId}`,
-      );
 
       return notification;
     } catch (error) {
@@ -279,7 +272,6 @@ async getUserNotifications(filters: NotificationFilters) {
 
     if (!settings?.emailNotifications) return;
 
-    // Check specific email preferences based on notification type
     const shouldSendEmail = this.shouldSendEmailForType(
       notification.type,
       settings,
@@ -321,19 +313,18 @@ async getUserNotifications(filters: NotificationFilters) {
     data: any;
   }) {
     try {
-      // Get user by ID to get email address
       const user = await this.prisma.user.findUnique({
         where: { id: emailData.to },
         select: { email: true, notificationSettings: true },
       });
 
       if (!user) {
-        console.warn(`⚠️ User ${emailData.to} not found`);
+        console.warn(`User ${emailData.to} not found`);
         return { success: false, reason: "User not found" };
       }
 
       if (!user.email) {
-        console.warn(`⚠️ User ${emailData.to} has no email address`);
+        console.warn(`User ${emailData.to} has no email address`);
         return { success: false, reason: "No email address" };
       }
 
@@ -379,7 +370,6 @@ async getUserNotifications(filters: NotificationFilters) {
           break;
 
         default:
-          // For generic notifications, use the generic notification method
           await this.emailService.sendNotificationEmail(user.email, {
             title: emailData.subject,
             message: emailData.data.message || "",
@@ -391,10 +381,8 @@ async getUserNotifications(filters: NotificationFilters) {
           break;
       }
 
-      console.log(`✅ Email sent to ${user.email}: ${emailData.subject}`);
       return { success: true };
     } catch (error) {
-      console.error("❌ Error sending email notification:", error);
       return {
         success: false,
         reason: error instanceof Error ? error.message : String(error),
@@ -418,7 +406,6 @@ async getUserNotifications(filters: NotificationFilters) {
         throw new Error(`User ${emailData.to} not found or has no email`);
       }
 
-      // Use the generic notification email method
       await this.emailService.sendNotificationEmail(user.email, {
         title: emailData.subject,
         message: emailData.context.message || "",
@@ -430,7 +417,7 @@ async getUserNotifications(filters: NotificationFilters) {
 
       return { success: true };
     } catch (error) {
-      console.error("❌ Error sending email:", error);
+      console.error("Error sending email:", error);
       throw error;
     }
   }

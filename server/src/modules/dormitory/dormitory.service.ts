@@ -37,7 +37,9 @@ export class DormitoryService {
         ),
       )
       : [];
+
     return this.prismaService.$transaction(async (tx) => {
+
 
       const dormitory = await tx.dormitory.create({
         data: {
@@ -48,6 +50,8 @@ export class DormitoryService {
         },
       });
 
+
+
       for (const floorAssignment of dto.floorAssignments) {
         const floor = await tx.floor.create({
           data: {
@@ -55,6 +59,8 @@ export class DormitoryService {
             dormitoryId: dormitory.id,
           },
         });
+        
+
 
         for (const roomAssignment of floorAssignment.roomAssignments) {
           const roomType = await tx.roomType.findUnique({
