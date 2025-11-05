@@ -7,8 +7,8 @@ export class SecurityConfig {
 
   getThrottlerConfig() {
     return {
-      ttl: 60, // Time window in seconds
-      limit: 100, // Max requests per window
+      ttl: 60, 
+      limit: 100, 
     };
   }
 

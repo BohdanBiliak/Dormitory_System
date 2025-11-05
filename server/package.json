@@ -17,6 +17,7 @@
     "db:reset": "docker compose exec backend npx prisma migrate reset --force",
     "db:generate": "docker compose exec backend npx prisma generate",
     "db:studio": "docker compose exec backend npx prisma studio",
+    "db:seed": "docker compose exec backend npx tsx prisma/seed.ts",
     "test": "jest",
     "test:auth": "jest tests/auth/",
     "test:auth:basic": "jest tests/auth/auth.service.basic.spec.ts",
@@ -109,10 +110,14 @@
     "tsconfig-paths": "^4.2.0",
     "tsconfig-paths-jest": "^0.0.1",
     "typescript": "^5.7.3",
-    "typescript-eslint": "^8.20.0"
+    "typescript-eslint": "^8.20.0",
+    "tsx": "^4.6.2"
   },
   "main": "index.js",
   "directories": {
     "test": "tests"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   }
 }

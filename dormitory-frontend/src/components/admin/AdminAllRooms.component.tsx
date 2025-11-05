@@ -464,7 +464,7 @@ export default function AllRoomsPage() {
                                                     </div>
                                                 </div>
                                             ))}
-                                            {Array.from({ length: selectedRoom.capacity - selectedRoom.residents.length }, (_, i) => (
+                                            {Array.from({ length: selectedRoom.capacity - (selectedRoom.residents ? selectedRoom.residents.length : 0) }, (_, i) => (
                                                 <div key={`empty-${i}`} className="bg-slate-50 border-2 border-dashed border-slate-300 rounded-lg p-2 text-center text-slate-500 text-xs animate-in fade-in-0 zoom-in-95 duration-300">
                                                     Available for accommodation
                                                 </div>
@@ -548,10 +548,10 @@ export default function AllRoomsPage() {
                                     {/* Residents */}
                                     <div className="px-6 py-4">
                                         <h4 className="text-sm font-medium text-slate-900 mb-3">
-                                            Residents, {selectedRoom.residents.length}/{selectedRoom.capacity}:
+                                            Residents, {selectedRoom.residents ? selectedRoom.residents.length : 0}/{selectedRoom.capacity}:
                                         </h4>
                                         <div className="space-y-3">
-                                            {selectedRoom.residents.map((resident, index) => (
+                                            {selectedRoom.residents && selectedRoom.residents.map((resident, index) => (
                                                 <div
                                                     key={resident.id}
                                                     className="bg-slate-100 rounded-lg p-4 animate-in fade-in-0 slide-in-from-left-2 duration-300"
@@ -576,7 +576,7 @@ export default function AllRoomsPage() {
                                                     </div>
                                                 </div>
                                             ))}
-                                            {Array.from({ length: selectedRoom.capacity - selectedRoom.residents.length }, (_, i) => (
+                                            {Array.from({ length: selectedRoom.capacity - (selectedRoom.residents ? selectedRoom.residents.length : 0) }, (_, i) => (
                                                 <div key={`empty-${i}`} className="bg-slate-50 border-2 border-dashed border-slate-300 rounded-lg p-4 text-center text-slate-500 animate-in fade-in-0 zoom-in-95 duration-300">
                                                     Available for accommodation
                                                 </div>

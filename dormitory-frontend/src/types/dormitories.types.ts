@@ -139,6 +139,9 @@ export interface PriceCategoryPostData {
 }
 
 export interface PriceCategoryUpdateData {
-    pricePerMonth: number;
-    pricePerDay: number;
+    name?: string;
+    description?: string;
+    pricePerMonth?: number;
+    pricePerDay?: number;
+    isActive?: boolean;
 }

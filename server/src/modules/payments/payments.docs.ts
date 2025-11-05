@@ -13,7 +13,7 @@ import {
   ApiBadRequestResponse,
   ApiCreatedResponse,
 } from "@nestjs/swagger";
-import { CreatePaymentDto, ConfirmPaymentDto, RejectPaymentDto } from "./dto";
+import { CreatePaymentDto, CreateBulkPaymentDto, ConfirmPaymentDto, RejectPaymentDto } from "./dto";
 
 export const PaymentsDocs = {
   controller: () => applyDecorators(ApiTags("Payments"), ApiBearerAuth()),
@@ -419,6 +419,122 @@ export const PaymentsDocs = {
         },
       }),
       ApiBadRequestResponse({ description: "Invalid payment data" }),
+      ApiForbiddenResponse({ description: "Admin access required" }),
+    ),
+
+  createBulkPayments: () =>
+    applyDecorators(
+      ApiOperation({
+        summary: "Create bulk payments (Admin only)",
+        description:
+          "Creates multiple payment records at once. Supports various pricing strategies: room-based pricing, price category, base amount, or custom amounts per user. Automatically calculates amounts from room's price category when useRoomPricing is enabled.",
+      }),
+      ApiBody({
+        type: CreateBulkPaymentDto,
+        examples: {
+          roomBasedPricing: {
+            summary: "Create payments for all users in specific rooms with room pricing",
+            value: {
+              users: [],
+              roomIds: ["room-id-1", "room-id-2", "room-id-3"],
+              useRoomPricing: true,
+              paymentType: "MONTHLY_RENT",
+              paymentMethod: "BANK_TRANSFER",
+              dueDate: "2025-12-01T00:00:00Z",
+              description: "December 2025 rent",
+            },
+          },
+          priceCategoryBased: {
+            summary: "Create payments using a specific price category",
+            value: {
+              users: [
+                { userId: "user-id-1" },
+                { userId: "user-id-2" },
+              ],
+              priceCategoryId: "price-category-id",
+              paymentType: "MONTHLY_RENT",
+              paymentMethod: "BANK_TRANSFER",
+              dueDate: "2025-12-01T00:00:00Z",
+              description: "December 2025 rent",
+            },
+          },
+          fixedAmount: {
+            summary: "Create payments with fixed base amount",
+            value: {
+              users: [
+                { userId: "user-id-1" },
+                { userId: "user-id-2" },
+                { userId: "user-id-3", customAmount: 700.0 },
+              ],
+              baseAmount: 650.0,
+              paymentType: "MONTHLY_RENT",
+              paymentMethod: "BANK_TRANSFER",
+              dueDate: "2025-12-01T00:00:00Z",
+              description: "December 2025 rent",
+            },
+          },
+          dailyRent: {
+            summary: "Create daily rent payments with period",
+            value: {
+              users: [
+                { userId: "user-id-1", roomId: "room-id-1" },
+              ],
+              useRoomPricing: true,
+              periodInDays: 15,
+              paymentType: "DAILY_RENT",
+              paymentMethod: "BANK_TRANSFER",
+              dueDate: "2025-12-15T00:00:00Z",
+              description: "Daily rent for 15 days",
+            },
+          },
+        },
+      }),
+      ApiCreatedResponse({
+        description: "Bulk payments created successfully",
+        schema: {
+          type: "object",
+          properties: {
+            success: { type: "boolean", example: true },
+            created: { type: "number", example: 15 },
+            failed: { type: "number", example: 0 },
+            payments: {
+              type: "array",
+              items: {
+                type: "object",
+                properties: {
+                  id: { type: "string", format: "uuid" },
+                  userId: { type: "string", format: "uuid" },
+                  amount: { type: "number", format: "decimal", example: 650.0 },
+                  paymentType: { type: "string", example: "MONTHLY_RENT" },
+                  status: { type: "string", example: "PENDING" },
+                  dueDate: { type: "string", format: "date-time" },
+                },
+              },
+            },
+            errors: {
+              type: "array",
+              items: {
+                type: "object",
+                properties: {
+                  userId: { type: "string" },
+                  error: { type: "string" },
+                },
+              },
+              description: "Errors encountered during bulk creation",
+            },
+          },
+        },
+      }),
+      ApiBadRequestResponse({ 
+        description: "Invalid bulk payment data or missing required pricing information",
+        schema: {
+          example: {
+            statusCode: 400,
+            message: "No amount could be determined. Provide baseAmount, priceCategoryId, or enable useRoomPricing",
+            error: "Bad Request",
+          },
+        },
+      }),
       ApiForbiddenResponse({ description: "Admin access required" }),
     ),
 
