@@ -1,7 +1,7 @@
 export interface Confirmation {
     id: string
     userId: string
-    type: 'IDENTITY_VERIFICATION' | 'ACCOMMODATION' | 'ROOM_CHANGE' | 'ROOM_VACATION'
+    type: 'IDENTITY_VERIFICATION' | 'ACCOMMODATION' | 'ROOM_CHANGE' | 'ROOM_VACATION' | 'PAYMENT_PROOF'
     status: 'PENDING' | 'APPROVED' | 'REJECTED'
     photo?: string
     frontIdUrl?: string

@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import type { Confirmation } from '@/app/lib/confirmations.api'
+import {Confirmation} from "@/types/confirmations.types";
 import {Description, Dialog, DialogBackdrop, DialogPanel, DialogTitle} from "@headlessui/react";
 
 interface IdentityVerificationModalProps {

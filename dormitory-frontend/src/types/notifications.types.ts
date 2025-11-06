@@ -8,10 +8,6 @@ export enum NotificationType {
     ROOM_AVAILABLE = 'ROOM_AVAILABLE',
 }
 
-export enum isReadValues {
-    true = 'true', false = 'false',
-}
-
 export interface Notification {
     id: string;
     type: NotificationType;
@@ -31,7 +27,7 @@ export interface Notification {
 
 export interface NotificationGetRequest {
     type?: string | null;
-    isRead: isReadValues;
+    isArchived: 'true' | 'false';
     startDate: string;
     endDate: string;
     priority: string;

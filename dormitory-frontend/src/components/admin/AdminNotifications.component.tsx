@@ -1,7 +1,7 @@
 'use client'
 
 import {useGetNotification, useNotifications} from "@/hooks/notifications.hook";
-import {isReadValues, Notification, NotificationGetRequest, NotificationType} from "@/types/notifications.types";
+import {Notification, NotificationGetRequest, NotificationType} from "@/types/notifications.types";
 import {useEffect, useState} from "react";
 import {notificationsApi} from "@/app/lib/notifications.api";
 
@@ -10,7 +10,7 @@ export function AdminNotifications() {
 
     const[notificationsFilters, setNotificationsFilters] = useState<NotificationGetRequest>({
         type: null,
-        isRead: isReadValues.false,
+        isArchived: 'false',
         startDate: '',
         endDate: '',
         priority: ''
@@ -94,21 +94,18 @@ export function AdminNotifications() {
                             </label>
                             <select
                                 name="isRead"
-                                value={notificationsFilters.isRead.toString()}
+                                value={notificationsFilters.isArchived.toString()}
                                 onChange={(e: React.ChangeEvent<HTMLSelectElement>)=>setNotificationsFilters(prevState => {
                                     if(!prevState) return prevState;
                                     return {
                                         ...prevState,
-                                        isRead: e.target.value as isReadValues
+                                        isArchived: e.target.value as 'true' | 'false'
                                     }
                                 })}
                                 className="w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm transition-all duration-200 hover:shadow-md"
                             >
-                                {Object.values(isReadValues).map((readValue) => (
-                                    <option value={readValue} key={readValue}>
-                                        {readValue === isReadValues.true ? 'Read' : readValue === isReadValues.false ? 'Unread' : 'All'}
-                                    </option>
-                                ))}
+                                <option value={`false`}>Unread</option>
+                                <option value={`true`}>Read</option>
                             </select>
                         </div>
                     </div>

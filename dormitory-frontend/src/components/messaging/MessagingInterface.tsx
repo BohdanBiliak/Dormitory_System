@@ -312,13 +312,6 @@ export const MessagingInterface: React.FC<MessagingInterfaceProps> = ({
               <MessageSquare className="w-6 h-6 mr-2" />
               Messages
             </h2>
-            <button
-              onClick={() => {}}
-              className="text-white hover:bg-blue-600 p-2 rounded-lg transition-colors"
-              title="New conversation"
-            >
-              <Plus size={20} />
-            </button>
           </div>
           
           <div className="mt-3 flex items-center">

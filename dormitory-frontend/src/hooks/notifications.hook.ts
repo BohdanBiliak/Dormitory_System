@@ -5,7 +5,7 @@ import {toast} from "sonner";
 
 export function useGetNotification(filters:NotificationGetRequest){
     const {data, isLoading, error} = useQuery({
-       queryKey: ['notifications', filters.type, filters.priority, filters.isRead, `startDate:${filters.startDate}`, `endDate:${filters.endDate}`],
+       queryKey: ['notifications', `type=${filters.type}`, `priority=${filters.priority}`, `isArchived=${filters.isArchived}`, `startDate=${filters.startDate}`, `endDate=${filters.endDate}`],
        queryFn: ()=>notificationsApi.getNotifications(filters),
         staleTime: 30 * 1000,
     });

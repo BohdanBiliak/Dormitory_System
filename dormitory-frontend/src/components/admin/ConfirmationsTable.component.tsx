@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { IdentityVerificationModal } from './IdentityVerificationModal.component'
 import { useConfirmations } from '@/hooks/confirmations.hook'
 import type { Confirmation } from '@/types/confirmations.types'
+import {PaymentProofModal} from "@/components/admin/PaymentProofVereficationModal";
 
 export function ConfirmationsTable() {
   const [selectedConfirmation, setSelectedConfirmation] = useState<Confirmation | null>(null)
@@ -423,13 +424,22 @@ export function ConfirmationsTable() {
       </div>
 
       {/* Modal */}
-      {selectedConfirmation && (
+      {selectedConfirmation && selectedConfirmation.type === 'IDENTITY_VERIFICATION' && (
         <IdentityVerificationModal
           confirmation={selectedConfirmation}
           onClose={handleCloseModal}
           onApprove={handleApprove}
           onReject={handleReject}
         />
+      )}
+
+      {selectedConfirmation && selectedConfirmation.type === 'PAYMENT_PROOF' && (
+          <PaymentProofModal
+            confirmation={selectedConfirmation}
+            onClose={handleCloseModal}
+            onApprove={handleApprove}
+            onReject={handleReject}
+          />
       )}
     </div>
   )
