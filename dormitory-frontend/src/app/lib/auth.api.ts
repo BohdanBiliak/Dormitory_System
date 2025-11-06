@@ -22,19 +22,14 @@ export const authApi = {
   register: async (data: RegisterRequest): Promise<AuthResponse> => {
     console.log('Register attempt:', { email: data.email })
     const formData = new FormData()
-    
-    // Add text fields - match backend DTO exactly
     formData.append('name', data.name)
     formData.append('secondName', data.secondName)
     formData.append('email', data.email)
     formData.append('password', data.password)
     formData.append('passwordRepeat', data.passwordRepeat)
-    
-    // Add file fields if they exist
     if (data.avatar) formData.append('avatar', data.avatar)
     if (data.studentIdFront) formData.append('studentIdFront', data.studentIdFront)
     if (data.studentIdBack) formData.append('studentIdBack', data.studentIdBack)
-
     try {
       const response = await api.post('/auth/register', formData, {
         headers: {

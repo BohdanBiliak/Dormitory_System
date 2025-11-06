@@ -154,7 +154,7 @@ enum PaymentItemType {
   LATE_FEE
   CLEANING_FEE
   OTHER
-}
+} 
 
 enum RoomAvailabilityStatus {
   AVAILABLE

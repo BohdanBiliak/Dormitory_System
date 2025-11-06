@@ -46,7 +46,6 @@ export class AuthService {
     const avatarFile = files.avatar?.[0];
     const frontFile = files.studentIdFront?.[0];
     const backFile = files.studentIdBack?.[0];
-
     const avatarUrls = avatarFile
       ? await this.s3Service.uploadResponsiveImage(
           avatarFile,
@@ -54,15 +53,12 @@ export class AuthService {
           "avatar",
         )
       : null;
-
     const frontUrl = frontFile
       ? await this.s3Service.uploadFile(frontFile, "users/studentIdFront")
       : "";
-
     const backUrl = backFile
       ? await this.s3Service.uploadFile(backFile, "users/studentIdBack")
       : "";
-
     const newUser = await this.userService.create(
       dto.email,
       dto.password,
@@ -84,15 +80,12 @@ export class AuthService {
         backIdUrl: backUrl,
       },
     });
-
     await this.emailConfirmationService.sendVerificationToken(newUser);
-
     return {
       message:
         "Register successfully. Please, approve your email. Mail was sent to your email address.",
     };
   }
-
   public async login(req: Request, dto: LoginDto) {
     const user = await this.userService.findByEmail(dto.email);
     if (!user || !user.password) {
@@ -120,7 +113,6 @@ export class AuthService {
         dto.code,
       );
     }
-
     return this.saveSession(req, user);
   }
 

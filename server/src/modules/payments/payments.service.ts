@@ -48,7 +48,7 @@ export class PaymentsService implements IPaymentService {
         break;
     }
 
-    return date;
+    return date
   }
 
   async createPayment(data: CreatePaymentDto): Promise<Payment> {
@@ -73,7 +73,7 @@ export class PaymentsService implements IPaymentService {
             })),
           }
         : undefined,
-    };
+    };  
     const payment = await this.paymentRepository.create(paymentData);
 
     await this.notificationService.createNotification({
@@ -92,6 +92,7 @@ export class PaymentsService implements IPaymentService {
 
     return payment;
   }
+  
   async getPaymentById(id: string): Promise<Payment | null> {
     return this.paymentRepository.findById(id);
   }
@@ -144,23 +145,11 @@ export class PaymentsService implements IPaymentService {
   }> {
     const payments: Payment[] = [];
     const errors: Array<{ userId: string; error: string }> = [];
-
-    console.log('Bulk payment request:', {
-      usersProvided: data.users.length,
-      roomIds: data.roomIds,
-      useRoomPricing: data.useRoomPricing,
-    });
-
-    // If roomIds are provided, get users from those rooms
     let usersToProcess = [...data.users];
     
     if (data.roomIds && data.roomIds.length > 0) {
-      // Query users in these rooms
       const roomUsers = await this.paymentRepository.findUsersByRoomIds(data.roomIds);
       
-      console.log(`Found ${roomUsers.length} users in ${data.roomIds.length} rooms:`, roomUsers);
-      
-      // Add users from rooms if not already in the list
       for (const user of roomUsers) {
         if (!usersToProcess.find(u => u.userId === user.id)) {
           usersToProcess.push({
@@ -171,9 +160,6 @@ export class PaymentsService implements IPaymentService {
       }
     }
 
-    console.log(`Processing payments for ${usersToProcess.length} users`);
-
-    // Pre-fetch price category if provided
     let priceCategoryData: any = null;
     if (data.priceCategoryId) {
       priceCategoryData = await this.paymentRepository.findPriceCategoryById(data.priceCategoryId);
@@ -184,20 +170,17 @@ export class PaymentsService implements IPaymentService {
 
     for (const userPayment of usersToProcess) {
       try {
-        // Check for duplicate payments
         const dueDate = new Date(data.dueDate);
         const startCheck = new Date(dueDate);
-        startCheck.setDate(startCheck.getDate() - 15); // Check 15 days before
+        startCheck.setDate(startCheck.getDate() - 15); 
         const endCheck = new Date(dueDate);
-        endCheck.setDate(endCheck.getDate() + 15); // Check 15 days after
-
+        endCheck.setDate(endCheck.getDate() + 15);
         const existingPayments = await this.paymentRepository.findExistingPayments(
           userPayment.userId,
           data.paymentType,
           startCheck,
           endCheck,
         );
-
         if (existingPayments.length > 0) {
           errors.push({
             userId: userPayment.userId,
@@ -205,22 +188,13 @@ export class PaymentsService implements IPaymentService {
           });
           continue;
         }
-
         let amount: number;
         let priceCategoryId: string | undefined;
         let priceId: string | undefined;
         let paymentDescription = data.description || '';
-
-        // Determine the amount based on priority:
-        // 1. Custom amount per user
-        // 2. Calculate from room pricing (if useRoomPricing is true)
-        // 3. Use base amount
-        // 4. Use price category amount
-
         if (userPayment.customAmount) {
           amount = userPayment.customAmount;
         } else if (data.useRoomPricing && userPayment.roomId) {
-          // Use the PricingService to get room pricing (handles room type fallback)
           try {
             const pricingInfo = await this.pricingService.getRoomPricing(userPayment.roomId);
             
@@ -231,16 +205,10 @@ export class PaymentsService implements IPaymentService {
               });
               continue;
             }
-
-            // Get room details for description
             const room = await this.paymentRepository.findRoomWithPricing(userPayment.roomId);
-            
-            // Set price category ID if available
             if (pricingInfo.categoryId) {
               priceCategoryId = pricingInfo.categoryId;
             }
-
-            // Calculate amount based on period
             amount = data.periodInDays && data.periodInDays <= 30
               ? data.periodInDays * pricingInfo.pricePerDay
               : pricingInfo.pricePerMonth;
@@ -290,7 +258,6 @@ export class PaymentsService implements IPaymentService {
       }
     }
 
-    // If there were errors, log them (you might want to throw or return them)
     if (errors.length > 0) {
       console.warn('Bulk payment creation had errors:', errors);
     }
@@ -313,19 +280,15 @@ export class PaymentsService implements IPaymentService {
     if (!allowedStatuses.includes(payment.status)) {
       throw new Error(`Cannot upload proof for this payment status. Current status: ${payment.status}. Allowed statuses: PENDING, REJECTED`);
     }
-
     const proofUrl = await this.fileUploadService.uploadFile(
       data.file,
       "payments",
     );
-
     const updatedPayment = await this.paymentRepository.updatePaymentProof(
       data.paymentId,
       proofUrl,
       data.file.originalname,
     );
-
-    // Create a confirmation request for admins to review
     await this.paymentRepository.createConfirmation({
       userId: payment.userId,
       type: 'PAYMENT_PROOF',
@@ -338,11 +301,7 @@ export class PaymentsService implements IPaymentService {
         uploadedAt: new Date().toISOString(),
       },
     });
-
-    // Fetch all admin users to send notifications
     const adminUsers = await this.paymentRepository.findAdminUsers();
-
-    // Create notification for each admin to review the payment proof
     for (const admin of adminUsers) {
       await this.notificationService.createNotification({
         type: $Enums.NotificationType.PAYMENT_CONFIRMATION_REQUIRED,
@@ -359,7 +318,6 @@ export class PaymentsService implements IPaymentService {
         },
       });
     }
-
     return updatedPayment;
   }
 
@@ -374,7 +332,6 @@ export class PaymentsService implements IPaymentService {
       throw new Error("Payment not found");
     }
     
-    // Allow user to download their own proof OR admins to download any proof
     const isAdmin = userRole === 'Admin' || userRole === 'SuperAdmin';
     if (payment.userId !== userId && !isAdmin) {
       throw new Error("Unauthorized");
@@ -385,10 +342,8 @@ export class PaymentsService implements IPaymentService {
     }
 
     try {
-      // Download file from S3
       const buffer = await this.fileUploadService.downloadFile(payment.paymentProofUrl);
       
-      // Determine content type from filename
       const ext = payment.paymentProofFilename?.split('.').pop()?.toLowerCase();
       let contentType = 'application/octet-stream';
       if (ext === 'pdf') contentType = 'application/pdf';
@@ -401,7 +356,6 @@ export class PaymentsService implements IPaymentService {
         filename: payment.paymentProofFilename || `payment-${paymentId}.pdf`,
       };
     } catch (error: any) {
-      console.error(`Error downloading payment proof for ${paymentId}:`, error);
       throw new Error(`Failed to download payment proof: ${error.message || 'Unknown error'}`);
     }
   }
@@ -440,7 +394,6 @@ export class PaymentsService implements IPaymentService {
   }
 
   async rejectPayment(data: RejectPaymentDto): Promise<Payment> {
-    // Validate payment exists and is awaiting confirmation
     const payment = await this.paymentRepository.findById(data.paymentId);
     if (!payment) {
       throw new Error("Payment not found");
@@ -450,14 +403,12 @@ export class PaymentsService implements IPaymentService {
       throw new Error("Payment is not awaiting confirmation");
     }
 
-    // Reject payment
     const rejectedPayment = await this.paymentRepository.rejectPayment(
       data.paymentId,
       data.rejectedBy,
       data.rejectionReason,
     );
 
-    // Notify user
     await this.notificationService.createNotification({
       type: $Enums.NotificationType.PAYMENT_REJECTED,
       title: "Payment Rejected",
@@ -488,20 +439,17 @@ export class PaymentsService implements IPaymentService {
       throw new Error("Payment not found");
     }
 
-    // Validate status
     const validStatuses = Object.values(PaymentStatus);
     if (!validStatuses.includes(status as PaymentStatus)) {
       throw new Error(`Invalid status: ${status}`);
     }
 
-    // Update payment
     const updatedPayment = await this.paymentRepository.updatePaymentStatus(
       paymentId,
       status as PaymentStatus,
       notes,
     );
 
-    // Create audit log
     await this.paymentRepository.createAuditLog({
       paymentId,
       userId: updatedBy,
@@ -511,7 +459,6 @@ export class PaymentsService implements IPaymentService {
       notes,
     });
 
-    // Send notification based on new status
     if (status === PaymentStatus.PAID) {
       await this.notificationService.createNotification({
         type: $Enums.NotificationType.PAYMENT_RECEIVED,
@@ -581,9 +528,6 @@ export class PaymentsService implements IPaymentService {
     frequency: string,
   ): Promise<void> {}
 
-  /**
-   * Create payment based on room's price category
-   */
   async createPaymentFromRoom(
     userId: string, 
     roomId: string, 
@@ -592,7 +536,6 @@ export class PaymentsService implements IPaymentService {
     dueDate: Date,
     periodInDays?: number
   ): Promise<Payment> {
-    // Get room with price category
     const room = await this.paymentRepository.findRoomWithPricing(roomId);
     if (!room) {
       throw new Error("Room not found");
@@ -602,14 +545,12 @@ export class PaymentsService implements IPaymentService {
     let priceCategoryId: string | undefined;
     let priceId: string | undefined;
 
-    // Try to get pricing from price category first (new system)
     if (room.priceCategoryId && room.priceCategory) {
       priceCategoryId = room.priceCategoryId;
       amount = periodInDays && periodInDays <= 30 
         ? periodInDays * room.priceCategory.pricePerDay 
         : room.priceCategory.pricePerMonth;
     } else {
-      // Fallback to old price system
       const price = await this.paymentRepository.findPriceByCapacity(room.capacity);
       if (price) {
         priceId = price.id;
@@ -633,9 +574,6 @@ export class PaymentsService implements IPaymentService {
     });
   }
 
-  /**
-   * Get all occupied rooms (rooms with active residents)
-   */
   async getOccupiedRooms(dormitoryId?: string): Promise<any[]> {
     return this.paymentRepository.findOccupiedRooms(dormitoryId);
   }

@@ -11,7 +11,6 @@ export class SecurityConfig {
       limit: 100, 
     };
   }
-
   getSessionConfig() {
     const isProduction = this.configService.get("NODE_ENV") === "production";
 

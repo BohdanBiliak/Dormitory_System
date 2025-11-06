@@ -33,20 +33,22 @@ async function bootstrap() {
   );
 
   // Redis client
+
+  
   const redisClient = createClient({
     url: config.getOrThrow("REDIS_URI"),
     legacyMode: true,
   } as any);
   await redisClient.connect();
 
-  // express-session with improved security
+  // express-session 
   const sessionConfig = securityConfig.getSessionConfig();
   app.use(
     session({
       store: new RedisStore({
         client: redisClient,
         prefix: config.getOrThrow<string>("SESSION_FOLDER") + ":",
-        ttl: sessionConfig.cookie.maxAge / 1000, // Convert to seconds
+        ttl: sessionConfig.cookie.maxAge / 1000, 
         disableTouch: false,
         disableTTL: false,
       }),
@@ -57,7 +59,6 @@ async function bootstrap() {
   // cookie parser
   app.use(cookieParser(config.getOrThrow("COOKIE_SECRET")));
 
-  // req.user ← з req.session.user (remove in production)
   if (config.get("NODE_ENV") === "development") {
     app.use((req, res, next) => {
       if (req.session?.user) {
