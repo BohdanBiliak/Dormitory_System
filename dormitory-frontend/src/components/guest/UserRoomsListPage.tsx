@@ -80,7 +80,7 @@ export default function AllRoomsPage() {
         if (availableRooms && availableRooms.length > 0) {
             const ids = availableRooms.map(room => room.id)
             setAvailableRoomsIds(ids)
-            console.log("Available rooms:", availableRooms)
+            // console.log("Available rooms:", availableRooms)
         }
     }, [availableRooms]);
 
@@ -149,7 +149,7 @@ export default function AllRoomsPage() {
             } else {
                 setCurrentDormitory(null)
             }
-            console.log("Dormitory: ", currentDormitory?.name)
+            // console.log("Dormitory: ", currentDormitory?.name)
         }
     }
 
@@ -183,7 +183,7 @@ export default function AllRoomsPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+        <div className="min-h-screen bg-slate-50">
             {/* Header */}
             <div className="bg-white border-b border-slate-200 shadow-sm animate-in slide-in-from-top-4 duration-500">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-6">
@@ -198,7 +198,7 @@ export default function AllRoomsPage() {
                         <div className="flex items-center space-x-3 animate-in fade-in-0 slide-in-from-right-4 duration-500 w-full sm:w-auto">
                             <button
                                 onClick={() => setShowFilters(!showFilters)}
-                                className="flex-1 sm:flex-none inline-flex items-center justify-center px-3 sm:px-4 py-2 bg-slate-200 text-slate-700 text-sm font-medium rounded-lg hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transition-all duration-200 hover:scale-105 active:scale-95"
+                                className="flex-1 sm:flex-none inline-flex items-center justify-center px-3 sm:px-4 py-2 bg-slate-200 text-slate-700 text-sm font-medium rounded-lg hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2  hover:scale-105"
                             >
                                 <Filter className="w-4 h-4 mr-2" />
                                 <span className="hidden sm:inline">{showFilters ? 'Hide Filters' : 'Show Filters'}</span>
@@ -220,7 +220,7 @@ export default function AllRoomsPage() {
                             {/* Mobile: Stack filters vertically */}
                             <div className="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3 sm:gap-4">
                                 {/* Date Range */}
-                                <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-2 bg-slate-100 rounded-lg p-3 sm:px-3 sm:py-2 animate-in fade-in-0 slide-in-from-left-2 duration-300">
+                                <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-2 bg-slate-100 rounded-lg p-3 sm:px-3 sm:py-2">
                                     <div className="flex items-center space-x-2">
                                         <Calendar className="w-4 h-4 text-slate-500 flex-shrink-0" />
                                         <span className="text-sm text-slate-700">Date:</span>
@@ -253,7 +253,7 @@ export default function AllRoomsPage() {
                                 </div>
 
                                 {/* Roommates Filter */}
-                                <div className="flex items-center justify-between sm:justify-start space-x-2 bg-slate-100 rounded-lg px-3 py-2 animate-in fade-in-0 slide-in-from-left-2 duration-300 delay-75">
+                                <div className="flex items-center justify-between sm:justify-start space-x-2 bg-slate-100 rounded-lg px-3 py-2 delay-75">
                                     <div className="flex items-center space-x-2">
                                         <Users className="w-4 h-4 text-slate-500" />
                                         <span className="text-sm text-slate-700">Empty room:</span>
@@ -278,7 +278,7 @@ export default function AllRoomsPage() {
                                 </div>
 
                                 {/* Group Booking */}
-                                <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-2 bg-slate-100 rounded-lg p-3 sm:px-3 sm:py-2 animate-in fade-in-0 slide-in-from-left-2 duration-300 delay-225">
+                                <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-2 bg-slate-100 rounded-lg p-3 sm:px-3 sm:py-2 delay-225">
                                     <span className="text-sm text-slate-700">Book a room for group:</span>
                                     <div className="flex items-center space-x-2">
                                         <input
@@ -337,7 +337,7 @@ export default function AllRoomsPage() {
                                                 <button
                                                     key={index}
                                                     onClick={()=>handleFloorChange(floor)}
-                                                    className={`px-2 py-1 text-xs sm:text-sm font-medium rounded-lg transition-all duration-200 hover:scale-105 active:scale-95 ${currentFloor === floor
+                                                    className={`px-2 py-1 text-xs sm:text-sm font-medium rounded-lg  hover:scale-105 ${currentFloor === floor
                                                         ? 'bg-blue-600 text-white shadow-md'
                                                         : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                                                     }`}
@@ -366,7 +366,7 @@ export default function AllRoomsPage() {
                                     {currentFloor && currentFloor.rooms && currentFloor.rooms.length>0 && currentFloor.rooms.map((room, index) => (
                                         <div key={room.id} className="flex flex-col items-center space-y-1">
                                             <div
-                                                className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center text-white text-xs font-medium cursor-pointer transition-all duration-200 hover:scale-110 active:scale-95 hover:shadow-md animate-in zoom-in-50 duration-300`}
+                                                className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center text-white text-xs font-medium cursor-pointer  hover:shadow-md animate-in zoom-in-50 duration-300`}
                                                 style={{ animationDelay: `${index * 20}ms` }}
                                                 onClick={() => handleRoomSelect(room.id)}
                                             >
@@ -380,7 +380,7 @@ export default function AllRoomsPage() {
                                 </div>
 
                                 {/* Legend */}
-                                <div className="mt-3 sm:mt-4 grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 text-xs sm:text-sm animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-300">
+                                <div className="mt-3 sm:mt-4 grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 text-xs sm:text-sm delay-300">
                                     <div className="flex items-center space-x-2">
                                         <div className="w-3 h-3 bg-green-500 rounded flex-shrink-0"></div>
                                         <span className="text-slate-700">Available</span>
@@ -431,7 +431,7 @@ export default function AllRoomsPage() {
                                     </>
                             ) : (
                                 <div className="px-4 py-8 text-center animate-in fade-in-0 zoom-in-50 duration-500">
-                                    <Building className="mx-auto h-10 w-10 text-slate-300 animate-pulse" />
+                                    <Building className="mx-auto h-10 w-10 text-slate-300" />
                                     <p className="mt-2 text-slate-500 text-sm">Select a room to view details</p>
                                 </div>
                             )}
@@ -442,7 +442,7 @@ export default function AllRoomsPage() {
 
             {/* Mobile Room Details Modal */}
             <Dialog open={showMobileRoomDetails} onClose={() => setShowMobileRoomDetails(false)} className="lg:hidden relative z-50">
-                <DialogBackdrop className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-all duration-300" />
+                <DialogBackdrop className="fixed inset-0 bg-black/60 backdrop-blur-sm " />
                 <div className="fixed inset-0 flex items-end justify-center p-4">
                     <DialogPanel className="w-full max-w-lg bg-white rounded-t-2xl shadow-2xl animate-in slide-in-from-bottom-4 duration-300 max-h-[90vh] overflow-hidden">
                         {selectedRoom && (
@@ -489,7 +489,7 @@ export default function AllRoomsPage() {
                                             {next14Days.map((day, index) => (
                                                 <div
                                                     key={day.date}
-                                                    className={`text-center py-2 rounded text-xs font-medium transition-all duration-200 hover:scale-110 cursor-pointer animate-in zoom-in-50 duration-300`}
+                                                    className={`text-center py-2 rounded text-xs font-medium  cursor-pointer animate-in zoom-in-50 duration-300`}
                                                     style={{ animationDelay: `${index * 30}ms` }}
                                                 >
                                                     <div className={`w-full py-1 rounded ${index < 4 ? 'bg-red-200 text-red-800' : 'bg-green-200 text-green-800'
@@ -510,7 +510,7 @@ export default function AllRoomsPage() {
                                             {selectedRoom.residents.map((resident, index) => (
                                                 <div
                                                     key={resident.id}
-                                                    className="bg-slate-100 rounded-lg p-4 animate-in fade-in-0 slide-in-from-left-2 duration-300"
+                                                    className="bg-slate-100 rounded-lg p-4"
                                                     style={{ animationDelay: `${index * 100}ms` }}
                                                 >
                                                     <div className="space-y-3">

@@ -28,7 +28,7 @@ export const userListApi = {
         }
 
         const response = await api.get(`/users?${params}`)
-        console.log("query link: ", `/users?${params}`)
+        // console.log("query link: ", `/users?${params}`)
         return response.data
     },
 

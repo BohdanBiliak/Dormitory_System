@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {useMutateAnnouncement} from "@/hooks/announcements.hook";
 import {AnnouncementCreateRequest} from "@/types/announcements.types";
 import Link from "next/link";
@@ -14,6 +14,7 @@ export function AdminNewAnnouncement(){
     const [attachedFiles, setAttachedFiles] = useState<File[]>([])
     const [addresses, setAddresses] = useState<{id: string, label: string, type: AddresseeType, addressee: AddresseeItem}[]>([])
     const [showAddressesDialog, setShowAddressesDialog] = useState<boolean>(false)
+    const [minDate, setMinDate] = useState<string>('')
 
     const [preselectedAddresses, setPreselectedAddresses] = useState<string[]>([])
 
@@ -31,6 +32,11 @@ export function AdminNewAnnouncement(){
     const {createAnnouncement, uploadAnnouncementAttachment} = useMutateAnnouncement()
     const {data: activeDormitories, isLoading: loadingDormitories, error: dormsErrors} = useGetActiveDormitories()
 
+    // Set minimum date on client side only to prevent hydration mismatch
+    useEffect(() => {
+        setMinDate(new Date().toISOString().split('T')[0])
+    }, [])
+
     const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
             setAttachedFiles(prev => [...prev, ...Array.from(event.target.files || [])])
@@ -43,7 +49,31 @@ export function AdminNewAnnouncement(){
 
 
     const removeAddresses = (index: number) => {
-        setAddresses(prev => prev.filter((_, i) => i !== index))
+        const addressToRemove = addresses[index]
+        const updatedAddresses = addresses.filter((_, i) => i !== index)
+        setAddresses(updatedAddresses)
+        
+        // Update announcement recipients
+        const userIds: string[] = []
+        const roomIds: string[] = []
+        const floorNumbers: number[] = []
+        
+        updatedAddresses.forEach((addr) => {
+            if (addr.addressee.type === AddresseeType.Resident && addr.addressee.resident) {
+                userIds.push(addr.addressee.resident.id)
+            } else if (addr.addressee.type === AddresseeType.Room && addr.addressee.room) {
+                roomIds.push(addr.addressee.room.id)
+            } else if (addr.addressee.type === AddresseeType.Floor && addr.addressee.floor) {
+                floorNumbers.push(parseInt(addr.addressee.floor.floorNumber))
+            }
+        })
+        
+        setNewAnnouncement(prev => ({
+            ...prev,
+            userIds,
+            roomIds,
+            floorNumbers
+        }))
     }
 
     const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -56,7 +86,7 @@ export function AdminNewAnnouncement(){
             }
             createAnnouncement(newAnnouncement)
         }catch(e){
-            console.log(e)
+            // console.log(e)
         }
     }
 
@@ -66,12 +96,9 @@ export function AdminNewAnnouncement(){
         if(name === "expiresAt"){
             const isoString = new Date(value + "T00:00:00Z").toISOString()
             setNewAnnouncement(prev => ({...prev, expiresAt: isoString}))
-        }
-
-        if(name !== "attachmentUrls" && name !=="expiresAt"){
+        } else if(name !== "attachmentUrls"){
             setNewAnnouncement(prev =>({...prev, [name]:value}))
         }
-
     }
 
     const handleCheckboxChange = (e:React.ChangeEvent<HTMLInputElement>) => {
@@ -95,23 +122,46 @@ export function AdminNewAnnouncement(){
     }
 
     const handleConfirmAddressesInDialog = (selected: AddresseeItem[]) => {
-        console.log(selected)
+        // console.log(selected)
         const newAddressees:{id: string, label: string, type: AddresseeType, addressee: AddresseeItem}[] = []
+        
+        // Separate recipients by type
+        const userIds: string[] = []
+        const roomIds: string[] = []
+        const floorNumbers: number[] = []
+        
         selected.forEach((item,index) => {
             newAddressees.push({
                 id: index.toString(),
                 label: item.label,
                 type: item.type,
                 addressee: item
-
             })
+            
+            // Add to appropriate array based on type
+            if (item.type === AddresseeType.Resident && item.resident) {
+                userIds.push(item.resident.id)
+            } else if (item.type === AddresseeType.Room && item.room) {
+                roomIds.push(item.room.id)
+            } else if (item.type === AddresseeType.Floor && item.floor) {
+                floorNumbers.push(parseInt(item.floor.floorNumber))
+            }
         })
+        
+        // Update announcement with recipient IDs
+        setNewAnnouncement(prev => ({
+            ...prev,
+            userIds,
+            roomIds,
+            floorNumbers
+        }))
+        
         setAddresses(newAddressees)
         setShowAddressesDialog(false)
     }
 
     return(
-        <div className="w-full bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className="w-full bg-gray-50">
             {/* Header */}
             <div className="bg-white shadow-sm border-b border-gray-200">
                 <div className="px-4 py-6 md:px-6 md:py-8">
@@ -142,7 +192,7 @@ export function AdminNewAnnouncement(){
                         <div className="xl:col-span-3">
                             <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                                 {/* Form Header */}
-                                <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
+                                <div className="bg-blue-600 px-6 py-4">
                                     <div className="flex items-center space-x-3">
                                         <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
@@ -242,7 +292,7 @@ export function AdminNewAnnouncement(){
                         <div className="xl:col-span-1 space-y-6">
                             {/* Recipients Section */}
                             <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                                <div className="bg-gradient-to-r from-green-600 to-green-700 px-6 py-4">
+                                <div className="bg-green-600 px-6 py-4">
                                     <label className="flex items-center space-x-3">
                                         <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -303,7 +353,7 @@ export function AdminNewAnnouncement(){
 
                             {/* Settings Section */}
                             <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                                <div className="bg-gradient-to-r from-purple-600 to-purple-700 px-6 py-4">
+                                <div className="bg-purple-600 px-6 py-4">
                                     <div className="flex items-center space-x-3">
                                         <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -321,8 +371,8 @@ export function AdminNewAnnouncement(){
                                         <input
                                             name="expiresAt"
                                             type="date"
-                                            min={new Date().toISOString().split('T')[0]}
-                                            //value={newAnnouncement.expiresAt}
+                                            min={minDate}
+                                            value={newAnnouncement.expiresAt ? new Date(newAnnouncement.expiresAt).toISOString().split('T')[0] : ''}
                                             onChange={handleInputChange}
                                             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm"
                                         />

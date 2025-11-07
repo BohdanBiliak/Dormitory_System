@@ -23,9 +23,9 @@ export function AdminAnnouncementList(){
          limit:limit
     })
 
-    console.log("showExpired ", showExpired);
-    console.log("showHidden:", showHidden);
-    console.log("announcements:", announcements);
+    // console.log("showExpired ", showExpired);
+    // console.log("showHidden:", showHidden);
+    // console.log("announcements:", announcements);
 
     const totalPages = announcementsList?.pagination?.totalPages || 1
 
@@ -64,7 +64,7 @@ export function AdminAnnouncementList(){
     }
 
     return(
-        <div className=" w-full bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className=" w-full bg-gray-50">
             {/* Header Section */}
             <div className="bg-white shadow-sm border-b border-gray-200">
                 <div className="px-4 py-6 md:px-6 md:py-8">
@@ -90,7 +90,7 @@ export function AdminAnnouncementList(){
                         <div className="flex-shrink-0">
                             <Link 
                                 href="/admin/announcements/new-announcement"
-                                className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 shadow-lg hover:shadow-xl"
+                                className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2  shadow-lg hover:shadow-xl"
                             >
                                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />

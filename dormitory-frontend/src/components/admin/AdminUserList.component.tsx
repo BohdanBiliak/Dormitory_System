@@ -1,7 +1,7 @@
 'use client'
 
 import {User, UserRole} from "../../types/auth.types";
-import {useEffect, useState} from "react";
+import {useEffect, useState, useMemo, useCallback, memo} from "react";
 import MultipleSelectDropdown from "@/components/ui/MultipleSelectDropdown.component";
 import Link from "next/link";
 import {useQuery} from "@tanstack/react-query";
@@ -10,10 +10,9 @@ import {UserListRequest} from "@/types/user.types";
 import {useUserListQuery} from "@/hooks/userList.hook";
 
 
-export function AdminUserList(){
+export const AdminUserList = memo(function AdminUserList(){
 
-    const roomFloors = ["1","2","3","4","5","6","7","8","9"];
-
+    const roomFloors = useMemo(() => ["1","2","3","4","5","6","7","8","9"], []);
 
     const [error, setError] = useState<Error|null>();
     const [loading, setLoading] = useState(true);
@@ -24,7 +23,7 @@ export function AdminUserList(){
     const [selectedPaymentsStatuses, setSelectedPaymentsStatuses] = useState<'Paid'|'Awaiting'|'All'|'Overdue'>('All');
     const [pagesCount, setPagesCount] = useState(1);
     const [page, setPage] = useState(1);
-    const limit = 10;
+    const limit = useMemo(() => 10, []);
 
 
     const { data: userList, isLoading } = useUserListQuery({
@@ -47,8 +46,8 @@ export function AdminUserList(){
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center">
-                <div className="bg-white shadow-xl rounded-2xl p-8 max-w-md mx-4 border border-slate-200 animate-pulse">
+            <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+                <div className="bg-white shadow-xl rounded-2xl p-8 max-w-md mx-4 border border-slate-200">
                     <div className="flex items-center justify-center">
                         <div className="animate-spin rounded-full h-10 w-10 border-4 border-blue-500 border-t-transparent"></div>
                         <span className="ml-4 text-slate-700 font-medium text-lg">Loading user list...</span>
@@ -60,7 +59,7 @@ export function AdminUserList(){
 
     if (error) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center">
+            <div className="min-h-screen bg-slate-50 flex items-center justify-center">
                 <div className="bg-white shadow-xl rounded-2xl p-8 max-w-md mx-4 border border-red-200 animate-in slide-in-from-bottom-4 duration-300">
                     <div className="text-center">
                         <div className="text-red-500 mb-4 animate-in zoom-in-50 duration-500 delay-150">
@@ -77,7 +76,7 @@ export function AdminUserList(){
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+        <div className="min-h-screen bg-slate-50">
             {/* Header */}
             <div className="bg-white border-b border-slate-200 shadow-sm animate-in slide-in-from-top-4 duration-500">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -96,12 +95,12 @@ export function AdminUserList(){
                     <h2 className="text-lg font-semibold text-slate-900 mb-4">Filters</h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         {/* Sort By */}
-                        <div className="space-y-2 animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-200">
+                        <div className="space-y-2 delay-200">
                             <label className="block text-sm font-medium text-slate-700">
                                 Sort by
                             </label>
                             <select 
-                                className="w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm transition-all duration-200 hover:shadow-md"
+                                className="w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm  hover:shadow-md"
                                 value={sortBy}
                                 onChange={(e) => setSortBy(e.target.value as 'Name'|'Id'|'Room')}
                             >
@@ -112,12 +111,12 @@ export function AdminUserList(){
                         </div>
 
                         {/* Role Filter */}
-                        <div className="space-y-2 animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-250">
+                        <div className="space-y-2 delay-250">
                             <label className="block text-sm font-medium text-slate-700">
                                 User Type
                             </label>
                             <select 
-                                className="w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm transition-all duration-200 hover:shadow-md"
+                                className="w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm  hover:shadow-md"
                                 value={roleFilter}
                                 onChange={(e) => setRoleFilter(e.target.value as UserRole)}
                             >
@@ -128,7 +127,7 @@ export function AdminUserList(){
                         </div>
 
                         {/* Room Floor */}
-                        <div className="space-y-2 animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-300">
+                        <div className="space-y-2 delay-300">
                             <label className="block text-sm font-medium text-slate-700">
                                 Room Floor
                             </label>
@@ -145,12 +144,12 @@ export function AdminUserList(){
                         </div>
 
                         {/* Payment Status */}
-                        <div className="space-y-2 animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-350">
+                        <div className="space-y-2 delay-350">
                             <label className="block text-sm font-medium text-slate-700">
                                 Payment Status
                             </label>
                             <select 
-                                className="w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm transition-all duration-200 hover:shadow-md"
+                                className="w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm  hover:shadow-md"
                                 value={selectedPaymentsStatuses}
                                 onChange={(e) => setSelectedPaymentsStatuses(e.target.value as 'Paid'|'Awaiting'|'All'|'Overdue')}
                             >
@@ -176,7 +175,7 @@ export function AdminUserList(){
                     {users.length === 0 ? (
                         <div className="p-12 text-center animate-in fade-in-0 zoom-in-50 duration-500">
                             <div className="text-slate-300 mb-4">
-                                <svg className="mx-auto h-16 w-16 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg className="mx-auto h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                                 </svg>
                             </div>
@@ -188,14 +187,14 @@ export function AdminUserList(){
                             {users.map((user, index) => (
                                 <Link key={user.id} href={`/admin/users/${user.id}`}>
                                     <div 
-                                        className="px-6 py-4 hover:bg-slate-50 transition-all duration-200 cursor-pointer hover:scale-[1.01] hover:shadow-sm animate-in fade-in-0 slide-in-from-left-2 duration-300"
+                                        className="px-6 py-4 hover:bg-slate-50  cursor-pointer hover:scale-[1.01] hover:shadow-sm"
                                         style={{ animationDelay: `${index * 50}ms` }}
                                     >
                                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                                             <div className="flex-1 min-w-0">
                                                 <div className="flex items-center space-x-4">
                                                     <div className="flex-shrink-0">
-                                                        <div className="h-12 w-12 rounded-full bg-gradient-to-br from-blue-100 to-blue-200 border-2 border-white shadow-sm overflow-hidden">
+                                                        <div className="h-12 w-12 rounded-full bg-blue-100 border-2 border-white shadow-sm overflow-hidden">
                                                             {user.picture ? (
                                                                 <img 
                                                                     src={user.picture} 
@@ -253,7 +252,7 @@ export function AdminUserList(){
                                     <button
                                         onClick={() => setPage(Math.max(1, page - 1))}
                                         disabled={page === 1}
-                                        className="px-4 py-2 text-sm font-medium text-slate-500 bg-white border border-slate-300 rounded-l-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 hover:scale-105 active:scale-95"
+                                        className="px-4 py-2 text-sm font-medium text-slate-500 bg-white border border-slate-300 rounded-l-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed  hover:scale-105"
                                     >
                                         Previous
                                     </button>
@@ -274,7 +273,7 @@ export function AdminUserList(){
                                             <button
                                                 key={pageNum}
                                                 onClick={() => setPage(pageNum)}
-                                                className={`px-4 py-2 text-sm font-medium border transition-all duration-200 hover:scale-105 active:scale-95 ${
+                                                className={`px-4 py-2 text-sm font-medium border  hover:scale-105 ${
                                                     page === pageNum
                                                         ? 'bg-blue-600 text-white border-blue-600 hover:bg-blue-700 shadow-md'
                                                         : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
@@ -288,7 +287,7 @@ export function AdminUserList(){
                                     <button
                                         onClick={() => setPage(Math.min(pagesCount, page + 1))}
                                         disabled={page === pagesCount}
-                                        className="px-4 py-2 text-sm font-medium text-slate-500 bg-white border border-slate-300 rounded-r-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 hover:scale-105 active:scale-95"
+                                        className="px-4 py-2 text-sm font-medium text-slate-500 bg-white border border-slate-300 rounded-r-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed  hover:scale-105"
                                     >
                                         Next
                                     </button>
@@ -300,4 +299,4 @@ export function AdminUserList(){
             </div>
         </div>
     )
-}
+})

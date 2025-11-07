@@ -84,24 +84,24 @@ export default function AdminNotificationDetailsDialogComponent({show, onClose, 
 
     return(
         <Dialog onClose={onClose} open={show}>
-            <DialogBackdrop className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-all duration-300"/>
+            <DialogBackdrop className="fixed inset-0 bg-black/60 backdrop-blur-sm "/>
             <div className="flex flex-col h-full min-h-0">
                 <div className="fixed inset-0 flex items-center justify-center p-1 sm:p-4">
                     <DialogPanel className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] flex flex-col">
-                        <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-4 sm:px-6 py-4 sm:py-6 flex-shrink-0 create-dormitory-header">
+                        <div className="bg-blue-600 px-4 sm:px-6 py-4 sm:py-6 flex-shrink-0 create-dormitory-header">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-white/20 rounded-full animate-in zoom-in-50 duration-300 delay-150">
                                     <BuildingIcon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                                 </div>
                                 <div>
-                                    <DialogTitle className="text-lg sm:text-xl font-semibold text-white animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-200">
+                                    <DialogTitle className="text-lg sm:text-xl font-semibold text-white delay-200">
                                         {notification? (
                                             <>Notification</>
                                         ):(
                                             <>Create new notification</>
                                         )}
                                     </DialogTitle>
-                                    <Description className="text-blue-100 text-sm mt-1 animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-250">
+                                    <Description className="text-blue-100 text-sm mt-1 delay-250">
                                         {notification? (
                                             <>Notification details</>
                                         ):(

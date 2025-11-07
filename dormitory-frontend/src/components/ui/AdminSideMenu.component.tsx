@@ -40,13 +40,13 @@ export function AdminSideMenu ({children}:AdminSideMenuProps){
         {
             id: 'profile',
             image: '/user.svg',
-            label: t('sideMenu.myProfile') || 'My profile',
+            label: t('sideMenu.myProfile') || 'My Profile',
             href: '/admin/profile'
         },
         {
             id: 'dormitories',
             image: '/workplace.svg',
-            label: t('sideMenu.dormitoryManagement') || 'Dormitory management',
+            label: t('sideMenu.dormitoryManagement') || 'Dormitory Management',
             subMenu: [
                 {
                     id: 'dormsInfo',
@@ -56,16 +56,23 @@ export function AdminSideMenu ({children}:AdminSideMenuProps){
                 },
                 {
                     id: 'rooms',
-                    label: t('sideMenu.availableRooms') || 'Available rooms',
+                    label: t('sideMenu.availableRooms') || 'Available Rooms',
                     image: '/home.svg',
                     href: '/admin/rooms',
                 },
                 {
                     id: 'users',
-                    label: t('sideMenu.userProfiles') || 'User profiles',
+                    label: t('sideMenu.userProfiles') || 'User Profiles',
                     image: '/users.svg',
                     href: '/admin/users',
-                },
+                }
+            ]
+        },
+        {
+            id: 'operations',
+            image: '/cash.svg',
+            label: t('sideMenu.operations') || 'Operations',
+            subMenu: [
                 {
                     id:'confirmations',
                     label: t('sideMenu.confirmations') || 'Confirmations',
@@ -77,6 +84,12 @@ export function AdminSideMenu ({children}:AdminSideMenuProps){
                     label: t('sideMenu.payments') || 'Payments',
                     image: '/cash.svg',
                     href: '/admin/payments'
+                },
+                {
+                    id:'maintenance',
+                    label: t('sideMenu.maintenance') || 'Maintenance',
+                    image: '/wrench.svg',
+                    href: '/admin/maintenance'
                 }
             ]
         },
@@ -93,7 +106,7 @@ export function AdminSideMenu ({children}:AdminSideMenuProps){
                 },
                 {
                     id: 'messaging',
-                    label: t('sideMenu.messaging') || 'Academic Messaging',
+                    label: t('sideMenu.messaging') || 'Messaging',
                     image: '/envelope.svg',
                     href: '/admin/messaging'
                 },

@@ -16,11 +16,11 @@ export default function UserMessagingPage() {
   const createConversationMutation = useCreateConversation();
 
   const handleCreateConversation = async (data: CreateConversationData) => {
-    console.log('User page: Creating conversation:', data);
+    // console.log('User page: Creating conversation:', data);
     
     try {
       const newConversation = await createConversationMutation.mutateAsync(data);
-      console.log('User page: Conversation created successfully:', newConversation);
+      // console.log('User page: Conversation created successfully:', newConversation);
       setShowCreateModal(false);
     } catch (error) {
       console.error('User page: Failed to create conversation:', error);
@@ -30,9 +30,9 @@ export default function UserMessagingPage() {
   // Show loading state while fetching profile
   if (isLoadingProfile) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="flex items-center justify-center h-[calc(100vh-4rem)] bg-gray-50">
         <div className="text-center">
-          <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-blue-600" />
+          <Loader2 className="w-8 h-8 mx-auto mb-4 text-blue-600" />
           <p className="text-gray-600">Loading profile...</p>
         </div>
       </div>
@@ -42,7 +42,7 @@ export default function UserMessagingPage() {
   // Show error state if profile failed to load
   if (profileError || !profile) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="flex items-center justify-center h-[calc(100vh-4rem)] bg-gray-50">
         <div className="text-center">
           <p className="text-red-600 mb-4">Failed to load profile. Please try logging in again.</p>
           <button 
@@ -59,30 +59,11 @@ export default function UserMessagingPage() {
   const currentUserId = profile.id;
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white border-b border-gray-200 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900 flex items-center">
-                <Users className="w-8 h-8 mr-3 text-blue-600" />
-                Messages
-              </h1>
-              <p className="text-gray-600 mt-1">
-                Connect with your dormitory community
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Messaging Interface */}
-      <div className="h-screen">
-        <MessagingInterface
-          currentUserId={currentUserId}
-        />
-      </div>
+    <div className="h-[calc(100vh-4rem)] bg-gray-50">
+      {/* Messaging Interface - Integrated with layout */}
+      <MessagingInterface
+        currentUserId={currentUserId}
+      />
     </div>
   );
 }

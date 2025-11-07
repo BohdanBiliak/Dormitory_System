@@ -10,6 +10,7 @@ import { S3Module } from "@libs/common/s3/s3.module";
 import { UploadAnnouncementAttachmentsUseCase } from "@modules/announcement/use-cases/upload-announcement-attachments.use-case";
 import { GetAnnouncementByIdUseCase } from "@modules/announcement/use-cases/get-announcement-by-id.use-case";
 import { GetPublicAnnouncementsUseCase } from "@modules/announcement/use-cases/get-public-announcements.use-case";
+import { GetUserAnnouncementsUseCase } from "@modules/announcement/use-cases/get-user-announcements.use-case";
 import { UserModule } from "@modules/user/user.module";
 
 @Module({
@@ -23,6 +24,7 @@ import { UserModule } from "@modules/user/user.module";
     UploadAnnouncementAttachmentsUseCase,
     GetAnnouncementByIdUseCase,
     GetPublicAnnouncementsUseCase,
+    GetUserAnnouncementsUseCase,
   ],
   exports: [
     AnnouncementRepository,
@@ -32,6 +34,7 @@ import { UserModule } from "@modules/user/user.module";
     UploadAnnouncementAttachmentsUseCase,
     GetAnnouncementByIdUseCase,
     GetPublicAnnouncementsUseCase,
+    GetUserAnnouncementsUseCase,
   ],
 })
 export class AnnouncementModule {}

@@ -13,7 +13,7 @@ interface MessageListProps {
   searchQuery?: string;
 }
 
-export const MessageList: React.FC<MessageListProps> = ({
+export const MessageList: React.FC<MessageListProps> = React.memo(({
   messages,
   currentUserId,
   onReply,
@@ -233,4 +233,6 @@ export const MessageList: React.FC<MessageListProps> = ({
       <div ref={messagesEndRef} />
     </div>
   );
-};
+});
+
+MessageList.displayName = 'MessageList';

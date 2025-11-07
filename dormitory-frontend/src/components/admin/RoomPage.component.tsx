@@ -120,12 +120,12 @@ export function RoomPage({roomId}: RoomPageProps) {
                         photos: [...prevState.photos, photo]
                     }
                 })
-                console.log("Adding new photo to room info:",photo);
+                // console.log("Adding new photo to room info:",photo);
             })
             setNewPhotos([])
         }
 
-        console.log("Room info before update: ", roomInfo)
+        // console.log("Room info before update: ", roomInfo)
         const dataToUpdate: UpdateRoomData = {
             number: roomInfo.name,
             capacity: roomInfo.capacity,
@@ -151,12 +151,16 @@ export function RoomPage({roomId}: RoomPageProps) {
 
     const handleCancelRoomUpdate = () => {
         if(room){
+            // Use price from price category if available, otherwise fall back to room price
+            const pricePerDay = room?.priceCategory?.pricePerDay || room?.price?.pricePerDay || 0;
+            const pricePerMonth = room?.priceCategory?.pricePerMonth || room?.price?.pricePerMonth || 0;
+            
             setRoomInfo({
                 name: room?.number || "",
                 capacity: room?.capacity || 0,
                 residents: room?.residents || [],
-                pricePerDay: room?.price?.pricePerDay || 0,
-                pricePerMonth: room?.price?.pricePerMonth || 0,
+                pricePerDay: pricePerDay,
+                pricePerMonth: pricePerMonth,
                 statuses: room?.statuses || [],
                 photos: room?.photos || [],
                 roomEquipment: room?.roomEquipment || [],
@@ -188,6 +192,14 @@ export function RoomPage({roomId}: RoomPageProps) {
             lastChangedIndexRef.current = indexToUpdate;
         }
 
+        setRoomInfo(prevState => {
+            if (!prevState) return prevState;
+            return {...prevState, roomEquipment: newRoomEquipment}
+        });
+    }
+
+    const handleDeleteEquipment = (index: number) => {
+        const newRoomEquipment = roomInfo.roomEquipment.filter((_, i) => i !== index);
         setRoomInfo(prevState => {
             if (!prevState) return prevState;
             return {...prevState, roomEquipment: newRoomEquipment}
@@ -227,12 +239,16 @@ export function RoomPage({roomId}: RoomPageProps) {
 
     useEffect(() => {
         if(room){
+            // Use price from price category if available, otherwise fall back to room price
+            const pricePerDay = room?.priceCategory?.pricePerDay || room?.price?.pricePerDay || 0;
+            const pricePerMonth = room?.priceCategory?.pricePerMonth || room?.price?.pricePerMonth || 0;
+            
             setRoomInfo({
                 name: room?.number || "",
                 capacity: room?.capacity || 0,
                 residents: room?.residents || [],
-                pricePerDay: room?.price?.pricePerDay || 0,
-                pricePerMonth: room?.price?.pricePerMonth || 0,
+                pricePerDay: pricePerDay,
+                pricePerMonth: pricePerMonth,
                 statuses: room?.statuses || [],
                 photos: room?.photos || [],
                 roomEquipment: room?.roomEquipment || [],
@@ -273,7 +289,7 @@ export function RoomPage({roomId}: RoomPageProps) {
         if(inputRef.current && inputRef.current.files && inputRef.current.files.length>0 && name === "newImage"){
             const file = inputRef.current.files[0];
             setNewPhotos([...newPhotos, file]);
-            console.log("New photos changed")
+            // console.log("New photos changed")
         }
 
     }
@@ -400,16 +416,16 @@ export function RoomPage({roomId}: RoomPageProps) {
                     photos: roomInfo.photos.splice(indexToDelete, 1)}
             })
 
-            console.log("Room info photos: ", roomInfo.photos)
-            console.log("New photos: ", newPhotos)
+            // console.log("Room info photos: ", roomInfo.photos)
+            // console.log("New photos: ", newPhotos)
         }
     }
 
 
     if(isLoading){
         return (
-            <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100">
-                <div className="bg-white shadow-xl rounded-2xl p-8 max-w-md mx-4 border border-slate-200 animate-pulse">
+            <div className="min-h-screen w-full flex items-center justify-center bg-slate-50">
+                <div className="bg-white shadow-xl rounded-2xl p-8 max-w-md mx-4 border border-slate-200">
                     <div className="flex items-center justify-center">
                         <div className="animate-spin rounded-full h-10 w-10 border-4 border-blue-500 border-t-transparent"></div>
                         <span className="ml-4 text-slate-700 font-medium text-lg">Loading room data...</span>
@@ -421,7 +437,7 @@ export function RoomPage({roomId}: RoomPageProps) {
 
     if (error) {
         return (
-            <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100">
+            <div className="min-h-screen w-full flex items-center justify-center bg-slate-50">
                 <div className="bg-white shadow-xl rounded-2xl p-8 max-w-md mx-4 border border-red-200 animate-in slide-in-from-bottom-4 duration-300">
                     <div className="text-center">
                         <div className="text-red-500 mb-4 animate-in zoom-in-50 duration-500 delay-150">
@@ -438,7 +454,7 @@ export function RoomPage({roomId}: RoomPageProps) {
     const hasChanges = Object.values(isEditing).some(editing => editing);
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+        <div className="min-h-screen bg-slate-50">
             {/* Header */}
             <div className="bg-white border-b border-slate-200 shadow-sm animate-in slide-in-from-top-4 duration-500">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -452,14 +468,14 @@ export function RoomPage({roomId}: RoomPageProps) {
                                 <div className="flex items-center space-x-3 animate-in slide-in-from-right-2 fade-in-0 duration-300">
                                     <button 
                                         onClick={handleRoomUpdate}
-                                        className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 hover:scale-105 active:scale-95 transform hover:shadow-lg"
+                                        className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2  hover:scale-105 transform hover:shadow-lg"
                                     >
                                         <Check className="w-4 h-4 mr-2 transition-transform duration-200 group-hover:rotate-12" />
                                         Save Changes
                                     </button>
                                     <button 
                                         onClick={handleCancelRoomUpdate}
-                                        className="inline-flex items-center px-4 py-2 bg-slate-200 text-slate-700 text-sm font-medium rounded-lg hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transition-all duration-200 hover:scale-105 active:scale-95 transform"
+                                        className="inline-flex items-center px-4 py-2 bg-slate-200 text-slate-700 text-sm font-medium rounded-lg hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2  hover:scale-105 transform"
                                     >
                                         <X className="w-4 h-4 mr-2 transition-transform duration-200 group-hover:rotate-90" />
                                         Cancel
@@ -488,13 +504,13 @@ export function RoomPage({roomId}: RoomPageProps) {
                             </div>
                             <div className="p-6 space-y-6">
                                 {/* Room Number */}
-                                <div className="group animate-in fade-in-0 slide-in-from-left-2 duration-300 delay-100">
+                                <div className="group delay-100">
                                     <div className="flex items-center justify-between mb-2">
                                         <label className="text-sm font-medium text-slate-700">Room Number</label>
                                         <button 
                                             name="name" 
                                             onClick={handleEditField}
-                                            className="p-1 text-slate-400 hover:text-blue-600 transition-all duration-200 hover:scale-110 active:scale-95"
+                                            className="p-1 text-slate-400 hover:text-blue-600 "
                                         >
                                             <Edit3 className="w-4 h-4 transition-transform duration-200 hover:rotate-12" />
                                         </button>
@@ -505,16 +521,16 @@ export function RoomPage({roomId}: RoomPageProps) {
                                         disabled={!isEditing.name}
                                         onChange={handleFieldChange}
                                         name="name"
-                                        className={`w-full px-3 py-2 border rounded-lg text-sm font-medium transition-all duration-300 ${
+                                        className={`w-full px-3 py-2 border rounded-lg text-sm font-medium  ${
                                             isEditing.name 
-                                                ? 'border-blue-500 ring-2 ring-blue-100 bg-white animate-pulse' 
+                                                ? 'border-blue-500 ring-2 ring-blue-100 bg-white' 
                                                 : 'border-slate-200 bg-slate-50'
                                         } focus:outline-none focus:ring-2 focus:ring-blue-500 hover:shadow-sm`}
                                     />
                                 </div>
 
                                 {/* Capacity */}
-                                <div className="group animate-in fade-in-0 slide-in-from-left-2 duration-300 delay-150">
+                                <div className="group delay-150">
                                     <div className="flex items-center justify-between mb-2">
                                         <label className="text-sm font-medium text-slate-700">
                                             Room Capacity ({roomInfo.residents.length} / {roomInfo.capacity})
@@ -522,7 +538,7 @@ export function RoomPage({roomId}: RoomPageProps) {
                                         <button 
                                             name="capacity" 
                                             onClick={handleEditField}
-                                            className="p-1 text-slate-400 hover:text-blue-600 transition-all duration-200 hover:scale-110 active:scale-95"
+                                            className="p-1 text-slate-400 hover:text-blue-600 "
                                         >
                                             <Edit3 className="w-4 h-4 transition-transform duration-200 hover:rotate-12" />
                                         </button>
@@ -533,67 +549,55 @@ export function RoomPage({roomId}: RoomPageProps) {
                                         disabled={!isEditing.capacity}
                                         onChange={handleFieldChange}
                                         name="capacity"
-                                        className={`w-full px-3 py-2 border rounded-lg text-sm font-medium transition-all duration-300 ${
+                                        className={`w-full px-3 py-2 border rounded-lg text-sm font-medium  ${
                                             isEditing.capacity 
-                                                ? 'border-blue-500 ring-2 ring-blue-100 bg-white animate-pulse' 
+                                                ? 'border-blue-500 ring-2 ring-blue-100 bg-white' 
                                                 : 'border-slate-200 bg-slate-50'
                                         } focus:outline-none focus:ring-2 focus:ring-blue-500 hover:shadow-sm`}
                                     />
                                 </div>
 
                                 {/* Pricing */}
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-200">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 delay-200">
                                     <div className="group">
-                                        <div className="flex items-center justify-between mb-2">
-                                            <label className="text-sm font-medium text-slate-700">Price per Day</label>
-                                            <button 
-                                                name="pricePerDay" 
-                                                onClick={handleEditField}
-                                                className="p-1 text-slate-400 hover:text-blue-600 transition-all duration-200 hover:scale-110 active:scale-95"
-                                            >
-                                                <Edit3 className="w-4 h-4 transition-transform duration-200 hover:rotate-12" />
-                                            </button>
+                                        <div className="flex flex-col mb-2">
+                                            <div className="flex items-center justify-between">
+                                                <label className="text-sm font-medium text-slate-700">Price per Day</label>
+                                            </div>
+                                            {room?.priceCategory && (
+                                                <span className="text-xs text-blue-600 mt-0.5">From price category: {room.priceCategory.name}</span>
+                                            )}
                                         </div>
                                         <div className="relative">
                                             <DollarSign className="absolute left-3 top-2.5 w-4 h-4 text-slate-400 transition-colors duration-200 group-focus-within:text-blue-500" />
                                             <input
                                                 type="number"
                                                 value={roomInfo.pricePerDay}
-                                                disabled={!isEditing.pricePerDay}
+                                                disabled={true}
                                                 onChange={handleFieldChange}
                                                 name="pricePerDay"
-                                                className={`w-full pl-10 pr-3 py-2 border rounded-lg text-sm font-medium transition-all duration-300 ${
-                                                    isEditing.pricePerDay 
-                                                        ? 'border-blue-500 ring-2 ring-blue-100 bg-white animate-pulse' 
-                                                        : 'border-slate-200 bg-slate-50'
-                                                } focus:outline-none focus:ring-2 focus:ring-blue-500 hover:shadow-sm`}
+                                                className="w-full pl-10 pr-3 py-2 border rounded-lg text-sm font-medium  border-slate-200 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 hover:shadow-sm"
                                             />
                                         </div>
                                     </div>
                                     <div className="group">
-                                        <div className="flex items-center justify-between mb-2">
-                                            <label className="text-sm font-medium text-slate-700">Price per Month</label>
-                                            <button 
-                                                name="pricePerMonth" 
-                                                onClick={handleEditField}
-                                                className="p-1 text-slate-400 hover:text-blue-600 transition-all duration-200 hover:scale-110 active:scale-95"
-                                            >
-                                                <Edit3 className="w-4 h-4 transition-transform duration-200 hover:rotate-12" />
-                                            </button>
+                                        <div className="flex flex-col mb-2">
+                                            <div className="flex items-center justify-between">
+                                                <label className="text-sm font-medium text-slate-700">Price per Month</label>
+                                            </div>
+                                            {room?.priceCategory && (
+                                                <span className="text-xs text-blue-600 mt-0.5">From price category: {room.priceCategory.name}</span>
+                                            )}
                                         </div>
                                         <div className="relative">
                                             <DollarSign className="absolute left-3 top-2.5 w-4 h-4 text-slate-400 transition-colors duration-200 group-focus-within:text-blue-500" />
                                             <input
                                                 type="number"
                                                 value={roomInfo.pricePerMonth}
-                                                disabled={!isEditing.pricePerMonth}
+                                                disabled={true}
                                                 onChange={handleFieldChange}
                                                 name="pricePerMonth"
-                                                className={`w-full pl-10 pr-3 py-2 border rounded-lg text-sm font-medium transition-all duration-300 ${
-                                                    isEditing.pricePerMonth 
-                                                        ? 'border-blue-500 ring-2 ring-blue-100 bg-white animate-pulse' 
-                                                        : 'border-slate-200 bg-slate-50'
-                                                } focus:outline-none focus:ring-2 focus:ring-blue-500 hover:shadow-sm`}
+                                                className="w-full pl-10 pr-3 py-2 border rounded-lg text-sm font-medium  border-slate-200 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 hover:shadow-sm"
                                             />
                                         </div>
                                     </div>
@@ -614,7 +618,7 @@ export function RoomPage({roomId}: RoomPageProps) {
                                     <div className="space-y-3">
                                         {roomInfo.residents.map((resident, index) => (
                                             <div key={index} 
-                                                className="flex items-center justify-between p-4 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 transition-all hover:scale-[1.02] hover:shadow-sm animate-in fade-in-0 slide-in-from-left-2 duration-300"
+                                                className="flex items-center justify-between p-4 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 transition-all hover:scale-[1.02] hover:shadow-sm"
                                                 style={{ animationDelay: `${index * 50}ms` }}
                                             >
                                                 <Link 
@@ -627,7 +631,7 @@ export function RoomPage({roomId}: RoomPageProps) {
                                                     <div className="text-sm text-slate-500">{resident.email}</div>
                                                 </Link>
                                                 <button 
-                                                    className="ml-4 px-3 py-1 bg-red-100 text-red-700 text-sm font-medium rounded-md hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200 hover:scale-105 active:scale-95 hover:shadow-md"
+                                                    className="ml-4 px-3 py-1 bg-red-100 text-red-700 text-sm font-medium rounded-md hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2  hover:scale-105 hover:shadow-md"
                                                     value={index.toString()} 
                                                     onClick={handleChoseResidentToEvict}
                                                 >
@@ -638,7 +642,7 @@ export function RoomPage({roomId}: RoomPageProps) {
                                     </div>
                                 ) : (
                                     <div className="text-center py-8 animate-in fade-in-0 zoom-in-50 duration-500">
-                                        <Users className="mx-auto h-12 w-12 text-slate-300 animate-pulse" />
+                                        <Users className="mx-auto h-12 w-12 text-slate-300" />
                                         <p className="mt-2 text-slate-500">No residents currently assigned</p>
                                     </div>
                                 )}
@@ -656,7 +660,7 @@ export function RoomPage({roomId}: RoomPageProps) {
                                     <button 
                                         name="roomEquipment" 
                                         onClick={handleEditField}
-                                        className="p-1 text-slate-400 hover:text-blue-600 transition-all duration-200 hover:scale-110 active:scale-95"
+                                        className="p-1 text-slate-400 hover:text-blue-600 "
                                     >
                                         <Edit3 className="w-4 h-4 transition-transform duration-200 hover:rotate-12" />
                                     </button>
@@ -667,7 +671,7 @@ export function RoomPage({roomId}: RoomPageProps) {
                                     <div className="space-y-3">
                                         {roomInfo.roomEquipment.map((_, index) => (
                                             <div key={index} 
-                                                className="relative animate-in fade-in-0 slide-in-from-left-2 duration-300"
+                                                className="relative flex items-center gap-2"
                                                 style={{ animationDelay: `${index * 50}ms` }}
                                             >
                                                 <input
@@ -677,18 +681,27 @@ export function RoomPage({roomId}: RoomPageProps) {
                                                     onChange={handleEquipmentChange}
                                                     value={roomInfo.roomEquipment[index]}
                                                     disabled={!isEditing.roomEquipment}
-                                                    className={`w-full px-3 py-2 border rounded-lg text-sm transition-all duration-300 hover:shadow-sm ${
+                                                    className={`flex-1 px-3 py-2 border rounded-lg text-sm  hover:shadow-sm ${
                                                         isEditing.roomEquipment
                                                             ? 'border-blue-500 ring-2 ring-blue-100 bg-white'
                                                             : 'border-slate-200 bg-slate-50'
                                                     } focus:outline-none focus:ring-2 focus:ring-blue-500`}
                                                     placeholder={`Equipment item ${index + 1}`}
                                                 />
+                                                {isEditing.roomEquipment && (
+                                                    <button
+                                                        onClick={() => handleDeleteEquipment(index)}
+                                                        className="p-2 text-red-600 hover:bg-red-50 rounded-lg "
+                                                        title="Delete equipment"
+                                                    >
+                                                        <X className="w-4 h-4" />
+                                                    </button>
+                                                )}
                                             </div>
                                         ))}
                                         {isEditing.roomEquipment ? (
                                             <div key={roomInfo.roomEquipment.length}
-                                                 className="relative animate-in fade-in-0 slide-in-from-left-2 duration-300"
+                                                 className="relative"
                                                  style={{ animationDelay: `${roomInfo.roomEquipment.length * 50}ms` }}>
                                                 <input
                                                     ref={(el) => {inputRefs.current[roomInfo.roomEquipment.length] = el}}
@@ -697,7 +710,7 @@ export function RoomPage({roomId}: RoomPageProps) {
                                                     onChange={handleEquipmentChange}
                                                     value={""}
                                                     disabled={!isEditing.roomEquipment}
-                                                    className="w-full px-3 py-2 border rounded-lg text-sm transition-all duration-300 hover:shadow-sm border-blue-500 ring-2 ring-blue-100 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                    className="w-full px-3 py-2 border rounded-lg text-sm  hover:shadow-sm border-blue-500 ring-2 ring-blue-100 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                                                     placeholder={`Equipment item ${roomInfo.roomEquipment.length  + 1}`}
                                                 />
                                             </div>
@@ -706,7 +719,7 @@ export function RoomPage({roomId}: RoomPageProps) {
                                 ) : (
 
                                     <div className="text-center py-8 animate-in fade-in-0 zoom-in-50 duration-500">
-                                        <Settings className="mx-auto h-12 w-12 text-slate-300 animate-pulse" />
+                                        <Settings className="mx-auto h-12 w-12 text-slate-300" />
                                         <p className="mt-2 text-slate-500">No equipment listed</p>
                                     </div>
                                 )}
@@ -716,11 +729,11 @@ export function RoomPage({roomId}: RoomPageProps) {
                         {/* Calendar Card */}
                         <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden animate-in fade-in-0 slide-in-from-bottom-4 duration-500 delay-300 hover:shadow-md transition-all">
                             <div className="px-6 py-4 bg-slate-50 border-b border-slate-200 flex flex-row space-x-6">
-                                <h2 className="text-lg font-semibold text-slate-900 animate-in fade-in-0 slide-in-from-left-2 duration-300 delay-500">Availability Calendar</h2>
+                                <h2 className="text-lg font-semibold text-slate-900 delay-500">Availability Calendar</h2>
                                 <button
                                     name="statuses"
                                     onClick={handleEditField}
-                                    className="p-1 text-slate-400 hover:text-blue-600 transition-all duration-200 hover:scale-110 active:scale-95"
+                                    className="p-1 text-slate-400 hover:text-blue-600 "
                                 >
                                     <Edit3 className="w-4 h-4 transition-transform duration-200 hover:rotate-12" />
                                 </button>
@@ -733,7 +746,7 @@ export function RoomPage({roomId}: RoomPageProps) {
 
                     {/* Right Column - Photos */}
                     <div className="lg:col-span-1 animate-in fade-in-0 slide-in-from-right-4 duration-500 delay-200">
-                        <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden sticky top-8 hover:shadow-md transition-all duration-300">
+                        <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden sticky top-8 hover:shadow-md ">
                             <div className="px-6 py-4 bg-slate-50 border-b border-slate-200">
                                 <div className="flex items-center justify-between">
                                     <h2 className="text-lg font-semibold text-slate-900 flex items-center">
@@ -742,7 +755,7 @@ export function RoomPage({roomId}: RoomPageProps) {
                                     </h2>
                                     <button 
                                         name="photos" 
-                                        className="p-1 text-slate-400 hover:text-blue-600 transition-all duration-200 hover:scale-110 active:scale-95"
+                                        className="p-1 text-slate-400 hover:text-blue-600 "
                                         onClick={handleEditField}
                                     >
                                         <Edit3 className="w-4 h-4 transition-transform duration-200 hover:rotate-12" />
@@ -757,7 +770,7 @@ export function RoomPage({roomId}: RoomPageProps) {
                                                 key={currentIndex}
                                                 src={roomInfo.photos[currentIndex]}
                                                 alt={`Room photo ${currentIndex + 1}`}
-                                                className="w-full h-full object-cover transition-all duration-500 ease-out animate-in fade-in-0 zoom-in-95"
+                                                className="w-full h-full object-cover  ease-out animate-in fade-in-0 zoom-in-95"
                                             />
 
                                             {/* Navigation arrows */}
@@ -765,13 +778,13 @@ export function RoomPage({roomId}: RoomPageProps) {
                                                 <>
                                                     <button
                                                         onClick={goToPrevious}
-                                                        className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-all duration-200 opacity-0 group-hover:opacity-100 hover:scale-110 active:scale-95"
+                                                        className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70  opacity-0 group-hover:opacity-100"
                                                     >
                                                         <ChevronLeft size={20} className="transition-transform duration-200 hover:-translate-x-0.5" />
                                                     </button>
                                                     <button
                                                         onClick={goToNext}
-                                                        className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-all duration-200 opacity-0 group-hover:opacity-100 hover:scale-110 active:scale-95"
+                                                        className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70  opacity-0 group-hover:opacity-100"
                                                     >
                                                         <ChevronRight size={20} className="transition-transform duration-200 hover:translate-x-0.5" />
                                                     </button>
@@ -779,19 +792,19 @@ export function RoomPage({roomId}: RoomPageProps) {
                                             )}
 
                                             {/* Image counter */}
-                                            <div className="absolute bottom-2 right-2 bg-black/70 text-white px-2 py-1 rounded text-xs font-medium transition-all duration-200 opacity-0 group-hover:opacity-100">
+                                            <div className="absolute bottom-2 right-2 bg-black/70 text-white px-2 py-1 rounded text-xs font-medium  opacity-0 group-hover:opacity-100">
                                                 {currentIndex + 1} / {roomInfo.photos.length}
                                             </div>
                                         </div>
 
                                         {/* Dots indicator */}
                                         {roomInfo.photos.length > 1 && (
-                                            <div className="flex justify-center gap-2 animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-300">
+                                            <div className="flex justify-center gap-2 delay-300">
                                                 {roomInfo.photos.map((_, index) => (
                                                     <button
                                                         key={index}
                                                         onClick={() => setCurrentIndex(index)}
-                                                        className={`w-2 h-2 rounded-full transition-all duration-300 hover:scale-125 ${
+                                                        className={`w-2 h-2 rounded-full  hover:scale-125 ${
                                                             index === currentIndex
                                                                 ? 'bg-blue-600 scale-110'
                                                                 : 'bg-slate-300 hover:bg-slate-400'
@@ -803,7 +816,7 @@ export function RoomPage({roomId}: RoomPageProps) {
                                     </div>
                                 ) : (
                                     <div className="text-center py-12 animate-in fade-in-0 zoom-in-50 duration-500">
-                                        <Camera className="mx-auto h-12 w-12 text-slate-300 animate-pulse" />
+                                        <Camera className="mx-auto h-12 w-12 text-slate-300" />
                                         <p className="mt-2 text-slate-500">No photos available</p>
                                     </div>
                                 )}
@@ -817,11 +830,11 @@ export function RoomPage({roomId}: RoomPageProps) {
 
             {/*Statuses dialog*/}
             <Dialog onClose={closeStatusesDialog} open={showStatusesDialog} className="relative z-50">
-                <DialogBackdrop className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-all duration-300" />
+                <DialogBackdrop className="fixed inset-0 bg-black/60 backdrop-blur-sm " />
                 <div className="fixed inset-0 flex items-center justify-center p-1 xs:p-2 sm:p-4">
                     <DialogPanel className="w-full h-full xs:h-[98vh] sm:h-auto sm:max-w-6xl bg-white xs:rounded-lg sm:rounded-2xl shadow-2xl animate-in zoom-in-95 fade-in-0 duration-300 slide-in-from-bottom-4 sm:max-h-[90vh] overflow-hidden flex flex-col">
                         {/* Header */}
-                        <div className="px-3 xs:px-4 sm:px-6 py-3 xs:py-4 bg-gradient-to-r from-emerald-600 to-teal-600 border-b border-emerald-200 animate-in fade-in-0 slide-in-from-top-2 duration-300 flex-shrink-0">
+                        <div className="px-3 xs:px-4 sm:px-6 py-3 xs:py-4 bg-emerald-600 border-b border-emerald-200 flex-shrink-0">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center space-x-2 xs:space-x-3 min-w-0 flex-1">
                                     <div className="flex items-center justify-center w-8 h-8 xs:w-10 xs:h-10 bg-white/20 rounded-full backdrop-blur-sm flex-shrink-0">
@@ -879,7 +892,7 @@ export function RoomPage({roomId}: RoomPageProps) {
                                                 <div className="mt-2">
                                                     <div className="flex w-full bg-slate-200 rounded-full h-1.5 xs:h-2">
                                                         <div 
-                                                            className="bg-blue-600 h-1.5 xs:h-2 rounded-full transition-all duration-300"
+                                                            className="bg-blue-600 h-1.5 xs:h-2 rounded-full "
                                                             style={{ width: `${(roomInfo.residents.length / roomInfo.capacity) * 100}%` }}
                                                         ></div>
                                                     </div>
@@ -1034,7 +1047,7 @@ export function RoomPage({roomId}: RoomPageProps) {
                 <div className="fixed inset-0 flex items-center justify-center">
                     <DialogPanel className="w-full h-full max-w-none bg-white shadow-2xl transition-all duration-150 overflow-hidden flex flex-col">
                         {/* Header */}
-                        <div className="px-4 sm:px-6 py-4 bg-gradient-to-r from-blue-600 to-purple-600 border-b border-blue-200 transition-all duration-100 flex-shrink-0">
+                        <div className="px-4 sm:px-6 py-4 bg-blue-600 border-b border-blue-200 transition-all duration-100 flex-shrink-0">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center space-x-3 min-w-0 flex-1">
                                     <div className="flex items-center justify-center w-10 h-10 bg-white/20 rounded-full backdrop-blur-sm flex-shrink-0">
@@ -1072,13 +1085,13 @@ export function RoomPage({roomId}: RoomPageProps) {
                                         </h2>
                                         
                                         {roomInfo.photos.length > 0 ? (
-                                            <div className="flex-1 flex flex-col">
-                                                <div className="relative aspect-video rounded-lg overflow-hidden bg-slate-100 group shadow-lg">
+                                            <div className="flex-1 flex flex-col max-w-3xl mx-auto w-full">
+                                                <div className="relative rounded-lg overflow-hidden bg-slate-100 group shadow-lg" style={{ maxHeight: '400px', aspectRatio: '16/9' }}>
                                                     <img
                                                         key={currentIndex}
                                                         src={roomInfo.photos[currentIndex]}
                                                         alt={`Room photo ${currentIndex + 1}`}
-                                                        className="w-full h-full object-cover transition-all duration-500 ease-out animate-in fade-in-0 zoom-in-95"
+                                                        className="w-full h-full object-contain  ease-out animate-in fade-in-0 zoom-in-95"
                                                     />
 
                                                     {/* Navigation arrows */}
@@ -1100,19 +1113,19 @@ export function RoomPage({roomId}: RoomPageProps) {
                                                     )}
 
                                                     {/* Image counter */}
-                                                    <div className="absolute bottom-2 xs:bottom-4 right-2 xs:right-4 bg-black/70 text-white px-2 xs:px-3 py-1 rounded-full text-xs xs:text-sm font-medium transition-all duration-200 opacity-0 group-hover:opacity-100">
+                                                    <div className="absolute bottom-2 xs:bottom-4 right-2 xs:right-4 bg-black/70 text-white px-2 xs:px-3 py-1 rounded-full text-xs xs:text-sm font-medium  opacity-0 group-hover:opacity-100">
                                                         {currentIndex + 1} / {roomInfo.photos.length}
                                                     </div>
                                                 </div>
 
                                                 {/* Dots indicator */}
                                                 {roomInfo.photos.length > 1 && (
-                                                    <div className="flex justify-center gap-1.5 xs:gap-2 mt-3 xs:mt-4 animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-300">
+                                                    <div className="flex justify-center gap-1.5 xs:gap-2 mt-3 xs:mt-4 delay-300">
                                                         {roomInfo.photos.map((_, index) => (
                                                             <button
                                                                 key={index}
                                                                 onClick={() => setCurrentIndex(index)}
-                                                                className={`w-2 h-2 xs:w-3 xs:h-3 rounded-full transition-all duration-300 hover:scale-125 ${
+                                                                className={`w-2 h-2 xs:w-3 xs:h-3 rounded-full  hover:scale-125 ${
                                                                     index === currentIndex
                                                                         ? 'bg-blue-600 scale-110'
                                                                         : 'bg-slate-300 hover:bg-slate-400'
@@ -1127,7 +1140,7 @@ export function RoomPage({roomId}: RoomPageProps) {
                                                     <button 
                                                         onClick={handleDeleteRoomPhoto}
                                                         value={currentIndex}
-                                                        className="inline-flex items-center px-3 xs:px-4 py-2 bg-red-600 text-white text-xs xs:text-sm font-medium rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200 hover:scale-105 active:scale-95"
+                                                        className="inline-flex items-center px-3 xs:px-4 py-2 bg-red-600 text-white text-xs xs:text-sm font-medium rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2  hover:scale-105"
                                                     >
                                                         <svg className="w-3 h-3 xs:w-4 xs:h-4 mr-1.5 xs:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -1139,7 +1152,7 @@ export function RoomPage({roomId}: RoomPageProps) {
                                         ) : (
                                             <div className="flex-1 flex items-center justify-center text-center py-8 xs:py-12 animate-in fade-in-0 zoom-in-50 duration-500">
                                                 <div>
-                                                    <Camera className="mx-auto h-12 w-12 xs:h-16 xs:w-16 text-slate-300 animate-pulse mb-3 xs:mb-4" />
+                                                    <Camera className="mx-auto h-12 w-12 xs:h-16 xs:w-16 text-slate-300 mb-3 xs:mb-4" />
                                                     <h3 className="text-base xs:text-lg font-semibold text-slate-900 mb-2">No Photos Available</h3>
                                                     <p className="text-slate-500 text-sm xs:text-base">Add your first photo to get started</p>
                                                 </div>

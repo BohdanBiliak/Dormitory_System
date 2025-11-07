@@ -153,6 +153,11 @@ export type Message = $Result.DefaultSelection<Prisma.$MessagePayload>
  * 
  */
 export type MessageRead = $Result.DefaultSelection<Prisma.$MessageReadPayload>
+/**
+ * Model MaintenanceReport
+ * 
+ */
+export type MaintenanceReport = $Result.DefaultSelection<Prisma.$MaintenanceReportPayload>
 
 /**
  * Enums
@@ -337,6 +342,41 @@ export const RoomAvailabilityStatus: {
 
 export type RoomAvailabilityStatus = (typeof RoomAvailabilityStatus)[keyof typeof RoomAvailabilityStatus]
 
+
+export const MaintenancePriority: {
+  LOW: 'LOW',
+  MEDIUM: 'MEDIUM',
+  HIGH: 'HIGH',
+  URGENT: 'URGENT'
+};
+
+export type MaintenancePriority = (typeof MaintenancePriority)[keyof typeof MaintenancePriority]
+
+
+export const MaintenanceStatus: {
+  PENDING: 'PENDING',
+  IN_PROGRESS: 'IN_PROGRESS',
+  RESOLVED: 'RESOLVED',
+  CANCELLED: 'CANCELLED'
+};
+
+export type MaintenanceStatus = (typeof MaintenanceStatus)[keyof typeof MaintenanceStatus]
+
+
+export const MaintenanceCategory: {
+  PLUMBING: 'PLUMBING',
+  ELECTRICAL: 'ELECTRICAL',
+  HEATING: 'HEATING',
+  FURNITURE: 'FURNITURE',
+  APPLIANCES: 'APPLIANCES',
+  WINDOWS_DOORS: 'WINDOWS_DOORS',
+  CLEANING: 'CLEANING',
+  INTERNET: 'INTERNET',
+  OTHER: 'OTHER'
+};
+
+export type MaintenanceCategory = (typeof MaintenanceCategory)[keyof typeof MaintenanceCategory]
+
 }
 
 export type UserRole = $Enums.UserRole
@@ -394,6 +434,18 @@ export const PaymentItemType: typeof $Enums.PaymentItemType
 export type RoomAvailabilityStatus = $Enums.RoomAvailabilityStatus
 
 export const RoomAvailabilityStatus: typeof $Enums.RoomAvailabilityStatus
+
+export type MaintenancePriority = $Enums.MaintenancePriority
+
+export const MaintenancePriority: typeof $Enums.MaintenancePriority
+
+export type MaintenanceStatus = $Enums.MaintenanceStatus
+
+export const MaintenanceStatus: typeof $Enums.MaintenanceStatus
+
+export type MaintenanceCategory = $Enums.MaintenanceCategory
+
+export const MaintenanceCategory: typeof $Enums.MaintenanceCategory
 
 /**
  * ##  Prisma Client ʲˢ
@@ -792,6 +844,16 @@ export class PrismaClient<
     * ```
     */
   get messageRead(): Prisma.MessageReadDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.maintenanceReport`: Exposes CRUD operations for the **MaintenanceReport** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more MaintenanceReports
+    * const maintenanceReports = await prisma.maintenanceReport.findMany()
+    * ```
+    */
+  get maintenanceReport(): Prisma.MaintenanceReportDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -850,8 +912,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.18.0
-   * Query Engine version: 34b5a692b7bd79939a9a2c3ef97d816e749cda2f
+   * Prisma Client JS version: 6.19.0
+   * Query Engine version: 2ba551f319ab1df4bc874a89965d8b3641056773
    */
   export type PrismaVersion = {
     client: string
@@ -1260,7 +1322,8 @@ export namespace Prisma {
     Conversation: 'Conversation',
     ConversationParticipant: 'ConversationParticipant',
     Message: 'Message',
-    MessageRead: 'MessageRead'
+    MessageRead: 'MessageRead',
+    MaintenanceReport: 'MaintenanceReport'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1279,7 +1342,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "dormitoryAdmin" | "dormitoryManager" | "confirmation" | "token" | "auditLog" | "dormitory" | "floor" | "room" | "roomType" | "floorRoomAssignment" | "roomStatus" | "priceCategory" | "price" | "booking" | "payment" | "recurringPayment" | "paymentItem" | "paymentAuditLog" | "notification" | "notificationSettings" | "announcement" | "attachment" | "announcementRecipient" | "conversation" | "conversationParticipant" | "message" | "messageRead"
+      modelProps: "user" | "dormitoryAdmin" | "dormitoryManager" | "confirmation" | "token" | "auditLog" | "dormitory" | "floor" | "room" | "roomType" | "floorRoomAssignment" | "roomStatus" | "priceCategory" | "price" | "booking" | "payment" | "recurringPayment" | "paymentItem" | "paymentAuditLog" | "notification" | "notificationSettings" | "announcement" | "attachment" | "announcementRecipient" | "conversation" | "conversationParticipant" | "message" | "messageRead" | "maintenanceReport"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3355,6 +3418,80 @@ export namespace Prisma {
           }
         }
       }
+      MaintenanceReport: {
+        payload: Prisma.$MaintenanceReportPayload<ExtArgs>
+        fields: Prisma.MaintenanceReportFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MaintenanceReportFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceReportPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MaintenanceReportFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceReportPayload>
+          }
+          findFirst: {
+            args: Prisma.MaintenanceReportFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceReportPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MaintenanceReportFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceReportPayload>
+          }
+          findMany: {
+            args: Prisma.MaintenanceReportFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceReportPayload>[]
+          }
+          create: {
+            args: Prisma.MaintenanceReportCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceReportPayload>
+          }
+          createMany: {
+            args: Prisma.MaintenanceReportCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.MaintenanceReportCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceReportPayload>[]
+          }
+          delete: {
+            args: Prisma.MaintenanceReportDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceReportPayload>
+          }
+          update: {
+            args: Prisma.MaintenanceReportUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceReportPayload>
+          }
+          deleteMany: {
+            args: Prisma.MaintenanceReportDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MaintenanceReportUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.MaintenanceReportUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceReportPayload>[]
+          }
+          upsert: {
+            args: Prisma.MaintenanceReportUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceReportPayload>
+          }
+          aggregate: {
+            args: Prisma.MaintenanceReportAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMaintenanceReport>
+          }
+          groupBy: {
+            args: Prisma.MaintenanceReportGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MaintenanceReportGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MaintenanceReportCountArgs<ExtArgs>
+            result: $Utils.Optional<MaintenanceReportCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -3479,6 +3616,7 @@ export namespace Prisma {
     conversationParticipant?: ConversationParticipantOmit
     message?: MessageOmit
     messageRead?: MessageReadOmit
+    maintenanceReport?: MaintenanceReportOmit
   }
 
   /* Types for Logging */
@@ -3575,6 +3713,7 @@ export namespace Prisma {
     conversationParticipants: number
     sentMessages: number
     readMessages: number
+    maintenanceReports: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3594,6 +3733,7 @@ export namespace Prisma {
     conversationParticipants?: boolean | UserCountOutputTypeCountConversationParticipantsArgs
     sentMessages?: boolean | UserCountOutputTypeCountSentMessagesArgs
     readMessages?: boolean | UserCountOutputTypeCountReadMessagesArgs
+    maintenanceReports?: boolean | UserCountOutputTypeCountMaintenanceReportsArgs
   }
 
   // Custom InputTypes
@@ -3719,6 +3859,13 @@ export namespace Prisma {
     where?: MessageReadWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountMaintenanceReportsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaintenanceReportWhereInput
+  }
+
 
   /**
    * Count Type DormitoryCountOutputType
@@ -3838,6 +3985,7 @@ export namespace Prisma {
     statuses: number
     residents: number
     prices: number
+    maintenanceReports: number
   }
 
   export type RoomCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3847,6 +3995,7 @@ export namespace Prisma {
     statuses?: boolean | RoomCountOutputTypeCountStatusesArgs
     residents?: boolean | RoomCountOutputTypeCountResidentsArgs
     prices?: boolean | RoomCountOutputTypeCountPricesArgs
+    maintenanceReports?: boolean | RoomCountOutputTypeCountMaintenanceReportsArgs
   }
 
   // Custom InputTypes
@@ -3900,6 +4049,13 @@ export namespace Prisma {
    */
   export type RoomCountOutputTypeCountPricesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PriceWhereInput
+  }
+
+  /**
+   * RoomCountOutputType without action
+   */
+  export type RoomCountOutputTypeCountMaintenanceReportsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaintenanceReportWhereInput
   }
 
 
@@ -4588,6 +4744,7 @@ export namespace Prisma {
     conversationParticipants?: boolean | User$conversationParticipantsArgs<ExtArgs>
     sentMessages?: boolean | User$sentMessagesArgs<ExtArgs>
     readMessages?: boolean | User$readMessagesArgs<ExtArgs>
+    maintenanceReports?: boolean | User$maintenanceReportsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -4685,6 +4842,7 @@ export namespace Prisma {
     conversationParticipants?: boolean | User$conversationParticipantsArgs<ExtArgs>
     sentMessages?: boolean | User$sentMessagesArgs<ExtArgs>
     readMessages?: boolean | User$readMessagesArgs<ExtArgs>
+    maintenanceReports?: boolean | User$maintenanceReportsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4718,6 +4876,7 @@ export namespace Prisma {
       conversationParticipants: Prisma.$ConversationParticipantPayload<ExtArgs>[]
       sentMessages: Prisma.$MessagePayload<ExtArgs>[]
       readMessages: Prisma.$MessageReadPayload<ExtArgs>[]
+      maintenanceReports: Prisma.$MaintenanceReportPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5153,6 +5312,7 @@ export namespace Prisma {
     conversationParticipants<T extends User$conversationParticipantsArgs<ExtArgs> = {}>(args?: Subset<T, User$conversationParticipantsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConversationParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sentMessages<T extends User$sentMessagesArgs<ExtArgs> = {}>(args?: Subset<T, User$sentMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     readMessages<T extends User$readMessagesArgs<ExtArgs> = {}>(args?: Subset<T, User$readMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MessageReadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    maintenanceReports<T extends User$maintenanceReportsArgs<ExtArgs> = {}>(args?: Subset<T, User$maintenanceReportsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaintenanceReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6036,6 +6196,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: MessageReadScalarFieldEnum | MessageReadScalarFieldEnum[]
+  }
+
+  /**
+   * User.maintenanceReports
+   */
+  export type User$maintenanceReportsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceReport
+     */
+    select?: MaintenanceReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceReport
+     */
+    omit?: MaintenanceReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceReportInclude<ExtArgs> | null
+    where?: MaintenanceReportWhereInput
+    orderBy?: MaintenanceReportOrderByWithRelationInput | MaintenanceReportOrderByWithRelationInput[]
+    cursor?: MaintenanceReportWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MaintenanceReportScalarFieldEnum | MaintenanceReportScalarFieldEnum[]
   }
 
   /**
@@ -14025,6 +14209,7 @@ export namespace Prisma {
     statuses?: boolean | Room$statusesArgs<ExtArgs>
     residents?: boolean | Room$residentsArgs<ExtArgs>
     prices?: boolean | Room$pricesArgs<ExtArgs>
+    maintenanceReports?: boolean | Room$maintenanceReportsArgs<ExtArgs>
     _count?: boolean | RoomCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["room"]>
 
@@ -14090,6 +14275,7 @@ export namespace Prisma {
     statuses?: boolean | Room$statusesArgs<ExtArgs>
     residents?: boolean | Room$residentsArgs<ExtArgs>
     prices?: boolean | Room$pricesArgs<ExtArgs>
+    maintenanceReports?: boolean | Room$maintenanceReportsArgs<ExtArgs>
     _count?: boolean | RoomCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type RoomIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -14118,6 +14304,7 @@ export namespace Prisma {
       statuses: Prisma.$RoomStatusPayload<ExtArgs>[]
       residents: Prisma.$UserPayload<ExtArgs>[]
       prices: Prisma.$PricePayload<ExtArgs>[]
+      maintenanceReports: Prisma.$MaintenanceReportPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -14535,6 +14722,7 @@ export namespace Prisma {
     statuses<T extends Room$statusesArgs<ExtArgs> = {}>(args?: Subset<T, Room$statusesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoomStatusPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     residents<T extends Room$residentsArgs<ExtArgs> = {}>(args?: Subset<T, Room$residentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     prices<T extends Room$pricesArgs<ExtArgs> = {}>(args?: Subset<T, Room$pricesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PricePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    maintenanceReports<T extends Room$maintenanceReportsArgs<ExtArgs> = {}>(args?: Subset<T, Room$maintenanceReportsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaintenanceReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -15150,6 +15338,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: PriceScalarFieldEnum | PriceScalarFieldEnum[]
+  }
+
+  /**
+   * Room.maintenanceReports
+   */
+  export type Room$maintenanceReportsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceReport
+     */
+    select?: MaintenanceReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceReport
+     */
+    omit?: MaintenanceReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceReportInclude<ExtArgs> | null
+    where?: MaintenanceReportWhereInput
+    orderBy?: MaintenanceReportOrderByWithRelationInput | MaintenanceReportOrderByWithRelationInput[]
+    cursor?: MaintenanceReportWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MaintenanceReportScalarFieldEnum | MaintenanceReportScalarFieldEnum[]
   }
 
   /**
@@ -33202,6 +33414,7 @@ export namespace Prisma {
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
     participants?: boolean | Conversation$participantsArgs<ExtArgs>
     messages?: boolean | Conversation$messagesArgs<ExtArgs>
+    maintenanceReport?: boolean | Conversation$maintenanceReportArgs<ExtArgs>
     _count?: boolean | ConversationCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["conversation"]>
 
@@ -33239,6 +33452,7 @@ export namespace Prisma {
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
     participants?: boolean | Conversation$participantsArgs<ExtArgs>
     messages?: boolean | Conversation$messagesArgs<ExtArgs>
+    maintenanceReport?: boolean | Conversation$maintenanceReportArgs<ExtArgs>
     _count?: boolean | ConversationCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ConversationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -33254,6 +33468,7 @@ export namespace Prisma {
       createdBy: Prisma.$UserPayload<ExtArgs>
       participants: Prisma.$ConversationParticipantPayload<ExtArgs>[]
       messages: Prisma.$MessagePayload<ExtArgs>[]
+      maintenanceReport: Prisma.$MaintenanceReportPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -33659,6 +33874,7 @@ export namespace Prisma {
     createdBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     participants<T extends Conversation$participantsArgs<ExtArgs> = {}>(args?: Subset<T, Conversation$participantsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConversationParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     messages<T extends Conversation$messagesArgs<ExtArgs> = {}>(args?: Subset<T, Conversation$messagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    maintenanceReport<T extends Conversation$maintenanceReportArgs<ExtArgs> = {}>(args?: Subset<T, Conversation$maintenanceReportArgs<ExtArgs>>): Prisma__MaintenanceReportClient<$Result.GetResult<Prisma.$MaintenanceReportPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -34135,6 +34351,25 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: MessageScalarFieldEnum | MessageScalarFieldEnum[]
+  }
+
+  /**
+   * Conversation.maintenanceReport
+   */
+  export type Conversation$maintenanceReportArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceReport
+     */
+    select?: MaintenanceReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceReport
+     */
+    omit?: MaintenanceReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceReportInclude<ExtArgs> | null
+    where?: MaintenanceReportWhereInput
   }
 
   /**
@@ -37570,6 +37805,1231 @@ export namespace Prisma {
 
 
   /**
+   * Model MaintenanceReport
+   */
+
+  export type AggregateMaintenanceReport = {
+    _count: MaintenanceReportCountAggregateOutputType | null
+    _min: MaintenanceReportMinAggregateOutputType | null
+    _max: MaintenanceReportMaxAggregateOutputType | null
+  }
+
+  export type MaintenanceReportMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    roomId: string | null
+    category: $Enums.MaintenanceCategory | null
+    priority: $Enums.MaintenancePriority | null
+    status: $Enums.MaintenanceStatus | null
+    title: string | null
+    description: string | null
+    location: string | null
+    conversationId: string | null
+    resolvedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MaintenanceReportMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    roomId: string | null
+    category: $Enums.MaintenanceCategory | null
+    priority: $Enums.MaintenancePriority | null
+    status: $Enums.MaintenanceStatus | null
+    title: string | null
+    description: string | null
+    location: string | null
+    conversationId: string | null
+    resolvedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MaintenanceReportCountAggregateOutputType = {
+    id: number
+    userId: number
+    roomId: number
+    category: number
+    priority: number
+    status: number
+    title: number
+    description: number
+    location: number
+    attachments: number
+    conversationId: number
+    resolvedAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type MaintenanceReportMinAggregateInputType = {
+    id?: true
+    userId?: true
+    roomId?: true
+    category?: true
+    priority?: true
+    status?: true
+    title?: true
+    description?: true
+    location?: true
+    conversationId?: true
+    resolvedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MaintenanceReportMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    roomId?: true
+    category?: true
+    priority?: true
+    status?: true
+    title?: true
+    description?: true
+    location?: true
+    conversationId?: true
+    resolvedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MaintenanceReportCountAggregateInputType = {
+    id?: true
+    userId?: true
+    roomId?: true
+    category?: true
+    priority?: true
+    status?: true
+    title?: true
+    description?: true
+    location?: true
+    attachments?: true
+    conversationId?: true
+    resolvedAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type MaintenanceReportAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MaintenanceReport to aggregate.
+     */
+    where?: MaintenanceReportWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaintenanceReports to fetch.
+     */
+    orderBy?: MaintenanceReportOrderByWithRelationInput | MaintenanceReportOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MaintenanceReportWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaintenanceReports from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaintenanceReports.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned MaintenanceReports
+    **/
+    _count?: true | MaintenanceReportCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MaintenanceReportMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MaintenanceReportMaxAggregateInputType
+  }
+
+  export type GetMaintenanceReportAggregateType<T extends MaintenanceReportAggregateArgs> = {
+        [P in keyof T & keyof AggregateMaintenanceReport]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMaintenanceReport[P]>
+      : GetScalarType<T[P], AggregateMaintenanceReport[P]>
+  }
+
+
+
+
+  export type MaintenanceReportGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaintenanceReportWhereInput
+    orderBy?: MaintenanceReportOrderByWithAggregationInput | MaintenanceReportOrderByWithAggregationInput[]
+    by: MaintenanceReportScalarFieldEnum[] | MaintenanceReportScalarFieldEnum
+    having?: MaintenanceReportScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MaintenanceReportCountAggregateInputType | true
+    _min?: MaintenanceReportMinAggregateInputType
+    _max?: MaintenanceReportMaxAggregateInputType
+  }
+
+  export type MaintenanceReportGroupByOutputType = {
+    id: string
+    userId: string
+    roomId: string | null
+    category: $Enums.MaintenanceCategory
+    priority: $Enums.MaintenancePriority
+    status: $Enums.MaintenanceStatus
+    title: string
+    description: string
+    location: string
+    attachments: string[]
+    conversationId: string | null
+    resolvedAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: MaintenanceReportCountAggregateOutputType | null
+    _min: MaintenanceReportMinAggregateOutputType | null
+    _max: MaintenanceReportMaxAggregateOutputType | null
+  }
+
+  type GetMaintenanceReportGroupByPayload<T extends MaintenanceReportGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MaintenanceReportGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MaintenanceReportGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MaintenanceReportGroupByOutputType[P]>
+            : GetScalarType<T[P], MaintenanceReportGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MaintenanceReportSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    roomId?: boolean
+    category?: boolean
+    priority?: boolean
+    status?: boolean
+    title?: boolean
+    description?: boolean
+    location?: boolean
+    attachments?: boolean
+    conversationId?: boolean
+    resolvedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    room?: boolean | MaintenanceReport$roomArgs<ExtArgs>
+    conversation?: boolean | MaintenanceReport$conversationArgs<ExtArgs>
+  }, ExtArgs["result"]["maintenanceReport"]>
+
+  export type MaintenanceReportSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    roomId?: boolean
+    category?: boolean
+    priority?: boolean
+    status?: boolean
+    title?: boolean
+    description?: boolean
+    location?: boolean
+    attachments?: boolean
+    conversationId?: boolean
+    resolvedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    room?: boolean | MaintenanceReport$roomArgs<ExtArgs>
+    conversation?: boolean | MaintenanceReport$conversationArgs<ExtArgs>
+  }, ExtArgs["result"]["maintenanceReport"]>
+
+  export type MaintenanceReportSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    roomId?: boolean
+    category?: boolean
+    priority?: boolean
+    status?: boolean
+    title?: boolean
+    description?: boolean
+    location?: boolean
+    attachments?: boolean
+    conversationId?: boolean
+    resolvedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    room?: boolean | MaintenanceReport$roomArgs<ExtArgs>
+    conversation?: boolean | MaintenanceReport$conversationArgs<ExtArgs>
+  }, ExtArgs["result"]["maintenanceReport"]>
+
+  export type MaintenanceReportSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    roomId?: boolean
+    category?: boolean
+    priority?: boolean
+    status?: boolean
+    title?: boolean
+    description?: boolean
+    location?: boolean
+    attachments?: boolean
+    conversationId?: boolean
+    resolvedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type MaintenanceReportOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "roomId" | "category" | "priority" | "status" | "title" | "description" | "location" | "attachments" | "conversationId" | "resolvedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["maintenanceReport"]>
+  export type MaintenanceReportInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    room?: boolean | MaintenanceReport$roomArgs<ExtArgs>
+    conversation?: boolean | MaintenanceReport$conversationArgs<ExtArgs>
+  }
+  export type MaintenanceReportIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    room?: boolean | MaintenanceReport$roomArgs<ExtArgs>
+    conversation?: boolean | MaintenanceReport$conversationArgs<ExtArgs>
+  }
+  export type MaintenanceReportIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    room?: boolean | MaintenanceReport$roomArgs<ExtArgs>
+    conversation?: boolean | MaintenanceReport$conversationArgs<ExtArgs>
+  }
+
+  export type $MaintenanceReportPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "MaintenanceReport"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      room: Prisma.$RoomPayload<ExtArgs> | null
+      conversation: Prisma.$ConversationPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      roomId: string | null
+      category: $Enums.MaintenanceCategory
+      priority: $Enums.MaintenancePriority
+      status: $Enums.MaintenanceStatus
+      title: string
+      description: string
+      location: string
+      attachments: string[]
+      conversationId: string | null
+      resolvedAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["maintenanceReport"]>
+    composites: {}
+  }
+
+  type MaintenanceReportGetPayload<S extends boolean | null | undefined | MaintenanceReportDefaultArgs> = $Result.GetResult<Prisma.$MaintenanceReportPayload, S>
+
+  type MaintenanceReportCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<MaintenanceReportFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: MaintenanceReportCountAggregateInputType | true
+    }
+
+  export interface MaintenanceReportDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MaintenanceReport'], meta: { name: 'MaintenanceReport' } }
+    /**
+     * Find zero or one MaintenanceReport that matches the filter.
+     * @param {MaintenanceReportFindUniqueArgs} args - Arguments to find a MaintenanceReport
+     * @example
+     * // Get one MaintenanceReport
+     * const maintenanceReport = await prisma.maintenanceReport.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MaintenanceReportFindUniqueArgs>(args: SelectSubset<T, MaintenanceReportFindUniqueArgs<ExtArgs>>): Prisma__MaintenanceReportClient<$Result.GetResult<Prisma.$MaintenanceReportPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one MaintenanceReport that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MaintenanceReportFindUniqueOrThrowArgs} args - Arguments to find a MaintenanceReport
+     * @example
+     * // Get one MaintenanceReport
+     * const maintenanceReport = await prisma.maintenanceReport.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MaintenanceReportFindUniqueOrThrowArgs>(args: SelectSubset<T, MaintenanceReportFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MaintenanceReportClient<$Result.GetResult<Prisma.$MaintenanceReportPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MaintenanceReport that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaintenanceReportFindFirstArgs} args - Arguments to find a MaintenanceReport
+     * @example
+     * // Get one MaintenanceReport
+     * const maintenanceReport = await prisma.maintenanceReport.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MaintenanceReportFindFirstArgs>(args?: SelectSubset<T, MaintenanceReportFindFirstArgs<ExtArgs>>): Prisma__MaintenanceReportClient<$Result.GetResult<Prisma.$MaintenanceReportPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MaintenanceReport that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaintenanceReportFindFirstOrThrowArgs} args - Arguments to find a MaintenanceReport
+     * @example
+     * // Get one MaintenanceReport
+     * const maintenanceReport = await prisma.maintenanceReport.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MaintenanceReportFindFirstOrThrowArgs>(args?: SelectSubset<T, MaintenanceReportFindFirstOrThrowArgs<ExtArgs>>): Prisma__MaintenanceReportClient<$Result.GetResult<Prisma.$MaintenanceReportPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more MaintenanceReports that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaintenanceReportFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all MaintenanceReports
+     * const maintenanceReports = await prisma.maintenanceReport.findMany()
+     * 
+     * // Get first 10 MaintenanceReports
+     * const maintenanceReports = await prisma.maintenanceReport.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const maintenanceReportWithIdOnly = await prisma.maintenanceReport.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MaintenanceReportFindManyArgs>(args?: SelectSubset<T, MaintenanceReportFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaintenanceReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a MaintenanceReport.
+     * @param {MaintenanceReportCreateArgs} args - Arguments to create a MaintenanceReport.
+     * @example
+     * // Create one MaintenanceReport
+     * const MaintenanceReport = await prisma.maintenanceReport.create({
+     *   data: {
+     *     // ... data to create a MaintenanceReport
+     *   }
+     * })
+     * 
+     */
+    create<T extends MaintenanceReportCreateArgs>(args: SelectSubset<T, MaintenanceReportCreateArgs<ExtArgs>>): Prisma__MaintenanceReportClient<$Result.GetResult<Prisma.$MaintenanceReportPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many MaintenanceReports.
+     * @param {MaintenanceReportCreateManyArgs} args - Arguments to create many MaintenanceReports.
+     * @example
+     * // Create many MaintenanceReports
+     * const maintenanceReport = await prisma.maintenanceReport.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MaintenanceReportCreateManyArgs>(args?: SelectSubset<T, MaintenanceReportCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many MaintenanceReports and returns the data saved in the database.
+     * @param {MaintenanceReportCreateManyAndReturnArgs} args - Arguments to create many MaintenanceReports.
+     * @example
+     * // Create many MaintenanceReports
+     * const maintenanceReport = await prisma.maintenanceReport.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many MaintenanceReports and only return the `id`
+     * const maintenanceReportWithIdOnly = await prisma.maintenanceReport.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends MaintenanceReportCreateManyAndReturnArgs>(args?: SelectSubset<T, MaintenanceReportCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaintenanceReportPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a MaintenanceReport.
+     * @param {MaintenanceReportDeleteArgs} args - Arguments to delete one MaintenanceReport.
+     * @example
+     * // Delete one MaintenanceReport
+     * const MaintenanceReport = await prisma.maintenanceReport.delete({
+     *   where: {
+     *     // ... filter to delete one MaintenanceReport
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MaintenanceReportDeleteArgs>(args: SelectSubset<T, MaintenanceReportDeleteArgs<ExtArgs>>): Prisma__MaintenanceReportClient<$Result.GetResult<Prisma.$MaintenanceReportPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one MaintenanceReport.
+     * @param {MaintenanceReportUpdateArgs} args - Arguments to update one MaintenanceReport.
+     * @example
+     * // Update one MaintenanceReport
+     * const maintenanceReport = await prisma.maintenanceReport.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MaintenanceReportUpdateArgs>(args: SelectSubset<T, MaintenanceReportUpdateArgs<ExtArgs>>): Prisma__MaintenanceReportClient<$Result.GetResult<Prisma.$MaintenanceReportPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more MaintenanceReports.
+     * @param {MaintenanceReportDeleteManyArgs} args - Arguments to filter MaintenanceReports to delete.
+     * @example
+     * // Delete a few MaintenanceReports
+     * const { count } = await prisma.maintenanceReport.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MaintenanceReportDeleteManyArgs>(args?: SelectSubset<T, MaintenanceReportDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MaintenanceReports.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaintenanceReportUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many MaintenanceReports
+     * const maintenanceReport = await prisma.maintenanceReport.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MaintenanceReportUpdateManyArgs>(args: SelectSubset<T, MaintenanceReportUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MaintenanceReports and returns the data updated in the database.
+     * @param {MaintenanceReportUpdateManyAndReturnArgs} args - Arguments to update many MaintenanceReports.
+     * @example
+     * // Update many MaintenanceReports
+     * const maintenanceReport = await prisma.maintenanceReport.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more MaintenanceReports and only return the `id`
+     * const maintenanceReportWithIdOnly = await prisma.maintenanceReport.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends MaintenanceReportUpdateManyAndReturnArgs>(args: SelectSubset<T, MaintenanceReportUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaintenanceReportPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one MaintenanceReport.
+     * @param {MaintenanceReportUpsertArgs} args - Arguments to update or create a MaintenanceReport.
+     * @example
+     * // Update or create a MaintenanceReport
+     * const maintenanceReport = await prisma.maintenanceReport.upsert({
+     *   create: {
+     *     // ... data to create a MaintenanceReport
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the MaintenanceReport we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MaintenanceReportUpsertArgs>(args: SelectSubset<T, MaintenanceReportUpsertArgs<ExtArgs>>): Prisma__MaintenanceReportClient<$Result.GetResult<Prisma.$MaintenanceReportPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of MaintenanceReports.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaintenanceReportCountArgs} args - Arguments to filter MaintenanceReports to count.
+     * @example
+     * // Count the number of MaintenanceReports
+     * const count = await prisma.maintenanceReport.count({
+     *   where: {
+     *     // ... the filter for the MaintenanceReports we want to count
+     *   }
+     * })
+    **/
+    count<T extends MaintenanceReportCountArgs>(
+      args?: Subset<T, MaintenanceReportCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MaintenanceReportCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a MaintenanceReport.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaintenanceReportAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MaintenanceReportAggregateArgs>(args: Subset<T, MaintenanceReportAggregateArgs>): Prisma.PrismaPromise<GetMaintenanceReportAggregateType<T>>
+
+    /**
+     * Group by MaintenanceReport.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaintenanceReportGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MaintenanceReportGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MaintenanceReportGroupByArgs['orderBy'] }
+        : { orderBy?: MaintenanceReportGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MaintenanceReportGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMaintenanceReportGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the MaintenanceReport model
+   */
+  readonly fields: MaintenanceReportFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for MaintenanceReport.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MaintenanceReportClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    room<T extends MaintenanceReport$roomArgs<ExtArgs> = {}>(args?: Subset<T, MaintenanceReport$roomArgs<ExtArgs>>): Prisma__RoomClient<$Result.GetResult<Prisma.$RoomPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    conversation<T extends MaintenanceReport$conversationArgs<ExtArgs> = {}>(args?: Subset<T, MaintenanceReport$conversationArgs<ExtArgs>>): Prisma__ConversationClient<$Result.GetResult<Prisma.$ConversationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the MaintenanceReport model
+   */
+  interface MaintenanceReportFieldRefs {
+    readonly id: FieldRef<"MaintenanceReport", 'String'>
+    readonly userId: FieldRef<"MaintenanceReport", 'String'>
+    readonly roomId: FieldRef<"MaintenanceReport", 'String'>
+    readonly category: FieldRef<"MaintenanceReport", 'MaintenanceCategory'>
+    readonly priority: FieldRef<"MaintenanceReport", 'MaintenancePriority'>
+    readonly status: FieldRef<"MaintenanceReport", 'MaintenanceStatus'>
+    readonly title: FieldRef<"MaintenanceReport", 'String'>
+    readonly description: FieldRef<"MaintenanceReport", 'String'>
+    readonly location: FieldRef<"MaintenanceReport", 'String'>
+    readonly attachments: FieldRef<"MaintenanceReport", 'String[]'>
+    readonly conversationId: FieldRef<"MaintenanceReport", 'String'>
+    readonly resolvedAt: FieldRef<"MaintenanceReport", 'DateTime'>
+    readonly createdAt: FieldRef<"MaintenanceReport", 'DateTime'>
+    readonly updatedAt: FieldRef<"MaintenanceReport", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * MaintenanceReport findUnique
+   */
+  export type MaintenanceReportFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceReport
+     */
+    select?: MaintenanceReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceReport
+     */
+    omit?: MaintenanceReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceReportInclude<ExtArgs> | null
+    /**
+     * Filter, which MaintenanceReport to fetch.
+     */
+    where: MaintenanceReportWhereUniqueInput
+  }
+
+  /**
+   * MaintenanceReport findUniqueOrThrow
+   */
+  export type MaintenanceReportFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceReport
+     */
+    select?: MaintenanceReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceReport
+     */
+    omit?: MaintenanceReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceReportInclude<ExtArgs> | null
+    /**
+     * Filter, which MaintenanceReport to fetch.
+     */
+    where: MaintenanceReportWhereUniqueInput
+  }
+
+  /**
+   * MaintenanceReport findFirst
+   */
+  export type MaintenanceReportFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceReport
+     */
+    select?: MaintenanceReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceReport
+     */
+    omit?: MaintenanceReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceReportInclude<ExtArgs> | null
+    /**
+     * Filter, which MaintenanceReport to fetch.
+     */
+    where?: MaintenanceReportWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaintenanceReports to fetch.
+     */
+    orderBy?: MaintenanceReportOrderByWithRelationInput | MaintenanceReportOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MaintenanceReports.
+     */
+    cursor?: MaintenanceReportWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaintenanceReports from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaintenanceReports.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MaintenanceReports.
+     */
+    distinct?: MaintenanceReportScalarFieldEnum | MaintenanceReportScalarFieldEnum[]
+  }
+
+  /**
+   * MaintenanceReport findFirstOrThrow
+   */
+  export type MaintenanceReportFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceReport
+     */
+    select?: MaintenanceReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceReport
+     */
+    omit?: MaintenanceReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceReportInclude<ExtArgs> | null
+    /**
+     * Filter, which MaintenanceReport to fetch.
+     */
+    where?: MaintenanceReportWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaintenanceReports to fetch.
+     */
+    orderBy?: MaintenanceReportOrderByWithRelationInput | MaintenanceReportOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MaintenanceReports.
+     */
+    cursor?: MaintenanceReportWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaintenanceReports from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaintenanceReports.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MaintenanceReports.
+     */
+    distinct?: MaintenanceReportScalarFieldEnum | MaintenanceReportScalarFieldEnum[]
+  }
+
+  /**
+   * MaintenanceReport findMany
+   */
+  export type MaintenanceReportFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceReport
+     */
+    select?: MaintenanceReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceReport
+     */
+    omit?: MaintenanceReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceReportInclude<ExtArgs> | null
+    /**
+     * Filter, which MaintenanceReports to fetch.
+     */
+    where?: MaintenanceReportWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaintenanceReports to fetch.
+     */
+    orderBy?: MaintenanceReportOrderByWithRelationInput | MaintenanceReportOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing MaintenanceReports.
+     */
+    cursor?: MaintenanceReportWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaintenanceReports from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaintenanceReports.
+     */
+    skip?: number
+    distinct?: MaintenanceReportScalarFieldEnum | MaintenanceReportScalarFieldEnum[]
+  }
+
+  /**
+   * MaintenanceReport create
+   */
+  export type MaintenanceReportCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceReport
+     */
+    select?: MaintenanceReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceReport
+     */
+    omit?: MaintenanceReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceReportInclude<ExtArgs> | null
+    /**
+     * The data needed to create a MaintenanceReport.
+     */
+    data: XOR<MaintenanceReportCreateInput, MaintenanceReportUncheckedCreateInput>
+  }
+
+  /**
+   * MaintenanceReport createMany
+   */
+  export type MaintenanceReportCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many MaintenanceReports.
+     */
+    data: MaintenanceReportCreateManyInput | MaintenanceReportCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MaintenanceReport createManyAndReturn
+   */
+  export type MaintenanceReportCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceReport
+     */
+    select?: MaintenanceReportSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceReport
+     */
+    omit?: MaintenanceReportOmit<ExtArgs> | null
+    /**
+     * The data used to create many MaintenanceReports.
+     */
+    data: MaintenanceReportCreateManyInput | MaintenanceReportCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceReportIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * MaintenanceReport update
+   */
+  export type MaintenanceReportUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceReport
+     */
+    select?: MaintenanceReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceReport
+     */
+    omit?: MaintenanceReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceReportInclude<ExtArgs> | null
+    /**
+     * The data needed to update a MaintenanceReport.
+     */
+    data: XOR<MaintenanceReportUpdateInput, MaintenanceReportUncheckedUpdateInput>
+    /**
+     * Choose, which MaintenanceReport to update.
+     */
+    where: MaintenanceReportWhereUniqueInput
+  }
+
+  /**
+   * MaintenanceReport updateMany
+   */
+  export type MaintenanceReportUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update MaintenanceReports.
+     */
+    data: XOR<MaintenanceReportUpdateManyMutationInput, MaintenanceReportUncheckedUpdateManyInput>
+    /**
+     * Filter which MaintenanceReports to update
+     */
+    where?: MaintenanceReportWhereInput
+    /**
+     * Limit how many MaintenanceReports to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * MaintenanceReport updateManyAndReturn
+   */
+  export type MaintenanceReportUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceReport
+     */
+    select?: MaintenanceReportSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceReport
+     */
+    omit?: MaintenanceReportOmit<ExtArgs> | null
+    /**
+     * The data used to update MaintenanceReports.
+     */
+    data: XOR<MaintenanceReportUpdateManyMutationInput, MaintenanceReportUncheckedUpdateManyInput>
+    /**
+     * Filter which MaintenanceReports to update
+     */
+    where?: MaintenanceReportWhereInput
+    /**
+     * Limit how many MaintenanceReports to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceReportIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * MaintenanceReport upsert
+   */
+  export type MaintenanceReportUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceReport
+     */
+    select?: MaintenanceReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceReport
+     */
+    omit?: MaintenanceReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceReportInclude<ExtArgs> | null
+    /**
+     * The filter to search for the MaintenanceReport to update in case it exists.
+     */
+    where: MaintenanceReportWhereUniqueInput
+    /**
+     * In case the MaintenanceReport found by the `where` argument doesn't exist, create a new MaintenanceReport with this data.
+     */
+    create: XOR<MaintenanceReportCreateInput, MaintenanceReportUncheckedCreateInput>
+    /**
+     * In case the MaintenanceReport was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MaintenanceReportUpdateInput, MaintenanceReportUncheckedUpdateInput>
+  }
+
+  /**
+   * MaintenanceReport delete
+   */
+  export type MaintenanceReportDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceReport
+     */
+    select?: MaintenanceReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceReport
+     */
+    omit?: MaintenanceReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceReportInclude<ExtArgs> | null
+    /**
+     * Filter which MaintenanceReport to delete.
+     */
+    where: MaintenanceReportWhereUniqueInput
+  }
+
+  /**
+   * MaintenanceReport deleteMany
+   */
+  export type MaintenanceReportDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MaintenanceReports to delete
+     */
+    where?: MaintenanceReportWhereInput
+    /**
+     * Limit how many MaintenanceReports to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * MaintenanceReport.room
+   */
+  export type MaintenanceReport$roomArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Room
+     */
+    select?: RoomSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Room
+     */
+    omit?: RoomOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomInclude<ExtArgs> | null
+    where?: RoomWhereInput
+  }
+
+  /**
+   * MaintenanceReport.conversation
+   */
+  export type MaintenanceReport$conversationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Conversation
+     */
+    select?: ConversationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Conversation
+     */
+    omit?: ConversationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConversationInclude<ExtArgs> | null
+    where?: ConversationWhereInput
+  }
+
+  /**
+   * MaintenanceReport without action
+   */
+  export type MaintenanceReportDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceReport
+     */
+    select?: MaintenanceReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceReport
+     */
+    omit?: MaintenanceReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceReportInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -37999,6 +39459,26 @@ export namespace Prisma {
   export type MessageReadScalarFieldEnum = (typeof MessageReadScalarFieldEnum)[keyof typeof MessageReadScalarFieldEnum]
 
 
+  export const MaintenanceReportScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    roomId: 'roomId',
+    category: 'category',
+    priority: 'priority',
+    status: 'status',
+    title: 'title',
+    description: 'description',
+    location: 'location',
+    attachments: 'attachments',
+    conversationId: 'conversationId',
+    resolvedAt: 'resolvedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type MaintenanceReportScalarFieldEnum = (typeof MaintenanceReportScalarFieldEnum)[keyof typeof MaintenanceReportScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -38302,6 +39782,48 @@ export namespace Prisma {
    */
   export type ListEnumNotificationPriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NotificationPriority[]'>
     
+
+
+  /**
+   * Reference to a field of type 'MaintenanceCategory'
+   */
+  export type EnumMaintenanceCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MaintenanceCategory'>
+    
+
+
+  /**
+   * Reference to a field of type 'MaintenanceCategory[]'
+   */
+  export type ListEnumMaintenanceCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MaintenanceCategory[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'MaintenancePriority'
+   */
+  export type EnumMaintenancePriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MaintenancePriority'>
+    
+
+
+  /**
+   * Reference to a field of type 'MaintenancePriority[]'
+   */
+  export type ListEnumMaintenancePriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MaintenancePriority[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'MaintenanceStatus'
+   */
+  export type EnumMaintenanceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MaintenanceStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'MaintenanceStatus[]'
+   */
+  export type ListEnumMaintenanceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MaintenanceStatus[]'>
+    
   /**
    * Deep Input Types
    */
@@ -38350,6 +39872,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantListRelationFilter
     sentMessages?: MessageListRelationFilter
     readMessages?: MessageReadListRelationFilter
+    maintenanceReports?: MaintenanceReportListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -38392,6 +39915,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantOrderByRelationAggregateInput
     sentMessages?: MessageOrderByRelationAggregateInput
     readMessages?: MessageReadOrderByRelationAggregateInput
+    maintenanceReports?: MaintenanceReportOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -38437,6 +39961,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantListRelationFilter
     sentMessages?: MessageListRelationFilter
     readMessages?: MessageReadListRelationFilter
+    maintenanceReports?: MaintenanceReportListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -38980,6 +40505,7 @@ export namespace Prisma {
     statuses?: RoomStatusListRelationFilter
     residents?: UserListRelationFilter
     prices?: PriceListRelationFilter
+    maintenanceReports?: MaintenanceReportListRelationFilter
   }
 
   export type RoomOrderByWithRelationInput = {
@@ -39004,6 +40530,7 @@ export namespace Prisma {
     statuses?: RoomStatusOrderByRelationAggregateInput
     residents?: UserOrderByRelationAggregateInput
     prices?: PriceOrderByRelationAggregateInput
+    maintenanceReports?: MaintenanceReportOrderByRelationAggregateInput
   }
 
   export type RoomWhereUniqueInput = Prisma.AtLeast<{
@@ -39032,6 +40559,7 @@ export namespace Prisma {
     statuses?: RoomStatusListRelationFilter
     residents?: UserListRelationFilter
     prices?: PriceListRelationFilter
+    maintenanceReports?: MaintenanceReportListRelationFilter
   }, "id" | "floorId_number">
 
   export type RoomOrderByWithAggregationInput = {
@@ -40350,6 +41878,7 @@ export namespace Prisma {
     createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
     participants?: ConversationParticipantListRelationFilter
     messages?: MessageListRelationFilter
+    maintenanceReport?: XOR<MaintenanceReportNullableScalarRelationFilter, MaintenanceReportWhereInput> | null
   }
 
   export type ConversationOrderByWithRelationInput = {
@@ -40362,6 +41891,7 @@ export namespace Prisma {
     createdBy?: UserOrderByWithRelationInput
     participants?: ConversationParticipantOrderByRelationAggregateInput
     messages?: MessageOrderByRelationAggregateInput
+    maintenanceReport?: MaintenanceReportOrderByWithRelationInput
   }
 
   export type ConversationWhereUniqueInput = Prisma.AtLeast<{
@@ -40377,6 +41907,7 @@ export namespace Prisma {
     createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
     participants?: ConversationParticipantListRelationFilter
     messages?: MessageListRelationFilter
+    maintenanceReport?: XOR<MaintenanceReportNullableScalarRelationFilter, MaintenanceReportWhereInput> | null
   }, "id">
 
   export type ConversationOrderByWithAggregationInput = {
@@ -40638,6 +42169,112 @@ export namespace Prisma {
     readAt?: DateTimeWithAggregatesFilter<"MessageRead"> | Date | string
   }
 
+  export type MaintenanceReportWhereInput = {
+    AND?: MaintenanceReportWhereInput | MaintenanceReportWhereInput[]
+    OR?: MaintenanceReportWhereInput[]
+    NOT?: MaintenanceReportWhereInput | MaintenanceReportWhereInput[]
+    id?: StringFilter<"MaintenanceReport"> | string
+    userId?: StringFilter<"MaintenanceReport"> | string
+    roomId?: StringNullableFilter<"MaintenanceReport"> | string | null
+    category?: EnumMaintenanceCategoryFilter<"MaintenanceReport"> | $Enums.MaintenanceCategory
+    priority?: EnumMaintenancePriorityFilter<"MaintenanceReport"> | $Enums.MaintenancePriority
+    status?: EnumMaintenanceStatusFilter<"MaintenanceReport"> | $Enums.MaintenanceStatus
+    title?: StringFilter<"MaintenanceReport"> | string
+    description?: StringFilter<"MaintenanceReport"> | string
+    location?: StringFilter<"MaintenanceReport"> | string
+    attachments?: StringNullableListFilter<"MaintenanceReport">
+    conversationId?: StringNullableFilter<"MaintenanceReport"> | string | null
+    resolvedAt?: DateTimeNullableFilter<"MaintenanceReport"> | Date | string | null
+    createdAt?: DateTimeFilter<"MaintenanceReport"> | Date | string
+    updatedAt?: DateTimeFilter<"MaintenanceReport"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    room?: XOR<RoomNullableScalarRelationFilter, RoomWhereInput> | null
+    conversation?: XOR<ConversationNullableScalarRelationFilter, ConversationWhereInput> | null
+  }
+
+  export type MaintenanceReportOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    roomId?: SortOrderInput | SortOrder
+    category?: SortOrder
+    priority?: SortOrder
+    status?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    location?: SortOrder
+    attachments?: SortOrder
+    conversationId?: SortOrderInput | SortOrder
+    resolvedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    room?: RoomOrderByWithRelationInput
+    conversation?: ConversationOrderByWithRelationInput
+  }
+
+  export type MaintenanceReportWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    conversationId?: string
+    AND?: MaintenanceReportWhereInput | MaintenanceReportWhereInput[]
+    OR?: MaintenanceReportWhereInput[]
+    NOT?: MaintenanceReportWhereInput | MaintenanceReportWhereInput[]
+    userId?: StringFilter<"MaintenanceReport"> | string
+    roomId?: StringNullableFilter<"MaintenanceReport"> | string | null
+    category?: EnumMaintenanceCategoryFilter<"MaintenanceReport"> | $Enums.MaintenanceCategory
+    priority?: EnumMaintenancePriorityFilter<"MaintenanceReport"> | $Enums.MaintenancePriority
+    status?: EnumMaintenanceStatusFilter<"MaintenanceReport"> | $Enums.MaintenanceStatus
+    title?: StringFilter<"MaintenanceReport"> | string
+    description?: StringFilter<"MaintenanceReport"> | string
+    location?: StringFilter<"MaintenanceReport"> | string
+    attachments?: StringNullableListFilter<"MaintenanceReport">
+    resolvedAt?: DateTimeNullableFilter<"MaintenanceReport"> | Date | string | null
+    createdAt?: DateTimeFilter<"MaintenanceReport"> | Date | string
+    updatedAt?: DateTimeFilter<"MaintenanceReport"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    room?: XOR<RoomNullableScalarRelationFilter, RoomWhereInput> | null
+    conversation?: XOR<ConversationNullableScalarRelationFilter, ConversationWhereInput> | null
+  }, "id" | "conversationId">
+
+  export type MaintenanceReportOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    roomId?: SortOrderInput | SortOrder
+    category?: SortOrder
+    priority?: SortOrder
+    status?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    location?: SortOrder
+    attachments?: SortOrder
+    conversationId?: SortOrderInput | SortOrder
+    resolvedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: MaintenanceReportCountOrderByAggregateInput
+    _max?: MaintenanceReportMaxOrderByAggregateInput
+    _min?: MaintenanceReportMinOrderByAggregateInput
+  }
+
+  export type MaintenanceReportScalarWhereWithAggregatesInput = {
+    AND?: MaintenanceReportScalarWhereWithAggregatesInput | MaintenanceReportScalarWhereWithAggregatesInput[]
+    OR?: MaintenanceReportScalarWhereWithAggregatesInput[]
+    NOT?: MaintenanceReportScalarWhereWithAggregatesInput | MaintenanceReportScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"MaintenanceReport"> | string
+    userId?: StringWithAggregatesFilter<"MaintenanceReport"> | string
+    roomId?: StringNullableWithAggregatesFilter<"MaintenanceReport"> | string | null
+    category?: EnumMaintenanceCategoryWithAggregatesFilter<"MaintenanceReport"> | $Enums.MaintenanceCategory
+    priority?: EnumMaintenancePriorityWithAggregatesFilter<"MaintenanceReport"> | $Enums.MaintenancePriority
+    status?: EnumMaintenanceStatusWithAggregatesFilter<"MaintenanceReport"> | $Enums.MaintenanceStatus
+    title?: StringWithAggregatesFilter<"MaintenanceReport"> | string
+    description?: StringWithAggregatesFilter<"MaintenanceReport"> | string
+    location?: StringWithAggregatesFilter<"MaintenanceReport"> | string
+    attachments?: StringNullableListFilter<"MaintenanceReport">
+    conversationId?: StringNullableWithAggregatesFilter<"MaintenanceReport"> | string | null
+    resolvedAt?: DateTimeNullableWithAggregatesFilter<"MaintenanceReport"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"MaintenanceReport"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"MaintenanceReport"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     email: string
@@ -40676,6 +42313,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     readMessages?: MessageReadCreateNestedManyWithoutUserInput
+    maintenanceReports?: MaintenanceReportCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -40716,6 +42354,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     readMessages?: MessageReadUncheckedCreateNestedManyWithoutUserInput
+    maintenanceReports?: MaintenanceReportUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -40756,6 +42395,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     readMessages?: MessageReadUpdateManyWithoutUserNestedInput
+    maintenanceReports?: MaintenanceReportUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -40796,6 +42436,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     readMessages?: MessageReadUncheckedUpdateManyWithoutUserNestedInput
+    maintenanceReports?: MaintenanceReportUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -41365,6 +43006,7 @@ export namespace Prisma {
     statuses?: RoomStatusCreateNestedManyWithoutRoomInput
     residents?: UserCreateNestedManyWithoutRoomInput
     prices?: PriceCreateNestedManyWithoutRoomInput
+    maintenanceReports?: MaintenanceReportCreateNestedManyWithoutRoomInput
   }
 
   export type RoomUncheckedCreateInput = {
@@ -41385,6 +43027,7 @@ export namespace Prisma {
     statuses?: RoomStatusUncheckedCreateNestedManyWithoutRoomInput
     residents?: UserUncheckedCreateNestedManyWithoutRoomInput
     prices?: PriceUncheckedCreateNestedManyWithoutRoomInput
+    maintenanceReports?: MaintenanceReportUncheckedCreateNestedManyWithoutRoomInput
   }
 
   export type RoomUpdateInput = {
@@ -41405,6 +43048,7 @@ export namespace Prisma {
     statuses?: RoomStatusUpdateManyWithoutRoomNestedInput
     residents?: UserUpdateManyWithoutRoomNestedInput
     prices?: PriceUpdateManyWithoutRoomNestedInput
+    maintenanceReports?: MaintenanceReportUpdateManyWithoutRoomNestedInput
   }
 
   export type RoomUncheckedUpdateInput = {
@@ -41425,6 +43069,7 @@ export namespace Prisma {
     statuses?: RoomStatusUncheckedUpdateManyWithoutRoomNestedInput
     residents?: UserUncheckedUpdateManyWithoutRoomNestedInput
     prices?: PriceUncheckedUpdateManyWithoutRoomNestedInput
+    maintenanceReports?: MaintenanceReportUncheckedUpdateManyWithoutRoomNestedInput
   }
 
   export type RoomCreateManyInput = {
@@ -42815,6 +44460,7 @@ export namespace Prisma {
     createdBy: UserCreateNestedOneWithoutCreatedConversationsInput
     participants?: ConversationParticipantCreateNestedManyWithoutConversationInput
     messages?: MessageCreateNestedManyWithoutConversationInput
+    maintenanceReport?: MaintenanceReportCreateNestedOneWithoutConversationInput
   }
 
   export type ConversationUncheckedCreateInput = {
@@ -42826,6 +44472,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     participants?: ConversationParticipantUncheckedCreateNestedManyWithoutConversationInput
     messages?: MessageUncheckedCreateNestedManyWithoutConversationInput
+    maintenanceReport?: MaintenanceReportUncheckedCreateNestedOneWithoutConversationInput
   }
 
   export type ConversationUpdateInput = {
@@ -42837,6 +44484,7 @@ export namespace Prisma {
     createdBy?: UserUpdateOneRequiredWithoutCreatedConversationsNestedInput
     participants?: ConversationParticipantUpdateManyWithoutConversationNestedInput
     messages?: MessageUpdateManyWithoutConversationNestedInput
+    maintenanceReport?: MaintenanceReportUpdateOneWithoutConversationNestedInput
   }
 
   export type ConversationUncheckedUpdateInput = {
@@ -42848,6 +44496,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     participants?: ConversationParticipantUncheckedUpdateManyWithoutConversationNestedInput
     messages?: MessageUncheckedUpdateManyWithoutConversationNestedInput
+    maintenanceReport?: MaintenanceReportUncheckedUpdateOneWithoutConversationNestedInput
   }
 
   export type ConversationCreateManyInput = {
@@ -43115,6 +44764,122 @@ export namespace Prisma {
     readAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type MaintenanceReportCreateInput = {
+    id?: string
+    category: $Enums.MaintenanceCategory
+    priority: $Enums.MaintenancePriority
+    status?: $Enums.MaintenanceStatus
+    title: string
+    description: string
+    location: string
+    attachments?: MaintenanceReportCreateattachmentsInput | string[]
+    resolvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutMaintenanceReportsInput
+    room?: RoomCreateNestedOneWithoutMaintenanceReportsInput
+    conversation?: ConversationCreateNestedOneWithoutMaintenanceReportInput
+  }
+
+  export type MaintenanceReportUncheckedCreateInput = {
+    id?: string
+    userId: string
+    roomId?: string | null
+    category: $Enums.MaintenanceCategory
+    priority: $Enums.MaintenancePriority
+    status?: $Enums.MaintenanceStatus
+    title: string
+    description: string
+    location: string
+    attachments?: MaintenanceReportCreateattachmentsInput | string[]
+    conversationId?: string | null
+    resolvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaintenanceReportUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    category?: EnumMaintenanceCategoryFieldUpdateOperationsInput | $Enums.MaintenanceCategory
+    priority?: EnumMaintenancePriorityFieldUpdateOperationsInput | $Enums.MaintenancePriority
+    status?: EnumMaintenanceStatusFieldUpdateOperationsInput | $Enums.MaintenanceStatus
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    attachments?: MaintenanceReportUpdateattachmentsInput | string[]
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutMaintenanceReportsNestedInput
+    room?: RoomUpdateOneWithoutMaintenanceReportsNestedInput
+    conversation?: ConversationUpdateOneWithoutMaintenanceReportNestedInput
+  }
+
+  export type MaintenanceReportUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumMaintenanceCategoryFieldUpdateOperationsInput | $Enums.MaintenanceCategory
+    priority?: EnumMaintenancePriorityFieldUpdateOperationsInput | $Enums.MaintenancePriority
+    status?: EnumMaintenanceStatusFieldUpdateOperationsInput | $Enums.MaintenanceStatus
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    attachments?: MaintenanceReportUpdateattachmentsInput | string[]
+    conversationId?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaintenanceReportCreateManyInput = {
+    id?: string
+    userId: string
+    roomId?: string | null
+    category: $Enums.MaintenanceCategory
+    priority: $Enums.MaintenancePriority
+    status?: $Enums.MaintenanceStatus
+    title: string
+    description: string
+    location: string
+    attachments?: MaintenanceReportCreateattachmentsInput | string[]
+    conversationId?: string | null
+    resolvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaintenanceReportUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    category?: EnumMaintenanceCategoryFieldUpdateOperationsInput | $Enums.MaintenanceCategory
+    priority?: EnumMaintenancePriorityFieldUpdateOperationsInput | $Enums.MaintenancePriority
+    status?: EnumMaintenanceStatusFieldUpdateOperationsInput | $Enums.MaintenanceStatus
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    attachments?: MaintenanceReportUpdateattachmentsInput | string[]
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaintenanceReportUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumMaintenanceCategoryFieldUpdateOperationsInput | $Enums.MaintenanceCategory
+    priority?: EnumMaintenancePriorityFieldUpdateOperationsInput | $Enums.MaintenancePriority
+    status?: EnumMaintenanceStatusFieldUpdateOperationsInput | $Enums.MaintenanceStatus
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    attachments?: MaintenanceReportUpdateattachmentsInput | string[]
+    conversationId?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -43285,6 +45050,12 @@ export namespace Prisma {
     none?: MessageReadWhereInput
   }
 
+  export type MaintenanceReportListRelationFilter = {
+    every?: MaintenanceReportWhereInput
+    some?: MaintenanceReportWhereInput
+    none?: MaintenanceReportWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -43343,6 +45114,10 @@ export namespace Prisma {
   }
 
   export type MessageReadOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type MaintenanceReportOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -44910,6 +46685,11 @@ export namespace Prisma {
     _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
+  export type MaintenanceReportNullableScalarRelationFilter = {
+    is?: MaintenanceReportWhereInput | null
+    isNot?: MaintenanceReportWhereInput | null
+  }
+
   export type ConversationCountOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
@@ -45064,6 +46844,111 @@ export namespace Prisma {
     readAt?: SortOrder
   }
 
+  export type EnumMaintenanceCategoryFilter<$PrismaModel = never> = {
+    equals?: $Enums.MaintenanceCategory | EnumMaintenanceCategoryFieldRefInput<$PrismaModel>
+    in?: $Enums.MaintenanceCategory[] | ListEnumMaintenanceCategoryFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MaintenanceCategory[] | ListEnumMaintenanceCategoryFieldRefInput<$PrismaModel>
+    not?: NestedEnumMaintenanceCategoryFilter<$PrismaModel> | $Enums.MaintenanceCategory
+  }
+
+  export type EnumMaintenancePriorityFilter<$PrismaModel = never> = {
+    equals?: $Enums.MaintenancePriority | EnumMaintenancePriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.MaintenancePriority[] | ListEnumMaintenancePriorityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MaintenancePriority[] | ListEnumMaintenancePriorityFieldRefInput<$PrismaModel>
+    not?: NestedEnumMaintenancePriorityFilter<$PrismaModel> | $Enums.MaintenancePriority
+  }
+
+  export type EnumMaintenanceStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.MaintenanceStatus | EnumMaintenanceStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MaintenanceStatus[] | ListEnumMaintenanceStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MaintenanceStatus[] | ListEnumMaintenanceStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumMaintenanceStatusFilter<$PrismaModel> | $Enums.MaintenanceStatus
+  }
+
+  export type ConversationNullableScalarRelationFilter = {
+    is?: ConversationWhereInput | null
+    isNot?: ConversationWhereInput | null
+  }
+
+  export type MaintenanceReportCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    roomId?: SortOrder
+    category?: SortOrder
+    priority?: SortOrder
+    status?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    location?: SortOrder
+    attachments?: SortOrder
+    conversationId?: SortOrder
+    resolvedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MaintenanceReportMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    roomId?: SortOrder
+    category?: SortOrder
+    priority?: SortOrder
+    status?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    location?: SortOrder
+    conversationId?: SortOrder
+    resolvedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MaintenanceReportMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    roomId?: SortOrder
+    category?: SortOrder
+    priority?: SortOrder
+    status?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    location?: SortOrder
+    conversationId?: SortOrder
+    resolvedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumMaintenanceCategoryWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.MaintenanceCategory | EnumMaintenanceCategoryFieldRefInput<$PrismaModel>
+    in?: $Enums.MaintenanceCategory[] | ListEnumMaintenanceCategoryFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MaintenanceCategory[] | ListEnumMaintenanceCategoryFieldRefInput<$PrismaModel>
+    not?: NestedEnumMaintenanceCategoryWithAggregatesFilter<$PrismaModel> | $Enums.MaintenanceCategory
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumMaintenanceCategoryFilter<$PrismaModel>
+    _max?: NestedEnumMaintenanceCategoryFilter<$PrismaModel>
+  }
+
+  export type EnumMaintenancePriorityWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.MaintenancePriority | EnumMaintenancePriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.MaintenancePriority[] | ListEnumMaintenancePriorityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MaintenancePriority[] | ListEnumMaintenancePriorityFieldRefInput<$PrismaModel>
+    not?: NestedEnumMaintenancePriorityWithAggregatesFilter<$PrismaModel> | $Enums.MaintenancePriority
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumMaintenancePriorityFilter<$PrismaModel>
+    _max?: NestedEnumMaintenancePriorityFilter<$PrismaModel>
+  }
+
+  export type EnumMaintenanceStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.MaintenanceStatus | EnumMaintenanceStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MaintenanceStatus[] | ListEnumMaintenanceStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MaintenanceStatus[] | ListEnumMaintenanceStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumMaintenanceStatusWithAggregatesFilter<$PrismaModel> | $Enums.MaintenanceStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumMaintenanceStatusFilter<$PrismaModel>
+    _max?: NestedEnumMaintenanceStatusFilter<$PrismaModel>
+  }
+
   export type ConfirmationCreateNestedManyWithoutRequesterInput = {
     create?: XOR<ConfirmationCreateWithoutRequesterInput, ConfirmationUncheckedCreateWithoutRequesterInput> | ConfirmationCreateWithoutRequesterInput[] | ConfirmationUncheckedCreateWithoutRequesterInput[]
     connectOrCreate?: ConfirmationCreateOrConnectWithoutRequesterInput | ConfirmationCreateOrConnectWithoutRequesterInput[]
@@ -45194,6 +47079,13 @@ export namespace Prisma {
     connect?: MessageReadWhereUniqueInput | MessageReadWhereUniqueInput[]
   }
 
+  export type MaintenanceReportCreateNestedManyWithoutUserInput = {
+    create?: XOR<MaintenanceReportCreateWithoutUserInput, MaintenanceReportUncheckedCreateWithoutUserInput> | MaintenanceReportCreateWithoutUserInput[] | MaintenanceReportUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MaintenanceReportCreateOrConnectWithoutUserInput | MaintenanceReportCreateOrConnectWithoutUserInput[]
+    createMany?: MaintenanceReportCreateManyUserInputEnvelope
+    connect?: MaintenanceReportWhereUniqueInput | MaintenanceReportWhereUniqueInput[]
+  }
+
   export type ConfirmationUncheckedCreateNestedManyWithoutRequesterInput = {
     create?: XOR<ConfirmationCreateWithoutRequesterInput, ConfirmationUncheckedCreateWithoutRequesterInput> | ConfirmationCreateWithoutRequesterInput[] | ConfirmationUncheckedCreateWithoutRequesterInput[]
     connectOrCreate?: ConfirmationCreateOrConnectWithoutRequesterInput | ConfirmationCreateOrConnectWithoutRequesterInput[]
@@ -45310,6 +47202,13 @@ export namespace Prisma {
     connectOrCreate?: MessageReadCreateOrConnectWithoutUserInput | MessageReadCreateOrConnectWithoutUserInput[]
     createMany?: MessageReadCreateManyUserInputEnvelope
     connect?: MessageReadWhereUniqueInput | MessageReadWhereUniqueInput[]
+  }
+
+  export type MaintenanceReportUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<MaintenanceReportCreateWithoutUserInput, MaintenanceReportUncheckedCreateWithoutUserInput> | MaintenanceReportCreateWithoutUserInput[] | MaintenanceReportUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MaintenanceReportCreateOrConnectWithoutUserInput | MaintenanceReportCreateOrConnectWithoutUserInput[]
+    createMany?: MaintenanceReportCreateManyUserInputEnvelope
+    connect?: MaintenanceReportWhereUniqueInput | MaintenanceReportWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -45594,6 +47493,20 @@ export namespace Prisma {
     deleteMany?: MessageReadScalarWhereInput | MessageReadScalarWhereInput[]
   }
 
+  export type MaintenanceReportUpdateManyWithoutUserNestedInput = {
+    create?: XOR<MaintenanceReportCreateWithoutUserInput, MaintenanceReportUncheckedCreateWithoutUserInput> | MaintenanceReportCreateWithoutUserInput[] | MaintenanceReportUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MaintenanceReportCreateOrConnectWithoutUserInput | MaintenanceReportCreateOrConnectWithoutUserInput[]
+    upsert?: MaintenanceReportUpsertWithWhereUniqueWithoutUserInput | MaintenanceReportUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: MaintenanceReportCreateManyUserInputEnvelope
+    set?: MaintenanceReportWhereUniqueInput | MaintenanceReportWhereUniqueInput[]
+    disconnect?: MaintenanceReportWhereUniqueInput | MaintenanceReportWhereUniqueInput[]
+    delete?: MaintenanceReportWhereUniqueInput | MaintenanceReportWhereUniqueInput[]
+    connect?: MaintenanceReportWhereUniqueInput | MaintenanceReportWhereUniqueInput[]
+    update?: MaintenanceReportUpdateWithWhereUniqueWithoutUserInput | MaintenanceReportUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: MaintenanceReportUpdateManyWithWhereWithoutUserInput | MaintenanceReportUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: MaintenanceReportScalarWhereInput | MaintenanceReportScalarWhereInput[]
+  }
+
   export type ConfirmationUncheckedUpdateManyWithoutRequesterNestedInput = {
     create?: XOR<ConfirmationCreateWithoutRequesterInput, ConfirmationUncheckedCreateWithoutRequesterInput> | ConfirmationCreateWithoutRequesterInput[] | ConfirmationUncheckedCreateWithoutRequesterInput[]
     connectOrCreate?: ConfirmationCreateOrConnectWithoutRequesterInput | ConfirmationCreateOrConnectWithoutRequesterInput[]
@@ -45826,6 +47739,20 @@ export namespace Prisma {
     update?: MessageReadUpdateWithWhereUniqueWithoutUserInput | MessageReadUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: MessageReadUpdateManyWithWhereWithoutUserInput | MessageReadUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: MessageReadScalarWhereInput | MessageReadScalarWhereInput[]
+  }
+
+  export type MaintenanceReportUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<MaintenanceReportCreateWithoutUserInput, MaintenanceReportUncheckedCreateWithoutUserInput> | MaintenanceReportCreateWithoutUserInput[] | MaintenanceReportUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MaintenanceReportCreateOrConnectWithoutUserInput | MaintenanceReportCreateOrConnectWithoutUserInput[]
+    upsert?: MaintenanceReportUpsertWithWhereUniqueWithoutUserInput | MaintenanceReportUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: MaintenanceReportCreateManyUserInputEnvelope
+    set?: MaintenanceReportWhereUniqueInput | MaintenanceReportWhereUniqueInput[]
+    disconnect?: MaintenanceReportWhereUniqueInput | MaintenanceReportWhereUniqueInput[]
+    delete?: MaintenanceReportWhereUniqueInput | MaintenanceReportWhereUniqueInput[]
+    connect?: MaintenanceReportWhereUniqueInput | MaintenanceReportWhereUniqueInput[]
+    update?: MaintenanceReportUpdateWithWhereUniqueWithoutUserInput | MaintenanceReportUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: MaintenanceReportUpdateManyWithWhereWithoutUserInput | MaintenanceReportUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: MaintenanceReportScalarWhereInput | MaintenanceReportScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutDormitoryAdminAssignmentsInput = {
@@ -46339,6 +48266,13 @@ export namespace Prisma {
     connect?: PriceWhereUniqueInput | PriceWhereUniqueInput[]
   }
 
+  export type MaintenanceReportCreateNestedManyWithoutRoomInput = {
+    create?: XOR<MaintenanceReportCreateWithoutRoomInput, MaintenanceReportUncheckedCreateWithoutRoomInput> | MaintenanceReportCreateWithoutRoomInput[] | MaintenanceReportUncheckedCreateWithoutRoomInput[]
+    connectOrCreate?: MaintenanceReportCreateOrConnectWithoutRoomInput | MaintenanceReportCreateOrConnectWithoutRoomInput[]
+    createMany?: MaintenanceReportCreateManyRoomInputEnvelope
+    connect?: MaintenanceReportWhereUniqueInput | MaintenanceReportWhereUniqueInput[]
+  }
+
   export type AnnouncementRecipientUncheckedCreateNestedManyWithoutRoomInput = {
     create?: XOR<AnnouncementRecipientCreateWithoutRoomInput, AnnouncementRecipientUncheckedCreateWithoutRoomInput> | AnnouncementRecipientCreateWithoutRoomInput[] | AnnouncementRecipientUncheckedCreateWithoutRoomInput[]
     connectOrCreate?: AnnouncementRecipientCreateOrConnectWithoutRoomInput | AnnouncementRecipientCreateOrConnectWithoutRoomInput[]
@@ -46379,6 +48313,13 @@ export namespace Prisma {
     connectOrCreate?: PriceCreateOrConnectWithoutRoomInput | PriceCreateOrConnectWithoutRoomInput[]
     createMany?: PriceCreateManyRoomInputEnvelope
     connect?: PriceWhereUniqueInput | PriceWhereUniqueInput[]
+  }
+
+  export type MaintenanceReportUncheckedCreateNestedManyWithoutRoomInput = {
+    create?: XOR<MaintenanceReportCreateWithoutRoomInput, MaintenanceReportUncheckedCreateWithoutRoomInput> | MaintenanceReportCreateWithoutRoomInput[] | MaintenanceReportUncheckedCreateWithoutRoomInput[]
+    connectOrCreate?: MaintenanceReportCreateOrConnectWithoutRoomInput | MaintenanceReportCreateOrConnectWithoutRoomInput[]
+    createMany?: MaintenanceReportCreateManyRoomInputEnvelope
+    connect?: MaintenanceReportWhereUniqueInput | MaintenanceReportWhereUniqueInput[]
   }
 
   export type RoomUpdateroomEquipmentInput = {
@@ -46511,6 +48452,20 @@ export namespace Prisma {
     deleteMany?: PriceScalarWhereInput | PriceScalarWhereInput[]
   }
 
+  export type MaintenanceReportUpdateManyWithoutRoomNestedInput = {
+    create?: XOR<MaintenanceReportCreateWithoutRoomInput, MaintenanceReportUncheckedCreateWithoutRoomInput> | MaintenanceReportCreateWithoutRoomInput[] | MaintenanceReportUncheckedCreateWithoutRoomInput[]
+    connectOrCreate?: MaintenanceReportCreateOrConnectWithoutRoomInput | MaintenanceReportCreateOrConnectWithoutRoomInput[]
+    upsert?: MaintenanceReportUpsertWithWhereUniqueWithoutRoomInput | MaintenanceReportUpsertWithWhereUniqueWithoutRoomInput[]
+    createMany?: MaintenanceReportCreateManyRoomInputEnvelope
+    set?: MaintenanceReportWhereUniqueInput | MaintenanceReportWhereUniqueInput[]
+    disconnect?: MaintenanceReportWhereUniqueInput | MaintenanceReportWhereUniqueInput[]
+    delete?: MaintenanceReportWhereUniqueInput | MaintenanceReportWhereUniqueInput[]
+    connect?: MaintenanceReportWhereUniqueInput | MaintenanceReportWhereUniqueInput[]
+    update?: MaintenanceReportUpdateWithWhereUniqueWithoutRoomInput | MaintenanceReportUpdateWithWhereUniqueWithoutRoomInput[]
+    updateMany?: MaintenanceReportUpdateManyWithWhereWithoutRoomInput | MaintenanceReportUpdateManyWithWhereWithoutRoomInput[]
+    deleteMany?: MaintenanceReportScalarWhereInput | MaintenanceReportScalarWhereInput[]
+  }
+
   export type AnnouncementRecipientUncheckedUpdateManyWithoutRoomNestedInput = {
     create?: XOR<AnnouncementRecipientCreateWithoutRoomInput, AnnouncementRecipientUncheckedCreateWithoutRoomInput> | AnnouncementRecipientCreateWithoutRoomInput[] | AnnouncementRecipientUncheckedCreateWithoutRoomInput[]
     connectOrCreate?: AnnouncementRecipientCreateOrConnectWithoutRoomInput | AnnouncementRecipientCreateOrConnectWithoutRoomInput[]
@@ -46593,6 +48548,20 @@ export namespace Prisma {
     update?: PriceUpdateWithWhereUniqueWithoutRoomInput | PriceUpdateWithWhereUniqueWithoutRoomInput[]
     updateMany?: PriceUpdateManyWithWhereWithoutRoomInput | PriceUpdateManyWithWhereWithoutRoomInput[]
     deleteMany?: PriceScalarWhereInput | PriceScalarWhereInput[]
+  }
+
+  export type MaintenanceReportUncheckedUpdateManyWithoutRoomNestedInput = {
+    create?: XOR<MaintenanceReportCreateWithoutRoomInput, MaintenanceReportUncheckedCreateWithoutRoomInput> | MaintenanceReportCreateWithoutRoomInput[] | MaintenanceReportUncheckedCreateWithoutRoomInput[]
+    connectOrCreate?: MaintenanceReportCreateOrConnectWithoutRoomInput | MaintenanceReportCreateOrConnectWithoutRoomInput[]
+    upsert?: MaintenanceReportUpsertWithWhereUniqueWithoutRoomInput | MaintenanceReportUpsertWithWhereUniqueWithoutRoomInput[]
+    createMany?: MaintenanceReportCreateManyRoomInputEnvelope
+    set?: MaintenanceReportWhereUniqueInput | MaintenanceReportWhereUniqueInput[]
+    disconnect?: MaintenanceReportWhereUniqueInput | MaintenanceReportWhereUniqueInput[]
+    delete?: MaintenanceReportWhereUniqueInput | MaintenanceReportWhereUniqueInput[]
+    connect?: MaintenanceReportWhereUniqueInput | MaintenanceReportWhereUniqueInput[]
+    update?: MaintenanceReportUpdateWithWhereUniqueWithoutRoomInput | MaintenanceReportUpdateWithWhereUniqueWithoutRoomInput[]
+    updateMany?: MaintenanceReportUpdateManyWithWhereWithoutRoomInput | MaintenanceReportUpdateManyWithWhereWithoutRoomInput[]
+    deleteMany?: MaintenanceReportScalarWhereInput | MaintenanceReportScalarWhereInput[]
   }
 
   export type RoomTypeCreateequipmentInput = {
@@ -47826,6 +49795,12 @@ export namespace Prisma {
     connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
   }
 
+  export type MaintenanceReportCreateNestedOneWithoutConversationInput = {
+    create?: XOR<MaintenanceReportCreateWithoutConversationInput, MaintenanceReportUncheckedCreateWithoutConversationInput>
+    connectOrCreate?: MaintenanceReportCreateOrConnectWithoutConversationInput
+    connect?: MaintenanceReportWhereUniqueInput
+  }
+
   export type ConversationParticipantUncheckedCreateNestedManyWithoutConversationInput = {
     create?: XOR<ConversationParticipantCreateWithoutConversationInput, ConversationParticipantUncheckedCreateWithoutConversationInput> | ConversationParticipantCreateWithoutConversationInput[] | ConversationParticipantUncheckedCreateWithoutConversationInput[]
     connectOrCreate?: ConversationParticipantCreateOrConnectWithoutConversationInput | ConversationParticipantCreateOrConnectWithoutConversationInput[]
@@ -47838,6 +49813,12 @@ export namespace Prisma {
     connectOrCreate?: MessageCreateOrConnectWithoutConversationInput | MessageCreateOrConnectWithoutConversationInput[]
     createMany?: MessageCreateManyConversationInputEnvelope
     connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+  }
+
+  export type MaintenanceReportUncheckedCreateNestedOneWithoutConversationInput = {
+    create?: XOR<MaintenanceReportCreateWithoutConversationInput, MaintenanceReportUncheckedCreateWithoutConversationInput>
+    connectOrCreate?: MaintenanceReportCreateOrConnectWithoutConversationInput
+    connect?: MaintenanceReportWhereUniqueInput
   }
 
   export type UserUpdateOneRequiredWithoutCreatedConversationsNestedInput = {
@@ -47876,6 +49857,16 @@ export namespace Prisma {
     deleteMany?: MessageScalarWhereInput | MessageScalarWhereInput[]
   }
 
+  export type MaintenanceReportUpdateOneWithoutConversationNestedInput = {
+    create?: XOR<MaintenanceReportCreateWithoutConversationInput, MaintenanceReportUncheckedCreateWithoutConversationInput>
+    connectOrCreate?: MaintenanceReportCreateOrConnectWithoutConversationInput
+    upsert?: MaintenanceReportUpsertWithoutConversationInput
+    disconnect?: MaintenanceReportWhereInput | boolean
+    delete?: MaintenanceReportWhereInput | boolean
+    connect?: MaintenanceReportWhereUniqueInput
+    update?: XOR<XOR<MaintenanceReportUpdateToOneWithWhereWithoutConversationInput, MaintenanceReportUpdateWithoutConversationInput>, MaintenanceReportUncheckedUpdateWithoutConversationInput>
+  }
+
   export type ConversationParticipantUncheckedUpdateManyWithoutConversationNestedInput = {
     create?: XOR<ConversationParticipantCreateWithoutConversationInput, ConversationParticipantUncheckedCreateWithoutConversationInput> | ConversationParticipantCreateWithoutConversationInput[] | ConversationParticipantUncheckedCreateWithoutConversationInput[]
     connectOrCreate?: ConversationParticipantCreateOrConnectWithoutConversationInput | ConversationParticipantCreateOrConnectWithoutConversationInput[]
@@ -47902,6 +49893,16 @@ export namespace Prisma {
     update?: MessageUpdateWithWhereUniqueWithoutConversationInput | MessageUpdateWithWhereUniqueWithoutConversationInput[]
     updateMany?: MessageUpdateManyWithWhereWithoutConversationInput | MessageUpdateManyWithWhereWithoutConversationInput[]
     deleteMany?: MessageScalarWhereInput | MessageScalarWhereInput[]
+  }
+
+  export type MaintenanceReportUncheckedUpdateOneWithoutConversationNestedInput = {
+    create?: XOR<MaintenanceReportCreateWithoutConversationInput, MaintenanceReportUncheckedCreateWithoutConversationInput>
+    connectOrCreate?: MaintenanceReportCreateOrConnectWithoutConversationInput
+    upsert?: MaintenanceReportUpsertWithoutConversationInput
+    disconnect?: MaintenanceReportWhereInput | boolean
+    delete?: MaintenanceReportWhereInput | boolean
+    connect?: MaintenanceReportWhereUniqueInput
+    update?: XOR<XOR<MaintenanceReportUpdateToOneWithWhereWithoutConversationInput, MaintenanceReportUpdateWithoutConversationInput>, MaintenanceReportUncheckedUpdateWithoutConversationInput>
   }
 
   export type ConversationCreateNestedOneWithoutParticipantsInput = {
@@ -48086,6 +50087,73 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutReadMessagesInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutReadMessagesInput, UserUpdateWithoutReadMessagesInput>, UserUncheckedUpdateWithoutReadMessagesInput>
+  }
+
+  export type MaintenanceReportCreateattachmentsInput = {
+    set: string[]
+  }
+
+  export type UserCreateNestedOneWithoutMaintenanceReportsInput = {
+    create?: XOR<UserCreateWithoutMaintenanceReportsInput, UserUncheckedCreateWithoutMaintenanceReportsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutMaintenanceReportsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type RoomCreateNestedOneWithoutMaintenanceReportsInput = {
+    create?: XOR<RoomCreateWithoutMaintenanceReportsInput, RoomUncheckedCreateWithoutMaintenanceReportsInput>
+    connectOrCreate?: RoomCreateOrConnectWithoutMaintenanceReportsInput
+    connect?: RoomWhereUniqueInput
+  }
+
+  export type ConversationCreateNestedOneWithoutMaintenanceReportInput = {
+    create?: XOR<ConversationCreateWithoutMaintenanceReportInput, ConversationUncheckedCreateWithoutMaintenanceReportInput>
+    connectOrCreate?: ConversationCreateOrConnectWithoutMaintenanceReportInput
+    connect?: ConversationWhereUniqueInput
+  }
+
+  export type EnumMaintenanceCategoryFieldUpdateOperationsInput = {
+    set?: $Enums.MaintenanceCategory
+  }
+
+  export type EnumMaintenancePriorityFieldUpdateOperationsInput = {
+    set?: $Enums.MaintenancePriority
+  }
+
+  export type EnumMaintenanceStatusFieldUpdateOperationsInput = {
+    set?: $Enums.MaintenanceStatus
+  }
+
+  export type MaintenanceReportUpdateattachmentsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type UserUpdateOneRequiredWithoutMaintenanceReportsNestedInput = {
+    create?: XOR<UserCreateWithoutMaintenanceReportsInput, UserUncheckedCreateWithoutMaintenanceReportsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutMaintenanceReportsInput
+    upsert?: UserUpsertWithoutMaintenanceReportsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutMaintenanceReportsInput, UserUpdateWithoutMaintenanceReportsInput>, UserUncheckedUpdateWithoutMaintenanceReportsInput>
+  }
+
+  export type RoomUpdateOneWithoutMaintenanceReportsNestedInput = {
+    create?: XOR<RoomCreateWithoutMaintenanceReportsInput, RoomUncheckedCreateWithoutMaintenanceReportsInput>
+    connectOrCreate?: RoomCreateOrConnectWithoutMaintenanceReportsInput
+    upsert?: RoomUpsertWithoutMaintenanceReportsInput
+    disconnect?: RoomWhereInput | boolean
+    delete?: RoomWhereInput | boolean
+    connect?: RoomWhereUniqueInput
+    update?: XOR<XOR<RoomUpdateToOneWithWhereWithoutMaintenanceReportsInput, RoomUpdateWithoutMaintenanceReportsInput>, RoomUncheckedUpdateWithoutMaintenanceReportsInput>
+  }
+
+  export type ConversationUpdateOneWithoutMaintenanceReportNestedInput = {
+    create?: XOR<ConversationCreateWithoutMaintenanceReportInput, ConversationUncheckedCreateWithoutMaintenanceReportInput>
+    connectOrCreate?: ConversationCreateOrConnectWithoutMaintenanceReportInput
+    upsert?: ConversationUpsertWithoutMaintenanceReportInput
+    disconnect?: ConversationWhereInput | boolean
+    delete?: ConversationWhereInput | boolean
+    connect?: ConversationWhereUniqueInput
+    update?: XOR<XOR<ConversationUpdateToOneWithWhereWithoutMaintenanceReportInput, ConversationUpdateWithoutMaintenanceReportInput>, ConversationUncheckedUpdateWithoutMaintenanceReportInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -48549,6 +50617,57 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
+  export type NestedEnumMaintenanceCategoryFilter<$PrismaModel = never> = {
+    equals?: $Enums.MaintenanceCategory | EnumMaintenanceCategoryFieldRefInput<$PrismaModel>
+    in?: $Enums.MaintenanceCategory[] | ListEnumMaintenanceCategoryFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MaintenanceCategory[] | ListEnumMaintenanceCategoryFieldRefInput<$PrismaModel>
+    not?: NestedEnumMaintenanceCategoryFilter<$PrismaModel> | $Enums.MaintenanceCategory
+  }
+
+  export type NestedEnumMaintenancePriorityFilter<$PrismaModel = never> = {
+    equals?: $Enums.MaintenancePriority | EnumMaintenancePriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.MaintenancePriority[] | ListEnumMaintenancePriorityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MaintenancePriority[] | ListEnumMaintenancePriorityFieldRefInput<$PrismaModel>
+    not?: NestedEnumMaintenancePriorityFilter<$PrismaModel> | $Enums.MaintenancePriority
+  }
+
+  export type NestedEnumMaintenanceStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.MaintenanceStatus | EnumMaintenanceStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MaintenanceStatus[] | ListEnumMaintenanceStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MaintenanceStatus[] | ListEnumMaintenanceStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumMaintenanceStatusFilter<$PrismaModel> | $Enums.MaintenanceStatus
+  }
+
+  export type NestedEnumMaintenanceCategoryWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.MaintenanceCategory | EnumMaintenanceCategoryFieldRefInput<$PrismaModel>
+    in?: $Enums.MaintenanceCategory[] | ListEnumMaintenanceCategoryFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MaintenanceCategory[] | ListEnumMaintenanceCategoryFieldRefInput<$PrismaModel>
+    not?: NestedEnumMaintenanceCategoryWithAggregatesFilter<$PrismaModel> | $Enums.MaintenanceCategory
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumMaintenanceCategoryFilter<$PrismaModel>
+    _max?: NestedEnumMaintenanceCategoryFilter<$PrismaModel>
+  }
+
+  export type NestedEnumMaintenancePriorityWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.MaintenancePriority | EnumMaintenancePriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.MaintenancePriority[] | ListEnumMaintenancePriorityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MaintenancePriority[] | ListEnumMaintenancePriorityFieldRefInput<$PrismaModel>
+    not?: NestedEnumMaintenancePriorityWithAggregatesFilter<$PrismaModel> | $Enums.MaintenancePriority
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumMaintenancePriorityFilter<$PrismaModel>
+    _max?: NestedEnumMaintenancePriorityFilter<$PrismaModel>
+  }
+
+  export type NestedEnumMaintenanceStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.MaintenanceStatus | EnumMaintenanceStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MaintenanceStatus[] | ListEnumMaintenanceStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MaintenanceStatus[] | ListEnumMaintenanceStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumMaintenanceStatusWithAggregatesFilter<$PrismaModel> | $Enums.MaintenanceStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumMaintenanceStatusFilter<$PrismaModel>
+    _max?: NestedEnumMaintenanceStatusFilter<$PrismaModel>
+  }
+
   export type ConfirmationCreateWithoutRequesterInput = {
     id?: string
     type: $Enums.ConfirmationType
@@ -48687,6 +50806,7 @@ export namespace Prisma {
     bookings?: BookingCreateNestedManyWithoutRoomInput
     statuses?: RoomStatusCreateNestedManyWithoutRoomInput
     prices?: PriceCreateNestedManyWithoutRoomInput
+    maintenanceReports?: MaintenanceReportCreateNestedManyWithoutRoomInput
   }
 
   export type RoomUncheckedCreateWithoutResidentsInput = {
@@ -48706,6 +50826,7 @@ export namespace Prisma {
     bookings?: BookingUncheckedCreateNestedManyWithoutRoomInput
     statuses?: RoomStatusUncheckedCreateNestedManyWithoutRoomInput
     prices?: PriceUncheckedCreateNestedManyWithoutRoomInput
+    maintenanceReports?: MaintenanceReportUncheckedCreateNestedManyWithoutRoomInput
   }
 
   export type RoomCreateOrConnectWithoutResidentsInput = {
@@ -49156,6 +51277,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     participants?: ConversationParticipantCreateNestedManyWithoutConversationInput
     messages?: MessageCreateNestedManyWithoutConversationInput
+    maintenanceReport?: MaintenanceReportCreateNestedOneWithoutConversationInput
   }
 
   export type ConversationUncheckedCreateWithoutCreatedByInput = {
@@ -49166,6 +51288,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     participants?: ConversationParticipantUncheckedCreateNestedManyWithoutConversationInput
     messages?: MessageUncheckedCreateNestedManyWithoutConversationInput
+    maintenanceReport?: MaintenanceReportUncheckedCreateNestedOneWithoutConversationInput
   }
 
   export type ConversationCreateOrConnectWithoutCreatedByInput = {
@@ -49271,6 +51394,48 @@ export namespace Prisma {
 
   export type MessageReadCreateManyUserInputEnvelope = {
     data: MessageReadCreateManyUserInput | MessageReadCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MaintenanceReportCreateWithoutUserInput = {
+    id?: string
+    category: $Enums.MaintenanceCategory
+    priority: $Enums.MaintenancePriority
+    status?: $Enums.MaintenanceStatus
+    title: string
+    description: string
+    location: string
+    attachments?: MaintenanceReportCreateattachmentsInput | string[]
+    resolvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    room?: RoomCreateNestedOneWithoutMaintenanceReportsInput
+    conversation?: ConversationCreateNestedOneWithoutMaintenanceReportInput
+  }
+
+  export type MaintenanceReportUncheckedCreateWithoutUserInput = {
+    id?: string
+    roomId?: string | null
+    category: $Enums.MaintenanceCategory
+    priority: $Enums.MaintenancePriority
+    status?: $Enums.MaintenanceStatus
+    title: string
+    description: string
+    location: string
+    attachments?: MaintenanceReportCreateattachmentsInput | string[]
+    conversationId?: string | null
+    resolvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaintenanceReportCreateOrConnectWithoutUserInput = {
+    where: MaintenanceReportWhereUniqueInput
+    create: XOR<MaintenanceReportCreateWithoutUserInput, MaintenanceReportUncheckedCreateWithoutUserInput>
+  }
+
+  export type MaintenanceReportCreateManyUserInputEnvelope = {
+    data: MaintenanceReportCreateManyUserInput | MaintenanceReportCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -49430,6 +51595,7 @@ export namespace Prisma {
     bookings?: BookingUpdateManyWithoutRoomNestedInput
     statuses?: RoomStatusUpdateManyWithoutRoomNestedInput
     prices?: PriceUpdateManyWithoutRoomNestedInput
+    maintenanceReports?: MaintenanceReportUpdateManyWithoutRoomNestedInput
   }
 
   export type RoomUncheckedUpdateWithoutResidentsInput = {
@@ -49449,6 +51615,7 @@ export namespace Prisma {
     bookings?: BookingUncheckedUpdateManyWithoutRoomNestedInput
     statuses?: RoomStatusUncheckedUpdateManyWithoutRoomNestedInput
     prices?: PriceUncheckedUpdateManyWithoutRoomNestedInput
+    maintenanceReports?: MaintenanceReportUncheckedUpdateManyWithoutRoomNestedInput
   }
 
   export type AnnouncementUpsertWithWhereUniqueWithoutAuthorInput = {
@@ -49873,6 +52040,42 @@ export namespace Prisma {
     readAt?: DateTimeFilter<"MessageRead"> | Date | string
   }
 
+  export type MaintenanceReportUpsertWithWhereUniqueWithoutUserInput = {
+    where: MaintenanceReportWhereUniqueInput
+    update: XOR<MaintenanceReportUpdateWithoutUserInput, MaintenanceReportUncheckedUpdateWithoutUserInput>
+    create: XOR<MaintenanceReportCreateWithoutUserInput, MaintenanceReportUncheckedCreateWithoutUserInput>
+  }
+
+  export type MaintenanceReportUpdateWithWhereUniqueWithoutUserInput = {
+    where: MaintenanceReportWhereUniqueInput
+    data: XOR<MaintenanceReportUpdateWithoutUserInput, MaintenanceReportUncheckedUpdateWithoutUserInput>
+  }
+
+  export type MaintenanceReportUpdateManyWithWhereWithoutUserInput = {
+    where: MaintenanceReportScalarWhereInput
+    data: XOR<MaintenanceReportUpdateManyMutationInput, MaintenanceReportUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type MaintenanceReportScalarWhereInput = {
+    AND?: MaintenanceReportScalarWhereInput | MaintenanceReportScalarWhereInput[]
+    OR?: MaintenanceReportScalarWhereInput[]
+    NOT?: MaintenanceReportScalarWhereInput | MaintenanceReportScalarWhereInput[]
+    id?: StringFilter<"MaintenanceReport"> | string
+    userId?: StringFilter<"MaintenanceReport"> | string
+    roomId?: StringNullableFilter<"MaintenanceReport"> | string | null
+    category?: EnumMaintenanceCategoryFilter<"MaintenanceReport"> | $Enums.MaintenanceCategory
+    priority?: EnumMaintenancePriorityFilter<"MaintenanceReport"> | $Enums.MaintenancePriority
+    status?: EnumMaintenanceStatusFilter<"MaintenanceReport"> | $Enums.MaintenanceStatus
+    title?: StringFilter<"MaintenanceReport"> | string
+    description?: StringFilter<"MaintenanceReport"> | string
+    location?: StringFilter<"MaintenanceReport"> | string
+    attachments?: StringNullableListFilter<"MaintenanceReport">
+    conversationId?: StringNullableFilter<"MaintenanceReport"> | string | null
+    resolvedAt?: DateTimeNullableFilter<"MaintenanceReport"> | Date | string | null
+    createdAt?: DateTimeFilter<"MaintenanceReport"> | Date | string
+    updatedAt?: DateTimeFilter<"MaintenanceReport"> | Date | string
+  }
+
   export type UserCreateWithoutDormitoryAdminAssignmentsInput = {
     id?: string
     email: string
@@ -49910,6 +52113,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     readMessages?: MessageReadCreateNestedManyWithoutUserInput
+    maintenanceReports?: MaintenanceReportCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDormitoryAdminAssignmentsInput = {
@@ -49949,6 +52153,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     readMessages?: MessageReadUncheckedCreateNestedManyWithoutUserInput
+    maintenanceReports?: MaintenanceReportUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDormitoryAdminAssignmentsInput = {
@@ -50037,6 +52242,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     readMessages?: MessageReadUpdateManyWithoutUserNestedInput
+    maintenanceReports?: MaintenanceReportUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDormitoryAdminAssignmentsInput = {
@@ -50076,6 +52282,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     readMessages?: MessageReadUncheckedUpdateManyWithoutUserNestedInput
+    maintenanceReports?: MaintenanceReportUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DormitoryUpsertWithoutAdminsInput = {
@@ -50187,6 +52394,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     readMessages?: MessageReadCreateNestedManyWithoutUserInput
+    maintenanceReports?: MaintenanceReportCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDormitoryManagerAssignmentsInput = {
@@ -50226,6 +52434,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     readMessages?: MessageReadUncheckedCreateNestedManyWithoutUserInput
+    maintenanceReports?: MaintenanceReportUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDormitoryManagerAssignmentsInput = {
@@ -50320,6 +52529,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     readMessages?: MessageReadUpdateManyWithoutUserNestedInput
+    maintenanceReports?: MaintenanceReportUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDormitoryManagerAssignmentsInput = {
@@ -50359,6 +52569,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     readMessages?: MessageReadUncheckedUpdateManyWithoutUserNestedInput
+    maintenanceReports?: MaintenanceReportUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutConfirmationsInput = {
@@ -50398,6 +52609,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     readMessages?: MessageReadCreateNestedManyWithoutUserInput
+    maintenanceReports?: MaintenanceReportCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutConfirmationsInput = {
@@ -50437,6 +52649,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     readMessages?: MessageReadUncheckedCreateNestedManyWithoutUserInput
+    maintenanceReports?: MaintenanceReportUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutConfirmationsInput = {
@@ -50563,6 +52776,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     readMessages?: MessageReadUpdateManyWithoutUserNestedInput
+    maintenanceReports?: MaintenanceReportUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutConfirmationsInput = {
@@ -50602,6 +52816,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     readMessages?: MessageReadUncheckedUpdateManyWithoutUserNestedInput
+    maintenanceReports?: MaintenanceReportUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PaymentUpsertWithoutConfirmationsInput = {
@@ -50718,6 +52933,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     readMessages?: MessageReadCreateNestedManyWithoutUserInput
+    maintenanceReports?: MaintenanceReportCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -50757,6 +52973,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     readMessages?: MessageReadUncheckedCreateNestedManyWithoutUserInput
+    maintenanceReports?: MaintenanceReportUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -50812,6 +53029,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     readMessages?: MessageReadUpdateManyWithoutUserNestedInput
+    maintenanceReports?: MaintenanceReportUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -50851,6 +53069,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     readMessages?: MessageReadUncheckedUpdateManyWithoutUserNestedInput
+    maintenanceReports?: MaintenanceReportUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type FloorCreateWithoutDormitoryInput = {
@@ -50958,6 +53177,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     readMessages?: MessageReadCreateNestedManyWithoutUserInput
+    maintenanceReports?: MaintenanceReportCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDormitoryInput = {
@@ -50997,6 +53217,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     readMessages?: MessageReadUncheckedCreateNestedManyWithoutUserInput
+    maintenanceReports?: MaintenanceReportUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDormitoryInput = {
@@ -51026,6 +53247,7 @@ export namespace Prisma {
     statuses?: RoomStatusCreateNestedManyWithoutRoomInput
     residents?: UserCreateNestedManyWithoutRoomInput
     prices?: PriceCreateNestedManyWithoutRoomInput
+    maintenanceReports?: MaintenanceReportCreateNestedManyWithoutRoomInput
   }
 
   export type RoomUncheckedCreateWithoutDormitoryInput = {
@@ -51045,6 +53267,7 @@ export namespace Prisma {
     statuses?: RoomStatusUncheckedCreateNestedManyWithoutRoomInput
     residents?: UserUncheckedCreateNestedManyWithoutRoomInput
     prices?: PriceUncheckedCreateNestedManyWithoutRoomInput
+    maintenanceReports?: MaintenanceReportUncheckedCreateNestedManyWithoutRoomInput
   }
 
   export type RoomCreateOrConnectWithoutDormitoryInput = {
@@ -51239,6 +53462,7 @@ export namespace Prisma {
     statuses?: RoomStatusCreateNestedManyWithoutRoomInput
     residents?: UserCreateNestedManyWithoutRoomInput
     prices?: PriceCreateNestedManyWithoutRoomInput
+    maintenanceReports?: MaintenanceReportCreateNestedManyWithoutRoomInput
   }
 
   export type RoomUncheckedCreateWithoutFloorInput = {
@@ -51258,6 +53482,7 @@ export namespace Prisma {
     statuses?: RoomStatusUncheckedCreateNestedManyWithoutRoomInput
     residents?: UserUncheckedCreateNestedManyWithoutRoomInput
     prices?: PriceUncheckedCreateNestedManyWithoutRoomInput
+    maintenanceReports?: MaintenanceReportUncheckedCreateNestedManyWithoutRoomInput
   }
 
   export type RoomCreateOrConnectWithoutFloorInput = {
@@ -51664,6 +53889,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     readMessages?: MessageReadCreateNestedManyWithoutUserInput
+    maintenanceReports?: MaintenanceReportCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRoomInput = {
@@ -51703,6 +53929,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     readMessages?: MessageReadUncheckedCreateNestedManyWithoutUserInput
+    maintenanceReports?: MaintenanceReportUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRoomInput = {
@@ -51742,6 +53969,48 @@ export namespace Prisma {
 
   export type PriceCreateManyRoomInputEnvelope = {
     data: PriceCreateManyRoomInput | PriceCreateManyRoomInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MaintenanceReportCreateWithoutRoomInput = {
+    id?: string
+    category: $Enums.MaintenanceCategory
+    priority: $Enums.MaintenancePriority
+    status?: $Enums.MaintenanceStatus
+    title: string
+    description: string
+    location: string
+    attachments?: MaintenanceReportCreateattachmentsInput | string[]
+    resolvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutMaintenanceReportsInput
+    conversation?: ConversationCreateNestedOneWithoutMaintenanceReportInput
+  }
+
+  export type MaintenanceReportUncheckedCreateWithoutRoomInput = {
+    id?: string
+    userId: string
+    category: $Enums.MaintenanceCategory
+    priority: $Enums.MaintenancePriority
+    status?: $Enums.MaintenanceStatus
+    title: string
+    description: string
+    location: string
+    attachments?: MaintenanceReportCreateattachmentsInput | string[]
+    conversationId?: string | null
+    resolvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaintenanceReportCreateOrConnectWithoutRoomInput = {
+    where: MaintenanceReportWhereUniqueInput
+    create: XOR<MaintenanceReportCreateWithoutRoomInput, MaintenanceReportUncheckedCreateWithoutRoomInput>
+  }
+
+  export type MaintenanceReportCreateManyRoomInputEnvelope = {
+    data: MaintenanceReportCreateManyRoomInput | MaintenanceReportCreateManyRoomInput[]
     skipDuplicates?: boolean
   }
 
@@ -52005,6 +54274,22 @@ export namespace Prisma {
     dateTo?: DateTimeNullableFilter<"Price"> | Date | string | null
   }
 
+  export type MaintenanceReportUpsertWithWhereUniqueWithoutRoomInput = {
+    where: MaintenanceReportWhereUniqueInput
+    update: XOR<MaintenanceReportUpdateWithoutRoomInput, MaintenanceReportUncheckedUpdateWithoutRoomInput>
+    create: XOR<MaintenanceReportCreateWithoutRoomInput, MaintenanceReportUncheckedCreateWithoutRoomInput>
+  }
+
+  export type MaintenanceReportUpdateWithWhereUniqueWithoutRoomInput = {
+    where: MaintenanceReportWhereUniqueInput
+    data: XOR<MaintenanceReportUpdateWithoutRoomInput, MaintenanceReportUncheckedUpdateWithoutRoomInput>
+  }
+
+  export type MaintenanceReportUpdateManyWithWhereWithoutRoomInput = {
+    where: MaintenanceReportScalarWhereInput
+    data: XOR<MaintenanceReportUpdateManyMutationInput, MaintenanceReportUncheckedUpdateManyWithoutRoomInput>
+  }
+
   export type RoomCreateWithoutRoomTypeInput = {
     id?: string
     number: string
@@ -52022,6 +54307,7 @@ export namespace Prisma {
     statuses?: RoomStatusCreateNestedManyWithoutRoomInput
     residents?: UserCreateNestedManyWithoutRoomInput
     prices?: PriceCreateNestedManyWithoutRoomInput
+    maintenanceReports?: MaintenanceReportCreateNestedManyWithoutRoomInput
   }
 
   export type RoomUncheckedCreateWithoutRoomTypeInput = {
@@ -52041,6 +54327,7 @@ export namespace Prisma {
     statuses?: RoomStatusUncheckedCreateNestedManyWithoutRoomInput
     residents?: UserUncheckedCreateNestedManyWithoutRoomInput
     prices?: PriceUncheckedCreateNestedManyWithoutRoomInput
+    maintenanceReports?: MaintenanceReportUncheckedCreateNestedManyWithoutRoomInput
   }
 
   export type RoomCreateOrConnectWithoutRoomTypeInput = {
@@ -52308,6 +54595,7 @@ export namespace Prisma {
     bookings?: BookingCreateNestedManyWithoutRoomInput
     residents?: UserCreateNestedManyWithoutRoomInput
     prices?: PriceCreateNestedManyWithoutRoomInput
+    maintenanceReports?: MaintenanceReportCreateNestedManyWithoutRoomInput
   }
 
   export type RoomUncheckedCreateWithoutStatusesInput = {
@@ -52327,6 +54615,7 @@ export namespace Prisma {
     bookings?: BookingUncheckedCreateNestedManyWithoutRoomInput
     residents?: UserUncheckedCreateNestedManyWithoutRoomInput
     prices?: PriceUncheckedCreateNestedManyWithoutRoomInput
+    maintenanceReports?: MaintenanceReportUncheckedCreateNestedManyWithoutRoomInput
   }
 
   export type RoomCreateOrConnectWithoutStatusesInput = {
@@ -52362,6 +54651,7 @@ export namespace Prisma {
     bookings?: BookingUpdateManyWithoutRoomNestedInput
     residents?: UserUpdateManyWithoutRoomNestedInput
     prices?: PriceUpdateManyWithoutRoomNestedInput
+    maintenanceReports?: MaintenanceReportUpdateManyWithoutRoomNestedInput
   }
 
   export type RoomUncheckedUpdateWithoutStatusesInput = {
@@ -52381,6 +54671,7 @@ export namespace Prisma {
     bookings?: BookingUncheckedUpdateManyWithoutRoomNestedInput
     residents?: UserUncheckedUpdateManyWithoutRoomNestedInput
     prices?: PriceUncheckedUpdateManyWithoutRoomNestedInput
+    maintenanceReports?: MaintenanceReportUncheckedUpdateManyWithoutRoomNestedInput
   }
 
   export type RoomTypeCreateWithoutPriceCategoryInput = {
@@ -52438,6 +54729,7 @@ export namespace Prisma {
     statuses?: RoomStatusCreateNestedManyWithoutRoomInput
     residents?: UserCreateNestedManyWithoutRoomInput
     prices?: PriceCreateNestedManyWithoutRoomInput
+    maintenanceReports?: MaintenanceReportCreateNestedManyWithoutRoomInput
   }
 
   export type RoomUncheckedCreateWithoutPriceCategoryInput = {
@@ -52457,6 +54749,7 @@ export namespace Prisma {
     statuses?: RoomStatusUncheckedCreateNestedManyWithoutRoomInput
     residents?: UserUncheckedCreateNestedManyWithoutRoomInput
     prices?: PriceUncheckedCreateNestedManyWithoutRoomInput
+    maintenanceReports?: MaintenanceReportUncheckedCreateNestedManyWithoutRoomInput
   }
 
   export type RoomCreateOrConnectWithoutPriceCategoryInput = {
@@ -52626,6 +54919,7 @@ export namespace Prisma {
     bookings?: BookingCreateNestedManyWithoutRoomInput
     statuses?: RoomStatusCreateNestedManyWithoutRoomInput
     residents?: UserCreateNestedManyWithoutRoomInput
+    maintenanceReports?: MaintenanceReportCreateNestedManyWithoutRoomInput
   }
 
   export type RoomUncheckedCreateWithoutPricesInput = {
@@ -52645,6 +54939,7 @@ export namespace Prisma {
     bookings?: BookingUncheckedCreateNestedManyWithoutRoomInput
     statuses?: RoomStatusUncheckedCreateNestedManyWithoutRoomInput
     residents?: UserUncheckedCreateNestedManyWithoutRoomInput
+    maintenanceReports?: MaintenanceReportUncheckedCreateNestedManyWithoutRoomInput
   }
 
   export type RoomCreateOrConnectWithoutPricesInput = {
@@ -52756,6 +55051,7 @@ export namespace Prisma {
     bookings?: BookingUpdateManyWithoutRoomNestedInput
     statuses?: RoomStatusUpdateManyWithoutRoomNestedInput
     residents?: UserUpdateManyWithoutRoomNestedInput
+    maintenanceReports?: MaintenanceReportUpdateManyWithoutRoomNestedInput
   }
 
   export type RoomUncheckedUpdateWithoutPricesInput = {
@@ -52775,6 +55071,7 @@ export namespace Prisma {
     bookings?: BookingUncheckedUpdateManyWithoutRoomNestedInput
     statuses?: RoomStatusUncheckedUpdateManyWithoutRoomNestedInput
     residents?: UserUncheckedUpdateManyWithoutRoomNestedInput
+    maintenanceReports?: MaintenanceReportUncheckedUpdateManyWithoutRoomNestedInput
   }
 
   export type PaymentUpsertWithWhereUniqueWithoutPriceInput = {
@@ -52830,6 +55127,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     readMessages?: MessageReadCreateNestedManyWithoutUserInput
+    maintenanceReports?: MaintenanceReportCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutBookingsInput = {
@@ -52869,6 +55167,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     readMessages?: MessageReadUncheckedCreateNestedManyWithoutUserInput
+    maintenanceReports?: MaintenanceReportUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutBookingsInput = {
@@ -52893,6 +55192,7 @@ export namespace Prisma {
     statuses?: RoomStatusCreateNestedManyWithoutRoomInput
     residents?: UserCreateNestedManyWithoutRoomInput
     prices?: PriceCreateNestedManyWithoutRoomInput
+    maintenanceReports?: MaintenanceReportCreateNestedManyWithoutRoomInput
   }
 
   export type RoomUncheckedCreateWithoutBookingsInput = {
@@ -52912,6 +55212,7 @@ export namespace Prisma {
     statuses?: RoomStatusUncheckedCreateNestedManyWithoutRoomInput
     residents?: UserUncheckedCreateNestedManyWithoutRoomInput
     prices?: PriceUncheckedCreateNestedManyWithoutRoomInput
+    maintenanceReports?: MaintenanceReportUncheckedCreateNestedManyWithoutRoomInput
   }
 
   export type RoomCreateOrConnectWithoutBookingsInput = {
@@ -53131,6 +55432,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     readMessages?: MessageReadUpdateManyWithoutUserNestedInput
+    maintenanceReports?: MaintenanceReportUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBookingsInput = {
@@ -53170,6 +55472,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     readMessages?: MessageReadUncheckedUpdateManyWithoutUserNestedInput
+    maintenanceReports?: MaintenanceReportUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type RoomUpsertWithoutBookingsInput = {
@@ -53200,6 +55503,7 @@ export namespace Prisma {
     statuses?: RoomStatusUpdateManyWithoutRoomNestedInput
     residents?: UserUpdateManyWithoutRoomNestedInput
     prices?: PriceUpdateManyWithoutRoomNestedInput
+    maintenanceReports?: MaintenanceReportUpdateManyWithoutRoomNestedInput
   }
 
   export type RoomUncheckedUpdateWithoutBookingsInput = {
@@ -53219,6 +55523,7 @@ export namespace Prisma {
     statuses?: RoomStatusUncheckedUpdateManyWithoutRoomNestedInput
     residents?: UserUncheckedUpdateManyWithoutRoomNestedInput
     prices?: PriceUncheckedUpdateManyWithoutRoomNestedInput
+    maintenanceReports?: MaintenanceReportUncheckedUpdateManyWithoutRoomNestedInput
   }
 
   export type NotificationUpsertWithWhereUniqueWithoutBookingInput = {
@@ -53324,6 +55629,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     readMessages?: MessageReadCreateNestedManyWithoutUserInput
+    maintenanceReports?: MaintenanceReportCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPaymentsInput = {
@@ -53363,6 +55669,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     readMessages?: MessageReadUncheckedCreateNestedManyWithoutUserInput
+    maintenanceReports?: MaintenanceReportUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPaymentsInput = {
@@ -53498,6 +55805,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     readMessages?: MessageReadCreateNestedManyWithoutUserInput
+    maintenanceReports?: MaintenanceReportCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutConfirmedPaymentsInput = {
@@ -53537,6 +55845,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     readMessages?: MessageReadUncheckedCreateNestedManyWithoutUserInput
+    maintenanceReports?: MaintenanceReportUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutConfirmedPaymentsInput = {
@@ -53812,6 +56121,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     readMessages?: MessageReadUpdateManyWithoutUserNestedInput
+    maintenanceReports?: MaintenanceReportUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPaymentsInput = {
@@ -53851,6 +56161,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     readMessages?: MessageReadUncheckedUpdateManyWithoutUserNestedInput
+    maintenanceReports?: MaintenanceReportUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type BookingUpsertWithoutPaymentsInput = {
@@ -54010,6 +56321,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     readMessages?: MessageReadUpdateManyWithoutUserNestedInput
+    maintenanceReports?: MaintenanceReportUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutConfirmedPaymentsInput = {
@@ -54049,6 +56361,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     readMessages?: MessageReadUncheckedUpdateManyWithoutUserNestedInput
+    maintenanceReports?: MaintenanceReportUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type RecurringPaymentUpsertWithoutGeneratedPaymentsInput = {
@@ -54781,6 +57094,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     readMessages?: MessageReadCreateNestedManyWithoutUserInput
+    maintenanceReports?: MaintenanceReportCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPaymentAuditLogsInput = {
@@ -54820,6 +57134,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     readMessages?: MessageReadUncheckedCreateNestedManyWithoutUserInput
+    maintenanceReports?: MaintenanceReportUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPaymentAuditLogsInput = {
@@ -54952,6 +57267,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     readMessages?: MessageReadUpdateManyWithoutUserNestedInput
+    maintenanceReports?: MaintenanceReportUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPaymentAuditLogsInput = {
@@ -54991,6 +57307,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     readMessages?: MessageReadUncheckedUpdateManyWithoutUserNestedInput
+    maintenanceReports?: MaintenanceReportUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSentNotificationsInput = {
@@ -55030,6 +57347,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     readMessages?: MessageReadCreateNestedManyWithoutUserInput
+    maintenanceReports?: MaintenanceReportCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSentNotificationsInput = {
@@ -55069,6 +57387,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     readMessages?: MessageReadUncheckedCreateNestedManyWithoutUserInput
+    maintenanceReports?: MaintenanceReportUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSentNotificationsInput = {
@@ -55113,6 +57432,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     readMessages?: MessageReadCreateNestedManyWithoutUserInput
+    maintenanceReports?: MaintenanceReportCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReceivedNotificationsInput = {
@@ -55152,6 +57472,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     readMessages?: MessageReadUncheckedCreateNestedManyWithoutUserInput
+    maintenanceReports?: MaintenanceReportUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReceivedNotificationsInput = {
@@ -55176,6 +57497,7 @@ export namespace Prisma {
     statuses?: RoomStatusCreateNestedManyWithoutRoomInput
     residents?: UserCreateNestedManyWithoutRoomInput
     prices?: PriceCreateNestedManyWithoutRoomInput
+    maintenanceReports?: MaintenanceReportCreateNestedManyWithoutRoomInput
   }
 
   export type RoomUncheckedCreateWithoutNotificationsInput = {
@@ -55195,6 +57517,7 @@ export namespace Prisma {
     statuses?: RoomStatusUncheckedCreateNestedManyWithoutRoomInput
     residents?: UserUncheckedCreateNestedManyWithoutRoomInput
     prices?: PriceUncheckedCreateNestedManyWithoutRoomInput
+    maintenanceReports?: MaintenanceReportUncheckedCreateNestedManyWithoutRoomInput
   }
 
   export type RoomCreateOrConnectWithoutNotificationsInput = {
@@ -55356,6 +57679,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     readMessages?: MessageReadUpdateManyWithoutUserNestedInput
+    maintenanceReports?: MaintenanceReportUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSentNotificationsInput = {
@@ -55395,6 +57719,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     readMessages?: MessageReadUncheckedUpdateManyWithoutUserNestedInput
+    maintenanceReports?: MaintenanceReportUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutReceivedNotificationsInput = {
@@ -55445,6 +57770,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     readMessages?: MessageReadUpdateManyWithoutUserNestedInput
+    maintenanceReports?: MaintenanceReportUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReceivedNotificationsInput = {
@@ -55484,6 +57810,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     readMessages?: MessageReadUncheckedUpdateManyWithoutUserNestedInput
+    maintenanceReports?: MaintenanceReportUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type RoomUpsertWithoutNotificationsInput = {
@@ -55514,6 +57841,7 @@ export namespace Prisma {
     statuses?: RoomStatusUpdateManyWithoutRoomNestedInput
     residents?: UserUpdateManyWithoutRoomNestedInput
     prices?: PriceUpdateManyWithoutRoomNestedInput
+    maintenanceReports?: MaintenanceReportUpdateManyWithoutRoomNestedInput
   }
 
   export type RoomUncheckedUpdateWithoutNotificationsInput = {
@@ -55533,6 +57861,7 @@ export namespace Prisma {
     statuses?: RoomStatusUncheckedUpdateManyWithoutRoomNestedInput
     residents?: UserUncheckedUpdateManyWithoutRoomNestedInput
     prices?: PriceUncheckedUpdateManyWithoutRoomNestedInput
+    maintenanceReports?: MaintenanceReportUncheckedUpdateManyWithoutRoomNestedInput
   }
 
   export type BookingUpsertWithoutNotificationsInput = {
@@ -55690,6 +58019,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     readMessages?: MessageReadCreateNestedManyWithoutUserInput
+    maintenanceReports?: MaintenanceReportCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutNotificationSettingsInput = {
@@ -55729,6 +58059,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     readMessages?: MessageReadUncheckedCreateNestedManyWithoutUserInput
+    maintenanceReports?: MaintenanceReportUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutNotificationSettingsInput = {
@@ -55784,6 +58115,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     readMessages?: MessageReadUpdateManyWithoutUserNestedInput
+    maintenanceReports?: MaintenanceReportUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNotificationSettingsInput = {
@@ -55823,6 +58155,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     readMessages?: MessageReadUncheckedUpdateManyWithoutUserNestedInput
+    maintenanceReports?: MaintenanceReportUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAnnouncementsInput = {
@@ -55862,6 +58195,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     readMessages?: MessageReadCreateNestedManyWithoutUserInput
+    maintenanceReports?: MaintenanceReportCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAnnouncementsInput = {
@@ -55901,6 +58235,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     readMessages?: MessageReadUncheckedCreateNestedManyWithoutUserInput
+    maintenanceReports?: MaintenanceReportUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAnnouncementsInput = {
@@ -56004,6 +58339,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     readMessages?: MessageReadUpdateManyWithoutUserNestedInput
+    maintenanceReports?: MaintenanceReportUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAnnouncementsInput = {
@@ -56043,6 +58379,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     readMessages?: MessageReadUncheckedUpdateManyWithoutUserNestedInput
+    maintenanceReports?: MaintenanceReportUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AttachmentUpsertWithWhereUniqueWithoutAnnouncementInput = {
@@ -56211,6 +58548,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     readMessages?: MessageReadCreateNestedManyWithoutUserInput
+    maintenanceReports?: MaintenanceReportCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAnnouncementRecipientsInput = {
@@ -56250,6 +58588,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     readMessages?: MessageReadUncheckedCreateNestedManyWithoutUserInput
+    maintenanceReports?: MaintenanceReportUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAnnouncementRecipientsInput = {
@@ -56274,6 +58613,7 @@ export namespace Prisma {
     statuses?: RoomStatusCreateNestedManyWithoutRoomInput
     residents?: UserCreateNestedManyWithoutRoomInput
     prices?: PriceCreateNestedManyWithoutRoomInput
+    maintenanceReports?: MaintenanceReportCreateNestedManyWithoutRoomInput
   }
 
   export type RoomUncheckedCreateWithoutAnnouncementRecipientsInput = {
@@ -56293,6 +58633,7 @@ export namespace Prisma {
     statuses?: RoomStatusUncheckedCreateNestedManyWithoutRoomInput
     residents?: UserUncheckedCreateNestedManyWithoutRoomInput
     prices?: PriceUncheckedCreateNestedManyWithoutRoomInput
+    maintenanceReports?: MaintenanceReportUncheckedCreateNestedManyWithoutRoomInput
   }
 
   export type RoomCreateOrConnectWithoutAnnouncementRecipientsInput = {
@@ -56381,6 +58722,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     readMessages?: MessageReadUpdateManyWithoutUserNestedInput
+    maintenanceReports?: MaintenanceReportUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAnnouncementRecipientsInput = {
@@ -56420,6 +58762,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     readMessages?: MessageReadUncheckedUpdateManyWithoutUserNestedInput
+    maintenanceReports?: MaintenanceReportUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type RoomUpsertWithoutAnnouncementRecipientsInput = {
@@ -56450,6 +58793,7 @@ export namespace Prisma {
     statuses?: RoomStatusUpdateManyWithoutRoomNestedInput
     residents?: UserUpdateManyWithoutRoomNestedInput
     prices?: PriceUpdateManyWithoutRoomNestedInput
+    maintenanceReports?: MaintenanceReportUpdateManyWithoutRoomNestedInput
   }
 
   export type RoomUncheckedUpdateWithoutAnnouncementRecipientsInput = {
@@ -56469,6 +58813,7 @@ export namespace Prisma {
     statuses?: RoomStatusUncheckedUpdateManyWithoutRoomNestedInput
     residents?: UserUncheckedUpdateManyWithoutRoomNestedInput
     prices?: PriceUncheckedUpdateManyWithoutRoomNestedInput
+    maintenanceReports?: MaintenanceReportUncheckedUpdateManyWithoutRoomNestedInput
   }
 
   export type UserCreateWithoutCreatedConversationsInput = {
@@ -56508,6 +58853,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     readMessages?: MessageReadCreateNestedManyWithoutUserInput
+    maintenanceReports?: MaintenanceReportCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCreatedConversationsInput = {
@@ -56547,6 +58893,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     readMessages?: MessageReadUncheckedCreateNestedManyWithoutUserInput
+    maintenanceReports?: MaintenanceReportUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCreatedConversationsInput = {
@@ -56628,6 +58975,43 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type MaintenanceReportCreateWithoutConversationInput = {
+    id?: string
+    category: $Enums.MaintenanceCategory
+    priority: $Enums.MaintenancePriority
+    status?: $Enums.MaintenanceStatus
+    title: string
+    description: string
+    location: string
+    attachments?: MaintenanceReportCreateattachmentsInput | string[]
+    resolvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutMaintenanceReportsInput
+    room?: RoomCreateNestedOneWithoutMaintenanceReportsInput
+  }
+
+  export type MaintenanceReportUncheckedCreateWithoutConversationInput = {
+    id?: string
+    userId: string
+    roomId?: string | null
+    category: $Enums.MaintenanceCategory
+    priority: $Enums.MaintenancePriority
+    status?: $Enums.MaintenanceStatus
+    title: string
+    description: string
+    location: string
+    attachments?: MaintenanceReportCreateattachmentsInput | string[]
+    resolvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaintenanceReportCreateOrConnectWithoutConversationInput = {
+    where: MaintenanceReportWhereUniqueInput
+    create: XOR<MaintenanceReportCreateWithoutConversationInput, MaintenanceReportUncheckedCreateWithoutConversationInput>
+  }
+
   export type UserUpsertWithoutCreatedConversationsInput = {
     update: XOR<UserUpdateWithoutCreatedConversationsInput, UserUncheckedUpdateWithoutCreatedConversationsInput>
     create: XOR<UserCreateWithoutCreatedConversationsInput, UserUncheckedCreateWithoutCreatedConversationsInput>
@@ -56676,6 +59060,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     readMessages?: MessageReadUpdateManyWithoutUserNestedInput
+    maintenanceReports?: MaintenanceReportUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedConversationsInput = {
@@ -56715,6 +59100,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     readMessages?: MessageReadUncheckedUpdateManyWithoutUserNestedInput
+    maintenanceReports?: MaintenanceReportUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ConversationParticipantUpsertWithWhereUniqueWithoutConversationInput = {
@@ -56749,6 +59135,49 @@ export namespace Prisma {
     data: XOR<MessageUpdateManyMutationInput, MessageUncheckedUpdateManyWithoutConversationInput>
   }
 
+  export type MaintenanceReportUpsertWithoutConversationInput = {
+    update: XOR<MaintenanceReportUpdateWithoutConversationInput, MaintenanceReportUncheckedUpdateWithoutConversationInput>
+    create: XOR<MaintenanceReportCreateWithoutConversationInput, MaintenanceReportUncheckedCreateWithoutConversationInput>
+    where?: MaintenanceReportWhereInput
+  }
+
+  export type MaintenanceReportUpdateToOneWithWhereWithoutConversationInput = {
+    where?: MaintenanceReportWhereInput
+    data: XOR<MaintenanceReportUpdateWithoutConversationInput, MaintenanceReportUncheckedUpdateWithoutConversationInput>
+  }
+
+  export type MaintenanceReportUpdateWithoutConversationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    category?: EnumMaintenanceCategoryFieldUpdateOperationsInput | $Enums.MaintenanceCategory
+    priority?: EnumMaintenancePriorityFieldUpdateOperationsInput | $Enums.MaintenancePriority
+    status?: EnumMaintenanceStatusFieldUpdateOperationsInput | $Enums.MaintenanceStatus
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    attachments?: MaintenanceReportUpdateattachmentsInput | string[]
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutMaintenanceReportsNestedInput
+    room?: RoomUpdateOneWithoutMaintenanceReportsNestedInput
+  }
+
+  export type MaintenanceReportUncheckedUpdateWithoutConversationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumMaintenanceCategoryFieldUpdateOperationsInput | $Enums.MaintenanceCategory
+    priority?: EnumMaintenancePriorityFieldUpdateOperationsInput | $Enums.MaintenancePriority
+    status?: EnumMaintenanceStatusFieldUpdateOperationsInput | $Enums.MaintenanceStatus
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    attachments?: MaintenanceReportUpdateattachmentsInput | string[]
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ConversationCreateWithoutParticipantsInput = {
     id?: string
     title?: string | null
@@ -56757,6 +59186,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     createdBy: UserCreateNestedOneWithoutCreatedConversationsInput
     messages?: MessageCreateNestedManyWithoutConversationInput
+    maintenanceReport?: MaintenanceReportCreateNestedOneWithoutConversationInput
   }
 
   export type ConversationUncheckedCreateWithoutParticipantsInput = {
@@ -56767,6 +59197,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     messages?: MessageUncheckedCreateNestedManyWithoutConversationInput
+    maintenanceReport?: MaintenanceReportUncheckedCreateNestedOneWithoutConversationInput
   }
 
   export type ConversationCreateOrConnectWithoutParticipantsInput = {
@@ -56811,6 +59242,7 @@ export namespace Prisma {
     createdConversations?: ConversationCreateNestedManyWithoutCreatedByInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     readMessages?: MessageReadCreateNestedManyWithoutUserInput
+    maintenanceReports?: MaintenanceReportCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutConversationParticipantsInput = {
@@ -56850,6 +59282,7 @@ export namespace Prisma {
     createdConversations?: ConversationUncheckedCreateNestedManyWithoutCreatedByInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     readMessages?: MessageReadUncheckedCreateNestedManyWithoutUserInput
+    maintenanceReports?: MaintenanceReportUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutConversationParticipantsInput = {
@@ -56876,6 +59309,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneRequiredWithoutCreatedConversationsNestedInput
     messages?: MessageUpdateManyWithoutConversationNestedInput
+    maintenanceReport?: MaintenanceReportUpdateOneWithoutConversationNestedInput
   }
 
   export type ConversationUncheckedUpdateWithoutParticipantsInput = {
@@ -56886,6 +59320,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     messages?: MessageUncheckedUpdateManyWithoutConversationNestedInput
+    maintenanceReport?: MaintenanceReportUncheckedUpdateOneWithoutConversationNestedInput
   }
 
   export type UserUpsertWithoutConversationParticipantsInput = {
@@ -56936,6 +59371,7 @@ export namespace Prisma {
     createdConversations?: ConversationUpdateManyWithoutCreatedByNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     readMessages?: MessageReadUpdateManyWithoutUserNestedInput
+    maintenanceReports?: MaintenanceReportUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutConversationParticipantsInput = {
@@ -56975,6 +59411,7 @@ export namespace Prisma {
     createdConversations?: ConversationUncheckedUpdateManyWithoutCreatedByNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     readMessages?: MessageReadUncheckedUpdateManyWithoutUserNestedInput
+    maintenanceReports?: MaintenanceReportUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ConversationCreateWithoutMessagesInput = {
@@ -56985,6 +59422,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     createdBy: UserCreateNestedOneWithoutCreatedConversationsInput
     participants?: ConversationParticipantCreateNestedManyWithoutConversationInput
+    maintenanceReport?: MaintenanceReportCreateNestedOneWithoutConversationInput
   }
 
   export type ConversationUncheckedCreateWithoutMessagesInput = {
@@ -56995,6 +59433,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     participants?: ConversationParticipantUncheckedCreateNestedManyWithoutConversationInput
+    maintenanceReport?: MaintenanceReportUncheckedCreateNestedOneWithoutConversationInput
   }
 
   export type ConversationCreateOrConnectWithoutMessagesInput = {
@@ -57039,6 +59478,7 @@ export namespace Prisma {
     createdConversations?: ConversationCreateNestedManyWithoutCreatedByInput
     conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     readMessages?: MessageReadCreateNestedManyWithoutUserInput
+    maintenanceReports?: MaintenanceReportCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSentMessagesInput = {
@@ -57078,6 +59518,7 @@ export namespace Prisma {
     createdConversations?: ConversationUncheckedCreateNestedManyWithoutCreatedByInput
     conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     readMessages?: MessageReadUncheckedCreateNestedManyWithoutUserInput
+    maintenanceReports?: MaintenanceReportUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSentMessagesInput = {
@@ -57213,6 +59654,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneRequiredWithoutCreatedConversationsNestedInput
     participants?: ConversationParticipantUpdateManyWithoutConversationNestedInput
+    maintenanceReport?: MaintenanceReportUpdateOneWithoutConversationNestedInput
   }
 
   export type ConversationUncheckedUpdateWithoutMessagesInput = {
@@ -57223,6 +59665,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     participants?: ConversationParticipantUncheckedUpdateManyWithoutConversationNestedInput
+    maintenanceReport?: MaintenanceReportUncheckedUpdateOneWithoutConversationNestedInput
   }
 
   export type UserUpsertWithoutSentMessagesInput = {
@@ -57273,6 +59716,7 @@ export namespace Prisma {
     createdConversations?: ConversationUpdateManyWithoutCreatedByNestedInput
     conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     readMessages?: MessageReadUpdateManyWithoutUserNestedInput
+    maintenanceReports?: MaintenanceReportUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSentMessagesInput = {
@@ -57312,6 +59756,7 @@ export namespace Prisma {
     createdConversations?: ConversationUncheckedUpdateManyWithoutCreatedByNestedInput
     conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     readMessages?: MessageReadUncheckedUpdateManyWithoutUserNestedInput
+    maintenanceReports?: MaintenanceReportUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type MessageUpsertWithoutRepliesInput = {
@@ -57471,6 +59916,7 @@ export namespace Prisma {
     createdConversations?: ConversationCreateNestedManyWithoutCreatedByInput
     conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
+    maintenanceReports?: MaintenanceReportCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReadMessagesInput = {
@@ -57510,6 +59956,7 @@ export namespace Prisma {
     createdConversations?: ConversationUncheckedCreateNestedManyWithoutCreatedByInput
     conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
+    maintenanceReports?: MaintenanceReportUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReadMessagesInput = {
@@ -57612,6 +60059,7 @@ export namespace Prisma {
     createdConversations?: ConversationUpdateManyWithoutCreatedByNestedInput
     conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
+    maintenanceReports?: MaintenanceReportUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReadMessagesInput = {
@@ -57651,6 +60099,339 @@ export namespace Prisma {
     createdConversations?: ConversationUncheckedUpdateManyWithoutCreatedByNestedInput
     conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
+    maintenanceReports?: MaintenanceReportUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutMaintenanceReportsInput = {
+    id?: string
+    email: string
+    password: string
+    displayName: string
+    picture: string
+    isVerified?: boolean
+    isTwoFactorEnabled?: boolean
+    method: $Enums.AuthMethod
+    role?: $Enums.UserRole
+    secondName: string
+    studentIdFront: string
+    studentIdBack?: string | null
+    isActive?: boolean
+    language?: string
+    startReservationDate?: Date | string | null
+    endReservationDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    confirmations?: ConfirmationCreateNestedManyWithoutRequesterInput
+    dormitoryAdminAssignments?: DormitoryAdminCreateNestedManyWithoutUserInput
+    dormitory?: DormitoryCreateNestedOneWithoutResidentsInput
+    dormitoryManagerAssignments?: DormitoryManagerCreateNestedManyWithoutUserInput
+    room?: RoomCreateNestedOneWithoutResidentsInput
+    announcements?: AnnouncementCreateNestedManyWithoutAuthorInput
+    announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    sentNotifications?: NotificationCreateNestedManyWithoutFromUserInput
+    receivedNotifications?: NotificationCreateNestedManyWithoutToUserInput
+    notificationSettings?: NotificationSettingsCreateNestedOneWithoutUserInput
+    bookings?: BookingCreateNestedManyWithoutUserInput
+    payments?: PaymentCreateNestedManyWithoutUserInput
+    confirmedPayments?: PaymentCreateNestedManyWithoutConfirmedByUserInput
+    paymentAuditLogs?: PaymentAuditLogCreateNestedManyWithoutUserInput
+    createdConversations?: ConversationCreateNestedManyWithoutCreatedByInput
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
+    sentMessages?: MessageCreateNestedManyWithoutSenderInput
+    readMessages?: MessageReadCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutMaintenanceReportsInput = {
+    id?: string
+    email: string
+    password: string
+    displayName: string
+    picture: string
+    isVerified?: boolean
+    isTwoFactorEnabled?: boolean
+    method: $Enums.AuthMethod
+    role?: $Enums.UserRole
+    secondName: string
+    studentIdFront: string
+    studentIdBack?: string | null
+    isActive?: boolean
+    language?: string
+    startReservationDate?: Date | string | null
+    endReservationDate?: Date | string | null
+    dormitoryId?: string | null
+    roomId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    confirmations?: ConfirmationUncheckedCreateNestedManyWithoutRequesterInput
+    dormitoryAdminAssignments?: DormitoryAdminUncheckedCreateNestedManyWithoutUserInput
+    dormitoryManagerAssignments?: DormitoryManagerUncheckedCreateNestedManyWithoutUserInput
+    announcements?: AnnouncementUncheckedCreateNestedManyWithoutAuthorInput
+    announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    sentNotifications?: NotificationUncheckedCreateNestedManyWithoutFromUserInput
+    receivedNotifications?: NotificationUncheckedCreateNestedManyWithoutToUserInput
+    notificationSettings?: NotificationSettingsUncheckedCreateNestedOneWithoutUserInput
+    bookings?: BookingUncheckedCreateNestedManyWithoutUserInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    confirmedPayments?: PaymentUncheckedCreateNestedManyWithoutConfirmedByUserInput
+    paymentAuditLogs?: PaymentAuditLogUncheckedCreateNestedManyWithoutUserInput
+    createdConversations?: ConversationUncheckedCreateNestedManyWithoutCreatedByInput
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
+    sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
+    readMessages?: MessageReadUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutMaintenanceReportsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutMaintenanceReportsInput, UserUncheckedCreateWithoutMaintenanceReportsInput>
+  }
+
+  export type RoomCreateWithoutMaintenanceReportsInput = {
+    id?: string
+    number: string
+    capacity: number
+    roomEquipment?: RoomCreateroomEquipmentInput | string[]
+    photos?: RoomCreatephotosInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    floor: FloorCreateNestedOneWithoutRoomsInput
+    dormitory: DormitoryCreateNestedOneWithoutRoomsInput
+    roomType?: RoomTypeCreateNestedOneWithoutRoomsInput
+    priceCategory?: PriceCategoryCreateNestedOneWithoutRoomsInput
+    announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutRoomInput
+    notifications?: NotificationCreateNestedManyWithoutRoomInput
+    bookings?: BookingCreateNestedManyWithoutRoomInput
+    statuses?: RoomStatusCreateNestedManyWithoutRoomInput
+    residents?: UserCreateNestedManyWithoutRoomInput
+    prices?: PriceCreateNestedManyWithoutRoomInput
+  }
+
+  export type RoomUncheckedCreateWithoutMaintenanceReportsInput = {
+    id?: string
+    number: string
+    floorId: string
+    capacity: number
+    dormitoryId: string
+    roomEquipment?: RoomCreateroomEquipmentInput | string[]
+    photos?: RoomCreatephotosInput | string[]
+    roomTypeId?: string | null
+    priceCategoryId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutRoomInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutRoomInput
+    bookings?: BookingUncheckedCreateNestedManyWithoutRoomInput
+    statuses?: RoomStatusUncheckedCreateNestedManyWithoutRoomInput
+    residents?: UserUncheckedCreateNestedManyWithoutRoomInput
+    prices?: PriceUncheckedCreateNestedManyWithoutRoomInput
+  }
+
+  export type RoomCreateOrConnectWithoutMaintenanceReportsInput = {
+    where: RoomWhereUniqueInput
+    create: XOR<RoomCreateWithoutMaintenanceReportsInput, RoomUncheckedCreateWithoutMaintenanceReportsInput>
+  }
+
+  export type ConversationCreateWithoutMaintenanceReportInput = {
+    id?: string
+    title?: string | null
+    isGroup?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdBy: UserCreateNestedOneWithoutCreatedConversationsInput
+    participants?: ConversationParticipantCreateNestedManyWithoutConversationInput
+    messages?: MessageCreateNestedManyWithoutConversationInput
+  }
+
+  export type ConversationUncheckedCreateWithoutMaintenanceReportInput = {
+    id?: string
+    title?: string | null
+    isGroup?: boolean
+    createdById: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    participants?: ConversationParticipantUncheckedCreateNestedManyWithoutConversationInput
+    messages?: MessageUncheckedCreateNestedManyWithoutConversationInput
+  }
+
+  export type ConversationCreateOrConnectWithoutMaintenanceReportInput = {
+    where: ConversationWhereUniqueInput
+    create: XOR<ConversationCreateWithoutMaintenanceReportInput, ConversationUncheckedCreateWithoutMaintenanceReportInput>
+  }
+
+  export type UserUpsertWithoutMaintenanceReportsInput = {
+    update: XOR<UserUpdateWithoutMaintenanceReportsInput, UserUncheckedUpdateWithoutMaintenanceReportsInput>
+    create: XOR<UserCreateWithoutMaintenanceReportsInput, UserUncheckedCreateWithoutMaintenanceReportsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutMaintenanceReportsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutMaintenanceReportsInput, UserUncheckedUpdateWithoutMaintenanceReportsInput>
+  }
+
+  export type UserUpdateWithoutMaintenanceReportsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    picture?: StringFieldUpdateOperationsInput | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    method?: EnumAuthMethodFieldUpdateOperationsInput | $Enums.AuthMethod
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    secondName?: StringFieldUpdateOperationsInput | string
+    studentIdFront?: StringFieldUpdateOperationsInput | string
+    studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
+    startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    confirmations?: ConfirmationUpdateManyWithoutRequesterNestedInput
+    dormitoryAdminAssignments?: DormitoryAdminUpdateManyWithoutUserNestedInput
+    dormitory?: DormitoryUpdateOneWithoutResidentsNestedInput
+    dormitoryManagerAssignments?: DormitoryManagerUpdateManyWithoutUserNestedInput
+    room?: RoomUpdateOneWithoutResidentsNestedInput
+    announcements?: AnnouncementUpdateManyWithoutAuthorNestedInput
+    announcementRecipients?: AnnouncementRecipientUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    sentNotifications?: NotificationUpdateManyWithoutFromUserNestedInput
+    receivedNotifications?: NotificationUpdateManyWithoutToUserNestedInput
+    notificationSettings?: NotificationSettingsUpdateOneWithoutUserNestedInput
+    bookings?: BookingUpdateManyWithoutUserNestedInput
+    payments?: PaymentUpdateManyWithoutUserNestedInput
+    confirmedPayments?: PaymentUpdateManyWithoutConfirmedByUserNestedInput
+    paymentAuditLogs?: PaymentAuditLogUpdateManyWithoutUserNestedInput
+    createdConversations?: ConversationUpdateManyWithoutCreatedByNestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
+    sentMessages?: MessageUpdateManyWithoutSenderNestedInput
+    readMessages?: MessageReadUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutMaintenanceReportsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    picture?: StringFieldUpdateOperationsInput | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    method?: EnumAuthMethodFieldUpdateOperationsInput | $Enums.AuthMethod
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    secondName?: StringFieldUpdateOperationsInput | string
+    studentIdFront?: StringFieldUpdateOperationsInput | string
+    studentIdBack?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
+    startReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endReservationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
+    roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    confirmations?: ConfirmationUncheckedUpdateManyWithoutRequesterNestedInput
+    dormitoryAdminAssignments?: DormitoryAdminUncheckedUpdateManyWithoutUserNestedInput
+    dormitoryManagerAssignments?: DormitoryManagerUncheckedUpdateManyWithoutUserNestedInput
+    announcements?: AnnouncementUncheckedUpdateManyWithoutAuthorNestedInput
+    announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    sentNotifications?: NotificationUncheckedUpdateManyWithoutFromUserNestedInput
+    receivedNotifications?: NotificationUncheckedUpdateManyWithoutToUserNestedInput
+    notificationSettings?: NotificationSettingsUncheckedUpdateOneWithoutUserNestedInput
+    bookings?: BookingUncheckedUpdateManyWithoutUserNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    confirmedPayments?: PaymentUncheckedUpdateManyWithoutConfirmedByUserNestedInput
+    paymentAuditLogs?: PaymentAuditLogUncheckedUpdateManyWithoutUserNestedInput
+    createdConversations?: ConversationUncheckedUpdateManyWithoutCreatedByNestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
+    sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
+    readMessages?: MessageReadUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type RoomUpsertWithoutMaintenanceReportsInput = {
+    update: XOR<RoomUpdateWithoutMaintenanceReportsInput, RoomUncheckedUpdateWithoutMaintenanceReportsInput>
+    create: XOR<RoomCreateWithoutMaintenanceReportsInput, RoomUncheckedCreateWithoutMaintenanceReportsInput>
+    where?: RoomWhereInput
+  }
+
+  export type RoomUpdateToOneWithWhereWithoutMaintenanceReportsInput = {
+    where?: RoomWhereInput
+    data: XOR<RoomUpdateWithoutMaintenanceReportsInput, RoomUncheckedUpdateWithoutMaintenanceReportsInput>
+  }
+
+  export type RoomUpdateWithoutMaintenanceReportsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    number?: StringFieldUpdateOperationsInput | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    roomEquipment?: RoomUpdateroomEquipmentInput | string[]
+    photos?: RoomUpdatephotosInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    floor?: FloorUpdateOneRequiredWithoutRoomsNestedInput
+    dormitory?: DormitoryUpdateOneRequiredWithoutRoomsNestedInput
+    roomType?: RoomTypeUpdateOneWithoutRoomsNestedInput
+    priceCategory?: PriceCategoryUpdateOneWithoutRoomsNestedInput
+    announcementRecipients?: AnnouncementRecipientUpdateManyWithoutRoomNestedInput
+    notifications?: NotificationUpdateManyWithoutRoomNestedInput
+    bookings?: BookingUpdateManyWithoutRoomNestedInput
+    statuses?: RoomStatusUpdateManyWithoutRoomNestedInput
+    residents?: UserUpdateManyWithoutRoomNestedInput
+    prices?: PriceUpdateManyWithoutRoomNestedInput
+  }
+
+  export type RoomUncheckedUpdateWithoutMaintenanceReportsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    number?: StringFieldUpdateOperationsInput | string
+    floorId?: StringFieldUpdateOperationsInput | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    dormitoryId?: StringFieldUpdateOperationsInput | string
+    roomEquipment?: RoomUpdateroomEquipmentInput | string[]
+    photos?: RoomUpdatephotosInput | string[]
+    roomTypeId?: NullableStringFieldUpdateOperationsInput | string | null
+    priceCategoryId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutRoomNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutRoomNestedInput
+    bookings?: BookingUncheckedUpdateManyWithoutRoomNestedInput
+    statuses?: RoomStatusUncheckedUpdateManyWithoutRoomNestedInput
+    residents?: UserUncheckedUpdateManyWithoutRoomNestedInput
+    prices?: PriceUncheckedUpdateManyWithoutRoomNestedInput
+  }
+
+  export type ConversationUpsertWithoutMaintenanceReportInput = {
+    update: XOR<ConversationUpdateWithoutMaintenanceReportInput, ConversationUncheckedUpdateWithoutMaintenanceReportInput>
+    create: XOR<ConversationCreateWithoutMaintenanceReportInput, ConversationUncheckedCreateWithoutMaintenanceReportInput>
+    where?: ConversationWhereInput
+  }
+
+  export type ConversationUpdateToOneWithWhereWithoutMaintenanceReportInput = {
+    where?: ConversationWhereInput
+    data: XOR<ConversationUpdateWithoutMaintenanceReportInput, ConversationUncheckedUpdateWithoutMaintenanceReportInput>
+  }
+
+  export type ConversationUpdateWithoutMaintenanceReportInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    isGroup?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneRequiredWithoutCreatedConversationsNestedInput
+    participants?: ConversationParticipantUpdateManyWithoutConversationNestedInput
+    messages?: MessageUpdateManyWithoutConversationNestedInput
+  }
+
+  export type ConversationUncheckedUpdateWithoutMaintenanceReportInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    isGroup?: BoolFieldUpdateOperationsInput | boolean
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    participants?: ConversationParticipantUncheckedUpdateManyWithoutConversationNestedInput
+    messages?: MessageUncheckedUpdateManyWithoutConversationNestedInput
   }
 
   export type ConfirmationCreateManyRequesterInput = {
@@ -57862,6 +60643,22 @@ export namespace Prisma {
     id?: string
     messageId: string
     readAt?: Date | string
+  }
+
+  export type MaintenanceReportCreateManyUserInput = {
+    id?: string
+    roomId?: string | null
+    category: $Enums.MaintenanceCategory
+    priority: $Enums.MaintenancePriority
+    status?: $Enums.MaintenanceStatus
+    title: string
+    description: string
+    location: string
+    attachments?: MaintenanceReportCreateattachmentsInput | string[]
+    conversationId?: string | null
+    resolvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type ConfirmationUpdateWithoutRequesterInput = {
@@ -58418,6 +61215,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     participants?: ConversationParticipantUpdateManyWithoutConversationNestedInput
     messages?: MessageUpdateManyWithoutConversationNestedInput
+    maintenanceReport?: MaintenanceReportUpdateOneWithoutConversationNestedInput
   }
 
   export type ConversationUncheckedUpdateWithoutCreatedByInput = {
@@ -58428,6 +61226,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     participants?: ConversationParticipantUncheckedUpdateManyWithoutConversationNestedInput
     messages?: MessageUncheckedUpdateManyWithoutConversationNestedInput
+    maintenanceReport?: MaintenanceReportUncheckedUpdateOneWithoutConversationNestedInput
   }
 
   export type ConversationUncheckedUpdateManyWithoutCreatedByInput = {
@@ -58533,6 +61332,54 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     messageId?: StringFieldUpdateOperationsInput | string
     readAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaintenanceReportUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    category?: EnumMaintenanceCategoryFieldUpdateOperationsInput | $Enums.MaintenanceCategory
+    priority?: EnumMaintenancePriorityFieldUpdateOperationsInput | $Enums.MaintenancePriority
+    status?: EnumMaintenanceStatusFieldUpdateOperationsInput | $Enums.MaintenanceStatus
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    attachments?: MaintenanceReportUpdateattachmentsInput | string[]
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    room?: RoomUpdateOneWithoutMaintenanceReportsNestedInput
+    conversation?: ConversationUpdateOneWithoutMaintenanceReportNestedInput
+  }
+
+  export type MaintenanceReportUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumMaintenanceCategoryFieldUpdateOperationsInput | $Enums.MaintenanceCategory
+    priority?: EnumMaintenancePriorityFieldUpdateOperationsInput | $Enums.MaintenancePriority
+    status?: EnumMaintenanceStatusFieldUpdateOperationsInput | $Enums.MaintenanceStatus
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    attachments?: MaintenanceReportUpdateattachmentsInput | string[]
+    conversationId?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaintenanceReportUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumMaintenanceCategoryFieldUpdateOperationsInput | $Enums.MaintenanceCategory
+    priority?: EnumMaintenancePriorityFieldUpdateOperationsInput | $Enums.MaintenancePriority
+    status?: EnumMaintenanceStatusFieldUpdateOperationsInput | $Enums.MaintenanceStatus
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    attachments?: MaintenanceReportUpdateattachmentsInput | string[]
+    conversationId?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type FloorCreateManyDormitoryInput = {
@@ -58679,6 +61526,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     readMessages?: MessageReadUpdateManyWithoutUserNestedInput
+    maintenanceReports?: MaintenanceReportUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDormitoryInput = {
@@ -58718,6 +61566,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     readMessages?: MessageReadUncheckedUpdateManyWithoutUserNestedInput
+    maintenanceReports?: MaintenanceReportUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutDormitoryInput = {
@@ -58759,6 +61608,7 @@ export namespace Prisma {
     statuses?: RoomStatusUpdateManyWithoutRoomNestedInput
     residents?: UserUpdateManyWithoutRoomNestedInput
     prices?: PriceUpdateManyWithoutRoomNestedInput
+    maintenanceReports?: MaintenanceReportUpdateManyWithoutRoomNestedInput
   }
 
   export type RoomUncheckedUpdateWithoutDormitoryInput = {
@@ -58778,6 +61628,7 @@ export namespace Prisma {
     statuses?: RoomStatusUncheckedUpdateManyWithoutRoomNestedInput
     residents?: UserUncheckedUpdateManyWithoutRoomNestedInput
     prices?: PriceUncheckedUpdateManyWithoutRoomNestedInput
+    maintenanceReports?: MaintenanceReportUncheckedUpdateManyWithoutRoomNestedInput
   }
 
   export type RoomUncheckedUpdateManyWithoutDormitoryInput = {
@@ -58829,6 +61680,7 @@ export namespace Prisma {
     statuses?: RoomStatusUpdateManyWithoutRoomNestedInput
     residents?: UserUpdateManyWithoutRoomNestedInput
     prices?: PriceUpdateManyWithoutRoomNestedInput
+    maintenanceReports?: MaintenanceReportUpdateManyWithoutRoomNestedInput
   }
 
   export type RoomUncheckedUpdateWithoutFloorInput = {
@@ -58848,6 +61700,7 @@ export namespace Prisma {
     statuses?: RoomStatusUncheckedUpdateManyWithoutRoomNestedInput
     residents?: UserUncheckedUpdateManyWithoutRoomNestedInput
     prices?: PriceUncheckedUpdateManyWithoutRoomNestedInput
+    maintenanceReports?: MaintenanceReportUncheckedUpdateManyWithoutRoomNestedInput
   }
 
   export type RoomUncheckedUpdateManyWithoutFloorInput = {
@@ -58956,6 +61809,22 @@ export namespace Prisma {
     pricePerDay: number
     dateFrom: Date | string
     dateTo?: Date | string | null
+  }
+
+  export type MaintenanceReportCreateManyRoomInput = {
+    id?: string
+    userId: string
+    category: $Enums.MaintenanceCategory
+    priority: $Enums.MaintenancePriority
+    status?: $Enums.MaintenanceStatus
+    title: string
+    description: string
+    location: string
+    attachments?: MaintenanceReportCreateattachmentsInput | string[]
+    conversationId?: string | null
+    resolvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type AnnouncementRecipientUpdateWithoutRoomInput = {
@@ -59139,6 +62008,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     readMessages?: MessageReadUpdateManyWithoutUserNestedInput
+    maintenanceReports?: MaintenanceReportUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRoomInput = {
@@ -59178,6 +62048,7 @@ export namespace Prisma {
     conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     readMessages?: MessageReadUncheckedUpdateManyWithoutUserNestedInput
+    maintenanceReports?: MaintenanceReportUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutRoomInput = {
@@ -59231,6 +62102,54 @@ export namespace Prisma {
     dateTo?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
+  export type MaintenanceReportUpdateWithoutRoomInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    category?: EnumMaintenanceCategoryFieldUpdateOperationsInput | $Enums.MaintenanceCategory
+    priority?: EnumMaintenancePriorityFieldUpdateOperationsInput | $Enums.MaintenancePriority
+    status?: EnumMaintenanceStatusFieldUpdateOperationsInput | $Enums.MaintenanceStatus
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    attachments?: MaintenanceReportUpdateattachmentsInput | string[]
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutMaintenanceReportsNestedInput
+    conversation?: ConversationUpdateOneWithoutMaintenanceReportNestedInput
+  }
+
+  export type MaintenanceReportUncheckedUpdateWithoutRoomInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    category?: EnumMaintenanceCategoryFieldUpdateOperationsInput | $Enums.MaintenanceCategory
+    priority?: EnumMaintenancePriorityFieldUpdateOperationsInput | $Enums.MaintenancePriority
+    status?: EnumMaintenanceStatusFieldUpdateOperationsInput | $Enums.MaintenanceStatus
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    attachments?: MaintenanceReportUpdateattachmentsInput | string[]
+    conversationId?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaintenanceReportUncheckedUpdateManyWithoutRoomInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    category?: EnumMaintenanceCategoryFieldUpdateOperationsInput | $Enums.MaintenanceCategory
+    priority?: EnumMaintenancePriorityFieldUpdateOperationsInput | $Enums.MaintenancePriority
+    status?: EnumMaintenanceStatusFieldUpdateOperationsInput | $Enums.MaintenanceStatus
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    attachments?: MaintenanceReportUpdateattachmentsInput | string[]
+    conversationId?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type RoomCreateManyRoomTypeInput = {
     id?: string
     number: string
@@ -59267,6 +62186,7 @@ export namespace Prisma {
     statuses?: RoomStatusUpdateManyWithoutRoomNestedInput
     residents?: UserUpdateManyWithoutRoomNestedInput
     prices?: PriceUpdateManyWithoutRoomNestedInput
+    maintenanceReports?: MaintenanceReportUpdateManyWithoutRoomNestedInput
   }
 
   export type RoomUncheckedUpdateWithoutRoomTypeInput = {
@@ -59286,6 +62206,7 @@ export namespace Prisma {
     statuses?: RoomStatusUncheckedUpdateManyWithoutRoomNestedInput
     residents?: UserUncheckedUpdateManyWithoutRoomNestedInput
     prices?: PriceUncheckedUpdateManyWithoutRoomNestedInput
+    maintenanceReports?: MaintenanceReportUncheckedUpdateManyWithoutRoomNestedInput
   }
 
   export type RoomUncheckedUpdateManyWithoutRoomTypeInput = {
@@ -59429,6 +62350,7 @@ export namespace Prisma {
     statuses?: RoomStatusUpdateManyWithoutRoomNestedInput
     residents?: UserUpdateManyWithoutRoomNestedInput
     prices?: PriceUpdateManyWithoutRoomNestedInput
+    maintenanceReports?: MaintenanceReportUpdateManyWithoutRoomNestedInput
   }
 
   export type RoomUncheckedUpdateWithoutPriceCategoryInput = {
@@ -59448,6 +62370,7 @@ export namespace Prisma {
     statuses?: RoomStatusUncheckedUpdateManyWithoutRoomNestedInput
     residents?: UserUncheckedUpdateManyWithoutRoomNestedInput
     prices?: PriceUncheckedUpdateManyWithoutRoomNestedInput
+    maintenanceReports?: MaintenanceReportUncheckedUpdateManyWithoutRoomNestedInput
   }
 
   export type RoomUncheckedUpdateManyWithoutPriceCategoryInput = {

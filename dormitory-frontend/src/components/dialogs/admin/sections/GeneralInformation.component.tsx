@@ -8,8 +8,6 @@ interface ValidationErrors {
     name?: string;
     address?: string;
     groundFloorPhoneNumber?: string;
-    pricePerMonth?: string;
-    pricePerDay?: string;
 }
 
 interface GeneralInformationProps {
@@ -71,7 +69,7 @@ export default function GeneralInformationComponent({
                             value={dormitoryData.name}
                             onChange={onInputChange}
                             placeholder="Wprowadź nazwę akademiku"
-                            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:border-transparent transition-all duration-200 text-gray-900 placeholder-gray-500 shadow-sm ${
+                            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:border-transparent  text-gray-900 placeholder-gray-500 shadow-sm ${
                                 validationErrors.name
                                     ? 'border-red-500 focus:ring-red-500'
                                     : 'border-gray-300 focus:ring-blue-500'
@@ -92,7 +90,7 @@ export default function GeneralInformationComponent({
                             value={dormitoryData.address}
                             onChange={onInputChange}
                             placeholder="Wprowadź pełny adres"
-                            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:border-transparent transition-all duration-200 text-gray-900 placeholder-gray-500 shadow-sm ${
+                            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:border-transparent  text-gray-900 placeholder-gray-500 shadow-sm ${
                                 validationErrors.address
                                     ? 'border-red-500 focus:ring-red-500'
                                     : 'border-gray-300 focus:ring-blue-500'
@@ -102,8 +100,8 @@ export default function GeneralInformationComponent({
                         <ValidationError error={validationErrors.address} />
                     </div>
 
-                    {/* Phone Number */}
-                    <div>
+                    {/* Phone Number - Full Width */}
+                    <div className="lg:col-span-2">
                         <label className="block text-sm font-semibold text-gray-700 mb-3">
                             Numer telefonu <span className="text-red-500">*</span>
                         </label>
@@ -113,7 +111,7 @@ export default function GeneralInformationComponent({
                             value={dormitoryData.groundFloorPhoneNumber}
                             onChange={onInputChange}
                             placeholder="+48123456789"
-                            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:border-transparent transition-all duration-200 text-gray-900 placeholder-gray-500 shadow-sm ${
+                            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:border-transparent  text-gray-900 placeholder-gray-500 shadow-sm ${
                                 validationErrors.groundFloorPhoneNumber
                                     ? 'border-red-500 focus:ring-red-500'
                                     : 'border-gray-300 focus:ring-blue-500'
@@ -121,52 +119,9 @@ export default function GeneralInformationComponent({
                             required
                         />
                         <ValidationError error={validationErrors.groundFloorPhoneNumber} />
-                    </div>
-
-                    {/* Price Per Month */}
-                    <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-3">
-                            Cena za miesiąc (zł) <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                            type="number"
-                            name="pricePerMonth"
-                            value={dormitoryData.pricePerMonth}
-                            onChange={onInputChange}
-                            placeholder="0"
-                            min="0"
-                            step="0.01"
-                            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:border-transparent transition-all duration-200 text-gray-900 placeholder-gray-500 shadow-sm ${
-                                validationErrors.pricePerMonth
-                                    ? 'border-red-500 focus:ring-red-500'
-                                    : 'border-gray-300 focus:ring-blue-500'
-                            }`}
-                            required
-                        />
-                        <ValidationError error={validationErrors.pricePerMonth} />
-                    </div>
-
-                    {/* Price Per Day */}
-                    <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-3">
-                            Cena za dzień (zł) <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                            type="number"
-                            name="pricePerDay"
-                            value={dormitoryData.pricePerDay}
-                            onChange={onInputChange}
-                            placeholder="0"
-                            min="0"
-                            step="0.01"
-                            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:border-transparent transition-all duration-200 text-gray-900 placeholder-gray-500 shadow-sm ${
-                                validationErrors.pricePerDay
-                                    ? 'border-red-500 focus:ring-red-500'
-                                    : 'border-gray-300 focus:ring-blue-500'
-                            }`}
-                            required
-                        />
-                        <ValidationError error={validationErrors.pricePerDay} />
+                        <p className="mt-2 text-xs text-gray-500">
+                            💡 Ceny pokoi są ustawiane przez kategorie cenowe w osobnej zakładce
+                        </p>
                     </div>
 
                     {/* Description - Full Width */}
@@ -179,7 +134,7 @@ export default function GeneralInformationComponent({
                             value={dormitoryData.description}
                             onChange={onInputChange}
                             rows={4}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-900 placeholder-gray-500 resize-none shadow-sm"
+                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent  text-gray-900 placeholder-gray-500 resize-none shadow-sm"
                             placeholder="Opisz swój akademik szczegółowo..."
                         />
                     </div>

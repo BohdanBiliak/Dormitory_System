@@ -92,20 +92,33 @@ export class RoomService {
     // Add price information to each room
     return await Promise.all(
       rooms.map(async (room) => {
+        // Prioritize priceCategory over legacy pricing
+        if (room.priceCategory) {
+          return {
+            ...room,
+            price: {
+              pricePerDay: room.priceCategory.pricePerDay,
+              pricePerMonth: room.priceCategory.pricePerMonth,
+            },
+          };
+        }
+        
         try {
           const pricing = await this.pricingService.getRoomPricing(room.id);
           return {
             ...room,
-            pricing,
+            price: {
+              pricePerDay: pricing.pricePerDay,
+              pricePerMonth: pricing.pricePerMonth,
+            },
           };
         } catch (error) {
           console.error(`Error getting pricing for room ${room.id}:`, error);
           return {
             ...room,
-            pricing: {
+            price: {
               pricePerDay: 0,
               pricePerMonth: 0,
-              source: 'no_pricing',
             },
           };
         }
@@ -116,20 +129,33 @@ export class RoomService {
   async findOne(id: string) {
     const room = await this.roomRepository.findByIdOrThrow(id);
     
+    // Prioritize priceCategory over legacy pricing
+    if (room.priceCategory) {
+      return {
+        ...room,
+        price: {
+          pricePerDay: room.priceCategory.pricePerDay,
+          pricePerMonth: room.priceCategory.pricePerMonth,
+        },
+      };
+    }
+    
     try {
       const pricing = await this.pricingService.getRoomPricing(id);
       return {
         ...room,
-        pricing,
+        price: {
+          pricePerDay: pricing.pricePerDay,
+          pricePerMonth: pricing.pricePerMonth,
+        },
       };
     } catch (error) {
       console.error(`Error getting pricing for room ${id}:`, error);
       return {
         ...room,
-        pricing: {
+        price: {
           pricePerDay: 0,
           pricePerMonth: 0,
-          source: 'no_pricing',
         },
       };
     }
@@ -143,22 +169,36 @@ export class RoomService {
 
     const statistics = await this.roomRepository.getRoomStatistics(id);
     
+    // Prioritize priceCategory over legacy pricing
+    if (room.priceCategory) {
+      return {
+        ...room,
+        ...statistics,
+        price: {
+          pricePerDay: room.priceCategory.pricePerDay,
+          pricePerMonth: room.priceCategory.pricePerMonth,
+        },
+      };
+    }
+    
     try {
       const pricing = await this.pricingService.getRoomPricing(id);
       return {
         ...room,
         ...statistics,
-        pricing,
+        price: {
+          pricePerDay: pricing.pricePerDay,
+          pricePerMonth: pricing.pricePerMonth,
+        },
       };
     } catch (error) {
       console.error(`Error getting pricing for room ${id}:`, error);
       return {
         ...room,
         ...statistics,
-        pricing: {
+        price: {
           pricePerDay: 0,
           pricePerMonth: 0,
-          source: 'no_pricing',
         },
       };
     }

@@ -163,6 +163,32 @@ enum RoomAvailabilityStatus {
   UNAVAILABLE
 }
 
+enum MaintenancePriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum MaintenanceStatus {
+  PENDING
+  IN_PROGRESS
+  RESOLVED
+  CANCELLED
+}
+
+enum MaintenanceCategory {
+  PLUMBING
+  ELECTRICAL
+  HEATING
+  FURNITURE
+  APPLIANCES
+  WINDOWS_DOORS
+  CLEANING
+  INTERNET
+  OTHER
+}
+
 // ==========================================
 // USER MODELS
 // ==========================================
@@ -214,6 +240,9 @@ model User {
   conversationParticipants ConversationParticipant[] @relation("ConversationParticipantUser")
   sentMessages          Message[]                 @relation("MessageSender")
   readMessages          MessageRead[]             @relation("MessageReadBy")
+
+  // Maintenance relations
+  maintenanceReports MaintenanceReport[] @relation("UserMaintenanceReports")
 
   createdAt         DateTime          @default(now()) @map("created_at")
   updatedAt         DateTime          @updatedAt @map("updated_at")
@@ -375,6 +404,7 @@ model Room {
   statuses               RoomStatus[]
   residents              User[]
   prices                 Price[]
+  maintenanceReports     MaintenanceReport[]     @relation("RoomMaintenanceReports")
 
   @@unique([floorId, number])
   @@index([dormitoryId]) // Rooms by dormitory
@@ -785,6 +815,7 @@ model Conversation {
   createdBy    User                    @relation("ConversationCreatedBy", fields: [createdById], references: [id], onDelete: Cascade)
   participants ConversationParticipant[]
   messages     Message[]
+  maintenanceReport MaintenanceReport?  @relation("MaintenanceConversation")
 
   @@index([createdById])
   @@index([isGroup])
@@ -857,4 +888,37 @@ model MessageRead {
   @@index([userId, readAt]) // User read history
   @@index([messageId]) // Message read status
   @@map("message_reads")
+}
+
+// ==========================================
+// MAINTENANCE MODELS
+// ==========================================
+model MaintenanceReport {
+  id             String              @id @default(uuid())
+  userId         String              @map("user_id")
+  roomId         String?             @map("room_id")
+  category       MaintenanceCategory
+  priority       MaintenancePriority
+  status         MaintenanceStatus   @default(PENDING)
+  title          String
+  description    String              @db.Text
+  location       String
+  attachments    String[]            @default([])
+  conversationId String?             @unique @map("conversation_id")
+  resolvedAt     DateTime?           @map("resolved_at")
+  createdAt      DateTime            @default(now()) @map("created_at")
+  updatedAt      DateTime            @updatedAt @map("updated_at")
+
+  // Relations
+  user         User          @relation("UserMaintenanceReports", fields: [userId], references: [id], onDelete: Cascade)
+  room         Room?         @relation("RoomMaintenanceReports", fields: [roomId], references: [id], onDelete: SetNull)
+  conversation Conversation? @relation("MaintenanceConversation", fields: [conversationId], references: [id], onDelete: SetNull)
+
+  @@index([userId, createdAt])
+  @@index([status, createdAt])
+  @@index([priority, status])
+  @@index([roomId, status])
+  @@index([category, status])
+  @@index([createdAt])
+  @@map("maintenance_reports")
 }

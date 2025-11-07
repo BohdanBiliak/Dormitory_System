@@ -12,7 +12,7 @@ interface ConversationListProps {
   currentUserId: string;
 }
 
-export const ConversationList: React.FC<ConversationListProps> = ({
+export const ConversationList: React.FC<ConversationListProps> = React.memo(({
   conversations,
   selectedConversationId,
   onSelectConversation,
@@ -117,7 +117,7 @@ export const ConversationList: React.FC<ConversationListProps> = ({
   }
 
   return (
-    <div className="flex-1 overflow-y-auto">
+    <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
       {conversations.map((conversation) => (
         <div
           key={conversation.id}
@@ -130,7 +130,7 @@ export const ConversationList: React.FC<ConversationListProps> = ({
             {getConversationAvatar(conversation)}
             
             {conversation.unreadCount && conversation.unreadCount > 0 && (
-              <div className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+              <div className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-semibold">
                 {conversation.unreadCount > 99 ? '99+' : conversation.unreadCount}
               </div>
             )}
@@ -162,13 +162,18 @@ export const ConversationList: React.FC<ConversationListProps> = ({
             </p>
 
             {conversation.isGroup && (
-              <p className="text-xs text-gray-400 mt-1">
-                {conversation.participants.length} participants
-              </p>
+              <div className="flex items-center mt-1">
+                <Users className="w-3 h-3 text-gray-400 mr-1" />
+                <p className="text-xs text-gray-400">
+                  {conversation.participants.length} {conversation.participants.length === 1 ? 'participant' : 'participants'}
+                </p>
+              </div>
             )}
           </div>
         </div>
       ))}
     </div>
   );
-};
+});
+
+ConversationList.displayName = 'ConversationList';

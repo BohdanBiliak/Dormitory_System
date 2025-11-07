@@ -54,18 +54,20 @@ export const useSocket = (events?: SocketEvents): UseSocketReturn => {
       randomizationFactor: 0.5, // Randomize reconnection to avoid thundering herd
     });
 
-    socketRef.current = socket;    // Connection events
+    socketRef.current = socket;
+    
+    // Connection events
     socket.on('connect', () => {
-      console.log('Connected to messaging server');
+      // console.log('Connected to messaging server');
       setIsConnected(true);
     });
 
     socket.on('connected', (data) => {
-      console.log('Authentication successful:', data);
+      // console.log('Authentication successful:', data);
     });
 
     socket.on('disconnect', (reason) => {
-      console.log('Disconnected from messaging server:', reason);
+      // console.log('Disconnected from messaging server:', reason);
       setIsConnected(false);
     });
 
@@ -83,13 +85,13 @@ export const useSocket = (events?: SocketEvents): UseSocketReturn => {
       console.error('🔴 Socket error:', error);
       if (error.code === 'NO_SESSION' || error.code === 'INVALID_SESSION') {
         // Session expired or invalid, user needs to log in again
-        console.warn('Session invalid, disconnecting socket...');
+        // console.warn('Session invalid, disconnecting socket...');
         socket.disconnect(); // Stop reconnection attempts
         if (eventsRef.current?.onError) {
           eventsRef.current.onError(error);
         }
       } else if (error.code === 'RATE_LIMIT_EXCEEDED') {
-        console.warn('Too many connection attempts, backing off...');
+        // console.warn('Too many connection attempts, backing off...');
         socket.disconnect(); // Stop reconnection attempts
         if (eventsRef.current?.onError) {
           eventsRef.current.onError(error);
@@ -104,7 +106,7 @@ export const useSocket = (events?: SocketEvents): UseSocketReturn => {
 
     // Conversation events
     socket.on('conversation_created', (conversation: Conversation) => {
-      console.log('✅ Conversation created via socket:', conversation.id);
+      // console.log('✅ Conversation created via socket:', conversation.id);
       if (eventsRef.current?.onNewConversation) {
         eventsRef.current.onNewConversation(conversation);
       }
@@ -161,11 +163,11 @@ export const useSocket = (events?: SocketEvents): UseSocketReturn => {
 
     // Conversation join/leave confirmations
     socket.on('joined_conversation', (data: { conversationId: string }) => {
-      console.log('Joined conversation:', data.conversationId);
+      // console.log('Joined conversation:', data.conversationId);
     });
 
     socket.on('left_conversation', (data: { conversationId: string }) => {
-      console.log('Left conversation:', data.conversationId);
+      // console.log('Left conversation:', data.conversationId);
     });
 
     return () => {
@@ -184,13 +186,8 @@ export const useSocket = (events?: SocketEvents): UseSocketReturn => {
   };
 
   const createConversation = (data: CreateConversationData) => {
-    console.log('🔵 Socket: Attempting to create conversation', { 
-      isConnected: socketRef.current?.connected, 
-      data 
-    });
     
     if (socketRef.current?.connected) {
-      console.log('🔵 Socket: Emitting create_conversation event');
       socketRef.current.emit('create_conversation', data);
     } else {
       console.error('🔴 Socket: Cannot create conversation - socket not connected');

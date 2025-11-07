@@ -32,7 +32,7 @@ export function UserPublicAnnouncements(){
 
 
     return(
-        <div className="min-h-screen w-full bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className="min-h-screen w-full bg-gray-50">
             {/* Header Section */}
             <div className="bg-white shadow-sm border-b border-gray-200">
                 <div className="px-4 py-6 md:px-6 md:py-8">

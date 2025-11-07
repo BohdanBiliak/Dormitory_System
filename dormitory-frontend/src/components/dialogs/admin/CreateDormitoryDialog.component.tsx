@@ -36,8 +36,6 @@ interface ValidationErrors {
     name?: string;
     address?: string;
     groundFloorPhoneNumber?: string;
-    pricePerMonth?: string;
-    pricePerDay?: string;
     floorNumber?: string;
     roomTemplates?: {
         name?: string;
@@ -81,14 +79,6 @@ const validateGeneralInformation = (data: DormitoryPostData): ValidationErrors =
         errors.groundFloorPhoneNumber = 'Phone number is required';
     } else if (!validatePhoneNumber(data.groundFloorPhoneNumber)) {
         errors.groundFloorPhoneNumber = 'Phone number must start with + and contain exactly 11 digits (e.g., +48123456789)';
-    }
-
-    if (data.pricePerMonth <= 0) {
-        errors.pricePerMonth = 'Price per month must be greater than 0';
-    }
-
-    if (data.pricePerDay <= 0) {
-        errors.pricePerDay = 'Price per day must be greater than 0';
     }
 
     return errors;
@@ -147,8 +137,6 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
         address: '',
         description: '',
         groundFloorPhoneNumber: '',
-        pricePerMonth: 0,
-        pricePerDay: 0,
         floorAssignments: [],
         photos: [],
     });
@@ -226,10 +214,10 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const {name, value} = e.target;
 
-        if (['name', 'address', 'description', 'groundFloorPhoneNumber', 'pricePerDay', 'pricePerMonth'].includes(name)) {
+        if (['name', 'address', 'description', 'groundFloorPhoneNumber'].includes(name)) {
             setNewDormitory(prevState => ({
                 ...prevState,
-                [name]: name === 'pricePerDay' || name === 'pricePerMonth' ? Number(value) : value
+                [name]: value
             }));
 
             // Clear validation error for this field
@@ -768,8 +756,6 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
             address: '',
             description: '',
             groundFloorPhoneNumber: '',
-            pricePerMonth: 0,
-            pricePerDay: 0,
             floorAssignments: [],
             photos: [],
         });
@@ -966,7 +952,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                             <div className="flex items-center space-x-1 xs:space-x-2 sm:space-x-3 flex-shrink-0">
                                 {isCreating && (
                                     <div className="hidden sm:flex items-center space-x-2 text-white">
-                                        <Loader2 className="w-3 h-3 xs:w-4 xs:h-4 animate-spin" />
+                                        <Loader2 className="w-3 h-3 xs:w-4 xs:h-4" />
                                         <span className="text-xs xs:text-sm">Creating...</span>
                                     </div>
                                 )}
@@ -987,7 +973,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                             <div className="mt-2 xs:mt-4 sm:mt-6 relative z-10">
                                 <div className="w-full bg-white/20 rounded-full h-1.5 xs:h-2 sm:h-3 shadow-inner">
                                     <div 
-                                        className="bg-gradient-to-r from-white to-blue-100 rounded-full h-1.5 xs:h-2 sm:h-3 transition-all duration-500 ease-out shadow-sm"
+                                        className="bg-white rounded-full h-1.5 xs:h-2 sm:h-3  ease-out shadow-sm"
                                         style={{ width: `${calculateProgress()}%` }}
                                     />
                                 </div>
@@ -1000,7 +986,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                     </div>
 
                     {/* Simplified Progress Navigation */}
-                    <div className="bg-gradient-to-r from-gray-50 to-blue-50 border-b border-gray-200 px-1 xs:px-2 sm:px-4 md:px-6 py-2 xs:py-3 sm:py-5 flex-shrink-0 shadow-sm">
+                    <div className="bg-gray-50 border-b border-gray-200 px-1 xs:px-2 sm:px-4 md:px-6 py-2 xs:py-3 sm:py-5 flex-shrink-0 shadow-sm">
                         <div className="flex items-center justify-between w-full">
                             {/* Previous Button */}
                             <button 
@@ -1026,9 +1012,9 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                                     <button 
                                         key={section.key}
                                         onClick={() => setActiveSection(section.key)}
-                                        className={`px-1.5 xs:px-2 sm:px-5 py-1.5 xs:py-2 sm:py-3 text-xs sm:text-sm font-semibold rounded-md xs:rounded-lg sm:rounded-xl transition-all duration-200 flex items-center space-x-1 sm:space-x-2 shadow-sm transform hover:scale-105 whitespace-nowrap min-w-0 ${
+                                        className={`px-1.5 xs:px-2 sm:px-5 py-1.5 xs:py-2 sm:py-3 text-xs sm:text-sm font-semibold rounded-md xs:rounded-lg sm:rounded-xl  flex items-center space-x-1 sm:space-x-2 shadow-sm whitespace-nowrap min-w-0 ${
                                             activeSection === section.key
-                                                ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/25'
+                                                ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/25'
                                                 : 'bg-white text-gray-700 border border-gray-200 hover:bg-blue-50 hover:border-blue-300'
                                         }`}
                                     >
@@ -1059,7 +1045,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                     </div>
 
                     {/* Content Area */}
-                    <div className="flex-1 overflow-y-auto bg-gradient-to-br from-gray-50 to-blue-50">
+                    <div className="flex-1 overflow-y-auto bg-gray-50">
                         <div 
                             key={activeSection} 
                             className="h-full p-2 xs:p-3 sm:p-6"
@@ -1070,10 +1056,10 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                     </div>
 
                     {/* Footer with Create Button */}
-                    <div className="bg-gradient-to-r from-gray-50 to-blue-50 border-t border-gray-200 px-2 xs:px-4 sm:px-6 py-3 xs:py-4 sm:py-5 flex-shrink-0 shadow-lg">
+                    <div className="bg-gray-50 border-t border-gray-200 px-2 xs:px-4 sm:px-6 py-3 xs:py-4 sm:py-5 flex-shrink-0 shadow-lg">
                         <div className="flex flex-col gap-2 xs:gap-3 sm:gap-0 sm:flex-row items-stretch sm:items-center justify-between">
                             <div className="text-xs sm:text-sm text-gray-600 flex items-center space-x-2 justify-center sm:justify-start order-2 sm:order-1">
-                                <div className="w-1.5 h-1.5 xs:w-2 xs:h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                                <div className="w-1.5 h-1.5 xs:w-2 xs:h-2 bg-blue-500 rounded-full"></div>
                                 <span className="text-center sm:text-left text-xs xs:text-sm">
                                     {activeSection === 'General Information' 
                                         ? 'Wypełnij podstawowe informacje o akademiku'
@@ -1088,13 +1074,13 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                             <div className="flex flex-col xs:flex-row gap-2 sm:gap-3 order-1 sm:order-2">
                                 <button 
                                     onClick={onClose}
-                                    className="px-3 xs:px-4 sm:px-5 py-2 xs:py-2.5 text-xs xs:text-sm font-medium text-gray-700 bg-white border-2 border-gray-300 rounded-lg xs:rounded-xl hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 shadow-sm"
+                                    className="px-3 xs:px-4 sm:px-5 py-2 xs:py-2.5 text-xs xs:text-sm font-medium text-gray-700 bg-white border-2 border-gray-300 rounded-lg xs:rounded-xl hover:bg-gray-50 hover:border-gray-400  shadow-sm"
                                 >
                                     Anuluj
                                 </button>
                                 <button 
                                     onClick={handleClearAll}
-                                    className="px-3 xs:px-4 sm:px-5 py-2 xs:py-2.5 text-xs xs:text-sm font-medium text-orange-700 bg-orange-50 border-2 border-orange-200 rounded-lg xs:rounded-xl hover:bg-orange-100 hover:border-orange-300 transition-all duration-200 flex items-center justify-center space-x-1 xs:space-x-2 shadow-sm"
+                                    className="px-3 xs:px-4 sm:px-5 py-2 xs:py-2.5 text-xs xs:text-sm font-medium text-orange-700 bg-orange-50 border-2 border-orange-200 rounded-lg xs:rounded-xl hover:bg-orange-100 hover:border-orange-300  flex items-center justify-center space-x-1 xs:space-x-2 shadow-sm"
                                 >
                                     <svg className="w-3 h-3 xs:w-4 xs:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -1104,15 +1090,15 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                                 <button 
                                     onClick={handleCreateDormitory}
                                     disabled={isCreating}
-                                    className={`px-4 xs:px-6 sm:px-8 py-2 xs:py-2.5 text-xs xs:text-sm font-semibold text-white border-2 rounded-lg xs:rounded-xl transition-all duration-200 flex items-center justify-center space-x-1 xs:space-x-2 shadow-lg ${
+                                    className={`px-4 xs:px-6 sm:px-8 py-2 xs:py-2.5 text-xs xs:text-sm font-semibold text-white border-2 rounded-lg xs:rounded-xl  flex items-center justify-center space-x-1 xs:space-x-2 shadow-lg ${
                                         isCreating 
                                             ? 'bg-gray-400 border-gray-400 cursor-not-allowed' 
-                                            : 'bg-gradient-to-r from-blue-600 to-purple-600 border-transparent hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 shadow-blue-500/25'
+                                            : 'bg-blue-600 border-transparent hover:bg-blue-700 shadow-blue-500/25'
                                     }`}
                                 >
                                     {isCreating ? (
                                         <>
-                                            <Loader2 className="w-3 h-3 xs:w-4 xs:h-4 sm:w-5 sm:h-5 animate-spin" />
+                                            <Loader2 className="w-3 h-3 xs:w-4 xs:h-4 sm:w-5 sm:h-5" />
                                             <span>Tworzenie...</span>
                                         </>
                                     ) : (

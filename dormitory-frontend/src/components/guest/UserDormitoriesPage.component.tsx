@@ -2,12 +2,12 @@
 
 import { usePublicDormitories } from '@/hooks/public-dormitories.hook'
 import Link from 'next/link'
+import { memo, useMemo } from 'react'
 
-export function UserDormitoriesPageComponent() {
+export const UserDormitoriesPageComponent = memo(function UserDormitoriesPageComponent() {
   const { data: dormitoriesResponse, isLoading, error } = usePublicDormitories()
 
-
-  const dormitories = dormitoriesResponse?.data
+  const dormitories = useMemo(() => dormitoriesResponse?.data, [dormitoriesResponse?.data])
 
   if (isLoading) {
     return (
@@ -40,7 +40,7 @@ export function UserDormitoriesPageComponent() {
   }
 
   return (
-    <div className="w-full bg-gradient-to-br from-gray-50 to-gray-100 p-4 md:p-6 lg:p-8">
+    <div className="w-full bg-gray-50 p-4 md:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
@@ -66,7 +66,7 @@ export function UserDormitoriesPageComponent() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {dormitories.map((dormitory: any) => (
               <Link key={dormitory.id} href={`/dormitories/${dormitory.id}`}>
-                <div className="bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-200 overflow-hidden group">
+                <div className="bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-lg  overflow-hidden group">
                   <div className="p-6">
                     <div className="flex items-start justify-between mb-4">
                       <h3 className="text-xl font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
@@ -130,4 +130,4 @@ export function UserDormitoriesPageComponent() {
       </div>
     </div>
   )
-}
+})

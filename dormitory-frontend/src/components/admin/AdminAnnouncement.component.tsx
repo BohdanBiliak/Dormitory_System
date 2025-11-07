@@ -8,6 +8,7 @@ import {Dialog} from "@headlessui/react";
 import {useGetRooms} from "@/hooks/rooms.hook";
 import {useGetActiveDormitories} from "@/hooks/dormitories.hook";
 import {Room} from "@/types/rooms.types";
+import { FileText, Download, Calendar, Users, Building, DoorOpen } from "lucide-react";
 
 export interface AdminAnnouncementProps {
     id: string
@@ -35,9 +36,6 @@ export default function AdminAnnouncement({id}:AdminAnnouncementProps){
     const handleInputChange = (e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const {name, value} = e.target
 
-        // if(name === "expiresAt"){
-        //     setNewAnnouncement(prev =>({...prev, expiresAt: new Date(value).toISOString()}))
-        // }else
         if(name !== "attachmentUrls"){
             setAnnouncementDetails(prev =>({...prev, [name]:value}))
         }
@@ -56,6 +54,26 @@ export default function AdminAnnouncement({id}:AdminAnnouncementProps){
         setAddingAddresses(false)
     }
 
+    const formatDate = (dateString: string) => {
+        return new Date(dateString).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    }
+
+    const handleDownloadAttachment = (url: string, filename: string) => {
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        link.target = '_blank';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
     useEffect(() => {
         if(announcement){
             setAnnouncementDetails(announcement)
@@ -65,7 +83,7 @@ export default function AdminAnnouncement({id}:AdminAnnouncementProps){
 
 
     return (
-        <div className=" w-full bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className=" w-full bg-gray-50">
             {/* Header */}
             <div className="bg-white shadow-sm border-b border-gray-200">
                 <div className="px-4 py-6 md:px-6 md:py-8">
@@ -98,7 +116,7 @@ export default function AdminAnnouncement({id}:AdminAnnouncementProps){
                         <div className="xl:col-span-3">
                             <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                                 {/* Form Header */}
-                                <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
+                                <div className="bg-blue-600 px-6 py-4">
                                     <div className="flex items-center space-x-3">
                                         <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
@@ -142,21 +160,33 @@ export default function AdminAnnouncement({id}:AdminAnnouncementProps){
 
                                     {/* Attached Files Section */}
                                     <div className="space-y-4">
-                                        {attachedFiles.length > 0 && (
+                                        <label className="block text-sm font-medium text-gray-700">
+                                            Attached Files
+                                        </label>
+                                        {announcementDetails.attachments && announcementDetails.attachments.length > 0 ? (
                                             <div className="bg-gray-50 rounded-lg p-4 space-y-2">
-                                                {attachedFiles.map((file, index) => (
-                                                    <div key={index} className="flex items-center justify-between bg-white p-3 rounded-lg border">
-                                                        <div className="flex items-center space-x-3">
-                                                            <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                                            </svg>
-                                                            <div>
-                                                                <p className="text-sm font-medium text-gray-900">{file.name}</p>
-                                                                <p className="text-xs text-gray-500">{(file.size / 1024).toFixed(1)} KB</p>
+                                                {announcementDetails.attachments.map((file, index) => (
+                                                    <div key={index} className="flex items-center justify-between bg-white p-3 rounded-lg border border-gray-200 hover:border-blue-300 transition-colors">
+                                                        <div className="flex items-center space-x-3 flex-1 min-w-0">
+                                                            <FileText className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                                                            <div className="min-w-0 flex-1">
+                                                                <p className="text-sm font-medium text-gray-900 truncate">{file.fileName}</p>
+                                                                <p className="text-xs text-gray-500">Attachment</p>
                                                             </div>
                                                         </div>
+                                                        <button
+                                                            onClick={() => handleDownloadAttachment(file.url, file.fileName)}
+                                                            className="ml-3 p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors flex-shrink-0"
+                                                            title="Download file"
+                                                        >
+                                                            <Download className="w-5 h-5" />
+                                                        </button>
                                                     </div>
                                                 ))}
+                                            </div>
+                                        ) : (
+                                            <div className="bg-gray-50 rounded-lg p-4 text-center text-gray-500 text-sm">
+                                                No files attached
                                             </div>
                                         )}
                                     </div>
@@ -168,79 +198,84 @@ export default function AdminAnnouncement({id}:AdminAnnouncementProps){
                         <div className="xl:col-span-1 space-y-6">
                             {/* Recipients Section */}
                             <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                                <div className="bg-gradient-to-r from-green-600 to-green-700 px-6 py-4">
-                                    <label className="flex items-center space-x-3">
-                                        <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                                        </svg>
+                                <div className="bg-green-600 px-6 py-4">
+                                    <div className="flex items-center space-x-3">
+                                        <Users className="w-5 h-5 text-white" />
                                         <h3 className="text-lg font-semibold text-white">Recipients</h3>
-                                    </label>
-                                    <label className="flex items-center space-x-3">
-                                        <h4 className="text-sm text-white">
-                                            General announcement:
-                                        </h4>
-                                        <input
-                                            type="checkbox"
-                                            name="forEveryone"
-                                            onChange={handleCheckboxChange}
-                                            className={`sr-only`}
-                                        />
-                                        <div className={`relative w-11 h-6 rounded-full transition-colors duration-200 ${
-                                            announcementDetails.isHidden ? 'bg-blue-600' : 'bg-gray-300'
-                                        }`}>
-                                            <div className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform duration-200 ${
-                                                announcementDetails.isHidden ? 'translate-x-5' : 'translate-x-0'
-                                            }`}/>
-                                        </div>
-                                    </label>
+                                    </div>
                                 </div>
 
                                 <div className="p-6">
-                                    <div className="space-y-4">
-                                        {addresses.map((address, index) => (
-                                            <div key={index} className="flex items-center space-x-2">
-                                                <div className="flex items-center space-x-2">
-                                                    <label>address</label>
+                                    <div className="space-y-3">
+                                        {announcementDetails.recipients && announcementDetails.recipients.length > 0 ? (
+                                            announcementDetails.recipients.map((recipient, index) => (
+                                                <div key={index} className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                                                    {recipient.forEveryone ? (
+                                                        <>
+                                                            <Users className="w-5 h-5 text-green-600" />
+                                                            <span className="text-sm font-medium text-gray-900">Everyone</span>
+                                                        </>
+                                                    ) : recipient.userId ? (
+                                                        <>
+                                                            <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                                            </svg>
+                                                            <span className="text-sm font-medium text-gray-900">User ID: {recipient.userId}</span>
+                                                        </>
+                                                    ) : recipient.roomId ? (
+                                                        <>
+                                                            <DoorOpen className="w-5 h-5 text-purple-600" />
+                                                            <span className="text-sm font-medium text-gray-900">Room ID: {recipient.roomId}</span>
+                                                        </>
+                                                    ) : recipient.floorId ? (
+                                                        <>
+                                                            <Building className="w-5 h-5 text-orange-600" />
+                                                            <span className="text-sm font-medium text-gray-900">Floor: {recipient.floorId}</span>
+                                                        </>
+                                                    ) : null}
                                                 </div>
+                                            ))
+                                        ) : (
+                                            <div className="text-center py-4 text-gray-500 text-sm">
+                                                No specific recipients
                                             </div>
-                                        ))}
-
-                                        <button
-                                            className="w-full flex items-center justify-center px-4 py-2 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-green-400 hover:text-green-600 transition-colors"
-                                        >
-                                            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                            </svg>
-                                            Add Recipient
-                                        </button>
+                                        )}
                                     </div>
                                 </div>
                             </div>
 
-                            {/* Settings Section */}
+                            {/* Dates Section */}
                             <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                                <div className="bg-gradient-to-r from-purple-600 to-purple-700 px-6 py-4">
+                                <div className="bg-blue-600 px-6 py-4">
                                     <div className="flex items-center space-x-3">
-                                        <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        </svg>
-                                        <h3 className="text-lg font-semibold text-white">Settings</h3>
+                                        <Calendar className="w-5 h-5 text-white" />
+                                        <h3 className="text-lg font-semibold text-white">Important Dates</h3>
                                     </div>
                                 </div>
 
                                 <div className="p-6 space-y-4">
-                                    <div className="space-y-2">
-                                        <label className="block text-sm font-medium text-gray-700">
-                                            Expiration Date
-                                        </label>
-                                        <input
-                                            name="expiresAt"
-                                            type="date"
-                                            disabled={true}
-                                            value={announcementDetails.expiresAt}
-                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm"
-                                        />
+                                    <div className="flex items-start space-x-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                                        <svg className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        <div>
+                                            <p className="text-xs font-medium text-blue-900 uppercase tracking-wide">Posted At</p>
+                                            <p className="text-sm text-blue-800 mt-1">
+                                                {announcementDetails.postedAt ? formatDate(announcementDetails.postedAt) : 'Not available'}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-start space-x-3 p-3 bg-orange-50 rounded-lg border border-orange-200">
+                                        <svg className="w-5 h-5 text-orange-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                        </svg>
+                                        <div>
+                                            <p className="text-xs font-medium text-orange-900 uppercase tracking-wide">Expires At</p>
+                                            <p className="text-sm text-orange-800 mt-1">
+                                                {announcementDetails.expiresAt ? formatDate(announcementDetails.expiresAt) : 'No expiration'}
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

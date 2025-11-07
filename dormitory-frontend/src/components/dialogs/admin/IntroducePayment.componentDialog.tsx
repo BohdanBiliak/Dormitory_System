@@ -15,6 +15,12 @@ export default function IntroducePaymentComponentDialog({open, onClose}: Introdu
     const {createPayment} = useUpdatePayments();
 
     const {data: users, isLoading: loadingUsers, error: usersError} = useUserListQuery();
+    const [minDate, setMinDate] = useState<string>('')
+
+    // Set minimum date on client side only to prevent hydration mismatch
+    useEffect(() => {
+        setMinDate(new Date().toISOString().split('T')[0])
+    }, [])
 
     useEffect(() => {
         if(users && users.data && users.data.length > 0) {
@@ -78,22 +84,22 @@ export default function IntroducePaymentComponentDialog({open, onClose}: Introdu
 
     return(
         <Dialog open={open} onClose={onClose}>
-            <DialogBackdrop className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-all duration-300" />
+            <DialogBackdrop className="fixed inset-0 bg-black/60 backdrop-blur-sm " />
             <div className="fixed inset-0 flex items-center justify-center p-1 sm:p-4">
                 <DialogPanel className="w-full max-w-7xl max-h-[98vh] sm:max-h-[95vh] bg-white rounded-xl sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col h-full min-h-0 touch-pan-y">
                     <div className="flex flex-col h-full min-h-0">
                         {/*Dialog Header*/}
-                        <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-4 sm:px-6 py-4 sm:py-6 flex-shrink-0 create-dormitory-header">
+                        <div className="bg-blue-600 px-4 sm:px-6 py-4 sm:py-6 flex-shrink-0 create-dormitory-header">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center space-x-3 sm:space-x-4">
                                     <div className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-white/20 rounded-full animate-in zoom-in-50 duration-300 delay-150">
                                         <Receipt className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                                     </div>
                                     <div>
-                                        <DialogTitle className="text-lg sm:text-xl font-semibold text-white animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-200">
+                                        <DialogTitle className="text-lg sm:text-xl font-semibold text-white delay-200">
                                             Introduce Payment
                                         </DialogTitle>
-                                        <Description className="text-blue-100 text-sm mt-1 animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-250">
+                                        <Description className="text-blue-100 text-sm mt-1 delay-250">
                                             Here you can introduce new payments
                                         </Description>
                                     </div>
@@ -148,7 +154,7 @@ export default function IntroducePaymentComponentDialog({open, onClose}: Introdu
                                                     onChange={handleInputChange}
                                                     value={newPayment.description}
                                                     placeholder="Enter payment description..."
-                                                    className="w-full px-4 py-3 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:shadow-sm"
+                                                    className="w-full px-4 py-3 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500  hover:shadow-sm"
                                                 />
                                             </div>
 
@@ -165,7 +171,7 @@ export default function IntroducePaymentComponentDialog({open, onClose}: Introdu
                                                     onChange={handleInputChange}
                                                     value={newPayment.amount}
                                                     placeholder="0.00"
-                                                    className="w-full px-4 py-3 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:shadow-sm"
+                                                    className="w-full px-4 py-3 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500  hover:shadow-sm"
                                                 />
                                             </div>
 
@@ -182,7 +188,7 @@ export default function IntroducePaymentComponentDialog({open, onClose}: Introdu
                                                             return { ...prevState, paymentType: e.target.value as PaymentType }
                                                         })
                                                     }}
-                                                    className="w-full px-4 py-3 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:shadow-sm bg-white"
+                                                    className="w-full px-4 py-3 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500  hover:shadow-sm bg-white"
                                                 >
                                                     {Object.values(PaymentType).map(value => (
                                                         <option key={value} value={value}>
@@ -202,8 +208,8 @@ export default function IntroducePaymentComponentDialog({open, onClose}: Introdu
                                                     type="date"
                                                     onChange={handleInputChange}
                                                     value={newPayment.dueDate}
-                                                    min={new Date().toISOString().split('T')[0]}
-                                                    className="w-full px-4 py-3 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:shadow-sm"
+                                                    min={minDate}
+                                                    className="w-full px-4 py-3 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500  hover:shadow-sm"
                                                 />
                                             </div>
                                         </div>
@@ -236,7 +242,7 @@ export default function IntroducePaymentComponentDialog({open, onClose}: Introdu
                                                                 return { ...prevState, userId: e.target.value }
                                                             })
                                                         }}
-                                                        className="w-full px-4 py-3 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:shadow-sm bg-white"
+                                                        className="w-full px-4 py-3 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500  hover:shadow-sm bg-white"
                                                     >
                                                         {userList.map((item) => (
                                                             <option key={item.id} value={item.id}>
@@ -260,7 +266,7 @@ export default function IntroducePaymentComponentDialog({open, onClose}: Introdu
                                                             return { ...prevState, paymentMethod: e.target.value as PaymentMethod }
                                                         })
                                                     }}
-                                                    className="w-full px-4 py-3 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:shadow-sm bg-white"
+                                                    className="w-full px-4 py-3 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500  hover:shadow-sm bg-white"
                                                 >
                                                     {Object.values(PaymentMethod).map((item) => (
                                                         <option key={item} value={item}>
@@ -271,7 +277,7 @@ export default function IntroducePaymentComponentDialog({open, onClose}: Introdu
                                             </div>
 
                                             {/* Payment Summary */}
-                                            <div className="bg-white rounded-lg p-4 border border-slate-200 animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-400">
+                                            <div className="bg-white rounded-lg p-4 border border-slate-200 delay-400">
                                                 <h4 className="text-sm font-medium text-slate-700 mb-3">Payment Summary</h4>
                                                 <div className="space-y-2 text-sm">
                                                     <div className="flex justify-between">
@@ -298,14 +304,14 @@ export default function IntroducePaymentComponentDialog({open, onClose}: Introdu
                                 <div className="flex flex-col sm:flex-row gap-3 justify-end mt-8 pt-6 border-t border-slate-200 animate-in fade-in-0 slide-in-from-bottom-4 duration-500 delay-500">
                                     <button
                                         onClick={handleCancel}
-                                        className="px-6 py-3 bg-slate-200 text-slate-700 text-sm font-medium rounded-lg hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transition-all duration-200 hover:scale-105 active:scale-95 transform"
+                                        className="px-6 py-3 bg-slate-200 text-slate-700 text-sm font-medium rounded-lg hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2  hover:scale-105 transform"
                                     >
                                         Cancel
                                     </button>
                                     <button
                                         onClick={handleSubmit}
                                         disabled={!newPayment.userId || !newPayment.amount || !newPayment.dueDate}
-                                        className="px-6 py-3 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 hover:scale-105 active:scale-95 transform hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                                        className="px-6 py-3 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2  hover:scale-105 transform hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                                     >
                                         Create Payment
                                     </button>

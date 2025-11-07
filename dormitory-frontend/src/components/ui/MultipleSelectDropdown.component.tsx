@@ -1,7 +1,7 @@
 
 'use client'
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, memo } from "react";
 
 interface MultipleSelectDropdownProps {
     dropdownHeader: string;
@@ -13,7 +13,7 @@ interface MultipleSelectDropdownProps {
     placeholder?: string;
 }
 
-export default function MultipleSelectDropdown({
+const MultipleSelectDropdown = memo(function MultipleSelectDropdown({
     dropdownHeader,
     formFieldName, 
     options, 
@@ -78,7 +78,7 @@ export default function MultipleSelectDropdown({
                     bg-white border border-gray-300 rounded-md
                     hover:border-gray-400 focus:outline-none focus:ring-2 
                     focus:ring-blue-500 focus:border-transparent
-                    transition-all duration-200
+                    
                     ${disabled ? 'opacity-50 cursor-not-allowed bg-gray-50' : 'cursor-pointer'}
                     ${selectedOptions.length === 0 ? 'text-gray-500' : 'text-gray-900'}
                 `}
@@ -148,4 +148,6 @@ export default function MultipleSelectDropdown({
             )}
         </div>
     );
-}
+});
+
+export default MultipleSelectDropdown;

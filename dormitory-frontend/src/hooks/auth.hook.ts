@@ -3,42 +3,45 @@ import {authApi} from '@/app/lib/auth.api'
 import {LoginRequest, RegisterRequest, User, UserRole} from '@/types/auth.types'
 import {toast} from 'sonner'
 import {useRouter} from 'next/navigation'
-import {useState} from "react";
+import {useState, useCallback, useMemo} from "react";
 
 export const useAuth = () => {
   const queryClient = useQueryClient()
   const router = useRouter()
   const [user, setUser] = useState<User | null>(null)
 
-  const isLoadingUser = false
-  const userError = null;
+  const isLoadingUser = useMemo(() => false, [])
+  const userError = useMemo(() => null, [])
+
+  const handleLoginSuccess = useCallback((response: any) => {
+    // console.log("Loggining user",response.newUser)
+    if(!response.newUser) {
+      throw Error('Bad credentials')
+    }
+    const user = response.newUser
+    setUser(user)
+
+    toast.success('Login successful!')
+    queryClient.invalidateQueries({ queryKey: ['auth', 'currentUser'] })
+    switch (user?.role){
+      case UserRole.Admin: router.push('/admin/profile'); break;
+      case UserRole.Regular:
+      case UserRole.SignedInUser:
+      case UserRole.Resident: router.push('/profile');break;
+      default: router.push('/dormitories');
+    }
+  }, [queryClient, router])
+
+  const handleLoginError = useCallback((error: any) => {
+    console.error('Login error:', error)
+    toast.error(error.response?.data?.message || 'Login failed')
+  }, [])
 
   // Login mutation
   const loginMutation = useMutation({
     mutationFn: (data: LoginRequest) => authApi.login(data),
-    onSuccess: (response) => {
-
-      console.log("Loggining user",response.newUser)
-      if(!response.newUser) {
-        throw Error('Bad credentials')
-      }
-      const user = response.newUser
-      setUser(user)
-
-      toast.success('Login successful!')
-      queryClient.invalidateQueries({ queryKey: ['auth', 'currentUser'] })
-      switch (user?.role){
-        case UserRole.Admin: router.push('/admin/profile'); break;
-        case UserRole.Regular:
-        case UserRole.SignedInUser:
-        case UserRole.Resident: router.push('/profile');break;
-        default: router.push('/dormitories');
-      }
-    },
-    onError: (error: any) => {
-      console.error('Login error:', error)
-      toast.error(error.response?.data?.message || 'Login failed')
-    },
+    onSuccess: handleLoginSuccess,
+    onError: handleLoginError,
   })
 
   // Register mutation
@@ -109,12 +112,30 @@ export const useAuth = () => {
     },
   })
 
-  return {
+  const isAuthenticated = useMemo(() => !!user, [user])
+  
+  const isLoading = useMemo(() => (
+    loginMutation.isPending || 
+    registerMutation.isPending || 
+    verifyEmailMutation.isPending || 
+    resetPasswordMutation.isPending || 
+    setNewPasswordMutation.isPending || 
+    logoutMutation.isPending
+  ), [
+    loginMutation.isPending,
+    registerMutation.isPending,
+    verifyEmailMutation.isPending,
+    resetPasswordMutation.isPending,
+    setNewPasswordMutation.isPending,
+    logoutMutation.isPending
+  ])
+
+  return useMemo(() => ({
     // User data
     user,
     isLoadingUser,
     userError,
-    isAuthenticated: !!user,
+    isAuthenticated,
 
     // Actions
     login: loginMutation.mutate,
@@ -125,12 +146,30 @@ export const useAuth = () => {
     logout: logoutMutation.mutate,
 
     // Loading states
-    isLoading: loginMutation.isPending || registerMutation.isPending || verifyEmailMutation.isPending || resetPasswordMutation.isPending || setNewPasswordMutation.isPending || logoutMutation.isPending,
+    isLoading,
     isLoggingIn: loginMutation.isPending,
     isRegistering: registerMutation.isPending,
     isVerifyingEmail: verifyEmailMutation.isPending,
     isResettingPassword: resetPasswordMutation.isPending,
     isSettingNewPassword: setNewPasswordMutation.isPending,
     isLoggingOut: logoutMutation.isPending,
-  }
+  }), [
+    user,
+    isLoadingUser,
+    userError,
+    isAuthenticated,
+    loginMutation.mutate,
+    loginMutation.isPending,
+    registerMutation.mutate,
+    registerMutation.isPending,
+    verifyEmailMutation.mutate,
+    verifyEmailMutation.isPending,
+    resetPasswordMutation.mutate,
+    resetPasswordMutation.isPending,
+    setNewPasswordMutation.mutate,
+    setNewPasswordMutation.isPending,
+    logoutMutation.mutate,
+    logoutMutation.isPending,
+    isLoading,
+  ])
 }

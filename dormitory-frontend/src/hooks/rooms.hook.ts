@@ -111,7 +111,7 @@ export const useUploadRoomPhoto = () => {
     return useMutation({
         mutationFn: ({urls}:{urls:File[]}) => roomsApi.uploadRoomPhotos(urls),
         onSuccess: (data) => {
-            console.log(data)
+            // console.log(data)
         }
     })
 }

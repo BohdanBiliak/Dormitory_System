@@ -64,7 +64,7 @@ const getIconSize = (size: StatusSize): string => {
   return styles[size];
 };
 
-export default function StatusBadge({ 
+const StatusBadge = React.memo(function StatusBadge({ 
   variant, 
   size = 'md', 
   children, 
@@ -72,7 +72,7 @@ export default function StatusBadge({
   icon,
   animate = false 
 }: StatusBadgeProps) {
-  const baseStyles = 'inline-flex items-center font-medium rounded-full border transition-all duration-200';
+  const baseStyles = 'inline-flex items-center font-medium rounded-full border ';
   const variantStyles = getVariantStyles(variant);
   const sizeStyles = getSizeStyles(size);
   const animationStyles = animate ? 'animate-pulse' : '';
@@ -87,7 +87,9 @@ export default function StatusBadge({
       {children}
     </span>
   );
-}
+});
+
+export default StatusBadge;
 
 // Helper function to get appropriate variant for payment status
 export const getPaymentStatusVariant = (status: string): StatusVariant => {
@@ -144,20 +146,26 @@ export const getGeneralStatusVariant = (status: string): StatusVariant => {
 };
 
 // Pre-built status badges for common use cases
-export const PaymentStatusBadge = ({ status, size = 'md' }: { status: string; size?: StatusSize }) => (
-  <StatusBadge variant={getPaymentStatusVariant(status)} size={size}>
-    {status}
-  </StatusBadge>
-);
+export const PaymentStatusBadge = React.memo(function PaymentStatusBadge({ status, size = 'md' }: { status: string; size?: StatusSize }) {
+  return (
+    <StatusBadge variant={getPaymentStatusVariant(status)} size={size}>
+      {status}
+    </StatusBadge>
+  );
+});
 
-export const RoomStatusBadge = ({ status, size = 'md' }: { status: string; size?: StatusSize }) => (
-  <StatusBadge variant={getRoomStatusVariant(status)} size={size}>
-    {status}
-  </StatusBadge>
-);
+export const RoomStatusBadge = React.memo(function RoomStatusBadge({ status, size = 'md' }: { status: string; size?: StatusSize }) {
+  return (
+    <StatusBadge variant={getRoomStatusVariant(status)} size={size}>
+      {status}
+    </StatusBadge>
+  );
+});
 
-export const GeneralStatusBadge = ({ status, size = 'md' }: { status: string; size?: StatusSize }) => (
-  <StatusBadge variant={getGeneralStatusVariant(status)} size={size}>
-    {status}
-  </StatusBadge>
-);
+export const GeneralStatusBadge = React.memo(function GeneralStatusBadge({ status, size = 'md' }: { status: string; size?: StatusSize }) {
+  return (
+    <StatusBadge variant={getGeneralStatusVariant(status)} size={size}>
+      {status}
+    </StatusBadge>
+  );
+});

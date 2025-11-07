@@ -26,7 +26,7 @@ export function TranslationButton({
       <div className={`fixed bottom-4 right-4 z-50 ${className}`}>
         <button
           onClick={toggleLanguage}
-          className="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 active:scale-95 group"
+          className="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-3 shadow-lg hover:shadow-xl  group"
           title={t('common.translateApp') || 'Translate App'}
         >
           <div className="flex items-center space-x-2">
@@ -57,7 +57,7 @@ export function TranslationButton({
         <div className="flex flex-row justify-center">
           <button 
             onClick={() => setLanguage('pl')}
-            className={`px-4 py-2 text-sm font-medium rounded-l-md transition-all duration-200 transform hover:scale-105 ${
+            className={`px-4 py-2 text-sm font-medium rounded-l-md  ${
               language === 'pl' 
                 ? 'bg-white text-blue-900 shadow-lg' 
                 : 'text-white border border-white hover:bg-white hover:text-blue-900 hover:shadow-md'
@@ -68,7 +68,7 @@ export function TranslationButton({
           </button>
           <button 
             onClick={() => setLanguage('en')}
-            className={`px-4 py-2 text-sm font-medium rounded-r-md transition-all duration-200 transform hover:scale-105 ${
+            className={`px-4 py-2 text-sm font-medium rounded-r-md  ${
               language === 'en' 
                 ? 'bg-white text-blue-900 shadow-lg' 
                 : 'text-white border border-white hover:bg-white hover:text-blue-900 hover:shadow-md'
@@ -113,7 +113,7 @@ export function TranslationButton({
     return (
       <button
         onClick={toggleLanguage}
-        className={`flex items-center space-x-2 px-3 py-2 rounded-lg border transition-all duration-200 hover:shadow-md transform hover:scale-105 active:scale-95 ${className}`}
+        className={`flex items-center space-x-2 px-3 py-2 rounded-lg border  hover:shadow-md ${className}`}
         title={language === 'en' ? (t('common.translateToPolish') || 'Switch to Polish') : (t('common.translateToEnglish') || 'Switch to English')}
       >
         <span className="text-lg">

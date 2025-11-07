@@ -10,7 +10,7 @@ export function useMutateRoomTemplate(){
         mutationFn: (newTemplate: RoomTemplatePostData)=> roomTemplatesApi.postRoomTemplate(newTemplate),
         onSuccess: () => {
             queryClient.invalidateQueries({queryKey: ['roomTemplates']});
-            console.log('RoomTemplate created!');
+            // console.log('RoomTemplate created!');
         },
         onError: (error) => {
             toast.error(error.message);

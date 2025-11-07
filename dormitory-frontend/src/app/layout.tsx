@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "@/providers/query.provider";
 import { LanguageProvider } from "@/providers/language.provider";
+import { PushNotificationProvider } from "@/providers/push-notification.provider";
 import { Toaster } from "sonner";
 import { TranslationButton } from "@/components/ui/TranslationButton.component";
 
@@ -33,9 +34,11 @@ export default function RootLayout({
       >
         <LanguageProvider>
           <QueryProvider>
-            {children}
-            <TranslationButton variant="floating" />
-            <Toaster position="top-right" />
+            <PushNotificationProvider>
+              {children}
+              <TranslationButton variant="floating" />
+              <Toaster position="top-right" />
+            </PushNotificationProvider>
           </QueryProvider>
         </LanguageProvider>
       </body>
