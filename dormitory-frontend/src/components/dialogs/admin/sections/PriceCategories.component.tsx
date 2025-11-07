@@ -265,7 +265,7 @@ export default function PriceCategoriesComponent({
                                     </div>
 
                                     {/* Preview Card */}
-                                    <div className="bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-xl p-6">
+                                    <div className="bg-green-50 border border-green-200 rounded-xl p-6">
                                         <h4 className="font-semibold text-gray-900 mb-4">Podgląd cen</h4>
                                         <div className="grid grid-cols-2 gap-4">
                                             <div className="text-center">
@@ -386,7 +386,7 @@ export default function PriceCategoriesComponent({
                                     </div>
 
                                     {/* Preview Card */}
-                                    <div className="bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-xl p-6">
+                                    <div className="bg-green-50 border border-green-200 rounded-xl p-6">
                                         <h4 className="font-semibold text-gray-900 mb-4">Podgląd cen</h4>
                                         <div className="grid grid-cols-2 gap-4">
                                             <div className="text-center">

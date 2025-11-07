@@ -9,11 +9,11 @@ export const adminApi = {
   },
 
   async updateProfile(data: UpdateProfileRequest) {
-    console.log('🔄 Updating admin profile:', data)
+    // console.log('🔄 Updating admin profile:', data)
     
     try {
       const response = await api.patch('/admin/profile', data)
-      console.log('Profile updated:', response.data)
+      // console.log('Profile updated:', response.data)
       return response.data
     } catch (error: any) {
       console.error('Profile update error:', {
@@ -26,7 +26,7 @@ export const adminApi = {
   },
 
   async uploadAvatar(file: File): Promise<{ url: string }> {
-    console.log('Uploading avatar...')
+    // console.log('Uploading avatar...')
     const formData = new FormData()
     formData.append('file', file)
 
@@ -36,7 +36,7 @@ export const adminApi = {
           'Content-Type': 'multipart/form-data',
         },
       })
-      console.log('Avatar uploaded:', response.data)
+      // console.log('Avatar uploaded:', response.data)
       return response.data
     } catch (error: any) {
       console.error('Avatar upload error:', {

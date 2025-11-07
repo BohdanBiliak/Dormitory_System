@@ -1,15 +1,15 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback, useMemo, memo } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { useAuth } from '@/hooks/auth.hook'
 import { toast } from 'sonner'
 import { LoginTutorial } from '@/app/tutorials/auth/login'
 
-export function LoginForm() {
+export const LoginForm = memo(function LoginForm() {
   const searchParams = useSearchParams()
-  const verified = searchParams.get('verified')
+  const verified = useMemo(() => searchParams.get('verified'), [searchParams])
   const { login, isLoggingIn } = useAuth()
   
   const [email, setEmail] = useState('')
@@ -26,13 +26,13 @@ export function LoginForm() {
     }
   }, [verified])
 
-  const handleValidate = (e: React.FocusEvent<HTMLInputElement>) => {
+  const emailPattern = useMemo(() => /^[^\s@]+@[^\s@]+\.[^\s@]+$/, [])
+
+  const handleValidate = useCallback((e: React.FocusEvent<HTMLInputElement>) => {
     const {name, value} = e.target;
 
     //email validation
     if (name === 'email') {
-      const email_pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
       if(value.trim() === ''){
         setValidationErrors(prevState => {
           if(!prevState) return prevState;
@@ -41,7 +41,7 @@ export function LoginForm() {
             email: "Field must not be empty",
           }
         })
-      }else if(email_pattern.test(value)) {
+      }else if(emailPattern.test(value)) {
         setValidationErrors(prevState => {
           if(!prevState) return prevState;
           return {
@@ -80,18 +80,18 @@ export function LoginForm() {
       }
     }
 
-  }
+  }, [emailPattern])
 
-  const validateBeforeSubmit =()=>{
+  const validateBeforeSubmit = useCallback(() => {
     if(!email.trim()){setValidationErrors(prevState => {
       if(!prevState)return prevState;
       return{...prevState, email: 'Email is required'}})}
     if(!password.trim()){setValidationErrors(prevState => {
       if(!prevState)return prevState;
       return{...prevState, password: 'Password is required'}})}
-  }
+  }, [email, password])
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault()
     validateBeforeSubmit()
 
@@ -103,9 +103,9 @@ export function LoginForm() {
       }
     }
 
-  }
+  }, [email, password, validationErrors.email, validationErrors.password, validateBeforeSubmit, login])
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
     if(name === 'email') {
@@ -123,11 +123,11 @@ export function LoginForm() {
         [name]: ''
       }
     })
-  }
+  }, [])
 
-  const handleChangePasswordVisibility = () => {
+  const handleChangePasswordVisibility = useCallback(() => {
     setShowPassword(!showPassword)
-  }
+  }, [showPassword])
 
   return (
     <LoginTutorial>
@@ -224,4 +224,4 @@ export function LoginForm() {
       </div>
     </LoginTutorial>
   )
-}
+})

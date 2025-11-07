@@ -1,11 +1,12 @@
 'use client'
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useMemo, memo} from "react";
 import {useCurrentUserProfile} from "@/hooks/user.hook";
 import {User, UserRole} from "@/types/auth.types";
+import {NotificationPermissionBanner, NotificationSettingsButton} from "@/components/ui/NotificationPermission.component";
 
 
-export function SignedInProfile(){
-    const [profileData, setProfileData] = useState<User>({
+export const SignedInProfile = memo(function SignedInProfile(){
+    const defaultProfileData = useMemo(() => ({
         id: '',
         email: '',
         displayName: '',
@@ -17,7 +18,9 @@ export function SignedInProfile(){
         isTwoFactorEnabled: false,
         createdAt: '',
         updatedAt: '',
-    });
+    }), []);
+
+    const [profileData, setProfileData] = useState<User>(defaultProfileData);
 
     const {data:user, isLoading, error, refetch} = useCurrentUserProfile()
 
@@ -25,11 +28,14 @@ export function SignedInProfile(){
         if(user){
             setProfileData(user)
         }
-    })
+    }, [user])
 
 
-    return(<div className="w-full bg-gradient-to-br from-gray-50 to-gray-100 p-4 md:p-6 lg:p-8">
+    return(<div className="w-full bg-gray-50 p-4 md:p-6 lg:p-8">
         <div className="max-w-4xl mx-auto">
+            {/* Notification Permission Banner */}
+            <NotificationPermissionBanner />
+            
             {/* Header Section */}
             <div className="mb-8">
                 <div className="flex items-center space-x-3 mb-2">
@@ -52,7 +58,7 @@ export function SignedInProfile(){
             {/* Main Content Card */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                 {/* Card Header */}
-                <div className="bg-gradient-to-r from-blue-800 to-blue-700 px-6 py-4 md:px-8 md:py-6">
+                <div className="bg-blue-800 px-6 py-4 md:px-8 md:py-6">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                         <div className="flex items-center space-x-3">
                             <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
@@ -86,7 +92,7 @@ export function SignedInProfile(){
                             <div className="sticky top-8">
                                 <div className="bg-gray-50 rounded-xl p-6 text-center border-2 border-dashed border-gray-200 hover:border-blue-300 transition-colors">
                                     <div className="relative inline-block">
-                                        <div className="w-24 h-24 md:w-32 md:h-32 mx-auto bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center mb-4 overflow-hidden shadow-inner">
+                                        <div className="w-24 h-24 md:w-32 md:h-32 mx-auto bg-blue-100 rounded-full flex items-center justify-center mb-4 overflow-hidden shadow-inner">
                                             {user?.picture ? (
                                                 <img
                                                     src={user.picture}
@@ -208,6 +214,30 @@ export function SignedInProfile(){
                                     </div>
                                 </div>
                             </div>
+
+                            {/* Notification Settings */}
+                            <div className="space-y-4">
+                                <div className="flex items-center space-x-2 pb-2 border-b border-gray-200">
+                                    <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                                    </svg>
+                                    <h3 className="text-lg font-semibold text-gray-900">Notifications</h3>
+                                </div>
+
+                                <div className="bg-gray-50 rounded-lg p-4">
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <p className="font-medium text-gray-900 mb-1">Browser Notifications</p>
+                                            <p className="text-sm text-gray-600">
+                                                Get notified about messages, maintenance updates, and announcements
+                                            </p>
+                                        </div>
+                                        <div className="ml-4">
+                                            <NotificationSettingsButton />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -215,4 +245,4 @@ export function SignedInProfile(){
         </div>
     </div>
     )
-}
+})

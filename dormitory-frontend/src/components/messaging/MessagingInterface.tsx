@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, memo } from 'react';
 import { Conversation, Message, CreateConversationData } from '@/types/messaging.types';
 import { ConversationList } from './ConversationList';
 import { MessageList } from './MessageList';
@@ -17,12 +17,13 @@ import {
 } from '@/hooks/messaging-api.hook';
 import { MessageSquare, Plus, ArrowLeft, Settings, Search, Trash2, X, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { CreateConversationModal } from './CreateConversationModal';
 
 interface MessagingInterfaceProps {
   currentUserId: string;
 }
 
-export const MessagingInterface: React.FC<MessagingInterfaceProps> = ({
+export const MessagingInterface = memo<MessagingInterfaceProps>(({
   currentUserId,
 }) => {
   const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null);
@@ -34,6 +35,7 @@ export const MessagingInterface: React.FC<MessagingInterfaceProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [showSearch, setShowSearch] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   // API hooks
   const { data: conversations = [], refetch: refetchConversations } = useGetConversations();
@@ -63,7 +65,14 @@ export const MessagingInterface: React.FC<MessagingInterfaceProps> = ({
   } = useSocket({
     onNewMessage: (message: Message) => {
       if (message.conversationId === selectedConversation?.id) {
-        setMessages(prev => [...prev, message]);
+        // Check if message already exists to prevent duplication
+        setMessages(prev => {
+          const exists = prev.some(m => m.id === message.id);
+          if (exists) {
+            return prev;
+          }
+          return [...prev, message];
+        });
       }
       // Refetch conversations to update last message
       refetchConversations();
@@ -119,13 +128,13 @@ export const MessagingInterface: React.FC<MessagingInterfaceProps> = ({
     }
   }, [selectedConversation?.id, isConnected]);
 
-  const handleSelectConversation = (conversation: Conversation) => {
+  const handleSelectConversation = useCallback((conversation: Conversation) => {
     setSelectedConversation(conversation);
     setShowMobileConversationList(false);
     setReplyToMessage(null);
-  };
+  }, []);
 
-  const handleSendMessage = (content: string, attachments?: { url: string; name: string; type: string }) => {
+  const handleSendMessage = useCallback((content: string, attachments?: { url: string; name: string; type: string }) => {
     if (!selectedConversation) return;
 
     const messageData = {
@@ -153,25 +162,30 @@ export const MessagingInterface: React.FC<MessagingInterfaceProps> = ({
     });
 
     setReplyToMessage(null);
-  };
+  }, [selectedConversation, replyToMessage, socketSendMessage, sendMessageMutation]);
 
   const handleCreateConversation = async (data: CreateConversationData) => {
-    console.log('Creating conversation:', data);
+    // console.log('Creating conversation:', data);
     
     try {
       if (isConnected) {
-        console.log('Using socket to create conversation');
+        // console.log('Using socket to create conversation');
         socketCreateConversation(data);
       } else {
-        console.log('Socket not connected, will use HTTP only');
+        // console.log('Socket not connected, will use HTTP only');
       }
       
-      console.log('Creating conversation via HTTP API');
+      // console.log('Creating conversation via HTTP API');
       await createConversationMutation.mutateAsync(data);
-      console.log('Conversation created successfully');
+      // console.log('Conversation created successfully');
+      
+      setShowCreateModal(false);
+      toast.success('Conversation created successfully');
+      refetchConversations();
       
     } catch (error) {
       console.error('Failed to create conversation:', error);
+      toast.error('Failed to create conversation');
     }
   };
 
@@ -214,21 +228,43 @@ export const MessagingInterface: React.FC<MessagingInterfaceProps> = ({
       : selectedConversation.participants.some(p => onlineUsers.has(p.userId) && p.userId !== currentUserId);
 
     return (
-      <div className="border-b border-gray-200 bg-white">
+      <div className="border-b border-gray-200 bg-white shadow-sm">
         <div className="p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3 flex-1 min-w-0">
               <button
                 onClick={handleBackToConversations}
-                className="lg:hidden text-gray-600 hover:text-gray-800 flex-shrink-0"
+                className="lg:hidden text-gray-600 hover:text-gray-800 flex-shrink-0 p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                title="Back to conversations"
               >
                 <ArrowLeft size={20} />
               </button>
               
+              {/* Avatar */}
+              <div className="flex-shrink-0">
+                {selectedConversation.isGroup ? (
+                  <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+                    <MessageSquare className="w-5 h-5 text-white" />
+                  </div>
+                ) : (
+                  <div className="relative">
+                    <img
+                      src={selectedConversation.participants.find(p => p.userId !== currentUserId)?.user.picture || '/default-avatar.png'}
+                      alt={title}
+                      className="w-10 h-10 rounded-full object-cover border-2 border-gray-200"
+                    />
+                    {isOnline && (
+                      <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
+                    )}
+                  </div>
+                )}
+              </div>
+              
               <div className="min-w-0 flex-1">
-                <h3 className="font-semibold text-gray-900 truncate">{title}</h3>
+                <h3 className="font-semibold text-gray-900 truncate text-lg">{title}</h3>
                 {!selectedConversation.isGroup && (
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-gray-500 flex items-center">
+                    <span className={`w-2 h-2 rounded-full mr-2 ${isOnline ? 'bg-green-500' : 'bg-gray-400'}`}></span>
                     {isOnline ? 'Online' : 'Offline'}
                   </p>
                 )}
@@ -240,10 +276,10 @@ export const MessagingInterface: React.FC<MessagingInterfaceProps> = ({
               </div>
             </div>
 
-            <div className="flex items-center space-x-2 flex-shrink-0">
+            <div className="flex items-center space-x-1 flex-shrink-0">
               <button 
                 onClick={handleSearchToggle}
-                className={`text-gray-600 hover:text-gray-800 p-2 rounded-lg transition-colors ${
+                className={`text-gray-600 hover:text-gray-800 p-2 rounded-lg transition-colors hover:bg-gray-100 ${
                   showSearch ? 'bg-blue-100 text-blue-600' : ''
                 }`}
                 title="Search in conversation"
@@ -252,7 +288,7 @@ export const MessagingInterface: React.FC<MessagingInterfaceProps> = ({
               </button>
               <button 
                 onClick={() => setShowDeleteConfirm(true)}
-                className="text-gray-600 hover:text-red-600 p-2 rounded-lg transition-colors"
+                className="text-gray-600 hover:text-red-600 p-2 rounded-lg transition-colors hover:bg-red-50"
                 title="Delete conversation"
               >
                 <Trash2 size={18} />
@@ -262,13 +298,13 @@ export const MessagingInterface: React.FC<MessagingInterfaceProps> = ({
 
           {/* Search Bar */}
           {showSearch && (
-            <div className="mt-3 relative">
+            <div className="mt-3 relative animate-in slide-in-from-top duration-200">
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search messages..."
-                className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50"
               />
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
               {searchQuery && (
@@ -280,7 +316,7 @@ export const MessagingInterface: React.FC<MessagingInterfaceProps> = ({
                 </button>
               )}
               {searchResults && searchQuery && (
-                <div className="mt-1 text-xs text-gray-500">
+                <div className="mt-1 text-xs text-gray-500 px-1">
                   Found {searchResults.total} message{searchResults.total !== 1 ? 's' : ''}
                 </div>
               )}
@@ -289,7 +325,12 @@ export const MessagingInterface: React.FC<MessagingInterfaceProps> = ({
 
           {/* Typing indicator */}
           {typingUsers.size > 0 && (
-            <div className="mt-2 text-sm text-gray-500">
+            <div className="mt-2 text-sm text-blue-600 flex items-center">
+              <div className="flex space-x-1 mr-2">
+                <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+              </div>
               {Array.from(typingUsers).map(userId => {
                 const user = selectedConversation.participants.find(p => p.userId === userId);
                 return user?.user.displayName;
@@ -302,16 +343,23 @@ export const MessagingInterface: React.FC<MessagingInterfaceProps> = ({
   };
 
   return (
-    <div className="h-screen flex bg-gray-50">
+    <div className="h-full w-full flex bg-gray-50">
       <div className={`${
         showMobileConversationList ? 'flex' : 'hidden'
       } lg:flex w-full lg:w-80 xl:w-96 bg-white border-r border-gray-200 flex-col shadow-sm`}>
-        <div className="border-b border-gray-200 p-4 bg-gradient-to-r from-blue-600 to-blue-700">
+        <div className="border-b border-gray-200 p-4 bg-blue-600">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-semibold text-white flex items-center">
               <MessageSquare className="w-6 h-6 mr-2" />
               Messages
             </h2>
+            <button
+              onClick={() => setShowCreateModal(true)}
+              className="p-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg transition-colors"
+              title="New conversation"
+            >
+              <Plus className="w-5 h-5 text-white" />
+            </button>
           </div>
           
           <div className="mt-3 flex items-center">
@@ -360,7 +408,7 @@ export const MessagingInterface: React.FC<MessagingInterfaceProps> = ({
             </div>
           </>
         ) : (
-          <div className="flex-1 flex items-center justify-center bg-gradient-to-br from-gray-50 to-blue-50">
+          <div className="flex-1 flex items-center justify-center bg-gray-50">
             <div className="text-center text-gray-500 p-8">
               <div className="bg-blue-100 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6">
                 <MessageSquare className="w-12 h-12 text-blue-600" />
@@ -402,7 +450,7 @@ export const MessagingInterface: React.FC<MessagingInterfaceProps> = ({
               >
                 {deleteConversationMutation.isPending ? (
                   <span className="flex items-center">
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    <Loader2 className="w-4 h-4 mr-2" />
                     Deleting...
                   </span>
                 ) : (
@@ -413,6 +461,12 @@ export const MessagingInterface: React.FC<MessagingInterfaceProps> = ({
           </div>
         </div>
       )}
+
+      <CreateConversationModal
+        isOpen={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
+        onCreateConversation={handleCreateConversation}
+      />
     </div>
   );
-};
+});

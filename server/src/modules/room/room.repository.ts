@@ -32,6 +32,14 @@ export type RoomWithRelations = Prisma.RoomGetPayload<{
       };
     };
     statuses: true;
+    priceCategory: {
+      select: {
+        id: true;
+        name: true;
+        pricePerDay: true;
+        pricePerMonth: true;
+      };
+    };
   };
 }>;
 
@@ -80,6 +88,14 @@ export class RoomRepository {
           },
         },
         statuses: true,
+        priceCategory: {
+          select: {
+            id: true,
+            name: true,
+            pricePerDay: true,
+            pricePerMonth: true,
+          },
+        },
       },
     });
   }
@@ -119,6 +135,14 @@ export class RoomRepository {
           },
         },
         statuses: true,
+        priceCategory: {
+          select: {
+            id: true,
+            name: true,
+            pricePerDay: true,
+            pricePerMonth: true,
+          },
+        },
       },
     });
   }
@@ -150,6 +174,14 @@ export class RoomRepository {
           },
         },
         statuses: true,
+        priceCategory: {
+          select: {
+            id: true,
+            name: true,
+            pricePerDay: true,
+            pricePerMonth: true,
+          },
+        },
       },
     });
   }
@@ -211,6 +243,14 @@ export class RoomRepository {
           },
         },
         statuses: true,
+        priceCategory: {
+          select: {
+            id: true,
+            name: true,
+            pricePerDay: true,
+            pricePerMonth: true,
+          },
+        },
       },
     });
 
@@ -283,6 +323,14 @@ export class RoomRepository {
         dormitory: { select: { id: true, name: true, address: true } },
         floor: { select: { id: true, floorNumber: true, dormitoryId: true } },
         statuses: true,
+        priceCategory: {
+          select: {
+            id: true,
+            name: true,
+            pricePerDay: true,
+            pricePerMonth: true,
+          },
+        },
       },
     });
   }

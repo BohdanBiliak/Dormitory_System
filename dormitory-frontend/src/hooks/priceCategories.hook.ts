@@ -10,7 +10,7 @@ export function useUpdatePriceCategory(){
         mutationFn: (newCategory: PriceCategoryPostData) => priceCategoriesApi.createPriceCategory(newCategory),
         onSuccess: (response) => {
             queryClient.invalidateQueries({queryKey: ['priceCategories']});
-            console.log("Price category created!")
+            // console.log("Price category created!")
         },
         onError: (error) => {
             toast.error(error.message);
@@ -22,7 +22,7 @@ export function useUpdatePriceCategory(){
         onSuccess: (response) => {
             queryClient.invalidateQueries({queryKey: [`priceCategory`, response.id]})
             queryClient.invalidateQueries({queryKey: [`priceCategories`]})
-            console.log("Price category updated")
+            // console.log("Price category updated")
         },
         onError: (error) => {
             toast.error(error.message);
@@ -34,7 +34,7 @@ export function useUpdatePriceCategory(){
         onSuccess: (response) => {
             queryClient.invalidateQueries({queryKey: [`priceCategories`]});
             queryClient.invalidateQueries({queryKey: [`priceCategory`, response.id]});
-            console.log("Price category deleted!")
+            // console.log("Price category deleted!")
         },
         onError: (error) => {
             toast.error(error.message);
@@ -45,7 +45,7 @@ export function useUpdatePriceCategory(){
         mutationFn: ({categoryId, roomTypesIds}:{categoryId:string, roomTypesIds: string[]}) => priceCategoriesApi.assignRoomType(categoryId, roomTypesIds),
         onSuccess: (response) => {
             queryClient.invalidateQueries({queryKey: [`priceCategory`, response.id, 'assignedRoomTemplates']});
-            console.log("Templates assigned")
+            // console.log("Templates assigned")
         },
         onError: (error) => {
             toast.error(error.message);
@@ -56,7 +56,7 @@ export function useUpdatePriceCategory(){
         mutationFn: ({categoryId, roomIds}:{categoryId: string, roomIds: string[]}) => priceCategoriesApi.assignRooms(categoryId, roomIds),
         onSuccess: (response) => {
             queryClient.invalidateQueries({queryKey: [`priceCategory`, response.id, 'assignedRooms']});
-            console.log("Rooms assigned")
+            // console.log("Rooms assigned")
         },
         onError: (error) => {
             toast.error(error.message);

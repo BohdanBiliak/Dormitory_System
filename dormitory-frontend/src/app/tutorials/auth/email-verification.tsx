@@ -48,7 +48,7 @@ function TutorialButton() {
   return (
     <button
       onClick={() => setIsOpen(true)}
-      className="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 z-50 flex items-center gap-2 group"
+      className="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-full shadow-lg hover:shadow-xl  z-50 flex items-center gap-2 group"
       aria-label="Start tutorial"
     >
       <svg 

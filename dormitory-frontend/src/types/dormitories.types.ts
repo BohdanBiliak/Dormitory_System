@@ -51,8 +51,8 @@ export interface DormitoryPostData {
     address: string;
     description: string;
     groundFloorPhoneNumber: string;
-    pricePerDay: number;
-    pricePerMonth: number;
+    pricePerDay?: number; // Optional - prices are now managed via price categories
+    pricePerMonth?: number; // Optional - prices are now managed via price categories
     floorAssignments: FloorAssignment[],
     photos: File[]
 }

@@ -83,7 +83,7 @@ export default function AdminAnnouncement({id}:AdminAnnouncementProps){
 
 
     return (
-        <div className=" w-full bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className=" w-full bg-gray-50">
             {/* Header */}
             <div className="bg-white shadow-sm border-b border-gray-200">
                 <div className="px-4 py-6 md:px-6 md:py-8">
@@ -116,7 +116,7 @@ export default function AdminAnnouncement({id}:AdminAnnouncementProps){
                         <div className="xl:col-span-3">
                             <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                                 {/* Form Header */}
-                                <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
+                                <div className="bg-blue-600 px-6 py-4">
                                     <div className="flex items-center space-x-3">
                                         <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
@@ -198,7 +198,7 @@ export default function AdminAnnouncement({id}:AdminAnnouncementProps){
                         <div className="xl:col-span-1 space-y-6">
                             {/* Recipients Section */}
                             <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                                <div className="bg-gradient-to-r from-green-600 to-green-700 px-6 py-4">
+                                <div className="bg-green-600 px-6 py-4">
                                     <div className="flex items-center space-x-3">
                                         <Users className="w-5 h-5 text-white" />
                                         <h3 className="text-lg font-semibold text-white">Recipients</h3>
@@ -246,7 +246,7 @@ export default function AdminAnnouncement({id}:AdminAnnouncementProps){
 
                             {/* Dates Section */}
                             <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                                <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
+                                <div className="bg-blue-600 px-6 py-4">
                                     <div className="flex items-center space-x-3">
                                         <Calendar className="w-5 h-5 text-white" />
                                         <h3 className="text-lg font-semibold text-white">Important Dates</h3>

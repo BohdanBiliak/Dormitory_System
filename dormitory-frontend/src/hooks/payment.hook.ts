@@ -79,7 +79,7 @@ export function useUpdatePayments(){
                 toast.warning(`Created ${successCount} payments. ${errorCount} failed.`, {
                     description: "Check console for details about failed payments."
                 });
-                console.warn("Bulk payment errors:", data.errors);
+                // console.warn("Bulk payment errors:", data.errors);
             } else {
                 toast.success(`Successfully created ${successCount} payments!`);
             }

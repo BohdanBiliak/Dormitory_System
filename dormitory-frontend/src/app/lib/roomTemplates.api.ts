@@ -27,13 +27,13 @@ export const roomTemplatesApi = {
             formData.append('priceCategoryId', newTemplate.priceCategoryId);
         }
         try{
-            console.log(formData)
+            // console.log(formData)
             const response = await api.post('/room-types',formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 }
             })
-            console.log('Post room template response: ', response);
+            // console.log('Post room template response: ', response);
             return response.data;
         }catch (error: any) {
             console.error('Post Room template error:', {
@@ -81,7 +81,7 @@ export const roomTemplatesApi = {
                     'Content-Type': 'multipart/form-data',
                 }
             })
-            console.log('Patch room template response: ', responseFinal.data);
+            // console.log('Patch room template response: ', responseFinal.data);
             return responseFinal.data;
         }catch (error: any) {
             console.error('Patch room template error:', {

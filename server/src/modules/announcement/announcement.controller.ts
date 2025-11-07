@@ -20,6 +20,7 @@ import { FilesInterceptor } from "@nestjs/platform-express";
 import { $Enums } from "../../../__generated__";
 import UserRole = $Enums.UserRole;
 import { GetPublicAnnouncementsUseCase } from "@modules/announcement/use-cases/get-public-announcements.use-case";
+import { GetUserAnnouncementsUseCase } from "@modules/announcement/use-cases/get-user-announcements.use-case";
 import { Authorization } from "@libs/common/decorators/auth.decorator";
 import { AnnouncementDocs } from "./announcements.docs";
 
@@ -33,6 +34,7 @@ export class AnnouncementController {
     private readonly uploadUseCase: UploadAnnouncementAttachmentsUseCase,
     private readonly getAnnouncementByIdUseCase: GetAnnouncementByIdUseCase,
     private readonly getPublicAnnouncementsUseCase: GetPublicAnnouncementsUseCase,
+    private readonly getUserAnnouncementsUseCase: GetUserAnnouncementsUseCase,
   ) {}
 
   @Post()
@@ -56,6 +58,32 @@ export class AnnouncementController {
       page: page ? parseInt(page, 10) : undefined,
       limit: limit ? parseInt(limit, 10) : undefined,
     });
+  }
+
+  @Get("my")
+  @Authorization(UserRole.SignedInUser, UserRole.Resident, UserRole.Admin, UserRole.SuperAdmin)
+  findMy(
+    @Query("showHidden") showHidden: string,
+    @Query("showExpired") showExpired: string,
+    @Query("page") page: string,
+    @Query("limit") limit: string,
+    @Req() req,
+  ) {
+    const userId = req.user.id;
+    const roomId = req.user.roomId;
+    const floorId = req.user.room?.floorId;
+    
+    return this.getUserAnnouncementsUseCase.execute(
+      userId,
+      roomId,
+      floorId,
+      {
+        showHidden: showHidden === "true",
+        showExpired: showExpired === "true",
+        page: page ? parseInt(page, 10) : undefined,
+        limit: limit ? parseInt(limit, 10) : undefined,
+      },
+    );
   }
 
   @Get()

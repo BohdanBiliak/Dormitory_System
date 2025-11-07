@@ -79,9 +79,7 @@ export function CalendarOfAvailabilityComponent ({statuses, showLegend, setDateS
 
     useEffect(() => {
         setUnavailableDateRanges(statuses);
-        statuses.map((status, index)=>(
-            console.log(`status ${index} use effect: ${status}`)
-        ))
+        // statuses.map((status, index) => console.log(`status ${index} use effect: ${status}`));
     },[statuses])
 
     useEffect(() => {
@@ -156,7 +154,7 @@ export function CalendarOfAvailabilityComponent ({statuses, showLegend, setDateS
                             key={day}
                             name = {date.toISOString()}
                             onClick={statusReview}
-                            className={`h-10 flex items-center justify-center text-sm rounded-lg transition-all duration-200 ${
+                            className={`h-10 flex items-center justify-center text-sm rounded-lg  ${
                                 isUnavailable
                                 ? 'bg-red-200 text-red-800 hover:bg-red-300 '
                                 : `bg-green-200 text-green-800 hover:bg-green-300`

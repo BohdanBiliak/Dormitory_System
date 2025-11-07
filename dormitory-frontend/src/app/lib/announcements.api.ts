@@ -75,6 +75,34 @@ export const announcementsApi = {
         return response.data
     },
 
+    async getUserAnnouncements (filters:{
+        showHidden?: boolean,
+        showExpired?: boolean,
+        page:number,
+        limit:number,
+    }):Promise<AnnouncementsResponse>{
+        const params = new URLSearchParams();
+
+        if(filters?.showHidden){
+            params.append('showHidden', filters.showHidden.toString());
+        }
+
+        if(filters?.showExpired){
+            params.append('showExpired', filters.showExpired.toString());
+        }
+
+        if(filters?.page){
+            params.append('page', filters.page.toString());
+        }
+
+        if(filters?.limit){
+            params.append('limit', filters.limit.toString());
+        }
+
+        const response = await api.get(`/announcements/my?${params}`)
+        return response.data
+    },
+
     async postAnnouncement(newAnnouncement: AnnouncementCreateRequest){
         try {
             const response = await api.post(`/announcements`, newAnnouncement);
@@ -100,7 +128,7 @@ export const announcementsApi = {
     },
 
     async uploadAnnouncementAttachment(files:File[]):Promise<{urls:string[]}>{
-        console.log('Uploading file...');
+        // console.log('Uploading file...');
         const formData = new FormData();
         files.forEach(file => {
             formData.append('files', file);
@@ -112,7 +140,7 @@ export const announcementsApi = {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            console.log('Announcement attachments uploaded successfully.');
+            // console.log('Announcement attachments uploaded successfully.');
             return response.data;
         }catch (error){
             console.error('Attachments upload error:', error)

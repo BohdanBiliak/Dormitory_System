@@ -43,6 +43,20 @@ export function useGetPublicAnnouncements (filters:{
     return {data, isLoading, error}
 }
 
+export function useGetUserAnnouncements (filters:{
+        showHidden?: boolean,
+        showExpired?: boolean,
+        page:number,
+        limit:number }){
+    const {data, isLoading, error} = useQuery({
+        queryKey: [`announcements`, `user`, filters],
+        queryFn: () => announcementsApi.getUserAnnouncements(filters),
+        enabled: filters.page > 0 && filters.limit > 0,
+        staleTime: 30 * 1000,
+    })
+    return {data, isLoading, error}
+}
+
 
 export function useMutateAnnouncement(){
     const queryClient = useQueryClient();

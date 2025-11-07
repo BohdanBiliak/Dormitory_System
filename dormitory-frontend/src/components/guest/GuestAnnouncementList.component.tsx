@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Announcement } from "@/types/announcements.types";
-import { useGetPublicAnnouncements } from "@/hooks/announcements.hook";
+import { useGetUserAnnouncements } from "@/hooks/announcements.hook";
 
 export function GuestAnnouncementList() {
     const [page, setPage] = useState(1);
@@ -15,8 +15,8 @@ export function GuestAnnouncementList() {
     
     const limit = 10;
 
-    const { data: announcementsList, isLoading, error } = useGetPublicAnnouncements({
-        showHidden: false, // Guests shouldn't see hidden announcements
+    const { data: announcementsList, isLoading, error } = useGetUserAnnouncements({
+        showHidden: false, // Regular users shouldn't see hidden announcements
         showExpired: showExpired,
         page: page,
         limit: limit
@@ -120,235 +120,240 @@ export function GuestAnnouncementList() {
         );
     }
 
-    return (
-        <div className="w-4/5 bg-gradient-to-br from-gray-50 to-gray-100">
-            {/* Header Section */}
-            <div className="bg-white shadow-sm border-b border-gray-200">
-                <div className="px-4 py-6 ">
-                    <div className="flex items-center space-x-3">
-                        <div className="p-3 bg-blue-600 rounded-xl shadow-lg">
-                            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
-                            </svg>
-                        </div>
-                        <div>
-                            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900">
-                                Announcements
-                            </h1>
-                            <p className="text-gray-600 text-sm md:text-base mt-1">
-                                Stay updated with the latest dormitory news and notifications
-                            </p>
-                        </div>
-                    </div>
-                </div>
+  return (
+    <div className="w-full bg-white min-h-screen">
+      {/* Header Section with modern gradient */}
+      <div className="bg-blue-600 shadow-xl">
+        <div className="px-4 py-8 md:px-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex items-center space-x-4">
+              <div className="p-4 bg-white bg-opacity-20 backdrop-blur-sm rounded-2xl shadow-lg">
+                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+                </svg>
+              </div>
+              <div className="flex-1">
+                <h1 className="text-3xl md:text-4xl font-bold text-white drop-shadow-lg">
+                  Announcements Board
+                </h1>
+                <p className="text-blue-100 text-sm md:text-base mt-2 drop-shadow">
+                  Stay connected with your dormitory community
+                </p>
+              </div>
             </div>
+          </div>
+        </div>
+      </div>
 
-            {/* Filters Section */}
-            <div className="bg-white shadow-sm border-b border-gray-200">
-                <div className="px-4 py-4 md:px-6">
-                    <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-                        <h3 className="text-lg font-semibold text-gray-900">Filters & Sorting</h3>
-                        
-                        <div className="flex flex-col sm:flex-row gap-4">
-                            {/* Show Expired Toggle */}
-                            <label className="inline-flex items-center cursor-pointer group">
-                                <div className="relative">
-                                    <input
-                                        type="checkbox"
-                                        checked={showExpired}
-                                        onChange={handleShowExpiredChange}
-                                        className="sr-only"
-                                    />
-                                    <div className={`w-11 h-6 rounded-full transition-colors duration-200 ${
-                                        showExpired ? 'bg-blue-600' : 'bg-gray-300'
-                                    }`}>
-                                        <div className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform duration-200 ${
-                                            showExpired ? 'translate-x-5' : 'translate-x-0'
-                                        }`}></div>
-                                    </div>
-                                </div>
-                                <span className="ml-3 text-sm font-medium text-gray-700 group-hover:text-gray-900">
-                                    Show Expired Announcements
-                                </span>
-                            </label>
+      {/* Filters Section with glass morphism */}
+      <div className="sticky top-0 z-10 bg-white bg-opacity-90 backdrop-blur-md shadow-sm border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 py-4 md:px-8">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+            <div className="flex items-center space-x-2">
+              <div className="w-1 h-6 bg-blue-600 rounded-full"></div>
+              <h3 className="text-lg font-semibold text-gray-900">Filters & Sorting</h3>
+            </div>
+            
+            <div className="flex flex-col sm:flex-row gap-4">
+              {/* Show Expired Toggle */}
+              <label className="inline-flex items-center cursor-pointer group">
+                <div className="relative">
+                  <input
+                    type="checkbox"
+                    checked={showExpired}
+                    onChange={handleShowExpiredChange}
+                    className="sr-only"
+                  />
+                  <div className={`w-12 h-6 rounded-full  ${
+                    showExpired ? 'bg-blue-600 shadow-lg' : 'bg-gray-300'
+                  }`}>
+                    <div className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-md transition-transform duration-300 ${
+                      showExpired ? 'translate-x-6' : 'translate-x-0'
+                    }`}></div>
+                  </div>
+                </div>
+                <span className="ml-3 text-sm font-medium text-gray-700 group-hover:text-gray-900 transition-colors">
+                  Show Expired
+                </span>
+              </label>
 
-                            {/* Sort Options */}
-                            <div className="flex items-center space-x-3">
-                                <span className="text-sm font-medium text-gray-700">Sort by:</span>
-                                <div className="flex rounded-lg border border-gray-300 bg-white">
-                                    <button
-                                        onClick={() => handleSortChange('newest')}
-                                        className={`px-3 py-2 text-sm font-medium rounded-l-lg transition-colors ${
-                                            sortBy === 'newest'
-                                                ? 'bg-blue-600 text-white border-blue-600'
-                                                : 'text-gray-700 hover:bg-gray-50'
-                                        }`}
-                                    >
-                                        Newest First
-                                    </button>
-                                    <button
-                                        onClick={() => handleSortChange('oldest')}
-                                        className={`px-3 py-2 text-sm font-medium rounded-r-lg transition-colors border-l ${
-                                            sortBy === 'oldest'
-                                                ? 'bg-blue-600 text-white border-blue-600'
-                                                : 'text-gray-700 hover:bg-gray-50 border-gray-300'
-                                        }`}
-                                    >
-                                        Oldest First
-                                    </button>
-                                </div>
+              {/* Sort Options with modern design */}
+              <div className="flex items-center space-x-3">
+                <span className="text-sm font-medium text-gray-700">Sort by:</span>
+                <div className="flex rounded-lg border border-gray-300 bg-white shadow-sm overflow-hidden">
+                  <button
+                    onClick={() => handleSortChange('newest')}
+                    className={`px-4 py-2 text-sm font-medium  ${
+                      sortBy === 'newest'
+                        ? 'bg-blue-600 text-white shadow-md'
+                        : 'text-gray-700 hover:bg-gray-50'
+                    }`}
+                  >
+                    Newest First
+                  </button>
+                  <button
+                    onClick={() => handleSortChange('oldest')}
+                    className={`px-4 py-2 text-sm font-medium border-l  ${
+                      sortBy === 'oldest'
+                        ? 'bg-blue-600 text-white shadow-md'
+                        : 'text-gray-700 hover:bg-gray-50 border-gray-300'
+                    }`}
+                  >
+                    Oldest First
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Content Section - Desk Simulation */}
+      <div className="max-w-7xl mx-auto px-4 py-8 md:px-8">
+        <div className="mb-6">
+          <div className="flex items-center justify-between">
+            <h2 className="text-2xl font-bold text-gray-900">
+              📌 Pinned Announcements
+            </h2>
+            {showExpired && (
+              <span className="text-sm text-gray-500 bg-amber-100 px-3 py-1 rounded-full border border-amber-200">
+                ⏰ Including expired
+              </span>
+            )}
+          </div>
+          <p className="text-gray-600 mt-2">
+            {announcements.length} announcement{announcements.length !== 1 ? 's' : ''} on your desk
+          </p>
+        </div>                {announcements.length === 0 ? (
+                    <div className="flex items-center justify-center py-20">
+                        <div className="text-center max-w-md">
+                            <div className="bg-blue-100 rounded-full w-32 h-32 flex items-center justify-center mx-auto mb-6 shadow-xl">
+                                <svg className="w-16 h-16 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                                </svg>
                             </div>
+                            <h3 className="text-2xl font-bold text-gray-900 mb-3">Your desk is empty</h3>
+                            <p className="text-gray-600 mb-4">
+                                {showExpired 
+                                    ? "No announcements found with the current filters"
+                                    : "No active announcements at the moment"
+                                }
+                            </p>
+                            {!showExpired && (
+                                <button
+                                    onClick={() => setShowExpired(true)}
+                                    className="inline-flex items-center px-6 py-3 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:shadow-lg "
+                                >
+                                    📋 Show Expired Announcements
+                                </button>
+                            )}
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Content Section */}
-            <div className=" bg-white">
-                <div className="px-4 py-4 md:px-6 border-b border-gray-200">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                        <h2 className="text-lg font-semibold text-gray-900">
-                            Latest Announcements ({announcements.length} found)
-                        </h2>
-                        {showExpired && (
-                            <span className="text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                                Including expired announcements
-                            </span>
-                        )}
-                    </div>
-                </div>
-
-                {announcements.length === 0 ? (
-                    <div className="p-12 text-center">
-                        <div className="text-gray-400 mb-4">
-                            <svg className="mx-auto h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
-                            </svg>
-                        </div>
-                        <h3 className="text-lg font-semibold text-gray-900 mb-2">No announcements available</h3>
-                        <p className="text-gray-600 mb-4">
-                            {showExpired 
-                                ? "No announcements found with the current filters"
-                                : "Try enabling 'Show Expired' to see more announcements"
-                            }
-                        </p>
-                        {!showExpired && (
-                            <button
-                                onClick={() => setShowExpired(true)}
-                                className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
-                            >
-                                Show Expired Announcements
-                            </button>
-                        )}
                     </div>
                 ) : (
                     <>
-                        {/* Desktop Cards View */}
-                        <div className="hidden md:block p-6">
-                            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                                {announcements.map((announcement, index) => {
-                                    const isExpired = new Date(announcement.expiresAt) < new Date();
-                                    return (
-                                        <div
-                                            key={announcement.id || index}
-                                            onClick={() => handleAnnouncementClick(announcement)}
-                                            className="bg-white rounded-lg shadow-md border border-gray-200 hover:shadow-lg transition-shadow cursor-pointer"
-                                        >
-                                            <div className="p-6">
-                                                <div className="flex items-start justify-between mb-3">
-                                                    <h3 className="text-lg font-semibold text-gray-900 line-clamp-2">
-                                                        {announcement.title}
-                                                    </h3>
-                                                    <span className={`ml-2 inline-flex px-2 py-1 text-xs font-semibold rounded-full flex-shrink-0 ${
-                                                        isExpired 
-                                                            ? 'bg-red-100 text-red-800' 
-                                                            : 'bg-green-100 text-green-800'
-                                                    }`}>
-                                                        {isExpired ? 'Expired' : 'Active'}
-                                                    </span>
-                                                </div>
-                                                <p className="text-gray-600 text-sm line-clamp-3 mb-4">
-                                                    {announcement.content}
-                                                </p>
-                                                <div className="flex items-center justify-between text-sm text-gray-500">
-                                                    <span>Posted: {new Date(announcement.postedAt).toLocaleDateString()}</span>
-                                                    <span>Expires: {new Date(announcement.expiresAt).toLocaleDateString()}</span>
-                                                </div>
-                                                {announcement.attachments && announcement.attachments.length > 0 && (
-                                                    <div className="mt-3 flex items-center text-sm text-blue-600">
-                                                        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
-                                                        </svg>
-                                                        {announcement.attachments.length} attachment(s)
-                                                    </div>
-                                                )}
-                                            </div>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        </div>
-
-                        {/* Mobile List View */}
-                        <div className="md:hidden divide-y divide-gray-200">
+                        {/* Desk View - Staggered Cards */}
+                        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                             {announcements.map((announcement, index) => {
                                 const isExpired = new Date(announcement.expiresAt) < new Date();
+                                
                                 return (
-                                    <div 
+                                    <div
                                         key={announcement.id || index}
                                         onClick={() => handleAnnouncementClick(announcement)}
-                                        className="block px-4 py-4 hover:bg-gray-50 transition-colors cursor-pointer"
+                                        className={`group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl  cursor-pointer overflow-hidden border-2 ${
+                                            isExpired ? 'border-gray-200 opacity-75' : 'border-blue-100 hover:border-blue-300'
+                                        } hover:scale-105`}
+                                        style={{
+                                            transform: `rotate(${(index % 4 - 1.5) * 0.5}deg)`,
+                                        }}
                                     >
-                                        <div className="flex items-center justify-between mb-2">
-                                            <h3 className="text-sm font-medium text-gray-900 truncate flex-1">
+                                        {/* Status Pin */}
+                                        <div className="absolute top-4 right-4 z-10">
+                                            {isExpired ? (
+                                                <div className="bg-gray-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg flex items-center">
+                                                    <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                                                    </svg>
+                                                    Expired
+                                                </div>
+                                            ) : (
+                                                <div className="bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg flex items-center">
+                                                    <span className="w-2 h-2 bg-white rounded-full mr-2"></span>
+                                                    Active
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        {/* Decorative Corner Fold */}
+                                        <div className="absolute top-0 right-0 w-0 h-0 border-l-[40px] border-l-transparent border-t-[40px] border-t-blue-100 group-hover:border-t-blue-200 transition-colors"></div>
+
+                                        {/* Content */}
+                                        <div className="p-6">
+                                            {/* Title */}
+                                            <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors pr-12">
                                                 {announcement.title}
                                             </h3>
-                                            <span className={`ml-3 inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                                                isExpired 
-                                                    ? 'bg-red-100 text-red-800' 
-                                                    : 'bg-green-100 text-green-800'
-                                            }`}>
-                                                {isExpired ? 'Expired' : 'Active'}
-                                            </span>
-                                        </div>
-                                        <p className="text-gray-600 text-sm line-clamp-2 mb-2">
-                                            {announcement.content}
-                                        </p>
-                                        <div className="flex items-center justify-between text-sm text-gray-500">
-                                            <span>Posted: {new Date(announcement.postedAt).toLocaleDateString()}</span>
-                                            <span>Expires: {new Date(announcement.expiresAt).toLocaleDateString()}</span>
-                                        </div>
-                                        {announcement.attachments && announcement.attachments.length > 0 && (
-                                            <div className="mt-2 flex items-center text-sm text-blue-600">
-                                                <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
-                                                </svg>
-                                                {announcement.attachments.length} attachment(s)
-                                            </div>
-                                        )}
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </>
-                )}
-            </div>
+                                            
+                                            {/* Content Preview */}
+                                            <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+                                                {announcement.content}
+                                            </p>
 
-            {/* Pagination */}
-            {totalPages > 1 && (
-                <div className="bg-white border-t border-gray-200">
-                    <div className="px-4 py-4 md:px-6">
-                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                            <div className="text-sm text-gray-700 mb-4 sm:mb-0">
+                                            {/* Attachments Badge */}
+                                            {announcement.attachments && announcement.attachments.length > 0 && (
+                                                <div className="flex items-center text-sm text-blue-600 bg-blue-50 px-3 py-2 rounded-lg mb-4 w-fit">
+                                                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+                                                    </svg>
+                                                    <span className="font-medium">{announcement.attachments.length} file{announcement.attachments.length !== 1 ? 's' : ''}</span>
+                                                </div>
+                                            )}
+
+                                            {/* Dates Footer */}
+                                            <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                                                <div className="flex items-center text-xs text-gray-500">
+                                                    <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                    </svg>
+                                                    {new Date(announcement.postedAt).toLocaleDateString()}
+                                                </div>
+                                                <div className={`flex items-center text-xs ${
+                                                    isExpired ? 'text-red-600' : 'text-emerald-600'
+                                                } font-medium`}>
+                                                    <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    </svg>
+                                                    Until {new Date(announcement.expiresAt).toLocaleDateString()}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Hover Overlay */}
+                                                                {/* Hover Overlay */}
+                        <div className="absolute inset-0 bg-transparent opacity-0 group-hover:opacity-10 transition-opacity pointer-events-none"></div>
+                    </div>
+                );
+            })}
+        </div>
+    </>
+)}
+</div>
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+                <div className="max-w-7xl mx-auto bg-white bg-opacity-90 backdrop-blur-md shadow-lg rounded-xl border border-gray-200 my-6">
+                    <div className="px-6 py-4">
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                            <div className="text-sm text-gray-700 font-medium">
                                 Page {page} of {totalPages}
                             </div>
-                            <div className="flex flex-wrap justify-center sm:justify-end gap-1">
+                            <div className="flex flex-wrap justify-center sm:justify-end gap-2">
                                 <button
                                     onClick={() => setPage(Math.max(1, page - 1))}
                                     disabled={page === 1}
-                                    className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                    className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border-2 border-gray-300 rounded-lg hover:bg-gray-50 hover:border-blue-400 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm"
                                 >
-                                    Previous
+                                    ← Previous
                                 </button>
                                 
                                 {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
@@ -367,10 +372,10 @@ export function GuestAnnouncementList() {
                                         <button
                                             key={pageNum}
                                             onClick={() => setPage(pageNum)}
-                                            className={`px-3 py-2 text-sm font-medium border transition-colors ${
+                                            className={`px-4 py-2 text-sm font-medium rounded-lg transition-all shadow-sm ${
                                                 page === pageNum
-                                                    ? 'bg-blue-600 text-white border-blue-600 hover:bg-blue-700'
-                                                    : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                                                    ? 'bg-blue-600 text-white shadow-lg scale-110'
+                                                    : 'bg-white text-gray-700 border-2 border-gray-300 hover:bg-gray-50 hover:border-blue-400'
                                             }`}
                                         >
                                             {pageNum}
@@ -381,9 +386,9 @@ export function GuestAnnouncementList() {
                                 <button
                                     onClick={() => setPage(Math.min(totalPages, page + 1))}
                                     disabled={page === totalPages}
-                                    className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                    className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border-2 border-gray-300 rounded-lg hover:bg-gray-50 hover:border-blue-400 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm"
                                 >
-                                    Next
+                                    Next →
                                 </button>
                             </div>
                         </div>

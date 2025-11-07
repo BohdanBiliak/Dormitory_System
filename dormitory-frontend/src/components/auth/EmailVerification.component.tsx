@@ -28,7 +28,7 @@ export function EmailVerificationForm() {
     setError('')
 
     try {
-      console.log('🔍 Verifying email with token:', verificationToken)
+      // console.log('🔍 Verifying email with token:', verificationToken)
       
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}/auth/email-confirmation`, {
         method: 'POST',
@@ -41,11 +41,11 @@ export function EmailVerificationForm() {
         })
       })
 
-      console.log('📧 Verification response:', response.status)
+      // console.log('📧 Verification response:', response.status)
 
       if (response.ok) {
         const data = await response.json()
-        console.log('✅ Verification successful:', data)
+        // console.log('✅ Verification successful:', data)
         
         setIsSuccess(true)
         toast.success('Email verified successfully!')
@@ -111,7 +111,7 @@ export function EmailVerificationForm() {
             <div className="verification-actions">
               <Link
                 href="/admin/profile"
-                className="inline-block bg-blue-900 text-white py-2.5 sm:py-3 lg:py-4 px-4 sm:px-6 lg:px-8 rounded-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 text-sm sm:text-base font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                className="inline-block bg-blue-900 text-white py-2.5 sm:py-3 lg:py-4 px-4 sm:px-6 lg:px-8 rounded-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2  text-sm sm:text-base font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
               >
                 Go to Profile
               </Link>
@@ -144,7 +144,7 @@ export function EmailVerificationForm() {
             <div className="space-y-3 sm:space-y-4 verification-actions">
               <button
                 onClick={handleResendVerification}
-                className="w-full bg-blue-900 text-white py-2.5 sm:py-3 lg:py-4 px-4 sm:px-6 rounded-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 text-sm sm:text-base font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 resend-verification-button"
+                className="w-full bg-blue-900 text-white py-2.5 sm:py-3 lg:py-4 px-4 sm:px-6 rounded-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2  text-sm sm:text-base font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 resend-verification-button"
               >
                 Request New Verification Email
               </button>

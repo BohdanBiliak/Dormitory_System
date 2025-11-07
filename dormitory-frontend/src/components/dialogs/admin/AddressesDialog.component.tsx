@@ -141,17 +141,21 @@ export default function AddressesDialogComponent({open, onClose, onConfirm, preS
         });
     }
 
-    const renderItemWithChildren = (item: AddresseeItem, depth: number = 0): JSX.Element => {
+    const renderItemWithChildren = (item: AddresseeItem, depth: number = 0, parentPath: string = ''): JSX.Element => {
         const paddingLeft = depth * 20;
         const hasChildren= item.children && item.children.length > 0;
+        // Generate a unique key based on type and ID to avoid hydration mismatches
+        const uniqueKey = `${parentPath}/${AddresseeType[item.type]}-${item.id}`;
 
         return (
-            <div key={item.id}>
+            <div key={uniqueKey}>
                 <div className="flex items-center gap-2 py-2 px-3 hover:bg-gray-100 rounded transition-colors" style={{ paddingLeft: `${paddingLeft}px` }}>
                     {hasChildren && (
                         <button
+                            type="button"
                             onClick={() => (toggleShowChildren(item))}
                             className="flex-shrink-0 w-5 h-5 flex items-center justify-center hover:bg-gray-300 rounded"
+                            aria-label={item.showChildren ? "Collapse" : "Expand"}
                         >
                             <svg
                                 className={`w-4 h-4 transition-transform ${item.showChildren ? 'rotate-90' : ''}`}
@@ -170,20 +174,21 @@ export default function AddressesDialogComponent({open, onClose, onConfirm, preS
                         checked={item.isChosen}
                         onChange={() => toggleItemChosen(item)}
                         className="w-4 h-4 cursor-pointer"
+                        id={uniqueKey}
                     />
 
-                    <span className={`flex-1 text-sm ${item.type === AddresseeType.Dormitory ? 'font-semibold text-blue-900' : item.type === AddresseeType.Floor ? 'font-medium text-gray-700' : 'text-gray-600'}`}>
+                    <label htmlFor={uniqueKey} className={`flex-1 text-sm cursor-pointer ${item.type === AddresseeType.Dormitory ? 'font-semibold text-blue-900' : item.type === AddresseeType.Floor ? 'font-medium text-gray-700' : 'text-gray-600'}`}>
                         {item.label}
-                    </span>
+                    </label>
 
                     <span className="text-xs text-gray-500 bg-gray-200 px-2 py-1 rounded">
-                        {item.type}
+                        {AddresseeType[item.type]}
                     </span>
                 </div>
 
                 {item.showChildren && hasChildren && (
                     <div className="border-l-2 border-gray-300 ml-4">
-                        {item.children!.map(childItem => renderItemWithChildren(childItem, depth + 1))}
+                        {item.children!.map(childItem => renderItemWithChildren(childItem, depth + 1, uniqueKey))}
                     </div>
                 )}
             </div>
@@ -229,7 +234,12 @@ export default function AddressesDialogComponent({open, onClose, onConfirm, preS
     }
 
     const handleConfirm = () => {
-
+        const selectedItems = getSelectedItems(shownAddresses);
+        
+        if (onConfirm) {
+            onConfirm(selectedItems);
+        }
+        
         onClose();
     }
 
@@ -240,7 +250,7 @@ export default function AddressesDialogComponent({open, onClose, onConfirm, preS
                 <DialogPanel className="w-full max-w-2xl max-h-[90vh] bg-white rounded-2xl shadow-2xl overflow-hidden">
 
                     {/*header*/}
-                    <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
+                    <div className="bg-blue-600 px-6 py-4">
                         <div className="flex items-center justify-between">
                             <div className="flex items-center space-x-3">
                                 <div className="p-2 bg-white/20 rounded-lg">

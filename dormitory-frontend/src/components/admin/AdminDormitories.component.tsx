@@ -127,7 +127,7 @@ export function AdminDormitoriesList(){
 
     const handleSaveEditingChanges = () => {
         updateDormitory({updatedInformation: {name: chosenDormitory?.name || '', address: chosenDormitory?.address || '', groundFloorPhoneNumber: chosenDormitory?.groundFloorPhoneNumber || ''}, id: chosenDormitory?.id || ''})
-        console.log("Updating dormitory: ", chosenDormitory?.name)
+        // console.log("Updating dormitory: ", chosenDormitory?.name)
         setIsEditing(false);
     }
 
@@ -190,7 +190,7 @@ export function AdminDormitoriesList(){
 
     return(
         <DormitoryListTutorial>
-            <div className=" w-full bg-gradient-to-br from-gray-50 to-gray-100">
+            <div className=" w-full bg-gray-50">
                 {/* Header */}
                 <div className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-10 dormitory-management-header">
                     <div className="px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
@@ -230,7 +230,7 @@ export function AdminDormitoriesList(){
                         {/* Dormitory Selection */}
                         <div className="xl:col-span-1 dormitory-selection-panel">
                             <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden h-fit max-h-[calc(100vh-200px)]">
-                                <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-4 sm:px-6 py-3 sm:py-4">
+                                <div className="bg-blue-600 px-4 sm:px-6 py-3 sm:py-4">
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center space-x-2 sm:space-x-3">
                                             <svg className="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -255,7 +255,7 @@ export function AdminDormitoriesList(){
                                                         <button
                                                             key={dormitory.id || index}
                                                             onClick={() => {setChosenDormitory(dormitory); setTemporaryStatus(dormitory.status)}}
-                                                            className={`w-full text-left p-3 sm:p-4 rounded-lg border-2 transition-all duration-200 ${
+                                                            className={`w-full text-left p-3 sm:p-4 rounded-lg border-2  ${
                                                                 (chosenDormitory && chosenDormitory.id) === dormitory.id
                                                                     ? 'border-blue-500 bg-blue-50 text-blue-900 shadow-md'
                                                                     : 'border-gray-200 bg-gray-50 text-gray-700 hover:border-blue-300 hover:bg-blue-25'
@@ -295,7 +295,7 @@ export function AdminDormitoriesList(){
                                                         <button
                                                             key={dormitory.id || index}
                                                             onClick={() => {setChosenDormitory(dormitory); setTemporaryStatus(dormitory.status)}}
-                                                            className={`w-full text-left p-3 sm:p-4 rounded-lg border-2 transition-all duration-200 ${
+                                                            className={`w-full text-left p-3 sm:p-4 rounded-lg border-2  ${
                                                                 (chosenDormitory && chosenDormitory.id) === dormitory.id
                                                                     ? 'border-blue-500 bg-blue-50 text-blue-900 shadow-md'
                                                                     : 'border-gray-200 bg-gray-50 text-gray-700 hover:border-blue-300 hover:bg-blue-25'
@@ -350,7 +350,7 @@ export function AdminDormitoriesList(){
                         <div className="xl:col-span-2 dormitory-details-panel">
                             {chosenDormitory ? (
                                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                                    <div className="bg-gradient-to-r from-green-600 to-green-700 px-4 sm:px-6 py-3 sm:py-4">
+                                    <div className="bg-green-600 px-4 sm:px-6 py-3 sm:py-4">
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center space-x-2 sm:space-x-3">
                                                 <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">

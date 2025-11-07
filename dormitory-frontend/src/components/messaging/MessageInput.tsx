@@ -14,7 +14,7 @@ interface MessageInputProps {
   placeholder?: string;
 }
 
-export const MessageInput: React.FC<MessageInputProps> = ({
+export const MessageInput: React.FC<MessageInputProps> = React.memo(({
   onSendMessage,
   onStartTyping,
   onStopTyping,
@@ -214,4 +214,6 @@ export const MessageInput: React.FC<MessageInputProps> = ({
       )}
     </div>
   );
-};
+});
+
+MessageInput.displayName = 'MessageInput';

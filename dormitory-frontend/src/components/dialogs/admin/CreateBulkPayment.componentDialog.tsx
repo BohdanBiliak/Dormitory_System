@@ -23,6 +23,7 @@ export default function CreateBulkPaymentDialog({ open, onClose }: CreateBulkPay
 
   const [pricingStrategy, setPricingStrategy] = useState<PricingStrategy>('room');
   const [selectedRooms, setSelectedRooms] = useState<string[]>([]);
+  const [minDate, setMinDate] = useState<string>('');
   const [formData, setFormData] = useState<CreateBulkPaymentDto>({
     users: [],
     paymentType: PaymentType.MONTHLY_RENT,
@@ -31,6 +32,11 @@ export default function CreateBulkPaymentDialog({ open, onClose }: CreateBulkPay
     description: '',
     useRoomPricing: true,
   });
+
+  // Set minimum date on client side only to prevent hydration mismatch
+  useEffect(() => {
+    setMinDate(new Date().toISOString().split('T')[0]);
+  }, []);
 
   useEffect(() => {
     if (open) {
@@ -141,7 +147,7 @@ export default function CreateBulkPaymentDialog({ open, onClose }: CreateBulkPay
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 animate-in fade-in duration-200">
       <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden animate-in zoom-in-95 duration-200">
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4 flex items-center justify-between">
+        <div className="bg-blue-600 px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="bg-white/20 p-2 rounded-lg">
               <Users className="w-6 h-6 text-white" />
@@ -356,6 +362,7 @@ export default function CreateBulkPaymentDialog({ open, onClose }: CreateBulkPay
                 type="date"
                 value={formData.dueDate}
                 onChange={(e) => setFormData({ ...formData, dueDate: e.target.value })}
+                min={minDate}
                 className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 required
               />

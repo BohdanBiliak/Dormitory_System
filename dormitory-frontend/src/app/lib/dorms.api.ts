@@ -31,9 +31,16 @@ export const dormitoryApi = {
 
         formData.append('name', newDormitory.name);
         formData.append('address', newDormitory.address);
+        formData.append('description', newDormitory.description);
         formData.append('groundFloorPhoneNumber', newDormitory.groundFloorPhoneNumber);
-        formData.append('pricePerDay',newDormitory.pricePerDay.toString());
-        formData.append('pricePerMonth', newDormitory.pricePerMonth.toString());
+        
+        // Only append price fields if they are provided (they are optional now)
+        if (newDormitory.pricePerDay !== undefined) {
+            formData.append('pricePerDay', newDormitory.pricePerDay.toString());
+        }
+        if (newDormitory.pricePerMonth !== undefined) {
+            formData.append('pricePerMonth', newDormitory.pricePerMonth.toString());
+        }
 
         if(newDormitory.floorAssignments.length > 0) newDormitory.floorAssignments.forEach((floorAssignment, floorIndex) => {
             formData.append(`floorAssignments[${floorIndex}][floorNumber]`, floorAssignment.floorNumber);
@@ -52,7 +59,7 @@ export const dormitoryApi = {
                     "Content-Type": "multipart/form-data",
                 }
             })
-            console.log("Dormitory: ", response.data);
+            // console.log("Dormitory: ", response.data);
             return response.data;
         }catch (error) {
             console.error(error);

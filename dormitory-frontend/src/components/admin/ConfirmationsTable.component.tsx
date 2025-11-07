@@ -61,7 +61,7 @@ export function ConfirmationsTable() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center w-full h-full bg-gradient-to-br from-blue-50 via-white to-blue-50">
+      <div className="flex items-center justify-center w-full h-full bg-blue-50">
         <div className="bg-white shadow-xl rounded-2xl p-8 max-w-md border border-blue-100">
           <div className="flex flex-col items-center justify-center">
             <div className="relative">
@@ -78,7 +78,7 @@ export function ConfirmationsTable() {
 
   if (error) {
     return (
-      <div className="flex items-center justify-center w-full h-full bg-gradient-to-br from-red-50 via-white to-red-50">
+      <div className="flex items-center justify-center w-full h-full bg-red-50">
         <div className="bg-white shadow-xl rounded-2xl p-8 max-w-md border border-red-100">
           <div className="text-center">
             <div className="text-red-500 mb-4">
@@ -104,13 +104,13 @@ export function ConfirmationsTable() {
   const totalPages = confirmationsData?.pageCount || 1
 
   return (
-    <div className="flex flex-col w-full h-full bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="flex flex-col w-full h-full bg-gray-50">
       {/* Header */}
       <div className="bg-white shadow-lg border-b border-gray-200 flex-shrink-0">
         <div className="px-6 py-6">
           <div className="flex items-center space-x-4">
             <div className="flex-shrink-0">
-              <div className="p-3 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl shadow-lg">
+              <div className="p-3 bg-blue-600 rounded-xl shadow-lg">
                 <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
@@ -165,7 +165,7 @@ export function ConfirmationsTable() {
                     onChange={(e) => setShowResolved(e.target.checked)}
                     className="sr-only"
                   />
-                  <div className={`w-12 h-6 rounded-full transition-all duration-300 shadow-inner ${
+                  <div className={`w-12 h-6 rounded-full  shadow-inner ${
                     showResolved ? 'bg-gradient-to-r from-blue-500 to-blue-600' : 'bg-gray-300'
                   }`}>
                     <div className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-lg transition-transform duration-300 ${
@@ -198,7 +198,7 @@ export function ConfirmationsTable() {
         <div className="flex flex-col h-full bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden relative">
           
           {/* Stats Bar */}
-          <div className="bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 px-6 py-4 flex-shrink-0">
+          <div className="bg-blue-700 px-6 py-4 flex-shrink-0">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
                 <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -245,7 +245,7 @@ export function ConfirmationsTable() {
                     {confirmations.map((confirmation, index) => (
                       <tr
                         key={confirmation.id}
-                        className="hover:bg-blue-50 cursor-pointer transition-all duration-200 group"
+                        className="hover:bg-blue-50 cursor-pointer  group"
                         onClick={() => handleConfirmationClick(confirmation)}
                       >
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">
@@ -253,7 +253,7 @@ export function ConfirmationsTable() {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center">
-                            <div className="h-10 w-10 rounded-full bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center mr-3 shadow-sm">
+                            <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center mr-3 shadow-sm">
                               {confirmation.requester.picture ? (
                                 <img className="h-10 w-10 rounded-full object-cover border-2 border-white shadow-sm" src={confirmation.requester.picture} alt="" />
                               ) : (
@@ -304,12 +304,12 @@ export function ConfirmationsTable() {
                 {confirmations.map((confirmation, index) => (
                   <div
                     key={confirmation.id}
-                    className="p-4 hover:bg-blue-50 cursor-pointer transition-all duration-200 group"
+                    className="p-4 hover:bg-blue-50 cursor-pointer  group"
                     onClick={() => handleConfirmationClick(confirmation)}
                   >
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex items-center space-x-3 flex-1 min-w-0">
-                        <div className="h-12 w-12 rounded-full bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center shadow-sm flex-shrink-0">
+                        <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center shadow-sm flex-shrink-0">
                           {confirmation.requester.picture ? (
                             <img className="h-12 w-12 rounded-full object-cover border-2 border-white shadow-sm" src={confirmation.requester.picture} alt="" />
                           ) : (

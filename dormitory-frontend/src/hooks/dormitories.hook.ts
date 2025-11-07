@@ -1,6 +1,7 @@
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {dormitoryApi} from "@/app/lib/dorms.api";
 import {toast} from "sonner";
+import {useMemo, useCallback} from "react";
 import {
     Dormitory,
     DormitoryRequest,
@@ -10,30 +11,39 @@ import {
 } from "@/types/dormitories.types";
 
 export function useGetActiveDormitories() {
+    const queryFn = useCallback(() => dormitoryApi.getDormitories(), []);
+    const queryKey = useMemo(() => ['dormitories', 'active'], []);
+    
     const {data, isLoading, error, refetch} = useQuery({
-        queryFn:()=>dormitoryApi.getDormitories(),
-        queryKey:['dormitories', 'active'],
+        queryFn,
+        queryKey,
         staleTime: 30 * 1000
     });
-    return {data, isLoading, error,refetch};
+    return useMemo(() => ({data, isLoading, error, refetch}), [data, isLoading, error, refetch]);
 }
 
 export function useGetDeactivatedDormitories() {
+    const queryFn = useCallback(() => dormitoryApi.getDeactivatedDormitories(), []);
+    const queryKey = useMemo(() => ['dormitories', 'deactivated'], []);
+    
     const {data, isLoading, error, refetch} = useQuery({
-        queryFn:()=>dormitoryApi.getDeactivatedDormitories(),
-        queryKey:['dormitories', 'deactivated'],
+        queryFn,
+        queryKey,
         staleTime: 30 * 1000
     })
-    return {data, isLoading, error, refetch};
+    return useMemo(() => ({data, isLoading, error, refetch}), [data, isLoading, error, refetch]);
 }
 
-export  function useGetDormitoryById(id:string){
+export function useGetDormitoryById(id: string){
+    const queryFn = useCallback(() => dormitoryApi.getDormitory(id), [id]);
+    const queryKey = useMemo(() => ['dormitory', 'id', id], [id]);
+    
     const {data, isLoading, error} = useQuery({
-        queryFn:()=>dormitoryApi.getDormitory(id),
-        queryKey:['dormitory', 'id', id],
+        queryFn,
+        queryKey,
         staleTime: 30 * 1000
     })
-    return {data, isLoading, error};
+    return useMemo(() => ({data, isLoading, error}), [data, isLoading, error]);
 }
 
 export function useDormitories() {
@@ -46,7 +56,7 @@ export function useDormitories() {
             toast.success("Dormitory has been created!")
         },
         onError: (error:any)=> {
-            console.log(error.message)
+            // console.log(error.message)
             toast.error(error?.response?.data?.message || "Failed to create dormitory");
         }
     })

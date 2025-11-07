@@ -19,7 +19,7 @@ export function useNotifications(){
         mutationFn: (notificationId: string)=>notificationsApi.markNotificationAsRead(notificationId),
         onSuccess: () => {
             queryClient.invalidateQueries({queryKey: ["notifications"]})
-            console.log("Marked as read");
+            // console.log("Marked as read");
         },
         onError: (error) => {
             toast.error(error.message);
@@ -29,7 +29,7 @@ export function useNotifications(){
     const createNotification = useMutation({
         mutationFn: (notification: NotificationPostData)=>notificationsApi.adminNotificationAnnouncement(notification),
         onSuccess: () => {
-            console.log("New notification created successfully");
+            // console.log("New notification created successfully");
         },
         onError: (error) => {
             toast.error(error.message);

@@ -57,7 +57,7 @@ export function ImageCarouselComponent({photos, setPhotos, newPhotos, setNewPhot
 
     const addRoomImage = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {name, files} = e.target;
-        console.log("Add room Image")
+        // console.log("Add room Image")
         if(files && setNewPhotosTemp){
             setNewPhotosTemp([...newPhotosTemp, files[0]]);
         }
@@ -115,7 +115,7 @@ export function ImageCarouselComponent({photos, setPhotos, newPhotos, setNewPhot
                                     photos[currentIndex]
                                     : URL.createObjectURL(newPhotos[currentIndex-photos.length])}
                             alt={`Photo ${currentIndex + 1}`}
-                            className="w-full h-full object-cover transition-all duration-500 ease-out"
+                            className="w-full h-full object-cover  ease-out"
                         />
 
                         {/* Navigation arrows */}
@@ -123,13 +123,13 @@ export function ImageCarouselComponent({photos, setPhotos, newPhotos, setNewPhot
                             <>
                                 <button
                                     onClick={goToPrevious}
-                                    className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-1.5 sm:p-2 rounded-full hover:bg-black/70 transition-all duration-200 opacity-0 group-hover:opacity-100 hover:scale-110"
+                                    className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-1.5 sm:p-2 rounded-full hover:bg-black/70  opacity-0 group-hover:opacity-100"
                                 >
                                     <ChevronLeft size={16} className="sm:w-5 sm:h-5" />
                                 </button>
                                 <button
                                     onClick={goToNext}
-                                    className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-1.5 sm:p-2 rounded-full hover:bg-black/70 transition-all duration-200 opacity-0 group-hover:opacity-100 hover:scale-110"
+                                    className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-1.5 sm:p-2 rounded-full hover:bg-black/70  opacity-0 group-hover:opacity-100"
                                 >
                                     <ChevronRight size={16} className="sm:w-5 sm:h-5" />
                                 </button>
@@ -149,7 +149,7 @@ export function ImageCarouselComponent({photos, setPhotos, newPhotos, setNewPhot
                                 <button
                                     key={index}
                                     onClick={() => setCurrentIndex(index)}
-                                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                                    className={`w-2 h-2 rounded-full  ${
                                         index === currentIndex
                                             ? 'bg-blue-600 scale-110'
                                             : 'bg-gray-300 hover:bg-gray-400'
@@ -160,7 +160,7 @@ export function ImageCarouselComponent({photos, setPhotos, newPhotos, setNewPhot
                                 <button
                                     key={index + photos.length}
                                     onClick={() => setCurrentIndex(index + photos.length)}
-                                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                                    className={`w-2 h-2 rounded-full  ${
                                         index + photos.length === currentIndex
                                             ? 'bg-blue-600 scale-110'
                                             : 'bg-gray-300 hover:bg-gray-400'
@@ -179,11 +179,11 @@ export function ImageCarouselComponent({photos, setPhotos, newPhotos, setNewPhot
             )}
 
             <Dialog onClose={closeEdit} open={showEditMenu} className="relative z-50">
-                <DialogBackdrop className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-all duration-300" />
+                <DialogBackdrop className="fixed inset-0 bg-black/60 backdrop-blur-sm " />
                 <div className="fixed inset-0 flex items-center justify-center p-2 sm:p-4">
                     <DialogPanel className="w-full max-w-4xl max-h-[90vh] bg-white rounded-2xl shadow-2xl overflow-hidden">
                         {/* Header */}
-                        <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-4 sm:px-6 py-4 flex items-center justify-between">
+                        <div className="bg-blue-600 px-4 sm:px-6 py-4 flex items-center justify-between">
                             <div>
                                 <DialogTitle className="text-lg font-semibold text-white">
                                     {editionMenuLabels.title}
@@ -230,13 +230,13 @@ export function ImageCarouselComponent({photos, setPhotos, newPhotos, setNewPhot
                                                     <>
                                                         <button
                                                             onClick={goToPrevious}
-                                                            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-all duration-200 opacity-0 group-hover:opacity-100"
+                                                            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70  opacity-0 group-hover:opacity-100"
                                                         >
                                                             <ChevronLeft size={20} />
                                                         </button>
                                                         <button
                                                             onClick={goToNext}
-                                                            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-all duration-200 opacity-0 group-hover:opacity-100"
+                                                            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70  opacity-0 group-hover:opacity-100"
                                                         >
                                                             <ChevronRight size={20} />
                                                         </button>
@@ -256,7 +256,7 @@ export function ImageCarouselComponent({photos, setPhotos, newPhotos, setNewPhot
                                                         <button
                                                             key={index}
                                                             onClick={() => setCurrentEditIndex(index)}
-                                                            className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                                                            className={`w-2 h-2 rounded-full  ${
                                                                 index === currentEditIndex
                                                                     ? 'bg-blue-600 scale-110'
                                                                     : 'bg-gray-300 hover:bg-gray-400'
@@ -267,7 +267,7 @@ export function ImageCarouselComponent({photos, setPhotos, newPhotos, setNewPhot
                                                         <button
                                                             key={index + photosTemp.length}
                                                             onClick={() => setCurrentEditIndex(index + photosTemp.length)}
-                                                            className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                                                            className={`w-2 h-2 rounded-full  ${
                                                                 index + photosTemp.length === currentEditIndex
                                                                     ? 'bg-blue-600 scale-110'
                                                                     : 'bg-gray-300 hover:bg-gray-400'

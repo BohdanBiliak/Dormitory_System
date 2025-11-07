@@ -91,7 +91,7 @@ export function PaymentProofModal({
             <div className="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
                 <div className="bg-white rounded-2xl shadow-2xl max-w-6xl w-full max-h-[95vh] overflow-hidden flex flex-col">
                     {/* Header */}
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-6 border-b border-gray-200 bg-gradient-to-r from-green-50 to-green-100">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-6 border-b border-gray-200 bg-green-50">
                         <div className="flex items-center space-x-4 mb-4 sm:mb-0">
                             <div className="p-3 bg-green-600 rounded-xl shadow-lg">
                                 <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -153,7 +153,7 @@ export function PaymentProofModal({
                                                 alt="Payment Proof"
                                                 className="w-full h-auto rounded-lg border border-gray-300 group-hover:scale-105 transition-transform duration-300"
                                             />
-                                            <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
+                                            <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20  flex items-center justify-center">
                                                 <svg className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
                                                 </svg>
@@ -190,7 +190,7 @@ export function PaymentProofModal({
 
                                     <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
                                         <div className="flex items-center space-x-4 mb-4">
-                                            <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-green-200 rounded-full flex items-center justify-center border-4 border-white shadow-lg">
+                                            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center border-4 border-white shadow-lg">
                                                 {confirmation.requester.picture ? (
                                                     <img
                                                         src={confirmation.requester.picture}
@@ -222,7 +222,7 @@ export function PaymentProofModal({
 
                                     <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm space-y-4">
                                         {/* Amount - Large and prominent */}
-                                        <div className="bg-gradient-to-r from-green-50 to-green-100 rounded-lg p-4 border border-green-200">
+                                        <div className="bg-green-50 rounded-lg p-4 border border-green-200">
                                             <label className="block text-sm font-semibold text-green-700 uppercase tracking-wide mb-1">
                                                 Amount
                                             </label>
@@ -372,10 +372,10 @@ export function PaymentProofModal({
 
             {/* Rejection dialog */}
             <Dialog onClose={closeRejectionMenu} open={showRejectionMenu} className="relative z-50">
-                <DialogBackdrop className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-all duration-300" />
+                <DialogBackdrop className="fixed inset-0 bg-black/60 backdrop-blur-sm " />
                 <div className="fixed inset-0 flex items-center justify-center p-4">
                     <DialogPanel className="w-full max-w-lg bg-white rounded-2xl shadow-2xl animate-in zoom-in-95 fade-in-0 duration-300 slide-in-from-bottom-4">
-                        <div className="px-6 py-4 bg-red-50 border-b border-red-200 animate-in fade-in-0 slide-in-from-top-2 duration-300">
+                        <div className="px-6 py-4 bg-red-50 border-b border-red-200">
                             <DialogTitle className="text-lg font-semibold text-red-900">
                                 Rejection reason
                             </DialogTitle>
@@ -394,21 +394,21 @@ export function PaymentProofModal({
                                     value={rejectionReason}
                                     onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => { setRejectionReason(event.target.value) }}
                                     rows={4}
-                                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-200 hover:shadow-sm resize-none"
+                                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500  hover:shadow-sm resize-none"
                                     placeholder="Enter reason for rejection..."
                                 />
                             </div>
                         </div>
 
-                        <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex space-x-3 animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-250">
+                        <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex space-x-3 delay-250">
                             <button
-                                className="flex-1 bg-red-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200 hover:scale-105 active:scale-95 hover:shadow-lg"
+                                className="flex-1 bg-red-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2  hover:scale-105 hover:shadow-lg"
                                 onClick={handleReject}
                             >
                                 Confirm rejection
                             </button>
                             <button
-                                className="flex-1 bg-slate-200 text-slate-700 py-2 px-4 rounded-lg font-medium hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transition-all duration-200 hover:scale-105 active:scale-95"
+                                className="flex-1 bg-slate-200 text-slate-700 py-2 px-4 rounded-lg font-medium hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2  hover:scale-105"
                                 onClick={closeRejectionMenu}
                             >
                                 Cancel

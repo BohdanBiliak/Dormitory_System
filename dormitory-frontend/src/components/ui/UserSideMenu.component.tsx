@@ -2,7 +2,7 @@
 
 import {MenuItem} from "@/types/ui.types";
 import {useAuth} from "@/hooks/auth.hook";
-import {useEffect, useState, useMemo} from "react";
+import {useEffect, useState, useMemo, useCallback, memo} from "react";
 import {useCurrentUserProfile} from "@/hooks/user.hook";
 import Link from "next/link";
 import {UserRole} from "@/types/auth.types";
@@ -13,25 +13,34 @@ interface UserSideMenuProps {
     children: React.ReactNode;
 }
 
-export function UserSideMenu ({children}:UserSideMenuProps){
+export const UserSideMenu = memo(function UserSideMenu ({children}:UserSideMenuProps){
     const { logout, isLoggingOut } = useAuth()
     const { t } = useLanguage()
     const [openMenu, setOpenMenu] = useState<string>()
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
-    const toggleMenu = (menuKey: string) => {
+    const toggleMenu = useCallback((menuKey: string) => {
         setOpenMenu(prev =>
             prev===menuKey ? '' : menuKey
         )
-    }
+    }, [])
 
-    const handleLogout = () => {
+    const handleLogout = useCallback(() => {
         logout()
-    }
+    }, [logout])
 
-    const toggleMobileMenu = () => {
+    const toggleMobileMenu = useCallback(() => {
         setIsMobileMenuOpen(!isMobileMenuOpen)
-    }
+    }, [isMobileMenuOpen])
+
+    const closeMobileMenu = useCallback(() => {
+        setIsMobileMenuOpen(false)
+    }, [])
+
+    const handleLogoutAndClose = useCallback(() => {
+        handleLogout()
+        closeMobileMenu()
+    }, [handleLogout, closeMobileMenu])
 
     const {data: user, isLoading, error} = useCurrentUserProfile()
 
@@ -99,68 +108,85 @@ export function UserSideMenu ({children}:UserSideMenuProps){
         {
             id: 'profile',
             image: '/user.svg',
-            label: t('sideMenu.profile'),
+            label: t('sideMenu.profile') || 'My Profile',
             href: '/profile'
         },
         {
-            id: 'dormitories',
-            image: '/workplace.svg',
-            label: t('sideMenu.dormitories'),
-            href: '/dormitories',
-        },
-        {
-            id: 'announcements',
-            image: '/clipboard-text.svg',
-            label: t('sideMenu.announcements'),
-            href: '/announcements',
-        },
-        {
-            id: 'messages',
-            image: '/envelope.svg',
-            label: t('sideMenu.messages'),
-            href: '/messaging',
-        },
-        {
-            id:'rooms',
+            id: 'living',
             image: '/home.svg',
-            label: t('sideMenu.rooms'),
-            href: '/rooms',
+            label: t('sideMenu.living') || 'Living',
+            subMenu: [
+                {
+                    id: 'dormitories',
+                    label: t('sideMenu.dormitories') || 'Dormitories',
+                    image: '/workplace.svg',
+                    href: '/dormitories',
+                },
+                {
+                    id:'rooms',
+                    label: t('sideMenu.rooms') || 'Rooms',
+                    image: '/home.svg',
+                    href: '/rooms',
+                },
+                {
+                    id: 'maintenance',
+                    label: t('sideMenu.maintenance') || 'Maintenance',
+                    image: '/wrench.svg',
+                    href: '/maintenance',
+                }
+            ]
         },
         {
-            id:'payments',
+            id: 'services',
             image: '/cash.svg',
-            label: t('sideMenu.payments'),
-            href: '/payments',
+            label: t('sideMenu.services') || 'Services',
+            subMenu: [
+                {
+                    id:'payments',
+                    label: t('sideMenu.payments') || 'Payments',
+                    image: '/cash.svg',
+                    href: '/payments',
+                },
+            ]
         },
         {
-            id:'notification',
-            image: '/bell.svg',
-            label: t('sideMenu.notification'),
-            href: '#',
+            id: 'communication',
+            image: '/comments.svg',
+            label: t('sideMenu.communication') || 'Communication',
+            subMenu: [
+                {
+                    id: 'announcements',
+                    label: t('sideMenu.announcements') || 'Announcements',
+                    image: '/clipboard-text.svg',
+                    href: '/announcements',
+                },
+                {
+                    id: 'messages',
+                    label: t('sideMenu.messages') || 'Messages',
+                    image: '/envelope.svg',
+                    href: '/messaging',
+                }
+            ]
         },
         {
             id:'logout',
             image:'/sign-out.svg',
-            label: t('sideMenu.logout'),
+            label: t('sideMenu.logout') || 'Logout',
         }
     ], [t])
 
-    const [currentMenuItems, setCurrentMenuItems] = useState<MenuItem[]>(GuestMenuItems)
-
-    {/*Languages*/}
-
-    useEffect(() => {
+    const currentMenuItems = useMemo(() => {
         if(user && user.isVerified){
             switch (user.role){
-                case UserRole.Regular: setCurrentMenuItems(RegularMenuItems); break;
+                case UserRole.Regular: return RegularMenuItems;
                 case UserRole.SignedInUser:
-                case UserRole.Resident: setCurrentMenuItems(SignedInMenuItems); break;
-                default: setCurrentMenuItems(GuestMenuItems);
+                case UserRole.Resident: return SignedInMenuItems;
+                default: return GuestMenuItems;
             }
         }else{
-            setCurrentMenuItems(GuestMenuItems);
+            return GuestMenuItems;
         }
-    },[user, GuestMenuItems, RegularMenuItems, SignedInMenuItems])
+    }, [user, GuestMenuItems, RegularMenuItems, SignedInMenuItems])
 
     return(
         <div className="min-h-screen bg-white flex flex-col md:flex-row">
@@ -253,7 +279,7 @@ export function UserSideMenu ({children}:UserSideMenuProps){
                                                     key={index}
                                                     href={subItem.href || '#'}
                                                     className="block px-3 py-2 text-sm text-blue-200 hover:text-white hover:bg-blue-800 rounded transition-colors"
-                                                    onClick={() => setIsMobileMenuOpen(false)}
+                                                    onClick={closeMobileMenu}
                                                 >
                                                     <div className="flex items-center space-x-3">
                                                         <img src={subItem.image} alt={subItem.label} className="w-6 h-6 md:w-8 md:h-8 filter brightness-0 invert"/>
@@ -269,10 +295,7 @@ export function UserSideMenu ({children}:UserSideMenuProps){
                                     if(item.id==='logout'){
                                         return(
                                             <button
-                                                onClick={() => {
-                                                    handleLogout()
-                                                    setIsMobileMenuOpen(false)
-                                                }}
+                                                onClick={handleLogoutAndClose}
                                                 disabled={isLoggingOut}
                                                 className="flex items-center space-x-3 px-3 py-2 md:py-3 hover:text-red-100 hover:bg-red-900 rounded transition-colors w-full disabled:opacity-50"
                                             >
@@ -284,7 +307,7 @@ export function UserSideMenu ({children}:UserSideMenuProps){
                                         <Link
                                             href={item.href || '#'}
                                             className={`flex items-center space-x-3 px-3 py-2 md:py-3 rounded hover:bg-blue-800 transition-colors`}
-                                            onClick={() => {setIsMobileMenuOpen(false)}}
+                                            onClick={closeMobileMenu}
                                         >
                                             <img src={item.image} alt={item.label} className="w-8 h-8 md:w-10 md:h-10 filter brightness-0 invert"/>
                                             <span className="text-sm md:text-base">{item.label}</span>
@@ -304,7 +327,7 @@ export function UserSideMenu ({children}:UserSideMenuProps){
             {isMobileMenuOpen && (
                 <div
                     className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={closeMobileMenu}
                 ></div>
             )}
 
@@ -316,4 +339,4 @@ export function UserSideMenu ({children}:UserSideMenuProps){
             </div>
         </div>
     )
-}
+})

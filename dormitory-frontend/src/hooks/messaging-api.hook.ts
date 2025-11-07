@@ -109,10 +109,10 @@ export const useCreateConversation = () => {
 
   return useMutation({
     mutationFn: async (data: CreateConversationData) => {
-      console.log('HTTP API: Creating conversation', data);
+      // console.log('HTTP API: Creating conversation', data);
       try {
         const result = await messagingAPI.createConversation(data);
-        console.log('HTTP API: Conversation created successfully', result);
+        // console.log('HTTP API: Conversation created successfully', result);
         return result;
       } catch (error) {
         console.error('HTTP API: Failed to create conversation', error);
@@ -120,7 +120,7 @@ export const useCreateConversation = () => {
       }
     },
     onSuccess: (newConversation) => {
-      console.log('Updating query cache with new conversation', newConversation.id);
+      // console.log('Updating query cache with new conversation', newConversation.id);
       queryClient.setQueryData(['conversations'], (old: Conversation[] | undefined) => {
         if (!old) return [newConversation];
         const exists = old.some(conv => conv.id === newConversation.id);

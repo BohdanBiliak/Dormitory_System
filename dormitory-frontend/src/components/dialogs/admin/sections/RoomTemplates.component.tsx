@@ -93,7 +93,7 @@ export default function RoomTemplatesComponent({
     return (
         <div className="w-full h-full min-h-[600px]">
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 h-full">
-                <div className="p-6 border-b border-gray-200 bg-gradient-to-r from-purple-50 to-blue-50">
+                <div className="p-6 border-b border-gray-200 bg-purple-50">
                     <h3 className="text-lg font-semibold text-gray-900 flex items-center">
                         <div className="flex items-center justify-center w-8 h-8 bg-purple-100 rounded-lg mr-3">
                             <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -114,9 +114,9 @@ export default function RoomTemplatesComponent({
                             <button
                                 key={template.id}
                                 onClick={() => onSelectTemplate(template)}
-                                className={`px-4 py-3 text-sm font-medium rounded-xl border-2 transition-all duration-200 transform hover:scale-105 ${
+                                className={`px-4 py-3 text-sm font-medium rounded-xl border-2  ${
                                     selectedTemplate === template
-                                        ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white border-transparent shadow-lg shadow-purple-500/25'
+                                        ? 'bg-purple-600 text-white border-transparent shadow-lg shadow-purple-500/25'
                                         : 'bg-white text-gray-700 border-gray-300 hover:bg-purple-50 hover:border-purple-300'
                                 }`}
                             >
@@ -128,9 +128,9 @@ export default function RoomTemplatesComponent({
                         ))}
                         <button
                             onClick={onAddRoomTemplate}
-                            className={`px-4 py-3 text-sm font-medium rounded-xl border-2 transition-all duration-200 transform hover:scale-105 ${
+                            className={`px-4 py-3 text-sm font-medium rounded-xl border-2  ${
                                 newRoomTemplate
-                                    ? 'bg-gradient-to-r from-green-600 to-emerald-600 text-white border-transparent shadow-lg shadow-green-500/25'
+                                    ? 'bg-green-600 text-white border-transparent shadow-lg shadow-green-500/25'
                                     : 'bg-white text-gray-600 border-dashed border-gray-300 hover:bg-green-50 hover:border-green-300'
                             }`}
                         >

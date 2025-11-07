@@ -79,7 +79,7 @@ export function CalendarOfAvailability2WVerComponent({ statuses, showLegend }: C
                             key={index}
                             name={date.toISOString()}
                             onClick={statusReview}
-                            className={`h-8 w-full flex items-center justify-center text-xs rounded-md transition-all duration-200 ${
+                            className={`h-8 w-full flex items-center justify-center text-xs rounded-md  ${
                                 isUnavailable
                                     ? 'bg-red-200 text-red-800 hover:bg-red-300'
                                     : 'bg-green-200 text-green-800 hover:bg-green-300'

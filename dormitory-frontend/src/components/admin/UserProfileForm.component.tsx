@@ -34,12 +34,12 @@ export function UserProfileForm({userId}:UserProfileFormProps){
     }, [userProfileData]);
 
     const handleUserDeactivation = () => {
-        console.log("Deactivating user ", profileData)
+        // console.log("Deactivating user ", profileData)
         deactivateUser({id:userId});
     }
 
     const handleUserActivation = () => {
-        console.log("Activating user ", profileData)
+        // console.log("Activating user ", profileData)
         activateUser({id:userId});
     }
 
@@ -74,7 +74,7 @@ export function UserProfileForm({userId}:UserProfileFormProps){
     }
 
     return (
-        <div className="w-full bg-gradient-to-br from-gray-50 to-gray-100 p-4 md:p-6 lg:p-8">
+        <div className="w-full bg-gray-50 p-4 md:p-6 lg:p-8">
             <div className="max-w-5xl mx-auto">
                 {/* Header Section */}
                 <div className="mb-8">
@@ -98,7 +98,7 @@ export function UserProfileForm({userId}:UserProfileFormProps){
                 {/* Main Content Card */}
                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                     {/* Card Header */}
-                    <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4 md:px-8 md:py-6">
+                    <div className="bg-blue-600 px-6 py-4 md:px-8 md:py-6">
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                             <div className="flex items-center space-x-3">
                                 <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
@@ -139,7 +139,7 @@ export function UserProfileForm({userId}:UserProfileFormProps){
                             {/* Profile Photo Section */}
                             <div className="lg:col-span-1 order-first lg:order-last">
                                 <div className="bg-gray-50 rounded-xl p-6 text-center border-2 border-dashed border-gray-200">
-                                    <div className="w-24 h-24 md:w-32 md:h-32 mx-auto bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center mb-4 overflow-hidden shadow-inner">
+                                    <div className="w-24 h-24 md:w-32 md:h-32 mx-auto bg-blue-100 rounded-full flex items-center justify-center mb-4 overflow-hidden shadow-inner">
                                         {userProfileData?.picture ? (
                                             <img
                                                 src={profileData.photo}

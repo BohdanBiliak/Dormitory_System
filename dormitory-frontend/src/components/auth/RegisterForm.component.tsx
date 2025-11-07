@@ -1,11 +1,11 @@
 'use client'
 
-import {useEffect, useState} from 'react'
+import {useEffect, useState, useCallback, useMemo, memo} from 'react'
 import Link from 'next/link'
 import { useAuth } from '@/hooks/auth.hook'
 import { RegisterFormTutorial } from '@/app/tutorials/auth/register'
 
-export function RegisterForm() {
+export const RegisterForm = memo(function RegisterForm() {
   const { register, isLoading } = useAuth()
   const [formData, setFormData] = useState({
     name: '',
@@ -27,13 +27,16 @@ export function RegisterForm() {
     studentIdFront: '',
   })
 
-  useEffect(() => {
-    setValid(validationErrors.name==='' && validationErrors.secondName==='' && validationErrors.email==='' && validationErrors.password==='' && validationErrors.passwordRepeat==='' && validationErrors.studentIdFront==='')
-  },[validationErrors])
+  const valid = useMemo(() => {
+    return validationErrors.name==='' && 
+           validationErrors.secondName==='' && 
+           validationErrors.email==='' && 
+           validationErrors.password==='' && 
+           validationErrors.passwordRepeat==='' && 
+           validationErrors.studentIdFront==='';
+  }, [validationErrors])
 
-  const [valid, setValid] = useState<boolean>(false)
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, files } = e.target
     
     if (files && files.length > 0) {
@@ -47,7 +50,7 @@ export function RegisterForm() {
       return { ...prevState, [name]: '' }
     })
 
-  }
+  }, [])
 
   const handleValidate = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -528,7 +531,7 @@ export function RegisterForm() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-blue-900 text-white py-3 sm:py-4 px-4 sm:px-6 rounded-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 text-sm sm:text-base font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+              className="w-full bg-blue-900 text-white py-3 sm:py-4 px-4 sm:px-6 rounded-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2  disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 text-sm sm:text-base font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
             >
               {isLoading && (
                 <div className="animate-spin rounded-full h-4 w-4 sm:h-5 sm:w-5 border-b-2 border-white"></div>
@@ -552,4 +555,4 @@ export function RegisterForm() {
       </div>
     </RegisterFormTutorial>
   )
-}
+})

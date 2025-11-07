@@ -60,7 +60,7 @@ export function UsersDormitoryDetailsPageComponent({ id }:GuestDormitoryDetailsP
   }
 
   return (
-    <div className=" w-full bg-gradient-to-br from-gray-50 to-gray-100 p-4 md:p-6 lg:p-8">
+    <div className=" w-full bg-gray-50 p-4 md:p-6 lg:p-8">
       <div className="max-w-5xl mx-auto">
         {/* Header Section */}
         <div className="mb-8">
@@ -89,7 +89,7 @@ export function UsersDormitoryDetailsPageComponent({ id }:GuestDormitoryDetailsP
         {/* Main Content Card */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
           {/* Card Header */}
-          <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4 md:px-8 md:py-6">
+          <div className="bg-blue-600 px-6 py-4 md:px-8 md:py-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center space-x-3">
                 <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">

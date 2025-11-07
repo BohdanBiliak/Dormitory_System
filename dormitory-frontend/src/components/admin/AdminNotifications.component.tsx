@@ -29,8 +29,8 @@ export function AdminNotifications() {
 
     if (loadingNotifications) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center">
-                <div className="bg-white shadow-xl rounded-2xl p-8 max-w-md mx-4 border border-slate-200 animate-pulse">
+            <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+                <div className="bg-white shadow-xl rounded-2xl p-8 max-w-md mx-4 border border-slate-200">
                     <div className="flex items-center justify-center">
                         <div className="animate-spin rounded-full h-10 w-10 border-4 border-blue-500 border-t-transparent"></div>
                         <span className="ml-4 text-slate-700 font-medium text-lg">Loading notifications...</span>
@@ -41,13 +41,13 @@ export function AdminNotifications() {
     }
 
     return(
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+        <div className="min-h-screen bg-slate-50">
             {/* Header */}
             <div className="bg-white border-b border-slate-200 shadow-sm animate-in slide-in-from-top-4 duration-500">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
                     <div className="text-center animate-in fade-in-0 slide-in-from-bottom-4 duration-500">
                         <h1 className="text-3xl font-bold text-slate-900 flex items-center justify-center">
-                            <svg className="w-8 h-8 mr-3 text-blue-600 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg className="w-8 h-8 mr-3 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-5 5l-5-5h5m0 0V3" />
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 4v7a4 4 0 108 0V4" />
                             </svg>
@@ -64,7 +64,7 @@ export function AdminNotifications() {
                     <h2 className="text-lg font-semibold text-slate-900 mb-4">Filters</h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         {/* Type Filter */}
-                        <div className="space-y-2 animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-200">
+                        <div className="space-y-2 delay-200">
                             <label className="block text-sm font-medium text-slate-700">
                                 Notification Type
                             </label>
@@ -78,7 +78,7 @@ export function AdminNotifications() {
                                         type : e.target.value === "" ? null : e.target.value as NotificationType
                                     }
                                 })}
-                                className="w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm transition-all duration-200 hover:shadow-md"
+                                className="w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm  hover:shadow-md"
                             >
                                 <option value="">All Types</option>
                                 {Object.values(NotificationType).map((type) => (
@@ -88,7 +88,7 @@ export function AdminNotifications() {
                         </div>
 
                         {/* Read Status Filter */}
-                        <div className="space-y-2 animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-250">
+                        <div className="space-y-2 delay-250">
                             <label className="block text-sm font-medium text-slate-700">
                                 Read Status
                             </label>
@@ -102,7 +102,7 @@ export function AdminNotifications() {
                                         isArchived: e.target.value as 'true' | 'false'
                                     }
                                 })}
-                                className="w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm transition-all duration-200 hover:shadow-md"
+                                className="w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm  hover:shadow-md"
                             >
                                 <option value={`false`}>Unread</option>
                                 <option value={`true`}>Read</option>
@@ -136,7 +136,7 @@ export function AdminNotifications() {
                             {notificationsList.map((notification, index) => (
                                 <div 
                                     key={notification.id || index}
-                                    className={`px-6 py-4 hover:bg-slate-50 transition-all duration-200 animate-in fade-in-0 slide-in-from-left-2 duration-300 ${
+                                    className={`px-6 py-4 hover:bg-slate-50  ${
                                         !notification.isRead ? 'bg-blue-50 border-l-4 border-l-blue-500' : ''
                                     }`}
                                     style={{ animationDelay: `${index * 50}ms` }}
@@ -147,7 +147,7 @@ export function AdminNotifications() {
                                             {!notification.isRead ? (
                                                 <button
                                                     onClick={() => markAsRead(notification.id)}
-                                                    className="flex items-center justify-center w-8 h-8 bg-blue-600 text-white rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 hover:scale-110 active:scale-95"
+                                                    className="flex items-center justify-center w-8 h-8 bg-blue-600 text-white rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 "
                                                     title="Mark as read"
                                                 >
                                                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -218,7 +218,7 @@ export function AdminNotifications() {
                     </div>
                 ) : (
                     <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-12 text-center animate-in fade-in-0 zoom-in-50 duration-500">
-                        <svg className="mx-auto h-16 w-16 text-slate-300 animate-pulse mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg className="mx-auto h-16 w-16 text-slate-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 17h5l-5 5v-5zM15 17V3a2 2 0 00-2-2H5a2 2 0 00-2 2v14l8-4 4 4z" />
                         </svg>
                         <h3 className="text-xl font-semibold text-slate-900 mb-2">No Notifications Found</h3>

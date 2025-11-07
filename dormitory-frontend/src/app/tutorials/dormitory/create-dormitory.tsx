@@ -248,7 +248,7 @@ function TutorialButton() {
               fill="none"
               strokeDasharray={`${progress * 1.63} 163`}
               strokeLinecap="round"
-              className="transition-all duration-500 ease-out"
+              className=" ease-out"
             />
           </svg>
         </div>
@@ -256,7 +256,7 @@ function TutorialButton() {
       
       <button
         onClick={() => setIsOpen(true)}
-        className="relative w-14 h-14 bg-gradient-to-br from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group active:scale-95"
+        className="relative w-14 h-14 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg hover:shadow-xl  flex items-center justify-center group"
         aria-label="Start interactive tutorial"
       >
         <div className="flex flex-col items-center">
@@ -306,7 +306,7 @@ export function CreateDormitoryTutorial({ children }: CreateDormitoryTutorialPro
       onClickMask={({ setIsOpen }) => setIsOpen(false)}
       beforeClose={() => {
         // Track tutorial completion
-        console.log('Tutorial completed:', { currentStep, completedSteps });
+        // console.log('Tutorial completed:', { currentStep, completedSteps });
       }}
       afterOpen={(target) => {
         // Add professional highlight animation
