@@ -286,13 +286,6 @@ export const MessagingInterface = memo<MessagingInterfaceProps>(({
               >
                 <Search size={18} />
               </button>
-              <button 
-                onClick={() => setShowDeleteConfirm(true)}
-                className="text-gray-600 hover:text-red-600 p-2 rounded-lg transition-colors hover:bg-red-50"
-                title="Delete conversation"
-              >
-                <Trash2 size={18} />
-              </button>
             </div>
           </div>
 

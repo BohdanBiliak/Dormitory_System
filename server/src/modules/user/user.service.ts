@@ -17,6 +17,14 @@ export class UserService {
       where: {
         id,
       },
+      include: {
+        room: {
+          select: {
+            id: true,
+            floorId: true,
+          },
+        },
+      },
     });
     if (!user) {
       throw new NotFoundException("User not found");
@@ -29,6 +37,14 @@ export class UserService {
     const user = await this.prismaService.user.findUnique({
       where: {
         email,
+      },
+      include: {
+        room: {
+          select: {
+            id: true,
+            floorId: true,
+          },
+        },
       },
     });
     return user;

@@ -23,6 +23,7 @@ export interface Recipient {
     userId?: string;
     roomId?: string;
     floorId?: string;
+    dormitoryId?: string;
     forEveryone?: boolean;
 }
 
@@ -30,11 +31,12 @@ export interface AnnouncementCreateRequest {
     title: string;
     content: string;
     expiresAt: string;
-    attachmentUrls: string[];
-    forEveryone: boolean;
-    userIds: string[];
-    roomIds: string[];
-    floorNumbers: number[];
+    attachmentUrls?: string[];
+    forEveryone?: boolean;
+    userIds?: string[];
+    roomIds?: string[];
+    floorIds?: string[];
+    dormitoryIds?: string[];
 }
 
 export interface AnnouncementUpdateRequest {
@@ -45,7 +47,8 @@ export interface AnnouncementUpdateRequest {
     forEveryone?: boolean;
     userIds?: string[];
     roomIds?: string[];
-    floorNumbers?: number[];
+    floorIds?: string[];
+    dormitoryIds?: string[];
 }
 
 export interface AnnouncementsResponse {

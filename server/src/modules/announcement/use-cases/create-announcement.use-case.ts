@@ -13,8 +13,14 @@ export class CreateAnnouncementUseCase {
       ...(dto.forEveryone ? [{ forEveryone: true }] : []),
       ...(dto.userIds?.map((id) => ({ userId: id })) || []),
       ...(dto.roomIds?.map((id) => ({ roomId: id })) || []),
-      ...(dto.floorNumbers?.map((num) => ({ floor: num })) || []),
+      ...(dto.floorIds?.map((id) => ({ floorId: id })) || []),
+      ...(dto.dormitoryIds?.map((id) => ({ dormitoryId: id })) || []),
     ];
+
+    // If no recipients are specified, default to everyone
+    if (recipientsData.length === 0) {
+      recipientsData.push({ forEveryone: true });
+    }
 
     return this.repo.create({
       title: dto.title,

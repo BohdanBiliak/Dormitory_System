@@ -22,7 +22,19 @@ export class AuthGuard implements CanActivate {
 
     const user = await this.userService.findById(request.session.user.id);
 
-    request.user = user;
+    // Set req.user with the structure matching the session, including room data
+    request.user = {
+      id: user.id,
+      role: user.role,
+      email: user.email,
+      displayName: user.displayName,
+      roomId: user.roomId || null,
+      dormitoryId: user.dormitoryId || null,
+      room: user.room ? {
+        id: user.room.id,
+        floorId: user.room.floorId,
+      } : undefined,
+    };
 
     return true;
   }

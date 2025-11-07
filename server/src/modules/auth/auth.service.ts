@@ -130,7 +130,7 @@ export class AuthService {
     });
   }
 
-  public async saveSession(req: Request, newUser: User) {
+  public async saveSession(req: Request, newUser: any) {
     return new Promise((resolve, reject) => {
       if (!req.session) {
         console.error("Session is undefined");
@@ -144,6 +144,12 @@ export class AuthService {
         role: newUser.role,
         email: newUser.email,
         displayName: newUser.displayName,
+        roomId: newUser.roomId || null,
+        dormitoryId: newUser.dormitoryId || null,
+        room: newUser.room ? {
+          id: newUser.room.id,
+          floorId: newUser.room.floorId,
+        } : undefined,
       };
       req.session.save((err) => {
         if (err) {

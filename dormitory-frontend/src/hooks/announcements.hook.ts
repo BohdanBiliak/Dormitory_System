@@ -65,6 +65,7 @@ export function useMutateAnnouncement(){
         mutationFn: (newAnnouncement: AnnouncementCreateRequest) => announcementsApi.postAnnouncement(newAnnouncement),
         onSuccess: (newAnnouncement) => {
             queryClient.setQueryData(['announcement', 'new'], newAnnouncement)
+            queryClient.invalidateQueries({queryKey: ['announcements']})
             toast.success('Announcement created successfully.')
         },
         onError: (error:any) => {

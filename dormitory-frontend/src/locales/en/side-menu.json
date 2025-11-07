@@ -26,8 +26,6 @@
     "signin": "Sign in",
     "signIn": "Sign in",
     "logout": "Logout",
-    "loggingOut": "Logging out...",
-    "translateApp": "Translate App",
-    "currentLanguage": "Current"
+    "loggingOut": "Logging out..."
   }
 }

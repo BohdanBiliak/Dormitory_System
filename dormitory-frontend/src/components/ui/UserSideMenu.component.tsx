@@ -6,7 +6,7 @@ import {useEffect, useState, useMemo, useCallback, memo} from "react";
 import {useCurrentUserProfile} from "@/hooks/user.hook";
 import Link from "next/link";
 import {UserRole} from "@/types/auth.types";
-import {useLanguage} from "@/providers/language.provider";
+import {useSSRSafeTranslation} from "@/hooks/ssr-translation.hook";
 import {TranslationButton} from "./TranslationButton.component";
 
 interface UserSideMenuProps {
@@ -15,7 +15,7 @@ interface UserSideMenuProps {
 
 export const UserSideMenu = memo(function UserSideMenu ({children}:UserSideMenuProps){
     const { logout, isLoggingOut } = useAuth()
-    const { t } = useLanguage()
+    const { safeT } = useSSRSafeTranslation()
     const [openMenu, setOpenMenu] = useState<string>()
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
@@ -48,89 +48,89 @@ export const UserSideMenu = memo(function UserSideMenu ({children}:UserSideMenuP
         {
             id: 'dormitories',
             image: '/workplace.svg',
-            label: t('sideMenu.dormitoriesInfo'),
+            label: safeT('sideMenu.dormitoriesInfo', 'Dormitories Information'),
             href: "/dormitories",
         },
         {
             id: 'announcements',
             image: '/clipboard-check.svg',
-            label: t('sideMenu.announcements'),
+            label: safeT('sideMenu.announcements', 'Announcements'),
             href: "/announcements-public"
         },
         {
             id: 'rooms',
             image: '/home.svg',
-            label: t('sideMenu.rooms'),
+            label: safeT('sideMenu.rooms', 'Available Rooms'),
             href: '/rooms',
         },
         {
             id: 'signin',
             image: '/user.svg',
-            label: t('sideMenu.signin'),
+            label: safeT('sideMenu.signin', 'Sign In'),
             href: "/auth/login",
         }
-    ], [t])
+    ], [safeT])
 
     const RegularMenuItems: MenuItem[] = useMemo(() => [
         {
             id: 'profile',
             image: '/user.svg',
-            label: t('sideMenu.profile'),
+            label: safeT('sideMenu.profile', 'My Profile'),
             href: '/profile'
         },
         {
             id: 'dormitories',
             image: '/workplace.svg',
-            label: t('sideMenu.dormitoriesInfo'),
+            label: safeT('sideMenu.dormitoriesInfo', 'Dormitories Information'),
             href: "/dormitories",
         },
         {
             id: 'announcements',
             image: '/clipboard-check.svg',
-            label: t('sideMenu.announcements'),
+            label: safeT('sideMenu.announcements', 'Announcements'),
             href: "/announcements-public"
         },
         {
             id: 'rooms',
             image: '/home.svg',
-            label: t('sideMenu.rooms'),
+            label: safeT('sideMenu.rooms', 'Available Rooms'),
             href: "/rooms",
         },
         {
             id: 'signin',
             image: '/user.svg',
-            label: t('sideMenu.signin'),
+            label: safeT('sideMenu.signin', 'Sign In'),
             href: "/auth/login",
         }
-    ], [t])
+    ], [safeT])
 
     const SignedInMenuItems:MenuItem[] = useMemo(() => [
         {
             id: 'profile',
             image: '/user.svg',
-            label: t('sideMenu.profile') || 'My Profile',
+            label: safeT('sideMenu.profile', 'My Profile'),
             href: '/profile'
         },
         {
             id: 'living',
             image: '/home.svg',
-            label: t('sideMenu.living') || 'Living',
+            label: safeT('sideMenu.living', 'Living'),
             subMenu: [
                 {
                     id: 'dormitories',
-                    label: t('sideMenu.dormitories') || 'Dormitories',
+                    label: safeT('sideMenu.dormitories', 'Dormitories'),
                     image: '/workplace.svg',
                     href: '/dormitories',
                 },
                 {
                     id:'rooms',
-                    label: t('sideMenu.rooms') || 'Rooms',
+                    label: safeT('sideMenu.rooms', 'Rooms'),
                     image: '/home.svg',
                     href: '/rooms',
                 },
                 {
                     id: 'maintenance',
-                    label: t('sideMenu.maintenance') || 'Maintenance',
+                    label: safeT('sideMenu.maintenance', 'Maintenance'),
                     image: '/wrench.svg',
                     href: '/maintenance',
                 }
@@ -139,11 +139,11 @@ export const UserSideMenu = memo(function UserSideMenu ({children}:UserSideMenuP
         {
             id: 'services',
             image: '/cash.svg',
-            label: t('sideMenu.services') || 'Services',
+            label: safeT('sideMenu.services', 'Services'),
             subMenu: [
                 {
                     id:'payments',
-                    label: t('sideMenu.payments') || 'Payments',
+                    label: safeT('sideMenu.payments', 'Payments'),
                     image: '/cash.svg',
                     href: '/payments',
                 },
@@ -152,17 +152,17 @@ export const UserSideMenu = memo(function UserSideMenu ({children}:UserSideMenuP
         {
             id: 'communication',
             image: '/comments.svg',
-            label: t('sideMenu.communication') || 'Communication',
+            label: safeT('sideMenu.communication', 'Communication'),
             subMenu: [
                 {
                     id: 'announcements',
-                    label: t('sideMenu.announcements') || 'Announcements',
+                    label: safeT('sideMenu.announcements', 'Announcements'),
                     image: '/clipboard-text.svg',
                     href: '/announcements',
                 },
                 {
                     id: 'messages',
-                    label: t('sideMenu.messages') || 'Messages',
+                    label: safeT('sideMenu.messages', 'Messages'),
                     image: '/envelope.svg',
                     href: '/messaging',
                 }
@@ -171,9 +171,9 @@ export const UserSideMenu = memo(function UserSideMenu ({children}:UserSideMenuP
         {
             id:'logout',
             image:'/sign-out.svg',
-            label: t('sideMenu.logout') || 'Logout',
+            label: safeT('sideMenu.logout', 'Logout'),
         }
-    ], [t])
+    ], [safeT])
 
     const currentMenuItems = useMemo(() => {
         if(user && user.isVerified){
@@ -198,7 +198,7 @@ export const UserSideMenu = memo(function UserSideMenu ({children}:UserSideMenuP
                         alt="Dormitory Logo"
                         className="w-8 h-8 filter brightness-0 invert"
                     />
-                    <h1 className="text-lg font-bold">Dormitory System</h1>
+                    <h1 className="text-lg font-bold">{safeT('sideMenu.dormitorySystem', 'Dormitory System')}</h1>
                 </div>
                 <button
                     onClick={toggleMobileMenu}
@@ -230,7 +230,7 @@ export const UserSideMenu = memo(function UserSideMenu ({children}:UserSideMenuP
                             className="w-16 h-16 lg:w-24 lg:h-24 filter brightness-0 invert"
                         />
                     </div>
-                    <h1 className="text-lg lg:text-xl font-bold">Dormitory System</h1>
+                    <h1 className="text-lg lg:text-xl font-bold">{safeT('sideMenu.dormitorySystem', 'Dormitory System')}</h1>
                 </div>
 
                 {/* Mobile Header inside sidebar */}
@@ -241,7 +241,7 @@ export const UserSideMenu = memo(function UserSideMenu ({children}:UserSideMenuP
                             alt="Dormitory Logo"
                             className="w-10 h-10 filter brightness-0 invert"
                         />
-                        <h1 className="text-lg font-bold">Dormitory System</h1>
+                        <h1 className="text-lg font-bold">{safeT('sideMenu.dormitorySystem', 'Dormitory System')}</h1>
                     </div>
                     <button
                         onClick={toggleMobileMenu}
@@ -300,7 +300,7 @@ export const UserSideMenu = memo(function UserSideMenu ({children}:UserSideMenuP
                                                 className="flex items-center space-x-3 px-3 py-2 md:py-3 hover:text-red-100 hover:bg-red-900 rounded transition-colors w-full disabled:opacity-50"
                                             >
                                                 <img src={item.image} alt={item.label} className="w-8 h-8 md:w-10 md:h-10 filter brightness-0 invert"/>
-                                                <span className="text-sm md:text-base">{isLoggingOut ? t('sideMenu.loggingOut') || 'Logging out...' : t('sideMenu.logout')}</span>
+                                                <span className="text-sm md:text-base">{isLoggingOut ? safeT('sideMenu.loggingOut', 'Logging out...') : safeT('sideMenu.logout', 'Logout')}</span>
                                             </button>
                                         )
                                     }else return(

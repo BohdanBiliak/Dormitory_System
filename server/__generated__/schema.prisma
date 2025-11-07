@@ -357,10 +357,11 @@ model Dormitory {
   photos                 String[]
   createdAt              DateTime @default(now()) @map("created_at")
 
-  admins    DormitoryAdmin[]
-  managers  DormitoryManager[]
-  residents User[]             @relation("DormitoryResidents")
-  rooms     Room[]
+  admins                 DormitoryAdmin[]
+  managers               DormitoryManager[]
+  residents              User[]                  @relation("DormitoryResidents")
+  rooms                  Room[]
+  announcementRecipients AnnouncementRecipient[] @relation("AnnouncementRecipientDormitory")
 
   @@index([status, name]) // List active/inactive dormitories alphabetically
   @@index([createdAt]) // Chronological ordering
@@ -369,12 +370,13 @@ model Dormitory {
 }
 
 model Floor {
-  id                   String                @id @default(cuid())
-  floorNumber          Int
-  dormitoryId          String
-  dormitory            Dormitory             @relation(fields: [dormitoryId], references: [id])
-  rooms                Room[]
-  floorRoomAssignments FloorRoomAssignment[]
+  id                     String                  @id @default(cuid())
+  floorNumber            Int
+  dormitoryId            String
+  dormitory              Dormitory               @relation(fields: [dormitoryId], references: [id])
+  rooms                  Room[]
+  floorRoomAssignments   FloorRoomAssignment[]
+  announcementRecipients AnnouncementRecipient[] @relation("AnnouncementRecipientFloor")
 
   @@unique([dormitoryId, floorNumber])
   @@map("floors")
@@ -785,16 +787,20 @@ model AnnouncementRecipient {
   announcementId String  @map("announcement_id")
   userId         String? @map("user_id")
   roomId         String? @map("room_id")
-  floor          Int?
+  floorId        String? @map("floor_id")
+  dormitoryId    String? @map("dormitory_id")
   forEveryone    Boolean @default(false) @map("for_everyone")
 
   announcement Announcement @relation(fields: [announcementId], references: [id], onDelete: Cascade)
   user         User?        @relation("AnnouncementRecipientUser", fields: [userId], references: [id], onDelete: Cascade)
   room         Room?        @relation("AnnouncementRecipientRoom", fields: [roomId], references: [id], onDelete: Cascade)
+  floor        Floor?       @relation("AnnouncementRecipientFloor", fields: [floorId], references: [id], onDelete: Cascade)
+  dormitory    Dormitory?   @relation("AnnouncementRecipientDormitory", fields: [dormitoryId], references: [id], onDelete: Cascade)
 
   @@index([userId, announcementId]) // User-specific announcements
   @@index([roomId, announcementId]) // Room-specific announcements
-  @@index([floor, announcementId]) // Floor-specific announcements
+  @@index([floorId, announcementId]) // Floor-specific announcements
+  @@index([dormitoryId, announcementId]) // Dormitory-specific announcements
   @@index([forEveryone]) // Global announcements
   @@index([announcementId])
   @@map("announcement_recipients")

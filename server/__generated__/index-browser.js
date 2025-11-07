@@ -406,7 +406,8 @@ exports.Prisma.AnnouncementRecipientScalarFieldEnum = {
   announcementId: 'announcementId',
   userId: 'userId',
   roomId: 'roomId',
-  floor: 'floor',
+  floorId: 'floorId',
+  dormitoryId: 'dormitoryId',
   forEveryone: 'forEveryone'
 };
 

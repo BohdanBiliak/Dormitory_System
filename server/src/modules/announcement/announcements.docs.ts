@@ -52,7 +52,7 @@ export const AnnouncementDocs = {
               expiresAt: "2025-10-10T23:59:59.000Z",
               userIds: ["uuid-user-1", "uuid-user-2"],
               roomIds: ["uuid-room-101", "uuid-room-202"],
-              floorNumbers: [1, 2],
+              floorIds: ["uuid-floor-1", "uuid-floor-2"],
               attachmentUrls: [
                 "https://s3.example.com/announcements/inspection-schedule.pdf",
               ],
@@ -153,7 +153,7 @@ export const AnnouncementDocs = {
                         forEveryone: { type: "boolean" },
                         roomId: { type: "string", nullable: true },
                         userId: { type: "string", nullable: true },
-                        floor: { type: "number", nullable: true },
+                        floorId: { type: "string", nullable: true },
                       },
                     },
                   },
@@ -265,7 +265,7 @@ export const AnnouncementDocs = {
             recipients: [
               { id: "uuid-rec-1", forEveryone: true },
               { id: "uuid-rec-2", roomId: "uuid-room-101" },
-              { id: "uuid-rec-3", floor: 3 },
+              { id: "uuid-rec-3", floorId: "uuid-floor-3" },
             ],
             authorId: "uuid-admin-1",
             author: {

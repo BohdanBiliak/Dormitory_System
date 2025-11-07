@@ -2,11 +2,11 @@
 
 import {MenuItem} from "@/types/ui.types";
 import {useAuth} from "@/hooks/auth.hook";
-import React, {useEffect, useState} from "react";
+import React, {useState, useMemo} from "react";
 import {useCurrentUserProfile} from "@/hooks/user.hook";
 import Link from "next/link";
 import {UserRole} from "@/types/auth.types";
-import { useLanguage } from "@/providers/language.provider";
+import { useSSRSafeTranslation } from "@/hooks/ssr-translation.hook";
 import { TranslationButton } from "./TranslationButton.component";
 
 interface AdminSideMenuProps {
@@ -16,7 +16,7 @@ interface AdminSideMenuProps {
 
 export function AdminSideMenu ({children}:AdminSideMenuProps){
     const { logout, isLoggingOut } = useAuth()
-    const { t } = useLanguage()
+    const { safeT } = useSSRSafeTranslation()
     const [openMenu, setOpenMenu] = useState<string>()
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
@@ -36,33 +36,33 @@ export function AdminSideMenu ({children}:AdminSideMenuProps){
 
     const {data: user, isLoading, error} = useCurrentUserProfile()
 
-    const AdminMenuItems:MenuItem[] = [
+    const getAdminMenuItems = ():MenuItem[] => [
         {
             id: 'profile',
             image: '/user.svg',
-            label: t('sideMenu.myProfile') || 'My Profile',
+            label: safeT('sideMenu.myProfile', 'My Profile'),
             href: '/admin/profile'
         },
         {
             id: 'dormitories',
             image: '/workplace.svg',
-            label: t('sideMenu.dormitoryManagement') || 'Dormitory Management',
+            label: safeT('sideMenu.dormitoryManagement', 'Dormitory Management'),
             subMenu: [
                 {
                     id: 'dormsInfo',
-                    label: t('sideMenu.information') || 'Information',
+                    label: safeT('sideMenu.information', 'Information'),
                     image: '/clipboard-text.svg',
                     href: '/admin/dormitories'
                 },
                 {
                     id: 'rooms',
-                    label: t('sideMenu.availableRooms') || 'Available Rooms',
+                    label: safeT('sideMenu.availableRooms', 'Available Rooms'),
                     image: '/home.svg',
                     href: '/admin/rooms',
                 },
                 {
                     id: 'users',
-                    label: t('sideMenu.userProfiles') || 'User Profiles',
+                    label: safeT('sideMenu.userProfiles', 'User Profiles'),
                     image: '/users.svg',
                     href: '/admin/users',
                 }
@@ -71,23 +71,23 @@ export function AdminSideMenu ({children}:AdminSideMenuProps){
         {
             id: 'operations',
             image: '/cash.svg',
-            label: t('sideMenu.operations') || 'Operations',
+            label: safeT('sideMenu.operations', 'Operations'),
             subMenu: [
                 {
                     id:'confirmations',
-                    label: t('sideMenu.confirmations') || 'Confirmations',
+                    label: safeT('sideMenu.confirmations', 'Confirmations'),
                     image:'/clipboard-check.svg',
                     href: '/admin/confirmations',
                 },
                 {
                     id:'payments',
-                    label: t('sideMenu.payments') || 'Payments',
+                    label: safeT('sideMenu.payments', 'Payments'),
                     image: '/cash.svg',
                     href: '/admin/payments'
                 },
                 {
                     id:'maintenance',
-                    label: t('sideMenu.maintenance') || 'Maintenance',
+                    label: safeT('sideMenu.maintenance', 'Maintenance'),
                     image: '/wrench.svg',
                     href: '/admin/maintenance'
                 }
@@ -96,23 +96,23 @@ export function AdminSideMenu ({children}:AdminSideMenuProps){
         {
             id: 'communication',
             image: '/comments.svg',
-            label: t('sideMenu.communication') || 'Communication',
+            label: safeT('sideMenu.communication', 'Communication'),
             subMenu: [
                 {
                     id: 'announcements',
-                    label: t('sideMenu.announcements') || 'Announcements',
+                    label: safeT('sideMenu.announcements', 'Announcements'),
                     image:'/comments.svg',
                     href: '/admin/announcements'
                 },
                 {
                     id: 'messaging',
-                    label: t('sideMenu.messaging') || 'Messaging',
+                    label: safeT('sideMenu.messaging', 'Messaging'),
                     image: '/envelope.svg',
                     href: '/admin/messaging'
                 },
                 {
                     id:'notifications',
-                    label: t('sideMenu.notifications') || 'Notifications',
+                    label: safeT('sideMenu.notifications', 'Notifications'),
                     image:'/bell.svg',
                     href: '/admin/notifications'
                 }
@@ -121,48 +121,47 @@ export function AdminSideMenu ({children}:AdminSideMenuProps){
         {
             id:'logout',
             image:'/sign-out.svg',
-            label: t('sideMenu.logout') || 'Logout',
+            label: safeT('sideMenu.logout', 'Logout'),
         }
     ]
 
-    const GuestMenuItems: MenuItem[] = [
+    const getGuestMenuItems = (): MenuItem[] => [
         {
             id: 'dormitories',
             image: '/workplace.svg',
-            label: t('sideMenu.dormitoriesInformation') || 'Dormitories Information',
+            label: safeT('sideMenu.dormitoriesInformation', 'Dormitories Information'),
             href: "/dormitories",
         },
         {
             id: 'announcements',
             image: '/clipboard-check.svg',
-            label: t('sideMenu.announcements') || 'Announcements',
+            label: safeT('sideMenu.announcements', 'Announcements'),
             href: "/announcements-public"
         },
         {
             id: 'rooms',
             image: '/home.svg',
-            label: t('sideMenu.availableRooms') || 'Available rooms'
+            label: safeT('sideMenu.availableRooms', 'Available rooms'),
+            href: '/rooms'
         },
         {
             id: 'signin',
             image: '/user.svg',
-            label: t('sideMenu.signIn') || 'Sign in',
+            label: safeT('sideMenu.signIn', 'Sign in'),
             href: "/auth/login",
         }
     ]
 
-    const [currentMenuItems, setCurrentMenuItems] = useState<MenuItem[]>(GuestMenuItems)
-
-    useEffect(() => {
+    const currentMenuItems = useMemo(() => {
         if(user){
             switch (user.role){
-                case UserRole.Admin: setCurrentMenuItems(AdminMenuItems); break;
-                default: setCurrentMenuItems(GuestMenuItems);
+                case UserRole.Admin: return getAdminMenuItems();
+                default: return getGuestMenuItems();
             }
         }else{
-            setCurrentMenuItems(GuestMenuItems);
+            return getGuestMenuItems();
         }
-    },[user])
+    }, [user, safeT])
 
     return(
         <div className="min-h-screen bg-white flex flex-col md:flex-row">
@@ -174,7 +173,7 @@ export function AdminSideMenu ({children}:AdminSideMenuProps){
                         alt="Dormitory Logo"
                         className="w-8 h-8 filter brightness-0 invert"
                     />
-                    <h1 className="text-lg font-bold">{t('sideMenu.dormitorySystem') || 'Dormitory System'}</h1>
+                    <h1 className="text-lg font-bold">{safeT('sideMenu.dormitorySystem', 'Dormitory System')}</h1>
                 </div>
                 <button
                     onClick={toggleMobileMenu}
@@ -206,7 +205,7 @@ export function AdminSideMenu ({children}:AdminSideMenuProps){
                             className="w-16 h-16 lg:w-24 lg:h-24 filter brightness-0 invert"
                         />
                     </div>
-                    <h1 className="text-lg lg:text-xl font-bold">{t('sideMenu.dormitorySystem') || 'Dormitory System'}</h1>
+                    <h1 className="text-lg lg:text-xl font-bold">{safeT('sideMenu.dormitorySystem', 'Dormitory System')}</h1>
                 </div>
 
                 {/* Mobile Header inside sidebar */}
@@ -217,7 +216,7 @@ export function AdminSideMenu ({children}:AdminSideMenuProps){
                             alt="Dormitory Logo"
                             className="w-10 h-10 filter brightness-0 invert"
                         />
-                        <h1 className="text-lg font-bold">{t('sideMenu.dormitorySystem') || 'Dormitory System'}</h1>
+                        <h1 className="text-lg font-bold">{safeT('sideMenu.dormitorySystem', 'Dormitory System')}</h1>
                     </div>
                     <button
                         onClick={toggleMobileMenu}
@@ -279,7 +278,7 @@ export function AdminSideMenu ({children}:AdminSideMenuProps){
                                                 className="flex items-center space-x-3 px-3 py-2 md:py-3 hover:text-red-100 hover:bg-red-900 rounded transition-colors w-full disabled:opacity-50"
                                             >
                                                 <img src={item.image} alt={item.label} className="w-8 h-8 md:w-10 md:h-10 filter brightness-0 invert"/>
-                                                <span className="text-sm md:text-base">{isLoggingOut ? (t('sideMenu.loggingOut') || 'Logging out...') : (t('sideMenu.logout') || 'Log out')}</span>
+                                                <span className="text-sm md:text-base">{isLoggingOut ? safeT('sideMenu.loggingOut', 'Logging out...') : safeT('sideMenu.logout', 'Log out')}</span>
                                             </button>
                                         )
                                     }else return(

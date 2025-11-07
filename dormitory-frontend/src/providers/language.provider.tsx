@@ -59,6 +59,7 @@ const loadLanguageData = async (lang: Language) => {
 
 const LanguageProviderComponent = ({ children }: { children: React.ReactNode }) => {
   const [language, setLanguageState] = useState<Language>('en')
+  const [isLoaded, setIsLoaded] = useState(false)
 
   // Load initial language data
   useEffect(() => {
@@ -69,6 +70,7 @@ const LanguageProviderComponent = ({ children }: { children: React.ReactNode }) 
       
       await loadLanguageData(initialLanguage)
       setLanguageState(initialLanguage)
+      setIsLoaded(true)
     }
 
     initializeLanguage()
@@ -76,9 +78,14 @@ const LanguageProviderComponent = ({ children }: { children: React.ReactNode }) 
 
   // Load language data when language changes
   useEffect(() => {
-    loadLanguageData(language)
-    localStorage.setItem('language', language)
-  }, [language])
+    if (isLoaded) {
+      const loadNewLanguage = async () => {
+        await loadLanguageData(language)
+        localStorage.setItem('language', language)
+      }
+      loadNewLanguage()
+    }
+  }, [language, isLoaded])
 
   const setLanguage = useCallback(async (lang: Language) => {
     await loadLanguageData(lang)

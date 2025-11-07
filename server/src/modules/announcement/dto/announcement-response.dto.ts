@@ -5,7 +5,6 @@ import {
   IsDate,
   IsArray,
   IsOptional,
-  IsNumber,
 } from "class-validator";
 
 export class AttachmentDto {
@@ -39,8 +38,13 @@ export class RecipientDto {
 
   @ApiProperty({ required: false, nullable: true })
   @IsOptional()
-  @IsNumber()
-  floor?: number;
+  @IsString()
+  floorId?: string;
+
+  @ApiProperty({ required: false, nullable: true })
+  @IsOptional()
+  @IsString()
+  dormitoryId?: string;
 
   @ApiProperty()
   @IsBoolean()

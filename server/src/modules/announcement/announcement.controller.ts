@@ -72,11 +72,21 @@ export class AnnouncementController {
     const userId = req.user.id;
     const roomId = req.user.roomId;
     const floorId = req.user.room?.floorId;
+    const dormitoryId = req.user.dormitoryId;
+    
+    console.log("Controller - User data:", {
+      userId,
+      roomId,
+      floorId,
+      dormitoryId,
+      hasRoom: !!req.user.room,
+    });
     
     return this.getUserAnnouncementsUseCase.execute(
       userId,
       roomId,
       floorId,
+      dormitoryId,
       {
         showHidden: showHidden === "true",
         showExpired: showExpired === "true",
