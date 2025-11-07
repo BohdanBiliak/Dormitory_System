@@ -19,6 +19,12 @@ export interface Room{
         "pricePerDay": number,
         "pricePerMonth": number,
     }
+    "priceCategory"?: {
+        "id": string,
+        "name": string,
+        "pricePerDay": number,
+        "pricePerMonth": number,
+    }
 }
 
 export interface RoomStatus{

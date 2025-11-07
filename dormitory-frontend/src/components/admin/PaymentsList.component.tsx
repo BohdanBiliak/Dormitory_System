@@ -1,9 +1,9 @@
 'use client'
 
 import {useEffect, useState} from "react";
-import {HandCoins, Search, Users, Eye, Check, X, Download} from "lucide-react";
+import {HandCoins, Search, Users, Eye, Check, X, Download, Edit, RefreshCcw} from "lucide-react";
 import {useGetPayments} from "@/hooks/payment.hook";
-import {Payment, PaymentStatus} from "@/types/payments.types";
+import {Payment, PaymentStatus, PaymentMethod} from "@/types/payments.types";
 import IntroducePaymentComponentDialog from "@/components/dialogs/admin/IntroducePayment.componentDialog";
 import CreateBulkPaymentDialog from "@/components/dialogs/admin/CreateBulkPayment.componentDialog";
 import {useUserProfile} from "@/hooks/userList.hook";
@@ -37,6 +37,8 @@ export function PaymentsListPage(){
     //Introduce payment dialog
     const [showCreateDialog, setShowCreateDialog] = useState(false);
     const [showBulkCreateDialog, setShowBulkCreateDialog] = useState(false);
+    const [showEditDialog, setShowEditDialog] = useState(false);
+    const [editingPayment, setEditingPayment] = useState<Payment | null>(null);
     const [processingPaymentId, setProcessingPaymentId] = useState<string | null>(null);
 
     const handleApprovePayment = async (paymentId: string) => {
@@ -73,6 +75,33 @@ export function PaymentsListPage(){
         } finally {
             setProcessingPaymentId(null);
         }
+    };
+
+    const handleRecreatePayment = async (payment: Payment) => {
+        try {
+            setProcessingPaymentId(payment.id);
+            await paymentsApi.createPayment({
+                userId: payment.userId || '',
+                amount: payment.amount,
+                paymentType: payment.paymentType,
+                description: payment.description,
+                dueDate: payment.dueDate,
+                paymentMethod: payment.paymentMethod || PaymentMethod.BANK_TRANSFER,
+            });
+            toast.success("New payment created successfully");
+            window.location.reload();
+        } catch (error: any) {
+            toast.error("Failed to recreate payment", {
+                description: error.response?.data?.message || error.message
+            });
+        } finally {
+            setProcessingPaymentId(null);
+        }
+    };
+
+    const handleEditPayment = (payment: Payment) => {
+        setEditingPayment(payment);
+        setShowEditDialog(true);
     };
 
     const handleDownloadProof = async (paymentId: string) => {
@@ -258,6 +287,30 @@ export function PaymentsListPage(){
                                                     </Button>
                                                 </>
                                             )}
+                                            {payment.status === PaymentStatus.REJECTED && (
+                                                <Button
+                                                    variant="default"
+                                                    size="sm"
+                                                    onClick={() => handleRecreatePayment(payment)}
+                                                    disabled={processingPaymentId === payment.id}
+                                                    className="!bg-purple-50 !text-purple-600 hover:!bg-purple-100 border border-purple-200"
+                                                    title="Recreate payment"
+                                                >
+                                                    <RefreshCcw className="w-4 h-4" />
+                                                </Button>
+                                            )}
+                                            {(payment.status === PaymentStatus.PENDING || payment.status === PaymentStatus.OVERDUE) && (
+                                                <Button
+                                                    variant="default"
+                                                    size="sm"
+                                                    onClick={() => handleEditPayment(payment)}
+                                                    disabled={processingPaymentId === payment.id}
+                                                    className="!bg-yellow-50 !text-yellow-600 hover:!bg-yellow-100 border border-yellow-200"
+                                                    title="Edit payment"
+                                                >
+                                                    <Edit className="w-4 h-4" />
+                                                </Button>
+                                            )}
                                         </div>
                                     </div>
 
@@ -282,40 +335,71 @@ export function PaymentsListPage(){
                                             </div>
                                         </div>
                                         {/* Mobile Actions */}
-                                        {payment.status === PaymentStatus.AWAITING_CONFIRMATION && (
+                                        {(payment.status === PaymentStatus.AWAITING_CONFIRMATION || 
+                                          payment.status === PaymentStatus.REJECTED || 
+                                          payment.status === PaymentStatus.PENDING ||
+                                          payment.status === PaymentStatus.OVERDUE) && (
                                             <div className="flex gap-2 pt-2 border-t border-slate-100">
-                                                {payment.paymentProofUrl && (
+                                                {payment.status === PaymentStatus.AWAITING_CONFIRMATION && (
+                                                    <>
+                                                        {payment.paymentProofUrl && (
+                                                            <Button
+                                                                variant="default"
+                                                                size="sm"
+                                                                onClick={() => handleDownloadProof(payment.id)}
+                                                                disabled={processingPaymentId === payment.id}
+                                                                className="!bg-blue-50 !text-blue-600 hover:!bg-blue-100 border border-blue-200 flex-1"
+                                                            >
+                                                                <Download className="w-4 h-4 mr-1" />
+                                                                <span className="text-xs">Proof</span>
+                                                            </Button>
+                                                        )}
+                                                        <Button
+                                                            variant="default"
+                                                            size="sm"
+                                                            onClick={() => handleApprovePayment(payment.id)}
+                                                            disabled={processingPaymentId === payment.id}
+                                                            className="!bg-green-50 !text-green-600 hover:!bg-green-100 border border-green-200 flex-1"
+                                                        >
+                                                            <Check className="w-4 h-4 mr-1" />
+                                                            <span className="text-xs">Approve</span>
+                                                        </Button>
+                                                        <Button
+                                                            variant="default"
+                                                            size="sm"
+                                                            onClick={() => handleRejectPayment(payment.id)}
+                                                            disabled={processingPaymentId === payment.id}
+                                                            className="!bg-red-50 !text-red-600 hover:!bg-red-100 border border-red-200 flex-1"
+                                                        >
+                                                            <X className="w-4 h-4 mr-1" />
+                                                            <span className="text-xs">Reject</span>
+                                                        </Button>
+                                                    </>
+                                                )}
+                                                {payment.status === PaymentStatus.REJECTED && (
                                                     <Button
                                                         variant="default"
                                                         size="sm"
-                                                        onClick={() => handleDownloadProof(payment.id)}
+                                                        onClick={() => handleRecreatePayment(payment)}
                                                         disabled={processingPaymentId === payment.id}
-                                                        className="!bg-blue-50 !text-blue-600 hover:!bg-blue-100 border border-blue-200 flex-1"
+                                                        className="!bg-purple-50 !text-purple-600 hover:!bg-purple-100 border border-purple-200 w-full"
                                                     >
-                                                        <Download className="w-4 h-4 mr-1" />
-                                                        <span className="text-xs">Proof</span>
+                                                        <RefreshCcw className="w-4 h-4 mr-1" />
+                                                        <span className="text-xs">Recreate Payment</span>
                                                     </Button>
                                                 )}
-                                                <Button
-                                                    variant="default"
-                                                    size="sm"
-                                                    onClick={() => handleApprovePayment(payment.id)}
-                                                    disabled={processingPaymentId === payment.id}
-                                                    className="!bg-green-50 !text-green-600 hover:!bg-green-100 border border-green-200 flex-1"
-                                                >
-                                                    <Check className="w-4 h-4 mr-1" />
-                                                    <span className="text-xs">Approve</span>
-                                                </Button>
-                                                <Button
-                                                    variant="default"
-                                                    size="sm"
-                                                    onClick={() => handleRejectPayment(payment.id)}
-                                                    disabled={processingPaymentId === payment.id}
-                                                    className="!bg-red-50 !text-red-600 hover:!bg-red-100 border border-red-200 flex-1"
-                                                >
-                                                    <X className="w-4 h-4 mr-1" />
-                                                    <span className="text-xs">Reject</span>
-                                                </Button>
+                                                {(payment.status === PaymentStatus.PENDING || payment.status === PaymentStatus.OVERDUE) && (
+                                                    <Button
+                                                        variant="default"
+                                                        size="sm"
+                                                        onClick={() => handleEditPayment(payment)}
+                                                        disabled={processingPaymentId === payment.id}
+                                                        className="!bg-yellow-50 !text-yellow-600 hover:!bg-yellow-100 border border-yellow-200 w-full"
+                                                    >
+                                                        <Edit className="w-4 h-4 mr-1" />
+                                                        <span className="text-xs">Edit Payment</span>
+                                                    </Button>
+                                                )}
                                             </div>
                                         )}
                                     </div>

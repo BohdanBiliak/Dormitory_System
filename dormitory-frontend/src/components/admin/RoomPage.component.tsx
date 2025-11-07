@@ -151,12 +151,16 @@ export function RoomPage({roomId}: RoomPageProps) {
 
     const handleCancelRoomUpdate = () => {
         if(room){
+            // Use price from price category if available, otherwise fall back to room price
+            const pricePerDay = room?.priceCategory?.pricePerDay || room?.price?.pricePerDay || 0;
+            const pricePerMonth = room?.priceCategory?.pricePerMonth || room?.price?.pricePerMonth || 0;
+            
             setRoomInfo({
                 name: room?.number || "",
                 capacity: room?.capacity || 0,
                 residents: room?.residents || [],
-                pricePerDay: room?.price?.pricePerDay || 0,
-                pricePerMonth: room?.price?.pricePerMonth || 0,
+                pricePerDay: pricePerDay,
+                pricePerMonth: pricePerMonth,
                 statuses: room?.statuses || [],
                 photos: room?.photos || [],
                 roomEquipment: room?.roomEquipment || [],
@@ -188,6 +192,14 @@ export function RoomPage({roomId}: RoomPageProps) {
             lastChangedIndexRef.current = indexToUpdate;
         }
 
+        setRoomInfo(prevState => {
+            if (!prevState) return prevState;
+            return {...prevState, roomEquipment: newRoomEquipment}
+        });
+    }
+
+    const handleDeleteEquipment = (index: number) => {
+        const newRoomEquipment = roomInfo.roomEquipment.filter((_, i) => i !== index);
         setRoomInfo(prevState => {
             if (!prevState) return prevState;
             return {...prevState, roomEquipment: newRoomEquipment}
@@ -227,12 +239,16 @@ export function RoomPage({roomId}: RoomPageProps) {
 
     useEffect(() => {
         if(room){
+            // Use price from price category if available, otherwise fall back to room price
+            const pricePerDay = room?.priceCategory?.pricePerDay || room?.price?.pricePerDay || 0;
+            const pricePerMonth = room?.priceCategory?.pricePerMonth || room?.price?.pricePerMonth || 0;
+            
             setRoomInfo({
                 name: room?.number || "",
                 capacity: room?.capacity || 0,
                 residents: room?.residents || [],
-                pricePerDay: room?.price?.pricePerDay || 0,
-                pricePerMonth: room?.price?.pricePerMonth || 0,
+                pricePerDay: pricePerDay,
+                pricePerMonth: pricePerMonth,
                 statuses: room?.statuses || [],
                 photos: room?.photos || [],
                 roomEquipment: room?.roomEquipment || [],
@@ -667,7 +683,7 @@ export function RoomPage({roomId}: RoomPageProps) {
                                     <div className="space-y-3">
                                         {roomInfo.roomEquipment.map((_, index) => (
                                             <div key={index} 
-                                                className="relative animate-in fade-in-0 slide-in-from-left-2 duration-300"
+                                                className="relative flex items-center gap-2 animate-in fade-in-0 slide-in-from-left-2 duration-300"
                                                 style={{ animationDelay: `${index * 50}ms` }}
                                             >
                                                 <input
@@ -677,13 +693,22 @@ export function RoomPage({roomId}: RoomPageProps) {
                                                     onChange={handleEquipmentChange}
                                                     value={roomInfo.roomEquipment[index]}
                                                     disabled={!isEditing.roomEquipment}
-                                                    className={`w-full px-3 py-2 border rounded-lg text-sm transition-all duration-300 hover:shadow-sm ${
+                                                    className={`flex-1 px-3 py-2 border rounded-lg text-sm transition-all duration-300 hover:shadow-sm ${
                                                         isEditing.roomEquipment
                                                             ? 'border-blue-500 ring-2 ring-blue-100 bg-white'
                                                             : 'border-slate-200 bg-slate-50'
                                                     } focus:outline-none focus:ring-2 focus:ring-blue-500`}
                                                     placeholder={`Equipment item ${index + 1}`}
                                                 />
+                                                {isEditing.roomEquipment && (
+                                                    <button
+                                                        onClick={() => handleDeleteEquipment(index)}
+                                                        className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200 hover:scale-110 active:scale-95"
+                                                        title="Delete equipment"
+                                                    >
+                                                        <X className="w-4 h-4" />
+                                                    </button>
+                                                )}
                                             </div>
                                         ))}
                                         {isEditing.roomEquipment ? (
@@ -1072,13 +1097,13 @@ export function RoomPage({roomId}: RoomPageProps) {
                                         </h2>
                                         
                                         {roomInfo.photos.length > 0 ? (
-                                            <div className="flex-1 flex flex-col">
-                                                <div className="relative aspect-video rounded-lg overflow-hidden bg-slate-100 group shadow-lg">
+                                            <div className="flex-1 flex flex-col max-w-3xl mx-auto w-full">
+                                                <div className="relative rounded-lg overflow-hidden bg-slate-100 group shadow-lg" style={{ maxHeight: '400px', aspectRatio: '16/9' }}>
                                                     <img
                                                         key={currentIndex}
                                                         src={roomInfo.photos[currentIndex]}
                                                         alt={`Room photo ${currentIndex + 1}`}
-                                                        className="w-full h-full object-cover transition-all duration-500 ease-out animate-in fade-in-0 zoom-in-95"
+                                                        className="w-full h-full object-contain transition-all duration-500 ease-out animate-in fade-in-0 zoom-in-95"
                                                     />
 
                                                     {/* Navigation arrows */}
