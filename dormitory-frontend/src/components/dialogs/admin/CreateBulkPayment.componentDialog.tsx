@@ -273,8 +273,7 @@ export default function CreateBulkPaymentDialog({ open, onClose }: CreateBulkPay
             {pricingStrategy === 'fixed' && (
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">
-                  <DollarSign className="w-4 h-4 inline mr-1" />
-                  Base Amount
+                  Base Amount (PLN)
                 </label>
                 <input
                   type="number"

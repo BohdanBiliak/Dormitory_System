@@ -241,7 +241,7 @@ export function PaymentsListPage(){
                                         
                                         {/* Amount */}
                                         <div className="font-semibold text-slate-900 text-sm lg:text-base">
-                                            ${payment.amount || 'N/A'}
+                                            {`PLN ${payment.amount}` || 'N/A'}
                                         </div>
                                         
                                         {/* Due Date */}
@@ -325,7 +325,7 @@ export function PaymentsListPage(){
                                         <div className="grid grid-cols-2 gap-2 xs:gap-4 text-xs xs:text-sm">
                                             <div>
                                                 <span className="text-slate-500 block xs:inline">Amount: </span>
-                                                <span className="font-semibold text-slate-900">${payment.amount || 'N/A'}</span>
+                                                <span className="font-semibold text-slate-900">{`PLN ${payment.amount}` || 'N/A'}</span>
                                             </div>
                                             <div>
                                                 <span className="text-slate-500 block xs:inline">Due: </span>

@@ -73,14 +73,6 @@ export default function UserMessagingPage() {
                 Connect with your dormitory community
               </p>
             </div>
-            
-            <button
-              onClick={() => setShowCreateModal(true)}
-              className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              <span>New Conversation</span>
-            </button>
           </div>
         </div>
       </div>
@@ -91,15 +83,6 @@ export default function UserMessagingPage() {
           currentUserId={currentUserId}
         />
       </div>
-
-      {/* Create Conversation Modal */}
-      {showCreateModal && (
-        <CreateConversationModal
-          isOpen={showCreateModal}
-          onClose={() => setShowCreateModal(false)}
-          onCreateConversation={handleCreateConversation}
-        />
-      )}
     </div>
   );
 }

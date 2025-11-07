@@ -31,10 +31,104 @@ import {
     PriceCategoryUpdateData 
 } from "../../../types/dormitories.types";
 
+// Validation types
+interface ValidationErrors {
+    name?: string;
+    address?: string;
+    groundFloorPhoneNumber?: string;
+    pricePerMonth?: string;
+    pricePerDay?: string;
+    floorNumber?: string;
+    roomTemplates?: {
+        name?: string;
+        typeCode?: string;
+        capacity?: string;
+    };
+    priceCategories?: {
+        name?: string;
+        pricePerMonth?: string;
+        pricePerDay?: string;
+    };
+}
+
 export interface CreateDormitoryDialogProps {
     open: boolean;
     onClose: () => void;
 }
+
+const validatePhoneNumber = (phone: string): boolean => {
+    // Must start with + and have exactly 11 digits after +
+    const phoneRegex = /^\+\d{11}$/;
+    return phoneRegex.test(phone);
+};
+
+const validateFloorNumber = (floor: string): boolean => {
+    return !isNaN(Number(floor)) && floor.trim() !== '';
+};
+
+const validateGeneralInformation = (data: DormitoryPostData): ValidationErrors => {
+    const errors: ValidationErrors = {};
+
+    if (!data.name.trim()) {
+        errors.name = 'Dormitory name is required';
+    }
+
+    if (!data.address.trim()) {
+        errors.address = 'Address is required';
+    }
+
+    if (!data.groundFloorPhoneNumber.trim()) {
+        errors.groundFloorPhoneNumber = 'Phone number is required';
+    } else if (!validatePhoneNumber(data.groundFloorPhoneNumber)) {
+        errors.groundFloorPhoneNumber = 'Phone number must start with + and contain exactly 11 digits (e.g., +48123456789)';
+    }
+
+    if (data.pricePerMonth <= 0) {
+        errors.pricePerMonth = 'Price per month must be greater than 0';
+    }
+
+    if (data.pricePerDay <= 0) {
+        errors.pricePerDay = 'Price per day must be greater than 0';
+    }
+
+    return errors;
+};
+
+const validateRoomTemplate = (template: RoomTemplatePostData | RoomTemplate): ValidationErrors => {
+    const errors: ValidationErrors = { roomTemplates: {} };
+
+    if (!template.name.trim()) {
+        errors.roomTemplates!.name = 'Template name is required';
+    }
+
+    if (!template.typeCode.trim()) {
+        errors.roomTemplates!.typeCode = 'Template code is required';
+    }
+
+    if (template.capacity < 1) {
+        errors.roomTemplates!.capacity = 'Capacity must be at least 1';
+    }
+
+    return errors;
+};
+
+const validatePriceCategory = (category: PriceCategoryPostData | PriceCategory): ValidationErrors => {
+    const errors: ValidationErrors = { priceCategories: {} };
+
+    if (!category.name.trim()) {
+        errors.priceCategories!.name = 'Category name is required';
+    }
+
+    if (category.pricePerMonth <= 0) {
+        errors.priceCategories!.pricePerMonth = 'Price per month must be greater than 0';
+    }
+
+    if (category.pricePerDay <= 0) {
+        errors.priceCategories!.pricePerDay = 'Price per day must be greater than 0';
+    }
+
+    return errors;
+};
 
 type ActiveSection = 'General Information' | 'Room Generation' | 'Room Templates' | 'Price Categories';
 
@@ -86,6 +180,10 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
     const [isCreating, setIsCreating] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
 
+    //Validation
+    const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
+    const [showValidationErrors, setShowValidationErrors] = useState(false);
+
     // Initialize price categories from API data
     useEffect(() => {
         if (priceCategories) {
@@ -124,6 +222,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
     ];
 
     // General Information handlers
+    //Input change with validation
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const {name, value} = e.target;
 
@@ -132,8 +231,31 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                 ...prevState,
                 [name]: name === 'pricePerDay' || name === 'pricePerMonth' ? Number(value) : value
             }));
+
+            // Clear validation error for this field
+            if (validationErrors[name as keyof ValidationErrors]) {
+                setValidationErrors(prev => {
+                    const newErrors = {...prev};
+                    delete newErrors[name as keyof ValidationErrors];
+                    return newErrors;
+                });
+            }
         } else if (name === 'newFloorLabel') {
             setNewFloorLabel(value);
+
+            // Validate floor number in real-time
+            if (value && !validateFloorNumber(value)) {
+                setValidationErrors(prev => ({
+                    ...prev,
+                    floorNumber: 'Floor number must be a valid number (e.g., 0, 1, 2)'
+                }));
+            } else {
+                setValidationErrors(prev => {
+                    const newErrors = {...prev};
+                    delete newErrors.floorNumber;
+                    return newErrors;
+                });
+            }
         } else if (name === 'newRoomsNumbers') {
             setNewRoomsNumbersLabel(value);
         }
@@ -162,18 +284,40 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
     };
 
     const handleAddFloor = () => {
-        if (newFloorLabel.trim()) {
-            const newFloor: FloorAssignment = {
-                floorNumber: newFloorLabel.trim(),
-                roomAssignments: []
-            };
-            setNewDormitory(prevState => ({
-                ...prevState,
-                floorAssignments: [...prevState.floorAssignments, newFloor]
+        if (!newFloorLabel.trim()) {
+            setValidationErrors(prev => ({
+                ...prev,
+                floorNumber: 'Floor number is required'
             }));
-            setNewFloorLabel('');
+            return;
         }
+
+        if (!validateFloorNumber(newFloorLabel)) {
+            setValidationErrors(prev => ({
+                ...prev,
+                floorNumber: 'Floor number must be a valid number'
+            }));
+            return;
+        }
+
+        const newFloor: FloorAssignment = {
+            floorNumber: newFloorLabel.trim(),
+            roomAssignments: []
+        };
+        setNewDormitory(prevState => ({
+            ...prevState,
+            floorAssignments: [...prevState.floorAssignments, newFloor]
+        }));
+        setNewFloorLabel('');
+
+        // Clear validation error
+        setValidationErrors(prev => {
+            const newErrors = {...prev};
+            delete newErrors.floorNumber;
+            return newErrors;
+        });
     };
+
 
     const handleDeleteFloor = (index: number) => {
         setNewDormitory(prevState => ({
@@ -244,26 +388,19 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
 
     const handleCreateNewRoomTemplate = () => {
         if (newRoomTemplate) {
-            // Validate required fields
-            if (!newRoomTemplate.name.trim()) {
-                alert('Please enter a template name');
-                return;
-            }
-            if (!newRoomTemplate.typeCode.trim()) {
-                alert('Please enter a template code');
-                return;
-            }
-            if (newRoomTemplate.capacity < 1) {
-                alert('Capacity must be at least 1');
+            const errors = validateRoomTemplate(newRoomTemplate);
+
+            if (Object.keys(errors.roomTemplates || {}).length > 0) {
+                setValidationErrors(errors);
+                setShowValidationErrors(true);
                 return;
             }
 
-            // Clean up equipment array - remove empty strings and ensure at least one item
+            // Clean up equipment array
             const cleanEquipment = newRoomTemplate.equipment
                 .filter(item => item.trim() !== '')
                 .map(item => item.trim());
-            
-            // If no equipment provided, add default
+
             if (cleanEquipment.length === 0) {
                 cleanEquipment.push('Bed');
             }
@@ -279,21 +416,17 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
             createRoomTemplate(templateToCreate);
             setNewRoomTemplate(null);
             setEditRoomTemplate(false);
+            setValidationErrors({});
+            setShowValidationErrors(false);
         }
     };
 
     const handleEditTemplate = (templateId: string, template: RoomTemplate) => {
-        // Validate required fields
-        if (!template.name.trim()) {
-            alert('Please enter a template name');
-            return;
-        }
-        if (!template.typeCode.trim()) {
-            alert('Please enter a template code');
-            return;
-        }
-        if (template.capacity < 1) {
-            alert('Capacity must be at least 1');
+        const errors = validateRoomTemplate(template);
+
+        if (Object.keys(errors.roomTemplates || {}).length > 0) {
+            setValidationErrors(errors);
+            setShowValidationErrors(true);
             return;
         }
 
@@ -301,8 +434,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
         const cleanEquipment = template.equipment
             .filter(item => item.trim() !== '')
             .map(item => item.trim());
-        
-        // If no equipment provided, add default
+
         if (cleanEquipment.length === 0) {
             cleanEquipment.push('Bed');
         }
@@ -313,11 +445,13 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
             description: template.description.trim(),
             capacity: template.capacity,
             equipment: cleanEquipment,
-            photos: [], // Convert existing photos to files if needed
+            photos: [],
             priceCategoryId: template.priceCategoryId
         };
         updateRoomTemplate({ templateId, newTemplate: templateUpdate });
         setEditRoomTemplate(false);
+        setValidationErrors({});
+        setShowValidationErrors(false);
     };
 
     const handleCancelTemplateChanges = (templateId: string) => {
@@ -350,6 +484,17 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                     ...prev,
                     [name]: name === 'capacity' ? Number(value) : value
                 } : prev);
+
+                // Clear validation error for this field
+                if (name === 'capacity' && validationErrors.roomTemplates?.capacity) {
+                    setValidationErrors(prev => ({
+                        ...prev,
+                        roomTemplates: {
+                            ...prev.roomTemplates,
+                            capacity: undefined
+                        }
+                    }));
+                }
             }
         }
     };
@@ -370,6 +515,17 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                     ...prev,
                     [name]: name === 'capacity' ? Number(value) : value
                 } : prev);
+
+                // Clear validation error for this field
+                if (validationErrors.roomTemplates?.[name as keyof typeof validationErrors.roomTemplates]) {
+                    setValidationErrors(prev => ({
+                        ...prev,
+                        roomTemplates: {
+                            ...prev.roomTemplates,
+                            [name]: undefined
+                        }
+                    }));
+                }
             }
         }
     };
@@ -482,6 +638,17 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                 ...prev,
                 [name]: name === 'pricePerMonth' || name === 'pricePerDay' ? Number(value) : value
             } : prev);
+
+            // Clear validation error
+            if (validationErrors.priceCategories?.[name as keyof typeof validationErrors.priceCategories]) {
+                setValidationErrors(prev => ({
+                    ...prev,
+                    priceCategories: {
+                        ...prev.priceCategories,
+                        [name]: undefined
+                    }
+                }));
+            }
         }
     };
 
@@ -492,6 +659,17 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                 ...prev,
                 [name]: name === 'pricePerMonth' || name === 'pricePerDay' ? Number(value) : value
             } : prev);
+
+            // Clear validation error
+            if (validationErrors.priceCategories?.[name as keyof typeof validationErrors.priceCategories]) {
+                setValidationErrors(prev => ({
+                    ...prev,
+                    priceCategories: {
+                        ...prev.priceCategories,
+                        [name]: undefined
+                    }
+                }));
+            }
         }
     };
 
@@ -510,7 +688,14 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
     };
 
     const handleSaveEdition = (id: string, changes: PriceCategoryPostData) => {
-        // Convert PriceCategoryPostData to PriceCategoryUpdateData
+        const errors = validatePriceCategory(changes);
+
+        if (Object.keys(errors.priceCategories || {}).length > 0) {
+            setValidationErrors(errors);
+            setShowValidationErrors(true);
+            return;
+        }
+
         const updateData: PriceCategoryUpdateData = {
             name: changes.name,
             description: changes.description,
@@ -520,32 +705,59 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
         };
         updatePriceCategory({ categoryId: id, categoryUpdate: updateData });
         setEditPCategory(false);
+        setValidationErrors({});
+        setShowValidationErrors(false);
     };
 
+
     const handleCreateCategory = (category: PriceCategoryPostData) => {
+        const errors = validatePriceCategory(category);
+
+        if (Object.keys(errors.priceCategories || {}).length > 0) {
+            setValidationErrors(errors);
+            setShowValidationErrors(true);
+            return;
+        }
+
         createPriceCategory(category);
         setNewPCategory(null);
+        setValidationErrors({});
+        setShowValidationErrors(false);
     };
+
 
     const handleSetEditMode = (edit: boolean) => {
         setEditPCategory(edit);
     };
 
     const handleCreateDormitory = async () => {
+        // Validate General Information
+        const errors = validateGeneralInformation(newDormitory);
+
+        if (Object.keys(errors).length > 0) {
+            setValidationErrors(errors);
+            setShowValidationErrors(true);
+            setActiveSection('General Information');
+
+            // Show error notification
+            alert('Please fill in all required fields correctly in General Information section');
+            return;
+        }
+
         setIsCreating(true);
         try {
             await createDormitory({ newDormitory });
             setIsSuccess(true);
-            // Show success animation before closing
             setTimeout(() => {
                 setIsCreating(false);
                 setIsSuccess(false);
+                setValidationErrors({});
+                setShowValidationErrors(false);
                 onClose();
             }, 2000);
         } catch (error) {
             setIsCreating(false);
             setIsSuccess(false);
-            // Handle error state
             console.error('Error creating dormitory:', error);
         }
     };
@@ -575,6 +787,8 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
         setSelectedPCategory(null);
         setNewPCategory(null);
         setEditPCategory(false);
+        setValidationErrors({});
+        setShowValidationErrors(false);
     };
 
     // Enhanced section navigation with minimal animation
@@ -599,6 +813,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                         onOpenPhotosEdit={openDormitoryPhotosEdit}
                         onClosePhotosEdit={closeDormitoryPhotosEdit}
                         onSetPhotos={setNewPhotos}
+                        validationErrors={validationErrors}
                     />
                 );
 
@@ -618,6 +833,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                         onAddFloor={handleAddFloor}
                         onDeleteFloor={handleDeleteFloor}
                         onAddRoomAssignment={handleAddRoomAssignment}
+                        validationErrors={validationErrors}
                     />
                 );
 
@@ -651,6 +867,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                         onRemoveEquipmentFromTemplate={handleRemoveEquipmentFromTemplate}
                         onAddEquipmentToNewTemplate={handleAddEquipmentToNewTemplate}
                         onRemoveEquipmentFromNewTemplate={handleRemoveEquipmentFromNewTemplate}
+                        validationErrors={validationErrors}
                     />
                 );
 
@@ -670,6 +887,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                         onSaveEdition={handleSaveEdition}
                         onCreateCategory={handleCreateCategory}
                         onSetEditMode={handleSetEditMode}
+                        validationErrors={validationErrors}
                     />
                 );
 
@@ -912,3 +1130,17 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
         </Dialog>
     );
 }
+
+//Helper component to show error
+export const ValidationError = ({ error }: { error?: string }) => {
+    if (!error) return null;
+
+    return (
+        <p className="mt-1 text-sm text-red-600 flex items-center">
+            <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+            </svg>
+            {error}
+        </p>
+    );
+};
