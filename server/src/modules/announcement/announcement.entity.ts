@@ -19,6 +19,7 @@ export class AnnouncementRecipientEntity {
   id: string;
   userId?: string;
   roomId?: string;
-  floor?: number;
+  floorId?: string;
+  dormitoryId?: string;
   forEveryone: boolean;
 }

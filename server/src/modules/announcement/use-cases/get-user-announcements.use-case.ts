@@ -9,6 +9,7 @@ export class GetUserAnnouncementsUseCase {
     userId: string,
     roomId?: string,
     floorId?: string,
+    dormitoryId?: string,
     options: {
       showHidden?: boolean;
       showExpired?: boolean;
@@ -16,7 +17,7 @@ export class GetUserAnnouncementsUseCase {
       limit?: number;
     } = {},
   ) {
-    console.log("GetUserAnnouncementsUseCase started with:", { userId, roomId, floorId, options });
+    console.log("GetUserAnnouncementsUseCase started with:", { userId, roomId, floorId, dormitoryId, options });
 
     // Build the recipient filters
     const recipientFilters: any[] = [
@@ -30,6 +31,10 @@ export class GetUserAnnouncementsUseCase {
 
     if (floorId) {
       recipientFilters.push({ floorId });
+    }
+
+    if (dormitoryId) {
+      recipientFilters.push({ dormitoryId });
     }
 
     const filters: any = {

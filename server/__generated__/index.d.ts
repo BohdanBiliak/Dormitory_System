@@ -3877,6 +3877,7 @@ export namespace Prisma {
     managers: number
     residents: number
     rooms: number
+    announcementRecipients: number
   }
 
   export type DormitoryCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3885,6 +3886,7 @@ export namespace Prisma {
     managers?: boolean | DormitoryCountOutputTypeCountManagersArgs
     residents?: boolean | DormitoryCountOutputTypeCountResidentsArgs
     rooms?: boolean | DormitoryCountOutputTypeCountRoomsArgs
+    announcementRecipients?: boolean | DormitoryCountOutputTypeCountAnnouncementRecipientsArgs
   }
 
   // Custom InputTypes
@@ -3933,6 +3935,13 @@ export namespace Prisma {
     where?: RoomWhereInput
   }
 
+  /**
+   * DormitoryCountOutputType without action
+   */
+  export type DormitoryCountOutputTypeCountAnnouncementRecipientsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AnnouncementRecipientWhereInput
+  }
+
 
   /**
    * Count Type FloorCountOutputType
@@ -3941,11 +3950,13 @@ export namespace Prisma {
   export type FloorCountOutputType = {
     rooms: number
     floorRoomAssignments: number
+    announcementRecipients: number
   }
 
   export type FloorCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     rooms?: boolean | FloorCountOutputTypeCountRoomsArgs
     floorRoomAssignments?: boolean | FloorCountOutputTypeCountFloorRoomAssignmentsArgs
+    announcementRecipients?: boolean | FloorCountOutputTypeCountAnnouncementRecipientsArgs
   }
 
   // Custom InputTypes
@@ -3971,6 +3982,13 @@ export namespace Prisma {
    */
   export type FloorCountOutputTypeCountFloorRoomAssignmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: FloorRoomAssignmentWhereInput
+  }
+
+  /**
+   * FloorCountOutputType without action
+   */
+  export type FloorCountOutputTypeCountAnnouncementRecipientsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AnnouncementRecipientWhereInput
   }
 
 
@@ -11814,6 +11832,7 @@ export namespace Prisma {
     managers?: boolean | Dormitory$managersArgs<ExtArgs>
     residents?: boolean | Dormitory$residentsArgs<ExtArgs>
     rooms?: boolean | Dormitory$roomsArgs<ExtArgs>
+    announcementRecipients?: boolean | Dormitory$announcementRecipientsArgs<ExtArgs>
     _count?: boolean | DormitoryCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["dormitory"]>
 
@@ -11854,6 +11873,7 @@ export namespace Prisma {
     managers?: boolean | Dormitory$managersArgs<ExtArgs>
     residents?: boolean | Dormitory$residentsArgs<ExtArgs>
     rooms?: boolean | Dormitory$roomsArgs<ExtArgs>
+    announcementRecipients?: boolean | Dormitory$announcementRecipientsArgs<ExtArgs>
     _count?: boolean | DormitoryCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type DormitoryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -11867,6 +11887,7 @@ export namespace Prisma {
       managers: Prisma.$DormitoryManagerPayload<ExtArgs>[]
       residents: Prisma.$UserPayload<ExtArgs>[]
       rooms: Prisma.$RoomPayload<ExtArgs>[]
+      announcementRecipients: Prisma.$AnnouncementRecipientPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -12275,6 +12296,7 @@ export namespace Prisma {
     managers<T extends Dormitory$managersArgs<ExtArgs> = {}>(args?: Subset<T, Dormitory$managersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DormitoryManagerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     residents<T extends Dormitory$residentsArgs<ExtArgs> = {}>(args?: Subset<T, Dormitory$residentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     rooms<T extends Dormitory$roomsArgs<ExtArgs> = {}>(args?: Subset<T, Dormitory$roomsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoomPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    announcementRecipients<T extends Dormitory$announcementRecipientsArgs<ExtArgs> = {}>(args?: Subset<T, Dormitory$announcementRecipientsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnouncementRecipientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12819,6 +12841,30 @@ export namespace Prisma {
   }
 
   /**
+   * Dormitory.announcementRecipients
+   */
+  export type Dormitory$announcementRecipientsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementRecipient
+     */
+    select?: AnnouncementRecipientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementRecipient
+     */
+    omit?: AnnouncementRecipientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementRecipientInclude<ExtArgs> | null
+    where?: AnnouncementRecipientWhereInput
+    orderBy?: AnnouncementRecipientOrderByWithRelationInput | AnnouncementRecipientOrderByWithRelationInput[]
+    cursor?: AnnouncementRecipientWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AnnouncementRecipientScalarFieldEnum | AnnouncementRecipientScalarFieldEnum[]
+  }
+
+  /**
    * Dormitory without action
    */
   export type DormitoryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -13022,6 +13068,7 @@ export namespace Prisma {
     dormitory?: boolean | DormitoryDefaultArgs<ExtArgs>
     rooms?: boolean | Floor$roomsArgs<ExtArgs>
     floorRoomAssignments?: boolean | Floor$floorRoomAssignmentsArgs<ExtArgs>
+    announcementRecipients?: boolean | Floor$announcementRecipientsArgs<ExtArgs>
     _count?: boolean | FloorCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["floor"]>
 
@@ -13050,6 +13097,7 @@ export namespace Prisma {
     dormitory?: boolean | DormitoryDefaultArgs<ExtArgs>
     rooms?: boolean | Floor$roomsArgs<ExtArgs>
     floorRoomAssignments?: boolean | Floor$floorRoomAssignmentsArgs<ExtArgs>
+    announcementRecipients?: boolean | Floor$announcementRecipientsArgs<ExtArgs>
     _count?: boolean | FloorCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type FloorIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -13065,6 +13113,7 @@ export namespace Prisma {
       dormitory: Prisma.$DormitoryPayload<ExtArgs>
       rooms: Prisma.$RoomPayload<ExtArgs>[]
       floorRoomAssignments: Prisma.$FloorRoomAssignmentPayload<ExtArgs>[]
+      announcementRecipients: Prisma.$AnnouncementRecipientPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -13467,6 +13516,7 @@ export namespace Prisma {
     dormitory<T extends DormitoryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DormitoryDefaultArgs<ExtArgs>>): Prisma__DormitoryClient<$Result.GetResult<Prisma.$DormitoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     rooms<T extends Floor$roomsArgs<ExtArgs> = {}>(args?: Subset<T, Floor$roomsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoomPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     floorRoomAssignments<T extends Floor$floorRoomAssignmentsArgs<ExtArgs> = {}>(args?: Subset<T, Floor$floorRoomAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FloorRoomAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    announcementRecipients<T extends Floor$announcementRecipientsArgs<ExtArgs> = {}>(args?: Subset<T, Floor$announcementRecipientsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnouncementRecipientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -13940,6 +13990,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: FloorRoomAssignmentScalarFieldEnum | FloorRoomAssignmentScalarFieldEnum[]
+  }
+
+  /**
+   * Floor.announcementRecipients
+   */
+  export type Floor$announcementRecipientsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementRecipient
+     */
+    select?: AnnouncementRecipientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementRecipient
+     */
+    omit?: AnnouncementRecipientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementRecipientInclude<ExtArgs> | null
+    where?: AnnouncementRecipientWhereInput
+    orderBy?: AnnouncementRecipientOrderByWithRelationInput | AnnouncementRecipientOrderByWithRelationInput[]
+    cursor?: AnnouncementRecipientWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AnnouncementRecipientScalarFieldEnum | AnnouncementRecipientScalarFieldEnum[]
   }
 
   /**
@@ -32086,18 +32160,8 @@ export namespace Prisma {
 
   export type AggregateAnnouncementRecipient = {
     _count: AnnouncementRecipientCountAggregateOutputType | null
-    _avg: AnnouncementRecipientAvgAggregateOutputType | null
-    _sum: AnnouncementRecipientSumAggregateOutputType | null
     _min: AnnouncementRecipientMinAggregateOutputType | null
     _max: AnnouncementRecipientMaxAggregateOutputType | null
-  }
-
-  export type AnnouncementRecipientAvgAggregateOutputType = {
-    floor: number | null
-  }
-
-  export type AnnouncementRecipientSumAggregateOutputType = {
-    floor: number | null
   }
 
   export type AnnouncementRecipientMinAggregateOutputType = {
@@ -32105,7 +32169,8 @@ export namespace Prisma {
     announcementId: string | null
     userId: string | null
     roomId: string | null
-    floor: number | null
+    floorId: string | null
+    dormitoryId: string | null
     forEveryone: boolean | null
   }
 
@@ -32114,7 +32179,8 @@ export namespace Prisma {
     announcementId: string | null
     userId: string | null
     roomId: string | null
-    floor: number | null
+    floorId: string | null
+    dormitoryId: string | null
     forEveryone: boolean | null
   }
 
@@ -32123,26 +32189,20 @@ export namespace Prisma {
     announcementId: number
     userId: number
     roomId: number
-    floor: number
+    floorId: number
+    dormitoryId: number
     forEveryone: number
     _all: number
   }
 
-
-  export type AnnouncementRecipientAvgAggregateInputType = {
-    floor?: true
-  }
-
-  export type AnnouncementRecipientSumAggregateInputType = {
-    floor?: true
-  }
 
   export type AnnouncementRecipientMinAggregateInputType = {
     id?: true
     announcementId?: true
     userId?: true
     roomId?: true
-    floor?: true
+    floorId?: true
+    dormitoryId?: true
     forEveryone?: true
   }
 
@@ -32151,7 +32211,8 @@ export namespace Prisma {
     announcementId?: true
     userId?: true
     roomId?: true
-    floor?: true
+    floorId?: true
+    dormitoryId?: true
     forEveryone?: true
   }
 
@@ -32160,7 +32221,8 @@ export namespace Prisma {
     announcementId?: true
     userId?: true
     roomId?: true
-    floor?: true
+    floorId?: true
+    dormitoryId?: true
     forEveryone?: true
     _all?: true
   }
@@ -32203,18 +32265,6 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Select which fields to average
-    **/
-    _avg?: AnnouncementRecipientAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: AnnouncementRecipientSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
      * Select which fields to find the minimum value
     **/
     _min?: AnnouncementRecipientMinAggregateInputType
@@ -32245,8 +32295,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: AnnouncementRecipientCountAggregateInputType | true
-    _avg?: AnnouncementRecipientAvgAggregateInputType
-    _sum?: AnnouncementRecipientSumAggregateInputType
     _min?: AnnouncementRecipientMinAggregateInputType
     _max?: AnnouncementRecipientMaxAggregateInputType
   }
@@ -32256,11 +32304,10 @@ export namespace Prisma {
     announcementId: string
     userId: string | null
     roomId: string | null
-    floor: number | null
+    floorId: string | null
+    dormitoryId: string | null
     forEveryone: boolean
     _count: AnnouncementRecipientCountAggregateOutputType | null
-    _avg: AnnouncementRecipientAvgAggregateOutputType | null
-    _sum: AnnouncementRecipientSumAggregateOutputType | null
     _min: AnnouncementRecipientMinAggregateOutputType | null
     _max: AnnouncementRecipientMaxAggregateOutputType | null
   }
@@ -32284,11 +32331,14 @@ export namespace Prisma {
     announcementId?: boolean
     userId?: boolean
     roomId?: boolean
-    floor?: boolean
+    floorId?: boolean
+    dormitoryId?: boolean
     forEveryone?: boolean
     announcement?: boolean | AnnouncementDefaultArgs<ExtArgs>
     user?: boolean | AnnouncementRecipient$userArgs<ExtArgs>
     room?: boolean | AnnouncementRecipient$roomArgs<ExtArgs>
+    floor?: boolean | AnnouncementRecipient$floorArgs<ExtArgs>
+    dormitory?: boolean | AnnouncementRecipient$dormitoryArgs<ExtArgs>
   }, ExtArgs["result"]["announcementRecipient"]>
 
   export type AnnouncementRecipientSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -32296,11 +32346,14 @@ export namespace Prisma {
     announcementId?: boolean
     userId?: boolean
     roomId?: boolean
-    floor?: boolean
+    floorId?: boolean
+    dormitoryId?: boolean
     forEveryone?: boolean
     announcement?: boolean | AnnouncementDefaultArgs<ExtArgs>
     user?: boolean | AnnouncementRecipient$userArgs<ExtArgs>
     room?: boolean | AnnouncementRecipient$roomArgs<ExtArgs>
+    floor?: boolean | AnnouncementRecipient$floorArgs<ExtArgs>
+    dormitory?: boolean | AnnouncementRecipient$dormitoryArgs<ExtArgs>
   }, ExtArgs["result"]["announcementRecipient"]>
 
   export type AnnouncementRecipientSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -32308,11 +32361,14 @@ export namespace Prisma {
     announcementId?: boolean
     userId?: boolean
     roomId?: boolean
-    floor?: boolean
+    floorId?: boolean
+    dormitoryId?: boolean
     forEveryone?: boolean
     announcement?: boolean | AnnouncementDefaultArgs<ExtArgs>
     user?: boolean | AnnouncementRecipient$userArgs<ExtArgs>
     room?: boolean | AnnouncementRecipient$roomArgs<ExtArgs>
+    floor?: boolean | AnnouncementRecipient$floorArgs<ExtArgs>
+    dormitory?: boolean | AnnouncementRecipient$dormitoryArgs<ExtArgs>
   }, ExtArgs["result"]["announcementRecipient"]>
 
   export type AnnouncementRecipientSelectScalar = {
@@ -32320,25 +32376,32 @@ export namespace Prisma {
     announcementId?: boolean
     userId?: boolean
     roomId?: boolean
-    floor?: boolean
+    floorId?: boolean
+    dormitoryId?: boolean
     forEveryone?: boolean
   }
 
-  export type AnnouncementRecipientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "announcementId" | "userId" | "roomId" | "floor" | "forEveryone", ExtArgs["result"]["announcementRecipient"]>
+  export type AnnouncementRecipientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "announcementId" | "userId" | "roomId" | "floorId" | "dormitoryId" | "forEveryone", ExtArgs["result"]["announcementRecipient"]>
   export type AnnouncementRecipientInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     announcement?: boolean | AnnouncementDefaultArgs<ExtArgs>
     user?: boolean | AnnouncementRecipient$userArgs<ExtArgs>
     room?: boolean | AnnouncementRecipient$roomArgs<ExtArgs>
+    floor?: boolean | AnnouncementRecipient$floorArgs<ExtArgs>
+    dormitory?: boolean | AnnouncementRecipient$dormitoryArgs<ExtArgs>
   }
   export type AnnouncementRecipientIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     announcement?: boolean | AnnouncementDefaultArgs<ExtArgs>
     user?: boolean | AnnouncementRecipient$userArgs<ExtArgs>
     room?: boolean | AnnouncementRecipient$roomArgs<ExtArgs>
+    floor?: boolean | AnnouncementRecipient$floorArgs<ExtArgs>
+    dormitory?: boolean | AnnouncementRecipient$dormitoryArgs<ExtArgs>
   }
   export type AnnouncementRecipientIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     announcement?: boolean | AnnouncementDefaultArgs<ExtArgs>
     user?: boolean | AnnouncementRecipient$userArgs<ExtArgs>
     room?: boolean | AnnouncementRecipient$roomArgs<ExtArgs>
+    floor?: boolean | AnnouncementRecipient$floorArgs<ExtArgs>
+    dormitory?: boolean | AnnouncementRecipient$dormitoryArgs<ExtArgs>
   }
 
   export type $AnnouncementRecipientPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -32347,13 +32410,16 @@ export namespace Prisma {
       announcement: Prisma.$AnnouncementPayload<ExtArgs>
       user: Prisma.$UserPayload<ExtArgs> | null
       room: Prisma.$RoomPayload<ExtArgs> | null
+      floor: Prisma.$FloorPayload<ExtArgs> | null
+      dormitory: Prisma.$DormitoryPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       announcementId: string
       userId: string | null
       roomId: string | null
-      floor: number | null
+      floorId: string | null
+      dormitoryId: string | null
       forEveryone: boolean
     }, ExtArgs["result"]["announcementRecipient"]>
     composites: {}
@@ -32752,6 +32818,8 @@ export namespace Prisma {
     announcement<T extends AnnouncementDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AnnouncementDefaultArgs<ExtArgs>>): Prisma__AnnouncementClient<$Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     user<T extends AnnouncementRecipient$userArgs<ExtArgs> = {}>(args?: Subset<T, AnnouncementRecipient$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     room<T extends AnnouncementRecipient$roomArgs<ExtArgs> = {}>(args?: Subset<T, AnnouncementRecipient$roomArgs<ExtArgs>>): Prisma__RoomClient<$Result.GetResult<Prisma.$RoomPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    floor<T extends AnnouncementRecipient$floorArgs<ExtArgs> = {}>(args?: Subset<T, AnnouncementRecipient$floorArgs<ExtArgs>>): Prisma__FloorClient<$Result.GetResult<Prisma.$FloorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    dormitory<T extends AnnouncementRecipient$dormitoryArgs<ExtArgs> = {}>(args?: Subset<T, AnnouncementRecipient$dormitoryArgs<ExtArgs>>): Prisma__DormitoryClient<$Result.GetResult<Prisma.$DormitoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -32785,7 +32853,8 @@ export namespace Prisma {
     readonly announcementId: FieldRef<"AnnouncementRecipient", 'String'>
     readonly userId: FieldRef<"AnnouncementRecipient", 'String'>
     readonly roomId: FieldRef<"AnnouncementRecipient", 'String'>
-    readonly floor: FieldRef<"AnnouncementRecipient", 'Int'>
+    readonly floorId: FieldRef<"AnnouncementRecipient", 'String'>
+    readonly dormitoryId: FieldRef<"AnnouncementRecipient", 'String'>
     readonly forEveryone: FieldRef<"AnnouncementRecipient", 'Boolean'>
   }
     
@@ -33218,6 +33287,44 @@ export namespace Prisma {
      */
     include?: RoomInclude<ExtArgs> | null
     where?: RoomWhereInput
+  }
+
+  /**
+   * AnnouncementRecipient.floor
+   */
+  export type AnnouncementRecipient$floorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Floor
+     */
+    select?: FloorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Floor
+     */
+    omit?: FloorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FloorInclude<ExtArgs> | null
+    where?: FloorWhereInput
+  }
+
+  /**
+   * AnnouncementRecipient.dormitory
+   */
+  export type AnnouncementRecipient$dormitoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dormitory
+     */
+    select?: DormitorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dormitory
+     */
+    omit?: DormitoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DormitoryInclude<ExtArgs> | null
+    where?: DormitoryWhereInput
   }
 
   /**
@@ -39397,7 +39504,8 @@ export namespace Prisma {
     announcementId: 'announcementId',
     userId: 'userId',
     roomId: 'roomId',
-    floor: 'floor',
+    floorId: 'floorId',
+    dormitoryId: 'dormitoryId',
     forEveryone: 'forEveryone'
   };
 
@@ -40365,6 +40473,7 @@ export namespace Prisma {
     managers?: DormitoryManagerListRelationFilter
     residents?: UserListRelationFilter
     rooms?: RoomListRelationFilter
+    announcementRecipients?: AnnouncementRecipientListRelationFilter
   }
 
   export type DormitoryOrderByWithRelationInput = {
@@ -40380,6 +40489,7 @@ export namespace Prisma {
     managers?: DormitoryManagerOrderByRelationAggregateInput
     residents?: UserOrderByRelationAggregateInput
     rooms?: RoomOrderByRelationAggregateInput
+    announcementRecipients?: AnnouncementRecipientOrderByRelationAggregateInput
   }
 
   export type DormitoryWhereUniqueInput = Prisma.AtLeast<{
@@ -40398,6 +40508,7 @@ export namespace Prisma {
     managers?: DormitoryManagerListRelationFilter
     residents?: UserListRelationFilter
     rooms?: RoomListRelationFilter
+    announcementRecipients?: AnnouncementRecipientListRelationFilter
   }, "id">
 
   export type DormitoryOrderByWithAggregationInput = {
@@ -40436,6 +40547,7 @@ export namespace Prisma {
     dormitory?: XOR<DormitoryScalarRelationFilter, DormitoryWhereInput>
     rooms?: RoomListRelationFilter
     floorRoomAssignments?: FloorRoomAssignmentListRelationFilter
+    announcementRecipients?: AnnouncementRecipientListRelationFilter
   }
 
   export type FloorOrderByWithRelationInput = {
@@ -40445,6 +40557,7 @@ export namespace Prisma {
     dormitory?: DormitoryOrderByWithRelationInput
     rooms?: RoomOrderByRelationAggregateInput
     floorRoomAssignments?: FloorRoomAssignmentOrderByRelationAggregateInput
+    announcementRecipients?: AnnouncementRecipientOrderByRelationAggregateInput
   }
 
   export type FloorWhereUniqueInput = Prisma.AtLeast<{
@@ -40458,6 +40571,7 @@ export namespace Prisma {
     dormitory?: XOR<DormitoryScalarRelationFilter, DormitoryWhereInput>
     rooms?: RoomListRelationFilter
     floorRoomAssignments?: FloorRoomAssignmentListRelationFilter
+    announcementRecipients?: AnnouncementRecipientListRelationFilter
   }, "id" | "dormitoryId_floorNumber">
 
   export type FloorOrderByWithAggregationInput = {
@@ -41805,11 +41919,14 @@ export namespace Prisma {
     announcementId?: StringFilter<"AnnouncementRecipient"> | string
     userId?: StringNullableFilter<"AnnouncementRecipient"> | string | null
     roomId?: StringNullableFilter<"AnnouncementRecipient"> | string | null
-    floor?: IntNullableFilter<"AnnouncementRecipient"> | number | null
+    floorId?: StringNullableFilter<"AnnouncementRecipient"> | string | null
+    dormitoryId?: StringNullableFilter<"AnnouncementRecipient"> | string | null
     forEveryone?: BoolFilter<"AnnouncementRecipient"> | boolean
     announcement?: XOR<AnnouncementScalarRelationFilter, AnnouncementWhereInput>
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     room?: XOR<RoomNullableScalarRelationFilter, RoomWhereInput> | null
+    floor?: XOR<FloorNullableScalarRelationFilter, FloorWhereInput> | null
+    dormitory?: XOR<DormitoryNullableScalarRelationFilter, DormitoryWhereInput> | null
   }
 
   export type AnnouncementRecipientOrderByWithRelationInput = {
@@ -41817,11 +41934,14 @@ export namespace Prisma {
     announcementId?: SortOrder
     userId?: SortOrderInput | SortOrder
     roomId?: SortOrderInput | SortOrder
-    floor?: SortOrderInput | SortOrder
+    floorId?: SortOrderInput | SortOrder
+    dormitoryId?: SortOrderInput | SortOrder
     forEveryone?: SortOrder
     announcement?: AnnouncementOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
     room?: RoomOrderByWithRelationInput
+    floor?: FloorOrderByWithRelationInput
+    dormitory?: DormitoryOrderByWithRelationInput
   }
 
   export type AnnouncementRecipientWhereUniqueInput = Prisma.AtLeast<{
@@ -41832,11 +41952,14 @@ export namespace Prisma {
     announcementId?: StringFilter<"AnnouncementRecipient"> | string
     userId?: StringNullableFilter<"AnnouncementRecipient"> | string | null
     roomId?: StringNullableFilter<"AnnouncementRecipient"> | string | null
-    floor?: IntNullableFilter<"AnnouncementRecipient"> | number | null
+    floorId?: StringNullableFilter<"AnnouncementRecipient"> | string | null
+    dormitoryId?: StringNullableFilter<"AnnouncementRecipient"> | string | null
     forEveryone?: BoolFilter<"AnnouncementRecipient"> | boolean
     announcement?: XOR<AnnouncementScalarRelationFilter, AnnouncementWhereInput>
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     room?: XOR<RoomNullableScalarRelationFilter, RoomWhereInput> | null
+    floor?: XOR<FloorNullableScalarRelationFilter, FloorWhereInput> | null
+    dormitory?: XOR<DormitoryNullableScalarRelationFilter, DormitoryWhereInput> | null
   }, "id">
 
   export type AnnouncementRecipientOrderByWithAggregationInput = {
@@ -41844,13 +41967,12 @@ export namespace Prisma {
     announcementId?: SortOrder
     userId?: SortOrderInput | SortOrder
     roomId?: SortOrderInput | SortOrder
-    floor?: SortOrderInput | SortOrder
+    floorId?: SortOrderInput | SortOrder
+    dormitoryId?: SortOrderInput | SortOrder
     forEveryone?: SortOrder
     _count?: AnnouncementRecipientCountOrderByAggregateInput
-    _avg?: AnnouncementRecipientAvgOrderByAggregateInput
     _max?: AnnouncementRecipientMaxOrderByAggregateInput
     _min?: AnnouncementRecipientMinOrderByAggregateInput
-    _sum?: AnnouncementRecipientSumOrderByAggregateInput
   }
 
   export type AnnouncementRecipientScalarWhereWithAggregatesInput = {
@@ -41861,7 +41983,8 @@ export namespace Prisma {
     announcementId?: StringWithAggregatesFilter<"AnnouncementRecipient"> | string
     userId?: StringNullableWithAggregatesFilter<"AnnouncementRecipient"> | string | null
     roomId?: StringNullableWithAggregatesFilter<"AnnouncementRecipient"> | string | null
-    floor?: IntNullableWithAggregatesFilter<"AnnouncementRecipient"> | number | null
+    floorId?: StringNullableWithAggregatesFilter<"AnnouncementRecipient"> | string | null
+    dormitoryId?: StringNullableWithAggregatesFilter<"AnnouncementRecipient"> | string | null
     forEveryone?: BoolWithAggregatesFilter<"AnnouncementRecipient"> | boolean
   }
 
@@ -42862,6 +42985,7 @@ export namespace Prisma {
     managers?: DormitoryManagerCreateNestedManyWithoutDormitoryInput
     residents?: UserCreateNestedManyWithoutDormitoryInput
     rooms?: RoomCreateNestedManyWithoutDormitoryInput
+    announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutDormitoryInput
   }
 
   export type DormitoryUncheckedCreateInput = {
@@ -42877,6 +43001,7 @@ export namespace Prisma {
     managers?: DormitoryManagerUncheckedCreateNestedManyWithoutDormitoryInput
     residents?: UserUncheckedCreateNestedManyWithoutDormitoryInput
     rooms?: RoomUncheckedCreateNestedManyWithoutDormitoryInput
+    announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutDormitoryInput
   }
 
   export type DormitoryUpdateInput = {
@@ -42892,6 +43017,7 @@ export namespace Prisma {
     managers?: DormitoryManagerUpdateManyWithoutDormitoryNestedInput
     residents?: UserUpdateManyWithoutDormitoryNestedInput
     rooms?: RoomUpdateManyWithoutDormitoryNestedInput
+    announcementRecipients?: AnnouncementRecipientUpdateManyWithoutDormitoryNestedInput
   }
 
   export type DormitoryUncheckedUpdateInput = {
@@ -42907,6 +43033,7 @@ export namespace Prisma {
     managers?: DormitoryManagerUncheckedUpdateManyWithoutDormitoryNestedInput
     residents?: UserUncheckedUpdateManyWithoutDormitoryNestedInput
     rooms?: RoomUncheckedUpdateManyWithoutDormitoryNestedInput
+    announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutDormitoryNestedInput
   }
 
   export type DormitoryCreateManyInput = {
@@ -42945,6 +43072,7 @@ export namespace Prisma {
     dormitory: DormitoryCreateNestedOneWithoutFloorsInput
     rooms?: RoomCreateNestedManyWithoutFloorInput
     floorRoomAssignments?: FloorRoomAssignmentCreateNestedManyWithoutFloorInput
+    announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutFloorInput
   }
 
   export type FloorUncheckedCreateInput = {
@@ -42953,6 +43081,7 @@ export namespace Prisma {
     dormitoryId: string
     rooms?: RoomUncheckedCreateNestedManyWithoutFloorInput
     floorRoomAssignments?: FloorRoomAssignmentUncheckedCreateNestedManyWithoutFloorInput
+    announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutFloorInput
   }
 
   export type FloorUpdateInput = {
@@ -42961,6 +43090,7 @@ export namespace Prisma {
     dormitory?: DormitoryUpdateOneRequiredWithoutFloorsNestedInput
     rooms?: RoomUpdateManyWithoutFloorNestedInput
     floorRoomAssignments?: FloorRoomAssignmentUpdateManyWithoutFloorNestedInput
+    announcementRecipients?: AnnouncementRecipientUpdateManyWithoutFloorNestedInput
   }
 
   export type FloorUncheckedUpdateInput = {
@@ -42969,6 +43099,7 @@ export namespace Prisma {
     dormitoryId?: StringFieldUpdateOperationsInput | string
     rooms?: RoomUncheckedUpdateManyWithoutFloorNestedInput
     floorRoomAssignments?: FloorRoomAssignmentUncheckedUpdateManyWithoutFloorNestedInput
+    announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutFloorNestedInput
   }
 
   export type FloorCreateManyInput = {
@@ -44393,11 +44524,12 @@ export namespace Prisma {
 
   export type AnnouncementRecipientCreateInput = {
     id?: string
-    floor?: number | null
     forEveryone?: boolean
     announcement: AnnouncementCreateNestedOneWithoutRecipientsInput
     user?: UserCreateNestedOneWithoutAnnouncementRecipientsInput
     room?: RoomCreateNestedOneWithoutAnnouncementRecipientsInput
+    floor?: FloorCreateNestedOneWithoutAnnouncementRecipientsInput
+    dormitory?: DormitoryCreateNestedOneWithoutAnnouncementRecipientsInput
   }
 
   export type AnnouncementRecipientUncheckedCreateInput = {
@@ -44405,17 +44537,19 @@ export namespace Prisma {
     announcementId: string
     userId?: string | null
     roomId?: string | null
-    floor?: number | null
+    floorId?: string | null
+    dormitoryId?: string | null
     forEveryone?: boolean
   }
 
   export type AnnouncementRecipientUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    floor?: NullableIntFieldUpdateOperationsInput | number | null
     forEveryone?: BoolFieldUpdateOperationsInput | boolean
     announcement?: AnnouncementUpdateOneRequiredWithoutRecipientsNestedInput
     user?: UserUpdateOneWithoutAnnouncementRecipientsNestedInput
     room?: RoomUpdateOneWithoutAnnouncementRecipientsNestedInput
+    floor?: FloorUpdateOneWithoutAnnouncementRecipientsNestedInput
+    dormitory?: DormitoryUpdateOneWithoutAnnouncementRecipientsNestedInput
   }
 
   export type AnnouncementRecipientUncheckedUpdateInput = {
@@ -44423,7 +44557,8 @@ export namespace Prisma {
     announcementId?: StringFieldUpdateOperationsInput | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
-    floor?: NullableIntFieldUpdateOperationsInput | number | null
+    floorId?: NullableStringFieldUpdateOperationsInput | string | null
+    dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
     forEveryone?: BoolFieldUpdateOperationsInput | boolean
   }
 
@@ -44432,13 +44567,13 @@ export namespace Prisma {
     announcementId: string
     userId?: string | null
     roomId?: string | null
-    floor?: number | null
+    floorId?: string | null
+    dormitoryId?: string | null
     forEveryone?: boolean
   }
 
   export type AnnouncementRecipientUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    floor?: NullableIntFieldUpdateOperationsInput | number | null
     forEveryone?: BoolFieldUpdateOperationsInput | boolean
   }
 
@@ -44447,7 +44582,8 @@ export namespace Prisma {
     announcementId?: StringFieldUpdateOperationsInput | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
-    floor?: NullableIntFieldUpdateOperationsInput | number | null
+    floorId?: NullableStringFieldUpdateOperationsInput | string | null
+    dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
     forEveryone?: BoolFieldUpdateOperationsInput | boolean
   }
 
@@ -46623,15 +46759,9 @@ export namespace Prisma {
     filename?: SortOrder
   }
 
-  export type IntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  export type FloorNullableScalarRelationFilter = {
+    is?: FloorWhereInput | null
+    isNot?: FloorWhereInput | null
   }
 
   export type AnnouncementRecipientCountOrderByAggregateInput = {
@@ -46639,12 +46769,9 @@ export namespace Prisma {
     announcementId?: SortOrder
     userId?: SortOrder
     roomId?: SortOrder
-    floor?: SortOrder
+    floorId?: SortOrder
+    dormitoryId?: SortOrder
     forEveryone?: SortOrder
-  }
-
-  export type AnnouncementRecipientAvgOrderByAggregateInput = {
-    floor?: SortOrder
   }
 
   export type AnnouncementRecipientMaxOrderByAggregateInput = {
@@ -46652,7 +46779,8 @@ export namespace Prisma {
     announcementId?: SortOrder
     userId?: SortOrder
     roomId?: SortOrder
-    floor?: SortOrder
+    floorId?: SortOrder
+    dormitoryId?: SortOrder
     forEveryone?: SortOrder
   }
 
@@ -46661,28 +46789,9 @@ export namespace Prisma {
     announcementId?: SortOrder
     userId?: SortOrder
     roomId?: SortOrder
-    floor?: SortOrder
+    floorId?: SortOrder
+    dormitoryId?: SortOrder
     forEveryone?: SortOrder
-  }
-
-  export type AnnouncementRecipientSumOrderByAggregateInput = {
-    floor?: SortOrder
-  }
-
-  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type MaintenanceReportNullableScalarRelationFilter = {
@@ -47906,6 +48015,13 @@ export namespace Prisma {
     connect?: RoomWhereUniqueInput | RoomWhereUniqueInput[]
   }
 
+  export type AnnouncementRecipientCreateNestedManyWithoutDormitoryInput = {
+    create?: XOR<AnnouncementRecipientCreateWithoutDormitoryInput, AnnouncementRecipientUncheckedCreateWithoutDormitoryInput> | AnnouncementRecipientCreateWithoutDormitoryInput[] | AnnouncementRecipientUncheckedCreateWithoutDormitoryInput[]
+    connectOrCreate?: AnnouncementRecipientCreateOrConnectWithoutDormitoryInput | AnnouncementRecipientCreateOrConnectWithoutDormitoryInput[]
+    createMany?: AnnouncementRecipientCreateManyDormitoryInputEnvelope
+    connect?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+  }
+
   export type FloorUncheckedCreateNestedManyWithoutDormitoryInput = {
     create?: XOR<FloorCreateWithoutDormitoryInput, FloorUncheckedCreateWithoutDormitoryInput> | FloorCreateWithoutDormitoryInput[] | FloorUncheckedCreateWithoutDormitoryInput[]
     connectOrCreate?: FloorCreateOrConnectWithoutDormitoryInput | FloorCreateOrConnectWithoutDormitoryInput[]
@@ -47939,6 +48055,13 @@ export namespace Prisma {
     connectOrCreate?: RoomCreateOrConnectWithoutDormitoryInput | RoomCreateOrConnectWithoutDormitoryInput[]
     createMany?: RoomCreateManyDormitoryInputEnvelope
     connect?: RoomWhereUniqueInput | RoomWhereUniqueInput[]
+  }
+
+  export type AnnouncementRecipientUncheckedCreateNestedManyWithoutDormitoryInput = {
+    create?: XOR<AnnouncementRecipientCreateWithoutDormitoryInput, AnnouncementRecipientUncheckedCreateWithoutDormitoryInput> | AnnouncementRecipientCreateWithoutDormitoryInput[] | AnnouncementRecipientUncheckedCreateWithoutDormitoryInput[]
+    connectOrCreate?: AnnouncementRecipientCreateOrConnectWithoutDormitoryInput | AnnouncementRecipientCreateOrConnectWithoutDormitoryInput[]
+    createMany?: AnnouncementRecipientCreateManyDormitoryInputEnvelope
+    connect?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
   }
 
   export type DormitoryUpdatephotosInput = {
@@ -48016,6 +48139,20 @@ export namespace Prisma {
     deleteMany?: RoomScalarWhereInput | RoomScalarWhereInput[]
   }
 
+  export type AnnouncementRecipientUpdateManyWithoutDormitoryNestedInput = {
+    create?: XOR<AnnouncementRecipientCreateWithoutDormitoryInput, AnnouncementRecipientUncheckedCreateWithoutDormitoryInput> | AnnouncementRecipientCreateWithoutDormitoryInput[] | AnnouncementRecipientUncheckedCreateWithoutDormitoryInput[]
+    connectOrCreate?: AnnouncementRecipientCreateOrConnectWithoutDormitoryInput | AnnouncementRecipientCreateOrConnectWithoutDormitoryInput[]
+    upsert?: AnnouncementRecipientUpsertWithWhereUniqueWithoutDormitoryInput | AnnouncementRecipientUpsertWithWhereUniqueWithoutDormitoryInput[]
+    createMany?: AnnouncementRecipientCreateManyDormitoryInputEnvelope
+    set?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    disconnect?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    delete?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    connect?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    update?: AnnouncementRecipientUpdateWithWhereUniqueWithoutDormitoryInput | AnnouncementRecipientUpdateWithWhereUniqueWithoutDormitoryInput[]
+    updateMany?: AnnouncementRecipientUpdateManyWithWhereWithoutDormitoryInput | AnnouncementRecipientUpdateManyWithWhereWithoutDormitoryInput[]
+    deleteMany?: AnnouncementRecipientScalarWhereInput | AnnouncementRecipientScalarWhereInput[]
+  }
+
   export type FloorUncheckedUpdateManyWithoutDormitoryNestedInput = {
     create?: XOR<FloorCreateWithoutDormitoryInput, FloorUncheckedCreateWithoutDormitoryInput> | FloorCreateWithoutDormitoryInput[] | FloorUncheckedCreateWithoutDormitoryInput[]
     connectOrCreate?: FloorCreateOrConnectWithoutDormitoryInput | FloorCreateOrConnectWithoutDormitoryInput[]
@@ -48086,6 +48223,20 @@ export namespace Prisma {
     deleteMany?: RoomScalarWhereInput | RoomScalarWhereInput[]
   }
 
+  export type AnnouncementRecipientUncheckedUpdateManyWithoutDormitoryNestedInput = {
+    create?: XOR<AnnouncementRecipientCreateWithoutDormitoryInput, AnnouncementRecipientUncheckedCreateWithoutDormitoryInput> | AnnouncementRecipientCreateWithoutDormitoryInput[] | AnnouncementRecipientUncheckedCreateWithoutDormitoryInput[]
+    connectOrCreate?: AnnouncementRecipientCreateOrConnectWithoutDormitoryInput | AnnouncementRecipientCreateOrConnectWithoutDormitoryInput[]
+    upsert?: AnnouncementRecipientUpsertWithWhereUniqueWithoutDormitoryInput | AnnouncementRecipientUpsertWithWhereUniqueWithoutDormitoryInput[]
+    createMany?: AnnouncementRecipientCreateManyDormitoryInputEnvelope
+    set?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    disconnect?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    delete?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    connect?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    update?: AnnouncementRecipientUpdateWithWhereUniqueWithoutDormitoryInput | AnnouncementRecipientUpdateWithWhereUniqueWithoutDormitoryInput[]
+    updateMany?: AnnouncementRecipientUpdateManyWithWhereWithoutDormitoryInput | AnnouncementRecipientUpdateManyWithWhereWithoutDormitoryInput[]
+    deleteMany?: AnnouncementRecipientScalarWhereInput | AnnouncementRecipientScalarWhereInput[]
+  }
+
   export type DormitoryCreateNestedOneWithoutFloorsInput = {
     create?: XOR<DormitoryCreateWithoutFloorsInput, DormitoryUncheckedCreateWithoutFloorsInput>
     connectOrCreate?: DormitoryCreateOrConnectWithoutFloorsInput
@@ -48106,6 +48257,13 @@ export namespace Prisma {
     connect?: FloorRoomAssignmentWhereUniqueInput | FloorRoomAssignmentWhereUniqueInput[]
   }
 
+  export type AnnouncementRecipientCreateNestedManyWithoutFloorInput = {
+    create?: XOR<AnnouncementRecipientCreateWithoutFloorInput, AnnouncementRecipientUncheckedCreateWithoutFloorInput> | AnnouncementRecipientCreateWithoutFloorInput[] | AnnouncementRecipientUncheckedCreateWithoutFloorInput[]
+    connectOrCreate?: AnnouncementRecipientCreateOrConnectWithoutFloorInput | AnnouncementRecipientCreateOrConnectWithoutFloorInput[]
+    createMany?: AnnouncementRecipientCreateManyFloorInputEnvelope
+    connect?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+  }
+
   export type RoomUncheckedCreateNestedManyWithoutFloorInput = {
     create?: XOR<RoomCreateWithoutFloorInput, RoomUncheckedCreateWithoutFloorInput> | RoomCreateWithoutFloorInput[] | RoomUncheckedCreateWithoutFloorInput[]
     connectOrCreate?: RoomCreateOrConnectWithoutFloorInput | RoomCreateOrConnectWithoutFloorInput[]
@@ -48118,6 +48276,13 @@ export namespace Prisma {
     connectOrCreate?: FloorRoomAssignmentCreateOrConnectWithoutFloorInput | FloorRoomAssignmentCreateOrConnectWithoutFloorInput[]
     createMany?: FloorRoomAssignmentCreateManyFloorInputEnvelope
     connect?: FloorRoomAssignmentWhereUniqueInput | FloorRoomAssignmentWhereUniqueInput[]
+  }
+
+  export type AnnouncementRecipientUncheckedCreateNestedManyWithoutFloorInput = {
+    create?: XOR<AnnouncementRecipientCreateWithoutFloorInput, AnnouncementRecipientUncheckedCreateWithoutFloorInput> | AnnouncementRecipientCreateWithoutFloorInput[] | AnnouncementRecipientUncheckedCreateWithoutFloorInput[]
+    connectOrCreate?: AnnouncementRecipientCreateOrConnectWithoutFloorInput | AnnouncementRecipientCreateOrConnectWithoutFloorInput[]
+    createMany?: AnnouncementRecipientCreateManyFloorInputEnvelope
+    connect?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -48164,6 +48329,20 @@ export namespace Prisma {
     deleteMany?: FloorRoomAssignmentScalarWhereInput | FloorRoomAssignmentScalarWhereInput[]
   }
 
+  export type AnnouncementRecipientUpdateManyWithoutFloorNestedInput = {
+    create?: XOR<AnnouncementRecipientCreateWithoutFloorInput, AnnouncementRecipientUncheckedCreateWithoutFloorInput> | AnnouncementRecipientCreateWithoutFloorInput[] | AnnouncementRecipientUncheckedCreateWithoutFloorInput[]
+    connectOrCreate?: AnnouncementRecipientCreateOrConnectWithoutFloorInput | AnnouncementRecipientCreateOrConnectWithoutFloorInput[]
+    upsert?: AnnouncementRecipientUpsertWithWhereUniqueWithoutFloorInput | AnnouncementRecipientUpsertWithWhereUniqueWithoutFloorInput[]
+    createMany?: AnnouncementRecipientCreateManyFloorInputEnvelope
+    set?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    disconnect?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    delete?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    connect?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    update?: AnnouncementRecipientUpdateWithWhereUniqueWithoutFloorInput | AnnouncementRecipientUpdateWithWhereUniqueWithoutFloorInput[]
+    updateMany?: AnnouncementRecipientUpdateManyWithWhereWithoutFloorInput | AnnouncementRecipientUpdateManyWithWhereWithoutFloorInput[]
+    deleteMany?: AnnouncementRecipientScalarWhereInput | AnnouncementRecipientScalarWhereInput[]
+  }
+
   export type RoomUncheckedUpdateManyWithoutFloorNestedInput = {
     create?: XOR<RoomCreateWithoutFloorInput, RoomUncheckedCreateWithoutFloorInput> | RoomCreateWithoutFloorInput[] | RoomUncheckedCreateWithoutFloorInput[]
     connectOrCreate?: RoomCreateOrConnectWithoutFloorInput | RoomCreateOrConnectWithoutFloorInput[]
@@ -48190,6 +48369,20 @@ export namespace Prisma {
     update?: FloorRoomAssignmentUpdateWithWhereUniqueWithoutFloorInput | FloorRoomAssignmentUpdateWithWhereUniqueWithoutFloorInput[]
     updateMany?: FloorRoomAssignmentUpdateManyWithWhereWithoutFloorInput | FloorRoomAssignmentUpdateManyWithWhereWithoutFloorInput[]
     deleteMany?: FloorRoomAssignmentScalarWhereInput | FloorRoomAssignmentScalarWhereInput[]
+  }
+
+  export type AnnouncementRecipientUncheckedUpdateManyWithoutFloorNestedInput = {
+    create?: XOR<AnnouncementRecipientCreateWithoutFloorInput, AnnouncementRecipientUncheckedCreateWithoutFloorInput> | AnnouncementRecipientCreateWithoutFloorInput[] | AnnouncementRecipientUncheckedCreateWithoutFloorInput[]
+    connectOrCreate?: AnnouncementRecipientCreateOrConnectWithoutFloorInput | AnnouncementRecipientCreateOrConnectWithoutFloorInput[]
+    upsert?: AnnouncementRecipientUpsertWithWhereUniqueWithoutFloorInput | AnnouncementRecipientUpsertWithWhereUniqueWithoutFloorInput[]
+    createMany?: AnnouncementRecipientCreateManyFloorInputEnvelope
+    set?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    disconnect?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    delete?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    connect?: AnnouncementRecipientWhereUniqueInput | AnnouncementRecipientWhereUniqueInput[]
+    update?: AnnouncementRecipientUpdateWithWhereUniqueWithoutFloorInput | AnnouncementRecipientUpdateWithWhereUniqueWithoutFloorInput[]
+    updateMany?: AnnouncementRecipientUpdateManyWithWhereWithoutFloorInput | AnnouncementRecipientUpdateManyWithWhereWithoutFloorInput[]
+    deleteMany?: AnnouncementRecipientScalarWhereInput | AnnouncementRecipientScalarWhereInput[]
   }
 
   export type RoomCreateroomEquipmentInput = {
@@ -49739,12 +49932,16 @@ export namespace Prisma {
     connect?: RoomWhereUniqueInput
   }
 
-  export type NullableIntFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
+  export type FloorCreateNestedOneWithoutAnnouncementRecipientsInput = {
+    create?: XOR<FloorCreateWithoutAnnouncementRecipientsInput, FloorUncheckedCreateWithoutAnnouncementRecipientsInput>
+    connectOrCreate?: FloorCreateOrConnectWithoutAnnouncementRecipientsInput
+    connect?: FloorWhereUniqueInput
+  }
+
+  export type DormitoryCreateNestedOneWithoutAnnouncementRecipientsInput = {
+    create?: XOR<DormitoryCreateWithoutAnnouncementRecipientsInput, DormitoryUncheckedCreateWithoutAnnouncementRecipientsInput>
+    connectOrCreate?: DormitoryCreateOrConnectWithoutAnnouncementRecipientsInput
+    connect?: DormitoryWhereUniqueInput
   }
 
   export type AnnouncementUpdateOneRequiredWithoutRecipientsNestedInput = {
@@ -49773,6 +49970,26 @@ export namespace Prisma {
     delete?: RoomWhereInput | boolean
     connect?: RoomWhereUniqueInput
     update?: XOR<XOR<RoomUpdateToOneWithWhereWithoutAnnouncementRecipientsInput, RoomUpdateWithoutAnnouncementRecipientsInput>, RoomUncheckedUpdateWithoutAnnouncementRecipientsInput>
+  }
+
+  export type FloorUpdateOneWithoutAnnouncementRecipientsNestedInput = {
+    create?: XOR<FloorCreateWithoutAnnouncementRecipientsInput, FloorUncheckedCreateWithoutAnnouncementRecipientsInput>
+    connectOrCreate?: FloorCreateOrConnectWithoutAnnouncementRecipientsInput
+    upsert?: FloorUpsertWithoutAnnouncementRecipientsInput
+    disconnect?: FloorWhereInput | boolean
+    delete?: FloorWhereInput | boolean
+    connect?: FloorWhereUniqueInput
+    update?: XOR<XOR<FloorUpdateToOneWithWhereWithoutAnnouncementRecipientsInput, FloorUpdateWithoutAnnouncementRecipientsInput>, FloorUncheckedUpdateWithoutAnnouncementRecipientsInput>
+  }
+
+  export type DormitoryUpdateOneWithoutAnnouncementRecipientsNestedInput = {
+    create?: XOR<DormitoryCreateWithoutAnnouncementRecipientsInput, DormitoryUncheckedCreateWithoutAnnouncementRecipientsInput>
+    connectOrCreate?: DormitoryCreateOrConnectWithoutAnnouncementRecipientsInput
+    upsert?: DormitoryUpsertWithoutAnnouncementRecipientsInput
+    disconnect?: DormitoryWhereInput | boolean
+    delete?: DormitoryWhereInput | boolean
+    connect?: DormitoryWhereUniqueInput
+    update?: XOR<XOR<DormitoryUpdateToOneWithWhereWithoutAnnouncementRecipientsInput, DormitoryUpdateWithoutAnnouncementRecipientsInput>, DormitoryUncheckedUpdateWithoutAnnouncementRecipientsInput>
   }
 
   export type UserCreateNestedOneWithoutCreatedConversationsInput = {
@@ -50590,33 +50807,6 @@ export namespace Prisma {
     _max?: NestedEnumNotificationPriorityFilter<$PrismaModel>
   }
 
-  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
-  }
-
-  export type NestedFloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
-  }
-
   export type NestedEnumMaintenanceCategoryFilter<$PrismaModel = never> = {
     equals?: $Enums.MaintenanceCategory | EnumMaintenanceCategoryFieldRefInput<$PrismaModel>
     in?: $Enums.MaintenanceCategory[] | ListEnumMaintenanceCategoryFieldRefInput<$PrismaModel>
@@ -50748,6 +50938,7 @@ export namespace Prisma {
     admins?: DormitoryAdminCreateNestedManyWithoutDormitoryInput
     managers?: DormitoryManagerCreateNestedManyWithoutDormitoryInput
     rooms?: RoomCreateNestedManyWithoutDormitoryInput
+    announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutDormitoryInput
   }
 
   export type DormitoryUncheckedCreateWithoutResidentsInput = {
@@ -50762,6 +50953,7 @@ export namespace Prisma {
     admins?: DormitoryAdminUncheckedCreateNestedManyWithoutDormitoryInput
     managers?: DormitoryManagerUncheckedCreateNestedManyWithoutDormitoryInput
     rooms?: RoomUncheckedCreateNestedManyWithoutDormitoryInput
+    announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutDormitoryInput
   }
 
   export type DormitoryCreateOrConnectWithoutResidentsInput = {
@@ -50868,17 +51060,19 @@ export namespace Prisma {
 
   export type AnnouncementRecipientCreateWithoutUserInput = {
     id?: string
-    floor?: number | null
     forEveryone?: boolean
     announcement: AnnouncementCreateNestedOneWithoutRecipientsInput
     room?: RoomCreateNestedOneWithoutAnnouncementRecipientsInput
+    floor?: FloorCreateNestedOneWithoutAnnouncementRecipientsInput
+    dormitory?: DormitoryCreateNestedOneWithoutAnnouncementRecipientsInput
   }
 
   export type AnnouncementRecipientUncheckedCreateWithoutUserInput = {
     id?: string
     announcementId: string
     roomId?: string | null
-    floor?: number | null
+    floorId?: string | null
+    dormitoryId?: string | null
     forEveryone?: boolean
   }
 
@@ -51526,6 +51720,7 @@ export namespace Prisma {
     admins?: DormitoryAdminUpdateManyWithoutDormitoryNestedInput
     managers?: DormitoryManagerUpdateManyWithoutDormitoryNestedInput
     rooms?: RoomUpdateManyWithoutDormitoryNestedInput
+    announcementRecipients?: AnnouncementRecipientUpdateManyWithoutDormitoryNestedInput
   }
 
   export type DormitoryUncheckedUpdateWithoutResidentsInput = {
@@ -51540,6 +51735,7 @@ export namespace Prisma {
     admins?: DormitoryAdminUncheckedUpdateManyWithoutDormitoryNestedInput
     managers?: DormitoryManagerUncheckedUpdateManyWithoutDormitoryNestedInput
     rooms?: RoomUncheckedUpdateManyWithoutDormitoryNestedInput
+    announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutDormitoryNestedInput
   }
 
   export type DormitoryManagerUpsertWithWhereUniqueWithoutUserInput = {
@@ -51671,7 +51867,8 @@ export namespace Prisma {
     announcementId?: StringFilter<"AnnouncementRecipient"> | string
     userId?: StringNullableFilter<"AnnouncementRecipient"> | string | null
     roomId?: StringNullableFilter<"AnnouncementRecipient"> | string | null
-    floor?: IntNullableFilter<"AnnouncementRecipient"> | number | null
+    floorId?: StringNullableFilter<"AnnouncementRecipient"> | string | null
+    dormitoryId?: StringNullableFilter<"AnnouncementRecipient"> | string | null
     forEveryone?: BoolFilter<"AnnouncementRecipient"> | boolean
   }
 
@@ -52173,6 +52370,7 @@ export namespace Prisma {
     managers?: DormitoryManagerCreateNestedManyWithoutDormitoryInput
     residents?: UserCreateNestedManyWithoutDormitoryInput
     rooms?: RoomCreateNestedManyWithoutDormitoryInput
+    announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutDormitoryInput
   }
 
   export type DormitoryUncheckedCreateWithoutAdminsInput = {
@@ -52187,6 +52385,7 @@ export namespace Prisma {
     managers?: DormitoryManagerUncheckedCreateNestedManyWithoutDormitoryInput
     residents?: UserUncheckedCreateNestedManyWithoutDormitoryInput
     rooms?: RoomUncheckedCreateNestedManyWithoutDormitoryInput
+    announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutDormitoryInput
   }
 
   export type DormitoryCreateOrConnectWithoutAdminsInput = {
@@ -52308,6 +52507,7 @@ export namespace Prisma {
     managers?: DormitoryManagerUpdateManyWithoutDormitoryNestedInput
     residents?: UserUpdateManyWithoutDormitoryNestedInput
     rooms?: RoomUpdateManyWithoutDormitoryNestedInput
+    announcementRecipients?: AnnouncementRecipientUpdateManyWithoutDormitoryNestedInput
   }
 
   export type DormitoryUncheckedUpdateWithoutAdminsInput = {
@@ -52322,6 +52522,7 @@ export namespace Prisma {
     managers?: DormitoryManagerUncheckedUpdateManyWithoutDormitoryNestedInput
     residents?: UserUncheckedUpdateManyWithoutDormitoryNestedInput
     rooms?: RoomUncheckedUpdateManyWithoutDormitoryNestedInput
+    announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutDormitoryNestedInput
   }
 
   export type DormitoryCreateWithoutManagersInput = {
@@ -52336,6 +52537,7 @@ export namespace Prisma {
     admins?: DormitoryAdminCreateNestedManyWithoutDormitoryInput
     residents?: UserCreateNestedManyWithoutDormitoryInput
     rooms?: RoomCreateNestedManyWithoutDormitoryInput
+    announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutDormitoryInput
   }
 
   export type DormitoryUncheckedCreateWithoutManagersInput = {
@@ -52350,6 +52552,7 @@ export namespace Prisma {
     admins?: DormitoryAdminUncheckedCreateNestedManyWithoutDormitoryInput
     residents?: UserUncheckedCreateNestedManyWithoutDormitoryInput
     rooms?: RoomUncheckedCreateNestedManyWithoutDormitoryInput
+    announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutDormitoryInput
   }
 
   export type DormitoryCreateOrConnectWithoutManagersInput = {
@@ -52465,6 +52668,7 @@ export namespace Prisma {
     admins?: DormitoryAdminUpdateManyWithoutDormitoryNestedInput
     residents?: UserUpdateManyWithoutDormitoryNestedInput
     rooms?: RoomUpdateManyWithoutDormitoryNestedInput
+    announcementRecipients?: AnnouncementRecipientUpdateManyWithoutDormitoryNestedInput
   }
 
   export type DormitoryUncheckedUpdateWithoutManagersInput = {
@@ -52479,6 +52683,7 @@ export namespace Prisma {
     admins?: DormitoryAdminUncheckedUpdateManyWithoutDormitoryNestedInput
     residents?: UserUncheckedUpdateManyWithoutDormitoryNestedInput
     rooms?: RoomUncheckedUpdateManyWithoutDormitoryNestedInput
+    announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutDormitoryNestedInput
   }
 
   export type UserUpsertWithoutDormitoryManagerAssignmentsInput = {
@@ -53077,6 +53282,7 @@ export namespace Prisma {
     floorNumber: number
     rooms?: RoomCreateNestedManyWithoutFloorInput
     floorRoomAssignments?: FloorRoomAssignmentCreateNestedManyWithoutFloorInput
+    announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutFloorInput
   }
 
   export type FloorUncheckedCreateWithoutDormitoryInput = {
@@ -53084,6 +53290,7 @@ export namespace Prisma {
     floorNumber: number
     rooms?: RoomUncheckedCreateNestedManyWithoutFloorInput
     floorRoomAssignments?: FloorRoomAssignmentUncheckedCreateNestedManyWithoutFloorInput
+    announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutFloorInput
   }
 
   export type FloorCreateOrConnectWithoutDormitoryInput = {
@@ -53280,6 +53487,34 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type AnnouncementRecipientCreateWithoutDormitoryInput = {
+    id?: string
+    forEveryone?: boolean
+    announcement: AnnouncementCreateNestedOneWithoutRecipientsInput
+    user?: UserCreateNestedOneWithoutAnnouncementRecipientsInput
+    room?: RoomCreateNestedOneWithoutAnnouncementRecipientsInput
+    floor?: FloorCreateNestedOneWithoutAnnouncementRecipientsInput
+  }
+
+  export type AnnouncementRecipientUncheckedCreateWithoutDormitoryInput = {
+    id?: string
+    announcementId: string
+    userId?: string | null
+    roomId?: string | null
+    floorId?: string | null
+    forEveryone?: boolean
+  }
+
+  export type AnnouncementRecipientCreateOrConnectWithoutDormitoryInput = {
+    where: AnnouncementRecipientWhereUniqueInput
+    create: XOR<AnnouncementRecipientCreateWithoutDormitoryInput, AnnouncementRecipientUncheckedCreateWithoutDormitoryInput>
+  }
+
+  export type AnnouncementRecipientCreateManyDormitoryInputEnvelope = {
+    data: AnnouncementRecipientCreateManyDormitoryInput | AnnouncementRecipientCreateManyDormitoryInput[]
+    skipDuplicates?: boolean
+  }
+
   export type FloorUpsertWithWhereUniqueWithoutDormitoryInput = {
     where: FloorWhereUniqueInput
     update: XOR<FloorUpdateWithoutDormitoryInput, FloorUncheckedUpdateWithoutDormitoryInput>
@@ -53412,6 +53647,22 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Room"> | Date | string
   }
 
+  export type AnnouncementRecipientUpsertWithWhereUniqueWithoutDormitoryInput = {
+    where: AnnouncementRecipientWhereUniqueInput
+    update: XOR<AnnouncementRecipientUpdateWithoutDormitoryInput, AnnouncementRecipientUncheckedUpdateWithoutDormitoryInput>
+    create: XOR<AnnouncementRecipientCreateWithoutDormitoryInput, AnnouncementRecipientUncheckedCreateWithoutDormitoryInput>
+  }
+
+  export type AnnouncementRecipientUpdateWithWhereUniqueWithoutDormitoryInput = {
+    where: AnnouncementRecipientWhereUniqueInput
+    data: XOR<AnnouncementRecipientUpdateWithoutDormitoryInput, AnnouncementRecipientUncheckedUpdateWithoutDormitoryInput>
+  }
+
+  export type AnnouncementRecipientUpdateManyWithWhereWithoutDormitoryInput = {
+    where: AnnouncementRecipientScalarWhereInput
+    data: XOR<AnnouncementRecipientUpdateManyMutationInput, AnnouncementRecipientUncheckedUpdateManyWithoutDormitoryInput>
+  }
+
   export type DormitoryCreateWithoutFloorsInput = {
     id?: string
     name: string
@@ -53424,6 +53675,7 @@ export namespace Prisma {
     managers?: DormitoryManagerCreateNestedManyWithoutDormitoryInput
     residents?: UserCreateNestedManyWithoutDormitoryInput
     rooms?: RoomCreateNestedManyWithoutDormitoryInput
+    announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutDormitoryInput
   }
 
   export type DormitoryUncheckedCreateWithoutFloorsInput = {
@@ -53438,6 +53690,7 @@ export namespace Prisma {
     managers?: DormitoryManagerUncheckedCreateNestedManyWithoutDormitoryInput
     residents?: UserUncheckedCreateNestedManyWithoutDormitoryInput
     rooms?: RoomUncheckedCreateNestedManyWithoutDormitoryInput
+    announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutDormitoryInput
   }
 
   export type DormitoryCreateOrConnectWithoutFloorsInput = {
@@ -53517,6 +53770,34 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type AnnouncementRecipientCreateWithoutFloorInput = {
+    id?: string
+    forEveryone?: boolean
+    announcement: AnnouncementCreateNestedOneWithoutRecipientsInput
+    user?: UserCreateNestedOneWithoutAnnouncementRecipientsInput
+    room?: RoomCreateNestedOneWithoutAnnouncementRecipientsInput
+    dormitory?: DormitoryCreateNestedOneWithoutAnnouncementRecipientsInput
+  }
+
+  export type AnnouncementRecipientUncheckedCreateWithoutFloorInput = {
+    id?: string
+    announcementId: string
+    userId?: string | null
+    roomId?: string | null
+    dormitoryId?: string | null
+    forEveryone?: boolean
+  }
+
+  export type AnnouncementRecipientCreateOrConnectWithoutFloorInput = {
+    where: AnnouncementRecipientWhereUniqueInput
+    create: XOR<AnnouncementRecipientCreateWithoutFloorInput, AnnouncementRecipientUncheckedCreateWithoutFloorInput>
+  }
+
+  export type AnnouncementRecipientCreateManyFloorInputEnvelope = {
+    data: AnnouncementRecipientCreateManyFloorInput | AnnouncementRecipientCreateManyFloorInput[]
+    skipDuplicates?: boolean
+  }
+
   export type DormitoryUpsertWithoutFloorsInput = {
     update: XOR<DormitoryUpdateWithoutFloorsInput, DormitoryUncheckedUpdateWithoutFloorsInput>
     create: XOR<DormitoryCreateWithoutFloorsInput, DormitoryUncheckedCreateWithoutFloorsInput>
@@ -53540,6 +53821,7 @@ export namespace Prisma {
     managers?: DormitoryManagerUpdateManyWithoutDormitoryNestedInput
     residents?: UserUpdateManyWithoutDormitoryNestedInput
     rooms?: RoomUpdateManyWithoutDormitoryNestedInput
+    announcementRecipients?: AnnouncementRecipientUpdateManyWithoutDormitoryNestedInput
   }
 
   export type DormitoryUncheckedUpdateWithoutFloorsInput = {
@@ -53554,6 +53836,7 @@ export namespace Prisma {
     managers?: DormitoryManagerUncheckedUpdateManyWithoutDormitoryNestedInput
     residents?: UserUncheckedUpdateManyWithoutDormitoryNestedInput
     rooms?: RoomUncheckedUpdateManyWithoutDormitoryNestedInput
+    announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutDormitoryNestedInput
   }
 
   export type RoomUpsertWithWhereUniqueWithoutFloorInput = {
@@ -53598,11 +53881,28 @@ export namespace Prisma {
     roomNumbers?: IntNullableListFilter<"FloorRoomAssignment">
   }
 
+  export type AnnouncementRecipientUpsertWithWhereUniqueWithoutFloorInput = {
+    where: AnnouncementRecipientWhereUniqueInput
+    update: XOR<AnnouncementRecipientUpdateWithoutFloorInput, AnnouncementRecipientUncheckedUpdateWithoutFloorInput>
+    create: XOR<AnnouncementRecipientCreateWithoutFloorInput, AnnouncementRecipientUncheckedCreateWithoutFloorInput>
+  }
+
+  export type AnnouncementRecipientUpdateWithWhereUniqueWithoutFloorInput = {
+    where: AnnouncementRecipientWhereUniqueInput
+    data: XOR<AnnouncementRecipientUpdateWithoutFloorInput, AnnouncementRecipientUncheckedUpdateWithoutFloorInput>
+  }
+
+  export type AnnouncementRecipientUpdateManyWithWhereWithoutFloorInput = {
+    where: AnnouncementRecipientScalarWhereInput
+    data: XOR<AnnouncementRecipientUpdateManyMutationInput, AnnouncementRecipientUncheckedUpdateManyWithoutFloorInput>
+  }
+
   export type FloorCreateWithoutRoomsInput = {
     id?: string
     floorNumber: number
     dormitory: DormitoryCreateNestedOneWithoutFloorsInput
     floorRoomAssignments?: FloorRoomAssignmentCreateNestedManyWithoutFloorInput
+    announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutFloorInput
   }
 
   export type FloorUncheckedCreateWithoutRoomsInput = {
@@ -53610,6 +53910,7 @@ export namespace Prisma {
     floorNumber: number
     dormitoryId: string
     floorRoomAssignments?: FloorRoomAssignmentUncheckedCreateNestedManyWithoutFloorInput
+    announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutFloorInput
   }
 
   export type FloorCreateOrConnectWithoutRoomsInput = {
@@ -53629,6 +53930,7 @@ export namespace Prisma {
     admins?: DormitoryAdminCreateNestedManyWithoutDormitoryInput
     managers?: DormitoryManagerCreateNestedManyWithoutDormitoryInput
     residents?: UserCreateNestedManyWithoutDormitoryInput
+    announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutDormitoryInput
   }
 
   export type DormitoryUncheckedCreateWithoutRoomsInput = {
@@ -53643,6 +53945,7 @@ export namespace Prisma {
     admins?: DormitoryAdminUncheckedCreateNestedManyWithoutDormitoryInput
     managers?: DormitoryManagerUncheckedCreateNestedManyWithoutDormitoryInput
     residents?: UserUncheckedCreateNestedManyWithoutDormitoryInput
+    announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutDormitoryInput
   }
 
   export type DormitoryCreateOrConnectWithoutRoomsInput = {
@@ -53716,17 +54019,19 @@ export namespace Prisma {
 
   export type AnnouncementRecipientCreateWithoutRoomInput = {
     id?: string
-    floor?: number | null
     forEveryone?: boolean
     announcement: AnnouncementCreateNestedOneWithoutRecipientsInput
     user?: UserCreateNestedOneWithoutAnnouncementRecipientsInput
+    floor?: FloorCreateNestedOneWithoutAnnouncementRecipientsInput
+    dormitory?: DormitoryCreateNestedOneWithoutAnnouncementRecipientsInput
   }
 
   export type AnnouncementRecipientUncheckedCreateWithoutRoomInput = {
     id?: string
     announcementId: string
     userId?: string | null
-    floor?: number | null
+    floorId?: string | null
+    dormitoryId?: string | null
     forEveryone?: boolean
   }
 
@@ -54030,6 +54335,7 @@ export namespace Prisma {
     floorNumber?: IntFieldUpdateOperationsInput | number
     dormitory?: DormitoryUpdateOneRequiredWithoutFloorsNestedInput
     floorRoomAssignments?: FloorRoomAssignmentUpdateManyWithoutFloorNestedInput
+    announcementRecipients?: AnnouncementRecipientUpdateManyWithoutFloorNestedInput
   }
 
   export type FloorUncheckedUpdateWithoutRoomsInput = {
@@ -54037,6 +54343,7 @@ export namespace Prisma {
     floorNumber?: IntFieldUpdateOperationsInput | number
     dormitoryId?: StringFieldUpdateOperationsInput | string
     floorRoomAssignments?: FloorRoomAssignmentUncheckedUpdateManyWithoutFloorNestedInput
+    announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutFloorNestedInput
   }
 
   export type DormitoryUpsertWithoutRoomsInput = {
@@ -54062,6 +54369,7 @@ export namespace Prisma {
     admins?: DormitoryAdminUpdateManyWithoutDormitoryNestedInput
     managers?: DormitoryManagerUpdateManyWithoutDormitoryNestedInput
     residents?: UserUpdateManyWithoutDormitoryNestedInput
+    announcementRecipients?: AnnouncementRecipientUpdateManyWithoutDormitoryNestedInput
   }
 
   export type DormitoryUncheckedUpdateWithoutRoomsInput = {
@@ -54076,6 +54384,7 @@ export namespace Prisma {
     admins?: DormitoryAdminUncheckedUpdateManyWithoutDormitoryNestedInput
     managers?: DormitoryManagerUncheckedUpdateManyWithoutDormitoryNestedInput
     residents?: UserUncheckedUpdateManyWithoutDormitoryNestedInput
+    announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutDormitoryNestedInput
   }
 
   export type RoomTypeUpsertWithoutRoomsInput = {
@@ -54467,6 +54776,7 @@ export namespace Prisma {
     floorNumber: number
     dormitory: DormitoryCreateNestedOneWithoutFloorsInput
     rooms?: RoomCreateNestedManyWithoutFloorInput
+    announcementRecipients?: AnnouncementRecipientCreateNestedManyWithoutFloorInput
   }
 
   export type FloorUncheckedCreateWithoutFloorRoomAssignmentsInput = {
@@ -54474,6 +54784,7 @@ export namespace Prisma {
     floorNumber: number
     dormitoryId: string
     rooms?: RoomUncheckedCreateNestedManyWithoutFloorInput
+    announcementRecipients?: AnnouncementRecipientUncheckedCreateNestedManyWithoutFloorInput
   }
 
   export type FloorCreateOrConnectWithoutFloorRoomAssignmentsInput = {
@@ -54530,6 +54841,7 @@ export namespace Prisma {
     floorNumber?: IntFieldUpdateOperationsInput | number
     dormitory?: DormitoryUpdateOneRequiredWithoutFloorsNestedInput
     rooms?: RoomUpdateManyWithoutFloorNestedInput
+    announcementRecipients?: AnnouncementRecipientUpdateManyWithoutFloorNestedInput
   }
 
   export type FloorUncheckedUpdateWithoutFloorRoomAssignmentsInput = {
@@ -54537,6 +54849,7 @@ export namespace Prisma {
     floorNumber?: IntFieldUpdateOperationsInput | number
     dormitoryId?: StringFieldUpdateOperationsInput | string
     rooms?: RoomUncheckedUpdateManyWithoutFloorNestedInput
+    announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutFloorNestedInput
   }
 
   export type RoomTypeUpsertWithoutFloorRoomAssignmentsInput = {
@@ -58267,17 +58580,19 @@ export namespace Prisma {
 
   export type AnnouncementRecipientCreateWithoutAnnouncementInput = {
     id?: string
-    floor?: number | null
     forEveryone?: boolean
     user?: UserCreateNestedOneWithoutAnnouncementRecipientsInput
     room?: RoomCreateNestedOneWithoutAnnouncementRecipientsInput
+    floor?: FloorCreateNestedOneWithoutAnnouncementRecipientsInput
+    dormitory?: DormitoryCreateNestedOneWithoutAnnouncementRecipientsInput
   }
 
   export type AnnouncementRecipientUncheckedCreateWithoutAnnouncementInput = {
     id?: string
     userId?: string | null
     roomId?: string | null
-    floor?: number | null
+    floorId?: string | null
+    dormitoryId?: string | null
     forEveryone?: boolean
   }
 
@@ -58641,6 +58956,62 @@ export namespace Prisma {
     create: XOR<RoomCreateWithoutAnnouncementRecipientsInput, RoomUncheckedCreateWithoutAnnouncementRecipientsInput>
   }
 
+  export type FloorCreateWithoutAnnouncementRecipientsInput = {
+    id?: string
+    floorNumber: number
+    dormitory: DormitoryCreateNestedOneWithoutFloorsInput
+    rooms?: RoomCreateNestedManyWithoutFloorInput
+    floorRoomAssignments?: FloorRoomAssignmentCreateNestedManyWithoutFloorInput
+  }
+
+  export type FloorUncheckedCreateWithoutAnnouncementRecipientsInput = {
+    id?: string
+    floorNumber: number
+    dormitoryId: string
+    rooms?: RoomUncheckedCreateNestedManyWithoutFloorInput
+    floorRoomAssignments?: FloorRoomAssignmentUncheckedCreateNestedManyWithoutFloorInput
+  }
+
+  export type FloorCreateOrConnectWithoutAnnouncementRecipientsInput = {
+    where: FloorWhereUniqueInput
+    create: XOR<FloorCreateWithoutAnnouncementRecipientsInput, FloorUncheckedCreateWithoutAnnouncementRecipientsInput>
+  }
+
+  export type DormitoryCreateWithoutAnnouncementRecipientsInput = {
+    id?: string
+    name: string
+    address: string
+    groundFloorPhoneNumber: string
+    status?: string
+    photos?: DormitoryCreatephotosInput | string[]
+    createdAt?: Date | string
+    floors?: FloorCreateNestedManyWithoutDormitoryInput
+    admins?: DormitoryAdminCreateNestedManyWithoutDormitoryInput
+    managers?: DormitoryManagerCreateNestedManyWithoutDormitoryInput
+    residents?: UserCreateNestedManyWithoutDormitoryInput
+    rooms?: RoomCreateNestedManyWithoutDormitoryInput
+  }
+
+  export type DormitoryUncheckedCreateWithoutAnnouncementRecipientsInput = {
+    id?: string
+    name: string
+    address: string
+    groundFloorPhoneNumber: string
+    status?: string
+    photos?: DormitoryCreatephotosInput | string[]
+    createdAt?: Date | string
+    floors?: FloorUncheckedCreateNestedManyWithoutDormitoryInput
+    admins?: DormitoryAdminUncheckedCreateNestedManyWithoutDormitoryInput
+    managers?: DormitoryManagerUncheckedCreateNestedManyWithoutDormitoryInput
+    residents?: UserUncheckedCreateNestedManyWithoutDormitoryInput
+    rooms?: RoomUncheckedCreateNestedManyWithoutDormitoryInput
+  }
+
+  export type DormitoryCreateOrConnectWithoutAnnouncementRecipientsInput = {
+    where: DormitoryWhereUniqueInput
+    create: XOR<DormitoryCreateWithoutAnnouncementRecipientsInput, DormitoryUncheckedCreateWithoutAnnouncementRecipientsInput>
+  }
+
   export type AnnouncementUpsertWithoutRecipientsInput = {
     update: XOR<AnnouncementUpdateWithoutRecipientsInput, AnnouncementUncheckedUpdateWithoutRecipientsInput>
     create: XOR<AnnouncementCreateWithoutRecipientsInput, AnnouncementUncheckedCreateWithoutRecipientsInput>
@@ -58814,6 +59185,74 @@ export namespace Prisma {
     residents?: UserUncheckedUpdateManyWithoutRoomNestedInput
     prices?: PriceUncheckedUpdateManyWithoutRoomNestedInput
     maintenanceReports?: MaintenanceReportUncheckedUpdateManyWithoutRoomNestedInput
+  }
+
+  export type FloorUpsertWithoutAnnouncementRecipientsInput = {
+    update: XOR<FloorUpdateWithoutAnnouncementRecipientsInput, FloorUncheckedUpdateWithoutAnnouncementRecipientsInput>
+    create: XOR<FloorCreateWithoutAnnouncementRecipientsInput, FloorUncheckedCreateWithoutAnnouncementRecipientsInput>
+    where?: FloorWhereInput
+  }
+
+  export type FloorUpdateToOneWithWhereWithoutAnnouncementRecipientsInput = {
+    where?: FloorWhereInput
+    data: XOR<FloorUpdateWithoutAnnouncementRecipientsInput, FloorUncheckedUpdateWithoutAnnouncementRecipientsInput>
+  }
+
+  export type FloorUpdateWithoutAnnouncementRecipientsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    floorNumber?: IntFieldUpdateOperationsInput | number
+    dormitory?: DormitoryUpdateOneRequiredWithoutFloorsNestedInput
+    rooms?: RoomUpdateManyWithoutFloorNestedInput
+    floorRoomAssignments?: FloorRoomAssignmentUpdateManyWithoutFloorNestedInput
+  }
+
+  export type FloorUncheckedUpdateWithoutAnnouncementRecipientsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    floorNumber?: IntFieldUpdateOperationsInput | number
+    dormitoryId?: StringFieldUpdateOperationsInput | string
+    rooms?: RoomUncheckedUpdateManyWithoutFloorNestedInput
+    floorRoomAssignments?: FloorRoomAssignmentUncheckedUpdateManyWithoutFloorNestedInput
+  }
+
+  export type DormitoryUpsertWithoutAnnouncementRecipientsInput = {
+    update: XOR<DormitoryUpdateWithoutAnnouncementRecipientsInput, DormitoryUncheckedUpdateWithoutAnnouncementRecipientsInput>
+    create: XOR<DormitoryCreateWithoutAnnouncementRecipientsInput, DormitoryUncheckedCreateWithoutAnnouncementRecipientsInput>
+    where?: DormitoryWhereInput
+  }
+
+  export type DormitoryUpdateToOneWithWhereWithoutAnnouncementRecipientsInput = {
+    where?: DormitoryWhereInput
+    data: XOR<DormitoryUpdateWithoutAnnouncementRecipientsInput, DormitoryUncheckedUpdateWithoutAnnouncementRecipientsInput>
+  }
+
+  export type DormitoryUpdateWithoutAnnouncementRecipientsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    groundFloorPhoneNumber?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    photos?: DormitoryUpdatephotosInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    floors?: FloorUpdateManyWithoutDormitoryNestedInput
+    admins?: DormitoryAdminUpdateManyWithoutDormitoryNestedInput
+    managers?: DormitoryManagerUpdateManyWithoutDormitoryNestedInput
+    residents?: UserUpdateManyWithoutDormitoryNestedInput
+    rooms?: RoomUpdateManyWithoutDormitoryNestedInput
+  }
+
+  export type DormitoryUncheckedUpdateWithoutAnnouncementRecipientsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    groundFloorPhoneNumber?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    photos?: DormitoryUpdatephotosInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    floors?: FloorUncheckedUpdateManyWithoutDormitoryNestedInput
+    admins?: DormitoryAdminUncheckedUpdateManyWithoutDormitoryNestedInput
+    managers?: DormitoryManagerUncheckedUpdateManyWithoutDormitoryNestedInput
+    residents?: UserUncheckedUpdateManyWithoutDormitoryNestedInput
+    rooms?: RoomUncheckedUpdateManyWithoutDormitoryNestedInput
   }
 
   export type UserCreateWithoutCreatedConversationsInput = {
@@ -60476,7 +60915,8 @@ export namespace Prisma {
     id?: string
     announcementId: string
     roomId?: string | null
-    floor?: number | null
+    floorId?: string | null
+    dormitoryId?: string | null
     forEveryone?: boolean
   }
 
@@ -60781,17 +61221,19 @@ export namespace Prisma {
 
   export type AnnouncementRecipientUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    floor?: NullableIntFieldUpdateOperationsInput | number | null
     forEveryone?: BoolFieldUpdateOperationsInput | boolean
     announcement?: AnnouncementUpdateOneRequiredWithoutRecipientsNestedInput
     room?: RoomUpdateOneWithoutAnnouncementRecipientsNestedInput
+    floor?: FloorUpdateOneWithoutAnnouncementRecipientsNestedInput
+    dormitory?: DormitoryUpdateOneWithoutAnnouncementRecipientsNestedInput
   }
 
   export type AnnouncementRecipientUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     announcementId?: StringFieldUpdateOperationsInput | string
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
-    floor?: NullableIntFieldUpdateOperationsInput | number | null
+    floorId?: NullableStringFieldUpdateOperationsInput | string | null
+    dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
     forEveryone?: BoolFieldUpdateOperationsInput | boolean
   }
 
@@ -60799,7 +61241,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     announcementId?: StringFieldUpdateOperationsInput | string
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
-    floor?: NullableIntFieldUpdateOperationsInput | number | null
+    floorId?: NullableStringFieldUpdateOperationsInput | string | null
+    dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
     forEveryone?: BoolFieldUpdateOperationsInput | boolean
   }
 
@@ -61434,11 +61877,21 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type AnnouncementRecipientCreateManyDormitoryInput = {
+    id?: string
+    announcementId: string
+    userId?: string | null
+    roomId?: string | null
+    floorId?: string | null
+    forEveryone?: boolean
+  }
+
   export type FloorUpdateWithoutDormitoryInput = {
     id?: StringFieldUpdateOperationsInput | string
     floorNumber?: IntFieldUpdateOperationsInput | number
     rooms?: RoomUpdateManyWithoutFloorNestedInput
     floorRoomAssignments?: FloorRoomAssignmentUpdateManyWithoutFloorNestedInput
+    announcementRecipients?: AnnouncementRecipientUpdateManyWithoutFloorNestedInput
   }
 
   export type FloorUncheckedUpdateWithoutDormitoryInput = {
@@ -61446,6 +61899,7 @@ export namespace Prisma {
     floorNumber?: IntFieldUpdateOperationsInput | number
     rooms?: RoomUncheckedUpdateManyWithoutFloorNestedInput
     floorRoomAssignments?: FloorRoomAssignmentUncheckedUpdateManyWithoutFloorNestedInput
+    announcementRecipients?: AnnouncementRecipientUncheckedUpdateManyWithoutFloorNestedInput
   }
 
   export type FloorUncheckedUpdateManyWithoutDormitoryInput = {
@@ -61644,6 +62098,33 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type AnnouncementRecipientUpdateWithoutDormitoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    forEveryone?: BoolFieldUpdateOperationsInput | boolean
+    announcement?: AnnouncementUpdateOneRequiredWithoutRecipientsNestedInput
+    user?: UserUpdateOneWithoutAnnouncementRecipientsNestedInput
+    room?: RoomUpdateOneWithoutAnnouncementRecipientsNestedInput
+    floor?: FloorUpdateOneWithoutAnnouncementRecipientsNestedInput
+  }
+
+  export type AnnouncementRecipientUncheckedUpdateWithoutDormitoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    announcementId?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    floorId?: NullableStringFieldUpdateOperationsInput | string | null
+    forEveryone?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type AnnouncementRecipientUncheckedUpdateManyWithoutDormitoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    announcementId?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    floorId?: NullableStringFieldUpdateOperationsInput | string | null
+    forEveryone?: BoolFieldUpdateOperationsInput | boolean
+  }
+
   export type RoomCreateManyFloorInput = {
     id?: string
     number: string
@@ -61661,6 +62142,15 @@ export namespace Prisma {
     id?: string
     roomTypeId: string
     roomNumbers?: FloorRoomAssignmentCreateroomNumbersInput | number[]
+  }
+
+  export type AnnouncementRecipientCreateManyFloorInput = {
+    id?: string
+    announcementId: string
+    userId?: string | null
+    roomId?: string | null
+    dormitoryId?: string | null
+    forEveryone?: boolean
   }
 
   export type RoomUpdateWithoutFloorInput = {
@@ -61734,11 +62224,39 @@ export namespace Prisma {
     roomNumbers?: FloorRoomAssignmentUpdateroomNumbersInput | number[]
   }
 
+  export type AnnouncementRecipientUpdateWithoutFloorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    forEveryone?: BoolFieldUpdateOperationsInput | boolean
+    announcement?: AnnouncementUpdateOneRequiredWithoutRecipientsNestedInput
+    user?: UserUpdateOneWithoutAnnouncementRecipientsNestedInput
+    room?: RoomUpdateOneWithoutAnnouncementRecipientsNestedInput
+    dormitory?: DormitoryUpdateOneWithoutAnnouncementRecipientsNestedInput
+  }
+
+  export type AnnouncementRecipientUncheckedUpdateWithoutFloorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    announcementId?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
+    forEveryone?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type AnnouncementRecipientUncheckedUpdateManyWithoutFloorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    announcementId?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    roomId?: NullableStringFieldUpdateOperationsInput | string | null
+    dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
+    forEveryone?: BoolFieldUpdateOperationsInput | boolean
+  }
+
   export type AnnouncementRecipientCreateManyRoomInput = {
     id?: string
     announcementId: string
     userId?: string | null
-    floor?: number | null
+    floorId?: string | null
+    dormitoryId?: string | null
     forEveryone?: boolean
   }
 
@@ -61829,17 +62347,19 @@ export namespace Prisma {
 
   export type AnnouncementRecipientUpdateWithoutRoomInput = {
     id?: StringFieldUpdateOperationsInput | string
-    floor?: NullableIntFieldUpdateOperationsInput | number | null
     forEveryone?: BoolFieldUpdateOperationsInput | boolean
     announcement?: AnnouncementUpdateOneRequiredWithoutRecipientsNestedInput
     user?: UserUpdateOneWithoutAnnouncementRecipientsNestedInput
+    floor?: FloorUpdateOneWithoutAnnouncementRecipientsNestedInput
+    dormitory?: DormitoryUpdateOneWithoutAnnouncementRecipientsNestedInput
   }
 
   export type AnnouncementRecipientUncheckedUpdateWithoutRoomInput = {
     id?: StringFieldUpdateOperationsInput | string
     announcementId?: StringFieldUpdateOperationsInput | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
-    floor?: NullableIntFieldUpdateOperationsInput | number | null
+    floorId?: NullableStringFieldUpdateOperationsInput | string | null
+    dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
     forEveryone?: BoolFieldUpdateOperationsInput | boolean
   }
 
@@ -61847,7 +62367,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     announcementId?: StringFieldUpdateOperationsInput | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
-    floor?: NullableIntFieldUpdateOperationsInput | number | null
+    floorId?: NullableStringFieldUpdateOperationsInput | string | null
+    dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
     forEveryone?: BoolFieldUpdateOperationsInput | boolean
   }
 
@@ -63210,7 +63731,8 @@ export namespace Prisma {
     id?: string
     userId?: string | null
     roomId?: string | null
-    floor?: number | null
+    floorId?: string | null
+    dormitoryId?: string | null
     forEveryone?: boolean
   }
 
@@ -63234,17 +63756,19 @@ export namespace Prisma {
 
   export type AnnouncementRecipientUpdateWithoutAnnouncementInput = {
     id?: StringFieldUpdateOperationsInput | string
-    floor?: NullableIntFieldUpdateOperationsInput | number | null
     forEveryone?: BoolFieldUpdateOperationsInput | boolean
     user?: UserUpdateOneWithoutAnnouncementRecipientsNestedInput
     room?: RoomUpdateOneWithoutAnnouncementRecipientsNestedInput
+    floor?: FloorUpdateOneWithoutAnnouncementRecipientsNestedInput
+    dormitory?: DormitoryUpdateOneWithoutAnnouncementRecipientsNestedInput
   }
 
   export type AnnouncementRecipientUncheckedUpdateWithoutAnnouncementInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
-    floor?: NullableIntFieldUpdateOperationsInput | number | null
+    floorId?: NullableStringFieldUpdateOperationsInput | string | null
+    dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
     forEveryone?: BoolFieldUpdateOperationsInput | boolean
   }
 
@@ -63252,7 +63776,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     roomId?: NullableStringFieldUpdateOperationsInput | string | null
-    floor?: NullableIntFieldUpdateOperationsInput | number | null
+    floorId?: NullableStringFieldUpdateOperationsInput | string | null
+    dormitoryId?: NullableStringFieldUpdateOperationsInput | string | null
     forEveryone?: BoolFieldUpdateOperationsInput | boolean
   }
 

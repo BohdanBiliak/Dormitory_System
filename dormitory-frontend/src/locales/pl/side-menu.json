@@ -26,8 +26,6 @@
     "signin": "Zaloguj się",
     "signIn": "Zaloguj się",
     "logout": "Wyloguj",
-    "loggingOut": "Wylogowywanie...",
-    "translateApp": "Przetłumacz aplikację",
-    "currentLanguage": "Aktualny"
+    "loggingOut": "Wylogowywanie..."
   }
 }

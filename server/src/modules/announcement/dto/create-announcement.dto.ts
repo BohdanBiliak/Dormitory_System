@@ -4,9 +4,10 @@ import {
   IsOptional,
   IsArray,
   IsBoolean,
-  IsInt,
+  ValidateIf,
 } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
+import { Transform } from "class-transformer";
 
 export class CreateAnnouncementDto {
   @ApiProperty()
@@ -30,6 +31,7 @@ export class CreateAnnouncementDto {
   @ApiProperty()
   @IsOptional()
   @IsBoolean()
+  @Transform(({ value }) => value === true)
   forEveryone?: boolean;
 
   @ApiProperty()
@@ -47,6 +49,12 @@ export class CreateAnnouncementDto {
   @ApiProperty()
   @IsOptional()
   @IsArray()
-  @IsInt({ each: true })
-  floorNumbers?: number[];
+  @IsString({ each: true })
+  floorIds?: string[];
+
+  @ApiProperty()
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  dormitoryIds?: string[];
 }

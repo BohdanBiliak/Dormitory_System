@@ -7,10 +7,12 @@ import Link from "next/link";
 import {useGetActiveDormitories} from "@/hooks/dormitories.hook";
 import {useGetRooms} from "@/hooks/rooms.hook";
 import AddressesDialogComponent, {AddresseeItem, AddresseeType } from "@/components/dialogs/admin/AddressesDialog.component";
+import { useRouter } from 'next/navigation';
 
 
 
 export function AdminNewAnnouncement(){
+    const router = useRouter()
     const [attachedFiles, setAttachedFiles] = useState<File[]>([])
     const [addresses, setAddresses] = useState<{id: string, label: string, type: AddresseeType, addressee: AddresseeItem}[]>([])
     const [showAddressesDialog, setShowAddressesDialog] = useState<boolean>(false)
@@ -22,14 +24,9 @@ export function AdminNewAnnouncement(){
         title: '',
         content: '',
         expiresAt: '',
-        attachmentUrls: [],
-        forEveryone: false,
-        floorNumbers: [],
-        roomIds: [],
-        userIds: []
     })
 
-    const {createAnnouncement, uploadAnnouncementAttachment} = useMutateAnnouncement()
+    const {createAnnouncement, uploadAnnouncementAttachment, creatingAnnouncement} = useMutateAnnouncement()
     const {data: activeDormitories, isLoading: loadingDormitories, error: dormsErrors} = useGetActiveDormitories()
 
     // Set minimum date on client side only to prevent hydration mismatch
@@ -56,7 +53,8 @@ export function AdminNewAnnouncement(){
         // Update announcement recipients
         const userIds: string[] = []
         const roomIds: string[] = []
-        const floorNumbers: number[] = []
+        const floorIds: string[] = []
+        const dormitoryIds: string[] = []
         
         updatedAddresses.forEach((addr) => {
             if (addr.addressee.type === AddresseeType.Resident && addr.addressee.resident) {
@@ -64,27 +62,72 @@ export function AdminNewAnnouncement(){
             } else if (addr.addressee.type === AddresseeType.Room && addr.addressee.room) {
                 roomIds.push(addr.addressee.room.id)
             } else if (addr.addressee.type === AddresseeType.Floor && addr.addressee.floor) {
-                floorNumbers.push(parseInt(addr.addressee.floor.floorNumber))
+                floorIds.push(addr.addressee.floor.id)
+            } else if (addr.addressee.type === AddresseeType.Dormitory && addr.addressee.dormitory) {
+                dormitoryIds.push(addr.addressee.dormitory.id)
             }
         })
         
+        const updates: Partial<AnnouncementCreateRequest> = {};
+        
+        if (userIds.length > 0) updates.userIds = userIds;
+        if (roomIds.length > 0) updates.roomIds = roomIds;
+        if (floorIds.length > 0) updates.floorIds = floorIds;
+        if (dormitoryIds.length > 0) updates.dormitoryIds = dormitoryIds;
+        
         setNewAnnouncement(prev => ({
             ...prev,
-            userIds,
-            roomIds,
-            floorNumbers
+            ...updates
         }))
     }
 
-    const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
         try{
             if(attachedFiles && attachedFiles.length !== 0){
                 uploadAnnouncementAttachment(attachedFiles)
                 attachedFiles.forEach((elem, i) => {
-                    setNewAnnouncement(prev => ({...prev, attachmentUrls: [...prev.attachmentUrls, URL.createObjectURL(elem)]}))
+                    console.log('URL:', URL.createObjectURL(elem));
+                    setNewAnnouncement(prev => ({...prev, attachmentUrls: [...(prev.attachmentUrls || []), URL.createObjectURL(elem)]}))
+                    console.log('Announcement after file add:', newAnnouncement)
                 })
             }
-            createAnnouncement(newAnnouncement)
+            
+            // Prepare the announcement data, excluding empty arrays and false values for optional properties
+            const announcementData: any = {
+                title: newAnnouncement.title,
+                content: newAnnouncement.content,
+                expiresAt: newAnnouncement.expiresAt,
+            };
+            
+            if (newAnnouncement.attachmentUrls && newAnnouncement.attachmentUrls.length > 0) {
+                announcementData.attachmentUrls = newAnnouncement.attachmentUrls;
+            }
+            
+            if (newAnnouncement.forEveryone) {
+                announcementData.forEveryone = newAnnouncement.forEveryone;
+            }
+            
+            if (newAnnouncement.userIds && newAnnouncement.userIds.length > 0) {
+                announcementData.userIds = newAnnouncement.userIds;
+            }
+            
+            if (newAnnouncement.roomIds && newAnnouncement.roomIds.length > 0) {
+                announcementData.roomIds = newAnnouncement.roomIds;
+            }
+            
+            if (newAnnouncement.floorIds && newAnnouncement.floorIds.length > 0) {
+                announcementData.floorIds = newAnnouncement.floorIds;
+            }
+            
+            if (newAnnouncement.dormitoryIds && newAnnouncement.dormitoryIds.length > 0) {
+                announcementData.dormitoryIds = newAnnouncement.dormitoryIds;
+            }
+            
+            createAnnouncement(announcementData, {
+                onSuccess: () => {
+                    router.push('/admin/announcements')
+                }
+            })
         }catch(e){
             // console.log(e)
         }
@@ -122,13 +165,13 @@ export function AdminNewAnnouncement(){
     }
 
     const handleConfirmAddressesInDialog = (selected: AddresseeItem[]) => {
-        // console.log(selected)
         const newAddressees:{id: string, label: string, type: AddresseeType, addressee: AddresseeItem}[] = []
         
         // Separate recipients by type
         const userIds: string[] = []
         const roomIds: string[] = []
-        const floorNumbers: number[] = []
+        const floorIds: string[] = []
+        const dormitoryIds: string[] = []
         
         selected.forEach((item,index) => {
             newAddressees.push({
@@ -144,16 +187,23 @@ export function AdminNewAnnouncement(){
             } else if (item.type === AddresseeType.Room && item.room) {
                 roomIds.push(item.room.id)
             } else if (item.type === AddresseeType.Floor && item.floor) {
-                floorNumbers.push(parseInt(item.floor.floorNumber))
+                floorIds.push(item.floor.id)
+            } else if (item.type === AddresseeType.Dormitory && item.dormitory) {
+                dormitoryIds.push(item.dormitory.id)
             }
         })
         
         // Update announcement with recipient IDs
+        const updates: Partial<AnnouncementCreateRequest> = {};
+        
+        if (userIds.length > 0) updates.userIds = userIds;
+        if (roomIds.length > 0) updates.roomIds = roomIds;
+        if (floorIds.length > 0) updates.floorIds = floorIds;
+        if (dormitoryIds.length > 0) updates.dormitoryIds = dormitoryIds;
+        
         setNewAnnouncement(prev => ({
             ...prev,
-            userIds,
-            roomIds,
-            floorNumbers
+            ...updates
         }))
         
         setAddresses(newAddressees)
@@ -306,15 +356,15 @@ export function AdminNewAnnouncement(){
                                         <input
                                             type="checkbox"
                                             name="forEveryone"
-                                            checked={newAnnouncement.forEveryone}
+                                            checked={newAnnouncement.forEveryone || false}
                                             onChange={handleCheckboxChange}
                                             className={`sr-only`}
                                         />
                                         <div className={`relative w-11 h-6 rounded-full transition-colors duration-200 ${
-                                            newAnnouncement.forEveryone ? 'bg-blue-600' : 'bg-gray-300'
+                                            (newAnnouncement.forEveryone || false) ? 'bg-blue-600' : 'bg-gray-300'
                                         }`}>
                                             <div className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform duration-200 ${
-                                                newAnnouncement.forEveryone ? 'translate-x-5' : 'translate-x-0'
+                                                (newAnnouncement.forEveryone || false) ? 'translate-x-5' : 'translate-x-0'
                                             }`}/>
                                         </div>
                                     </label>

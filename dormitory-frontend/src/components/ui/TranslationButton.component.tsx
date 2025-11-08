@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { useSSRSafeTranslation } from '@/hooks/ssr-translation.hook'
 import { useLanguage } from '@/providers/language.provider'
 
 interface TranslationButtonProps {
@@ -14,7 +15,8 @@ export function TranslationButton({
   className = '', 
   showLabel = true 
 }: TranslationButtonProps) {
-  const { language, setLanguage, t } = useLanguage()
+  const { language, setLanguage } = useLanguage()
+  const { safeT } = useSSRSafeTranslation()
 
   const toggleLanguage = () => {
     setLanguage(language === 'en' ? 'pl' : 'en')
@@ -27,7 +29,7 @@ export function TranslationButton({
         <button
           onClick={toggleLanguage}
           className="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-3 shadow-lg hover:shadow-xl  group"
-          title={t('common.translateApp') || 'Translate App'}
+          title={language === 'en' ? safeT('common.translateToPolish', 'Switch to Polish') : safeT('common.translateToEnglish', 'Switch to English')}
         >
           <div className="flex items-center space-x-2">
             <span className="text-lg">🌐</span>
@@ -49,11 +51,6 @@ export function TranslationButton({
   if (variant === 'side-menu') {
     return (
       <div className={`p-4 md:p-0 mb-8 md:mb-20 ${className}`}>
-        <div className="text-center mb-3">
-          <p className="text-xs text-blue-200 uppercase tracking-wide font-medium">
-            {t('sideMenu.translateApp') || 'Translate App'}
-          </p>
-        </div>
         <div className="flex flex-row justify-center">
           <button 
             onClick={() => setLanguage('pl')}
@@ -62,7 +59,7 @@ export function TranslationButton({
                 ? 'bg-white text-blue-900 shadow-lg' 
                 : 'text-white border border-white hover:bg-white hover:text-blue-900 hover:shadow-md'
             }`}
-            title={t('common.translateToPolish') || 'Translate entire app to Polish'}
+            title={safeT('common.translateToPolish', 'Translate entire app to Polish')}
           >
             🇵🇱 Polski
           </button>
@@ -73,15 +70,10 @@ export function TranslationButton({
                 ? 'bg-white text-blue-900 shadow-lg' 
                 : 'text-white border border-white hover:bg-white hover:text-blue-900 hover:shadow-md'
             }`}
-            title={t('common.translateToEnglish') || 'Translate entire app to English'}
+            title={safeT('common.translateToEnglish', 'Translate entire app to English')}
           >
             🇺🇸 English
           </button>
-        </div>
-        <div className="text-center mt-2">
-          <p className="text-xs text-blue-300 opacity-75">
-            {t('sideMenu.currentLanguage') || 'Current'}: {language === 'en' ? 'English' : 'Polski'}
-          </p>
         </div>
       </div>
     )
@@ -114,7 +106,7 @@ export function TranslationButton({
       <button
         onClick={toggleLanguage}
         className={`flex items-center space-x-2 px-3 py-2 rounded-lg border  hover:shadow-md ${className}`}
-        title={language === 'en' ? (t('common.translateToPolish') || 'Switch to Polish') : (t('common.translateToEnglish') || 'Switch to English')}
+        title={language === 'en' ? safeT('common.translateToPolish', 'Switch to Polish') : safeT('common.translateToEnglish', 'Switch to English')}
       >
         <span className="text-lg">
           {language === 'en' ? '🇺🇸' : '🇵🇱'}
