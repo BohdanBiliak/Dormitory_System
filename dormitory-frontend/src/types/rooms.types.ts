@@ -65,3 +65,11 @@ export interface RoomResident{
     "secondName": string,
     "email": string,
 }
+
+export interface RoomReservationData {
+    roomId: string,
+    dateFrom: string,
+    dateTo: string,
+    suggestedTime: string,
+    alternativeRooms: boolean;
+}

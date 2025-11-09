@@ -37,10 +37,13 @@ interface ValidationErrors {
     address?: string;
     groundFloorPhoneNumber?: string;
     floorNumber?: string;
+    floorAssignments?: string;
+    roomAssignments?: string;
     roomTemplates?: {
         name?: string;
         typeCode?: string;
         capacity?: string;
+        equipment?: string;
     };
     priceCategories?: {
         name?: string;
@@ -81,6 +84,15 @@ const validateGeneralInformation = (data: DormitoryPostData): ValidationErrors =
         errors.groundFloorPhoneNumber = 'Phone number must start with + and contain exactly 11 digits (e.g., +48123456789)';
     }
 
+    if(data.floorAssignments.length < 1){
+        errors.floorAssignments = 'Dormitory should have at least one floor';
+    }else{
+        const emptyFloor = data.floorAssignments.find((floor) => floor.roomAssignments.length < 1);
+        if(emptyFloor) {
+            errors.roomAssignments = `Floor ${emptyFloor.floorNumber} cannot be empty`;
+        }
+    }
+
     return errors;
 };
 
@@ -99,14 +111,27 @@ const validateRoomTemplate = (template: RoomTemplatePostData | RoomTemplate): Va
         errors.roomTemplates!.capacity = 'Capacity must be at least 1';
     }
 
+    if(template.equipment.length < 3){
+        errors.roomTemplates!.equipment = 'At least 3 equipment positions is required';
+    }
+
     return errors;
 };
 
-const validatePriceCategory = (category: PriceCategoryPostData | PriceCategory): ValidationErrors => {
+const validatePriceCategory = (category: PriceCategoryPostData | PriceCategory, existingCategories: PriceCategory[], currentCategoryId?: string): ValidationErrors => {
     const errors: ValidationErrors = { priceCategories: {} };
 
     if (!category.name.trim()) {
         errors.priceCategories!.name = 'Category name is required';
+    } else {
+        // Check for duplicate names
+        const isDuplicate = existingCategories.some(cat =>
+            cat.name.toLowerCase().trim() === category.name.toLowerCase().trim() &&
+            cat.id !== currentCategoryId
+        );
+        if (isDuplicate) {
+            errors.priceCategories!.name = 'A category with this name already exists';
+        }
     }
 
     if (category.pricePerMonth <= 0) {
@@ -116,6 +141,8 @@ const validatePriceCategory = (category: PriceCategoryPostData | PriceCategory):
     if (category.pricePerDay <= 0) {
         errors.priceCategories!.pricePerDay = 'Price per day must be greater than 0';
     }
+
+
 
     return errors;
 };
@@ -302,12 +329,19 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
         setValidationErrors(prev => {
             const newErrors = {...prev};
             delete newErrors.floorNumber;
+            delete newErrors.floorAssignments;
             return newErrors;
         });
     };
 
 
     const handleDeleteFloor = (index: number) => {
+        if(newDormitory.floorAssignments.length < 2){
+            setValidationErrors(prev => ({
+                ...prev,
+                floorAssignments: 'Dormitory should have at least one floor'
+            }))
+        }
         setNewDormitory(prevState => ({
             ...prevState,
             floorAssignments: prevState.floorAssignments.filter((_, i) => i !== index)
@@ -340,6 +374,12 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                 ...prev,
                 roomAssignments: [...prev.roomAssignments, newRoomAssignment]
             } : prev);
+
+            setValidationErrors(prev => ({
+                ...prev,
+                roomAssignments: undefined
+
+            }));
 
             setNewRoomsNumbersLabel('');
             setNewRoomsNumbers([]);
@@ -498,6 +538,16 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                     ...prev,
                     equipment: newEquipment
                 } : prev);
+
+                if(validationErrors.roomTemplates?.equipment && newRoomTemplate.equipment.length > 2) {
+                    setValidationErrors(prev => ({
+                        ...prev,
+                        roomTemplates: {
+                            ...prev.roomTemplates,
+                            equipment: undefined
+                        }
+                    }))
+                }
             } else {
                 setNewRoomTemplate(prev => prev ? {
                     ...prev,
@@ -676,7 +726,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
     };
 
     const handleSaveEdition = (id: string, changes: PriceCategoryPostData) => {
-        const errors = validatePriceCategory(changes);
+        const errors = validatePriceCategory(changes, pCategoriesList, id);
 
         if (Object.keys(errors.priceCategories || {}).length > 0) {
             setValidationErrors(errors);
@@ -699,7 +749,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
 
 
     const handleCreateCategory = (category: PriceCategoryPostData) => {
-        const errors = validatePriceCategory(category);
+        const errors = validatePriceCategory(category, pCategoriesList);
 
         if (Object.keys(errors.priceCategories || {}).length > 0) {
             setValidationErrors(errors);

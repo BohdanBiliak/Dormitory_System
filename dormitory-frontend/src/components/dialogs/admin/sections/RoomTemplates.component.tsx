@@ -12,6 +12,7 @@ interface ValidationErrors {
         name?: string;
         typeCode?: string;
         capacity?: string;
+        equipment?: string;
     };
 }
 
@@ -498,10 +499,12 @@ export default function RoomTemplatesComponent({
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        <label className={`block text-sm font-medium text-gray-700 mb-2 `}>
                                             Wyposażenie
                                         </label>
-                                        <div className="space-y-2 max-h-32 overflow-y-auto bg-white border border-gray-200 rounded-lg p-3">
+                                        <div className={`space-y-2 max-h-32 overflow-y-auto bg-white border border-gray-200 rounded-lg p-3 ${validationErrors.roomTemplates?.equipment
+                                            ? 'border-red-500 focus:ring-red-500'
+                                            : 'border-gray-200'}`}>
                                             {newRoomTemplate.equipment.map((item, index) => (
                                                 <div className="flex flex-row space-x-2" key={index}>
                                                     <input
@@ -527,6 +530,7 @@ export default function RoomTemplatesComponent({
                                                 Dodaj nowe wyposażenie
                                             </button>
                                         </div>
+                                        <ValidationError error={validationErrors?.roomTemplates?.equipment}/>
                                     </div>
                                 </div>
                             </div>

@@ -1,6 +1,12 @@
 import {roomsApi} from "@/app/lib/rooms.api";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {AvailableRoomsRequest, CreateRoomStatusRequest, EvictRequest, UpdateRoomData} from "@/types/rooms.types";
+import {
+    AvailableRoomsRequest,
+    CreateRoomStatusRequest,
+    EvictRequest,
+    RoomReservationData,
+    UpdateRoomData
+} from "@/types/rooms.types";
 import {toast} from "sonner";
 
 export function useGetRooms(){
@@ -114,4 +120,23 @@ export const useUploadRoomPhoto = () => {
             // console.log(data)
         }
     })
+}
+
+export function useBookARoom(){
+    const queryClient = useQueryClient()
+
+    const requestAccommodation = useMutation({
+        mutationFn: (data: RoomReservationData) => roomsApi.requestAccommodation(data),
+        onSuccess: () => {
+            toast.success('Thank you for reservation! Await for approval from admin.')
+        },
+        onError: (err) => {
+            toast.error(err.message)
+        }
+    })
+
+    return{
+        requestAccommodation: requestAccommodation.mutate,
+        requestingAccommodation: requestAccommodation.isPending,
+    }
 }

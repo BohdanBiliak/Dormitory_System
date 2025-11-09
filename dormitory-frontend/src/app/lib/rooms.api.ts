@@ -3,7 +3,7 @@ import {
     AvailableRoomsRequest,
     CreateRoomStatusRequest,
     EvictRequest,
-    Room,
+    Room, RoomReservationData,
     RoomStatus,
     UpdateRoomData
 } from "@/types/rooms.types";
@@ -83,5 +83,10 @@ export const roomsApi= {
             })
             throw error
         }
+    },
+
+    async requestAccommodation(reservationData: RoomReservationData){
+        const response = await api.post('/rooms/request-accommodation',reservationData);
+        return response.data;
     }
 }
