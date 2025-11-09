@@ -26,11 +26,12 @@ import { EvictUserFromRoomDto } from "./dto/evict-user.dto";
 import { FilesInterceptor } from "@nestjs/platform-express";
 import { RoomDocs } from "./room.docs";
 import { AssignPriceCategoryDto } from "./dto/assign-price-category.dto";
+import { use } from "react";
 
 @RoomDocs.controller()
 @Controller("rooms")
 export class RoomController {
-  constructor(private roomService: RoomService) {}
+  constructor(private roomService: RoomService) { }
 
   @Get()
   @Authorization(
@@ -46,7 +47,9 @@ export class RoomController {
   }
 
   @Get("available")
-  @Authorization(UserRole.Admin, UserRole.SignedInUser)
+  @Authorization(UserRole.Admin, UserRole.SignedInUser, UserRole.SuperAdmin, UserRole.Regular,
+    UserRole.Resident
+  )
   @RoomDocs.getAvailableRooms()
   async getAvailableRooms(@Query() query: AvailableRoomsDto) {
     return this.roomService.findAvailableRooms(query);
@@ -78,7 +81,7 @@ export class RoomController {
   }
 
   @Post("request-accommodation")
-  @Authorization(UserRole.SignedInUser)
+  @Authorization(UserRole.SignedInUser, UserRole.Admin, UserRole.SuperAdmin)
   @RoomDocs.requestAccommodation()
   async requestAccommodation(
     @Authorized() user: User,
