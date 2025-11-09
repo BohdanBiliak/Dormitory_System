@@ -4,12 +4,16 @@ import { $Enums, Confirmation, ConfirmationType } from "../../../__generated__";
 import ConfirmationStatus = $Enums.ConfirmationStatus;
 import UserRole = $Enums.UserRole;
 import { MailService } from "@/libs/mail/mail.service";
+import { NotificationsService } from "../notifications/notifications.service";
+import { BadRequestException, NotFoundException } from "@nestjs/common";
+import { ApproveAccommodationDto } from "../admin/dto/ApproveAccommodation.dto";
 
 @Injectable()
 export class ConfirmationService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly mailService: MailService,
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   async getAll(): Promise<Confirmation[]> {
@@ -177,5 +181,169 @@ export class ConfirmationService {
     const template = "confirmation-rejection"; // Create this template
 
     await this.mailService.sendRejectionEmail(email, name, reason, type);
+  }
+
+  async approveAccommodation(id: string, dto: ApproveAccommodationDto) {
+    // Get confirmation with all details
+    const confirmation = await this.prisma.confirmation.findUnique({
+      where: { id },
+      include: {
+        requester: true,
+      },
+    });
+
+    if (!confirmation) {
+      throw new NotFoundException("Confirmation not found");
+    }
+
+    if (confirmation.type !== ConfirmationType.ACCOMMODATION) {
+      throw new BadRequestException("This confirmation is not an accommodation request");
+    }
+
+    if (confirmation.status !== ConfirmationStatus.PENDING) {
+      throw new BadRequestException("This confirmation has already been processed");
+    }
+
+    // Get the metadata for dates and alternative rooms preference
+    const metadata = confirmation.metadata as any;
+    const originalSuggestedTime = metadata?.suggestedTime || "Not specified";
+    const alternativeRoomsRequested = metadata?.alternativeRooms || false;
+
+    // Admin can override the suggested time
+    const finalSuggestedTime = dto.suggestedTime || originalSuggestedTime;
+    const timeWasChanged = dto.suggestedTime && dto.suggestedTime !== originalSuggestedTime;
+
+    // Determine which room to assign
+    let finalRoomId = confirmation.roomId;
+    
+    // If alternative room is provided and user requested alternatives, use it
+    if (dto.alternativeRoomId && alternativeRoomsRequested) {
+      finalRoomId = dto.alternativeRoomId;
+    }
+
+    if (!finalRoomId) {
+      throw new BadRequestException("Room ID is required for accommodation approval");
+    }
+
+    // Get room details
+    const room = await this.prisma.room.findUnique({
+      where: { id: finalRoomId },
+      include: {
+        dormitory: true,
+        floor: true,
+      },
+    });
+
+    if (!room) {
+      throw new NotFoundException("Room not found");
+    }
+
+    // Check room capacity
+    const currentResidents = await this.prisma.user.count({
+      where: { roomId: finalRoomId },
+    });
+
+    if (currentResidents >= room.capacity) {
+      throw new BadRequestException("Selected room is at full capacity");
+    }
+
+    // Update confirmation status
+    const updatedConfirmation = await this.prisma.confirmation.update({
+      where: { id },
+      data: {
+        status: ConfirmationStatus.APPROVED,
+        resolvedAt: new Date(),
+        metadata: {
+          ...metadata,
+          approvedRoomId: finalRoomId,
+          wasAlternativeRoomAssigned: finalRoomId !== confirmation.roomId,
+          originalSuggestedTime,
+          finalSuggestedTime,
+          timeWasChanged,
+          adminReason: dto.reason,
+        },
+      },
+    });
+
+    // Assign user to room
+    await this.prisma.user.update({
+      where: { id: confirmation.userId },
+      data: { roomId: finalRoomId },
+    });
+
+    // Create room status if dates are provided
+    if (confirmation.from && confirmation.to) {
+      await this.prisma.roomStatus.create({
+        data: {
+          roomId: finalRoomId,
+          description: `Accommodation approved for ${confirmation.requester.displayName}`,
+          dateOfStart: confirmation.from,
+          dateOfEnd: confirmation.to,
+        },
+      });
+    }
+
+    // Format dates for notification
+    const fromDate = confirmation.from 
+      ? new Date(confirmation.from).toLocaleDateString() 
+      : "Not specified";
+    const toDate = confirmation.to 
+      ? new Date(confirmation.to).toLocaleDateString() 
+      : "Not specified";
+
+    // Create notification for user
+    await this.notificationsService.createNotification({
+      toUserId: confirmation.userId,
+      type: $Enums.NotificationType.ROOM_BOOKING_APPROVED,
+      title: "Accommodation Request Approved",
+      message: `Your accommodation request was approved. Time of accommodation: ${fromDate} at ${finalSuggestedTime}. You have been assigned to Room ${room.number} in ${room.dormitory.name}.${dto.reason ? ` Note: ${dto.reason}` : ''}`,
+      priority: $Enums.NotificationPriority.HIGH,
+      roomId: finalRoomId,
+      metadata: {
+        roomNumber: room.number,
+        dormitoryName: room.dormitory.name,
+        floorNumber: room.floor?.floorNumber,
+        checkInDate: fromDate,
+        checkOutDate: toDate,
+        suggestedTime: finalSuggestedTime,
+        wasAlternativeRoom: finalRoomId !== confirmation.roomId,
+        timeWasChanged,
+        adminReason: dto.reason,
+      },
+    });
+
+    // Send email notification
+    await this.mailService.sendAccommodationApprovalEmail(
+      confirmation.requester.email,
+      {
+        userName: confirmation.requester.displayName,
+        roomNumber: room.number,
+        dormitoryName: room.dormitory.name,
+        floorNumber: room.floor?.floorNumber || 0,
+        checkInDate: fromDate,
+        checkOutDate: toDate,
+        suggestedTime: finalSuggestedTime,
+        originalSuggestedTime: timeWasChanged ? originalSuggestedTime : undefined,
+        wasAlternativeRoom: finalRoomId !== confirmation.roomId,
+        originalRoomNumber: confirmation.roomId !== finalRoomId 
+          ? (await this.prisma.room.findUnique({ 
+              where: { id: confirmation.roomId || '' },
+              select: { number: true }
+            }))?.number 
+          : undefined,
+        adminReason: dto.reason,
+      },
+    );
+
+    return {
+      message: "Accommodation request approved successfully",
+      confirmation: updatedConfirmation,
+      assignedRoom: {
+        id: room.id,
+        number: room.number,
+        dormitory: room.dormitory.name,
+        floor: room.floor?.floorNumber,
+      },
+    };
   }
 }

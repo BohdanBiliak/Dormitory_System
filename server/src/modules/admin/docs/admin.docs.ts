@@ -284,4 +284,98 @@ export const AdminDocs = {
         description: "Invalid reason or confirmation already processed",
       }),
     ),
+
+  approveAccommodation: () =>
+    applyDecorators(
+      ApiOperation({
+        summary: "Approve an accommodation request",
+        description:
+          "Approves an accommodation confirmation request, assigns user to room, creates notification, and sends email. " +
+          "If the user requested alternative rooms, admin can provide a different room ID.",
+      }),
+      ApiParam({
+        name: "id",
+        type: String,
+        description: "Accommodation confirmation ID to approve",
+        example: "123e4567-e89b-12d3-a456-426614174000",
+      }),
+      ApiBody({
+        schema: {
+          type: "object",
+          properties: {
+            alternativeRoomId: {
+              type: "string",
+              format: "uuid",
+              description:
+                "Optional: Alternative room ID to assign if user requested alternative rooms",
+              example: "123e4567-e89b-12d3-a456-426614174001",
+            },
+            suggestedTime: {
+              type: "string",
+              description:
+                "Optional: Admin can override the suggested time provided by user",
+              example: "Morning (10:00-12:00)",
+            },
+            reason: {
+              type: "string",
+              description:
+                "Optional: Reason for approval or any changes made (alternative room, time change, etc.)",
+              example: "Approved with alternative room due to maintenance in original room",
+            },
+          },
+        },
+        description:
+          "Optional fields for alternative room, time override, and reason",
+        required: false,
+      }),
+      ApiOkResponse({
+        description: "Accommodation approved successfully",
+        schema: {
+          type: "object",
+          properties: {
+            message: {
+              type: "string",
+              example: "Accommodation request approved successfully",
+            },
+            confirmation: {
+              type: "object",
+              properties: {
+                id: { type: "string", format: "uuid" },
+                status: { type: "string", example: "APPROVED" },
+                type: { type: "string", example: "ACCOMMODATION" },
+                resolvedAt: { type: "string", format: "date-time" },
+                metadata: {
+                  type: "object",
+                  properties: {
+                    suggestedTime: { type: "string" },
+                    alternativeRooms: { type: "boolean" },
+                    approvedRoomId: { type: "string", format: "uuid" },
+                    wasAlternativeRoomAssigned: { type: "boolean" },
+                  },
+                },
+              },
+            },
+            assignedRoom: {
+              type: "object",
+              properties: {
+                id: { type: "string", format: "uuid" },
+                number: { type: "string", example: "A301" },
+                dormitory: { type: "string", example: "Dormitory A" },
+                floor: { type: "number", example: 3 },
+              },
+            },
+          },
+        },
+      }),
+      ApiNotFoundResponse({
+        description: "Confirmation or room not found",
+      }),
+      ApiBadRequestResponse({
+        description:
+          "Invalid confirmation type, already processed, room at capacity, or missing room ID",
+      }),
+      ApiForbiddenResponse({
+        description: "Unauthorized or insufficient role",
+      }),
+    ),
 };

@@ -19,6 +19,7 @@ import { Authorization } from "@libs/common/decorators/auth.decorator";
 import { AdminDocs } from "../docs/admin.docs";
 import UserRole = $Enums.UserRole;
 import { RejectConfirmationDto } from "../dto/RejectConfirmation.dto";
+import { ApproveAccommodationDto } from "../dto/ApproveAccommodation.dto";
 
 const ALLOWED_VERSIONS = ["original", "mobile", "tablet", "desktop"] as const;
 type Version = (typeof ALLOWED_VERSIONS)[number];
@@ -85,5 +86,15 @@ export class AdminController {
     @Body() dto: RejectConfirmationDto,
   ) {
     return this.confirmationService.reject(id, dto.reason);
+  }
+
+  @Post("booking-confirmations/:id/approve")
+  @Authorization(UserRole.Admin, UserRole.SuperAdmin)
+  @AdminDocs.approveAccommodation()
+  approveAccommodation(
+    @Param("id") id: string,
+    @Body() dto: ApproveAccommodationDto,
+  ) {
+    return this.confirmationService.approveAccommodation(id, dto);
   }
 }

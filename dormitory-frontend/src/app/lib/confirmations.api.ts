@@ -63,4 +63,26 @@ export const confirmationsApi = {
     })
     return response.data
   },
+
+  // Approve accommodation request
+  async approveAccommodation(
+    id: string, 
+    options?: {
+      alternativeRoomId?: string
+      suggestedTime?: string
+      reason?: string
+    }
+  ): Promise<{
+    message: string
+    confirmation: Confirmation
+    assignedRoom: {
+      id: string
+      number: string
+      dormitory: string
+      floor: number
+    }
+  }> {
+    const response = await api.post(`/admin/confirmations/${id}/approve`, options || {})
+    return response.data
+  },
 }
