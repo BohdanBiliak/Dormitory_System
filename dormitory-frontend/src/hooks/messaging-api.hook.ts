@@ -138,13 +138,26 @@ export const useSendMessage = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ conversationId, data }: { conversationId: string; data: any }) =>
-      messagingAPI.sendMessage(conversationId, data),
+    mutationFn: ({ conversationId, data }: { conversationId: string; data: any }) => {
+      console.log('📡 HTTP API: Sending message via mutation', { conversationId, data });
+      return messagingAPI.sendMessage(conversationId, data);
+    },
     onSuccess: (newMessage) => {
+      console.log('✅ HTTP API: Message sent successfully', newMessage.id);
+      
       queryClient.setQueryData(
         ['conversation-messages', newMessage.conversationId, 1],
         (old: { messages: Message[]; hasMore: boolean } | undefined) => {
           if (!old) return { messages: [newMessage], hasMore: false };
+          
+          // Check for duplicates before adding
+          const messageExists = old.messages.some(m => m.id === newMessage.id);
+          if (messageExists) {
+            console.log('⚠️ HTTP API: Message already exists in cache, skipping:', newMessage.id);
+            return old;
+          }
+          
+          console.log('✅ HTTP API: Adding message to cache:', newMessage.id);
           return {
             ...old,
             messages: [...old.messages, newMessage],

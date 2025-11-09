@@ -181,13 +181,22 @@ export const useSocket = (events?: SocketEvents): UseSocketReturn => {
 
   const sendMessage = (data: SendMessageData) => {
     if (socketRef.current?.connected) {
+      console.log('📡 Socket: Emitting send_message event', {
+        conversationId: data.conversationId,
+        content: data.content.substring(0, 50),
+        messageType: data.messageType
+      });
       socketRef.current.emit('send_message', data);
+    } else {
+      console.error('🔴 Socket: Cannot send message - socket not connected');
     }
   };
 
   const createConversation = (data: CreateConversationData) => {
+    console.log('📡 Socket: Attempting to create conversation', data);
     
     if (socketRef.current?.connected) {
+      console.log('✅ Socket: Emitting create_conversation event');
       socketRef.current.emit('create_conversation', data);
     } else {
       console.error('🔴 Socket: Cannot create conversation - socket not connected');

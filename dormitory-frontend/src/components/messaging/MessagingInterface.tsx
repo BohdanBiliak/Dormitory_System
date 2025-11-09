@@ -34,8 +34,9 @@ export const MessagingInterface = memo<MessagingInterfaceProps>(({
   const [typingUsers, setTypingUsers] = useState<Set<string>>(new Set());
   const [searchQuery, setSearchQuery] = useState('');
   const [showSearch, setShowSearch] = useState(false);
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [isSendingMessage, setIsSendingMessage] = useState(false);
 
   // API hooks
   const { data: conversations = [], refetch: refetchConversations } = useGetConversations();
@@ -65,7 +66,6 @@ export const MessagingInterface = memo<MessagingInterfaceProps>(({
   } = useSocket({
     onNewMessage: (message: Message) => {
       if (message.conversationId === selectedConversation?.id) {
-        // Check if message already exists to prevent duplication
         setMessages(prev => {
           const exists = prev.some(m => m.id === message.id);
           if (exists) {
@@ -74,7 +74,6 @@ export const MessagingInterface = memo<MessagingInterfaceProps>(({
           return [...prev, message];
         });
       }
-      // Refetch conversations to update last message
       refetchConversations();
     },
     onNewConversation: (conversation: Conversation) => {
@@ -106,19 +105,29 @@ export const MessagingInterface = memo<MessagingInterfaceProps>(({
     },
   });
 
-  // Update messages when conversation changes
   useEffect(() => {
     if (messagesData?.messages) {
-      setMessages(messagesData.messages);
+      setMessages(prev => {
+        const newMessages = messagesData.messages;
+        const existingIds = new Set(prev.map(m => m.id));
+        const uniqueNewMessages = newMessages.filter(m => !existingIds.has(m.id));
+        
+        if (uniqueNewMessages.length > 0) {
+          return [...prev, ...uniqueNewMessages];
+        }
+        
+        if (prev.length === 0) {
+          return newMessages;
+        }
+        
+        return prev;
+      });
     }
-  }, [messagesData]);
+  }, [messagesData, selectedConversation?.id]);
 
-  // Join conversation when selected
   useEffect(() => {
     if (selectedConversation && isConnected) {
       joinConversation(selectedConversation.id);
-      
-      // Mark conversation as read
       markAsReadMutation.mutate(selectedConversation.id);
       socketMarkAsRead(selectedConversation.id);
 
@@ -129,13 +138,21 @@ export const MessagingInterface = memo<MessagingInterfaceProps>(({
   }, [selectedConversation?.id, isConnected]);
 
   const handleSelectConversation = useCallback((conversation: Conversation) => {
+    if (selectedConversation?.id !== conversation.id) {
+      setMessages([]);
+    }
+    
     setSelectedConversation(conversation);
     setShowMobileConversationList(false);
     setReplyToMessage(null);
-  }, []);
+    setSearchQuery('');
+    setShowSearch(false);
+  }, [selectedConversation?.id]);
 
-  const handleSendMessage = useCallback((content: string, attachments?: { url: string; name: string; type: string }) => {
-    if (!selectedConversation) return;
+  const handleSendMessage = useCallback(async (content: string, attachments?: { url: string; name: string; type: string }) => {
+    if (!selectedConversation || isSendingMessage) return;
+
+    setIsSendingMessage(true);
 
     const messageData = {
       conversationId: selectedConversation.id,
@@ -146,60 +163,58 @@ export const MessagingInterface = memo<MessagingInterfaceProps>(({
       replyToId: replyToMessage?.id,
     };
 
-    // Send via Socket.IO for real-time delivery
-    socketSendMessage(messageData);
-
-    // Also send via REST API as backup
-    sendMessageMutation.mutate({
-      conversationId: selectedConversation.id,
-      data: {
-        content,
-        messageType: messageData.messageType,
-        attachmentUrl: messageData.attachmentUrl,
-        attachmentName: messageData.attachmentName,
-        replyToId: messageData.replyToId,
-      },
-    });
-
-    setReplyToMessage(null);
-  }, [selectedConversation, replyToMessage, socketSendMessage, sendMessageMutation]);
-
-  const handleCreateConversation = async (data: CreateConversationData) => {
-    // console.log('Creating conversation:', data);
-    
     try {
       if (isConnected) {
-        // console.log('Using socket to create conversation');
-        socketCreateConversation(data);
+        socketSendMessage(messageData);
       } else {
-        // console.log('Socket not connected, will use HTTP only');
+        await sendMessageMutation.mutateAsync({
+          conversationId: selectedConversation.id,
+          data: {
+            content,
+            messageType: messageData.messageType,
+            attachmentUrl: messageData.attachmentUrl,
+            attachmentName: messageData.attachmentName,
+            replyToId: messageData.replyToId,
+          },
+        });
+      }
+    } catch (error) {
+      toast.error('Failed to send message');
+    } finally {
+      setIsSendingMessage(false);
+      setReplyToMessage(null);
+    }
+  }, [selectedConversation, replyToMessage, socketSendMessage, sendMessageMutation, isConnected, isSendingMessage]);
+
+  const handleCreateConversation = async (data: CreateConversationData) => {
+    try {
+      if (isConnected) {
+        socketCreateConversation(data);
       }
       
-      // console.log('Creating conversation via HTTP API');
       await createConversationMutation.mutateAsync(data);
-      // console.log('Conversation created successfully');
       
       setShowCreateModal(false);
       toast.success('Conversation created successfully');
       refetchConversations();
       
     } catch (error) {
-      console.error('Failed to create conversation:', error);
       toast.error('Failed to create conversation');
     }
   };
 
-  const handleDeleteConversation = async () => {
-    if (!selectedConversation) return;
-
+  const handleDeleteConversation = async (conversationId: string) => {
     try {
-      await deleteConversationMutation.mutateAsync(selectedConversation.id);
+      await deleteConversationMutation.mutateAsync(conversationId);
       toast.success('Conversation deleted successfully');
-      setSelectedConversation(null);
-      setShowMobileConversationList(true);
-      setShowDeleteConfirm(false);
+      
+      if (selectedConversation?.id === conversationId) {
+        setSelectedConversation(null);
+        setShowMobileConversationList(true);
+      }
+      
+      refetchConversations();
     } catch (error: any) {
-      console.error('Failed to delete conversation:', error);
       toast.error(error.response?.data?.message || 'Failed to delete conversation');
     }
   };
@@ -234,27 +249,26 @@ export const MessagingInterface = memo<MessagingInterfaceProps>(({
             <div className="flex items-center space-x-3 flex-1 min-w-0">
               <button
                 onClick={handleBackToConversations}
-                className="lg:hidden text-gray-600 hover:text-gray-800 flex-shrink-0 p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                className="lg:hidden text-gray-600 hover:text-gray-800 flex-shrink-0 p-2 hover:bg-gray-100 rounded-xl transition-all duration-200"
                 title="Back to conversations"
               >
                 <ArrowLeft size={20} />
               </button>
               
-              {/* Avatar */}
               <div className="flex-shrink-0">
                 {selectedConversation.isGroup ? (
-                  <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
-                    <MessageSquare className="w-5 h-5 text-white" />
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center shadow-sm">
+                    <MessageSquare className="w-6 h-6 text-white" />
                   </div>
                 ) : (
                   <div className="relative">
                     <img
                       src={selectedConversation.participants.find(p => p.userId !== currentUserId)?.user.picture || '/default-avatar.png'}
                       alt={title}
-                      className="w-10 h-10 rounded-full object-cover border-2 border-gray-200"
+                      className="w-12 h-12 rounded-full object-cover border-2 border-gray-200 shadow-sm"
                     />
                     {isOnline && (
-                      <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
+                      <div className="absolute bottom-0 right-0 w-4 h-4 bg-green-500 rounded-full border-2 border-white shadow-sm animate-pulse"></div>
                     )}
                   </div>
                 )}
@@ -289,7 +303,6 @@ export const MessagingInterface = memo<MessagingInterfaceProps>(({
             </div>
           </div>
 
-          {/* Search Bar */}
           {showSearch && (
             <div className="mt-3 relative animate-in slide-in-from-top duration-200">
               <input
@@ -316,7 +329,6 @@ export const MessagingInterface = memo<MessagingInterfaceProps>(({
             </div>
           )}
 
-          {/* Typing indicator */}
           {typingUsers.size > 0 && (
             <div className="mt-2 text-sm text-blue-600 flex items-center">
               <div className="flex space-x-1 mr-2">
@@ -340,26 +352,34 @@ export const MessagingInterface = memo<MessagingInterfaceProps>(({
       <div className={`${
         showMobileConversationList ? 'flex' : 'hidden'
       } lg:flex w-full lg:w-80 xl:w-96 bg-white border-r border-gray-200 flex-col shadow-sm`}>
-        <div className="border-b border-gray-200 p-4 bg-blue-600">
+        <div className="border-b border-gray-200 p-4 bg-gradient-to-r from-blue-600 to-blue-700 shadow-sm">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-white flex items-center">
-              <MessageSquare className="w-6 h-6 mr-2" />
+            <h2 className="text-xl font-bold text-white flex items-center">
+              <MessageSquare className="w-6 h-6 mr-3" />
               Messages
             </h2>
             <button
               onClick={() => setShowCreateModal(true)}
-              className="p-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg transition-colors"
-              title="New conversation"
+              className="p-2.5 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-xl transition-all duration-200 hover:scale-105 shadow-sm"
+              title="Start new conversation"
             >
               <Plus className="w-5 h-5 text-white" />
             </button>
           </div>
           
-          <div className="mt-3 flex items-center">
-            <div className={`w-2 h-2 rounded-full mr-2 ${isConnected ? 'bg-green-400' : 'bg-red-400'}`} />
-            <span className="text-xs text-blue-100">
-              {isConnected ? 'Connected' : 'Disconnected'}
-            </span>
+          <div className="mt-3 flex items-center justify-between">
+            <div className="flex items-center">
+              <div className={`w-2 h-2 rounded-full mr-2 animate-pulse ${isConnected ? 'bg-green-400' : 'bg-red-400'}`} />
+              <span className="text-xs text-blue-100 font-medium">
+                {isConnected ? 'Connected' : 'Reconnecting...'}
+              </span>
+            </div>
+            
+            {conversations.length > 0 && (
+              <span className="text-xs text-blue-200">
+                {conversations.length} conversation{conversations.length !== 1 ? 's' : ''}
+              </span>
+            )}
           </div>
         </div>
 
@@ -368,6 +388,7 @@ export const MessagingInterface = memo<MessagingInterfaceProps>(({
             conversations={conversations}
             selectedConversationId={selectedConversation?.id}
             onSelectConversation={handleSelectConversation}
+            onDeleteConversation={handleDeleteConversation}
             currentUserId={currentUserId}
           />
         </div>
@@ -380,11 +401,13 @@ export const MessagingInterface = memo<MessagingInterfaceProps>(({
           <>
             {getConversationHeader()}
 
-            <div className="flex-1 overflow-hidden bg-gray-50">
+            <div className="flex-1 bg-gray-50 relative overflow-hidden">
               <MessageList
                 messages={searchQuery && searchResults ? searchResults.messages : messages}
                 currentUserId={currentUserId}
                 onReply={setReplyToMessage}
+                onEditMessage={(message) => {}}
+                onDeleteMessage={(messageId) => {}}
                 searchQuery={searchQuery}
               />
             </div>
@@ -396,7 +419,7 @@ export const MessagingInterface = memo<MessagingInterfaceProps>(({
                 onStopTyping={() => selectedConversation && stopTyping(selectedConversation.id)}
                 replyTo={replyToMessage}
                 onCancelReply={() => setReplyToMessage(null)}
-                disabled={!isConnected}
+                disabled={!isConnected || isSendingMessage}
               />
             </div>
           </>
@@ -415,45 +438,7 @@ export const MessagingInterface = memo<MessagingInterfaceProps>(({
         )}
       </div>
 
-      {showDeleteConfirm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
-          <div className="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 transform transition-all">
-            <div className="flex items-center mb-4">
-              <div className="bg-red-100 rounded-full p-3 mr-4">
-                <Trash2 className="w-6 h-6 text-red-600" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900">Delete Conversation</h3>
-            </div>
-            
-            <p className="text-gray-600 mb-6">
-              Are you sure you want to delete this conversation? This action cannot be undone and all messages will be permanently removed.
-            </p>
-            
-            <div className="flex justify-end space-x-3">
-              <button
-                onClick={() => setShowDeleteConfirm(false)}
-                className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors font-medium"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleDeleteConversation}
-                disabled={deleteConversationMutation.isPending}
-                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium shadow-sm"
-              >
-                {deleteConversationMutation.isPending ? (
-                  <span className="flex items-center">
-                    <Loader2 className="w-4 h-4 mr-2" />
-                    Deleting...
-                  </span>
-                ) : (
-                  'Delete'
-                )}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+
 
       <CreateConversationModal
         isOpen={showCreateModal}

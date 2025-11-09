@@ -111,31 +111,38 @@ export const MessageInput: React.FC<MessageInputProps> = React.memo(({
     };
   }, []);
 
-  // Auto-resize textarea
+  // Auto-resize textarea with maximum height
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.style.height = 'auto';
-      inputRef.current.style.height = `${inputRef.current.scrollHeight}px`;
+      const scrollHeight = inputRef.current.scrollHeight;
+      const maxHeight = 128; // 8rem = 128px
+      
+      if (scrollHeight <= maxHeight) {
+        inputRef.current.style.height = `${scrollHeight}px`;
+      } else {
+        inputRef.current.style.height = `${maxHeight}px`;
+      }
     }
   }, [message]);
 
   return (
-    <div className="bg-white p-3 sm:p-4">
+    <div className="bg-white p-3 sm:p-4 border-t border-gray-100">
       {/* Reply preview */}
       {replyTo && (
-        <div className="mb-2 sm:mb-3 bg-blue-50 rounded-lg p-2 sm:p-3 border-l-4 border-blue-500">
+        <div className="mb-3 sm:mb-4 bg-gradient-to-r from-blue-50 to-blue-25 rounded-xl p-3 sm:p-4 border-l-4 border-blue-500 shadow-sm animate-in slide-in-from-bottom duration-200">
           <div className="flex items-start justify-between">
             <div className="flex-1 min-w-0">
-              <div className="text-xs sm:text-sm font-medium text-blue-900">
+              <div className="text-xs sm:text-sm font-semibold text-blue-900 mb-1">
                 Replying to {replyTo.sender.displayName}
               </div>
-              <div className="text-xs sm:text-sm text-gray-600 truncate">
+              <div className="text-xs sm:text-sm text-gray-700 truncate bg-white bg-opacity-50 rounded px-2 py-1">
                 {replyTo.content}
               </div>
             </div>
             <button
               onClick={onCancelReply}
-              className="ml-2 text-gray-400 hover:text-gray-600 flex-shrink-0"
+              className="ml-3 text-gray-400 hover:text-gray-600 flex-shrink-0 p-1 hover:bg-white hover:bg-opacity-50 rounded-full transition-colors"
             >
               <X size={16} />
             </button>
@@ -145,15 +152,20 @@ export const MessageInput: React.FC<MessageInputProps> = React.memo(({
 
       {/* Attachment preview */}
       {attachments && (
-        <div className="mb-2 sm:mb-3 bg-gray-50 rounded-lg p-2 sm:p-3 border border-gray-200">
+        <div className="mb-3 sm:mb-4 bg-gradient-to-r from-gray-50 to-gray-25 rounded-xl p-3 sm:p-4 border border-gray-200 shadow-sm animate-in slide-in-from-bottom duration-200">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2 min-w-0 flex-1">
-              <Paperclip size={16} className="text-gray-500 flex-shrink-0" />
-              <span className="text-xs sm:text-sm text-gray-700 truncate">{attachments.name}</span>
+            <div className="flex items-center space-x-3 min-w-0 flex-1">
+              <div className="p-2 bg-blue-100 rounded-lg">
+                <Paperclip size={16} className="text-blue-600 flex-shrink-0" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <span className="text-sm font-medium text-gray-800 truncate block">{attachments.name}</span>
+                <span className="text-xs text-gray-500">Ready to send</span>
+              </div>
             </div>
             <button
               onClick={removeAttachment}
-              className="ml-2 text-gray-400 hover:text-gray-600 flex-shrink-0"
+              className="ml-3 text-gray-400 hover:text-gray-600 flex-shrink-0 p-1 hover:bg-gray-100 rounded-full transition-colors"
             >
               <X size={16} />
             </button>
@@ -162,7 +174,7 @@ export const MessageInput: React.FC<MessageInputProps> = React.memo(({
       )}
 
       {/* Input area */}
-      <div className="flex items-end space-x-2">
+      <div className="flex items-end space-x-3">
         <div className="flex-1 relative">
           <textarea
             ref={inputRef}
@@ -172,7 +184,7 @@ export const MessageInput: React.FC<MessageInputProps> = React.memo(({
             placeholder={placeholder}
             disabled={disabled}
             rows={1}
-            className="w-full resize-none border border-gray-300 rounded-lg px-3 py-2 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent max-h-32 disabled:bg-gray-100 disabled:cursor-not-allowed transition-shadow"
+            className="w-full resize-none border border-gray-300 rounded-2xl px-4 py-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 max-h-32 overflow-y-auto disabled:bg-gray-100 disabled:cursor-not-allowed transition-all duration-200 shadow-sm focus:shadow-md bg-gray-50 focus:bg-white scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100"
           />
         </div>
 
@@ -180,20 +192,20 @@ export const MessageInput: React.FC<MessageInputProps> = React.memo(({
         <button
           onClick={() => fileInputRef.current?.click()}
           disabled={disabled}
-          className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
+          className="p-3 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-2xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0 hover:scale-105"
           title="Attach file"
         >
-          <Paperclip size={18} className="sm:w-5 sm:h-5" />
+          <Paperclip size={20} />
         </button>
 
         {/* Send button */}
         <button
           onClick={handleSendMessage}
           disabled={disabled || (!message.trim() && !attachments)}
-          className="bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm hover:shadow-md disabled:hover:shadow-sm flex-shrink-0"
+          className="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-3 rounded-2xl hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl disabled:hover:shadow-lg flex-shrink-0 hover:scale-105 disabled:hover:scale-100"
           title="Send message"
         >
-          <Send size={18} className="sm:w-5 sm:h-5" />
+          <Send size={20} />
         </button>
 
         {/* Hidden file input */}

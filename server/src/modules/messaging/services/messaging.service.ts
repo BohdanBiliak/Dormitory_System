@@ -206,7 +206,53 @@ export class MessagingService {
     senderId: string,
     createMessageDto: CreateMessageDto,
   ): Promise<MessageData> {
+    console.log('📡 Backend: Sending message', {
+      conversationId,
+      senderId,
+      content: createMessageDto.content.substring(0, 50),
+      messageType: createMessageDto.messageType
+    });
+
     await this.verifyUserInConversation(conversationId, senderId);
+
+    // Check for potential duplicates based on content, sender, and timing (within last 5 seconds)
+    const recentMessages = await this.prisma.message.findMany({
+      where: {
+        conversationId,
+        senderId,
+        content: createMessageDto.content,
+        createdAt: {
+          gte: new Date(Date.now() - 5000) // Last 5 seconds
+        }
+      },
+      include: {
+        sender: {
+          select: {
+            id: true,
+            displayName: true,
+            picture: true,
+          },
+        },
+        replyTo: {
+          include: {
+            sender: {
+              select: {
+                id: true,
+                displayName: true,
+                picture: true,
+              },
+            },
+          },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+      take: 1
+    });
+
+    if (recentMessages.length > 0) {
+      console.log('⚠️ Backend: Potential duplicate message detected, returning existing message:', recentMessages[0].id);
+      return this.formatMessageData(recentMessages[0]);
+    }
 
     const message = await this.prisma.message.create({
       data: {
@@ -245,7 +291,13 @@ export class MessagingService {
       data: { updatedAt: new Date() },
     });
 
-    return this.formatMessageData(message);
+    const formattedMessage = this.formatMessageData(message);
+    console.log('✅ Backend: Message created successfully', {
+      messageId: formattedMessage.id,
+      conversationId: formattedMessage.conversationId
+    });
+
+    return formattedMessage;
   }
 
   async markMessageAsRead(messageId: string, userId: string): Promise<void> {
