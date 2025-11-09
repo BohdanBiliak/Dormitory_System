@@ -80,11 +80,23 @@ export const CreateConversationModal: React.FC<CreateConversationModalProps> = (
   const handleUserToggle = (user: UserOption) => {
     setSelectedUsers(prev => {
       const isSelected = prev.some(u => u.id === user.id);
+      let newUsers;
       if (isSelected) {
-        return prev.filter(u => u.id !== user.id);
+        newUsers = prev.filter(u => u.id !== user.id);
       } else {
-        return [...prev, user];
+        newUsers = [...prev, user];
       }
+      
+      // Auto-enable group conversation when multiple users are selected
+      if (newUsers.length > 1 && !isGroup) {
+        setIsGroup(true);
+      }
+      // Auto-disable group conversation when only one user is selected (unless manually enabled)
+      else if (newUsers.length <= 1 && isGroup) {
+        setIsGroup(false);
+      }
+      
+      return newUsers;
     });
   };
 
@@ -93,26 +105,37 @@ export const CreateConversationModal: React.FC<CreateConversationModalProps> = (
     
     if (selectedUsers.length === 0) return;
 
+    // Always treat as group if multiple users selected or isGroup explicitly enabled
+    const isGroupConversation = isGroup || selectedUsers.length > 1;
+
     const data: CreateConversationData = {
       participantIds: selectedUsers.map(u => u.id),
-      isGroup: isGroup || selectedUsers.length > 1,
+      isGroup: isGroupConversation,
       title: conversationTitle || undefined,
     };
+
+    console.log('Creating conversation:', {
+      participantCount: selectedUsers.length,
+      isGroup: isGroupConversation,
+      hasTitle: !!conversationTitle,
+      participantIds: selectedUsers.map(u => u.id)
+    });
 
     onCreateConversation(data);
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-md mx-4 max-h-[80vh] flex flex-col">
+    <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[85vh] flex flex-col animate-in zoom-in-95 duration-200">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-900">
+        <div className="flex items-center justify-between p-6 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-t-2xl">
+          <h3 className="text-xl font-bold text-gray-900 flex items-center">
+            <Users className="w-6 h-6 mr-3 text-blue-600" />
             New Conversation
           </h3>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600"
+            className="text-gray-400 hover:text-gray-600 p-2 hover:bg-white hover:bg-opacity-50 rounded-xl transition-colors"
           >
             <X size={24} />
           </button>
@@ -139,19 +162,26 @@ export const CreateConversationModal: React.FC<CreateConversationModalProps> = (
 
             {/* Group Chat Toggle */}
             <div className="flex items-center justify-between">
-              <label className="text-sm font-medium text-gray-700">
-                Group Conversation
-              </label>
+              <div className="flex flex-col">
+                <label className="text-sm font-medium text-gray-700">
+                  Group Conversation
+                </label>
+                {selectedUsers.length > 0 && (
+                  <span className="text-xs text-gray-500 mt-1">
+                    {selectedUsers.length} participant{selectedUsers.length !== 1 ? 's' : ''} selected
+                  </span>
+                )}
+              </div>
               <button
                 type="button"
                 onClick={() => setIsGroup(!isGroup)}
                 className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                  isGroup ? 'bg-blue-600' : 'bg-gray-200'
+                  isGroup || selectedUsers.length > 1 ? 'bg-blue-600' : 'bg-gray-200'
                 }`}
               >
                 <span
                   className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                    isGroup ? 'translate-x-6' : 'translate-x-1'
+                    isGroup || selectedUsers.length > 1 ? 'translate-x-6' : 'translate-x-1'
                   }`}
                 />
               </button>
@@ -205,7 +235,7 @@ export const CreateConversationModal: React.FC<CreateConversationModalProps> = (
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Available Users
               </label>
-              <div className="border border-gray-200 rounded-lg max-h-48 overflow-y-auto">
+              <div className="border border-gray-200 rounded-lg max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
                 {isLoadingUsers ? (
                   <div className="p-4 text-center text-gray-500">
                     Loading users...
@@ -290,9 +320,14 @@ export const CreateConversationModal: React.FC<CreateConversationModalProps> = (
             <button
               type="submit"
               disabled={selectedUsers.length === 0}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
             >
-              Create Conversation
+              <span>Create Conversation</span>
+              {selectedUsers.length > 0 && (
+                <span className="bg-blue-500 text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center">
+                  {selectedUsers.length}
+                </span>
+              )}
             </button>
           </div>
         </form>

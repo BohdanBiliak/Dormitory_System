@@ -12,6 +12,8 @@ import { AnnouncementTemplate } from "@/libs/mail/templates/announcement-templat
 import { EvictionTemplate } from "./templates/eviction-template";
 import { ConfirmationType } from "../../../__generated__";
 import { RejectTemplate } from "@/libs/mail/templates/reject.template";
+import { AccommodationApprovalTemplate } from "@/libs/mail/templates/accommodation-approval-template";
+
 @Injectable()
 export class MailService {
   public constructor(
@@ -265,6 +267,48 @@ export class MailService {
         priority: maintenanceData.type === "URGENT" ? "HIGH" : "NORMAL",
         actionUrl: `${domain}/dashboard/room`,
         metadata: maintenanceData,
+      }),
+    );
+
+    return this.sendMail(email, title, html);
+  }
+
+  /**
+   * Send accommodation approval notification
+   */
+  public async sendAccommodationApprovalEmail(
+    email: string,
+    accommodationData: {
+      userName: string;
+      roomNumber: string;
+      dormitoryName: string;
+      floorNumber: number;
+      checkInDate: string;
+      checkOutDate: string;
+      suggestedTime: string;
+      originalSuggestedTime?: string;
+      wasAlternativeRoom?: boolean;
+      originalRoomNumber?: string;
+      adminReason?: string;
+    },
+  ) {
+    const domain = this.configService.getOrThrow<string>("ALLOWED_ORIGIN");
+    const title = "🎉 Accommodation Request Approved";
+
+    const html = await render(
+      AccommodationApprovalTemplate({
+        domain,
+        userName: accommodationData.userName,
+        roomNumber: accommodationData.roomNumber,
+        dormitoryName: accommodationData.dormitoryName,
+        floorNumber: accommodationData.floorNumber,
+        checkInDate: accommodationData.checkInDate,
+        checkOutDate: accommodationData.checkOutDate,
+        suggestedTime: accommodationData.suggestedTime,
+        originalSuggestedTime: accommodationData.originalSuggestedTime,
+        wasAlternativeRoom: accommodationData.wasAlternativeRoom || false,
+        originalRoomNumber: accommodationData.originalRoomNumber,
+        adminReason: accommodationData.adminReason,
       }),
     );
 

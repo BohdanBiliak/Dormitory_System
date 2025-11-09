@@ -196,7 +196,7 @@ export class MessagingService {
     }
 
     return {
-      messages: messages.reverse().map(this.formatMessageData),
+      messages: messages.reverse().map(msg => this.formatMessageData(msg)),
       hasMore,
     };
   }
@@ -206,7 +206,53 @@ export class MessagingService {
     senderId: string,
     createMessageDto: CreateMessageDto,
   ): Promise<MessageData> {
+    console.log('📡 Backend: Sending message', {
+      conversationId,
+      senderId,
+      content: createMessageDto.content.substring(0, 50),
+      messageType: createMessageDto.messageType
+    });
+
     await this.verifyUserInConversation(conversationId, senderId);
+
+    // Check for potential duplicates based on content, sender, and timing (within last 2 seconds)
+    const recentMessages = await this.prisma.message.findMany({
+      where: {
+        conversationId,
+        senderId,
+        content: createMessageDto.content,
+        createdAt: {
+          gte: new Date(Date.now() - 2000) // Last 2 seconds (reduced from 5)
+        }
+      },
+      include: {
+        sender: {
+          select: {
+            id: true,
+            displayName: true,
+            picture: true,
+          },
+        },
+        replyTo: {
+          include: {
+            sender: {
+              select: {
+                id: true,
+                displayName: true,
+                picture: true,
+              },
+            },
+          },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+      take: 1
+    });
+
+    if (recentMessages.length > 0) {
+      console.log('⚠️ Backend: Duplicate message detected within 2 seconds, returning existing message:', recentMessages[0].id);
+      return this.formatMessageData(recentMessages[0]);
+    }
 
     const message = await this.prisma.message.create({
       data: {
@@ -245,7 +291,14 @@ export class MessagingService {
       data: { updatedAt: new Date() },
     });
 
-    return this.formatMessageData(message);
+    const formattedMessage = this.formatMessageData(message);
+    console.log('✅ Backend: Message created successfully', {
+      messageId: formattedMessage.id,
+      conversationId: formattedMessage.conversationId,
+      senderId: formattedMessage.senderId
+    });
+
+    return formattedMessage;
   }
 
   async markMessageAsRead(messageId: string, userId: string): Promise<void> {
@@ -417,7 +470,7 @@ export class MessagingService {
     const hasMore = skip + messages.length < total;
 
     return {
-      messages: messages.map(this.formatMessageData),
+      messages: messages.map(msg => this.formatMessageData(msg)),
       hasMore,
       total,
     };

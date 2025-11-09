@@ -96,12 +96,12 @@ export const authApi = {
       // console.log('❌ /admin/profile failed:', error.response?.status);
       
       try {
-        // console.log('🔍 Trying /auth/me...')
-        const response = await api.get('/auth/me')
-        // console.log('✅ Got user from /auth/me:', response.data)
+        // console.log('🔍 Trying /users/profile...')
+        const response = await api.get('/users/profile')
+        // console.log('✅ Got user from /users/profile:', response.data)
         return response.data
       } catch (authError: any) {
-        console.error('❌ /auth/me also failed:', authError.response?.status);
+        // Both endpoints failed - user is not authenticated
         throw authError
       }
     }

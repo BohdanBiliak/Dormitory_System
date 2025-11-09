@@ -116,7 +116,7 @@ export class AuthService {
     return this.saveSession(req, user);
   }
 
-  public async logout(req: Request, res: Response): Promise<void> {
+  public async logout(req: Request, res: Response): Promise<{ message: string }> {
     return new Promise((resolve, reject) => {
       req.session.destroy((err) => {
         if (err) {
@@ -125,7 +125,7 @@ export class AuthService {
           );
         }
         res.clearCookie(this.configService.getOrThrow<string>("SESSION_NAME"));
-        resolve();
+        resolve({ message: 'Logged out successfully' });
       });
     });
   }

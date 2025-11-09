@@ -106,17 +106,6 @@ export class MessagingGateway implements OnGatewayConnection, OnGatewayDisconnec
         return;
       }
 
-      const user = await this.userService.findById(userId);
-      if (!user) {
-        this.logger.warn(`User ${userId} not found for client ${client.id}`);
-        client.emit('error', { 
-          message: 'User not found',
-          code: 'USER_NOT_FOUND'
-        });
-        client.disconnect();
-        return;
-      }
-
       const userConnections = this.connectedUsers.get(userId);
       if (userConnections && userConnections.size >= this.MAX_CONNECTIONS_PER_USER) {
         this.logger.warn(`User ${userId} exceeded max connections (${this.MAX_CONNECTIONS_PER_USER})`);
@@ -129,7 +118,6 @@ export class MessagingGateway implements OnGatewayConnection, OnGatewayDisconnec
       }
 
       client.userId = userId;
-      client.user = user;
       client.sessionId = sessionId;
       this.socketUsers.set(client.id, userId);
 
@@ -232,7 +220,10 @@ export class MessagingGateway implements OnGatewayConnection, OnGatewayDisconnec
     @MessageBody() data: SendMessageDto,
   ) {
     try {
-      if (!client.userId) return;
+      if (!client.userId) {
+        client.emit('error', { message: 'Authentication required' });
+        return;
+      }
 
       const message = await this.messagingService.sendMessage(
         data.conversationId,
@@ -246,12 +237,23 @@ export class MessagingGateway implements OnGatewayConnection, OnGatewayDisconnec
         },
       );
 
+      this.logger.log(`📨 Broadcasting message ${message.id} to conversation ${data.conversationId}`);
+      
+      // Broadcast to all users in the conversation, including the sender
       this.server.to(data.conversationId).emit('new_message', message);
+      
+      // Also emit to sender's socket directly to ensure they receive it
+      client.emit('new_message', message);
 
+      // Confirm message was sent
       client.emit('message_sent', { messageId: message.id });
+      
+      this.logger.log(`✅ Message ${message.id} sent successfully by user ${client.userId}`);
 
     } catch (error) {
-      client.emit('error', { message: 'Failed to send message' });
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      this.logger.error(`Failed to send message: ${errorMessage}`);
+      client.emit('error', { message: 'Failed to send message', details: errorMessage });
     }
   }
 

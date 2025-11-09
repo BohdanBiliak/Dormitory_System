@@ -74,6 +74,15 @@ const messagingAPI = {
     );
     return response.data;
   },
+
+  editMessage: async (messageId: string, content: string): Promise<Message> => {
+    const response = await api.put(`/messaging/messages/${messageId}`, { content });
+    return response.data;
+  },
+
+  deleteMessage: async (messageId: string): Promise<void> => {
+    await api.delete(`/messaging/messages/${messageId}`);
+  },
 };
 
 // Query hooks
@@ -81,16 +90,35 @@ export const useGetConversations = () => {
   return useQuery({
     queryKey: ['conversations'],
     queryFn: messagingAPI.getConversations,
-    staleTime: 30 * 1000, // 30 seconds
+    staleTime: 30 * 1000,
+    retry: (failureCount, error: any) => {
+      // Don't retry on 401 errors (unauthorized)
+      if (error?.response?.status === 401) {
+        return false;
+      }
+      return failureCount < 2;
+    },
+    refetchOnWindowFocus: false,
+    refetchOnMount: true,
+    refetchOnReconnect: false,
   });
 };
 
-export const useGetConversationMessages = (conversationId: string, page: number = 1) => {
+export const useGetConversationMessages = (conversationId: string, page: number = 1, enabled: boolean = true) => {
   return useQuery({
     queryKey: ['conversation-messages', conversationId, page],
     queryFn: () => messagingAPI.getConversationMessages(conversationId, page),
-    enabled: !!conversationId,
+    enabled: enabled && !!conversationId,
     staleTime: 30 * 1000,
+    retry: (failureCount, error: any) => {
+      if (error?.response?.status === 401) {
+        return false;
+      }
+      return failureCount < 2;
+    },
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchInterval: false,
   });
 };
 
@@ -109,27 +137,20 @@ export const useCreateConversation = () => {
 
   return useMutation({
     mutationFn: async (data: CreateConversationData) => {
-      // console.log('HTTP API: Creating conversation', data);
       try {
         const result = await messagingAPI.createConversation(data);
-        // console.log('HTTP API: Conversation created successfully', result);
         return result;
       } catch (error) {
-        console.error('HTTP API: Failed to create conversation', error);
         throw error;
       }
     },
     onSuccess: (newConversation) => {
-      // console.log('Updating query cache with new conversation', newConversation.id);
       queryClient.setQueryData(['conversations'], (old: Conversation[] | undefined) => {
         if (!old) return [newConversation];
         const exists = old.some(conv => conv.id === newConversation.id);
         if (exists) return old;
         return [newConversation, ...old];
       });
-    },
-    onError: (error: any) => {
-      console.error('Mutation error:', error);
     },
   });
 };
@@ -138,13 +159,20 @@ export const useSendMessage = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ conversationId, data }: { conversationId: string; data: any }) =>
-      messagingAPI.sendMessage(conversationId, data),
+    mutationFn: ({ conversationId, data }: { conversationId: string; data: any }) => {
+      return messagingAPI.sendMessage(conversationId, data);
+    },
     onSuccess: (newMessage) => {
       queryClient.setQueryData(
         ['conversation-messages', newMessage.conversationId, 1],
         (old: { messages: Message[]; hasMore: boolean } | undefined) => {
           if (!old) return { messages: [newMessage], hasMore: false };
+          
+          const messageExists = old.messages.some(m => m.id === newMessage.id);
+          if (messageExists) {
+            return old;
+          }
+          
           return {
             ...old,
             messages: [...old.messages, newMessage],
@@ -169,6 +197,7 @@ export const useMarkConversationAsRead = () => {
 
   return useMutation({
     mutationFn: messagingAPI.markConversationAsRead,
+    retry: false, // Don't retry on auth errors
     onSuccess: (_, conversationId) => {
       queryClient.setQueryData(['unread-count', conversationId], { unreadCount: 0 });
       
@@ -178,6 +207,23 @@ export const useMarkConversationAsRead = () => {
           conv.id === conversationId ? { ...conv, unreadCount: 0 } : conv
         );
       });
+    },
+    onError: (error: any) => {
+      // Silently handle expected errors
+      if (error?.response?.status === 401) {
+        // User not authenticated
+        return;
+      }
+      if (error?.code === 'ECONNABORTED' || error?.message === 'Request aborted') {
+        // Request was aborted (user navigated away, etc.)
+        return;
+      }
+      if (error?.code === 'ERR_CANCELED') {
+        // Request was canceled
+        return;
+      }
+      // Only log unexpected errors
+      console.error('Failed to mark conversation as read:', error);
     },
   });
 };
@@ -221,6 +267,51 @@ export const useSearchMessages = (conversationId: string, query: string) => {
     queryKey: ['search-messages', conversationId, query],
     queryFn: () => messagingAPI.searchMessages(conversationId, query),
     enabled: !!conversationId && !!query && query.trim().length > 0,
-    staleTime: 60 * 1000, // 1 minute
+    staleTime: 60 * 1000,
+    retry: false,
+    refetchOnWindowFocus: false,
+  });
+};
+
+export const useEditMessage = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ messageId, content }: { messageId: string; content: string }) => 
+      messagingAPI.editMessage(messageId, content),
+    onSuccess: (updatedMessage) => {
+      queryClient.setQueryData(
+        ['conversation-messages', updatedMessage.conversationId, 1],
+        (old: { messages: Message[]; hasMore: boolean } | undefined) => {
+          if (!old) return old;
+          return {
+            ...old,
+            messages: old.messages.map(msg =>
+              msg.id === updatedMessage.id ? updatedMessage : msg
+            ),
+          };
+        }
+      );
+    },
+  });
+};
+
+export const useDeleteMessage = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: messagingAPI.deleteMessage,
+    onSuccess: (_, messageId) => {
+      queryClient.setQueryData(
+        ['conversation-messages'],
+        (old: { messages: Message[]; hasMore: boolean } | undefined) => {
+          if (!old) return old;
+          return {
+            ...old,
+            messages: old.messages.filter(msg => msg.id !== messageId),
+          };
+        }
+      );
+    },
   });
 };
