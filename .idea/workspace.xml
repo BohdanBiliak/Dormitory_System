@@ -5,10 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a2609a67-42b3-4399-bbcc-46f7339b9fb9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/(user)/notifications/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/signedIn/UserNotifications.component.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/lib/managers.api.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/confirmationsModals/AccomodationConfirmationModal.component.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/dialogs/admin/ManagerCreationDialog.component.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/hooks/managers.hook.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dormitory-frontend/src/types/managers.types.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/ui/UserSideMenu.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/ui/UserSideMenu.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/AdminUserList.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/AdminUserList.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/ConfirmationsTable.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/ConfirmationsTable.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/IdentityVerificationModal.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/confirmationsModals/IdentityVerificationModal.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/PaymentProofVereficationModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/confirmationsModals/PaymentProofVereficationModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/dialogs/user/BookARoomDialog.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/dialogs/user/BookARoomDialog.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/types/confirmations.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/types/confirmations.types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/types/rooms.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/types/rooms.types.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,6 +28,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="TypeScript JSX File" />
+        <option value="TypeScript File" />
       </list>
     </option>
   </component>
@@ -76,11 +86,11 @@
       <recent name="$PROJECT_DIR$/dormitory-frontend/public" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/dormitory-frontend/src/components/admin/confirmationsModals" />
       <recent name="$PROJECT_DIR$/dormitory-frontend/src/app" />
       <recent name="$PROJECT_DIR$/dormitory-frontend/src/components/admin" />
       <recent name="$PROJECT_DIR$/dormitory-frontend/src/app/admin/dormitories" />
       <recent name="$PROJECT_DIR$/dormitory-frontend/src/app/admin/dormitories/[id]" />
-      <recent name="$PROJECT_DIR$/dormitory-frontend/src/app/(guest)" />
     </key>
   </component>
   <component name="RunManager">
@@ -251,7 +261,7 @@
       <workItem from="1762668833295" duration="1423000" />
       <workItem from="1762670283736" duration="77000" />
       <workItem from="1762673024211" duration="623000" />
-      <workItem from="1762673842299" duration="3934000" />
+      <workItem from="1762673842299" duration="16211000" />
     </task>
     <servers />
   </component>

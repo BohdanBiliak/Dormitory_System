@@ -9,12 +9,21 @@ export interface Confirmation {
     createdAt: string
     updatedAt?: string
     resolvedAt?: string
+    paymentId?: string
+    roomId?: string
+    from?: string
+    to?: string
+    metadata?: {
+        suggestedTime?: string
+        alternativeRooms?: boolean
+    }
     requester: {
         id: string
         displayName: string
         email: string
         picture?: string
         secondName?: string
+        isVerified?: boolean,
     }
 }
 

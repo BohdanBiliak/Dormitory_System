@@ -68,8 +68,8 @@ export interface RoomResident{
 
 export interface RoomReservationData {
     roomId: string,
-    dateFrom: string,
-    dateTo: string,
+    from: string,
+    to: string,
     suggestedTime: string,
     alternativeRooms: boolean;
 }

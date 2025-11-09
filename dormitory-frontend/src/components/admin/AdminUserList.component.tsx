@@ -8,6 +8,7 @@ import {useQuery} from "@tanstack/react-query";
 import {userListApi} from "@/app/lib/userList.api";
 import {UserListRequest} from "@/types/user.types";
 import {useUserListQuery} from "@/hooks/userList.hook";
+import {ManagerCreationDialog} from "@/components/dialogs/admin/ManagerCreationDialog.component";
 
 
 export const AdminUserList = memo(function AdminUserList(){
@@ -25,6 +26,13 @@ export const AdminUserList = memo(function AdminUserList(){
     const [page, setPage] = useState(1);
     const limit = useMemo(() => 10, []);
 
+    const[showManagerCreationDialog, setShowManagerCreationDialog] = useState(false)
+    const handleOpenManagerCreation = () => {
+        setShowManagerCreationDialog(true)
+    }
+    const handleCloseManagerCreation =()=>{
+        setShowManagerCreationDialog(false)
+    }
 
     const { data: userList, isLoading } = useUserListQuery({
         page,
@@ -77,6 +85,12 @@ export const AdminUserList = memo(function AdminUserList(){
 
     return (
         <div className="min-h-screen bg-slate-50">
+            <button
+                className={`bg-blue-600 text-white border-blue-800 border`}
+                onClick={handleOpenManagerCreation}
+            >
+                Create Manager
+            </button>
             {/* Header */}
             <div className="bg-white border-b border-slate-200 shadow-sm animate-in slide-in-from-top-4 duration-500">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -297,6 +311,13 @@ export const AdminUserList = memo(function AdminUserList(){
                     </div>
                 )}
             </div>
+
+            {showManagerCreationDialog && (
+                <ManagerCreationDialog
+                    open={showManagerCreationDialog}
+                    onClose={handleCloseManagerCreation}
+                />
+            )}
         </div>
     )
 })

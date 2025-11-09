@@ -1,5 +1,5 @@
 import {Description, Dialog, DialogBackdrop, DialogPanel, DialogTitle} from "@headlessui/react";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {BuildingIcon, HousePlus} from "lucide-react";
 import {LanguageSelector} from "@/providers/language.provider";
 import {User} from "@/types/auth.types";
@@ -24,10 +24,10 @@ export default function BookingDialog({open, onClose, user, room}: BookingDialog
     const {requestAccommodation} = useBookARoom();
 
     const [reservation, setReservation] = useState<RoomReservationData>({
-        roomId: room.id,
-        dateFrom: '',
-        dateTo: '',
-        suggestedTime: '',
+        roomId: '',
+        from: '',
+        to: '',
+        suggestedTime: "",
         alternativeRooms: false,
     })
 
@@ -39,7 +39,7 @@ export default function BookingDialog({open, onClose, user, room}: BookingDialog
                 if(!prevState) return prevState;
                 return {
                     ...prevState,
-                    dateFrom: value.toString()
+                    from: value.toString()
                 }
             })
         }
@@ -49,7 +49,7 @@ export default function BookingDialog({open, onClose, user, room}: BookingDialog
                 if(!prevState) return prevState;
                 return {
                     ...prevState,
-                    dateTo: value.toString()
+                    to: value.toString()
                 }
             })
         }
@@ -59,7 +59,7 @@ export default function BookingDialog({open, onClose, user, room}: BookingDialog
                 if(!prevState) return prevState;
                 return {
                     ...prevState,
-                    suggestedTime: value.toString()
+                    suggestedTime: value
                 }
             })
         }
@@ -73,20 +73,21 @@ export default function BookingDialog({open, onClose, user, room}: BookingDialog
                 }
             })
         }
+
     }
+
+    useEffect(() => {
+        setReservation(prevState => {
+            if(!prevState) return prevState;
+            return {
+                ...prevState,
+                roomId: room.id
+            }
+        })
+    }, [room]);
 
     const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const {name, value} = e.target;
-
-        if(name === "numbersOfPeople") {
-            setReservation(prevState => {
-                if(!prevState) return prevState;
-                return {
-                    ...prevState,
-                    numberOfPeople: Number.parseInt(value)+1
-                }
-            })
-        }
     }
 
     const handleRequestAccommodation = () => {
@@ -151,7 +152,7 @@ export default function BookingDialog({open, onClose, user, room}: BookingDialog
                                                     name={'startDate'}
                                                     min={tomorrow.toISOString().substring(0, tomorrow.toISOString().indexOf('T'))}
                                                     onChange={handleInputChange}
-                                                    value={reservation.dateFrom.toString()}
+                                                    value={reservation.from.toString()}
                                                     className={`bg-gray-300`}
                                                 />
                                             </div>
@@ -160,9 +161,9 @@ export default function BookingDialog({open, onClose, user, room}: BookingDialog
                                                 <input
                                                     type={'date'}
                                                     name={'endDate'}
-                                                    min={reservation.dateFrom.toString()}
+                                                    min={reservation.from.toString()}
                                                     onChange={handleInputChange}
-                                                    value={reservation.dateTo.toString()}
+                                                    value={reservation.to.toString()}
                                                     className={`bg-gray-300`}
                                                 />
                                             </div>
@@ -180,8 +181,8 @@ export default function BookingDialog({open, onClose, user, room}: BookingDialog
                                     <div className={`flex flex-row`}>
                                         <div>Suggested accommodation time:</div>
                                         <input
-                                            name={`suggestedTime`}
-                                            type={`time`}
+                                            name={'suggestedTime'}
+                                            type={'text'}
                                             value={reservation.suggestedTime}
                                             onChange={handleInputChange}
                                         />
