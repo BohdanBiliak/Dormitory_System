@@ -10,6 +10,9 @@ import {useGetAvailableRoom, useGetRoom, useGetRooms, useUpdateRoom} from "@/hoo
 import {AvailableRoomsRequest, Room, RoomResident} from "@/types/rooms.types";
 import { CalendarOfAvailability2WVerComponent } from "@/components/ui/CalendarOfAvailability2WVer.component";
 import EvictionFlowDialogsComponent from "@/components/dialogs/admin/EvictionFlowDialogs.component";
+import {useCurrentUserProfile} from "@/hooks/user.hook";
+import {User} from "@/types/auth.types";
+import BookingDialog from "@/components/dialogs/user/BookARoomDialog.component";
 
 interface Filters {
     dateFrom: string;
@@ -27,8 +30,16 @@ export default function AllRoomsPage() {
     const [selectedRoomId, setSelectedRoomId] = useState<string>('');
     const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
 
-    const { data: dormitories, isLoading: loadingDormitories, error: dormitoriesError } = useGetActiveDormitories();
+    const [currentUser, setCurrentUser] = useState<User | undefined>();
 
+    const { data: dormitories, isLoading: loadingDormitories, error: dormitoriesError } = useGetActiveDormitories();
+    const {data: room, isLoading: loadingRoom, error: roomError} = useGetRoom(selectedRoomId);
+    const {data: user, isLoading: loadingUserData, error: userDataError} = useCurrentUserProfile();
+
+
+    useEffect(() => {
+        setCurrentUser(user);
+    }, [user]);
 
     useEffect(() => {
         if (dormitories && dormitories?.data) {
@@ -54,6 +65,11 @@ export default function AllRoomsPage() {
         }
     }, [currentFloor]);
 
+    useEffect(() => {
+        if(room){
+            setSelectedRoom(room);
+        }
+    }, [room]);
 
 
     const [filters, setFilters] = useState<Filters>({
@@ -80,7 +96,7 @@ export default function AllRoomsPage() {
         if (availableRooms && availableRooms.length > 0) {
             const ids = availableRooms.map(room => room.id)
             setAvailableRoomsIds(ids)
-            // console.log("Available rooms:", availableRooms)
+            console.log("Available rooms:", availableRooms)
         }
     }, [availableRooms]);
 
@@ -162,25 +178,15 @@ export default function AllRoomsPage() {
         setShowMobileRoomDetails(true);
     };
 
-    //eviction
-
-    const [showEvictionConfirmation, setShowEvictionConfirmation] = useState(false);
-    const [userToEvict, setUserToEvict] = useState<RoomResident>({
-        id: ``,
-        displayName: ``,
-        secondName: ``,
-        email: ``,
-    });
-
-    const closeEvictionConfirmation = () => {
-        setUserToEvict({
-            id: '',
-            displayName: '',
-            secondName: '',
-            email: '',
-        })
-        setShowEvictionConfirmation(false);
+    //Booking
+    const [showBookDialog, setShowBookDialog] = useState(false);
+    const handleOpenBookDialog = () => {
+        setShowBookDialog(true);
     }
+    const handleCloseBookDialog = () => {
+        setShowBookDialog(false);
+    }
+
 
     return (
         <div className="min-h-screen bg-slate-50">
@@ -418,7 +424,7 @@ export default function AllRoomsPage() {
                                                 </span>
                                             )}
                                             <Link
-                                                href={`/admin/rooms/${selectedRoom.id}`}
+                                                href={`/rooms/${selectedRoom.id}`}
                                                 className="inline-flex items-center mt-2 px-3 py-1 bg-blue-600 text-white text-xs font-medium rounded-md hover:bg-blue-700 transition-colors"
                                             >
                                                 To room page →
@@ -428,7 +434,23 @@ export default function AllRoomsPage() {
 
                                     {/* Availability Calendar */}
                                     <CalendarOfAvailability2WVerComponent statuses={selectedRoom.statuses} showLegend={false} />
-                                    </>
+
+                                    <div className={`flex flex-row justify-center`}>
+                                    {user ? (
+
+                                        user.role === "Regular" ?  (<div className="text-red-800">Admin must confirm your profile first</div>) :
+                                            ( user.role === "SignedInUser" ? (<button onClick={handleOpenBookDialog} className={`bg-green-600 text-white py-1 px-3 my-2 rounded drop-shadow`}>Book this room</button>) :
+                                                (user.role === "Resident" && (<button onClick={handleOpenBookDialog} className={`bg-green-600 text-white py-1 px-3 my-2 rounded drop-shadow`}>Move to this room</button>)))
+
+                                        ) : (
+                                        <div className="text-red-800">
+                                            Please log in first.
+                                        </div>
+                                    )}
+                                    </div>
+
+
+                                </>
                             ) : (
                                 <div className="px-4 py-8 text-center animate-in fade-in-0 zoom-in-50 duration-500">
                                     <Building className="mx-auto h-10 w-10 text-slate-300" />
@@ -439,6 +461,8 @@ export default function AllRoomsPage() {
                     </div>
                 </div>
             </div>
+
+            {(currentUser && selectedRoom) && (<BookingDialog open={showBookDialog} onClose={handleCloseBookDialog} user={currentUser} room={selectedRoom}/>)}
 
             {/* Mobile Room Details Modal */}
             <Dialog open={showMobileRoomDetails} onClose={() => setShowMobileRoomDetails(false)} className="lg:hidden relative z-50">
@@ -496,45 +520,6 @@ export default function AllRoomsPage() {
                                                     }`}>
                                                         <div>{day.dayNumber}.{day.month}</div>
                                                     </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-
-                                    {/* Residents */}
-                                    <div className="px-6 py-4">
-                                        <h4 className="text-sm font-medium text-slate-900 mb-3">
-                                            Residents, {selectedRoom.residents.length}/{selectedRoom.capacity}:
-                                        </h4>
-                                        <div className="space-y-3">
-                                            {selectedRoom.residents.map((resident, index) => (
-                                                <div
-                                                    key={resident.id}
-                                                    className="bg-slate-100 rounded-lg p-4"
-                                                    style={{ animationDelay: `${index * 100}ms` }}
-                                                >
-                                                    <div className="space-y-3">
-                                                        <div>
-                                                            <div className="font-medium text-slate-900">
-                                                                {resident.displayName} {resident.secondName}
-                                                            </div>
-                                                        </div>
-                                                        <div className="flex items-center justify-between">
-                                                            <div className="flex items-center space-x-2">
-                                                                <span className="text-sm">Payments</span>
-                                                            </div>
-                                                            <div onClick={(e)=>e.stopPropagation()}>
-                                                                <button name={`eviction${index}`} className="px-3 py-2 bg-red-600 text-white text-sm rounded-lg hover:bg-red-700 transition-colors" onClick={()=>{setUserToEvict(resident); setShowEvictionConfirmation(true)}}>
-                                                                    Evict
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                            {Array.from({ length: selectedRoom.capacity - selectedRoom.residents.length }, (_, i) => (
-                                                <div key={`empty-${i}`} className="bg-slate-50 border-2 border-dashed border-slate-300 rounded-lg p-4 text-center text-slate-500 animate-in fade-in-0 zoom-in-95 duration-300">
-                                                    Available for accommodation
                                                 </div>
                                             ))}
                                         </div>

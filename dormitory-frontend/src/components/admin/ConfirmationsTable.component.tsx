@@ -424,7 +424,8 @@ export function ConfirmationsTable() {
       </div>
 
       {/* Modal */}
-      {selectedConfirmation && selectedConfirmation.type === 'IDENTITY_VERIFICATION' && (
+      {selectedConfirmation && selectedConfirmation.type === 'IDENTITY_VERIFICATION'
+          && (
         <IdentityVerificationModal
           confirmation={selectedConfirmation}
           onClose={handleCloseModal}

@@ -3,7 +3,6 @@
 import {useGetNotification, useNotifications} from "@/hooks/notifications.hook";
 import {Notification, NotificationGetRequest, NotificationType} from "@/types/notifications.types";
 import {useEffect, useState} from "react";
-import {notificationsApi} from "@/app/lib/notifications.api";
 
 export function AdminNotifications() {
     const {markAsRead} = useNotifications();
