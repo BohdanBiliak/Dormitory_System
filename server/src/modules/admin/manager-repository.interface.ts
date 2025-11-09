@@ -15,8 +15,9 @@ export interface IManagerRepository {
   findManagersByDormitory(dormitoryId: string): Promise<User[]>;
   //update
   update(id: string, data: UpdateManagerDto): Promise<User>;
-  //deactivate
+  //deactivate and activate
   deactivate(id: string): Promise<User>;
+  activate(id: string): Promise<User>;
   //assign and remove from dormitory
   assignToDormitory(managerId: string, dormitoryId: string): Promise<void>;
   removeFromDormitory(managerId: string, dormitoryId: string): Promise<void>;

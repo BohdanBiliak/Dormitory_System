@@ -10,9 +10,11 @@ import { NotificationGateway } from "../notifications/NotificationGateway";
 import { MailService } from "@/libs/mail/mail.service";
 import { ManagerRepository } from "./manager.repository";
 import { GetManagersUseCase } from "./use-cases/manager/GetManagerUseCase";
+import { GetManagerByIdUseCase } from "./use-cases/manager/GetManagerByIdUseCase";
 import { CreateManagerUseCase } from "./use-cases/manager/CreateManagerUseCase";
 import { UpdateManagerUseCase } from "./use-cases/manager/UpdateManagerUseCase";
 import { DeactivateManagerUseCase } from "./use-cases/manager/DeactivateManagerUseCase";
+import { ActivateManagerUseCase } from "./use-cases/manager/ActivateManagerUseCase";
 import { DormitoryModule } from "@/modules/dormitory/dormitory.module";
 import { DormitoryService } from "../dormitory/dormitory.service";
 import { ManagerController } from "./controllers/manager.controller";
@@ -31,8 +33,10 @@ import { PricingModule } from "@/modules/pricing/pricing.module";
     ManagerRepository,
     CreateManagerUseCase,
     GetManagersUseCase,
+    GetManagerByIdUseCase,
     UpdateManagerUseCase,
     DeactivateManagerUseCase,
+    ActivateManagerUseCase,
     DormitoryService,
   ],
 })

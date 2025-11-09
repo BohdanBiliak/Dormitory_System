@@ -10,8 +10,10 @@ import {
 } from "@nestjs/common";
 import { CreateManagerUseCase } from "../use-cases/manager/CreateManagerUseCase";
 import { GetManagersUseCase } from "../use-cases/manager/GetManagerUseCase";
+import { GetManagerByIdUseCase } from "../use-cases/manager/GetManagerByIdUseCase";
 import { UpdateManagerUseCase } from "../use-cases/manager/UpdateManagerUseCase";
 import { DeactivateManagerUseCase } from "../use-cases/manager/DeactivateManagerUseCase";
+import { ActivateManagerUseCase } from "../use-cases/manager/ActivateManagerUseCase";
 import { CreateManagerDto } from "../dto/CreateMeneger.dto";
 import { UpdateManagerDto } from "../dto/UpdateManager.dto";
 import { ManagerFiltersDto } from "../dto/ManagerFilters.dto";
@@ -26,8 +28,10 @@ export class ManagerController {
   constructor(
     private readonly createManagerUseCase: CreateManagerUseCase,
     private readonly getManagersUseCase: GetManagersUseCase,
+    private readonly getManagerByIdUseCase: GetManagerByIdUseCase,
     private readonly updateManagerUseCase: UpdateManagerUseCase,
     private readonly deactivateManagerUseCase: DeactivateManagerUseCase,
+    private readonly activateManagerUseCase: ActivateManagerUseCase,
   ) {}
 
   @Post()
@@ -51,8 +55,7 @@ export class ManagerController {
   @Authorization($Enums.UserRole.SuperAdmin, $Enums.UserRole.Admin)
   @ManagerDocs.getManagerById()
   async getManagerById(@Param("id") id: string) {
-    // This would use a GetManagerByIdUseCase
-    return { message: "Get manager by ID implementation needed" };
+    return this.getManagerByIdUseCase.execute(id);
   }
 
   @Patch(":id")
@@ -75,8 +78,10 @@ export class ManagerController {
   @Post(":id/activate")
   @Authorization($Enums.UserRole.SuperAdmin, $Enums.UserRole.Admin)
   @ManagerDocs.activateManager()
-  async activateManager(@Param("id") id: string) {
-    // This would use an ActivateManagerUseCase
-    return { message: "Activate manager implementation needed" };
+  async activateManager(
+    @Param("id") id: string,
+    @CurrentUser("id") currentUserId: string,
+  ) {
+    return this.activateManagerUseCase.execute(id, currentUserId);
   }
 }
