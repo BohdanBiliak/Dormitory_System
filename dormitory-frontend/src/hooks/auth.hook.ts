@@ -25,8 +25,8 @@ export const useAuth = () => {
     queryClient.invalidateQueries({ queryKey: ['auth', 'currentUser'] })
     switch (user?.role){
       case UserRole.Admin: router.push('/admin/profile'); break;
-      case UserRole.Regular:
-      case UserRole.SignedInUser:
+      case UserRole.Regular: router.push('/profile');break;
+      case UserRole.SignedInUser: router.push('/profile');break;
       case UserRole.Resident: router.push('/profile');break;
       default: router.push('/dormitories');
     }

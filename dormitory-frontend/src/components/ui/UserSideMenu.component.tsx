@@ -165,6 +165,12 @@ export const UserSideMenu = memo(function UserSideMenu ({children}:UserSideMenuP
                     label: safeT('sideMenu.messages', 'Messages'),
                     image: '/envelope.svg',
                     href: '/messaging',
+                },
+                {
+                    id: 'notifications',
+                    label: safeT('sideMenu.notifications', 'Notifications'),
+                    image: '/bell.svg',
+                    href: '/notifications',
                 }
             ]
         },
