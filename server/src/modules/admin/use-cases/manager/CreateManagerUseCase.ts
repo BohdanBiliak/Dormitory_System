@@ -41,9 +41,9 @@ export class CreateManagerUseCase {
     // Hash password with Argon2
     const hashedPassword = await argon2.hash(createManagerDto.password, {
       type: argon2.argon2id,
-      memoryCost: 2 ** 16, // 64 MB
-      timeCost: 3, // iterations
-      parallelism: 1, // threads
+      memoryCost: 2 ** 16, 
+      timeCost: 3, 
+      parallelism: 1,
     });
     // Create manager
     const manager = await this.managerRepository.create(

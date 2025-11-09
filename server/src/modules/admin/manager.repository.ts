@@ -17,9 +17,14 @@ export class ManagerRepository implements IManagerRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(data: CreateManagerDto, hashedPassword: string): Promise<User> {
+    // Compute displayName from name and middleName
+    const displayName = data.middleName 
+      ? `${data.name} ${data.middleName}`
+      : data.name;
+
     return this.prisma.user.create({
       data: {
-        displayName: data.name,
+        displayName: displayName,
         secondName: data.lastName,
         email: data.email,
         password: hashedPassword,
