@@ -365,7 +365,7 @@ export class RoomService {
   }
 
   async requestAccommodation(user: User, dto: RequestAccommmodationDto) {
-    const { from, to, roomId, roommateIds, numberOfPeople } = dto;
+    const { from, to, roomId, suggestedTime, alternativeRooms } = dto;
 
     const room = await this.roomRepository.findById(roomId);
     if (!room) throw new NotFoundException("Room not found");
@@ -384,6 +384,7 @@ export class RoomService {
     if (overlapping) {
       throw new ConflictException("Room not available on selected dates");
     }
+    
 
     return this.roomRepository.createConfirmation({
       userId: user.id,
@@ -392,8 +393,10 @@ export class RoomService {
       roomId: roomId,
       from: fromDate,
       to: toDate,
-      roommateIds: roommateIds || [],
-      numberOfPeople: numberOfPeople || 1,
+      metadata: {
+        suggestedTime: suggestedTime || null,
+        alternativeRooms: alternativeRooms || false,
+      },
     });
   }
 

@@ -1,7 +1,7 @@
-import { IsUUID, IsDateString } from "class-validator";
+import { IsString, IsDateString } from "class-validator";
 
 export class BookRoomDto {
-  @IsUUID()
+  @IsString()
   roomId: string;
 
   @IsDateString()

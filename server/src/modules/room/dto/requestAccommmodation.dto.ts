@@ -1,13 +1,12 @@
 import {
-  IsArray,
+  IsBoolean,
   IsDateString,
-  IsInt,
   IsOptional,
-  IsUUID,
+  IsString,
 } from "class-validator";
 
 export class RequestAccommmodationDto {
-  @IsUUID()
+  @IsString()
   roomId: string;
 
   @IsDateString()
@@ -16,12 +15,11 @@ export class RequestAccommmodationDto {
   @IsDateString()
   to: string;
 
-  @IsArray()
-  @IsUUID("all", { each: true })
+  @IsString()
   @IsOptional()
-  roommateIds?: string[];
+  suggestedTime?: string;
 
-  @IsInt()
+  @IsBoolean()
   @IsOptional()
-  numberOfPeople?: number;
+  alternativeRooms?: boolean;
 }
