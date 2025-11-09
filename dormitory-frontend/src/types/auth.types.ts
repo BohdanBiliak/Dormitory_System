@@ -23,7 +23,7 @@ export interface AuthResponse {
 }
 
 export enum UserRole{
-  'Admin'="Admin", 'Manager'="Manager",'Resident'="Resident",'SignedInUser'="SignedInUser", 'Regular'="Regular"
+  'SuperAdmin'='SuperAdmin','Admin'="Admin",'Resident'="Resident",'SignedInUser'="SignedInUser", 'Regular'="Regular"
 }
 
 export interface User {
