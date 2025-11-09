@@ -58,55 +58,75 @@ export const useSocket = (events?: SocketEvents): UseSocketReturn => {
     
     // Connection events
     socket.on('connect', () => {
-      // console.log('Connected to messaging server');
       setIsConnected(true);
     });
 
     socket.on('connected', (data) => {
-      // console.log('Authentication successful:', data);
+      // Successfully authenticated
     });
 
     socket.on('disconnect', (reason) => {
-      // console.log('Disconnected from messaging server:', reason);
-      setIsConnected(false);
-    });
-
-    socket.on('connect_error', (error) => {
-      console.error('Connection error:', error);
       setIsConnected(false);
       
-      // Stop reconnecting if it's an authentication issue
-      if (error.message.includes('NO_SESSION') || error.message.includes('INVALID_SESSION')) {
-        socket.disconnect();
+      // Only log unexpected disconnections
+      if (reason !== 'io client disconnect' && reason !== 'io server disconnect') {
+        console.warn('Disconnected from messaging server:', reason);
       }
     });
 
+    socket.on('connect_error', (error) => {
+      setIsConnected(false);
+      
+      // Handle authentication errors silently - user may not be logged in
+      if (error.message.includes('NO_SESSION') || error.message.includes('INVALID_SESSION')) {
+        socket.disconnect();
+        return;
+      }
+      
+      // Only log non-auth connection errors
+      console.error('Connection error:', error.message);
+    });
+
     socket.on('error', (error) => {
-      console.error('🔴 Socket error:', error);
+      // Handle authentication errors
       if (error.code === 'NO_SESSION' || error.code === 'INVALID_SESSION') {
-        // Session expired or invalid, user needs to log in again
-        // console.warn('Session invalid, disconnecting socket...');
-        socket.disconnect(); // Stop reconnection attempts
+        socket.disconnect();
+        socket.close();
         if (eventsRef.current?.onError) {
           eventsRef.current.onError(error);
         }
-      } else if (error.code === 'RATE_LIMIT_EXCEEDED') {
-        // console.warn('Too many connection attempts, backing off...');
-        socket.disconnect(); // Stop reconnection attempts
+        return;
+      }
+      
+      // Handle rate limiting
+      if (error.code === 'RATE_LIMIT_EXCEEDED') {
+        console.warn('Connection rate limit exceeded. Please wait before reconnecting.');
+        socket.disconnect();
+        socket.close();
         if (eventsRef.current?.onError) {
           eventsRef.current.onError(error);
         }
-      } else if (error.code === 'CONVERSATION_CREATE_FAILED') {
-        console.error('🔴 Failed to create conversation:', error);
+        return;
+      }
+      
+      // Handle conversation creation errors
+      if (error.code === 'CONVERSATION_CREATE_FAILED') {
+        console.error('Failed to create conversation:', error.message);
         if (eventsRef.current?.onError) {
           eventsRef.current.onError(error);
         }
+        return;
+      }
+      
+      // Log other errors
+      console.error('Socket error:', error);
+      if (eventsRef.current?.onError) {
+        eventsRef.current.onError(error);
       }
     });
 
     // Conversation events
     socket.on('conversation_created', (conversation: Conversation) => {
-      // console.log('✅ Conversation created via socket:', conversation.id);
       if (eventsRef.current?.onNewConversation) {
         eventsRef.current.onNewConversation(conversation);
       }
@@ -163,11 +183,11 @@ export const useSocket = (events?: SocketEvents): UseSocketReturn => {
 
     // Conversation join/leave confirmations
     socket.on('joined_conversation', (data: { conversationId: string }) => {
-      // console.log('Joined conversation:', data.conversationId);
+      // Joined conversation successfully
     });
 
     socket.on('left_conversation', (data: { conversationId: string }) => {
-      // console.log('Left conversation:', data.conversationId);
+      // Left conversation successfully
     });
 
     return () => {
@@ -181,25 +201,13 @@ export const useSocket = (events?: SocketEvents): UseSocketReturn => {
 
   const sendMessage = (data: SendMessageData) => {
     if (socketRef.current?.connected) {
-      console.log('📡 Socket: Emitting send_message event', {
-        conversationId: data.conversationId,
-        content: data.content.substring(0, 50),
-        messageType: data.messageType
-      });
       socketRef.current.emit('send_message', data);
-    } else {
-      console.error('🔴 Socket: Cannot send message - socket not connected');
     }
   };
 
   const createConversation = (data: CreateConversationData) => {
-    console.log('📡 Socket: Attempting to create conversation', data);
-    
     if (socketRef.current?.connected) {
-      console.log('✅ Socket: Emitting create_conversation event');
       socketRef.current.emit('create_conversation', data);
-    } else {
-      console.error('🔴 Socket: Cannot create conversation - socket not connected');
     }
   };
 

@@ -420,8 +420,8 @@ export const RegisterForm = memo(function RegisterForm() {
                       onClick={handleChangePasswordRepeatVisibility}
                   >
                     <img
-                        src={showPassword ? '/eye.svg' : '/eye-slash.svg'}
-                        alt={showPassword ? 'Hide password' : 'Show password'}
+                        src={showRepeatPassword ? '/eye.svg' : '/eye-slash.svg'}
+                        alt={showRepeatPassword ? 'Hide password' : 'Show password'}
                         className="h-6 w-6"
                     />
                   </button>

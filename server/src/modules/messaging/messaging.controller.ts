@@ -16,6 +16,8 @@ import { MessagingService } from './services/messaging.service';
 import { CreateConversationDto } from './dto/create-conversation.dto';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { AuthGuard } from '../../libs/common/guards/auth.guard';
+import { UserRole } from '../../../__generated__';
+import { Authorization } from '@/libs/common/decorators/auth.decorator';
 
 @ApiTags('Messaging')
 @ApiBearerAuth()
@@ -24,9 +26,11 @@ import { AuthGuard } from '../../libs/common/guards/auth.guard';
 export class MessagingController {
   constructor(private readonly messagingService: MessagingService) {}
 
+  @Authorization(UserRole.Admin, UserRole.SuperAdmin)
   @Post('conversations')
   @ApiOperation({ summary: 'Create a new conversation' })
   @ApiResponse({ status: 201, description: 'Conversation created successfully' })
+
   async createConversation(
     @Body() createConversationDto: CreateConversationDto,
     @Request() req: any,
@@ -52,6 +56,8 @@ export class MessagingController {
     }
   }
 
+
+@Authorization(UserRole.Admin, UserRole.SuperAdmin, UserRole.SignedInUser, UserRole.Resident, UserRole.Regular)
   @Get('conversations')
   @ApiOperation({ summary: 'Get user conversations' })
   @ApiResponse({ status: 200, description: 'Conversations retrieved successfully' })
@@ -61,6 +67,7 @@ export class MessagingController {
     return this.messagingService.getUserConversations(userId);
   }
 
+  @Authorization(UserRole.Admin, UserRole.SuperAdmin, UserRole.SignedInUser, UserRole.Resident, UserRole.Regular)
   @Get('conversations/:conversationId/messages')
   @ApiOperation({ summary: 'Get conversation messages' })
   @ApiResponse({ status: 200, description: 'Messages retrieved successfully' })
@@ -80,6 +87,7 @@ export class MessagingController {
     );
   }
 
+  @Authorization(UserRole.Admin, UserRole.SuperAdmin, UserRole.SignedInUser, UserRole.Resident, UserRole.Regular)
   @Post('conversations/:conversationId/messages')
   @ApiOperation({ summary: 'Send a message to a conversation' })
   @ApiResponse({ status: 201, description: 'Message sent successfully' })
@@ -93,6 +101,8 @@ export class MessagingController {
     return this.messagingService.sendMessage(conversationId, userId, createMessageDto);
   }
 
+
+  @Authorization(UserRole.Admin, UserRole.SuperAdmin, UserRole.SignedInUser, UserRole.Resident, UserRole.Regular)
   @Post('messages/:messageId/read')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Mark a message as read' })
@@ -105,7 +115,8 @@ export class MessagingController {
     
     await this.messagingService.markMessageAsRead(messageId, userId);
   }
-
+  
+  @Authorization(UserRole.Admin, UserRole.SuperAdmin, UserRole.SignedInUser, UserRole.Resident, UserRole.Regular)
   @Post('conversations/:conversationId/read')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Mark all messages in conversation as read' })
@@ -119,6 +130,7 @@ export class MessagingController {
     await this.messagingService.markConversationAsRead(conversationId, userId);
   }
 
+  @Authorization(UserRole.Admin, UserRole.SuperAdmin, UserRole.SignedInUser, UserRole.Resident, UserRole.Regular)
   @Get('conversations/:conversationId/unread-count')
   @ApiOperation({ summary: 'Get unread message count for a conversation' })
   @ApiResponse({ status: 200, description: 'Unread count retrieved successfully' })
@@ -132,6 +144,7 @@ export class MessagingController {
     return { unreadCount: count };
   }
 
+  @Authorization(UserRole.Admin, UserRole.SuperAdmin, UserRole.SignedInUser, UserRole.Resident, UserRole.Regular)
   @Get('conversations/direct/:otherUserId')
   @ApiOperation({ summary: 'Find or create direct conversation with another user' })
   @ApiResponse({ status: 200, description: 'Direct conversation retrieved/created successfully' })
@@ -153,6 +166,7 @@ export class MessagingController {
     return conversation;
   }
 
+  @Authorization(UserRole.Admin, UserRole.SuperAdmin)
   @Delete('conversations/:conversationId')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Delete a conversation' })
@@ -167,6 +181,7 @@ export class MessagingController {
     await this.messagingService.deleteConversation(conversationId, userId);
   }
 
+  @Authorization(UserRole.Admin, UserRole.SuperAdmin, UserRole.SignedInUser, UserRole.Resident, UserRole.Regular)
   @Get('conversations/:conversationId/search')
   @ApiOperation({ summary: 'Search messages in a conversation' })
   @ApiResponse({ status: 200, description: 'Search results retrieved successfully' })

@@ -1,28 +1,36 @@
-import {useMutation, useQueryClient} from '@tanstack/react-query'
+import {useMutation, useQueryClient, useQuery} from '@tanstack/react-query'
 import {authApi} from '@/app/lib/auth.api'
 import {LoginRequest, RegisterRequest, User, UserRole} from '@/types/auth.types'
 import {toast} from 'sonner'
 import {useRouter} from 'next/navigation'
-import {useState, useCallback, useMemo} from "react";
+import {useCallback, useMemo, useEffect} from "react";
 
 export const useAuth = () => {
   const queryClient = useQueryClient()
   const router = useRouter()
-  const [user, setUser] = useState<User | null>(null)
 
-  const isLoadingUser = useMemo(() => false, [])
-  const userError = useMemo(() => null, [])
+  // Query to fetch current user - this will check if user is authenticated
+  const { data: user, isLoading: isLoadingUser, error: userError, refetch: refetchUser } = useQuery({
+    queryKey: ['user', 'current'],
+    queryFn: authApi.getCurrentUser,
+    retry: false,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+  })
 
-  const handleLoginSuccess = useCallback((response: any) => {
-    // console.log("Loggining user",response.newUser)
+  const handleLoginSuccess = useCallback(async (response: any) => {
     if(!response.newUser) {
       throw Error('Bad credentials')
     }
     const user = response.newUser
-    setUser(user)
 
+    // Update cache with the logged in user
+    queryClient.setQueryData(['user', 'current'], user)
+    
     toast.success('Login successful!')
-    queryClient.invalidateQueries({ queryKey: ['auth', 'currentUser'] })
+    
+    // Redirect based on role
     switch (user?.role){
       case UserRole.Admin: router.push('/admin/profile'); break;
       case UserRole.Regular:
@@ -100,15 +108,28 @@ export const useAuth = () => {
   const logoutMutation = useMutation({
     mutationFn: authApi.logout,
     onSuccess: () => {
+      // Clear user data from cache
       queryClient.setQueryData(['user', 'current'], null)
-      queryClient.invalidateQueries({ queryKey: ['user', 'current'] })
-      queryClient.invalidateQueries({ queryKey: ['admin', 'profile'] })
+      
+      // Cancel all ongoing queries to prevent stale requests
+      queryClient.cancelQueries()
+      
+      // Clear all cache data
+      queryClient.clear()
+      
       toast.success('Logged out successfully!')
       router.push('/auth/login')
     },
     onError: (error: any) => {
       console.error('Logout error:', error)
-      toast.error('Logout failed')
+      
+      // Even if logout fails on backend, clear local state
+      queryClient.setQueryData(['user', 'current'], null)
+      queryClient.cancelQueries()
+      queryClient.clear()
+      
+      router.push('/auth/login')
+      toast.error('Logout completed with errors')
     },
   })
 

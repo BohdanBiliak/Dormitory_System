@@ -14,6 +14,8 @@ import {
   useCreateConversation,
   useDeleteConversation,
   useSearchMessages,
+  useEditMessage,
+  useDeleteMessage,
 } from '@/hooks/messaging-api.hook';
 import { MessageSquare, Plus, ArrowLeft, Settings, Search, Trash2, X, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
@@ -38,16 +40,19 @@ export const MessagingInterface = memo<MessagingInterfaceProps>(({
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [isSendingMessage, setIsSendingMessage] = useState(false);
 
-  // API hooks
-  const { data: conversations = [], refetch: refetchConversations } = useGetConversations();
-  const { data: messagesData, refetch: refetchMessages } = useGetConversationMessages(
+  // API hooks - only enabled when we have a current user
+  const { data: conversations = [], refetch: refetchConversations, isError: conversationsError } = useGetConversations();
+  const { data: messagesData, refetch: refetchMessages, isError: messagesError } = useGetConversationMessages(
     selectedConversation?.id || '',
-    1
+    1,
+    !!currentUserId && !!selectedConversation?.id // Only fetch when authenticated and conversation is selected
   );
   const sendMessageMutation = useSendMessage();
   const markAsReadMutation = useMarkConversationAsRead();
   const createConversationMutation = useCreateConversation();
   const deleteConversationMutation = useDeleteConversation();
+  const editMessageMutation = useEditMessage();
+  const deleteMessageMutation = useDeleteMessage();
   const { data: searchResults } = useSearchMessages(
     selectedConversation?.id || '',
     searchQuery
@@ -65,15 +70,18 @@ export const MessagingInterface = memo<MessagingInterfaceProps>(({
     stopTyping,
   } = useSocket({
     onNewMessage: (message: Message) => {
+      // Only add message if it's for the currently selected conversation
       if (message.conversationId === selectedConversation?.id) {
         setMessages(prev => {
+          // Check if message already exists to prevent duplicates
           const exists = prev.some(m => m.id === message.id);
-          if (exists) {
-            return prev;
+          if (!exists) {
+            return [...prev, message];
           }
-          return [...prev, message];
+          return prev;
         });
       }
+      // Refetch conversations list to update last message and unread counts
       refetchConversations();
     },
     onNewConversation: (conversation: Conversation) => {
@@ -106,48 +114,44 @@ export const MessagingInterface = memo<MessagingInterfaceProps>(({
   });
 
   useEffect(() => {
-    if (messagesData?.messages) {
-      setMessages(prev => {
-        const newMessages = messagesData.messages;
-        const existingIds = new Set(prev.map(m => m.id));
-        const uniqueNewMessages = newMessages.filter(m => !existingIds.has(m.id));
-        
-        if (uniqueNewMessages.length > 0) {
-          return [...prev, ...uniqueNewMessages];
-        }
-        
-        if (prev.length === 0) {
-          return newMessages;
-        }
-        
-        return prev;
-      });
+    if (messagesData?.messages && selectedConversation) {
+      setMessages(messagesData.messages);
+    } else if (!selectedConversation) {
+      setMessages([]);
     }
-  }, [messagesData, selectedConversation?.id]);
+  }, [messagesData, selectedConversation]);
 
   useEffect(() => {
-    if (selectedConversation && isConnected) {
+    if (conversationsError || messagesError) {
+      if (!isConnected) {
+        setMessages([]);
+        setSelectedConversation(null);
+      }
+    }
+  }, [conversationsError, messagesError, isConnected]);
+
+  useEffect(() => {
+    if (selectedConversation && isConnected && currentUserId) {
       joinConversation(selectedConversation.id);
       markAsReadMutation.mutate(selectedConversation.id);
       socketMarkAsRead(selectedConversation.id);
+      
+      refetchMessages();
 
       return () => {
         leaveConversation(selectedConversation.id);
       };
     }
-  }, [selectedConversation?.id, isConnected]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedConversation?.id, isConnected, currentUserId]);
 
   const handleSelectConversation = useCallback((conversation: Conversation) => {
-    if (selectedConversation?.id !== conversation.id) {
-      setMessages([]);
-    }
-    
     setSelectedConversation(conversation);
     setShowMobileConversationList(false);
     setReplyToMessage(null);
     setSearchQuery('');
     setShowSearch(false);
-  }, [selectedConversation?.id]);
+  }, []);
 
   const handleSendMessage = useCallback(async (content: string, attachments?: { url: string; name: string; type: string }) => {
     if (!selectedConversation || isSendingMessage) return;
@@ -165,9 +169,11 @@ export const MessagingInterface = memo<MessagingInterfaceProps>(({
 
     try {
       if (isConnected) {
+        // Send via WebSocket - the server will broadcast back to us via 'new_message' event
         socketSendMessage(messageData);
       } else {
-        await sendMessageMutation.mutateAsync({
+        // Fallback to HTTP API if not connected
+        const newMessage = await sendMessageMutation.mutateAsync({
           conversationId: selectedConversation.id,
           data: {
             content,
@@ -177,12 +183,23 @@ export const MessagingInterface = memo<MessagingInterfaceProps>(({
             replyToId: messageData.replyToId,
           },
         });
+        
+        // Manually add message to the list if using HTTP API
+        setMessages(prev => {
+          const exists = prev.some(m => m.id === newMessage.id);
+          if (!exists) {
+            return [...prev, newMessage];
+          }
+          return prev;
+        });
       }
+      
+      setReplyToMessage(null);
     } catch (error) {
+      console.error('Failed to send message:', error);
       toast.error('Failed to send message');
     } finally {
       setIsSendingMessage(false);
-      setReplyToMessage(null);
     }
   }, [selectedConversation, replyToMessage, socketSendMessage, sendMessageMutation, isConnected, isSendingMessage]);
 
@@ -216,6 +233,48 @@ export const MessagingInterface = memo<MessagingInterfaceProps>(({
       refetchConversations();
     } catch (error: any) {
       toast.error(error.response?.data?.message || 'Failed to delete conversation');
+    }
+  };
+
+  const handleEditMessage = async (updatedMessage: Message) => {
+    try {
+      setMessages(prev => 
+        prev.map(msg => 
+          msg.id === updatedMessage.id ? updatedMessage : msg
+        )
+      );
+      
+      toast.success('Message updated');
+      
+      refetchConversations();
+    } catch (error) {
+      setMessages(prev => 
+        prev.map(msg => 
+          msg.id === updatedMessage.id 
+            ? messages.find(m => m.id === updatedMessage.id) || msg
+            : msg
+        )
+      );
+      toast.error('Failed to update message');
+    }
+  };
+
+  const handleDeleteMessage = async (messageId: string) => {
+    const messageToDelete = messages.find(m => m.id === messageId);
+    
+    try {
+      setMessages(prev => prev.filter(msg => msg.id !== messageId));
+      
+      toast.success('Message deleted');
+      
+      refetchConversations();
+    } catch (error) {
+      if (messageToDelete) {
+        setMessages(prev => [...prev, messageToDelete].sort((a, b) => 
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        ));
+      }
+      toast.error('Failed to delete message');
     }
   };
 
@@ -406,8 +465,8 @@ export const MessagingInterface = memo<MessagingInterfaceProps>(({
                 messages={searchQuery && searchResults ? searchResults.messages : messages}
                 currentUserId={currentUserId}
                 onReply={setReplyToMessage}
-                onEditMessage={(message) => {}}
-                onDeleteMessage={(messageId) => {}}
+                onEditMessage={handleEditMessage}
+                onDeleteMessage={handleDeleteMessage}
                 searchQuery={searchQuery}
               />
             </div>

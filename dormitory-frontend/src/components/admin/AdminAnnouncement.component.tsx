@@ -227,10 +227,10 @@ export default function AdminAnnouncement({id}:AdminAnnouncementProps){
                                                             <DoorOpen className="w-5 h-5 text-purple-600" />
                                                             <span className="text-sm font-medium text-gray-900">Room ID: {recipient.roomId}</span>
                                                         </>
-                                                    ) : recipient.floor ? (
+                                                    ) : recipient.floorId ? (
                                                         <>
                                                             <Building className="w-5 h-5 text-orange-600" />
-                                                            <span className="text-sm font-medium text-gray-900">Floor: {recipient.floor}</span>
+                                                            <span className="text-sm font-medium text-gray-900">Floor: {recipient.floorId}</span>
                                                         </>
                                                     ) : recipient.dormitoryId ? (
                                                         <>

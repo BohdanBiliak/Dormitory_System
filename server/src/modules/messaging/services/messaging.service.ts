@@ -196,7 +196,7 @@ export class MessagingService {
     }
 
     return {
-      messages: messages.reverse().map(this.formatMessageData),
+      messages: messages.reverse().map(msg => this.formatMessageData(msg)),
       hasMore,
     };
   }
@@ -215,14 +215,14 @@ export class MessagingService {
 
     await this.verifyUserInConversation(conversationId, senderId);
 
-    // Check for potential duplicates based on content, sender, and timing (within last 5 seconds)
+    // Check for potential duplicates based on content, sender, and timing (within last 2 seconds)
     const recentMessages = await this.prisma.message.findMany({
       where: {
         conversationId,
         senderId,
         content: createMessageDto.content,
         createdAt: {
-          gte: new Date(Date.now() - 5000) // Last 5 seconds
+          gte: new Date(Date.now() - 2000) // Last 2 seconds (reduced from 5)
         }
       },
       include: {
@@ -250,7 +250,7 @@ export class MessagingService {
     });
 
     if (recentMessages.length > 0) {
-      console.log('⚠️ Backend: Potential duplicate message detected, returning existing message:', recentMessages[0].id);
+      console.log('⚠️ Backend: Duplicate message detected within 2 seconds, returning existing message:', recentMessages[0].id);
       return this.formatMessageData(recentMessages[0]);
     }
 
@@ -294,7 +294,8 @@ export class MessagingService {
     const formattedMessage = this.formatMessageData(message);
     console.log('✅ Backend: Message created successfully', {
       messageId: formattedMessage.id,
-      conversationId: formattedMessage.conversationId
+      conversationId: formattedMessage.conversationId,
+      senderId: formattedMessage.senderId
     });
 
     return formattedMessage;
@@ -469,7 +470,7 @@ export class MessagingService {
     const hasMore = skip + messages.length < total;
 
     return {
-      messages: messages.map(this.formatMessageData),
+      messages: messages.map(msg => this.formatMessageData(msg)),
       hasMore,
       total,
     };
