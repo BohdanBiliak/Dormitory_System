@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { confirmationsApi } from '@/app/lib/confirmations.api'
 import { toast } from 'sonner'
+import {BookingConfirmationApproval} from "@/types/confirmations.types";
 
 export const useConfirmations = () => {
   const queryClient = useQueryClient()
@@ -53,6 +54,18 @@ export const useConfirmations = () => {
     },
   })
 
+  const approveAccommodationConfirmation = useMutation({
+    mutationFn: ({id, approvalData}:{id:string, approvalData: BookingConfirmationApproval}) =>
+        confirmationsApi.approveAccommodationConfirmation(id, approvalData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['confirmations'] })
+      toast.success('Confirmation approved successfully!')
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || 'Failed to approve confirmation')
+    },
+  })
+
   return {
     confirmations,
     isLoading,
@@ -62,5 +75,7 @@ export const useConfirmations = () => {
     rejectConfirmation: rejectConfirmation.mutate,
     isApproving: approveConfirmation.isPending,
     isRejecting: rejectConfirmation.isPending,
+    approveAccommodationConfirmation: approveAccommodationConfirmation.mutate,
+    approvingAccommodationConfirmation: approveAccommodationConfirmation.isPending,
   }
 }

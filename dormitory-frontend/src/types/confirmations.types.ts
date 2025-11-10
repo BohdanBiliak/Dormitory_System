@@ -33,3 +33,9 @@ export interface ConfirmationsResponse {
     page: number
     pageCount: number
 }
+
+export interface BookingConfirmationApproval {
+    alternativeRoomId?: string,
+    suggestedTime?: string,
+    reason?: string,
+}

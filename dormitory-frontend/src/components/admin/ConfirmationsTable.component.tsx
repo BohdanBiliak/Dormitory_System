@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { IdentityVerificationModal } from './confirmationsModals/IdentityVerificationModal.component'
 import { useConfirmations } from '@/hooks/confirmations.hook'
-import type { Confirmation } from '@/types/confirmations.types'
+import {BookingConfirmationApproval, Confirmation} from '@/types/confirmations.types'
 import {PaymentProofModal} from "@/components/admin/confirmationsModals/PaymentProofVereficationModal";
 import {
   AccommodationConfirmationModal
@@ -17,7 +17,7 @@ export function ConfirmationsTable() {
   const [page, setPage] = useState(1)
   const limit = 10
 
-  const { useFilteredConfirmations, approveConfirmation, rejectConfirmation, isApproving, isRejecting } = useConfirmations()
+  const { useFilteredConfirmations, approveConfirmation, rejectConfirmation, isApproving, isRejecting, approvingAccommodationConfirmation, approveAccommodationConfirmation } = useConfirmations()
   
   const { data: confirmationsData, isLoading, error } = useFilteredConfirmations({
     type: typeFilter,
@@ -42,6 +42,10 @@ export function ConfirmationsTable() {
   const handleReject = ({id, reason}:{id:string, reason: string}) => {
     rejectConfirmation({ id: id, reason: reason })
     setSelectedConfirmation(null)
+  }
+
+  const handleApproveAccommodation = (confirmationId: string, approvalInfo: BookingConfirmationApproval) => {
+    approveAccommodationConfirmation({id: confirmationId, approvalData: approvalInfo})
   }
 
   const getDisplayType = (type: string) => {
@@ -451,7 +455,7 @@ export function ConfirmationsTable() {
               <AccommodationConfirmationModal
                   confirmation={selectedConfirmation}
                   onClose={handleCloseModal}
-                  onApprove={handleApprove}
+                  onApproveAccommodation={handleApproveAccommodation}
                   onReject={handleReject}
               />
           )}

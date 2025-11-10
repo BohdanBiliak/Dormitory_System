@@ -1,4 +1,4 @@
-import {Confirmation, ConfirmationsResponse} from '@/types/confirmations.types'
+import {BookingConfirmationApproval, Confirmation, ConfirmationsResponse} from '@/types/confirmations.types'
 import { api } from './api.api'
 
 export const confirmationsApi = {
@@ -80,9 +80,18 @@ export const confirmationsApi = {
       number: string
       dormitory: string
       floor: number
-    }
+    },
   }> {
     const response = await api.post(`/admin/confirmations/${id}/approve`, options || {})
     return response.data
   },
+
+  async approveAccommodationConfirmation(id: string, approvalData: BookingConfirmationApproval):Promise<Confirmation> {
+    const  response = await api.post(`/admin/booking-confirmations/${id}/approve`, {
+      alternativeRoomId: approvalData.alternativeRoomId,
+      suggestedTime: approvalData.suggestedTime,
+      reason: approvalData.reason,
+    });
+    return response.data;
+  }
 }
