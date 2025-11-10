@@ -22,9 +22,9 @@ export function AccommodationConfirmationModal({
     const [showRejectionMenu, setShowRejectionMenu] = useState<boolean>(false)
     const [rejectionReason, setRejectionReason] = useState<string>("")
     const [approvalInfo, setApprovalInfo] = useState<BookingConfirmationApproval>({
-        alternativeRoomId: '',
-        suggestedTime: '',
-        reason: '',
+        alternativeRoomId: undefined,
+        suggestedTime: undefined,
+        reason: undefined,
     })
 
     const handleConfirm = () => {
@@ -159,27 +159,6 @@ export function AccommodationConfirmationModal({
                         </p>
                     </div>
 
-                    {/* Time Input */}
-                    <div className="space-y-2">
-                        <label className="text-black font-mono block">
-                            Set a time for accommodation:
-                        </label>
-                        <div className="flex items-center space-x-2">
-                            <input
-                                type="time"
-                                value={approvalInfo.suggestedTime}
-                                onChange={handleInputChange}
-                                className="flex-1 px-3 py-2 border border-gray-400 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                placeholder="Enter accommodation time..."
-                            />
-                            <button className="p-2 bg-gray-300 hover:bg-gray-400 rounded transition-colors">
-                                <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-
                     <div className="space-y-2">
                         <div className={`flex flex-row`}>
                             <label className="text-black font-mono block">
@@ -187,8 +166,9 @@ export function AccommodationConfirmationModal({
                             </label>
                             <div className="flex items-center space-x-2">
                                 <input
+                                    name={`suggestedTime`}
                                     type="text"
-                                    value={approvalInfo.suggestedTime}
+                                    value={approvalInfo.suggestedTime || ''}
                                     onChange={handleInputChange}
                                     className="flex-1 px-3 py-2 border border-gray-400 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     placeholder="Enter accommodation time..."
@@ -206,8 +186,9 @@ export function AccommodationConfirmationModal({
                             </label>
                             <div className="flex items-center space-x-2">
                                 <input
+                                    name={`reason`}
                                     type="text"
-                                    value={approvalInfo.reason}
+                                    value={approvalInfo.reason || ''}
                                     onChange={handleInputChange}
                                     className="flex-1 px-3 py-2 border border-gray-400 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     placeholder="Reason for time/room change..."

@@ -6,11 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="a2609a67-42b3-4399-bbcc-46f7339b9fb9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/lib/confirmations.api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/lib/confirmations.api.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/ConfirmationsTable.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/ConfirmationsTable.component.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/confirmationsModals/AccomodationConfirmationModal.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/confirmationsModals/AccomodationConfirmationModal.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/dialogs/admin/ManagerCreationDialog.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/dialogs/admin/ManagerCreationDialog.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/ui/AdminSideMenu.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/ui/AdminSideMenu.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/hooks/auth.hook.ts" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/hooks/auth.hook.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/hooks/confirmations.hook.ts" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/hooks/confirmations.hook.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/types/confirmations.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/types/confirmations.types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/types/managers.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/types/managers.types.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -255,7 +256,7 @@
       <workItem from="1762670283736" duration="77000" />
       <workItem from="1762673024211" duration="623000" />
       <workItem from="1762673842299" duration="18836000" />
-      <workItem from="1762761380079" duration="1801000" />
+      <workItem from="1762761380079" duration="4486000" />
     </task>
     <servers />
   </component>

@@ -1,8 +1,9 @@
 export interface ManagerCreationData {
     email: string;
-    displayName: string;
+    name: string;
+    middleName?: string;
     secondName: string;
     password: string;
-    confirmPassword: string;
+    repeatPassword: string;
     dormitoryId: string;
 }

@@ -56,7 +56,7 @@ export const useConfirmations = () => {
 
   const approveAccommodationConfirmation = useMutation({
     mutationFn: ({id, approvalData}:{id:string, approvalData: BookingConfirmationApproval}) =>
-        confirmationsApi.approveAccommodationConfirmation(id, approvalData),
+      confirmationsApi.approveAccommodationConfirmation(id, approvalData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['confirmations'] })
       toast.success('Confirmation approved successfully!')

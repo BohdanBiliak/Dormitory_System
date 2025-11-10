@@ -2,12 +2,12 @@
 
 import {MenuItem} from "@/types/ui.types";
 import {useAuth} from "@/hooks/auth.hook";
-import React, {useState, useMemo} from "react";
+import React, {useMemo, useState} from "react";
 import {useCurrentUserProfile} from "@/hooks/user.hook";
 import Link from "next/link";
 import {UserRole} from "@/types/auth.types";
-import { useSSRSafeTranslation } from "@/hooks/ssr-translation.hook";
-import { TranslationButton } from "./TranslationButton.component";
+import {useSSRSafeTranslation} from "@/hooks/ssr-translation.hook";
+import {TranslationButton} from "./TranslationButton.component";
 
 interface AdminSideMenuProps {
     children: React.ReactNode;
@@ -155,8 +155,9 @@ export function AdminSideMenu ({children}:AdminSideMenuProps){
     const currentMenuItems = useMemo(() => {
         if(user){
             switch (user.role){
-                case UserRole.Admin: return getAdminMenuItems();
-                default: return getGuestMenuItems();
+                case UserRole.SuperAdmin: return getAdminMenuItems(); break;
+                case UserRole.Admin: return getAdminMenuItems(); break;
+                default: return getGuestMenuItems(); break;
             }
         }else{
             return getGuestMenuItems();
