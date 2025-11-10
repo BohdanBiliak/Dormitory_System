@@ -7,3 +7,15 @@ export interface ManagerCreationData {
     repeatPassword: string;
     dormitoryId: string;
 }
+
+export interface ManagerEditionData {
+    displayName?: string;
+    secondName?: string;
+    email?: string;
+    dormitoryId?: string;
+}
+
+export interface ManagerResetPassword {
+    password: string;
+    confirmPassword: string;
+}

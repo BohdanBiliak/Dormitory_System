@@ -3,21 +3,30 @@
 import {useEffect, useState} from "react"
 import {useUserList, useUserProfile} from "@/hooks/userList.hook";
 import Link from "next/link";
+import {SquarePen} from "lucide-react";
+import {useManagers} from "@/hooks/managers.hook";
+import {ManagerEditionData} from "@/types/managers.types";
+import {useGetActiveDormitories} from "@/hooks/dormitories.hook";
 
 interface UserProfileFormProps {
     userId:string;
 }
 
 export function UserProfileForm({userId}:UserProfileFormProps){
-    const {activateUser, dectivateUser: deactivateUser, activatingUser, deactivatingUser} = useUserList();
+    const {activateUser, deactivateUser, activatingUser, deactivatingUser} = useUserList();
+
+    const {updateManager, updatingManager} = useManagers();
+    const {data: activeDormitories, isLoading: loadingDormitories, error: errorDormitories} = useGetActiveDormitories();
 
     const [profileData, setProfileData] = useState({
         displayName: '',
         lastName: '',
         email: '',
         photo: '',
-        role: 'user'
+        role: '',
+        dormitoryId: '',
     })
+    const [editingUser, setEditingUser] = useState<boolean>(false)
 
     const {data: userProfileData, isLoading, error} = useUserProfile(userId);
 
@@ -29,6 +38,7 @@ export function UserProfileForm({userId}:UserProfileFormProps){
                 email: userProfileData.email,
                 role: userProfileData.role,
                 photo: userProfileData.picture,
+                dormitoryId: userProfileData.dormitoryId || '',
             })
         }
     }, [userProfileData]);
@@ -41,6 +51,74 @@ export function UserProfileForm({userId}:UserProfileFormProps){
     const handleUserActivation = () => {
         // console.log("Activating user ", profileData)
         activateUser({id:userId});
+    }
+
+    const handleStartManagerEdition = () => {
+        setEditingUser(true);
+    }
+
+    const handleCancelManagersChanges = () => {
+        if(userProfileData){
+            setProfileData({
+                displayName: userProfileData.displayName,
+                lastName: userProfileData.secondName,
+                email: userProfileData.email,
+                role: userProfileData.role,
+                photo: userProfileData.picture,
+                dormitoryId: userProfileData.dormitoryId || '',
+            })
+        }
+        setEditingUser(false);
+    }
+
+    const handleSaveManagersChanges = () => {
+        if(userProfileData) {
+            if(profileData.dormitoryId !== userProfileData.dormitoryId && profileData.dormitoryId !== '' ) {
+                const editedData: ManagerEditionData = {
+                    displayName: profileData.displayName,
+                    secondName: profileData.lastName,
+                    email: profileData.email,
+                    dormitoryId: profileData.dormitoryId,
+                }
+                updateManager({
+                    managerId: userProfileData.id,
+                    newManagerData: editedData,
+                })
+            }else{
+                const editedData: ManagerEditionData = {
+                    displayName: profileData.displayName,
+                    secondName: profileData.lastName,
+                    email: profileData.email,
+                }
+                updateManager({
+                    managerId: userProfileData.id,
+                    newManagerData: editedData,
+                })
+            }
+        }
+        setEditingUser(false);
+    }
+
+    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const { name, value } = e.target;
+
+        if(name === 'mangedDormitory'){
+            setProfileData(prevState => {
+                if(!prevState) return prevState;
+                return {...prevState, dormitoryId: value};
+            })
+        }
+    }
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+
+        if(name === 'displayName' || name === 'lastName' || name === 'email') {
+            setProfileData(prevState => {
+                if(!prevState) return prevState;
+                return {...prevState, [name]: value};
+            })
+        }
     }
 
     if(isLoading){
@@ -180,7 +258,8 @@ export function UserProfileForm({userId}:UserProfileFormProps){
                                                 type="text"
                                                 name="displayName"
                                                 value={profileData.displayName}
-                                                disabled={true}
+                                                onChange={handleInputChange}
+                                                disabled={!editingUser}
                                                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500 transition-colors"
                                             />
                                         </div>
@@ -191,9 +270,10 @@ export function UserProfileForm({userId}:UserProfileFormProps){
                                             </label>
                                             <input
                                                 type="text"
-                                                name="secondName"
+                                                name="lastName"
                                                 value={profileData.lastName}
-                                                disabled={true}
+                                                onChange={handleInputChange}
+                                                disabled={!editingUser}
                                                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500 transition-colors"
                                             />
                                         </div>
@@ -208,7 +288,8 @@ export function UserProfileForm({userId}:UserProfileFormProps){
                                                 type="email"
                                                 name="email"
                                                 value={profileData.email}
-                                                disabled={true}
+                                                onChange={handleInputChange}
+                                                disabled={!editingUser}
                                                 className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500 transition-colors"
                                             />
                                             <div className="absolute inset-y-0 left-0 flex items-center pl-3">
@@ -218,6 +299,29 @@ export function UserProfileForm({userId}:UserProfileFormProps){
                                             </div>
                                         </div>
                                     </div>
+
+                                    {userProfileData && userProfileData.role === "Admin" && (
+                                        <div className="space-y-2">
+                                            <label className="block text-sm font-medium text-gray-700">
+                                                Manged dormitory
+                                            </label>
+                                            <div className="relative">
+                                                <select
+                                                    name={'mangedDormitory'}
+                                                    value={profileData.dormitoryId}
+                                                    onChange={handleSelectChange}
+                                                    disabled={!editingUser}
+                                                >
+                                                    <option value={''}>--None--</option>
+                                                    {activeDormitories && activeDormitories.data && activeDormitories.data.length > 0 && (
+                                                        activeDormitories.data.map((dormitory,index) => (
+                                                            <option value={dormitory.id} key={index}>{dormitory.name}</option>
+                                                        ))
+                                                    )}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
 
                                 {/* Account Information */}
@@ -306,6 +410,43 @@ export function UserProfileForm({userId}:UserProfileFormProps){
 
                             {/* Account Control Buttons */}
                             <div className="flex flex-col sm:flex-row sm:justify-end space-y-3 sm:space-y-0 sm:space-x-4">
+                                {(userProfileData && userProfileData.role === 'Admin') && (
+                                    <button
+                                        //onClick={handleManagerPasswordReset}
+                                        className="w-full sm:w-auto px-6 py-3 bg-gray-600 text-white font-medium rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors flex items-center justify-center space-x-2"
+                                    >
+
+                                        <span>Reset Password</span>
+                                    </button>
+                                )}
+                                {(userProfileData && userProfileData.role === 'Admin') && (
+                                    editingUser ? (
+                                        <>
+                                            <button
+                                                onClick={handleCancelManagersChanges}
+                                                className="w-full sm:w-auto px-6 py-3 bg-gray-600 text-white font-medium rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors flex items-center justify-center space-x-2"
+                                            >
+                                                <SquarePen className="w-5 h-5" fill="none" viewBox="0 0 24 24"/>
+                                                <span>Cancel changes</span>
+                                            </button>
+                                            <button
+                                                onClick={handleSaveManagersChanges}
+                                                className="w-full sm:w-auto px-6 py-3 bg-gray-600 text-white font-medium rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors flex items-center justify-center space-x-2"
+                                            >
+                                                <SquarePen className="w-5 h-5" fill="none" viewBox="0 0 24 24"/>
+                                                <span>Save changes</span>
+                                            </button>
+                                        </>
+                                    ):(
+                                        <button
+                                            onClick={handleStartManagerEdition}
+                                            className="w-full sm:w-auto px-6 py-3 bg-gray-600 text-white font-medium rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors flex items-center justify-center space-x-2"
+                                        >
+                                            <SquarePen className="w-5 h-5" fill="none" viewBox="0 0 24 24"/>
+                                            <span>Edit Profile</span>
+                                        </button>
+                                    )
+                                )}
                                 {userProfileData?.isActive ? (
                                     <button 
                                         onClick={handleUserDeactivation}
