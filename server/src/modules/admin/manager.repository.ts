@@ -5,6 +5,7 @@ import { CreateManagerDto } from "./dto/CreateMeneger.dto";
 import { UpdateManagerDto } from "./dto/UpdateManager.dto";
 import { ManagerFiltersDto } from "./dto/ManagerFilters.dto";
 import { IManagerRepository } from "./manager-repository.interface";
+import { DormitoryAdminRole } from "./constants/dormitory-admin-roles.constant";
 
 type UserWithRelations = Prisma.UserGetPayload<{
   include: {
@@ -17,7 +18,6 @@ export class ManagerRepository implements IManagerRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(data: CreateManagerDto, hashedPassword: string): Promise<User> {
-    // Compute displayName from name and middleName
     const displayName = data.middleName 
       ? `${data.name} ${data.middleName}`
       : data.name;
@@ -179,6 +179,21 @@ export class ManagerRepository implements IManagerRepository {
     });
   }
 
+  async activate(id: string): Promise<User> {
+    return this.prisma.user.update({
+      where: { id },
+      data: { isActive: true },
+      include: {
+        dormitory: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    });
+  }
+
   async assignToDormitory(
     managerId: string,
     dormitoryId: string,
@@ -187,7 +202,7 @@ export class ManagerRepository implements IManagerRepository {
       data: {
         userId: managerId,
         dormitoryId,
-        role: "ADMIN",
+        role: DormitoryAdminRole.ADMIN,
       },
     });
   }
