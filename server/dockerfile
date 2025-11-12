@@ -1,8 +1,5 @@
 FROM node:20-bullseye AS build
-
 WORKDIR /app
-
-# Install dependencies for sharp and prisma
 RUN apt-get update && apt-get install -y \
     build-essential \
     libcairo2-dev \
@@ -12,44 +9,20 @@ RUN apt-get update && apt-get install -y \
     librsvg2-dev \
     python3 \
     && rm -rf /var/lib/apt/lists/*
-
 COPY package*.json ./
-
 RUN npm install --include=optional
 RUN npm rebuild sharp --force
-
 COPY . .
-
-# Generate prisma client for debian and native
 RUN npx prisma generate
-
-# ⚡️ Build the NestJS project (this creates /app/dist)
 RUN npm run build
-
-# Check where the main.js file is actually located
 RUN find dist -name "main.js"
-
-# ----------------------
-# Production image
-# ----------------------
 FROM node:20-bullseye AS prod
-
 WORKDIR /app
-
-# Copy node_modules first to cache better
 COPY --from=build /app/node_modules ./node_modules
-
-# Copy built app
 COPY --from=build /app/dist ./dist
-
-# Copy prisma schema files
 COPY --from=build /app/prisma ./prisma
-
 COPY --from=build /app/__generated__ ./__generated__
-
 COPY --from=build /app/__generated__ ./dist/__generated__
-
 EXPOSE 4000
 
-# Try the correct path based on your project structure
 CMD ["node", "dist/src/main.js"]
