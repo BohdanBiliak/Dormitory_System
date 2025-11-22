@@ -21,8 +21,11 @@ import { NotificationsService } from "@modules/notifications/notifications.servi
 import { MailService } from "@libs/mail/mail.service";
 import { EvictUserFromRoomDto } from "./dto/evict-user.dto";
 import { AssignPriceCategoryDto } from "./dto/assign-price-category.dto";
+import { AssignRoomStatusDto } from "./dto/assign-room-status.dto";
 import { S3Service } from "@libs/common/s3/s3.service";
 import { PricingService } from "@/modules/pricing/pricing.service";
+import { RoomStatusTypeService } from "./room-status-type.service";
+import { PrismaService } from "@/prisma/prisma.service";
 @Injectable()
 export class RoomService {
   constructor(
@@ -32,6 +35,8 @@ export class RoomService {
     private readonly emailService: MailService,
     private readonly s3: S3Service,
     private readonly pricingService: PricingService,
+    private readonly roomStatusTypeService: RoomStatusTypeService,
+    private readonly prisma: PrismaService,
   ) {}
 
   async updateRoom(
@@ -322,11 +327,22 @@ export class RoomService {
       notes: `Direct booking by user`,
     });
 
-    const roomStatus = await this.roomRepository.createRoomStatus(room.id, {
-      dateOfStart: from,
-      dateOfEnd: to,
-      description: `Booking by user ${userId}`,
-    });
+    // Get occupied status type and create room status
+    try {
+      const occupiedStatus = await this.roomStatusTypeService.findByName("Occupied");
+      if (occupiedStatus) {
+        await this.roomRepository.createRoomStatus(room.id, {
+          statusTypeId: occupiedStatus.id,
+          dateOfStart: from,
+          dateOfEnd: to,
+          description: `Booking by user ${userId}`,
+          createdById: userId,
+        });
+      }
+    } catch (statusError) {
+      console.error("❌ Error creating room status:", statusError);
+      // Don't throw - booking was successful
+    }
 
     await this.roomRepository.updateUserRoom(userId, room.id);
 
@@ -360,7 +376,6 @@ export class RoomService {
     return {
       message: "Room booked successfully",
       booking,
-      roomStatus,
     };
   }
 
@@ -419,7 +434,14 @@ export class RoomService {
   }
 
   async createRoomStatus(roomId: string, dto: CreateRoomStatusDto) {
+    // Validate that the status type exists
+    const statusType = await this.roomStatusTypeService.findOne(dto.statusTypeId);
+    if (!statusType) {
+      throw new NotFoundException("Status type not found");
+    }
+
     return this.roomRepository.createRoomStatus(roomId, {
+      statusTypeId: dto.statusTypeId,
       description: dto.description,
       dateOfStart: new Date(dto.dateOfStart),
       dateOfEnd: dto.dateOfEnd ? new Date(dto.dateOfEnd) : null,
@@ -455,15 +477,40 @@ export class RoomService {
       },
     );
 
-    this.createRoomStatus(roomId, {
-      description: `Assigned user ${userId} to room`,
-      dateOfStart: startDate
-        ? new Date(startDate).toISOString()
-        : new Date().toISOString(),
-      dateOfEnd: endDate ? new Date(endDate).toISOString() : undefined,
-    }).catch((err) => {
-      console.error("❌ Error creating room status for user assignment:", err);
-    });
+    // Auto-create "Occupied" status when assigning user to room
+    try {
+      const occupiedStatus = await this.roomStatusTypeService.findByName("Occupied");
+      if (occupiedStatus) {
+        // End any existing active statuses for this room
+        const activeStatuses = await this.prisma.roomStatus.findMany({
+          where: {
+            roomId,
+            dateOfEnd: null,
+          },
+        });
+
+        for (const status of activeStatuses) {
+          await this.prisma.roomStatus.update({
+            where: { id: status.id },
+            data: { dateOfEnd: new Date() },
+          });
+        }
+
+        // Create new occupied status
+        await this.prisma.roomStatus.create({
+          data: {
+            roomId,
+            statusTypeId: occupiedStatus.id,
+            dateOfStart: startDate ? new Date(startDate) : new Date(),
+            dateOfEnd: endDate ? new Date(endDate) : null,
+            description: `Room occupied by ${user.displayName || user.email}`,
+            createdById: userId,
+          },
+        });
+      }
+    } catch (err) {
+      console.error("❌ Error creating occupied status for user assignment:", err);
+    }
 
     await this.auditService.log({
       userId,
@@ -799,5 +846,127 @@ export class RoomService {
     folder: string,
   ): Promise<string[]> {
     return Promise.all(files.map((file) => this.s3.uploadFile(file, folder)));
+  }
+
+  // New methods for room status management
+  async assignStatusToRoom(roomId: string, dto: AssignRoomStatusDto, userId?: string) {
+    const room = await this.roomRepository.findById(roomId);
+    if (!room) throw new NotFoundException("Room not found");
+
+    const statusType = await this.roomStatusTypeService.findOne(dto.statusTypeId);
+    if (!statusType) {
+      throw new NotFoundException("Status type not found");
+    }
+
+    if (!statusType.isActive) {
+      throw new BadRequestException("Cannot assign an inactive status type");
+    }
+
+    // End any existing active statuses for this room (if the new status is meant to be current)
+    if (!dto.dateOfEnd) {
+      const activeStatuses = await this.prisma.roomStatus.findMany({
+        where: {
+          roomId,
+          dateOfEnd: null,
+        },
+      });
+
+      for (const status of activeStatuses) {
+        await this.prisma.roomStatus.update({
+          where: { id: status.id },
+          data: { dateOfEnd: new Date(dto.dateOfStart) },
+        });
+      }
+    }
+
+    const roomStatus = await this.prisma.roomStatus.create({
+      data: {
+        roomId,
+        statusTypeId: dto.statusTypeId,
+        dateOfStart: new Date(dto.dateOfStart),
+        dateOfEnd: dto.dateOfEnd ? new Date(dto.dateOfEnd) : null,
+        description: dto.description,
+        createdById: userId,
+      },
+      include: {
+        statusType: true,
+      },
+    });
+
+    await this.auditService.log({
+      userId: userId || "system",
+      action: "ASSIGN_ROOM_STATUS",
+      entity: "Room",
+      entityId: roomId,
+      meta: {
+        statusTypeId: dto.statusTypeId,
+        statusTypeName: statusType.name,
+        dateOfStart: dto.dateOfStart,
+        dateOfEnd: dto.dateOfEnd,
+      },
+    });
+
+    return roomStatus;
+  }
+
+  async getRoomStatuses(roomId: string) {
+    const room = await this.roomRepository.findById(roomId);
+    if (!room) throw new NotFoundException("Room not found");
+
+    return this.prisma.roomStatus.findMany({
+      where: { roomId },
+      include: {
+        statusType: true,
+      },
+      orderBy: {
+        dateOfStart: "desc",
+      },
+    });
+  }
+
+  async getCurrentRoomStatus(roomId: string) {
+    const room = await this.roomRepository.findById(roomId);
+    if (!room) throw new NotFoundException("Room not found");
+
+    return this.prisma.roomStatus.findFirst({
+      where: {
+        roomId,
+        dateOfEnd: null,
+      },
+      include: {
+        statusType: true,
+      },
+      orderBy: {
+        dateOfStart: "desc",
+      },
+    });
+  }
+
+  async endRoomStatus(roomId: string, statusId: string) {
+    const room = await this.roomRepository.findById(roomId);
+    if (!room) throw new NotFoundException("Room not found");
+
+    const status = await this.prisma.roomStatus.findFirst({
+      where: {
+        id: statusId,
+        roomId,
+      },
+    });
+
+    if (!status) {
+      throw new NotFoundException("Room status not found");
+    }
+
+    if (status.dateOfEnd) {
+      throw new BadRequestException("Room status has already ended");
+    }
+
+    return this.prisma.roomStatus.update({
+      where: { id: statusId },
+      data: { dateOfEnd: new Date() },
+      include: {
+        statusType: true,
+      },
+    });
   }
 }

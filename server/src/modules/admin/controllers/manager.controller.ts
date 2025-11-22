@@ -14,8 +14,10 @@ import { GetManagerByIdUseCase } from "../use-cases/manager/GetManagerByIdUseCas
 import { UpdateManagerUseCase } from "../use-cases/manager/UpdateManagerUseCase";
 import { DeactivateManagerUseCase } from "../use-cases/manager/DeactivateManagerUseCase";
 import { ActivateManagerUseCase } from "../use-cases/manager/ActivateManagerUseCase";
+import { ResetManagerPasswordUseCase } from "../use-cases/manager/ResetManagerPasswordUseCase";
 import { CreateManagerDto } from "../dto/CreateMeneger.dto";
 import { UpdateManagerDto } from "../dto/UpdateManager.dto";
+import { ResetManagerPasswordDto } from "../dto/ResetManagerPassword.dto";
 import { ManagerFiltersDto } from "../dto/ManagerFilters.dto";
 import { Authorization } from "@/libs/common/decorators/auth.decorator";
 import { CurrentUser } from "@/libs/common/decorators/current-user.decorator";
@@ -32,6 +34,7 @@ export class ManagerController {
     private readonly updateManagerUseCase: UpdateManagerUseCase,
     private readonly deactivateManagerUseCase: DeactivateManagerUseCase,
     private readonly activateManagerUseCase: ActivateManagerUseCase,
+    private readonly resetManagerPasswordUseCase: ResetManagerPasswordUseCase,
   ) {}
 
   @Post()
@@ -83,5 +86,16 @@ export class ManagerController {
     @CurrentUser("id") currentUserId: string,
   ) {
     return this.activateManagerUseCase.execute(id, currentUserId);
+  }
+
+  @Post(":id/reset-password")
+  @Authorization($Enums.UserRole.SuperAdmin)
+  @ManagerDocs.resetPassword()
+  async resetPassword(
+    @Param("id") id: string,
+    @Body() dto: ResetManagerPasswordDto,
+    @CurrentUser("id") currentUserId: string,
+  ) {
+    return this.resetManagerPasswordUseCase.execute(id, dto, currentUserId);
   }
 }

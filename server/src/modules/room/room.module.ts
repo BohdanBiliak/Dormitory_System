@@ -1,6 +1,8 @@
 import { Module } from "@nestjs/common";
 import { RoomService } from "./room.service";
 import { RoomController } from "./room.controller";
+import { RoomStatusTypeService } from "./room-status-type.service";
+import { RoomStatusTypeController } from "./room-status-type.controller";
 import { PrismaService } from "@/prisma/prisma.service";
 import { UserModule } from "@/modules/user/user.module";
 import { AuditService } from "@modules/audit/audit.service";
@@ -14,9 +16,10 @@ import { S3Service } from "@libs/common/s3/s3.service";
 import { PricingModule } from "@/modules/pricing/pricing.module";
 @Module({
   imports: [UserModule, MailModule, S3Module, PricingModule],
-  controllers: [RoomController],
+  controllers: [RoomController, RoomStatusTypeController],
   providers: [
     RoomService,
+    RoomStatusTypeService,
     PrismaService,
     AuditService,
     NotificationsService,
@@ -25,5 +28,6 @@ import { PricingModule } from "@/modules/pricing/pricing.module";
     RoomRepository,
     S3Service,
   ],
+  exports: [RoomStatusTypeService],
 })
 export class RoomModule {}

@@ -7,7 +7,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 
 const {
   Decimal,
-  objectEnumValues,
+  DbNull,
+  JsonNull,
+  AnyNull,
+  NullTypes,
   makeStrictEnum,
   Public,
   getRuntime,
@@ -21,12 +24,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.19.0
- * Query Engine version: 2ba551f319ab1df4bc874a89965d8b3641056773
+ * Prisma Client JS version: 7.0.0
+ * Query Engine version: 0c19ccc313cf9911a90d99d2ac2eb0280c76c513
  */
 Prisma.prismaVersion = {
-  client: "6.19.0",
-  engine: "2ba551f319ab1df4bc874a89965d8b3641056773"
+  client: "7.0.0",
+  engine: "0c19ccc313cf9911a90d99d2ac2eb0280c76c513"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -98,15 +101,11 @@ In case this error is unexpected for you, please report it in https://pris.ly/pr
 /**
  * Shorthand utilities for JSON filtering
  */
-Prisma.DbNull = objectEnumValues.instances.DbNull
-Prisma.JsonNull = objectEnumValues.instances.JsonNull
-Prisma.AnyNull = objectEnumValues.instances.AnyNull
+Prisma.DbNull = DbNull
+Prisma.JsonNull = JsonNull
+Prisma.AnyNull = AnyNull
 
-Prisma.NullTypes = {
-  DbNull: objectEnumValues.classes.DbNull,
-  JsonNull: objectEnumValues.classes.JsonNull,
-  AnyNull: objectEnumValues.classes.AnyNull
-}
+Prisma.NullTypes = NullTypes
 
 
 
@@ -244,12 +243,25 @@ exports.Prisma.FloorRoomAssignmentScalarFieldEnum = {
   roomNumbers: 'roomNumbers'
 };
 
+exports.Prisma.RoomStatusTypeScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  color: 'color',
+  isActive: 'isActive',
+  isSystem: 'isSystem',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.RoomStatusScalarFieldEnum = {
   id: 'id',
   roomId: 'roomId',
+  statusTypeId: 'statusTypeId',
   dateOfStart: 'dateOfStart',
   dateOfEnd: 'dateOfEnd',
-  description: 'description'
+  description: 'description',
+  createdById: 'createdById'
 };
 
 exports.Prisma.PriceCategoryScalarFieldEnum = {
@@ -665,6 +677,7 @@ exports.Prisma.ModelName = {
   Room: 'Room',
   RoomType: 'RoomType',
   FloorRoomAssignment: 'FloorRoomAssignment',
+  RoomStatusType: 'RoomStatusType',
   RoomStatus: 'RoomStatus',
   PriceCategory: 'PriceCategory',
   Price: 'Price',

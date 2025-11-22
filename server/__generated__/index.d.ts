@@ -3,7 +3,7 @@
  * Client
 **/
 
-import * as runtime from './runtime/library.js';
+import * as runtime from './runtime/client.js';
 import $Types = runtime.Types // general types
 import $Public = runtime.Types.Public
 import $Utils = runtime.Types.Utils
@@ -68,6 +68,11 @@ export type RoomType = $Result.DefaultSelection<Prisma.$RoomTypePayload>
  * 
  */
 export type FloorRoomAssignment = $Result.DefaultSelection<Prisma.$FloorRoomAssignmentPayload>
+/**
+ * Model RoomStatusType
+ * 
+ */
+export type RoomStatusType = $Result.DefaultSelection<Prisma.$RoomStatusTypePayload>
 /**
  * Model RoomStatus
  * 
@@ -560,7 +565,6 @@ export class PrismaClient<
 
   $transaction<R>(fn: (prisma: Omit<PrismaClient, runtime.ITXClientDenyList>) => $Utils.JsPromise<R>, options?: { maxWait?: number, timeout?: number, isolationLevel?: Prisma.TransactionIsolationLevel }): $Utils.JsPromise<R>
 
-
   $extends: $Extensions.ExtendsHook<"extends", Prisma.TypeMapCb<ClientOptions>, ExtArgs, $Utils.Call<Prisma.TypeMapCb<ClientOptions>, {
     extArgs: ExtArgs
   }>>
@@ -674,6 +678,16 @@ export class PrismaClient<
     * ```
     */
   get floorRoomAssignment(): Prisma.FloorRoomAssignmentDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.roomStatusType`: Exposes CRUD operations for the **RoomStatusType** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RoomStatusTypes
+    * const roomStatusTypes = await prisma.roomStatusType.findMany()
+    * ```
+    */
+  get roomStatusType(): Prisma.RoomStatusTypeDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.roomStatus`: Exposes CRUD operations for the **RoomStatus** model.
@@ -894,14 +908,6 @@ export namespace Prisma {
   export type DecimalJsLike = runtime.DecimalJsLike
 
   /**
-   * Metrics
-   */
-  export type Metrics = runtime.Metrics
-  export type Metric<T> = runtime.Metric<T>
-  export type MetricHistogram = runtime.MetricHistogram
-  export type MetricHistogramBucket = runtime.MetricHistogramBucket
-
-  /**
   * Extensions
   */
   export import Extension = $Extensions.UserArgs
@@ -912,11 +918,12 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.19.0
-   * Query Engine version: 2ba551f319ab1df4bc874a89965d8b3641056773
+   * Prisma Client JS version: 7.0.0
+   * Query Engine version: 0c19ccc313cf9911a90d99d2ac2eb0280c76c513
    */
   export type PrismaVersion = {
     client: string
+    engine: string
   }
 
   export const prismaVersion: PrismaVersion
@@ -1306,6 +1313,7 @@ export namespace Prisma {
     Room: 'Room',
     RoomType: 'RoomType',
     FloorRoomAssignment: 'FloorRoomAssignment',
+    RoomStatusType: 'RoomStatusType',
     RoomStatus: 'RoomStatus',
     PriceCategory: 'PriceCategory',
     Price: 'Price',
@@ -1329,9 +1337,6 @@ export namespace Prisma {
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
 
 
-  export type Datasources = {
-    db?: Datasource
-  }
 
   interface TypeMapCb<ClientOptions = {}> extends $Utils.Fn<{extArgs: $Extensions.InternalArgs }, $Utils.Record<string, any>> {
     returns: Prisma.TypeMap<this['params']['extArgs'], ClientOptions extends { omit: infer OmitOptions } ? OmitOptions : {}>
@@ -1342,7 +1347,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "dormitoryAdmin" | "dormitoryManager" | "confirmation" | "token" | "auditLog" | "dormitory" | "floor" | "room" | "roomType" | "floorRoomAssignment" | "roomStatus" | "priceCategory" | "price" | "booking" | "payment" | "recurringPayment" | "paymentItem" | "paymentAuditLog" | "notification" | "notificationSettings" | "announcement" | "attachment" | "announcementRecipient" | "conversation" | "conversationParticipant" | "message" | "messageRead" | "maintenanceReport"
+      modelProps: "user" | "dormitoryAdmin" | "dormitoryManager" | "confirmation" | "token" | "auditLog" | "dormitory" | "floor" | "room" | "roomType" | "floorRoomAssignment" | "roomStatusType" | "roomStatus" | "priceCategory" | "price" | "booking" | "payment" | "recurringPayment" | "paymentItem" | "paymentAuditLog" | "notification" | "notificationSettings" | "announcement" | "attachment" | "announcementRecipient" | "conversation" | "conversationParticipant" | "message" | "messageRead" | "maintenanceReport"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2157,6 +2162,80 @@ export namespace Prisma {
           count: {
             args: Prisma.FloorRoomAssignmentCountArgs<ExtArgs>
             result: $Utils.Optional<FloorRoomAssignmentCountAggregateOutputType> | number
+          }
+        }
+      }
+      RoomStatusType: {
+        payload: Prisma.$RoomStatusTypePayload<ExtArgs>
+        fields: Prisma.RoomStatusTypeFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RoomStatusTypeFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoomStatusTypePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RoomStatusTypeFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoomStatusTypePayload>
+          }
+          findFirst: {
+            args: Prisma.RoomStatusTypeFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoomStatusTypePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RoomStatusTypeFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoomStatusTypePayload>
+          }
+          findMany: {
+            args: Prisma.RoomStatusTypeFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoomStatusTypePayload>[]
+          }
+          create: {
+            args: Prisma.RoomStatusTypeCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoomStatusTypePayload>
+          }
+          createMany: {
+            args: Prisma.RoomStatusTypeCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RoomStatusTypeCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoomStatusTypePayload>[]
+          }
+          delete: {
+            args: Prisma.RoomStatusTypeDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoomStatusTypePayload>
+          }
+          update: {
+            args: Prisma.RoomStatusTypeUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoomStatusTypePayload>
+          }
+          deleteMany: {
+            args: Prisma.RoomStatusTypeDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RoomStatusTypeUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RoomStatusTypeUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoomStatusTypePayload>[]
+          }
+          upsert: {
+            args: Prisma.RoomStatusTypeUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoomStatusTypePayload>
+          }
+          aggregate: {
+            args: Prisma.RoomStatusTypeAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRoomStatusType>
+          }
+          groupBy: {
+            args: Prisma.RoomStatusTypeGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RoomStatusTypeGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RoomStatusTypeCountArgs<ExtArgs>
+            result: $Utils.Optional<RoomStatusTypeCountAggregateOutputType> | number
           }
         }
       }
@@ -3521,14 +3600,6 @@ export namespace Prisma {
   export type ErrorFormat = 'pretty' | 'colorless' | 'minimal'
   export interface PrismaClientOptions {
     /**
-     * Overwrites the datasource url from your schema.prisma file
-     */
-    datasources?: Datasources
-    /**
-     * Overwrites the datasource url from your schema.prisma file
-     */
-    datasourceUrl?: string
-    /**
      * @default "colorless"
      */
     errorFormat?: ErrorFormat
@@ -3570,7 +3641,11 @@ export namespace Prisma {
     /**
      * Instance of a Driver Adapter, e.g., like one provided by `@prisma/adapter-planetscale`
      */
-    adapter?: runtime.SqlDriverAdapterFactory | null
+    adapter?: runtime.SqlDriverAdapterFactory
+    /**
+     * Prisma Accelerate URL allowing the client to connect through Accelerate instead of a direct database.
+     */
+    accelerateUrl?: string
     /**
      * Global configuration for omitting model fields by default.
      * 
@@ -3599,6 +3674,7 @@ export namespace Prisma {
     room?: RoomOmit
     roomType?: RoomTypeOmit
     floorRoomAssignment?: FloorRoomAssignmentOmit
+    roomStatusType?: RoomStatusTypeOmit
     roomStatus?: RoomStatusOmit
     priceCategory?: PriceCategoryOmit
     price?: PriceOmit
@@ -4114,6 +4190,37 @@ export namespace Prisma {
    */
   export type RoomTypeCountOutputTypeCountFloorRoomAssignmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: FloorRoomAssignmentWhereInput
+  }
+
+
+  /**
+   * Count Type RoomStatusTypeCountOutputType
+   */
+
+  export type RoomStatusTypeCountOutputType = {
+    roomStatuses: number
+  }
+
+  export type RoomStatusTypeCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    roomStatuses?: boolean | RoomStatusTypeCountOutputTypeCountRoomStatusesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * RoomStatusTypeCountOutputType without action
+   */
+  export type RoomStatusTypeCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoomStatusTypeCountOutputType
+     */
+    select?: RoomStatusTypeCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * RoomStatusTypeCountOutputType without action
+   */
+  export type RoomStatusTypeCountOutputTypeCountRoomStatusesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RoomStatusWhereInput
   }
 
 
@@ -17767,6 +17874,1115 @@ export namespace Prisma {
 
 
   /**
+   * Model RoomStatusType
+   */
+
+  export type AggregateRoomStatusType = {
+    _count: RoomStatusTypeCountAggregateOutputType | null
+    _min: RoomStatusTypeMinAggregateOutputType | null
+    _max: RoomStatusTypeMaxAggregateOutputType | null
+  }
+
+  export type RoomStatusTypeMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    description: string | null
+    color: string | null
+    isActive: boolean | null
+    isSystem: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type RoomStatusTypeMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    description: string | null
+    color: string | null
+    isActive: boolean | null
+    isSystem: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type RoomStatusTypeCountAggregateOutputType = {
+    id: number
+    name: number
+    description: number
+    color: number
+    isActive: number
+    isSystem: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type RoomStatusTypeMinAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    color?: true
+    isActive?: true
+    isSystem?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type RoomStatusTypeMaxAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    color?: true
+    isActive?: true
+    isSystem?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type RoomStatusTypeCountAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    color?: true
+    isActive?: true
+    isSystem?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type RoomStatusTypeAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RoomStatusType to aggregate.
+     */
+    where?: RoomStatusTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RoomStatusTypes to fetch.
+     */
+    orderBy?: RoomStatusTypeOrderByWithRelationInput | RoomStatusTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RoomStatusTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RoomStatusTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RoomStatusTypes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned RoomStatusTypes
+    **/
+    _count?: true | RoomStatusTypeCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RoomStatusTypeMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RoomStatusTypeMaxAggregateInputType
+  }
+
+  export type GetRoomStatusTypeAggregateType<T extends RoomStatusTypeAggregateArgs> = {
+        [P in keyof T & keyof AggregateRoomStatusType]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRoomStatusType[P]>
+      : GetScalarType<T[P], AggregateRoomStatusType[P]>
+  }
+
+
+
+
+  export type RoomStatusTypeGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RoomStatusTypeWhereInput
+    orderBy?: RoomStatusTypeOrderByWithAggregationInput | RoomStatusTypeOrderByWithAggregationInput[]
+    by: RoomStatusTypeScalarFieldEnum[] | RoomStatusTypeScalarFieldEnum
+    having?: RoomStatusTypeScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RoomStatusTypeCountAggregateInputType | true
+    _min?: RoomStatusTypeMinAggregateInputType
+    _max?: RoomStatusTypeMaxAggregateInputType
+  }
+
+  export type RoomStatusTypeGroupByOutputType = {
+    id: string
+    name: string
+    description: string | null
+    color: string | null
+    isActive: boolean
+    isSystem: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: RoomStatusTypeCountAggregateOutputType | null
+    _min: RoomStatusTypeMinAggregateOutputType | null
+    _max: RoomStatusTypeMaxAggregateOutputType | null
+  }
+
+  type GetRoomStatusTypeGroupByPayload<T extends RoomStatusTypeGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RoomStatusTypeGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RoomStatusTypeGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RoomStatusTypeGroupByOutputType[P]>
+            : GetScalarType<T[P], RoomStatusTypeGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RoomStatusTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    color?: boolean
+    isActive?: boolean
+    isSystem?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    roomStatuses?: boolean | RoomStatusType$roomStatusesArgs<ExtArgs>
+    _count?: boolean | RoomStatusTypeCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["roomStatusType"]>
+
+  export type RoomStatusTypeSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    color?: boolean
+    isActive?: boolean
+    isSystem?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["roomStatusType"]>
+
+  export type RoomStatusTypeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    color?: boolean
+    isActive?: boolean
+    isSystem?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["roomStatusType"]>
+
+  export type RoomStatusTypeSelectScalar = {
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    color?: boolean
+    isActive?: boolean
+    isSystem?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type RoomStatusTypeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "color" | "isActive" | "isSystem" | "createdAt" | "updatedAt", ExtArgs["result"]["roomStatusType"]>
+  export type RoomStatusTypeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    roomStatuses?: boolean | RoomStatusType$roomStatusesArgs<ExtArgs>
+    _count?: boolean | RoomStatusTypeCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type RoomStatusTypeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type RoomStatusTypeIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $RoomStatusTypePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RoomStatusType"
+    objects: {
+      roomStatuses: Prisma.$RoomStatusPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      description: string | null
+      color: string | null
+      isActive: boolean
+      isSystem: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["roomStatusType"]>
+    composites: {}
+  }
+
+  type RoomStatusTypeGetPayload<S extends boolean | null | undefined | RoomStatusTypeDefaultArgs> = $Result.GetResult<Prisma.$RoomStatusTypePayload, S>
+
+  type RoomStatusTypeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RoomStatusTypeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RoomStatusTypeCountAggregateInputType | true
+    }
+
+  export interface RoomStatusTypeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RoomStatusType'], meta: { name: 'RoomStatusType' } }
+    /**
+     * Find zero or one RoomStatusType that matches the filter.
+     * @param {RoomStatusTypeFindUniqueArgs} args - Arguments to find a RoomStatusType
+     * @example
+     * // Get one RoomStatusType
+     * const roomStatusType = await prisma.roomStatusType.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RoomStatusTypeFindUniqueArgs>(args: SelectSubset<T, RoomStatusTypeFindUniqueArgs<ExtArgs>>): Prisma__RoomStatusTypeClient<$Result.GetResult<Prisma.$RoomStatusTypePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one RoomStatusType that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RoomStatusTypeFindUniqueOrThrowArgs} args - Arguments to find a RoomStatusType
+     * @example
+     * // Get one RoomStatusType
+     * const roomStatusType = await prisma.roomStatusType.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RoomStatusTypeFindUniqueOrThrowArgs>(args: SelectSubset<T, RoomStatusTypeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RoomStatusTypeClient<$Result.GetResult<Prisma.$RoomStatusTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RoomStatusType that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoomStatusTypeFindFirstArgs} args - Arguments to find a RoomStatusType
+     * @example
+     * // Get one RoomStatusType
+     * const roomStatusType = await prisma.roomStatusType.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RoomStatusTypeFindFirstArgs>(args?: SelectSubset<T, RoomStatusTypeFindFirstArgs<ExtArgs>>): Prisma__RoomStatusTypeClient<$Result.GetResult<Prisma.$RoomStatusTypePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RoomStatusType that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoomStatusTypeFindFirstOrThrowArgs} args - Arguments to find a RoomStatusType
+     * @example
+     * // Get one RoomStatusType
+     * const roomStatusType = await prisma.roomStatusType.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RoomStatusTypeFindFirstOrThrowArgs>(args?: SelectSubset<T, RoomStatusTypeFindFirstOrThrowArgs<ExtArgs>>): Prisma__RoomStatusTypeClient<$Result.GetResult<Prisma.$RoomStatusTypePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more RoomStatusTypes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoomStatusTypeFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RoomStatusTypes
+     * const roomStatusTypes = await prisma.roomStatusType.findMany()
+     * 
+     * // Get first 10 RoomStatusTypes
+     * const roomStatusTypes = await prisma.roomStatusType.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const roomStatusTypeWithIdOnly = await prisma.roomStatusType.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RoomStatusTypeFindManyArgs>(args?: SelectSubset<T, RoomStatusTypeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoomStatusTypePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a RoomStatusType.
+     * @param {RoomStatusTypeCreateArgs} args - Arguments to create a RoomStatusType.
+     * @example
+     * // Create one RoomStatusType
+     * const RoomStatusType = await prisma.roomStatusType.create({
+     *   data: {
+     *     // ... data to create a RoomStatusType
+     *   }
+     * })
+     * 
+     */
+    create<T extends RoomStatusTypeCreateArgs>(args: SelectSubset<T, RoomStatusTypeCreateArgs<ExtArgs>>): Prisma__RoomStatusTypeClient<$Result.GetResult<Prisma.$RoomStatusTypePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many RoomStatusTypes.
+     * @param {RoomStatusTypeCreateManyArgs} args - Arguments to create many RoomStatusTypes.
+     * @example
+     * // Create many RoomStatusTypes
+     * const roomStatusType = await prisma.roomStatusType.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RoomStatusTypeCreateManyArgs>(args?: SelectSubset<T, RoomStatusTypeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many RoomStatusTypes and returns the data saved in the database.
+     * @param {RoomStatusTypeCreateManyAndReturnArgs} args - Arguments to create many RoomStatusTypes.
+     * @example
+     * // Create many RoomStatusTypes
+     * const roomStatusType = await prisma.roomStatusType.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many RoomStatusTypes and only return the `id`
+     * const roomStatusTypeWithIdOnly = await prisma.roomStatusType.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RoomStatusTypeCreateManyAndReturnArgs>(args?: SelectSubset<T, RoomStatusTypeCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoomStatusTypePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a RoomStatusType.
+     * @param {RoomStatusTypeDeleteArgs} args - Arguments to delete one RoomStatusType.
+     * @example
+     * // Delete one RoomStatusType
+     * const RoomStatusType = await prisma.roomStatusType.delete({
+     *   where: {
+     *     // ... filter to delete one RoomStatusType
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RoomStatusTypeDeleteArgs>(args: SelectSubset<T, RoomStatusTypeDeleteArgs<ExtArgs>>): Prisma__RoomStatusTypeClient<$Result.GetResult<Prisma.$RoomStatusTypePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one RoomStatusType.
+     * @param {RoomStatusTypeUpdateArgs} args - Arguments to update one RoomStatusType.
+     * @example
+     * // Update one RoomStatusType
+     * const roomStatusType = await prisma.roomStatusType.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RoomStatusTypeUpdateArgs>(args: SelectSubset<T, RoomStatusTypeUpdateArgs<ExtArgs>>): Prisma__RoomStatusTypeClient<$Result.GetResult<Prisma.$RoomStatusTypePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more RoomStatusTypes.
+     * @param {RoomStatusTypeDeleteManyArgs} args - Arguments to filter RoomStatusTypes to delete.
+     * @example
+     * // Delete a few RoomStatusTypes
+     * const { count } = await prisma.roomStatusType.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RoomStatusTypeDeleteManyArgs>(args?: SelectSubset<T, RoomStatusTypeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RoomStatusTypes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoomStatusTypeUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RoomStatusTypes
+     * const roomStatusType = await prisma.roomStatusType.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RoomStatusTypeUpdateManyArgs>(args: SelectSubset<T, RoomStatusTypeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RoomStatusTypes and returns the data updated in the database.
+     * @param {RoomStatusTypeUpdateManyAndReturnArgs} args - Arguments to update many RoomStatusTypes.
+     * @example
+     * // Update many RoomStatusTypes
+     * const roomStatusType = await prisma.roomStatusType.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more RoomStatusTypes and only return the `id`
+     * const roomStatusTypeWithIdOnly = await prisma.roomStatusType.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RoomStatusTypeUpdateManyAndReturnArgs>(args: SelectSubset<T, RoomStatusTypeUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoomStatusTypePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one RoomStatusType.
+     * @param {RoomStatusTypeUpsertArgs} args - Arguments to update or create a RoomStatusType.
+     * @example
+     * // Update or create a RoomStatusType
+     * const roomStatusType = await prisma.roomStatusType.upsert({
+     *   create: {
+     *     // ... data to create a RoomStatusType
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RoomStatusType we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RoomStatusTypeUpsertArgs>(args: SelectSubset<T, RoomStatusTypeUpsertArgs<ExtArgs>>): Prisma__RoomStatusTypeClient<$Result.GetResult<Prisma.$RoomStatusTypePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of RoomStatusTypes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoomStatusTypeCountArgs} args - Arguments to filter RoomStatusTypes to count.
+     * @example
+     * // Count the number of RoomStatusTypes
+     * const count = await prisma.roomStatusType.count({
+     *   where: {
+     *     // ... the filter for the RoomStatusTypes we want to count
+     *   }
+     * })
+    **/
+    count<T extends RoomStatusTypeCountArgs>(
+      args?: Subset<T, RoomStatusTypeCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RoomStatusTypeCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a RoomStatusType.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoomStatusTypeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RoomStatusTypeAggregateArgs>(args: Subset<T, RoomStatusTypeAggregateArgs>): Prisma.PrismaPromise<GetRoomStatusTypeAggregateType<T>>
+
+    /**
+     * Group by RoomStatusType.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoomStatusTypeGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RoomStatusTypeGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RoomStatusTypeGroupByArgs['orderBy'] }
+        : { orderBy?: RoomStatusTypeGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RoomStatusTypeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRoomStatusTypeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the RoomStatusType model
+   */
+  readonly fields: RoomStatusTypeFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for RoomStatusType.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RoomStatusTypeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    roomStatuses<T extends RoomStatusType$roomStatusesArgs<ExtArgs> = {}>(args?: Subset<T, RoomStatusType$roomStatusesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoomStatusPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the RoomStatusType model
+   */
+  interface RoomStatusTypeFieldRefs {
+    readonly id: FieldRef<"RoomStatusType", 'String'>
+    readonly name: FieldRef<"RoomStatusType", 'String'>
+    readonly description: FieldRef<"RoomStatusType", 'String'>
+    readonly color: FieldRef<"RoomStatusType", 'String'>
+    readonly isActive: FieldRef<"RoomStatusType", 'Boolean'>
+    readonly isSystem: FieldRef<"RoomStatusType", 'Boolean'>
+    readonly createdAt: FieldRef<"RoomStatusType", 'DateTime'>
+    readonly updatedAt: FieldRef<"RoomStatusType", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * RoomStatusType findUnique
+   */
+  export type RoomStatusTypeFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoomStatusType
+     */
+    select?: RoomStatusTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoomStatusType
+     */
+    omit?: RoomStatusTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomStatusTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which RoomStatusType to fetch.
+     */
+    where: RoomStatusTypeWhereUniqueInput
+  }
+
+  /**
+   * RoomStatusType findUniqueOrThrow
+   */
+  export type RoomStatusTypeFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoomStatusType
+     */
+    select?: RoomStatusTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoomStatusType
+     */
+    omit?: RoomStatusTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomStatusTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which RoomStatusType to fetch.
+     */
+    where: RoomStatusTypeWhereUniqueInput
+  }
+
+  /**
+   * RoomStatusType findFirst
+   */
+  export type RoomStatusTypeFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoomStatusType
+     */
+    select?: RoomStatusTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoomStatusType
+     */
+    omit?: RoomStatusTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomStatusTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which RoomStatusType to fetch.
+     */
+    where?: RoomStatusTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RoomStatusTypes to fetch.
+     */
+    orderBy?: RoomStatusTypeOrderByWithRelationInput | RoomStatusTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RoomStatusTypes.
+     */
+    cursor?: RoomStatusTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RoomStatusTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RoomStatusTypes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RoomStatusTypes.
+     */
+    distinct?: RoomStatusTypeScalarFieldEnum | RoomStatusTypeScalarFieldEnum[]
+  }
+
+  /**
+   * RoomStatusType findFirstOrThrow
+   */
+  export type RoomStatusTypeFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoomStatusType
+     */
+    select?: RoomStatusTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoomStatusType
+     */
+    omit?: RoomStatusTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomStatusTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which RoomStatusType to fetch.
+     */
+    where?: RoomStatusTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RoomStatusTypes to fetch.
+     */
+    orderBy?: RoomStatusTypeOrderByWithRelationInput | RoomStatusTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RoomStatusTypes.
+     */
+    cursor?: RoomStatusTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RoomStatusTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RoomStatusTypes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RoomStatusTypes.
+     */
+    distinct?: RoomStatusTypeScalarFieldEnum | RoomStatusTypeScalarFieldEnum[]
+  }
+
+  /**
+   * RoomStatusType findMany
+   */
+  export type RoomStatusTypeFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoomStatusType
+     */
+    select?: RoomStatusTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoomStatusType
+     */
+    omit?: RoomStatusTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomStatusTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which RoomStatusTypes to fetch.
+     */
+    where?: RoomStatusTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RoomStatusTypes to fetch.
+     */
+    orderBy?: RoomStatusTypeOrderByWithRelationInput | RoomStatusTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing RoomStatusTypes.
+     */
+    cursor?: RoomStatusTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RoomStatusTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RoomStatusTypes.
+     */
+    skip?: number
+    distinct?: RoomStatusTypeScalarFieldEnum | RoomStatusTypeScalarFieldEnum[]
+  }
+
+  /**
+   * RoomStatusType create
+   */
+  export type RoomStatusTypeCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoomStatusType
+     */
+    select?: RoomStatusTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoomStatusType
+     */
+    omit?: RoomStatusTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomStatusTypeInclude<ExtArgs> | null
+    /**
+     * The data needed to create a RoomStatusType.
+     */
+    data: XOR<RoomStatusTypeCreateInput, RoomStatusTypeUncheckedCreateInput>
+  }
+
+  /**
+   * RoomStatusType createMany
+   */
+  export type RoomStatusTypeCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RoomStatusTypes.
+     */
+    data: RoomStatusTypeCreateManyInput | RoomStatusTypeCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RoomStatusType createManyAndReturn
+   */
+  export type RoomStatusTypeCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoomStatusType
+     */
+    select?: RoomStatusTypeSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoomStatusType
+     */
+    omit?: RoomStatusTypeOmit<ExtArgs> | null
+    /**
+     * The data used to create many RoomStatusTypes.
+     */
+    data: RoomStatusTypeCreateManyInput | RoomStatusTypeCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RoomStatusType update
+   */
+  export type RoomStatusTypeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoomStatusType
+     */
+    select?: RoomStatusTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoomStatusType
+     */
+    omit?: RoomStatusTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomStatusTypeInclude<ExtArgs> | null
+    /**
+     * The data needed to update a RoomStatusType.
+     */
+    data: XOR<RoomStatusTypeUpdateInput, RoomStatusTypeUncheckedUpdateInput>
+    /**
+     * Choose, which RoomStatusType to update.
+     */
+    where: RoomStatusTypeWhereUniqueInput
+  }
+
+  /**
+   * RoomStatusType updateMany
+   */
+  export type RoomStatusTypeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RoomStatusTypes.
+     */
+    data: XOR<RoomStatusTypeUpdateManyMutationInput, RoomStatusTypeUncheckedUpdateManyInput>
+    /**
+     * Filter which RoomStatusTypes to update
+     */
+    where?: RoomStatusTypeWhereInput
+    /**
+     * Limit how many RoomStatusTypes to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RoomStatusType updateManyAndReturn
+   */
+  export type RoomStatusTypeUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoomStatusType
+     */
+    select?: RoomStatusTypeSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoomStatusType
+     */
+    omit?: RoomStatusTypeOmit<ExtArgs> | null
+    /**
+     * The data used to update RoomStatusTypes.
+     */
+    data: XOR<RoomStatusTypeUpdateManyMutationInput, RoomStatusTypeUncheckedUpdateManyInput>
+    /**
+     * Filter which RoomStatusTypes to update
+     */
+    where?: RoomStatusTypeWhereInput
+    /**
+     * Limit how many RoomStatusTypes to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RoomStatusType upsert
+   */
+  export type RoomStatusTypeUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoomStatusType
+     */
+    select?: RoomStatusTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoomStatusType
+     */
+    omit?: RoomStatusTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomStatusTypeInclude<ExtArgs> | null
+    /**
+     * The filter to search for the RoomStatusType to update in case it exists.
+     */
+    where: RoomStatusTypeWhereUniqueInput
+    /**
+     * In case the RoomStatusType found by the `where` argument doesn't exist, create a new RoomStatusType with this data.
+     */
+    create: XOR<RoomStatusTypeCreateInput, RoomStatusTypeUncheckedCreateInput>
+    /**
+     * In case the RoomStatusType was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RoomStatusTypeUpdateInput, RoomStatusTypeUncheckedUpdateInput>
+  }
+
+  /**
+   * RoomStatusType delete
+   */
+  export type RoomStatusTypeDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoomStatusType
+     */
+    select?: RoomStatusTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoomStatusType
+     */
+    omit?: RoomStatusTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomStatusTypeInclude<ExtArgs> | null
+    /**
+     * Filter which RoomStatusType to delete.
+     */
+    where: RoomStatusTypeWhereUniqueInput
+  }
+
+  /**
+   * RoomStatusType deleteMany
+   */
+  export type RoomStatusTypeDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RoomStatusTypes to delete
+     */
+    where?: RoomStatusTypeWhereInput
+    /**
+     * Limit how many RoomStatusTypes to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * RoomStatusType.roomStatuses
+   */
+  export type RoomStatusType$roomStatusesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoomStatus
+     */
+    select?: RoomStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoomStatus
+     */
+    omit?: RoomStatusOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomStatusInclude<ExtArgs> | null
+    where?: RoomStatusWhereInput
+    orderBy?: RoomStatusOrderByWithRelationInput | RoomStatusOrderByWithRelationInput[]
+    cursor?: RoomStatusWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RoomStatusScalarFieldEnum | RoomStatusScalarFieldEnum[]
+  }
+
+  /**
+   * RoomStatusType without action
+   */
+  export type RoomStatusTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoomStatusType
+     */
+    select?: RoomStatusTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoomStatusType
+     */
+    omit?: RoomStatusTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomStatusTypeInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model RoomStatus
    */
 
@@ -17779,25 +18995,31 @@ export namespace Prisma {
   export type RoomStatusMinAggregateOutputType = {
     id: string | null
     roomId: string | null
+    statusTypeId: string | null
     dateOfStart: Date | null
     dateOfEnd: Date | null
     description: string | null
+    createdById: string | null
   }
 
   export type RoomStatusMaxAggregateOutputType = {
     id: string | null
     roomId: string | null
+    statusTypeId: string | null
     dateOfStart: Date | null
     dateOfEnd: Date | null
     description: string | null
+    createdById: string | null
   }
 
   export type RoomStatusCountAggregateOutputType = {
     id: number
     roomId: number
+    statusTypeId: number
     dateOfStart: number
     dateOfEnd: number
     description: number
+    createdById: number
     _all: number
   }
 
@@ -17805,25 +19027,31 @@ export namespace Prisma {
   export type RoomStatusMinAggregateInputType = {
     id?: true
     roomId?: true
+    statusTypeId?: true
     dateOfStart?: true
     dateOfEnd?: true
     description?: true
+    createdById?: true
   }
 
   export type RoomStatusMaxAggregateInputType = {
     id?: true
     roomId?: true
+    statusTypeId?: true
     dateOfStart?: true
     dateOfEnd?: true
     description?: true
+    createdById?: true
   }
 
   export type RoomStatusCountAggregateInputType = {
     id?: true
     roomId?: true
+    statusTypeId?: true
     dateOfStart?: true
     dateOfEnd?: true
     description?: true
+    createdById?: true
     _all?: true
   }
 
@@ -17902,9 +19130,11 @@ export namespace Prisma {
   export type RoomStatusGroupByOutputType = {
     id: string
     roomId: string
+    statusTypeId: string
     dateOfStart: Date
     dateOfEnd: Date | null
-    description: string
+    description: string | null
+    createdById: string | null
     _count: RoomStatusCountAggregateOutputType | null
     _min: RoomStatusMinAggregateOutputType | null
     _max: RoomStatusMaxAggregateOutputType | null
@@ -17927,60 +19157,77 @@ export namespace Prisma {
   export type RoomStatusSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     roomId?: boolean
+    statusTypeId?: boolean
     dateOfStart?: boolean
     dateOfEnd?: boolean
     description?: boolean
+    createdById?: boolean
     room?: boolean | RoomDefaultArgs<ExtArgs>
+    statusType?: boolean | RoomStatusTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["roomStatus"]>
 
   export type RoomStatusSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     roomId?: boolean
+    statusTypeId?: boolean
     dateOfStart?: boolean
     dateOfEnd?: boolean
     description?: boolean
+    createdById?: boolean
     room?: boolean | RoomDefaultArgs<ExtArgs>
+    statusType?: boolean | RoomStatusTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["roomStatus"]>
 
   export type RoomStatusSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     roomId?: boolean
+    statusTypeId?: boolean
     dateOfStart?: boolean
     dateOfEnd?: boolean
     description?: boolean
+    createdById?: boolean
     room?: boolean | RoomDefaultArgs<ExtArgs>
+    statusType?: boolean | RoomStatusTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["roomStatus"]>
 
   export type RoomStatusSelectScalar = {
     id?: boolean
     roomId?: boolean
+    statusTypeId?: boolean
     dateOfStart?: boolean
     dateOfEnd?: boolean
     description?: boolean
+    createdById?: boolean
   }
 
-  export type RoomStatusOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "roomId" | "dateOfStart" | "dateOfEnd" | "description", ExtArgs["result"]["roomStatus"]>
+  export type RoomStatusOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "roomId" | "statusTypeId" | "dateOfStart" | "dateOfEnd" | "description" | "createdById", ExtArgs["result"]["roomStatus"]>
   export type RoomStatusInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     room?: boolean | RoomDefaultArgs<ExtArgs>
+    statusType?: boolean | RoomStatusTypeDefaultArgs<ExtArgs>
   }
   export type RoomStatusIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     room?: boolean | RoomDefaultArgs<ExtArgs>
+    statusType?: boolean | RoomStatusTypeDefaultArgs<ExtArgs>
   }
   export type RoomStatusIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     room?: boolean | RoomDefaultArgs<ExtArgs>
+    statusType?: boolean | RoomStatusTypeDefaultArgs<ExtArgs>
   }
 
   export type $RoomStatusPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "RoomStatus"
     objects: {
       room: Prisma.$RoomPayload<ExtArgs>
+      statusType: Prisma.$RoomStatusTypePayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       roomId: string
+      statusTypeId: string
       dateOfStart: Date
       dateOfEnd: Date | null
-      description: string
+      description: string | null
+      createdById: string | null
     }, ExtArgs["result"]["roomStatus"]>
     composites: {}
   }
@@ -18376,6 +19623,7 @@ export namespace Prisma {
   export interface Prisma__RoomStatusClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     room<T extends RoomDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RoomDefaultArgs<ExtArgs>>): Prisma__RoomClient<$Result.GetResult<Prisma.$RoomPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    statusType<T extends RoomStatusTypeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RoomStatusTypeDefaultArgs<ExtArgs>>): Prisma__RoomStatusTypeClient<$Result.GetResult<Prisma.$RoomStatusTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -18407,9 +19655,11 @@ export namespace Prisma {
   interface RoomStatusFieldRefs {
     readonly id: FieldRef<"RoomStatus", 'String'>
     readonly roomId: FieldRef<"RoomStatus", 'String'>
+    readonly statusTypeId: FieldRef<"RoomStatus", 'String'>
     readonly dateOfStart: FieldRef<"RoomStatus", 'DateTime'>
     readonly dateOfEnd: FieldRef<"RoomStatus", 'DateTime'>
     readonly description: FieldRef<"RoomStatus", 'String'>
+    readonly createdById: FieldRef<"RoomStatus", 'String'>
   }
     
 
@@ -39306,12 +40556,28 @@ export namespace Prisma {
   export type FloorRoomAssignmentScalarFieldEnum = (typeof FloorRoomAssignmentScalarFieldEnum)[keyof typeof FloorRoomAssignmentScalarFieldEnum]
 
 
+  export const RoomStatusTypeScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    description: 'description',
+    color: 'color',
+    isActive: 'isActive',
+    isSystem: 'isSystem',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type RoomStatusTypeScalarFieldEnum = (typeof RoomStatusTypeScalarFieldEnum)[keyof typeof RoomStatusTypeScalarFieldEnum]
+
+
   export const RoomStatusScalarFieldEnum: {
     id: 'id',
     roomId: 'roomId',
+    statusTypeId: 'statusTypeId',
     dateOfStart: 'dateOfStart',
     dateOfEnd: 'dateOfEnd',
-    description: 'description'
+    description: 'description',
+    createdById: 'createdById'
   };
 
   export type RoomStatusScalarFieldEnum = (typeof RoomStatusScalarFieldEnum)[keyof typeof RoomStatusScalarFieldEnum]
@@ -40856,25 +42122,101 @@ export namespace Prisma {
     roomNumbers?: IntNullableListFilter<"FloorRoomAssignment">
   }
 
+  export type RoomStatusTypeWhereInput = {
+    AND?: RoomStatusTypeWhereInput | RoomStatusTypeWhereInput[]
+    OR?: RoomStatusTypeWhereInput[]
+    NOT?: RoomStatusTypeWhereInput | RoomStatusTypeWhereInput[]
+    id?: StringFilter<"RoomStatusType"> | string
+    name?: StringFilter<"RoomStatusType"> | string
+    description?: StringNullableFilter<"RoomStatusType"> | string | null
+    color?: StringNullableFilter<"RoomStatusType"> | string | null
+    isActive?: BoolFilter<"RoomStatusType"> | boolean
+    isSystem?: BoolFilter<"RoomStatusType"> | boolean
+    createdAt?: DateTimeFilter<"RoomStatusType"> | Date | string
+    updatedAt?: DateTimeFilter<"RoomStatusType"> | Date | string
+    roomStatuses?: RoomStatusListRelationFilter
+  }
+
+  export type RoomStatusTypeOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    color?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    isSystem?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    roomStatuses?: RoomStatusOrderByRelationAggregateInput
+  }
+
+  export type RoomStatusTypeWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    name?: string
+    AND?: RoomStatusTypeWhereInput | RoomStatusTypeWhereInput[]
+    OR?: RoomStatusTypeWhereInput[]
+    NOT?: RoomStatusTypeWhereInput | RoomStatusTypeWhereInput[]
+    description?: StringNullableFilter<"RoomStatusType"> | string | null
+    color?: StringNullableFilter<"RoomStatusType"> | string | null
+    isActive?: BoolFilter<"RoomStatusType"> | boolean
+    isSystem?: BoolFilter<"RoomStatusType"> | boolean
+    createdAt?: DateTimeFilter<"RoomStatusType"> | Date | string
+    updatedAt?: DateTimeFilter<"RoomStatusType"> | Date | string
+    roomStatuses?: RoomStatusListRelationFilter
+  }, "id" | "name">
+
+  export type RoomStatusTypeOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    color?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    isSystem?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: RoomStatusTypeCountOrderByAggregateInput
+    _max?: RoomStatusTypeMaxOrderByAggregateInput
+    _min?: RoomStatusTypeMinOrderByAggregateInput
+  }
+
+  export type RoomStatusTypeScalarWhereWithAggregatesInput = {
+    AND?: RoomStatusTypeScalarWhereWithAggregatesInput | RoomStatusTypeScalarWhereWithAggregatesInput[]
+    OR?: RoomStatusTypeScalarWhereWithAggregatesInput[]
+    NOT?: RoomStatusTypeScalarWhereWithAggregatesInput | RoomStatusTypeScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"RoomStatusType"> | string
+    name?: StringWithAggregatesFilter<"RoomStatusType"> | string
+    description?: StringNullableWithAggregatesFilter<"RoomStatusType"> | string | null
+    color?: StringNullableWithAggregatesFilter<"RoomStatusType"> | string | null
+    isActive?: BoolWithAggregatesFilter<"RoomStatusType"> | boolean
+    isSystem?: BoolWithAggregatesFilter<"RoomStatusType"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"RoomStatusType"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"RoomStatusType"> | Date | string
+  }
+
   export type RoomStatusWhereInput = {
     AND?: RoomStatusWhereInput | RoomStatusWhereInput[]
     OR?: RoomStatusWhereInput[]
     NOT?: RoomStatusWhereInput | RoomStatusWhereInput[]
     id?: StringFilter<"RoomStatus"> | string
     roomId?: StringFilter<"RoomStatus"> | string
+    statusTypeId?: StringFilter<"RoomStatus"> | string
     dateOfStart?: DateTimeFilter<"RoomStatus"> | Date | string
     dateOfEnd?: DateTimeNullableFilter<"RoomStatus"> | Date | string | null
-    description?: StringFilter<"RoomStatus"> | string
+    description?: StringNullableFilter<"RoomStatus"> | string | null
+    createdById?: StringNullableFilter<"RoomStatus"> | string | null
     room?: XOR<RoomScalarRelationFilter, RoomWhereInput>
+    statusType?: XOR<RoomStatusTypeScalarRelationFilter, RoomStatusTypeWhereInput>
   }
 
   export type RoomStatusOrderByWithRelationInput = {
     id?: SortOrder
     roomId?: SortOrder
+    statusTypeId?: SortOrder
     dateOfStart?: SortOrder
     dateOfEnd?: SortOrderInput | SortOrder
-    description?: SortOrder
+    description?: SortOrderInput | SortOrder
+    createdById?: SortOrderInput | SortOrder
     room?: RoomOrderByWithRelationInput
+    statusType?: RoomStatusTypeOrderByWithRelationInput
   }
 
   export type RoomStatusWhereUniqueInput = Prisma.AtLeast<{
@@ -40883,18 +42225,23 @@ export namespace Prisma {
     OR?: RoomStatusWhereInput[]
     NOT?: RoomStatusWhereInput | RoomStatusWhereInput[]
     roomId?: StringFilter<"RoomStatus"> | string
+    statusTypeId?: StringFilter<"RoomStatus"> | string
     dateOfStart?: DateTimeFilter<"RoomStatus"> | Date | string
     dateOfEnd?: DateTimeNullableFilter<"RoomStatus"> | Date | string | null
-    description?: StringFilter<"RoomStatus"> | string
+    description?: StringNullableFilter<"RoomStatus"> | string | null
+    createdById?: StringNullableFilter<"RoomStatus"> | string | null
     room?: XOR<RoomScalarRelationFilter, RoomWhereInput>
+    statusType?: XOR<RoomStatusTypeScalarRelationFilter, RoomStatusTypeWhereInput>
   }, "id">
 
   export type RoomStatusOrderByWithAggregationInput = {
     id?: SortOrder
     roomId?: SortOrder
+    statusTypeId?: SortOrder
     dateOfStart?: SortOrder
     dateOfEnd?: SortOrderInput | SortOrder
-    description?: SortOrder
+    description?: SortOrderInput | SortOrder
+    createdById?: SortOrderInput | SortOrder
     _count?: RoomStatusCountOrderByAggregateInput
     _max?: RoomStatusMaxOrderByAggregateInput
     _min?: RoomStatusMinOrderByAggregateInput
@@ -40906,9 +42253,11 @@ export namespace Prisma {
     NOT?: RoomStatusScalarWhereWithAggregatesInput | RoomStatusScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"RoomStatus"> | string
     roomId?: StringWithAggregatesFilter<"RoomStatus"> | string
+    statusTypeId?: StringWithAggregatesFilter<"RoomStatus"> | string
     dateOfStart?: DateTimeWithAggregatesFilter<"RoomStatus"> | Date | string
     dateOfEnd?: DateTimeNullableWithAggregatesFilter<"RoomStatus"> | Date | string | null
-    description?: StringWithAggregatesFilter<"RoomStatus"> | string
+    description?: StringNullableWithAggregatesFilter<"RoomStatus"> | string | null
+    createdById?: StringNullableWithAggregatesFilter<"RoomStatus"> | string | null
   }
 
   export type PriceCategoryWhereInput = {
@@ -43386,59 +44735,153 @@ export namespace Prisma {
     roomNumbers?: FloorRoomAssignmentUpdateroomNumbersInput | number[]
   }
 
+  export type RoomStatusTypeCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    color?: string | null
+    isActive?: boolean
+    isSystem?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    roomStatuses?: RoomStatusCreateNestedManyWithoutStatusTypeInput
+  }
+
+  export type RoomStatusTypeUncheckedCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    color?: string | null
+    isActive?: boolean
+    isSystem?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    roomStatuses?: RoomStatusUncheckedCreateNestedManyWithoutStatusTypeInput
+  }
+
+  export type RoomStatusTypeUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    roomStatuses?: RoomStatusUpdateManyWithoutStatusTypeNestedInput
+  }
+
+  export type RoomStatusTypeUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    roomStatuses?: RoomStatusUncheckedUpdateManyWithoutStatusTypeNestedInput
+  }
+
+  export type RoomStatusTypeCreateManyInput = {
+    id?: string
+    name: string
+    description?: string | null
+    color?: string | null
+    isActive?: boolean
+    isSystem?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RoomStatusTypeUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RoomStatusTypeUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type RoomStatusCreateInput = {
     id?: string
     dateOfStart: Date | string
     dateOfEnd?: Date | string | null
-    description: string
+    description?: string | null
+    createdById?: string | null
     room: RoomCreateNestedOneWithoutStatusesInput
+    statusType: RoomStatusTypeCreateNestedOneWithoutRoomStatusesInput
   }
 
   export type RoomStatusUncheckedCreateInput = {
     id?: string
     roomId: string
+    statusTypeId: string
     dateOfStart: Date | string
     dateOfEnd?: Date | string | null
-    description: string
+    description?: string | null
+    createdById?: string | null
   }
 
   export type RoomStatusUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     dateOfStart?: DateTimeFieldUpdateOperationsInput | Date | string
     dateOfEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    description?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
     room?: RoomUpdateOneRequiredWithoutStatusesNestedInput
+    statusType?: RoomStatusTypeUpdateOneRequiredWithoutRoomStatusesNestedInput
   }
 
   export type RoomStatusUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     roomId?: StringFieldUpdateOperationsInput | string
+    statusTypeId?: StringFieldUpdateOperationsInput | string
     dateOfStart?: DateTimeFieldUpdateOperationsInput | Date | string
     dateOfEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    description?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type RoomStatusCreateManyInput = {
     id?: string
     roomId: string
+    statusTypeId: string
     dateOfStart: Date | string
     dateOfEnd?: Date | string | null
-    description: string
+    description?: string | null
+    createdById?: string | null
   }
 
   export type RoomStatusUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     dateOfStart?: DateTimeFieldUpdateOperationsInput | Date | string
     dateOfEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    description?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type RoomStatusUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     roomId?: StringFieldUpdateOperationsInput | string
+    statusTypeId?: StringFieldUpdateOperationsInput | string
     dateOfStart?: DateTimeFieldUpdateOperationsInput | Date | string
     dateOfEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    description?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PriceCategoryCreateInput = {
@@ -45997,33 +47440,77 @@ export namespace Prisma {
     roomNumbers?: SortOrder
   }
 
+  export type RoomStatusTypeCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    color?: SortOrder
+    isActive?: SortOrder
+    isSystem?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RoomStatusTypeMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    color?: SortOrder
+    isActive?: SortOrder
+    isSystem?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RoomStatusTypeMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    color?: SortOrder
+    isActive?: SortOrder
+    isSystem?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
   export type RoomScalarRelationFilter = {
     is?: RoomWhereInput
     isNot?: RoomWhereInput
   }
 
+  export type RoomStatusTypeScalarRelationFilter = {
+    is?: RoomStatusTypeWhereInput
+    isNot?: RoomStatusTypeWhereInput
+  }
+
   export type RoomStatusCountOrderByAggregateInput = {
     id?: SortOrder
     roomId?: SortOrder
+    statusTypeId?: SortOrder
     dateOfStart?: SortOrder
     dateOfEnd?: SortOrder
     description?: SortOrder
+    createdById?: SortOrder
   }
 
   export type RoomStatusMaxOrderByAggregateInput = {
     id?: SortOrder
     roomId?: SortOrder
+    statusTypeId?: SortOrder
     dateOfStart?: SortOrder
     dateOfEnd?: SortOrder
     description?: SortOrder
+    createdById?: SortOrder
   }
 
   export type RoomStatusMinOrderByAggregateInput = {
     id?: SortOrder
     roomId?: SortOrder
+    statusTypeId?: SortOrder
     dateOfStart?: SortOrder
     dateOfEnd?: SortOrder
     description?: SortOrder
+    createdById?: SortOrder
   }
 
   export type FloatFilter<$PrismaModel = never> = {
@@ -48912,10 +50399,58 @@ export namespace Prisma {
     update?: XOR<XOR<RoomTypeUpdateToOneWithWhereWithoutFloorRoomAssignmentsInput, RoomTypeUpdateWithoutFloorRoomAssignmentsInput>, RoomTypeUncheckedUpdateWithoutFloorRoomAssignmentsInput>
   }
 
+  export type RoomStatusCreateNestedManyWithoutStatusTypeInput = {
+    create?: XOR<RoomStatusCreateWithoutStatusTypeInput, RoomStatusUncheckedCreateWithoutStatusTypeInput> | RoomStatusCreateWithoutStatusTypeInput[] | RoomStatusUncheckedCreateWithoutStatusTypeInput[]
+    connectOrCreate?: RoomStatusCreateOrConnectWithoutStatusTypeInput | RoomStatusCreateOrConnectWithoutStatusTypeInput[]
+    createMany?: RoomStatusCreateManyStatusTypeInputEnvelope
+    connect?: RoomStatusWhereUniqueInput | RoomStatusWhereUniqueInput[]
+  }
+
+  export type RoomStatusUncheckedCreateNestedManyWithoutStatusTypeInput = {
+    create?: XOR<RoomStatusCreateWithoutStatusTypeInput, RoomStatusUncheckedCreateWithoutStatusTypeInput> | RoomStatusCreateWithoutStatusTypeInput[] | RoomStatusUncheckedCreateWithoutStatusTypeInput[]
+    connectOrCreate?: RoomStatusCreateOrConnectWithoutStatusTypeInput | RoomStatusCreateOrConnectWithoutStatusTypeInput[]
+    createMany?: RoomStatusCreateManyStatusTypeInputEnvelope
+    connect?: RoomStatusWhereUniqueInput | RoomStatusWhereUniqueInput[]
+  }
+
+  export type RoomStatusUpdateManyWithoutStatusTypeNestedInput = {
+    create?: XOR<RoomStatusCreateWithoutStatusTypeInput, RoomStatusUncheckedCreateWithoutStatusTypeInput> | RoomStatusCreateWithoutStatusTypeInput[] | RoomStatusUncheckedCreateWithoutStatusTypeInput[]
+    connectOrCreate?: RoomStatusCreateOrConnectWithoutStatusTypeInput | RoomStatusCreateOrConnectWithoutStatusTypeInput[]
+    upsert?: RoomStatusUpsertWithWhereUniqueWithoutStatusTypeInput | RoomStatusUpsertWithWhereUniqueWithoutStatusTypeInput[]
+    createMany?: RoomStatusCreateManyStatusTypeInputEnvelope
+    set?: RoomStatusWhereUniqueInput | RoomStatusWhereUniqueInput[]
+    disconnect?: RoomStatusWhereUniqueInput | RoomStatusWhereUniqueInput[]
+    delete?: RoomStatusWhereUniqueInput | RoomStatusWhereUniqueInput[]
+    connect?: RoomStatusWhereUniqueInput | RoomStatusWhereUniqueInput[]
+    update?: RoomStatusUpdateWithWhereUniqueWithoutStatusTypeInput | RoomStatusUpdateWithWhereUniqueWithoutStatusTypeInput[]
+    updateMany?: RoomStatusUpdateManyWithWhereWithoutStatusTypeInput | RoomStatusUpdateManyWithWhereWithoutStatusTypeInput[]
+    deleteMany?: RoomStatusScalarWhereInput | RoomStatusScalarWhereInput[]
+  }
+
+  export type RoomStatusUncheckedUpdateManyWithoutStatusTypeNestedInput = {
+    create?: XOR<RoomStatusCreateWithoutStatusTypeInput, RoomStatusUncheckedCreateWithoutStatusTypeInput> | RoomStatusCreateWithoutStatusTypeInput[] | RoomStatusUncheckedCreateWithoutStatusTypeInput[]
+    connectOrCreate?: RoomStatusCreateOrConnectWithoutStatusTypeInput | RoomStatusCreateOrConnectWithoutStatusTypeInput[]
+    upsert?: RoomStatusUpsertWithWhereUniqueWithoutStatusTypeInput | RoomStatusUpsertWithWhereUniqueWithoutStatusTypeInput[]
+    createMany?: RoomStatusCreateManyStatusTypeInputEnvelope
+    set?: RoomStatusWhereUniqueInput | RoomStatusWhereUniqueInput[]
+    disconnect?: RoomStatusWhereUniqueInput | RoomStatusWhereUniqueInput[]
+    delete?: RoomStatusWhereUniqueInput | RoomStatusWhereUniqueInput[]
+    connect?: RoomStatusWhereUniqueInput | RoomStatusWhereUniqueInput[]
+    update?: RoomStatusUpdateWithWhereUniqueWithoutStatusTypeInput | RoomStatusUpdateWithWhereUniqueWithoutStatusTypeInput[]
+    updateMany?: RoomStatusUpdateManyWithWhereWithoutStatusTypeInput | RoomStatusUpdateManyWithWhereWithoutStatusTypeInput[]
+    deleteMany?: RoomStatusScalarWhereInput | RoomStatusScalarWhereInput[]
+  }
+
   export type RoomCreateNestedOneWithoutStatusesInput = {
     create?: XOR<RoomCreateWithoutStatusesInput, RoomUncheckedCreateWithoutStatusesInput>
     connectOrCreate?: RoomCreateOrConnectWithoutStatusesInput
     connect?: RoomWhereUniqueInput
+  }
+
+  export type RoomStatusTypeCreateNestedOneWithoutRoomStatusesInput = {
+    create?: XOR<RoomStatusTypeCreateWithoutRoomStatusesInput, RoomStatusTypeUncheckedCreateWithoutRoomStatusesInput>
+    connectOrCreate?: RoomStatusTypeCreateOrConnectWithoutRoomStatusesInput
+    connect?: RoomStatusTypeWhereUniqueInput
   }
 
   export type RoomUpdateOneRequiredWithoutStatusesNestedInput = {
@@ -48924,6 +50459,14 @@ export namespace Prisma {
     upsert?: RoomUpsertWithoutStatusesInput
     connect?: RoomWhereUniqueInput
     update?: XOR<XOR<RoomUpdateToOneWithWhereWithoutStatusesInput, RoomUpdateWithoutStatusesInput>, RoomUncheckedUpdateWithoutStatusesInput>
+  }
+
+  export type RoomStatusTypeUpdateOneRequiredWithoutRoomStatusesNestedInput = {
+    create?: XOR<RoomStatusTypeCreateWithoutRoomStatusesInput, RoomStatusTypeUncheckedCreateWithoutRoomStatusesInput>
+    connectOrCreate?: RoomStatusTypeCreateOrConnectWithoutRoomStatusesInput
+    upsert?: RoomStatusTypeUpsertWithoutRoomStatusesInput
+    connect?: RoomStatusTypeWhereUniqueInput
+    update?: XOR<XOR<RoomStatusTypeUpdateToOneWithWhereWithoutRoomStatusesInput, RoomStatusTypeUpdateWithoutRoomStatusesInput>, RoomStatusTypeUncheckedUpdateWithoutRoomStatusesInput>
   }
 
   export type RoomTypeCreateNestedManyWithoutPriceCategoryInput = {
@@ -54137,14 +55680,18 @@ export namespace Prisma {
     id?: string
     dateOfStart: Date | string
     dateOfEnd?: Date | string | null
-    description: string
+    description?: string | null
+    createdById?: string | null
+    statusType: RoomStatusTypeCreateNestedOneWithoutRoomStatusesInput
   }
 
   export type RoomStatusUncheckedCreateWithoutRoomInput = {
     id?: string
+    statusTypeId: string
     dateOfStart: Date | string
     dateOfEnd?: Date | string | null
-    description: string
+    description?: string | null
+    createdById?: string | null
   }
 
   export type RoomStatusCreateOrConnectWithoutRoomInput = {
@@ -54533,9 +56080,11 @@ export namespace Prisma {
     NOT?: RoomStatusScalarWhereInput | RoomStatusScalarWhereInput[]
     id?: StringFilter<"RoomStatus"> | string
     roomId?: StringFilter<"RoomStatus"> | string
+    statusTypeId?: StringFilter<"RoomStatus"> | string
     dateOfStart?: DateTimeFilter<"RoomStatus"> | Date | string
     dateOfEnd?: DateTimeNullableFilter<"RoomStatus"> | Date | string | null
-    description?: StringFilter<"RoomStatus"> | string
+    description?: StringNullableFilter<"RoomStatus"> | string | null
+    createdById?: StringNullableFilter<"RoomStatus"> | string | null
   }
 
   export type UserUpsertWithWhereUniqueWithoutRoomInput = {
@@ -54891,6 +56440,50 @@ export namespace Prisma {
     rooms?: RoomUncheckedUpdateManyWithoutRoomTypeNestedInput
   }
 
+  export type RoomStatusCreateWithoutStatusTypeInput = {
+    id?: string
+    dateOfStart: Date | string
+    dateOfEnd?: Date | string | null
+    description?: string | null
+    createdById?: string | null
+    room: RoomCreateNestedOneWithoutStatusesInput
+  }
+
+  export type RoomStatusUncheckedCreateWithoutStatusTypeInput = {
+    id?: string
+    roomId: string
+    dateOfStart: Date | string
+    dateOfEnd?: Date | string | null
+    description?: string | null
+    createdById?: string | null
+  }
+
+  export type RoomStatusCreateOrConnectWithoutStatusTypeInput = {
+    where: RoomStatusWhereUniqueInput
+    create: XOR<RoomStatusCreateWithoutStatusTypeInput, RoomStatusUncheckedCreateWithoutStatusTypeInput>
+  }
+
+  export type RoomStatusCreateManyStatusTypeInputEnvelope = {
+    data: RoomStatusCreateManyStatusTypeInput | RoomStatusCreateManyStatusTypeInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RoomStatusUpsertWithWhereUniqueWithoutStatusTypeInput = {
+    where: RoomStatusWhereUniqueInput
+    update: XOR<RoomStatusUpdateWithoutStatusTypeInput, RoomStatusUncheckedUpdateWithoutStatusTypeInput>
+    create: XOR<RoomStatusCreateWithoutStatusTypeInput, RoomStatusUncheckedCreateWithoutStatusTypeInput>
+  }
+
+  export type RoomStatusUpdateWithWhereUniqueWithoutStatusTypeInput = {
+    where: RoomStatusWhereUniqueInput
+    data: XOR<RoomStatusUpdateWithoutStatusTypeInput, RoomStatusUncheckedUpdateWithoutStatusTypeInput>
+  }
+
+  export type RoomStatusUpdateManyWithWhereWithoutStatusTypeInput = {
+    where: RoomStatusScalarWhereInput
+    data: XOR<RoomStatusUpdateManyMutationInput, RoomStatusUncheckedUpdateManyWithoutStatusTypeInput>
+  }
+
   export type RoomCreateWithoutStatusesInput = {
     id?: string
     number: string
@@ -54934,6 +56527,33 @@ export namespace Prisma {
   export type RoomCreateOrConnectWithoutStatusesInput = {
     where: RoomWhereUniqueInput
     create: XOR<RoomCreateWithoutStatusesInput, RoomUncheckedCreateWithoutStatusesInput>
+  }
+
+  export type RoomStatusTypeCreateWithoutRoomStatusesInput = {
+    id?: string
+    name: string
+    description?: string | null
+    color?: string | null
+    isActive?: boolean
+    isSystem?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RoomStatusTypeUncheckedCreateWithoutRoomStatusesInput = {
+    id?: string
+    name: string
+    description?: string | null
+    color?: string | null
+    isActive?: boolean
+    isSystem?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RoomStatusTypeCreateOrConnectWithoutRoomStatusesInput = {
+    where: RoomStatusTypeWhereUniqueInput
+    create: XOR<RoomStatusTypeCreateWithoutRoomStatusesInput, RoomStatusTypeUncheckedCreateWithoutRoomStatusesInput>
   }
 
   export type RoomUpsertWithoutStatusesInput = {
@@ -54985,6 +56605,39 @@ export namespace Prisma {
     residents?: UserUncheckedUpdateManyWithoutRoomNestedInput
     prices?: PriceUncheckedUpdateManyWithoutRoomNestedInput
     maintenanceReports?: MaintenanceReportUncheckedUpdateManyWithoutRoomNestedInput
+  }
+
+  export type RoomStatusTypeUpsertWithoutRoomStatusesInput = {
+    update: XOR<RoomStatusTypeUpdateWithoutRoomStatusesInput, RoomStatusTypeUncheckedUpdateWithoutRoomStatusesInput>
+    create: XOR<RoomStatusTypeCreateWithoutRoomStatusesInput, RoomStatusTypeUncheckedCreateWithoutRoomStatusesInput>
+    where?: RoomStatusTypeWhereInput
+  }
+
+  export type RoomStatusTypeUpdateToOneWithWhereWithoutRoomStatusesInput = {
+    where?: RoomStatusTypeWhereInput
+    data: XOR<RoomStatusTypeUpdateWithoutRoomStatusesInput, RoomStatusTypeUncheckedUpdateWithoutRoomStatusesInput>
+  }
+
+  export type RoomStatusTypeUpdateWithoutRoomStatusesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RoomStatusTypeUncheckedUpdateWithoutRoomStatusesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type RoomTypeCreateWithoutPriceCategoryInput = {
@@ -62293,9 +63946,11 @@ export namespace Prisma {
 
   export type RoomStatusCreateManyRoomInput = {
     id?: string
+    statusTypeId: string
     dateOfStart: Date | string
     dateOfEnd?: Date | string | null
-    description: string
+    description?: string | null
+    createdById?: string | null
   }
 
   export type UserCreateManyRoomInput = {
@@ -62475,21 +64130,27 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     dateOfStart?: DateTimeFieldUpdateOperationsInput | Date | string
     dateOfEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    description?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    statusType?: RoomStatusTypeUpdateOneRequiredWithoutRoomStatusesNestedInput
   }
 
   export type RoomStatusUncheckedUpdateWithoutRoomInput = {
     id?: StringFieldUpdateOperationsInput | string
+    statusTypeId?: StringFieldUpdateOperationsInput | string
     dateOfStart?: DateTimeFieldUpdateOperationsInput | Date | string
     dateOfEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    description?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type RoomStatusUncheckedUpdateManyWithoutRoomInput = {
     id?: StringFieldUpdateOperationsInput | string
+    statusTypeId?: StringFieldUpdateOperationsInput | string
     dateOfStart?: DateTimeFieldUpdateOperationsInput | Date | string
     dateOfEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    description?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUpdateWithoutRoomInput = {
@@ -62759,6 +64420,42 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     floorId?: StringFieldUpdateOperationsInput | string
     roomNumbers?: FloorRoomAssignmentUpdateroomNumbersInput | number[]
+  }
+
+  export type RoomStatusCreateManyStatusTypeInput = {
+    id?: string
+    roomId: string
+    dateOfStart: Date | string
+    dateOfEnd?: Date | string | null
+    description?: string | null
+    createdById?: string | null
+  }
+
+  export type RoomStatusUpdateWithoutStatusTypeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dateOfStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateOfEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    room?: RoomUpdateOneRequiredWithoutStatusesNestedInput
+  }
+
+  export type RoomStatusUncheckedUpdateWithoutStatusTypeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    roomId?: StringFieldUpdateOperationsInput | string
+    dateOfStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateOfEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type RoomStatusUncheckedUpdateManyWithoutStatusTypeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    roomId?: StringFieldUpdateOperationsInput | string
+    dateOfStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateOfEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type RoomTypeCreateManyPriceCategoryInput = {

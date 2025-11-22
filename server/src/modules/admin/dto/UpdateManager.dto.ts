@@ -39,4 +39,9 @@ export class UpdateManagerDto {
   @IsBoolean()
   @IsOptional()
   isActive?: boolean;
+
+  @ApiProperty({ example: "NewPassword123", required: false })
+  @IsString()
+  @IsOptional()
+  password?: string;
 }

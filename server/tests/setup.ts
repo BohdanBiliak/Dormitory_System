@@ -1,5 +1,6 @@
 // Jest setup for TypeScript types
-import "jest";
+import '@jest/globals';
+import { jest, expect } from '@jest/globals';
 
 // Mock React email rendering to avoid dependencies in tests
 jest.mock("@react-email/components", () => ({

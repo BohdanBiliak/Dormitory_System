@@ -6,7 +6,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("POSTGRES_URI")
 }
 
 // ==========================================
@@ -54,41 +53,28 @@ enum NotificationPriority {
 }
 
 enum NotificationType {
-  // Room related
   ROOM_BOOKING_REQUEST
   ROOM_BOOKING_APPROVED
   ROOM_BOOKING_REJECTED
   ROOM_ASSIGNMENT_UPDATED
   ROOM_AVAILABLE
-
-  // Accommodation changes
   ACCOMMODATION_CHANGE_REQUEST
   ACCOMMODATION_CHANGE_APPROVED
   ACCOMMODATION_CHANGE_REJECTED
-
-  // Maintenance
   MAINTENANCE_SCHEDULED
   MAINTENANCE_COMPLETED
   MAINTENANCE_URGENT
-
-  // Administrative
   ADMIN_ANNOUNCEMENT
   POLICY_UPDATE
   SYSTEM_MAINTENANCE
-
-  // Student interactions
   STUDENT_MESSAGE
   ROOMMATE_REQUEST
   ROOMMATE_APPROVED
-
-  // System events
   ACCOUNT_VERIFIED
   PASSWORD_CHANGED
   LOGIN_ALERT
   ACCOUNT_SUSPENDED
   ACCOUNT_CREATED
-
-  // Payment events
   PAYMENT_REJECTED
   PAYMENT_CREATED
   PAYMENT_DUE
@@ -453,19 +439,42 @@ model FloorRoomAssignment {
   @@map("floor_room_assignments")
 }
 
-model RoomStatus {
-  id          String    @id @default(uuid())
-  roomId      String    @map("room_id")
-  dateOfStart DateTime  @map("date_of_start")
-  dateOfEnd   DateTime? @map("date_of_end")
-  description String
+model RoomStatusType {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  color       String?  @default("#6B7280") // Hex color for UI display
+  isActive    Boolean  @default(true) @map("is_active")
+  isSystem    Boolean  @default(false) @map("is_system") // System statuses can't be deleted
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
 
-  room Room @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  // Relations
+  roomStatuses RoomStatus[]
+
+  @@index([isActive])
+  @@index([name])
+  @@map("room_status_types")
+}
+
+model RoomStatus {
+  id           String    @id @default(uuid())
+  roomId       String    @map("room_id")
+  statusTypeId String    @map("status_type_id")
+  dateOfStart  DateTime  @map("date_of_start")
+  dateOfEnd    DateTime? @map("date_of_end")
+  description  String?
+  createdById  String?   @map("created_by_id")
+
+  room       Room           @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  statusType RoomStatusType @relation(fields: [statusTypeId], references: [id], onDelete: Restrict)
 
   @@index([roomId])
+  @@index([statusTypeId])
   @@index([dateOfStart, dateOfEnd]) // Status date ranges
   @@index([roomId, dateOfStart]) // Room status history
   @@index([dateOfEnd]) // Active statuses (NULL dateOfEnd)
+  @@index([roomId, dateOfEnd]) // Current room status
   @@map("room_statuses")
 }
 

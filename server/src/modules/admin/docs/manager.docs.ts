@@ -301,4 +301,51 @@ export const ManagerDocs = {
         description: "Unauthorized or insufficient role",
       }),
     ),
+
+  resetPassword: () =>
+    applyDecorators(
+      ApiOperation({
+        summary: "Reset manager password",
+        description:
+          "Allows SuperAdmin to reset a manager's password. The manager will receive a notification about the password change.",
+      }),
+      ApiParam({ name: "id", type: String, description: "Manager ID (UUID)" }),
+      ApiBody({
+        schema: {
+          type: "object",
+          required: ["newPassword", "confirmPassword"],
+          properties: {
+            newPassword: {
+              type: "string",
+              minLength: 8,
+              example: "NewSecurePass123!",
+              description:
+                "New password (min 8 chars, must contain uppercase, lowercase, and number)",
+            },
+            confirmPassword: {
+              type: "string",
+              example: "NewSecurePass123!",
+              description: "Password confirmation (must match newPassword)",
+            },
+          },
+        },
+      }),
+      ApiOkResponse({
+        description: "Password reset successfully",
+        schema: {
+          example: {
+            message: "Password reset successfully",
+            managerId: "123e4567-e89b-12d3-a456-426614174000",
+          },
+        },
+      }),
+      ApiNotFoundResponse({ description: "Manager not found" }),
+      ApiBadRequestResponse({
+        description:
+          "Passwords do not match, password validation failed, or user is not an Admin",
+      }),
+      ApiForbiddenResponse({
+        description: "Only SuperAdmin can reset manager passwords",
+      }),
+    ),
 };

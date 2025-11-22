@@ -1,6 +1,9 @@
 import { IsDateString, IsString, IsOptional } from "class-validator";
 
 export class CreateRoomStatusDto {
+  @IsString()
+  statusTypeId: string;
+
   @IsDateString()
   dateOfStart: string;
 
@@ -9,5 +12,6 @@ export class CreateRoomStatusDto {
   dateOfEnd?: string;
 
   @IsString()
-  description: string;
+  @IsOptional()
+  description?: string;
 }

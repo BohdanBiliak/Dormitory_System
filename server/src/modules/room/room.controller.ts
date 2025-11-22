@@ -19,6 +19,7 @@ import { BookRoomDto } from "@modules/room/dto/book-room.dto";
 import { RequestMoveOutDto } from "@modules/room/dto/request-moveout.dto";
 import { RequestAccommmodationDto } from "./dto/requestAccommmodation.dto";
 import { CreateRoomStatusDto } from "@modules/room/dto/create-room-status.dto";
+import { AssignRoomStatusDto } from "./dto/assign-room-status.dto";
 import { AssignUserToRoomDto } from "@/modules/room/dto/assign-user.dto";
 import { UpdateRoomDto } from "@modules/room/dto/update-room.dto";
 import UserRole = $Enums.UserRole;
@@ -183,5 +184,40 @@ export class RoomController {
     const urls = await this.roomService.uploadFiles(files, "rooms");
 
     return { urls };
+  }
+
+  @Post(":id/assign-status")
+  @Authorization(UserRole.Admin, UserRole.SuperAdmin)
+  @RoomDocs.assignStatus()
+  async assignStatus(
+    @Param("id") roomId: string,
+    @Body() dto: AssignRoomStatusDto,
+    @Authorized() user: User,
+  ) {
+    return this.roomService.assignStatusToRoom(roomId, dto, user.id);
+  }
+
+  @Get(":id/statuses")
+  @Authorization()
+  @RoomDocs.getRoomStatuses()
+  async getRoomStatuses(@Param("id") roomId: string) {
+    return this.roomService.getRoomStatuses(roomId);
+  }
+
+  @Get(":id/current-status")
+  @Authorization()
+  @RoomDocs.getCurrentStatus()
+  async getCurrentStatus(@Param("id") roomId: string) {
+    return this.roomService.getCurrentRoomStatus(roomId);
+  }
+
+  @Patch(":roomId/statuses/:statusId/end")
+  @Authorization(UserRole.Admin, UserRole.SuperAdmin)
+  @RoomDocs.endRoomStatus()
+  async endRoomStatus(
+    @Param("roomId") roomId: string,
+    @Param("statusId") statusId: string,
+  ) {
+    return this.roomService.endRoomStatus(roomId, statusId);
   }
 }

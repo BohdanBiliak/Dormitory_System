@@ -941,4 +941,162 @@ export const RoomDocs = {
       ApiNotFoundResponse({ description: "Room not found" }),
       ApiForbiddenResponse({ description: "Access denied" }),
     ),
+
+  assignStatus: () =>
+    applyDecorators(
+      ApiOperation({
+        summary: "Assign status to room",
+        description:
+          "Assigns a status type to a room with a date range. Automatically ends any existing active statuses if the new status has no end date.",
+      }),
+      ApiParam({ name: "id", description: "Room ID (UUID)" }),
+      ApiBody({
+        schema: {
+          type: "object",
+          required: ["statusTypeId", "dateOfStart"],
+          properties: {
+            statusTypeId: {
+              type: "string",
+              format: "uuid",
+              description: "ID of the status type to assign",
+            },
+            description: {
+              type: "string",
+              example: "Room undergoing scheduled maintenance",
+              description: "Optional description for this status assignment",
+            },
+            dateOfStart: {
+              type: "string",
+              format: "date-time",
+              example: "2025-11-22T10:00:00.000Z",
+              description: "Start date of the status",
+            },
+            dateOfEnd: {
+              type: "string",
+              format: "date-time",
+              example: "2025-11-25T18:00:00.000Z",
+              description: "Optional end date of the status",
+            },
+          },
+        },
+      }),
+      ApiOkResponse({
+        description: "Status assigned to room successfully",
+        schema: {
+          example: {
+            id: "123e4567-e89b-12d3-a456-426614174000",
+            roomId: "room-uuid",
+            statusTypeId: "status-type-uuid",
+            dateOfStart: "2025-11-22T10:00:00.000Z",
+            dateOfEnd: null,
+            description: "Room undergoing scheduled maintenance",
+            createdById: "user-uuid",
+            statusType: {
+              id: "status-type-uuid",
+              name: "Under Maintenance",
+              color: "#F59E0B",
+            },
+          },
+        },
+      }),
+      ApiNotFoundResponse({ description: "Room or status type not found" }),
+      ApiBadRequestResponse({ description: "Cannot assign inactive status type" }),
+      ApiForbiddenResponse({ description: "Insufficient permissions" }),
+    ),
+
+  getRoomStatuses: () =>
+    applyDecorators(
+      ApiOperation({
+        summary: "Get all statuses for a room",
+        description: "Returns all status assignments for a room, ordered by start date (newest first)",
+      }),
+      ApiParam({ name: "id", description: "Room ID (UUID)" }),
+      ApiOkResponse({
+        description: "List of room statuses",
+        schema: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              id: { type: "string", format: "uuid" },
+              roomId: { type: "string", format: "uuid" },
+              statusTypeId: { type: "string", format: "uuid" },
+              dateOfStart: { type: "string", format: "date-time" },
+              dateOfEnd: { type: "string", format: "date-time", nullable: true },
+              description: { type: "string", nullable: true },
+              statusType: {
+                type: "object",
+                properties: {
+                  id: { type: "string", format: "uuid" },
+                  name: { type: "string", example: "Occupied" },
+                  color: { type: "string", example: "#EF4444" },
+                },
+              },
+            },
+          },
+        },
+      }),
+      ApiNotFoundResponse({ description: "Room not found" }),
+    ),
+
+  getCurrentStatus: () =>
+    applyDecorators(
+      ApiOperation({
+        summary: "Get current active status for a room",
+        description: "Returns the current active status (with no end date) for a room",
+      }),
+      ApiParam({ name: "id", description: "Room ID (UUID)" }),
+      ApiOkResponse({
+        description: "Current room status (or null if no active status)",
+        schema: {
+          type: "object",
+          nullable: true,
+          properties: {
+            id: { type: "string", format: "uuid" },
+            roomId: { type: "string", format: "uuid" },
+            statusTypeId: { type: "string", format: "uuid" },
+            dateOfStart: { type: "string", format: "date-time" },
+            dateOfEnd: { type: "null" },
+            description: { type: "string", nullable: true },
+            statusType: {
+              type: "object",
+              properties: {
+                id: { type: "string", format: "uuid" },
+                name: { type: "string", example: "Available" },
+                color: { type: "string", example: "#10B981" },
+              },
+            },
+          },
+        },
+      }),
+      ApiNotFoundResponse({ description: "Room not found" }),
+    ),
+
+  endRoomStatus: () =>
+    applyDecorators(
+      ApiOperation({
+        summary: "End a room status",
+        description: "Sets the end date of an active room status to the current time",
+      }),
+      ApiParam({ name: "roomId", description: "Room ID (UUID)" }),
+      ApiParam({ name: "statusId", description: "Status ID (UUID)" }),
+      ApiOkResponse({
+        description: "Room status ended successfully",
+        schema: {
+          example: {
+            id: "status-uuid",
+            roomId: "room-uuid",
+            statusTypeId: "status-type-uuid",
+            dateOfStart: "2025-11-22T10:00:00.000Z",
+            dateOfEnd: "2025-11-22T15:30:00.000Z",
+            statusType: {
+              name: "Under Maintenance",
+            },
+          },
+        },
+      }),
+      ApiNotFoundResponse({ description: "Room or status not found" }),
+      ApiBadRequestResponse({ description: "Room status has already ended" }),
+      ApiForbiddenResponse({ description: "Insufficient permissions" }),
+    ),
 };

@@ -273,14 +273,23 @@ export class ConfirmationService {
 
     // Create room status if dates are provided
     if (confirmation.from && confirmation.to) {
-      await this.prisma.roomStatus.create({
-        data: {
-          roomId: finalRoomId,
-          description: `Accommodation approved for ${confirmation.requester.displayName}`,
-          dateOfStart: confirmation.from,
-          dateOfEnd: confirmation.to,
-        },
+      // Get or find 'Occupied' status type
+      const occupiedStatus = await this.prisma.roomStatusType.findFirst({
+        where: { name: "Occupied" },
       });
+
+      if (occupiedStatus) {
+        await this.prisma.roomStatus.create({
+          data: {
+            roomId: finalRoomId,
+            statusTypeId: occupiedStatus.id,
+            description: `Accommodation approved for ${confirmation.requester.displayName}`,
+            dateOfStart: confirmation.from,
+            dateOfEnd: confirmation.to,
+            createdById: confirmation.userId,
+          },
+        });
+      }
     }
 
     // Format dates for notification

@@ -15,6 +15,7 @@ import { CreateManagerUseCase } from "./use-cases/manager/CreateManagerUseCase";
 import { UpdateManagerUseCase } from "./use-cases/manager/UpdateManagerUseCase";
 import { DeactivateManagerUseCase } from "./use-cases/manager/DeactivateManagerUseCase";
 import { ActivateManagerUseCase } from "./use-cases/manager/ActivateManagerUseCase";
+import { ResetManagerPasswordUseCase } from "./use-cases/manager/ResetManagerPasswordUseCase";
 import { DormitoryModule } from "@/modules/dormitory/dormitory.module";
 import { DormitoryService } from "../dormitory/dormitory.service";
 import { ManagerController } from "./controllers/manager.controller";
@@ -37,6 +38,7 @@ import { PricingModule } from "@/modules/pricing/pricing.module";
     UpdateManagerUseCase,
     DeactivateManagerUseCase,
     ActivateManagerUseCase,
+    ResetManagerPasswordUseCase,
     DormitoryService,
   ],
 })
