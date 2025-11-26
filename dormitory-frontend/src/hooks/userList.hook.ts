@@ -51,8 +51,7 @@ export function useUserList() {
 
     return {
         activateUser: activateUser.mutate,
-        dectivateUser: deactivateUser.mutate,
-
+        deactivateUser: deactivateUser.mutate,
         activatingUser: activateUser.isPending,
         deactivatingUser: deactivateUser.isPending
     }

@@ -1,13 +1,13 @@
 'use client'
 
 import React, { useState } from 'react'
-import { Confirmation } from "@/types/confirmations.types"
+import {BookingConfirmationApproval, Confirmation} from "@/types/confirmations.types"
 import { Description, Dialog, DialogBackdrop, DialogPanel, DialogTitle } from "@headlessui/react"
 
 interface AccommodationConfirmationModalProps {
     confirmation: Confirmation
     onClose: () => void
-    onApprove: (id: string) => void
+    onApproveAccommodation: (id: string, data: BookingConfirmationApproval) => void
     onReject: ({id, reason}:{id:string, reason: string}) => void
    // onInformAboutTime: (id: string) => void
 }
@@ -15,16 +15,20 @@ interface AccommodationConfirmationModalProps {
 export function AccommodationConfirmationModal({
                                                    confirmation,
                                                    onClose,
-                                                   onApprove,
+                                                   onApproveAccommodation,
                                                    onReject,
                                                    //onInformAboutTime
                                                }: AccommodationConfirmationModalProps) {
-    const [accommodationTime, setAccommodationTime] = useState<string>("")
     const [showRejectionMenu, setShowRejectionMenu] = useState<boolean>(false)
     const [rejectionReason, setRejectionReason] = useState<string>("")
+    const [approvalInfo, setApprovalInfo] = useState<BookingConfirmationApproval>({
+        alternativeRoomId: undefined,
+        suggestedTime: undefined,
+        reason: undefined,
+    })
 
     const handleConfirm = () => {
-        onApprove(confirmation.id)
+        onApproveAccommodation(confirmation.id, approvalInfo)
     }
 
     const openRejectionMenu = () => {
@@ -41,9 +45,19 @@ export function AccommodationConfirmationModal({
         setRejectionReason("")
     }
 
-    // const handleInformAboutTime = () => {
-    //     onInformAboutTime(confirmation.id)
-    // }
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target
+
+        if(name==='alternativeRoomId' || name==='suggestedTime' || name==='reason'){
+            setApprovalInfo(prevState => {
+                if(!prevState) return prevState;
+                return {
+                    ...prevState,
+                    [name]: value
+                }
+            })
+        }
+    }
 
     const formatDate = (dateString: string) => {
         return new Date(dateString).toLocaleDateString('en-US', {
@@ -145,24 +159,46 @@ export function AccommodationConfirmationModal({
                         </p>
                     </div>
 
-                    {/* Time Input */}
                     <div className="space-y-2">
-                        <label className="text-black font-mono block">
-                            Set a time for accommodation:
-                        </label>
-                        <div className="flex items-center space-x-2">
-                            <input
-                                type="text"
-                                value={accommodationTime}
-                                onChange={(e) => setAccommodationTime(e.target.value)}
-                                className="flex-1 px-3 py-2 border border-gray-400 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                placeholder="Enter accommodation time..."
-                            />
-                            <button className="p-2 bg-gray-300 hover:bg-gray-400 rounded transition-colors">
-                                <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                                </svg>
-                            </button>
+                        <div className={`flex flex-row`}>
+                            <label className="text-black font-mono block">
+                                Set a time for accommodation:
+                            </label>
+                            <div className="flex items-center space-x-2">
+                                <input
+                                    name={`suggestedTime`}
+                                    type="text"
+                                    value={approvalInfo.suggestedTime || ''}
+                                    onChange={handleInputChange}
+                                    className="flex-1 px-3 py-2 border border-gray-400 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    placeholder="Enter accommodation time..."
+                                />
+                                <button className="p-2 bg-gray-300 hover:bg-gray-400 rounded transition-colors">
+                                    <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div className={`flex flex-row`}>
+                            <label className="text-black font-mono block">
+                                Reason for time change:
+                            </label>
+                            <div className="flex items-center space-x-2">
+                                <input
+                                    name={`reason`}
+                                    type="text"
+                                    value={approvalInfo.reason || ''}
+                                    onChange={handleInputChange}
+                                    className="flex-1 px-3 py-2 border border-gray-400 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    placeholder="Reason for time/room change..."
+                                />
+                                <button className="p-2 bg-gray-300 hover:bg-gray-400 rounded transition-colors">
+                                    <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -176,12 +212,6 @@ export function AccommodationConfirmationModal({
                         >
                             Reject
                         </button>
-                        {/*<button*/}
-                        {/*    onClick={handleInformAboutTime}*/}
-                        {/*    className="px-8 py-2 bg-gray-400 text-black rounded hover:bg-gray-500 transition-colors font-medium"*/}
-                        {/*>*/}
-                        {/*    Inform about suggested time*/}
-                        {/*</button>*/}
                         <button
                             onClick={handleConfirm}
                             className="px-8 py-2 bg-blue-800 text-white rounded hover:bg-blue-900 transition-colors font-medium"

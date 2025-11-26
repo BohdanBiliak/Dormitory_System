@@ -1,9 +1,9 @@
-import {useMutation, useQueryClient, useQuery} from '@tanstack/react-query'
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 import {authApi} from '@/app/lib/auth.api'
-import {LoginRequest, RegisterRequest, User, UserRole} from '@/types/auth.types'
+import {LoginRequest, RegisterRequest, UserRole} from '@/types/auth.types'
 import {toast} from 'sonner'
 import {useRouter} from 'next/navigation'
-import {useCallback, useMemo, useEffect} from "react";
+import {useCallback, useMemo} from "react";
 
 export const useAuth = () => {
   const queryClient = useQueryClient()
@@ -32,6 +32,7 @@ export const useAuth = () => {
     
     // Redirect based on role
     switch (user?.role){
+      case UserRole.SuperAdmin: router.push('/admin/profile'); break;
       case UserRole.Admin: router.push('/admin/profile'); break;
       case UserRole.Regular: router.push('/profile');break;
       case UserRole.SignedInUser: router.push('/profile');break;

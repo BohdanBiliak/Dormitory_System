@@ -26,10 +26,11 @@ export function ManagerCreationDialog({open, onClose}:ManagerCreationProps) {
 
     const [newManager, setNewManager] = useState<ManagerCreationData>({
         email: '',
-        displayName: '',
+        name: '',
+        middleName: '',
         secondName: '',
         password: '',
-        confirmPassword: '',
+        repeatPassword: '',
         dormitoryId: ''
     })
     const [showRejectionMenu, setShowRejectionMenu] = useState<boolean>(false)
@@ -41,7 +42,7 @@ export function ManagerCreationDialog({open, onClose}:ManagerCreationProps) {
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target;
 
-        if(name==="displayName" || name==="secondName" || name==="password" || name==="confirmPassword" || name==='email'){
+        if(name==="name" || name=="middleName" || name==="secondName" || name==="password" || name==="repeatPassword" || name==='email'){
             setNewManager(prevState => {
                 if(!prevState) return prevState;
                 return {
@@ -74,10 +75,11 @@ export function ManagerCreationDialog({open, onClose}:ManagerCreationProps) {
     const handleCancel = () => {
         setNewManager({
             email: '',
-            displayName: '',
+            name: '',
+            middleName: '',
             secondName: '',
             password: '',
-            confirmPassword: '',
+            repeatPassword: '',
             dormitoryId: ''
         })
     }
@@ -109,9 +111,20 @@ export function ManagerCreationDialog({open, onClose}:ManagerCreationProps) {
                     <div className={`flex flex-row`}>
                         <div>Name:</div>
                         <input
-                            name={'displayName'}
+                            name={'name'}
                             type="text"
-                            value={newManager.displayName}
+                            value={newManager.name}
+                            onChange={handleInputChange}
+                            placeholder={'Input manager\'s name'}
+                        />
+                    </div>
+
+                    <div className={`flex flex-row`}>
+                        <div>Middle name:</div>
+                        <input
+                            name={'middleName'}
+                            type="text"
+                            value={newManager.middleName}
                             onChange={handleInputChange}
                             placeholder={'Input manager\'s name'}
                         />
@@ -167,9 +180,9 @@ export function ManagerCreationDialog({open, onClose}:ManagerCreationProps) {
                         <div>Confirm passwords:</div>
                         <div>
                             <input
-                                name={'confirmPassword'}
+                                name={'repeatPassword'}
                                 type={showConfirmPassword ? 'text' : 'password'}
-                                value={newManager.confirmPassword}
+                                value={newManager.repeatPassword}
                                 onChange={handleInputChange}
                                 placeholder={'Confirm manager\'s password'}
                             />
