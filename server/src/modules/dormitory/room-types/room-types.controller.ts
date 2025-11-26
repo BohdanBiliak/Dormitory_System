@@ -12,7 +12,7 @@ import {
 } from "@nestjs/common";
 import { ApiTags, ApiBearerAuth, ApiOperation, ApiParam, ApiResponse } from "@nestjs/swagger";
 import { Authorization } from "@/libs/common/decorators/auth.decorator";
-import { $Enums } from "../../../../__generated__";
+import { $Enums } from "@prisma/client";
 import { CreateRoomTypeUseCase } from "./use-cases/create-room-type.use-case";
 import { GetRoomTypesUseCase } from "./use-cases/get-room-types.use-case";
 import { UpdateRoomTypeUseCase } from "./use-cases/update-room-type.use-case";

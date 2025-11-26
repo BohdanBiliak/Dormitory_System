@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "@/prisma/prisma.service";
-import { Prisma, $Enums } from "../../../__generated__";
+import { Prisma, $Enums } from "@prisma/client";
 import { MailService } from "../../libs/mail/mail.service";
 import { NotificationGateway } from "./NotificationGateway";
 

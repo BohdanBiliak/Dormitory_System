@@ -10,7 +10,7 @@ import {
   UseInterceptors,
   ParseArrayPipe,
 } from "@nestjs/common";
-import { $Enums } from "../../../__generated__";
+import { $Enums } from "@prisma/client";
 import UserRole = $Enums.UserRole;
 import { CreateDormitoryDto } from "@/modules/dormitory/dto/create-dormitory.dto";
 import { UpdateDormitoryDto } from "@/modules/dormitory/dto/update-dormitory.dto";

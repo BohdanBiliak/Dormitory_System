@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, ForbiddenException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '@/prisma/prisma.service';
-import { MaintenanceStatus } from '../../../__generated__';
+import { MaintenanceStatus } from '@prisma/client';
 import { CreateMaintenanceReportDto } from './dto/create-maintenance-report.dto';
 import { UpdateMaintenanceStatusDto } from './dto/update-maintenance-status.dto';
 import { GetMaintenanceReportsDto } from './dto/get-maintenance-reports.dto';

@@ -10,7 +10,7 @@ import { PaymentReminderTemplate } from "@/libs/mail/templates/payment-reminder"
 import { TwoFactorAuthTemplate } from "@/libs/mail/templates/two-factor-auth.template";
 import { AnnouncementTemplate } from "@/libs/mail/templates/announcement-template";
 import { EvictionTemplate } from "./templates/eviction-template";
-import { ConfirmationType } from "../../../__generated__";
+import { ConfirmationType } from "@prisma/client";
 import { RejectTemplate } from "@/libs/mail/templates/reject.template";
 import { AccommodationApprovalTemplate } from "@/libs/mail/templates/accommodation-approval-template";
 

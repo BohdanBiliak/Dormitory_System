@@ -7,7 +7,7 @@ import {
 } from "@nestjs/common";
 import { PrismaService } from "@/prisma/prisma.service";
 import { v4 as uuidv4 } from "uuid";
-import { $Enums, User } from "../../../../../../__generated__";
+import { $Enums, User } from "@prisma/client";
 import TokenType = $Enums.TokenType;
 import { Request } from "express";
 import { ConfirmationDto } from "@/modules/auth/submodules/email-confirmation/dto/confirmation.dto";

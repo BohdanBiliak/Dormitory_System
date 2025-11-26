@@ -12,7 +12,7 @@ import { RoomStatusTypeService } from "./room-status-type.service";
 import { CreateRoomStatusTypeDto } from "./dto/create-room-status-type.dto";
 import { UpdateRoomStatusTypeDto } from "./dto/update-room-status-type.dto";
 import { Authorization } from "@/libs/common/decorators/auth.decorator";
-import { $Enums } from "../../../__generated__";
+import { $Enums } from "@prisma/client";
 import { RoomStatusTypeDocs } from "./room-status-type.docs";
 
 @RoomStatusTypeDocs.controller()

@@ -9,7 +9,7 @@ import { CreateManagerDto } from "../../dto/CreateMeneger.dto";
 import { DormitoryService } from "@/modules/dormitory/dormitory.service";
 import * as argon2 from "argon2";
 import { NotificationsService } from "@/modules/notifications/notifications.service";
-import { $Enums } from "../../../../../__generated__";
+import { $Enums } from "@prisma/client";
 
 @Injectable()
 export class CreateManagerUseCase {

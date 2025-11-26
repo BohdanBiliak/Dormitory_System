@@ -1,7 +1,7 @@
 import { IsOptional, IsEnum, IsInt, Min, Max } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { MaintenanceStatus, MaintenanceCategory, MaintenancePriority } from '../../../../__generated__';
+import { MaintenanceStatus, MaintenanceCategory, MaintenancePriority } from '@prisma/client';
 
 export class GetMaintenanceReportsDto {
   @ApiPropertyOptional({ 

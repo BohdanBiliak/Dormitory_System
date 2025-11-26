@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 
 import { PrismaService } from "@/prisma/prisma.service";
-import { $Enums, UserRole } from "../../../__generated__";
+import { $Enums, UserRole } from "@prisma/client";
 import AuthMethod = $Enums.AuthMethod;
 import { hash } from "argon2";
 import { UpdateUserDto } from "@/modules/user/dto/update-user.dto";

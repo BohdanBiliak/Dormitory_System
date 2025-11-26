@@ -16,7 +16,7 @@ import { MessagingService } from './services/messaging.service';
 import { CreateConversationDto } from './dto/create-conversation.dto';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { AuthGuard } from '../../libs/common/guards/auth.guard';
-import { UserRole } from '../../../__generated__';
+import { UserRole } from '@prisma/client';
 import { Authorization } from '@/libs/common/decorators/auth.decorator';
 
 @ApiTags('Messaging')

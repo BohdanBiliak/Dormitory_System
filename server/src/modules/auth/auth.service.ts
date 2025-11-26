@@ -7,7 +7,7 @@ import {
 } from "@nestjs/common";
 import { RegisterDto } from "@/modules/auth/dto/register.dto";
 import { UserService } from "@/modules/user/user.service";
-import { $Enums, User } from "../../../__generated__";
+import { $Enums, User } from "@prisma/client";
 import AuthMethod = $Enums.AuthMethod;
 import { Request, Response } from "express";
 import { LoginDto } from "@/modules/auth/dto/login.dto";

@@ -3,7 +3,7 @@ import {
   ExecutionContext,
   UnauthorizedException,
 } from "@nestjs/common";
-import { User } from "../../../../__generated__";
+import { User } from "@prisma/client";
 
 export const Authorized = createParamDecorator(
   (data: keyof User, ctx: ExecutionContext) => {

@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from "@nestjs/common";
 import { PrismaService } from "@/prisma/prisma.service";
-import { Room, Prisma, $Enums } from "../../../__generated__";
+import { Room, Prisma, $Enums } from "@prisma/client";
 import { AvailableRoomsDto } from "./dto/availableRooms.dto";
 
 export type RoomWithRelations = Prisma.RoomGetPayload<{

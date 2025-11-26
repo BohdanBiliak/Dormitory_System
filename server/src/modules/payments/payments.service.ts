@@ -5,8 +5,8 @@ import {
   PaymentType,
   PaymentMethod,
   PaymentItemType,
-} from "../../../__generated__";
-import { $Enums } from "../../../__generated__";
+} from "@prisma/client";
+import { $Enums } from "@prisma/client";
 import { IPaymentRepository } from "./interfaces/payments-repository.interfaces";
 import { IPaymentService } from "./interfaces/payments-service.interfaces";
 import { S3Service } from "../../libs/common/s3/s3.service";

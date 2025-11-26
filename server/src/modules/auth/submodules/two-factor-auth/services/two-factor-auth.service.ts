@@ -3,7 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from "@nestjs/common";
-import { $Enums } from "../../../../../../__generated__";
+import { $Enums } from "@prisma/client";
 import TokenType = $Enums.TokenType;
 import { PrismaService } from "@/prisma/prisma.service";
 import { MailService } from "@/libs/mail/mail.service";

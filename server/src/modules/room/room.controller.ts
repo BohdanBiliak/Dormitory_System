@@ -12,7 +12,7 @@ import {
 } from "@nestjs/common";
 import { RoomService } from "./room.service";
 import { Authorized } from "@/libs/common/decorators/authtorized.decorator";
-import { $Enums, User } from "../../../__generated__";
+import { $Enums, User } from "@prisma/client";
 import { Authorization } from "@/libs/common/decorators/auth.decorator";
 import { AvailableRoomsDto } from "./dto/availableRooms.dto";
 import { BookRoomDto } from "@modules/room/dto/book-room.dto";

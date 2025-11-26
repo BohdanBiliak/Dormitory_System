@@ -12,7 +12,7 @@ import {
   NotificationsService,
   NotificationFilters,
 } from "./notifications.service";
-import { $Enums, UserRole } from "../../../__generated__";
+import { $Enums, UserRole } from "@prisma/client";
 import { Authorization } from "@/libs/common/decorators/auth.decorator";
 import { NotificationsDocs } from "./notifications.docs";
 

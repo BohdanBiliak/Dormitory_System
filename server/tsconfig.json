@@ -16,9 +16,7 @@
       "@/*": ["./*"],
       "@libs/*": ["libs/*"],
       "@modules/*": ["modules/*"],
-      "@mail/*": ["libs/mail/*"],
-      "@prisma/__generated__": ["__generated__"],
-      "@prisma/__generated__/*": ["__generated__/*"]
+      "@mail/*": ["libs/mail/*"]
     },
     "incremental": true,
     "skipLibCheck": true,

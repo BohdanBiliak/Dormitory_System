@@ -10,7 +10,7 @@ import {
   IsBoolean,
 } from "class-validator";
 import { Type } from "class-transformer";
-import { PaymentType, PaymentMethod } from "../../../../__generated__";
+import { PaymentType, PaymentMethod } from "@prisma/client";
 
 export class BulkPaymentUserDto {
   @ApiProperty({ description: "User ID" })

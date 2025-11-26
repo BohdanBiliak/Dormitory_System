@@ -7,7 +7,7 @@ import { ManagerRepository } from "../../manager.repository";
 import { ResetManagerPasswordDto } from "../../dto/ResetManagerPassword.dto";
 import * as argon2 from "argon2";
 import { NotificationsService } from "@/modules/notifications/notifications.service";
-import { $Enums } from "../../../../../__generated__";
+import { $Enums } from "@prisma/client";
 
 @Injectable()
 export class ResetManagerPasswordUseCase {

@@ -8,7 +8,7 @@ import {
   Query,
   UploadedFile,
 } from "@nestjs/common";
-import { $Enums, ConfirmationStatus } from "../../../../__generated__";
+import { $Enums, ConfirmationStatus } from "@prisma/client";
 import { ConfirmationService } from "@/modules/confirmation/confirmation.service";
 import { GetConfirmationsQueryDto } from "@/modules/confirmation/dto/GetConfirmationsQuery.dto";
 import { CurrentUser } from "@/libs/common/decorators/current-user.decorator";

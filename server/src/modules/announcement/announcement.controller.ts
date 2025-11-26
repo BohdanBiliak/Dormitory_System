@@ -17,7 +17,7 @@ import { DeleteAnnouncementUseCase } from "@modules/announcement/use-cases/delet
 import { UploadAnnouncementAttachmentsUseCase } from "@modules/announcement/use-cases/upload-announcement-attachments.use-case";
 import { GetAnnouncementByIdUseCase } from "@modules/announcement/use-cases/get-announcement-by-id.use-case";
 import { FilesInterceptor } from "@nestjs/platform-express";
-import { $Enums } from "../../../__generated__";
+import { $Enums } from "@prisma/client";
 import UserRole = $Enums.UserRole;
 import { GetPublicAnnouncementsUseCase } from "@modules/announcement/use-cases/get-public-announcements.use-case";
 import { GetUserAnnouncementsUseCase } from "@modules/announcement/use-cases/get-user-announcements.use-case";

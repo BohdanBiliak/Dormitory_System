@@ -1,7 +1,7 @@
 import { CreateManagerDto } from "./dto/CreateMeneger.dto";
 import { ManagerFiltersDto } from "./dto/ManagerFilters.dto";
 import { UpdateManagerDto } from "./dto/UpdateManager.dto";
-import { User } from "../../../__generated__";
+import { User } from "@prisma/client";
 
 export interface IManagerRepository {
   //create

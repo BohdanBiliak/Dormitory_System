@@ -1,7 +1,7 @@
 import { ApiPropertyOptional } from "@nestjs/swagger";
 import { IsDate, IsNumber, IsOptional, IsString } from "class-validator";
 import { Type } from "class-transformer";
-import { PaymentStatus } from "../../../../__generated__";
+import { PaymentStatus } from "@prisma/client";
 export class PaymentFilterDto {
   @ApiPropertyOptional({ example: "uuid-user" })
   @IsOptional()

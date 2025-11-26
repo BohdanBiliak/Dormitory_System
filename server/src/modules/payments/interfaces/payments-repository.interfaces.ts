@@ -1,4 +1,4 @@
-import { Payment, PaymentStatus, Prisma } from "../../../../__generated__";
+import { Payment, PaymentStatus, Prisma } from "@prisma/client";
 
 export interface IPaymentRepository {
   create(data: Prisma.PaymentCreateInput): Promise<Payment>;

@@ -1,4 +1,4 @@
-import { Payment } from "../../../../__generated__";
+import { Payment } from "@prisma/client";
 import {
   CreatePaymentDto,
   PaymentFilterDto,

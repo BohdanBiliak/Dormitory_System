@@ -21,7 +21,7 @@ import { ResetManagerPasswordDto } from "../dto/ResetManagerPassword.dto";
 import { ManagerFiltersDto } from "../dto/ManagerFilters.dto";
 import { Authorization } from "@/libs/common/decorators/auth.decorator";
 import { CurrentUser } from "@/libs/common/decorators/current-user.decorator";
-import { $Enums } from "../../../../__generated__";
+import { $Enums } from "@prisma/client";
 import { ManagerDocs } from "../docs/manager.docs";
 
 @ManagerDocs.controller()

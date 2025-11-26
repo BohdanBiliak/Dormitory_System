@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "@/prisma/prisma.service";
-import { $Enums, Confirmation, ConfirmationType } from "../../../__generated__";
+import { $Enums, Confirmation, ConfirmationType } from "@prisma/client";
 import ConfirmationStatus = $Enums.ConfirmationStatus;
 import UserRole = $Enums.UserRole;
 import { MailService } from "@/libs/mail/mail.service";

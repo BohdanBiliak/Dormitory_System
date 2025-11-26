@@ -1,6 +1,6 @@
 import { IsEnum } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { MaintenanceStatus } from '../../../../__generated__';
+import { MaintenanceStatus } from '@prisma/client';
 
 export class UpdateMaintenanceStatusDto {
   @ApiProperty({ 

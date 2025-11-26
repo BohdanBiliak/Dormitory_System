@@ -1,5 +1,5 @@
 import { SetMetadata } from "@nestjs/common";
-import { $Enums } from "../../../../__generated__";
+import { $Enums } from "@prisma/client";
 import UserRole = $Enums.UserRole;
 
 export const ROLES_KEY = "roles";

@@ -1,6 +1,6 @@
 import { IsString, IsEnum, IsOptional, IsArray, MaxLength, MinLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { MaintenanceCategory, MaintenancePriority } from '../../../../__generated__';
+import { MaintenanceCategory, MaintenancePriority } from '@prisma/client';
 
 export class CreateMaintenanceReportDto {
   @ApiProperty({ 

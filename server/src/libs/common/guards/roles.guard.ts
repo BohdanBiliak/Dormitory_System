@@ -6,7 +6,7 @@ import {
 } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
 import { ROLES_KEY } from "@/libs/common/decorators/roles.decorator";
-import { $Enums } from "../../../../__generated__";
+import { $Enums } from "@prisma/client";
 type UserRole = $Enums.UserRole;
 
 @Injectable()

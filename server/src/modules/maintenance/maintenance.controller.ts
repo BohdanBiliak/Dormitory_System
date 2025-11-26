@@ -20,7 +20,7 @@ import { GetMaintenanceReportsDto } from './dto/get-maintenance-reports.dto';
 import { CreateConversationFromReportDto } from './dto/create-conversation-from-report.dto';
 import { RolesGuard } from '@/libs/common/guards/roles.guard';
 import { Roles } from '@/libs/common/decorators/roles.decorator';
-import { UserRole } from '../../../__generated__';
+import { UserRole } from '@prisma/client';
 
 @ApiTags('Maintenance')
 @ApiBearerAuth()

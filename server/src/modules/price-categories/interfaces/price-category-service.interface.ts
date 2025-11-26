@@ -1,4 +1,4 @@
-import { PriceCategory } from "../../../../__generated__";
+import { PriceCategory } from "@prisma/client";
 import { CreatePriceCategoryDto, UpdatePriceCategoryDto, AssignRoomTypesToCategoryDto, AssignRoomsToCategory, PriceCategoryFilterDto } from "../dto";
 
 export interface IPriceCategoryService {

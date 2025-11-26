@@ -14,7 +14,7 @@ import {
 } from "@nestjs/swagger";
 import { UpdateAdminProfileDto } from "../dto/UpdateAdminProfile.dto";
 import { UpdateConfirmationStatusDto } from "@/modules/confirmation/dto/UpdateConfirmationStatus.dto";
-import { $Enums, ConfirmationStatus } from "../../../../__generated__";
+import { $Enums, ConfirmationStatus } from "@prisma/client";
 import ConfirmationType = $Enums.ConfirmationType;
 
 const ALLOWED_VERSIONS = ["original", "mobile", "tablet", "desktop"] as const;

@@ -4,7 +4,7 @@ import {
   Injectable,
   NotFoundException,
 } from "@nestjs/common";
-import { $Enums, PrismaClient, User } from "../../../__generated__";
+import { $Enums, PrismaClient, User } from "@prisma/client";
 import {
   RoomRepository,
   RoomWithRelations,

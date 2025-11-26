@@ -6,7 +6,7 @@ import {
 import { PrismaService } from "@/prisma/prisma.service";
 import { UserService } from "@/modules/user/user.service";
 import { v4 as uuidv4 } from "uuid";
-import { $Enums } from "../../../../../../__generated__";
+import { $Enums } from "@prisma/client";
 import TokenType = $Enums.TokenType;
 import { MailService } from "@/libs/mail/mail.service";
 import { ResetPasswordDto } from "@/modules/auth/submodules/password-recovery/dto/reset-password.dto";

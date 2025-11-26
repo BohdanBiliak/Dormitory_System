@@ -1,5 +1,5 @@
 import { IsEnum } from "class-validator";
-import { $Enums } from "../../../../__generated__";
+import { $Enums } from "@prisma/client";
 import ConfirmationStatus = $Enums.ConfirmationStatus;
 import { ApiProperty } from "@nestjs/swagger";
 

@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException, BadRequestException, Inject } from "@nestjs/common";
-import { PriceCategory } from "../../../__generated__";
+import { PriceCategory } from "@prisma/client";
 import { IPriceCategoryService } from "./interfaces/price-category-service.interface";
 import { IPriceCategoryRepository } from "./interfaces/price-category-repository.interface";
 import { 

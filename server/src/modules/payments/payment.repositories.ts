@@ -4,7 +4,7 @@ import {
   Payment,
   PaymentStatus,
   Prisma,
-} from "../../../__generated__";
+} from "@prisma/client";
 import { PrismaService } from "../../prisma/prisma.service";
 import { IPaymentRepository } from "./interfaces/payments-repository.interfaces";
 

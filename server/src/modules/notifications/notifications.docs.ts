@@ -13,7 +13,7 @@ import {
   ApiBadRequestResponse,
   ApiCreatedResponse,
 } from "@nestjs/swagger";
-import { $Enums } from "../../../__generated__";
+import { $Enums } from "@prisma/client";
 
 export const NotificationsDocs = {
   controller: () => applyDecorators(ApiTags("Notifications"), ApiBearerAuth()),

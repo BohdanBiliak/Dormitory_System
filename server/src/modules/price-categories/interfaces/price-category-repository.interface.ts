@@ -1,4 +1,4 @@
-import { PriceCategory } from "../../../../__generated__";
+import { PriceCategory } from "@prisma/client";
 import { CreatePriceCategoryDto, UpdatePriceCategoryDto, PriceCategoryFilterDto } from "../dto";
 
 export interface IPriceCategoryRepository {

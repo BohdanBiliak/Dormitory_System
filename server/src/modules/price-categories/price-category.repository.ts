@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "@/prisma/prisma.service";
-import { PriceCategory } from "../../../__generated__";
+import { PriceCategory } from "@prisma/client";
 import { IPriceCategoryRepository } from "./interfaces/price-category-repository.interface";
 import { CreatePriceCategoryDto, UpdatePriceCategoryDto, PriceCategoryFilterDto } from "./dto";
 

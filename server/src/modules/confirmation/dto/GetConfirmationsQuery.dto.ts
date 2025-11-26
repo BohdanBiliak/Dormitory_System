@@ -1,6 +1,6 @@
 import { IsEnum, IsNumber, IsOptional, IsString } from "class-validator";
 import { Type } from "class-transformer";
-import { $Enums } from "../../../../__generated__";
+import { $Enums } from "@prisma/client";
 import { ApiPropertyOptional } from "@nestjs/swagger";
 
 const { ConfirmationStatus, ConfirmationType } = $Enums;

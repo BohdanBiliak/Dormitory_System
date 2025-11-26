@@ -10,7 +10,7 @@ import {
   ValidateNested,
 } from "class-validator";
 import { Type } from "class-transformer";
-import { PaymentType, PaymentMethod } from "../../../../__generated__";
+import { PaymentType, PaymentMethod } from "@prisma/client";
 import { CreatePaymentItemDto } from "./create-payment-item.dto";
 
 export class CreatePaymentDto {

@@ -5,7 +5,7 @@ import {
 } from "@nestjs/common";
 import { ManagerRepository } from "../../manager.repository";
 import { NotificationsService } from "@/modules/notifications/notifications.service";
-import { $Enums } from "../../../../../__generated__";
+import { $Enums } from "@prisma/client";
 
 @Injectable()
 export class ActivateManagerUseCase {
