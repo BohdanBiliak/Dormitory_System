@@ -1,29 +1,34 @@
 'use client'
 
-import {useGetRoom, useUpdateRoom, useUploadRoomPhoto} from "@/hooks/rooms.hook";
-import React, {useEffect, useRef, useState} from "react";
-import {CreateRoomStatusRequest, EvictRequest, RoomResident, RoomStatus, UpdateRoomData} from "@/types/rooms.types";
-import {CalendarOfAvailabilityComponent} from "@/components/ui/CalendarOfAvailability.component";
-import {ChevronLeft, ChevronRight, Edit3, Users, DollarSign, Camera, Settings, AlertTriangle, X, Check} from "lucide-react";
+import { useGetRoom, useUpdateRoom, useUploadRoomPhoto } from "@/hooks/rooms.hook";
+import React, { useEffect, useRef, useState } from "react";
+import { CreateRoomStatusRequest, EvictRequest, RoomResident, RoomStatus, UpdateRoomData } from "@/types/rooms.types";
+import { CalendarOfAvailabilityComponent } from "@/components/ui/CalendarOfAvailability.component";
+import { ChevronLeft, ChevronRight, Edit3, Users, DollarSign, Camera, Settings, AlertTriangle, X, Check } from "lucide-react";
 import Link from "next/link";
-import {Description, Dialog, DialogBackdrop, DialogPanel, DialogTitle} from "@headlessui/react";
+import { Description, Dialog, DialogBackdrop, DialogPanel, DialogTitle } from "@headlessui/react";
 import EvictionFlowDialogsComponent from "@/components/dialogs/admin/EvictionFlowDialogs.component";
+import { RoomStatusTypesModal } from "@/components/dialogs/admin/RoomStatusTypesModal.component";
+import { useGetRoomStatusTypes } from "@/hooks/roomStatusTypes.hook";
 
 interface RoomPageProps {
     roomId: string
 }
 
-export function RoomPage({roomId}: RoomPageProps) {
-    const {updateRoom, postRoomStatus, removeRoomStatus, evictUser, uploadRoomPhoto} = useUpdateRoom();
-    const {data: urls, mutateAsync: uploadPhotos} = useUploadRoomPhoto()
+export function RoomPage({ roomId }: RoomPageProps) {
+    const { updateRoom, postRoomStatus, removeRoomStatus, evictUser, uploadRoomPhoto } = useUpdateRoom();
+    const { data: urls, mutateAsync: uploadPhotos } = useUploadRoomPhoto()
+    const [showStatusTypesManager, setShowStatusTypesManager] = useState(false);
+    const { data: statusTypes } = useGetRoomStatusTypes(true);
 
 
-    const inputRef = useRef<HTMLInputElement>(null); 
+
+    const inputRef = useRef<HTMLInputElement>(null);
 
 
-    {/*Initial values*/}
+    {/*Initial values*/ }
 
-    const {data: room, isLoading, error} = useGetRoom(roomId)
+    const { data: room, isLoading, error } = useGetRoom(roomId)
     const [isEditing, setIsEditing] = useState<{
         name: boolean,
         capacity: boolean,
@@ -71,10 +76,12 @@ export function RoomPage({roomId}: RoomPageProps) {
 
     const lastChangedIndexRef = useRef<number | null>(null);
     const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+    {/*Room statuses dialog logic*/ }
 
-    {/*Fields update*/}
 
-    const handleEditField = (event:React.MouseEvent<HTMLButtonElement>) => {
+    {/*Fields update*/ }
+
+    const handleEditField = (event: React.MouseEvent<HTMLButtonElement>) => {
         const editingField = event.currentTarget.name;
 
         setIsEditing({
@@ -89,32 +96,32 @@ export function RoomPage({roomId}: RoomPageProps) {
             [editingField]: true,
         })
 
-        if(editingField==="statuses"){
+        if (editingField === "statuses") {
             setShowStatusesDialog(true)
         }
 
-        if(editingField==="photos"){
+        if (editingField === "photos") {
             setShowPhotosDialog(true)
         }
     }
 
-    const handleFieldChange = (event:React.ChangeEvent<HTMLInputElement>) => {
-        const {name, value} = event.target;
+    const handleFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = event.target;
 
         setRoomInfo(prevState => {
-            if(!prevState) return prevState;
-            return {...prevState, [name]: value}
+            if (!prevState) return prevState;
+            return { ...prevState, [name]: value }
         })
     }
 
-    {/*Rooms CRUD Logic*/}
+    {/*Rooms CRUD Logic*/ }
 
-    const handleRoomUpdate = async() => {
-        if(newPhotos.length>0){
-            const {urls} = await uploadPhotos({urls:newPhotos})
+    const handleRoomUpdate = async () => {
+        if (newPhotos.length > 0) {
+            const { urls } = await uploadPhotos({ urls: newPhotos })
             urls.forEach((photo) => {
                 setRoomInfo(prevState => {
-                    if(!prevState) return prevState;
+                    if (!prevState) return prevState;
                     return {
                         ...prevState,
                         photos: [...prevState.photos, photo]
@@ -134,7 +141,7 @@ export function RoomPage({roomId}: RoomPageProps) {
         }
 
         if (room) {
-            updateRoom({id: room?.id, data: dataToUpdate})
+            updateRoom({ id: room?.id, data: dataToUpdate })
         }
 
         setIsEditing({
@@ -150,11 +157,11 @@ export function RoomPage({roomId}: RoomPageProps) {
     }
 
     const handleCancelRoomUpdate = () => {
-        if(room){
+        if (room) {
             // Use price from price category if available, otherwise fall back to room price
             const pricePerDay = room?.priceCategory?.pricePerDay || room?.price?.pricePerDay || 0;
             const pricePerMonth = room?.priceCategory?.pricePerMonth || room?.price?.pricePerMonth || 0;
-            
+
             setRoomInfo({
                 name: room?.number || "",
                 capacity: room?.capacity || 0,
@@ -180,7 +187,7 @@ export function RoomPage({roomId}: RoomPageProps) {
     }
 
     const handleEquipmentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const {name, value} = event.target;
+        const { name, value } = event.target;
         const indexToUpdate = parseInt(name.substring(name.lastIndexOf("-") + 1));
 
         const newRoomEquipment: string[] = [...roomInfo.roomEquipment];
@@ -194,7 +201,7 @@ export function RoomPage({roomId}: RoomPageProps) {
 
         setRoomInfo(prevState => {
             if (!prevState) return prevState;
-            return {...prevState, roomEquipment: newRoomEquipment}
+            return { ...prevState, roomEquipment: newRoomEquipment }
         });
     }
 
@@ -202,7 +209,7 @@ export function RoomPage({roomId}: RoomPageProps) {
         const newRoomEquipment = roomInfo.roomEquipment.filter((_, i) => i !== index);
         setRoomInfo(prevState => {
             if (!prevState) return prevState;
-            return {...prevState, roomEquipment: newRoomEquipment}
+            return { ...prevState, roomEquipment: newRoomEquipment }
         });
     }
 
@@ -216,17 +223,17 @@ export function RoomPage({roomId}: RoomPageProps) {
         }
     }, [roomInfo.roomEquipment.length]);
 
-    const handleChoseResidentToEvict = (event:React.MouseEvent<HTMLButtonElement>) => { //for eviction menu
-        const {value} = event.currentTarget;
+    const handleChoseResidentToEvict = (event: React.MouseEvent<HTMLButtonElement>) => { //for eviction menu
+        const { value } = event.currentTarget;
 
         roomInfo.residents.map((resident, index) => {
-            if(index.toString() === value){
+            if (index.toString() === value) {
                 setUserToEvict(resident)
                 setEvictionInformation(prevState => {
-                    if(!prevState) return prevState
+                    if (!prevState) return prevState
                     return {
                         ...prevState,
-                        userId:resident.id
+                        userId: resident.id
                     }
                 })
                 setShowEvictionConfirmation(true)
@@ -235,14 +242,14 @@ export function RoomPage({roomId}: RoomPageProps) {
 
     }
 
-    {/*room update use effect*/}
+    {/*room update use effect*/ }
 
     useEffect(() => {
-        if(room){
+        if (room) {
             // Use price from price category if available, otherwise fall back to room price
             const pricePerDay = room?.priceCategory?.pricePerDay || room?.price?.pricePerDay || 0;
             const pricePerMonth = room?.priceCategory?.pricePerMonth || room?.price?.pricePerMonth || 0;
-            
+
             setRoomInfo({
                 name: room?.number || "",
                 capacity: room?.capacity || 0,
@@ -268,25 +275,25 @@ export function RoomPage({roomId}: RoomPageProps) {
             roomEquipment: false,
         })
 
-    },[room])
+    }, [room])
 
-    {/*Photo logic*/}
+    {/*Photo logic*/ }
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const goToPrevious = () => {
-        setCurrentIndex(prev => (prev === 0 && roomInfo?.photos && roomInfo.photos? roomInfo.photos.length - 1 : prev - 1));
+        setCurrentIndex(prev => (prev === 0 && roomInfo?.photos && roomInfo.photos ? roomInfo.photos.length - 1 : prev - 1));
     };
 
     const goToNext = () => {
-        setCurrentIndex(prev => (roomInfo?.photos && prev === roomInfo.photos.length - 1? 0 : prev + 1));
+        setCurrentIndex(prev => (roomInfo?.photos && prev === roomInfo.photos.length - 1 ? 0 : prev + 1));
     };
 
     const [newPhotos, setNewPhotos] = useState<File[]>([])
 
     const addRoomImage = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { name} = event.target
+        const { name } = event.target
 
-        if(inputRef.current && inputRef.current.files && inputRef.current.files.length>0 && name === "newImage"){
+        if (inputRef.current && inputRef.current.files && inputRef.current.files.length > 0 && name === "newImage") {
             const file = inputRef.current.files[0];
             setNewPhotos([...newPhotos, file]);
             // console.log("New photos changed")
@@ -294,7 +301,7 @@ export function RoomPage({roomId}: RoomPageProps) {
 
     }
 
-    {/*Eviction confirmation(1st) dialog logic*/}
+    {/*Eviction confirmation(1st) dialog logic*/ }
 
     const [showEvictionConfirmation, setShowEvictionConfirmation] = useState(false)
     const [userToEvict, setUserToEvict] = useState<RoomResident>({
@@ -313,7 +320,7 @@ export function RoomPage({roomId}: RoomPageProps) {
         setShowEvictionMenu(true)
     }
 
-    {/*Eviction menu(2nd) dialog logic*/}
+    {/*Eviction menu(2nd) dialog logic*/ }
 
     const [showEvictionMenu, setShowEvictionMenu] = useState(false)
     const [evictionInformation, setEvictionInformation] = useState<EvictRequest>({
@@ -330,61 +337,68 @@ export function RoomPage({roomId}: RoomPageProps) {
     }
 
     const handleEvictionInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const {name, value} = event.target;
+        const { name, value } = event.target;
 
         setEvictionInformation(prev => {
-            if(!prev) return prev;
-            return{...prev, [name]:value}
+            if (!prev) return prev;
+            return { ...prev, [name]: value }
         })
     }
 
     const handleEvictResident = (evet: React.MouseEvent<HTMLButtonElement>) => {
-        evictUser({roomId: roomId,  body: evictionInformation})
+        evictUser({ roomId: roomId, body: evictionInformation })
     }
 
 
     //Room statuses dialog
-    const[dateStatuses, setDateStatuses] = useState<RoomStatus[]>([]);
-    const[showStatusesDialog, setShowStatusesDialog] = useState(false)
+    const [dateStatuses, setDateStatuses] = useState<RoomStatus[]>([]);
+    const [showStatusesDialog, setShowStatusesDialog] = useState(false)
 
     const closeStatusesDialog = () => {
         setShowStatusesDialog(false)
     }
 
-    const handleDeleteStatus = (event:React.MouseEvent<HTMLButtonElement>) => {
-        const {value} = event.currentTarget;
+    const handleDeleteStatus = (event: React.MouseEvent<HTMLButtonElement>) => {
+        const { value } = event.currentTarget;
 
-        if(room){
-            removeRoomStatus({roomId: room.id, statusId: value})
+        if (room) {
+            removeRoomStatus({ roomId: room.id, statusId: value })
         }
     }
 
     //Post room status
-    const [newStatusData,setNewStatusData] = useState<CreateRoomStatusRequest>({
+    const [newStatusData, setNewStatusData] = useState<CreateRoomStatusRequest>({
         statusTypeId: '',
         dateOfStart: '',
         dateOfEnd: '',
         description: ''
-        
+
     });
 
     const onNewStatusDataChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const {name, value} = event.target;
+        const { name, value } = event.target;
 
-        if(name==='dateOfStart' || name==='dateOfEnd' || name==='description') {
+        if (name === 'dateOfStart' || name === 'dateOfEnd' || name === 'description') {
             setNewStatusData(prevState => {
                 if (!prevState) return prevState;
-                return {...prevState, [name]: value}
+                return { ...prevState, [name]: value }
             })
         }
     }
 
     const handlePostStatus = () => {
-        if(room && newStatusData && newStatusData.dateOfStart !== '' && newStatusData.dateOfEnd !== '' && newStatusData.description !== '') {
-            postRoomStatus({roomId: room.id, statusData: newStatusData})
-            setShowStatusesDialog(false)
-        }
+    if (
+        room &&
+        newStatusData.statusTypeId &&
+        newStatusData.dateOfStart !== '' &&
+        newStatusData.dateOfEnd !== ''
+    ) {
+        postRoomStatus({ roomId: room.id, statusData: newStatusData })
+        setShowStatusesDialog(false)
+        handleClearNewStatus()
     }
+}
+
 
     const handleClearNewStatus = () => {
         setNewStatusData({
@@ -403,20 +417,21 @@ export function RoomPage({roomId}: RoomPageProps) {
     }
 
     const handleDeleteRoomPhoto = (event: React.MouseEvent<HTMLButtonElement>) => {
-        const {name, value} = event.currentTarget;
+        const { name, value } = event.currentTarget;
 
-        if(name !== ""){
+        if (name !== "") {
             const indexToDelete = Number.parseInt(value)
-            if(indexToDelete >= roomInfo.photos.length - newPhotos.length){
-                setNewPhotos(newPhotos.splice(indexToDelete-roomInfo.photos.length+newPhotos.length, 1))
+            if (indexToDelete >= roomInfo.photos.length - newPhotos.length) {
+                setNewPhotos(newPhotos.splice(indexToDelete - roomInfo.photos.length + newPhotos.length, 1))
 
             }
 
             setRoomInfo(prevState => {
-                if(!prevState) return prevState;
+                if (!prevState) return prevState;
                 return {
                     ...prevState,
-                    photos: roomInfo.photos.splice(indexToDelete, 1)}
+                    photos: roomInfo.photos.splice(indexToDelete, 1)
+                }
             })
 
             // console.log("Room info photos: ", roomInfo.photos)
@@ -425,7 +440,7 @@ export function RoomPage({roomId}: RoomPageProps) {
     }
 
 
-    if(isLoading){
+    if (isLoading) {
         return (
             <div className="min-h-screen w-full flex items-center justify-center bg-slate-50">
                 <div className="bg-white shadow-xl rounded-2xl p-8 max-w-md mx-4 border border-slate-200">
@@ -469,14 +484,14 @@ export function RoomPage({roomId}: RoomPageProps) {
                         <div className="flex items-center space-x-3 animate-in fade-in-0 slide-in-from-right-4 duration-500">
                             {hasChanges && (
                                 <div className="flex items-center space-x-3 animate-in slide-in-from-right-2 fade-in-0 duration-300">
-                                    <button 
+                                    <button
                                         onClick={handleRoomUpdate}
                                         className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2  hover:scale-105 transform hover:shadow-lg"
                                     >
                                         <Check className="w-4 h-4 mr-2 transition-transform duration-200 group-hover:rotate-12" />
                                         Save Changes
                                     </button>
-                                    <button 
+                                    <button
                                         onClick={handleCancelRoomUpdate}
                                         className="inline-flex items-center px-4 py-2 bg-slate-200 text-slate-700 text-sm font-medium rounded-lg hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2  hover:scale-105 transform"
                                     >
@@ -493,10 +508,10 @@ export function RoomPage({roomId}: RoomPageProps) {
             {/* Main Content */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    
+
                     {/* Left Column - Room Details */}
                     <div className="lg:col-span-2 space-y-6">
-                        
+
                         {/* Basic Information Card */}
                         <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden animate-in fade-in-0 slide-in-from-bottom-4 duration-500 hover:shadow-md transition-all">
                             <div className="px-6 py-4 bg-slate-50 border-b border-slate-200">
@@ -510,8 +525,8 @@ export function RoomPage({roomId}: RoomPageProps) {
                                 <div className="group delay-100">
                                     <div className="flex items-center justify-between mb-2">
                                         <label className="text-sm font-medium text-slate-700">Room Number</label>
-                                        <button 
-                                            name="name" 
+                                        <button
+                                            name="name"
                                             onClick={handleEditField}
                                             className="p-1 text-slate-400 hover:text-blue-600 "
                                         >
@@ -524,11 +539,10 @@ export function RoomPage({roomId}: RoomPageProps) {
                                         disabled={!isEditing.name}
                                         onChange={handleFieldChange}
                                         name="name"
-                                        className={`w-full px-3 py-2 border rounded-lg text-sm font-medium  ${
-                                            isEditing.name 
-                                                ? 'border-blue-500 ring-2 ring-blue-100 bg-white' 
-                                                : 'border-slate-200 bg-slate-50'
-                                        } focus:outline-none focus:ring-2 focus:ring-blue-500 hover:shadow-sm`}
+                                        className={`w-full px-3 py-2 border rounded-lg text-sm font-medium  ${isEditing.name
+                                            ? 'border-blue-500 ring-2 ring-blue-100 bg-white'
+                                            : 'border-slate-200 bg-slate-50'
+                                            } focus:outline-none focus:ring-2 focus:ring-blue-500 hover:shadow-sm`}
                                     />
                                 </div>
 
@@ -538,8 +552,8 @@ export function RoomPage({roomId}: RoomPageProps) {
                                         <label className="text-sm font-medium text-slate-700">
                                             Room Capacity ({roomInfo.residents.length} / {roomInfo.capacity})
                                         </label>
-                                        <button 
-                                            name="capacity" 
+                                        <button
+                                            name="capacity"
                                             onClick={handleEditField}
                                             className="p-1 text-slate-400 hover:text-blue-600 "
                                         >
@@ -552,11 +566,10 @@ export function RoomPage({roomId}: RoomPageProps) {
                                         disabled={!isEditing.capacity}
                                         onChange={handleFieldChange}
                                         name="capacity"
-                                        className={`w-full px-3 py-2 border rounded-lg text-sm font-medium  ${
-                                            isEditing.capacity 
-                                                ? 'border-blue-500 ring-2 ring-blue-100 bg-white' 
-                                                : 'border-slate-200 bg-slate-50'
-                                        } focus:outline-none focus:ring-2 focus:ring-blue-500 hover:shadow-sm`}
+                                        className={`w-full px-3 py-2 border rounded-lg text-sm font-medium  ${isEditing.capacity
+                                            ? 'border-blue-500 ring-2 ring-blue-100 bg-white'
+                                            : 'border-slate-200 bg-slate-50'
+                                            } focus:outline-none focus:ring-2 focus:ring-blue-500 hover:shadow-sm`}
                                     />
                                 </div>
 
@@ -620,11 +633,11 @@ export function RoomPage({roomId}: RoomPageProps) {
                                 {roomInfo.residents.length > 0 ? (
                                     <div className="space-y-3">
                                         {roomInfo.residents.map((resident, index) => (
-                                            <div key={index} 
+                                            <div key={index}
                                                 className="flex items-center justify-between p-4 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 transition-all hover:scale-[1.02] hover:shadow-sm"
                                                 style={{ animationDelay: `${index * 50}ms` }}
                                             >
-                                                <Link 
+                                                <Link
                                                     href={`/admin/users/${resident.id}`}
                                                     className="flex-1 hover:text-blue-600 transition-colors duration-200"
                                                 >
@@ -633,9 +646,9 @@ export function RoomPage({roomId}: RoomPageProps) {
                                                     </div>
                                                     <div className="text-sm text-slate-500">{resident.email}</div>
                                                 </Link>
-                                                <button 
+                                                <button
                                                     className="ml-4 px-3 py-1 bg-red-100 text-red-700 text-sm font-medium rounded-md hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2  hover:scale-105 hover:shadow-md"
-                                                    value={index.toString()} 
+                                                    value={index.toString()}
                                                     onClick={handleChoseResidentToEvict}
                                                 >
                                                     Evict
@@ -660,8 +673,8 @@ export function RoomPage({roomId}: RoomPageProps) {
                                         <Settings className="w-5 h-5 mr-2 text-blue-600 animate-in spin-in-180 duration-700 delay-400" />
                                         Room Equipment
                                     </h2>
-                                    <button 
-                                        name="roomEquipment" 
+                                    <button
+                                        name="roomEquipment"
                                         onClick={handleEditField}
                                         className="p-1 text-slate-400 hover:text-blue-600 "
                                     >
@@ -673,22 +686,21 @@ export function RoomPage({roomId}: RoomPageProps) {
                                 {roomInfo.roomEquipment && roomInfo.roomEquipment.length > 0 ? (
                                     <div className="space-y-3">
                                         {roomInfo.roomEquipment.map((_, index) => (
-                                            <div key={index} 
+                                            <div key={index}
                                                 className="relative flex items-center gap-2"
                                                 style={{ animationDelay: `${index * 50}ms` }}
                                             >
                                                 <input
-                                                    ref={(el) => {inputRefs.current[index] = el}}
+                                                    ref={(el) => { inputRefs.current[index] = el }}
                                                     type="text"
                                                     name={`eq-${index}`}
                                                     onChange={handleEquipmentChange}
                                                     value={roomInfo.roomEquipment[index]}
                                                     disabled={!isEditing.roomEquipment}
-                                                    className={`flex-1 px-3 py-2 border rounded-lg text-sm  hover:shadow-sm ${
-                                                        isEditing.roomEquipment
-                                                            ? 'border-blue-500 ring-2 ring-blue-100 bg-white'
-                                                            : 'border-slate-200 bg-slate-50'
-                                                    } focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                                                    className={`flex-1 px-3 py-2 border rounded-lg text-sm  hover:shadow-sm ${isEditing.roomEquipment
+                                                        ? 'border-blue-500 ring-2 ring-blue-100 bg-white'
+                                                        : 'border-slate-200 bg-slate-50'
+                                                        } focus:outline-none focus:ring-2 focus:ring-blue-500`}
                                                     placeholder={`Equipment item ${index + 1}`}
                                                 />
                                                 {isEditing.roomEquipment && (
@@ -704,20 +716,20 @@ export function RoomPage({roomId}: RoomPageProps) {
                                         ))}
                                         {isEditing.roomEquipment ? (
                                             <div key={roomInfo.roomEquipment.length}
-                                                 className="relative"
-                                                 style={{ animationDelay: `${roomInfo.roomEquipment.length * 50}ms` }}>
+                                                className="relative"
+                                                style={{ animationDelay: `${roomInfo.roomEquipment.length * 50}ms` }}>
                                                 <input
-                                                    ref={(el) => {inputRefs.current[roomInfo.roomEquipment.length] = el}}
+                                                    ref={(el) => { inputRefs.current[roomInfo.roomEquipment.length] = el }}
                                                     type="text"
-                                                    name={`eq-${roomInfo.roomEquipment.length }`}
+                                                    name={`eq-${roomInfo.roomEquipment.length}`}
                                                     onChange={handleEquipmentChange}
                                                     value={""}
                                                     disabled={!isEditing.roomEquipment}
                                                     className="w-full px-3 py-2 border rounded-lg text-sm  hover:shadow-sm border-blue-500 ring-2 ring-blue-100 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                                    placeholder={`Equipment item ${roomInfo.roomEquipment.length  + 1}`}
+                                                    placeholder={`Equipment item ${roomInfo.roomEquipment.length + 1}`}
                                                 />
                                             </div>
-                                        ):(<></>)}
+                                        ) : (<></>)}
                                     </div>
                                 ) : (
 
@@ -742,7 +754,7 @@ export function RoomPage({roomId}: RoomPageProps) {
                                 </button>
                             </div>
                             <div className="p-6 animate-in fade-in-0 zoom-in-95 duration-500 delay-600">
-                                <CalendarOfAvailabilityComponent statuses={roomInfo.statuses} showLegend={true}/>
+                                <CalendarOfAvailabilityComponent statuses={roomInfo.statuses} showLegend={true} />
                             </div>
                         </div>
                     </div>
@@ -756,8 +768,8 @@ export function RoomPage({roomId}: RoomPageProps) {
                                         <Camera className="w-5 h-5 mr-2 text-blue-600 animate-in spin-in-180 duration-700 delay-500" />
                                         Photos
                                     </h2>
-                                    <button 
-                                        name="photos" 
+                                    <button
+                                        name="photos"
                                         className="p-1 text-slate-400 hover:text-blue-600 "
                                         onClick={handleEditField}
                                     >
@@ -807,11 +819,10 @@ export function RoomPage({roomId}: RoomPageProps) {
                                                     <button
                                                         key={index}
                                                         onClick={() => setCurrentIndex(index)}
-                                                        className={`w-2 h-2 rounded-full  hover:scale-125 ${
-                                                            index === currentIndex
-                                                                ? 'bg-blue-600 scale-110'
-                                                                : 'bg-slate-300 hover:bg-slate-400'
-                                                        }`}
+                                                        className={`w-2 h-2 rounded-full  hover:scale-125 ${index === currentIndex
+                                                            ? 'bg-blue-600 scale-110'
+                                                            : 'bg-slate-300 hover:bg-slate-400'
+                                                            }`}
                                                     />
                                                 ))}
                                             </div>
@@ -854,7 +865,7 @@ export function RoomPage({roomId}: RoomPageProps) {
                                         </Description>
                                     </div>
                                 </div>
-                                <button 
+                                <button
                                     onClick={closeStatusesDialog}
                                     className="flex items-center justify-center w-6 h-6 xs:w-8 xs:h-8 rounded-full bg-white/20 hover:bg-white/30 transition-colors text-white flex-shrink-0 ml-2"
                                 >
@@ -877,7 +888,7 @@ export function RoomPage({roomId}: RoomPageProps) {
                                             </svg>
                                             Availability Calendar
                                         </h2>
-                                        
+
                                         {/* Room Info Cards */}
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 xs:gap-4 mb-4 xs:mb-6">
                                             <div className="bg-white rounded-lg p-3 xs:p-4 shadow-sm border border-slate-200">
@@ -894,14 +905,14 @@ export function RoomPage({roomId}: RoomPageProps) {
                                                 </div>
                                                 <div className="mt-2">
                                                     <div className="flex w-full bg-slate-200 rounded-full h-1.5 xs:h-2">
-                                                        <div 
+                                                        <div
                                                             className="bg-blue-600 h-1.5 xs:h-2 rounded-full "
                                                             style={{ width: `${(roomInfo.residents.length / roomInfo.capacity) * 100}%` }}
                                                         ></div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            
+
                                             <div className="bg-white rounded-lg p-3 xs:p-4 shadow-sm border border-slate-200">
                                                 <div className="flex items-center justify-between">
                                                     <div>
@@ -919,13 +930,25 @@ export function RoomPage({roomId}: RoomPageProps) {
 
                                         {/* Calendar Component */}
                                         <div className="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden">
-                                            <CalendarOfAvailabilityComponent 
-                                                statuses={roomInfo.statuses} 
-                                                showLegend={true} 
-                                                setDateStatuses={setDateStatuses} 
+                                            <CalendarOfAvailabilityComponent
+                                                statuses={roomInfo.statuses}
+                                                showLegend={true}
+                                                setDateStatuses={setDateStatuses}
                                             />
                                         </div>
                                     </div>
+                                    <button
+                                        onClick={() => setShowStatusTypesManager(true)}
+                                        className="w-full mt-4 px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm transition"
+                                    >
+                                        Manage Status Types
+                                    </button>
+
+                                    <RoomStatusTypesModal
+                                        open={showStatusTypesManager}
+                                        onClose={() => setShowStatusTypesManager(false)}
+                                    />
+
                                 </div>
 
                                 {/* Status Management Sidebar */}
@@ -936,7 +959,7 @@ export function RoomPage({roomId}: RoomPageProps) {
                                         </svg>
                                         Status Management
                                     </h3>
-                                    
+
                                     {/* Current Statuses */}
                                     <div className="mb-4 xs:mb-6">
                                         <h4 className="text-xs xs:text-sm font-medium text-slate-700 mb-2 xs:mb-3">Current Statuses</h4>
@@ -953,7 +976,7 @@ export function RoomPage({roomId}: RoomPageProps) {
                                                                     <span>{new Date().toLocaleDateString()}</span>
                                                                 </div>
                                                             </div>
-                                                            <button 
+                                                            <button
                                                                 onClick={handleDeleteStatus}
                                                                 value={status.id}
                                                                 className="ml-2 flex items-center justify-center w-5 h-5 xs:w-6 xs:h-6 bg-red-100 hover:bg-red-200 text-red-600 rounded-full transition-colors duration-200"
@@ -979,25 +1002,40 @@ export function RoomPage({roomId}: RoomPageProps) {
                                     {/* Create New Status Form */}
                                     <div className="bg-emerald-50 rounded-lg p-3 xs:p-4 border border-emerald-200">
                                         <h4 className="text-xs xs:text-sm font-medium text-emerald-900 mb-3 xs:mb-4 flex items-center">
-                                            <svg className="w-3 h-3 xs:w-4 xs:h-4 mr-1.5 xs:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                            </svg>
-                                            Create New Status
+                                            <div className="bg-emerald-50 rounded-lg p-3 xs:p-4 border border-emerald-200"></div>
                                         </h4>
-                                        
+                                        {/* Status Type */}
+                                        <div>
+                                            <label className="block text-xs font-medium text-slate-700 mb-1">Status Type</label>
+
+                                            <select
+                                                name="statusTypeId"
+                                                value={newStatusData.statusTypeId}
+                                                onChange={(e) => {
+                                                    const selectedId = e.target.value;
+                                                    const selectedType = statusTypes?.find(t => t.id === selectedId);
+
+                                                    setNewStatusData(prev => ({
+                                                        ...prev,
+                                                        statusTypeId: selectedId,
+                                                        description: selectedType?.description || "", 
+                                                    }));
+                                                }}
+                                                className="w-full px-2 xs:px-3 py-1.5 xs:py-2 border border-slate-300 rounded-lg"
+                                            >
+                                                <option value="">Select type...</option>
+                                                {statusTypes?.map((type) => (
+                                                    <option key={type.id} value={type.id}>
+                                                        {type.name}
+                                                    </option>
+                                                ))}
+                                            </select>
+
+                                        </div>
+
+
                                         <div className="space-y-3 xs:space-y-4">
-                                            <div>
-                                                <label className="block text-xs font-medium text-slate-700 mb-1">Description</label>
-                                                <input
-                                                    type="text"
-                                                    name="description"
-                                                    value={newStatusData.description}
-                                                    onChange={onNewStatusDataChange}
-                                                    placeholder="Enter status description"
-                                                    className="w-full px-2 xs:px-3 py-1.5 xs:py-2 border border-slate-300 rounded-lg text-xs xs:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                                                />
-                                            </div>
-                                            
+
                                             <div>
                                                 <label className="block text-xs font-medium text-slate-700 mb-1">Start Date</label>
                                                 <input
@@ -1008,7 +1046,7 @@ export function RoomPage({roomId}: RoomPageProps) {
                                                     className="w-full px-2 xs:px-3 py-1.5 xs:py-2 border border-slate-300 rounded-lg text-xs xs:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                                                 />
                                             </div>
-                                            
+
                                             <div>
                                                 <label className="block text-xs font-medium text-slate-700 mb-1">End Date</label>
                                                 <input
@@ -1020,15 +1058,15 @@ export function RoomPage({roomId}: RoomPageProps) {
                                                     className="w-full px-2 xs:px-3 py-1.5 xs:py-2 border border-slate-300 rounded-lg text-xs xs:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                                                 />
                                             </div>
-                                            
+
                                             <div className="flex space-x-2 pt-2">
-                                                <button 
+                                                <button
                                                     onClick={handleClearNewStatus}
                                                     className="flex-1 px-2 xs:px-3 py-1.5 xs:py-2 text-xs xs:text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors duration-200"
                                                 >
                                                     Cancel
                                                 </button>
-                                                <button 
+                                                <button
                                                     onClick={handlePostStatus}
                                                     className="flex-1 px-2 xs:px-3 py-1.5 xs:py-2 text-xs xs:text-sm font-medium text-white bg-emerald-600 border border-emerald-600 rounded-lg hover:bg-emerald-700 transition-colors duration-200"
                                                 >
@@ -1065,7 +1103,7 @@ export function RoomPage({roomId}: RoomPageProps) {
                                         </Description>
                                     </div>
                                 </div>
-                                <button 
+                                <button
                                     onClick={closePhotosDialog}
                                     className="flex items-center justify-center w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 transition-colors duration-100 text-white flex-shrink-0 ml-2"
                                 >
@@ -1086,7 +1124,7 @@ export function RoomPage({roomId}: RoomPageProps) {
                                             <Camera className="w-5 h-5 mr-2 text-blue-600" />
                                             Current View
                                         </h2>
-                                        
+
                                         {roomInfo.photos.length > 0 ? (
                                             <div className="flex-1 flex flex-col max-w-3xl mx-auto w-full">
                                                 <div className="relative rounded-lg overflow-hidden bg-slate-100 group shadow-lg" style={{ maxHeight: '400px', aspectRatio: '16/9' }}>
@@ -1128,11 +1166,10 @@ export function RoomPage({roomId}: RoomPageProps) {
                                                             <button
                                                                 key={index}
                                                                 onClick={() => setCurrentIndex(index)}
-                                                                className={`w-2 h-2 xs:w-3 xs:h-3 rounded-full  hover:scale-125 ${
-                                                                    index === currentIndex
-                                                                        ? 'bg-blue-600 scale-110'
-                                                                        : 'bg-slate-300 hover:bg-slate-400'
-                                                                }`}
+                                                                className={`w-2 h-2 xs:w-3 xs:h-3 rounded-full  hover:scale-125 ${index === currentIndex
+                                                                    ? 'bg-blue-600 scale-110'
+                                                                    : 'bg-slate-300 hover:bg-slate-400'
+                                                                    }`}
                                                             />
                                                         ))}
                                                     </div>
@@ -1140,7 +1177,7 @@ export function RoomPage({roomId}: RoomPageProps) {
 
                                                 {/* Action Button */}
                                                 <div className="mt-4 xs:mt-6 flex justify-center">
-                                                    <button 
+                                                    <button
                                                         onClick={handleDeleteRoomPhoto}
                                                         value={currentIndex}
                                                         className="inline-flex items-center px-3 xs:px-4 py-2 bg-red-600 text-white text-xs xs:text-sm font-medium rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2  hover:scale-105"
@@ -1172,41 +1209,40 @@ export function RoomPage({roomId}: RoomPageProps) {
                                         </svg>
                                         Photo Gallery
                                     </h3>
-                                    
+
                                     <div className="space-y-3 max-h-96 overflow-y-auto">
                                         {/* Existing Photos */}
                                         {roomInfo.photos.map((photo, index) => (
-                                            <button 
-                                                key={index} 
+                                            <button
+                                                key={index}
                                                 onClick={() => setCurrentIndex(index)}
-                                                className={`w-full aspect-video rounded-lg overflow-hidden group border-2 transition-all duration-100 ${
-                                                    index === currentIndex 
-                                                        ? 'border-blue-500 shadow-lg' 
-                                                        : 'border-slate-200 hover:border-blue-300'
-                                                }`}
+                                                className={`w-full aspect-video rounded-lg overflow-hidden group border-2 transition-all duration-100 ${index === currentIndex
+                                                    ? 'border-blue-500 shadow-lg'
+                                                    : 'border-slate-200 hover:border-blue-300'
+                                                    }`}
                                             >
-                                                <img 
-                                                    src={photo} 
-                                                    alt={`Room photo ${index + 1}`} 
+                                                <img
+                                                    src={photo}
+                                                    alt={`Room photo ${index + 1}`}
                                                     className="w-full h-full object-cover transition-transform duration-100"
                                                 />
                                             </button>
                                         ))}
-                                        
+
                                         {/* New Photos Preview */}
                                         {newPhotos.map((photo, index) => (
-                                            <div 
+                                            <div
                                                 key={`new-${index}`}
                                                 className="w-full aspect-video rounded-lg overflow-hidden border-2 border-green-300 bg-green-50"
                                             >
-                                                <img 
-                                                    src={URL.createObjectURL(photo)} 
+                                                <img
+                                                    src={URL.createObjectURL(photo)}
                                                     alt={`New photo ${index + 1}`}
                                                     className="w-full h-full object-cover"
                                                 />
                                             </div>
                                         ))}
-                                        
+
                                         {/* Add New Photo Button */}
                                         <label className="w-full aspect-video rounded-lg border-2 border-dashed border-slate-300 hover:border-blue-400 bg-slate-50 hover:bg-blue-50 flex flex-col items-center justify-center cursor-pointer transition-all duration-100 group">
                                             <input

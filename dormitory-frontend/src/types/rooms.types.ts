@@ -1,4 +1,4 @@
-export interface Room{
+export interface Room {
     "id": string,
     "number": string,
     "floor": number,
@@ -27,7 +27,7 @@ export interface Room{
     }
 }
 
-export interface RoomStatus{
+export interface RoomStatus {
     id: string,
     roomId: string,
     statusTypeId: string,
@@ -58,10 +58,11 @@ export interface AvailableRoomsRequest {
 }
 
 export interface CreateRoomStatusRequest {
-    statusTypeId: string,
-    dateOfStart: string,
-    dateOfEnd?: string,
-    description?: string,
+    statusTypeId: string;
+    dateOfStart: string;
+    dateOfEnd: string;
+    description?: string;
+    name?: string;
 }
 
 export interface AssignRoomStatusRequest {
@@ -76,7 +77,7 @@ export interface EvictRequest {
     description: string,
 }
 
-export interface RoomResident{
+export interface RoomResident {
     "id": string,
     "displayName": string,
     "secondName": string,
