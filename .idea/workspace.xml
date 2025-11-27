@@ -6,11 +6,48 @@
   <component name="ChangeListManager">
     <list default="true" id="a2609a67-42b3-4399-bbcc-46f7339b9fb9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/lib/managers.api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/lib/managers.api.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/UserProfileForm.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/UserProfileForm.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/hooks/managers.hook.ts" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/hooks/managers.hook.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/hooks/userList.hook.ts" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/hooks/userList.hook.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/app/(user)/announcements/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/app/(user)/announcements/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/AdminAllRooms.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/AdminAllRooms.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/AdminDormitories.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/AdminDormitories.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/AdminUserList.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/admin/AdminUserList.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/dialogs/admin/ManagerCreationDialog.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/dialogs/admin/ManagerCreationDialog.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/guest/UserPublicAnnouncements.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/guest/UserPublicAnnouncements.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/guest/UserRoomPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/guest/UserRoomPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/guest/UserRoomsListPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/guest/UserRoomsListPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/components/signedIn/Profile.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/components/signedIn/Profile.component.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dormitory-frontend/src/types/managers.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/dormitory-frontend/src/types/managers.types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/client.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/client.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/default.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/default.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/edge.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/edge.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/index-browser.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/index.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/libquery_engine-debian-openssl-3.0.x.so.node" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/query_compiler_bg.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/query_compiler_bg.wasm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/query_compiler_bg.wasm-base64.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/query_engine_bg.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/query_engine_bg.wasm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/runtime/client.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/runtime/client.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/runtime/edge-esm.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/runtime/edge.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/runtime/index-browser.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/runtime/index-browser.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/runtime/library.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/runtime/library.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/runtime/react-native.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/runtime/wasm-compiler-edge.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/runtime/wasm-engine-edge.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/schema.prisma" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/wasm-edge-light-loader.mjs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/wasm-worker-loader.mjs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/wasm.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/__generated__/wasm.js" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -256,7 +293,13 @@
       <workItem from="1762673024211" duration="623000" />
       <workItem from="1762673842299" duration="18836000" />
       <workItem from="1762761380079" duration="5024000" />
-      <workItem from="1762782096874" duration="6019000" />
+      <workItem from="1762782096874" duration="6399000" />
+      <workItem from="1762854600498" duration="1026000" />
+      <workItem from="1763640222552" duration="2151000" />
+      <workItem from="1764134250207" duration="304000" />
+      <workItem from="1764147357711" duration="1139000" />
+      <workItem from="1764203651266" duration="3980000" />
+      <workItem from="1764219245518" duration="2457000" />
     </task>
     <servers />
   </component>
@@ -268,6 +311,7 @@
     <option featureType="dependencySupport" implementationName="javascript:npm:prettier" />
     <option featureType="dependencySupport" implementationName="executable:docker" />
     <option featureType="dependencySupport" implementationName="javascript:npm:tailwindcss" />
+    <option featureType="dependencySupport" implementationName="javascript:npm:prisma" />
     <option featureType="dependencySupport" implementationName="javascript:npm:next" />
     <option featureType="dependencySupport" implementationName="javascript:npm:cypress" />
     <option featureType="dependencySupport" implementationName="javascript:npm:postcss" />

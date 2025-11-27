@@ -195,7 +195,7 @@ export const SignedInProfile = memo(function SignedInProfile(){
                                             {user?.role && user.role === UserRole.Regular ? (
                                                 <div>
                                                     <p className="font-medium text-gray-900">Regular</p>
-                                                    <p className="text-sm text-gray-600">You are resident</p>
+                                                    <p className="text-sm text-gray-600">Admin will confirm your profile shortly</p>
                                                 </div>
                                             ):(
                                                 user?.role && user.role === UserRole.SignedInUser ? (
@@ -204,7 +204,14 @@ export const SignedInProfile = memo(function SignedInProfile(){
                                                         <p className="text-sm text-gray-600">You are ready to book a room</p>
                                                     </div>
                                                 ):(
-                                                    <></>
+                                                    user?.role && user.role === UserRole.Resident ? (
+                                                        <div>
+                                                            <p className="font-medium text-gray-900">Resident</p>
+                                                            <p className="text-sm text-gray-600">You already have a room</p>
+                                                        </div>
+                                                    ):(
+                                                        <></>
+                                                    )
                                                 )
                                             )}
                                         </div>

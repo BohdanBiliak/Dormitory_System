@@ -9,9 +9,12 @@ import {userListApi} from "@/app/lib/userList.api";
 import {UserListRequest} from "@/types/user.types";
 import {useUserListQuery} from "@/hooks/userList.hook";
 import {ManagerCreationDialog} from "@/components/dialogs/admin/ManagerCreationDialog.component";
+import {useCurrentUserProfile} from "@/hooks/user.hook";
 
 
 export const AdminUserList = memo(function AdminUserList(){
+
+    const {data: currentUser, isLoading: loadingCurrentUser, error: currentUserError} = useCurrentUserProfile()
 
     const roomFloors = useMemo(() => ["1","2","3","4","5","6","7","8","9"], []);
 
@@ -85,12 +88,14 @@ export const AdminUserList = memo(function AdminUserList(){
 
     return (
         <div className="min-h-screen bg-slate-50">
-            <button
-                className={`bg-blue-600 text-white border-blue-800 border`}
-                onClick={handleOpenManagerCreation}
-            >
-                Create Manager
-            </button>
+            {(currentUser && currentUser.role === 'SuperAdmin') &&(
+                <button
+                    className={`bg-blue-600 text-white border-blue-800 border`}
+                    onClick={handleOpenManagerCreation}
+                >
+                    Create Manager
+                </button>
+            )}
             {/* Header */}
             <div className="bg-white border-b border-slate-200 shadow-sm animate-in slide-in-from-top-4 duration-500">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -312,7 +317,7 @@ export const AdminUserList = memo(function AdminUserList(){
                 )}
             </div>
 
-            {showManagerCreationDialog && (
+            { (currentUser && currentUser.role === 'SuperAdmin' && showManagerCreationDialog) && (
                 <ManagerCreationDialog
                     open={showManagerCreationDialog}
                     onClose={handleCloseManagerCreation}

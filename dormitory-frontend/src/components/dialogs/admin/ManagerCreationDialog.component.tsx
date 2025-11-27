@@ -28,7 +28,7 @@ export function ManagerCreationDialog({open, onClose}:ManagerCreationProps) {
         email: '',
         name: '',
         middleName: '',
-        secondName: '',
+        lastName: '',
         password: '',
         repeatPassword: '',
         dormitoryId: ''
@@ -42,7 +42,7 @@ export function ManagerCreationDialog({open, onClose}:ManagerCreationProps) {
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target;
 
-        if(name==="name" || name=="middleName" || name==="secondName" || name==="password" || name==="repeatPassword" || name==='email'){
+        if(name==="name" || name=="middleName" || name==="lastName" || name==="password" || name==="repeatPassword" || name==='email'){
             setNewManager(prevState => {
                 if(!prevState) return prevState;
                 return {
@@ -77,7 +77,7 @@ export function ManagerCreationDialog({open, onClose}:ManagerCreationProps) {
             email: '',
             name: '',
             middleName: '',
-            secondName: '',
+            lastName: '',
             password: '',
             repeatPassword: '',
             dormitoryId: ''
@@ -133,9 +133,9 @@ export function ManagerCreationDialog({open, onClose}:ManagerCreationProps) {
                     <div className={`flex flex-row`}>
                         <div>Last name:</div>
                         <input
-                            name={'secondName'}
+                            name={'lastName'}
                             type="text"
-                            value={newManager.secondName}
+                            value={newManager.lastName}
                             onChange={handleInputChange}
                             placeholder={'Input manager\'s last name'}
                         />

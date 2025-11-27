@@ -121,7 +121,7 @@ export default function AllRoomsPage() {
         const availableSpace = room.residents ? room.capacity - room.residents.length : room.capacity;
         const roommatesRequirement = filters.residents === "either" ? true : filters.residents === "occupied" ? room.residents.length > 0 : room.residents.length < 1;
 
-        return availableRoomsIds.includes(room.id) && filters.groupSize<=availableSpace && roommatesRequirement;
+        return (filters.dateFrom === '' || filters.dateTo === '' ||  availableRoomsIds.includes(room.id)) && filters.groupSize<=availableSpace && roommatesRequirement;
     };
 
     const handleFilterChange = (key: keyof Filters, value: any) => {

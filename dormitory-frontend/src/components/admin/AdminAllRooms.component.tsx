@@ -75,7 +75,7 @@ export default function AllRoomsPage() {
 
     useEffect(() => {
         if (filters.dateFrom !== '' && filters.dateTo !== '') {
-            const request: AvailableRoomsRequest = { to: filters.dateTo, from: filters.dateFrom }
+            const request: AvailableRoomsRequest = {to: filters.dateTo, from: filters.dateFrom}
             setAvailableRoomRequest(request)
         }
     }, [filters.dateFrom, filters.dateTo]);
@@ -111,7 +111,7 @@ export default function AllRoomsPage() {
         const availableSpace = room.residents ? room.capacity - room.residents.length : room.capacity;
         const roommatesRequirement = filters.residents === "either" ? true : filters.residents === "occupied" ? room.residents.length > 0 : room.residents.length < 1;
 
-        return availableRoomsIds.includes(room.id) && filters.groupSize<=availableSpace && roommatesRequirement;
+        return (filters.dateFrom === '' || filters.dateTo === '' || availableRoomsIds.includes(room.id)) && filters.groupSize<=availableSpace && roommatesRequirement;
     };
 
     const handleFilterChange = (key: keyof Filters, value: any) => {
@@ -386,7 +386,7 @@ export default function AllRoomsPage() {
                                 </div>
 
                                 {/* Legend */}
-                                <div className="mt-3 sm:mt-4 grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 text-xs sm:text-sm delay-300">
+                                <div className="mt-3 sm:mt-4 grid grid-cols-1 sm:grid-cols-4 gap-2 sm:gap-3 text-xs sm:text-sm delay-300">
                                     <div className="flex items-center space-x-2">
                                         <div className="w-3 h-3 bg-green-500 rounded flex-shrink-0"></div>
                                         <span className="text-slate-700">Available</span>
@@ -398,6 +398,11 @@ export default function AllRoomsPage() {
                                     <div className="flex items-center space-x-2">
                                         <div className="w-3 h-3 bg-red-500 rounded flex-shrink-0"></div>
                                         <span className="text-slate-700">Fully occupied</span>
+                                    </div>
+
+                                    <div className="flex items-center space-x-2">
+                                        <div className="w-3 h-3 bg-gray-400 rounded flex-shrink-0"></div>
+                                        <span className="text-slate-700">Excluded by filters</span>
                                     </div>
                                 </div>
                             </div>
