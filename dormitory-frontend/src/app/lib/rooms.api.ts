@@ -2,6 +2,7 @@ import {api} from "@/app/lib/api.api";
 import {
     AvailableRoomsRequest,
     CreateRoomStatusRequest,
+    AssignRoomStatusRequest,
     EvictRequest,
     Room, RoomReservationData,
     RoomStatus,
@@ -53,6 +54,26 @@ export const roomsApi= {
 
     async postRoomStatus(roomId:string, data:CreateRoomStatusRequest):Promise<RoomStatus>{
         const response = await api.post(`/rooms/${roomId}/statuses`, data);
+        return response.data;
+    },
+
+    async assignRoomStatus(roomId:string, data:AssignRoomStatusRequest):Promise<RoomStatus>{
+        const response = await api.post(`/rooms/${roomId}/assign-status`, data);
+        return response.data;
+    },
+
+    async getRoomStatuses(roomId:string):Promise<RoomStatus[]>{
+        const response = await api.get(`/rooms/${roomId}/statuses`);
+        return response.data;
+    },
+
+    async getCurrentRoomStatus(roomId:string):Promise<RoomStatus | null>{
+        const response = await api.get(`/rooms/${roomId}/current-status`);
+        return response.data;
+    },
+
+    async endRoomStatus(roomId:string, statusId:string):Promise<RoomStatus>{
+        const response = await api.patch(`/rooms/${roomId}/statuses/${statusId}/end`);
         return response.data;
     },
 

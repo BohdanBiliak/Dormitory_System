@@ -18,7 +18,7 @@ export function RoomPage({roomId}: RoomPageProps) {
     const {data: urls, mutateAsync: uploadPhotos} = useUploadRoomPhoto()
 
 
-    const inputRef = useRef<HTMLInputElement>(null); //input reference for new photos input
+    const inputRef = useRef<HTMLInputElement>(null); 
 
 
     {/*Initial values*/}
@@ -361,9 +361,11 @@ export function RoomPage({roomId}: RoomPageProps) {
 
     //Post room status
     const [newStatusData,setNewStatusData] = useState<CreateRoomStatusRequest>({
+        statusTypeId: '',
         dateOfStart: '',
         dateOfEnd: '',
-        description: '',
+        description: ''
+        
     });
 
     const onNewStatusDataChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -386,6 +388,7 @@ export function RoomPage({roomId}: RoomPageProps) {
 
     const handleClearNewStatus = () => {
         setNewStatusData({
+            statusTypeId: '',
             dateOfStart: '',
             dateOfEnd: '',
             description: ''
@@ -947,7 +950,7 @@ export function RoomPage({roomId}: RoomPageProps) {
                                                                 <div className="text-xs text-slate-600 mt-1">
                                                                     <span>{new Date(status.dateOfStart).toLocaleDateString()}</span>
                                                                     <span className="mx-1">→</span>
-                                                                    <span>{new Date(status.dateOfEnd).toLocaleDateString()}</span>
+                                                                    <span>{new Date().toLocaleDateString()}</span>
                                                                 </div>
                                                             </div>
                                                             <button 

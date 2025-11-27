@@ -1,11 +1,11 @@
-import {Description, Dialog, DialogBackdrop, DialogPanel, DialogTitle} from "@headlessui/react";
-import React, {useEffect, useState} from "react";
-import {BuildingIcon, HousePlus} from "lucide-react";
-import {LanguageSelector} from "@/providers/language.provider";
-import {User} from "@/types/auth.types";
-import {Room, RoomReservationData} from "@/types/rooms.types";
+import { Description, Dialog, DialogBackdrop, DialogPanel, DialogTitle } from "@headlessui/react";
+import React, { useEffect, useState } from "react";
+import { BuildingIcon, HousePlus } from "lucide-react";
+import { LanguageSelector } from "@/providers/language.provider";
+import { User } from "@/types/auth.types";
+import { Room, RoomReservationData } from "@/types/rooms.types";
 import Link from "next/link";
-import {useBookARoom} from "@/hooks/rooms.hook";
+import { useBookARoom } from "@/hooks/rooms.hook";
 
 
 export interface BookingDialogProps {
@@ -15,13 +15,13 @@ export interface BookingDialogProps {
     room: Room;
 }
 
-export default function BookingDialog({open, onClose, user, room}: BookingDialogProps) {
+export default function BookingDialog({ open, onClose, user, room }: BookingDialogProps) {
 
 
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1)
 
-    const {requestAccommodation} = useBookARoom();
+    const { requestAccommodation } = useBookARoom();
 
     const [reservation, setReservation] = useState<RoomReservationData>({
         roomId: '',
@@ -32,11 +32,11 @@ export default function BookingDialog({open, onClose, user, room}: BookingDialog
     })
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const {name, value} = e.target;
+        const { name, value } = e.target;
 
-        if(name === "startDate") {
+        if (name === "startDate") {
             setReservation(prevState => {
-                if(!prevState) return prevState;
+                if (!prevState) return prevState;
                 return {
                     ...prevState,
                     from: value.toString()
@@ -44,9 +44,9 @@ export default function BookingDialog({open, onClose, user, room}: BookingDialog
             })
         }
 
-        if(name === "endDate") {
+        if (name === "endDate") {
             setReservation(prevState => {
-                if(!prevState) return prevState;
+                if (!prevState) return prevState;
                 return {
                     ...prevState,
                     to: value.toString()
@@ -54,9 +54,9 @@ export default function BookingDialog({open, onClose, user, room}: BookingDialog
             })
         }
 
-        if(name === "suggestedTime") {
+        if (name === "suggestedTime") {
             setReservation(prevState => {
-                if(!prevState) return prevState;
+                if (!prevState) return prevState;
                 return {
                     ...prevState,
                     suggestedTime: value
@@ -64,9 +64,9 @@ export default function BookingDialog({open, onClose, user, room}: BookingDialog
             })
         }
 
-        if(name === "alternativeRooms"){
+        if (name === "alternativeRooms") {
             setReservation(prevState => {
-                if(!prevState) return prevState;
+                if (!prevState) return prevState;
                 return {
                     ...prevState,
                     alternativeRooms: !prevState.alternativeRooms
@@ -78,7 +78,7 @@ export default function BookingDialog({open, onClose, user, room}: BookingDialog
 
     useEffect(() => {
         setReservation(prevState => {
-            if(!prevState) return prevState;
+            if (!prevState) return prevState;
             return {
                 ...prevState,
                 roomId: room.id
@@ -87,7 +87,7 @@ export default function BookingDialog({open, onClose, user, room}: BookingDialog
     }, [room]);
 
     const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const {name, value} = e.target;
+        const { name, value } = e.target;
     }
 
     const handleRequestAccommodation = () => {
@@ -97,131 +97,143 @@ export default function BookingDialog({open, onClose, user, room}: BookingDialog
 
     return (
         <Dialog onClose={onClose} open={open}>
-            <DialogBackdrop className="fixed inset-0 bg-black/60 backdrop-blur-sm "/>
-            <div className="flex flex-col h-full min-h-0">
-                <div className="fixed inset-0 flex items-center justify-center p-1 sm:p-4">
-                    <DialogPanel className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] flex flex-col">
-                        {/*Header*/}
-                        <div className="">
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-white/20 rounded-full animate-in zoom-in-50 duration-300 delay-150">
-                                    <HousePlus/>
+            <DialogBackdrop className="fixed inset-0 bg-black/60 backdrop-blur-sm" />
+
+            <div className="fixed inset-0 flex items-center justify-center p-4">
+                <DialogPanel className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+
+                    {/* Header */}
+                    <div className="flex items-center justify-between px-4 py-4 bg-blue-700 text-white">
+                        <div className="flex items-center space-x-3">
+                            <div className="flex items-center justify-center w-10 h-10 bg-white/20 rounded-full">
+                                <HousePlus />
+                            </div>
+
+                            <div>
+                                <DialogTitle className="text-lg sm:text-xl font-semibold">Book a Room</DialogTitle>
+                                <Description className="text-blue-100 text-sm">Fill in the reservation details</Description>
+                            </div>
+                        </div>
+
+                        <div className="flex items-center space-x-3">
+                            <div className="hidden sm:block">
+                                <LanguageSelector />
+                            </div>
+
+                            <button
+                                onClick={onClose}
+                                className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/20 transition"
+                            >
+                                <svg className="w-6 h-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Body */}
+                    <div className="flex flex-col sm:flex-row divide-y sm:divide-y-0 sm:divide-x divide-gray-300">
+
+                        {/* Form Section */}
+                        <div className="flex-1 p-6 bg-gray-50">
+                            <div className="space-y-6">
+
+                                {/* Reservation Time */}
+                                <div className="space-y-2">
+                                    <div className="font-semibold text-gray-800">Time of reservation</div>
+
+                                    <div className="space-y-3">
+                                        <div className="flex flex-col">
+                                            <label className="text-gray-600 mb-1">Date of start</label>
+                                            <input
+                                                type="date"
+                                                name="startDate"
+                                                min={tomorrow.toISOString().substring(0, 10)}
+                                                value={reservation.from.toString()}
+                                                onChange={handleInputChange}
+                                                className="border border-gray-300 rounded-lg px-3 py-2 bg-white focus:ring-2 focus:ring-blue-400 outline-none"
+                                            />
+                                        </div>
+
+                                        <div className="flex flex-col">
+                                            <label className="text-gray-600 mb-1">Date of end</label>
+                                            <input
+                                                type="date"
+                                                name="endDate"
+                                                min={reservation.from.toString()}
+                                                value={reservation.to.toString()}
+                                                onChange={handleInputChange}
+                                                className="border border-gray-300 rounded-lg px-3 py-2 bg-white focus:ring-2 focus:ring-blue-400 outline-none"
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
-                                <div>
-                                    <DialogTitle className="text-lg sm:text-xl font-semibold text-white delay-200">
 
-                                    </DialogTitle>
-                                    <Description className="text-blue-100 text-sm mt-1 delay-250">
+                                {/* Price */}
+                                {room.price && (
+                                    <div className="text-gray-700 font-medium">
+                                        Price per day: <span className="text-blue-700">${room.price.pricePerDay}</span> (per person)
+                                    </div>
+                                )}
 
-                                    </Description>
+                                {/* Suggested Time */}
+                                <div className="flex flex-col">
+                                    <label className="text-gray-600 mb-1">Suggested accommodation time</label>
+                                    <input
+                                        name="suggestedTime"
+                                        type="text"
+                                        value={reservation.suggestedTime}
+                                        onChange={handleInputChange}
+                                        className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 outline-none"
+                                    />
                                 </div>
 
-                                {/*Command buttons*/}
+                                {/* Alternative Rooms */}
                                 <div className="flex items-center space-x-3">
-
-                                    <div className="hidden sm:block">
-                                        <LanguageSelector />
-                                    </div>
-                                    <button
-                                        onClick={onClose}
-                                        className="flex items-center justify-center w-10 h-10 sm:w-8 sm:h-8 rounded-full bg-white/20 hover:bg-white/30 transition-colors text-white touch-target"
-                                        aria-label="Close dialog"
-                                    >
-                                        <svg className="w-5 h-5 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                        </svg>
-                                    </button>
+                                    <input
+                                        name="alternativeRooms"
+                                        type="checkbox"
+                                        checked={reservation.alternativeRooms}
+                                        onChange={handleInputChange}
+                                        className="h-5 w-5"
+                                    />
+                                    <span className="text-gray-700">Book any similar room in this dormitory</span>
                                 </div>
                             </div>
                         </div>
 
-                        {/*Body*/}
-                        <div className={`flex`}>
+                        {/* Navigation Buttons Section */}
+                        <div className="w-full sm:w-56 p-6 bg-white flex flex-col space-y-4">
+                            <div className="font-semibold text-gray-800">Room Actions:</div>
 
-                            {/*Form*/}
-                            <div className={`flex flex-row bg-gray-300`}>
-                                {/*Form inputs*/}
-                                <div className={`flex flex-col mx-10 my-5`}>
-                                    <div className={`flex flex-col border-black border`}>
-                                        <div className={``}>Time of reservation:</div>
-                                        <div className={`flex flex-col mx-10`}>
-                                            <div className={`flex flex-row`}>
-                                                <div>Date of start:</div>
-                                                <input
-                                                    type={'date'}
-                                                    name={'startDate'}
-                                                    min={tomorrow.toISOString().substring(0, tomorrow.toISOString().indexOf('T'))}
-                                                    onChange={handleInputChange}
-                                                    value={reservation.from.toString()}
-                                                    className={`bg-gray-300`}
-                                                />
-                                            </div>
-                                            <div className={`flex flex-row`}>
-                                                <div>Date of end:</div>
-                                                <input
-                                                    type={'date'}
-                                                    name={'endDate'}
-                                                    min={reservation.from.toString()}
-                                                    onChange={handleInputChange}
-                                                    value={reservation.to.toString()}
-                                                    className={`bg-gray-300`}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {room.price && (
-                                        <div className={`flex flex-col`}>
-                                            <div className={`flex flex-row`}>
-                                                Price per day: ${room.price.pricePerDay} (per person)
-                                            </div>
-                                        </div>
-                                    )}
-
-                                    <div className={`flex flex-row`}>
-                                        <div>Suggested accommodation time:</div>
-                                        <input
-                                            name={'suggestedTime'}
-                                            type={'text'}
-                                            value={reservation.suggestedTime}
-                                            onChange={handleInputChange}
-                                        />
-                                    </div>
-
-                                    <div className={`flex flex-row`}>
-                                        <div>Book any similar room in thi dormitory:</div>
-                                        <input
-                                            name={`alternativeRooms`}
-                                            type={`checkbox`}
-                                            value={reservation.alternativeRooms.toString()}
-                                            onChange={handleInputChange}
-                                        />
-                                    </div>
-
-                                </div>
-                                {/*Navigation buttons*/}
-                                <div className={`flex flex-col my-5 mx-10 space-y-2`}>
-                                    <div>
-                                        Link conversation
-                                    </div>
-                                    <div>
-                                        <Link className={`bg-blue-600 text-white px-3 py-1 rounded drop-shadow`} href={`/rooms/${room.id}`}>
-                                            To room page
-                                        </Link>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/*Action buttons*/}
-                            <div className={`flex flex-row`}>
-                                <button onClick={onClose}>Cancel</button>
-                                <button onClick={handleRequestAccommodation}>Book</button>
-                            </div>
-
+                            <Link
+                                href={`/rooms/${room.id}`}
+                                className="w-full text-center bg-blue-600 text-white py-2 rounded-lg shadow hover:bg-blue-700 transition"
+                            >
+                                To Room Page
+                            </Link>
                         </div>
-                    </DialogPanel>
-                </div>
+                    </div>
+
+                    {/* Footer */}
+                    <div className="flex justify-end space-x-3 px-6 py-4 bg-gray-100 border-t border-gray-300">
+                        <button
+                            onClick={onClose}
+                            className="px-4 py-2 rounded-lg bg-gray-200 text-gray-800 border border-gray-300 hover:bg-gray-300 transition"
+                        >
+                            Cancel
+                        </button>
+
+                        <button
+                            onClick={handleRequestAccommodation}
+                            className="px-4 py-2 rounded-lg bg-blue-600 text-white border border-blue-700 hover:bg-blue-700 active:bg-blue-800 transition shadow-md"
+                        >
+                            Book
+                        </button>
+                    </div>
+                </DialogPanel>
             </div>
         </Dialog>
+
     )
 }

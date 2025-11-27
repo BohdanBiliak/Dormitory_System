@@ -30,9 +30,18 @@ export interface Room{
 export interface RoomStatus{
     id: string,
     roomId: string,
+    statusTypeId: string,
     dateOfStart: string,
-    dateOfEnd: string,
-    description: string,
+    dateOfEnd: string | null,
+    description: string | null,
+    statusType?: {
+        id: string,
+        name: string,
+        description?: string,
+        color?: string,
+        isActive: boolean,
+        isSystem: boolean,
+    },
 }
 
 export interface UpdateRoomData {
@@ -49,9 +58,17 @@ export interface AvailableRoomsRequest {
 }
 
 export interface CreateRoomStatusRequest {
+    statusTypeId: string,
     dateOfStart: string,
-    dateOfEnd: string,
-    description: string,
+    dateOfEnd?: string,
+    description?: string,
+}
+
+export interface AssignRoomStatusRequest {
+    statusTypeId: string,
+    description?: string,
+    dateOfStart: string,
+    dateOfEnd?: string,
 }
 
 export interface EvictRequest {

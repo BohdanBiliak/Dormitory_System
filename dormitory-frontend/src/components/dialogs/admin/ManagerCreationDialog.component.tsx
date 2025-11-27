@@ -1,25 +1,25 @@
 'use client'
 
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 
-import {ManagerCreationData} from "@/types/managers.types";
-import {useGetActiveDormitories} from "@/hooks/dormitories.hook";
-import {Dormitory} from "@/types/dormitories.types";
-import {useManagers} from "@/hooks/managers.hook";
+import { ManagerCreationData } from "@/types/managers.types";
+import { useGetActiveDormitories } from "@/hooks/dormitories.hook";
+import { Dormitory } from "@/types/dormitories.types";
+import { useManagers } from "@/hooks/managers.hook";
 
 export interface ManagerCreationProps {
     open: boolean,
     onClose: () => void,
 }
 
-export function ManagerCreationDialog({open, onClose}:ManagerCreationProps) {
-    const {data: dormitories, isLoading: loadingDormitories, error: dormitoriesError} = useGetActiveDormitories()
-    const {createManager} = useManagers()
+export function ManagerCreationDialog({ open, onClose }: ManagerCreationProps) {
+    const { data: dormitories, isLoading: loadingDormitories, error: dormitoriesError } = useGetActiveDormitories()
+    const { createManager } = useManagers()
 
     const [dormitoriesList, setDormitoriesList] = useState<Dormitory[]>([])
 
     useEffect(() => {
-        if(dormitories && dormitories.data){
+        if (dormitories && dormitories.data) {
             setDormitoriesList(dormitories.data)
         }
     }, [dormitories]);
@@ -40,11 +40,11 @@ export function ManagerCreationDialog({open, onClose}:ManagerCreationProps) {
     const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false)
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const {name, value} = e.target;
+        const { name, value } = e.target;
 
-        if(name==="name" || name=="middleName" || name==="lastName" || name==="password" || name==="repeatPassword" || name==='email'){
+        if (name === "name" || name == "middleName" || name === "lastName" || name === "password" || name === "repeatPassword" || name === 'email') {
             setNewManager(prevState => {
-                if(!prevState) return prevState;
+                if (!prevState) return prevState;
                 return {
                     ...prevState,
                     [name]: value
@@ -54,11 +54,11 @@ export function ManagerCreationDialog({open, onClose}:ManagerCreationProps) {
     }
 
     const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const {name, value} = e.target;
+        const { name, value } = e.target;
 
-        if(name=='dormitoryId'){
+        if (name == 'dormitoryId') {
             setNewManager(prevState => {
-                if(!prevState) return prevState;
+                if (!prevState) return prevState;
                 return {
                     ...prevState,
                     dormitoryId: value
@@ -86,154 +86,165 @@ export function ManagerCreationDialog({open, onClose}:ManagerCreationProps) {
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-            <div className="bg-gray-200 rounded-lg shadow-2xl max-w-3xl w-full overflow-hidden flex flex-col">
+            <div className="bg-white rounded-xl shadow-2xl max-w-3xl w-full overflow-hidden flex flex-col">
+
                 {/* Header */}
-                <div className="flex items-center justify-between px-6 py-3 bg-gray-300 border-b border-gray-400">
-                    <h2 className="text-lg font-semibold text-black">
-                        New Manager
-                    </h2>
-                    <div className="flex items-center space-x-4">
-                        <button
-                            onClick={onClose}
-                            className="text-black hover:text-gray-600 transition-colors"
-                        >
-                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
-                    </div>
+                <div className="flex items-center justify-between px-6 py-4 bg-gray-100 border-b border-gray-300">
+                    <h2 className="text-xl font-semibold text-gray-800">New Manager</h2>
+
+                    <button
+                        onClick={onClose}
+                        className="text-gray-700 hover:text-gray-500 transition"
+                    >
+                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
                 </div>
 
                 {/* Content */}
-                <div className="p-6 space-y-3">
-                    <h3>Manager Info</h3>
+                <div className="p-6 space-y-4">
+                    <h3 className="text-lg font-medium text-gray-800">Manager Info</h3>
 
-                    <div className={`flex flex-row`}>
-                        <div>Name:</div>
-                        <input
-                            name={'name'}
-                            type="text"
-                            value={newManager.name}
-                            onChange={handleInputChange}
-                            placeholder={'Input manager\'s name'}
-                        />
-                    </div>
+                    {/* Form fields */}
+                    <div className="flex flex-col gap-4">
 
-                    <div className={`flex flex-row`}>
-                        <div>Middle name:</div>
-                        <input
-                            name={'middleName'}
-                            type="text"
-                            value={newManager.middleName}
-                            onChange={handleInputChange}
-                            placeholder={'Input manager\'s name'}
-                        />
-                    </div>
-
-                    <div className={`flex flex-row`}>
-                        <div>Last name:</div>
-                        <input
-                            name={'lastName'}
-                            type="text"
-                            value={newManager.lastName}
-                            onChange={handleInputChange}
-                            placeholder={'Input manager\'s last name'}
-                        />
-                    </div>
-
-                    <div className={`flex flex-row`}>
-                        <div>Email:</div>
-                        <input
-                            name={'email'}
-                            type="email"
-                            value={newManager.email}
-                            onChange={handleInputChange}
-                            placeholder={'Input manager\'s email'}
-                        />
-                    </div>
-
-                    <div className={`flex flex-row`}>
-                        <div>Password:</div>
-                        <div>
+                        {/* Name */}
+                        <div className="flex flex-col">
+                            <label className="text-gray-700 mb-1">Name</label>
                             <input
-                                name={'password'}
-                                type={showPassword ? 'text' : 'password'}
+                                name="name"
+                                type="text"
+                                value={newManager.name}
+                                onChange={handleInputChange}
+                                placeholder="Enter name"
+                                className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 outline-none"
+                            />
+                        </div>
+
+                        {/* Middle name */}
+                        <div className="flex flex-col">
+                            <label className="text-gray-700 mb-1">Middle name</label>
+                            <input
+                                name="middleName"
+                                type="text"
+                                value={newManager.middleName}
+                                onChange={handleInputChange}
+                                placeholder="Enter middle name"
+                                className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 outline-none"
+                            />
+                        </div>
+
+                        {/* Last name */}
+                        <div className="flex flex-col">
+                            <label className="text-gray-700 mb-1">Last name</label>
+                            <input
+                                name="lastName"
+                                type="text"
+                                value={newManager.lastName}
+                                onChange={handleInputChange}
+                                placeholder="Enter last name"
+                                className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 outline-none"
+                            />
+                        </div>
+
+                        {/* Email */}
+                        <div className="flex flex-col">
+                            <label className="text-gray-700 mb-1">Email</label>
+                            <input
+                                name="email"
+                                type="email"
+                                value={newManager.email}
+                                onChange={handleInputChange}
+                                placeholder="Enter email"
+                                className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 outline-none"
+                            />
+                        </div>
+
+                        {/* Password */}
+                        <div className="flex flex-col relative">
+                            <label className="text-gray-700 mb-1">Password</label>
+                            <input
+                                name="password"
+                                type={showPassword ? "text" : "password"}
                                 value={newManager.password}
                                 onChange={handleInputChange}
-                                placeholder={'Input manager\'s password'}
+                                placeholder="Enter password"
+                                className="border border-gray-300 rounded-lg px-3 py-2 pr-10 focus:ring-2 focus:ring-blue-400 outline-none"
                             />
                             <button
                                 type="button"
-                                className="absolute z-10 top-2 right-2 p-1 hover:bg-gray-100 rounded transition-colors password-visibility-toggle"
-                                onClick={()=>setShowPassword(!showPassword)}
+                                className="absolute right-3 top-9 p-1 rounded hover:bg-gray-100"
+                                onClick={() => setShowPassword(!showPassword)}
                             >
                                 <img
-                                    src={showPassword ? '/eye.svg' : '/eye-slash.svg'}
-                                    alt={showPassword ? 'Hide password' : 'Show password'}
-                                    className="h-6 w-6"
+                                    src={showPassword ? "/eye.svg" : "/eye-slash.svg"}
+                                    className="h-5 w-5"
                                 />
                             </button>
                         </div>
-                    </div>
 
-                    <div className={`flex flex-row`}>
-                        <div>Confirm passwords:</div>
-                        <div>
+                        {/* Confirm password */}
+                        <div className="flex flex-col relative">
+                            <label className="text-gray-700 mb-1">Confirm password</label>
                             <input
-                                name={'repeatPassword'}
-                                type={showConfirmPassword ? 'text' : 'password'}
+                                name="repeatPassword"
+                                type={showConfirmPassword ? "text" : "password"}
                                 value={newManager.repeatPassword}
                                 onChange={handleInputChange}
-                                placeholder={'Confirm manager\'s password'}
+                                placeholder="Confirm password"
+                                className="border border-gray-300 rounded-lg px-3 py-2 pr-10 focus:ring-2 focus:ring-blue-400 outline-none"
                             />
                             <button
                                 type="button"
-                                className="absolute z-10 top-2 right-2 p-1 hover:bg-gray-100 rounded transition-colors password-visibility-toggle"
-                                onClick={()=>setShowConfirmPassword(!showConfirmPassword)}
+                                className="absolute right-3 top-9 p-1 rounded hover:bg-gray-100"
+                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                             >
                                 <img
-                                    src={showConfirmPassword ? '/eye.svg' : '/eye-slash.svg'}
-                                    alt={showConfirmPassword ? 'Hide password' : 'Show password'}
-                                    className="h-6 w-6"
+                                    src={showConfirmPassword ? "/eye.svg" : "/eye-slash.svg"}
+                                    className="h-5 w-5"
                                 />
                             </button>
                         </div>
-                    </div>
 
-                    <div className={`flex flex-row`}>
-                        <div>Dormitory:</div>
-                        <select
-                            name={'dormitoryId'}
-                            value={newManager?.dormitoryId || ''}
-                            onChange={handleSelectChange}
-                        >
-                            <option value="">Select a dormitory</option>
-                            {dormitoriesList.map((dormitory) => (
-                                <option value={dormitory.id} key={dormitory.id}>{dormitory.name}</option>
-                            ))}
-                        </select>
+                        {/* Dormitory */}
+                        <div className="flex flex-col">
+                            <label className="text-gray-700 mb-1">Dormitory</label>
+                            <select
+                                name="dormitoryId"
+                                value={newManager?.dormitoryId || ""}
+                                onChange={handleSelectChange}
+                                className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 outline-none"
+                            >
+                                <option value="">Select a dormitory</option>
+                                {dormitoriesList.map(d => (
+                                    <option key={d.id} value={d.id}>{d.name}</option>
+                                ))}
+                            </select>
+                        </div>
+
                     </div>
                 </div>
 
-                {/* Footer - Action Buttons */}
-                <div className={`flex flex-row`}>
+                {/* Footer */}
+                <div className="flex justify-end gap-3 px-6 py-4 bg-gray-100 border-t border-gray-300">
                     <button
                         onClick={handleCancel}
-                        className={`bg-gray-200 border-black border px-3 py-1`}
+                        className="px-4 py-2 rounded-lg bg-gray-200 text-gray-800 border border-gray-400 hover:bg-gray-300 transition shadow-sm"
                     >
                         Cancel
                     </button>
 
                     <button
-                        className={`bg-blue-600 text-white border-blue-800 border px-3 py-1s`}
                         onClick={handleCreateManager}
+                        className="px-4 py-2 rounded-lg bg-blue-600 text-white border border-blue-700 hover:bg-blue-700 active:bg-blue-800 transition shadow-md"
                     >
-                        Create manager
+                        Create Manager
                     </button>
                 </div>
+
             </div>
-
-
         </div>
-    )
+    );
+
 }

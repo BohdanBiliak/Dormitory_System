@@ -3,6 +3,7 @@ import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {
     AvailableRoomsRequest,
     CreateRoomStatusRequest,
+    AssignRoomStatusRequest,
     EvictRequest,
     RoomReservationData,
     UpdateRoomData
@@ -23,6 +24,26 @@ export function useGetRoom(id: string){
         queryKey: ["room",id],
         queryFn: () => roomsApi.getRoom(id),
         staleTime: 30 * 1000
+    })
+    return {data, isLoading, error};
+}
+
+export function useGetRoomStatuses(roomId: string){
+    const {data, isLoading, error} = useQuery({
+        queryKey: ["room-statuses", roomId],
+        queryFn: () => roomsApi.getRoomStatuses(roomId),
+        staleTime: 30 * 1000,
+        enabled: !!roomId,
+    })
+    return {data, isLoading, error};
+}
+
+export function useGetCurrentRoomStatus(roomId: string){
+    const {data, isLoading, error} = useQuery({
+        queryKey: ["room-current-status", roomId],
+        queryFn: () => roomsApi.getCurrentRoomStatus(roomId),
+        staleTime: 30 * 1000,
+        enabled: !!roomId,
     })
     return {data, isLoading, error};
 }
@@ -53,12 +74,35 @@ export function useUpdateRoom(){
     const postRoomStatus = useMutation({
         mutationFn: ({roomId, statusData}:{roomId:string, statusData:CreateRoomStatusRequest})=>roomsApi.postRoomStatus(roomId, statusData),
         onSuccess: () => {
-
             queryClient.invalidateQueries({ queryKey: ["room"] })
             toast.success('Room status created successfully!')
         },
-        onError: (err) => {
-            toast.error(err.message)
+        onError: (err: any) => {
+            toast.error(err.response?.data?.message || err.message)
+        }
+    })
+
+    const assignRoomStatus = useMutation({
+        mutationFn: ({roomId, statusData}:{roomId:string, statusData:AssignRoomStatusRequest})=>roomsApi.assignRoomStatus(roomId, statusData),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["room"] })
+            queryClient.invalidateQueries({ queryKey: ["rooms"] })
+            toast.success('Room status assigned successfully!')
+        },
+        onError: (err: any) => {
+            toast.error(err.response?.data?.message || err.message)
+        }
+    })
+
+    const endRoomStatus = useMutation({
+        mutationFn: ({roomId, statusId}:{roomId: string, statusId:string})=>roomsApi.endRoomStatus(roomId, statusId),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["room"] })
+            queryClient.invalidateQueries({ queryKey: ["rooms"] })
+            toast.success('Room status ended successfully!')
+        },
+        onError: (err: any) => {
+            toast.error(err.response?.data?.message || err.message)
         }
     })
 
@@ -102,6 +146,10 @@ export function useUpdateRoom(){
         updatingRoom: updateRoom.isPending,
         postRoomStatus: postRoomStatus.mutate,
         postingRoomStatus: postRoomStatus.isPending,
+        assignRoomStatus: assignRoomStatus.mutate,
+        assigningRoomStatus: assignRoomStatus.isPending,
+        endRoomStatus: endRoomStatus.mutate,
+        endingRoomStatus: endRoomStatus.isPending,
         removeRoomStatus: removeRoomStatus.mutate,
         removingRoomStatus: removeRoomStatus.isPending,
         evictUser: evictUser.mutate,

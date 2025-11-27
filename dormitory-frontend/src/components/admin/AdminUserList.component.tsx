@@ -1,53 +1,53 @@
 'use client'
 
-import {User, UserRole} from "../../types/auth.types";
-import {useEffect, useState, useMemo, useCallback, memo} from "react";
+import { User, UserRole } from "../../types/auth.types";
+import { useEffect, useState, useMemo, useCallback, memo } from "react";
 import MultipleSelectDropdown from "@/components/ui/MultipleSelectDropdown.component";
 import Link from "next/link";
-import {useQuery} from "@tanstack/react-query";
-import {userListApi} from "@/app/lib/userList.api";
-import {UserListRequest} from "@/types/user.types";
-import {useUserListQuery} from "@/hooks/userList.hook";
-import {ManagerCreationDialog} from "@/components/dialogs/admin/ManagerCreationDialog.component";
-import {useCurrentUserProfile} from "@/hooks/user.hook";
+import { useQuery } from "@tanstack/react-query";
+import { userListApi } from "@/app/lib/userList.api";
+import { UserListRequest } from "@/types/user.types";
+import { useUserListQuery } from "@/hooks/userList.hook";
+import { ManagerCreationDialog } from "@/components/dialogs/admin/ManagerCreationDialog.component";
+import { useCurrentUserProfile } from "@/hooks/user.hook";
 
 
-export const AdminUserList = memo(function AdminUserList(){
+export const AdminUserList = memo(function AdminUserList() {
 
-    const {data: currentUser, isLoading: loadingCurrentUser, error: currentUserError} = useCurrentUserProfile()
+    const { data: currentUser, isLoading: loadingCurrentUser, error: currentUserError } = useCurrentUserProfile()
 
-    const roomFloors = useMemo(() => ["1","2","3","4","5","6","7","8","9"], []);
+    const roomFloors = useMemo(() => ["1", "2", "3", "4", "5", "6", "7", "8", "9"], []);
 
-    const [error, setError] = useState<Error|null>();
+    const [error, setError] = useState<Error | null>();
     const [loading, setLoading] = useState(true);
     const [users, setUsers] = useState<User[]>([]);
-    const [sortBy, setSortBy] = useState<'Name'|'Id'|'Room'>('Name');
+    const [sortBy, setSortBy] = useState<'Name' | 'Id' | 'Room'>('Name');
     const [roleFilter, setRoleFilter] = useState<UserRole | 'All'>('All');
     const [selectedRoomFloors, setSelectedRoomFloors] = useState<string[]>(roomFloors);
-    const [selectedPaymentsStatuses, setSelectedPaymentsStatuses] = useState<'Paid'|'Awaiting'|'All'|'Overdue'>('All');
+    const [selectedPaymentsStatuses, setSelectedPaymentsStatuses] = useState<'Paid' | 'Awaiting' | 'All' | 'Overdue'>('All');
     const [pagesCount, setPagesCount] = useState(1);
     const [page, setPage] = useState(1);
     const limit = useMemo(() => 10, []);
 
-    const[showManagerCreationDialog, setShowManagerCreationDialog] = useState(false)
+    const [showManagerCreationDialog, setShowManagerCreationDialog] = useState(false)
     const handleOpenManagerCreation = () => {
         setShowManagerCreationDialog(true)
     }
-    const handleCloseManagerCreation =()=>{
+    const handleCloseManagerCreation = () => {
         setShowManagerCreationDialog(false)
     }
 
     const { data: userList, isLoading } = useUserListQuery({
         page,
         limit,
-        role: roleFilter === 'All' ? undefined: roleFilter,
+        role: roleFilter === 'All' ? undefined : roleFilter,
         paymentStatus: selectedPaymentsStatuses,
         roomFlor: selectedRoomFloors,
         sortBy
     })
 
     useEffect(() => {
-        if(userList && userList.data && userList.data.length > 0){
+        if (userList && userList.data && userList.data.length > 0) {
             setUsers([...userList.data])
         }
         setUsers(userList?.data || []);
@@ -88,9 +88,9 @@ export const AdminUserList = memo(function AdminUserList(){
 
     return (
         <div className="min-h-screen bg-slate-50">
-            {(currentUser && currentUser.role === 'SuperAdmin') &&(
+            {(currentUser && currentUser.role === 'SuperAdmin') && (
                 <button
-                    className={`bg-blue-600 text-white border-blue-800 border`}
+                    className={`  bg-blue-600 text-white border border-blue-800 rounded-xl px-5 py-2.5 text-lg font-medium shadow-md `}
                     onClick={handleOpenManagerCreation}
                 >
                     Create Manager
@@ -118,10 +118,10 @@ export const AdminUserList = memo(function AdminUserList(){
                             <label className="block text-sm font-medium text-slate-700">
                                 Sort by
                             </label>
-                            <select 
+                            <select
                                 className="w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm  hover:shadow-md"
                                 value={sortBy}
-                                onChange={(e) => setSortBy(e.target.value as 'Name'|'Id'|'Room')}
+                                onChange={(e) => setSortBy(e.target.value as 'Name' | 'Id' | 'Room')}
                             >
                                 <option value='Name'>Name</option>
                                 <option value='Id'>ID</option>
@@ -134,7 +134,7 @@ export const AdminUserList = memo(function AdminUserList(){
                             <label className="block text-sm font-medium text-slate-700">
                                 User Type
                             </label>
-                            <select 
+                            <select
                                 className="w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm  hover:shadow-md"
                                 value={roleFilter}
                                 onChange={(e) => setRoleFilter(e.target.value as UserRole)}
@@ -151,13 +151,13 @@ export const AdminUserList = memo(function AdminUserList(){
                                 Room Floor
                             </label>
                             <div className="w-full">
-                                <MultipleSelectDropdown 
-                                    dropdownHeader="Select floors" 
-                                    formFieldName="floor" 
-                                    options={roomFloors} 
+                                <MultipleSelectDropdown
+                                    dropdownHeader="Select floors"
+                                    formFieldName="floor"
+                                    options={roomFloors}
                                     onChange={(roomFloors) => {
                                         setSelectedRoomFloors(roomFloors);
-                                    }} 
+                                    }}
                                 />
                             </div>
                         </div>
@@ -167,10 +167,10 @@ export const AdminUserList = memo(function AdminUserList(){
                             <label className="block text-sm font-medium text-slate-700">
                                 Payment Status
                             </label>
-                            <select 
+                            <select
                                 className="w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm  hover:shadow-md"
                                 value={selectedPaymentsStatuses}
-                                onChange={(e) => setSelectedPaymentsStatuses(e.target.value as 'Paid'|'Awaiting'|'All'|'Overdue')}
+                                onChange={(e) => setSelectedPaymentsStatuses(e.target.value as 'Paid' | 'Awaiting' | 'All' | 'Overdue')}
                             >
                                 <option value='All'>All Statuses</option>
                                 <option value='Paid'>Paid</option>
@@ -190,7 +190,7 @@ export const AdminUserList = memo(function AdminUserList(){
                             Users ({users.length} found)
                         </h2>
                     </div>
-                    
+
                     {users.length === 0 ? (
                         <div className="p-12 text-center animate-in fade-in-0 zoom-in-50 duration-500">
                             <div className="text-slate-300 mb-4">
@@ -205,7 +205,7 @@ export const AdminUserList = memo(function AdminUserList(){
                         <div className="divide-y divide-slate-200">
                             {users.map((user, index) => (
                                 <Link key={user.id} href={`/admin/users/${user.id}`}>
-                                    <div 
+                                    <div
                                         className="px-6 py-4 hover:bg-slate-50  cursor-pointer hover:scale-[1.01] hover:shadow-sm"
                                         style={{ animationDelay: `${index * 50}ms` }}
                                     >
@@ -215,9 +215,9 @@ export const AdminUserList = memo(function AdminUserList(){
                                                     <div className="flex-shrink-0">
                                                         <div className="h-12 w-12 rounded-full bg-blue-100 border-2 border-white shadow-sm overflow-hidden">
                                                             {user.picture ? (
-                                                                <img 
-                                                                    src={user.picture} 
-                                                                    className="w-full h-full object-cover" 
+                                                                <img
+                                                                    src={user.picture}
+                                                                    className="w-full h-full object-cover"
                                                                     alt={`${user.displayName} ${user.secondName}`}
                                                                 />
                                                             ) : (
@@ -275,7 +275,7 @@ export const AdminUserList = memo(function AdminUserList(){
                                     >
                                         Previous
                                     </button>
-                                    
+
                                     {Array.from({ length: Math.min(pagesCount, 5) }, (_, i) => {
                                         let pageNum;
                                         if (pagesCount <= 5) {
@@ -287,22 +287,21 @@ export const AdminUserList = memo(function AdminUserList(){
                                         } else {
                                             pageNum = page - 2 + i;
                                         }
-                                        
+
                                         return (
                                             <button
                                                 key={pageNum}
                                                 onClick={() => setPage(pageNum)}
-                                                className={`px-4 py-2 text-sm font-medium border  hover:scale-105 ${
-                                                    page === pageNum
+                                                className={`px-4 py-2 text-sm font-medium border  hover:scale-105 ${page === pageNum
                                                         ? 'bg-blue-600 text-white border-blue-600 hover:bg-blue-700 shadow-md'
                                                         : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
-                                                }`}
+                                                    }`}
                                             >
                                                 {pageNum}
                                             </button>
                                         );
                                     })}
-                                    
+
                                     <button
                                         onClick={() => setPage(Math.min(pagesCount, page + 1))}
                                         disabled={page === pagesCount}
@@ -317,7 +316,7 @@ export const AdminUserList = memo(function AdminUserList(){
                 )}
             </div>
 
-            { (currentUser && currentUser.role === 'SuperAdmin' && showManagerCreationDialog) && (
+            {(currentUser && currentUser.role === 'SuperAdmin' && showManagerCreationDialog) && (
                 <ManagerCreationDialog
                     open={showManagerCreationDialog}
                     onClose={handleCloseManagerCreation}
