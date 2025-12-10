@@ -38,7 +38,8 @@ const loadLanguageData = async (lang: Language) => {
       notifications,
       rooms,
       reports,
-      announcements
+      announcements,
+      managers
     ] = await Promise.all([
       import(`@/locales/${lang}/common.json`),
       import(`@/locales/${lang}/dialogs.json`),
@@ -55,7 +56,8 @@ const loadLanguageData = async (lang: Language) => {
       import(`@/locales/${lang}/notifications.json`),
       import(`@/locales/${lang}/rooms.json`),
       import(`@/locales/${lang}/reports.json`),
-      import(`@/locales/${lang}/announcements.json`)
+      import(`@/locales/${lang}/announcements.json`),
+      import(`@/locales/${lang}/managers.json`)
     ])
 
     languageData[lang] = {
@@ -74,7 +76,8 @@ const loadLanguageData = async (lang: Language) => {
       ...notifications.default,
       ...rooms.default,
       ...reports.default,
-      ...announcements.default
+      ...announcements.default,
+      ...managers.default
     }
   } catch (error) {
     console.error(`Error loading language data for ${lang}:`, error)

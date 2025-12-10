@@ -1,5 +1,6 @@
 {
-  "createDormitory": {
+  "dialogs": {
+    "createDormitory": {
     "title": "Create New Dormitory",
     "subtitle": "Configure dormitory details and room templates",
     "sections": {
@@ -288,5 +289,6 @@
       "newDescription": "Photos for new template"
     },
     "priceCategoryFormat": "{{name}} ({{monthly}} zł/month, {{daily}} zł/day)"
+  }
   }
 }

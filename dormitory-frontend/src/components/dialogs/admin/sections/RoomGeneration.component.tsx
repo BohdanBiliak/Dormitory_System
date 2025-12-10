@@ -64,10 +64,10 @@ export default function RoomGenerationComponent({
             <div className="p-6 space-y-8 max-w-7xl mx-auto">
                 <div className="text-center mb-8">
                     <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                        {t('createDormitory.sections.roomGeneration')}
+                        {t('dormitories.createDormitory.sections.roomGeneration')}
                     </h2>
                     <p className="text-gray-600">
-                        Configure floors and room assignments for your dormitory
+                        {t('dormitories.createDormitory.hints.roomGeneration')}
                     </p>
                 </div>
 

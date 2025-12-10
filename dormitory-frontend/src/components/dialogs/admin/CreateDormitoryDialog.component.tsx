@@ -835,7 +835,9 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
     // Calculate progress percentage
     const calculateProgress = () => {
         const currentIndex = sections.findIndex(s => s.key === activeSection);
-        return ((currentIndex + 1) / sections.length) * 100;
+        // Show progress based on completed steps, not current step
+        // Step 1 (index 0) = 0%, Step 2 (index 1) = 25%, Step 3 (index 2) = 50%, Step 4 (index 3) = 75%
+        return (currentIndex / sections.length) * 100;
     };
 
     const renderActiveSection = () => {
@@ -966,13 +968,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                     `}</style>
                     
                     {/* Simplified Header */}
-                    <div className="bg-gradient-to-r from-blue-600 via-blue-700 to-purple-700 px-2 xs:px-4 sm:px-6 py-2 xs:py-4 sm:py-6 flex-shrink-0 relative overflow-hidden">
-                        {/* Decorative background pattern */}
-                        <div className="absolute inset-0 opacity-10">
-                            <div className="absolute top-0 left-0 w-32 h-32 bg-white rounded-full -translate-x-16 -translate-y-16"></div>
-                            <div className="absolute top-0 right-0 w-24 h-24 bg-white rounded-full translate-x-12 -translate-y-12"></div>
-                            <div className="absolute bottom-0 left-1/4 w-20 h-20 bg-white rounded-full translate-y-10"></div>
-                        </div>
+                    <div className="bg-blue-600 px-2 xs:px-4 sm:px-6 py-2 xs:py-4 sm:py-6 flex-shrink-0 relative">
                         <div className="flex items-start justify-between relative z-10 gap-2 xs:gap-4">
                             <div className="flex items-start space-x-2 xs:space-x-3 sm:space-x-4 flex-1 min-w-0">
                                 <div className="flex items-center justify-center w-8 h-8 xs:w-10 xs:h-10 sm:w-12 sm:h-12 bg-white/20 rounded-full backdrop-blur-sm flex-shrink-0">
@@ -1029,7 +1025,6 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                                 </div>
                                 <div className="flex justify-between mt-1 xs:mt-2 sm:mt-3 text-xs sm:text-sm text-blue-100">
                                     <span className="font-medium">{t('dormitories.createDormitory.step')} {sections.findIndex(s => s.key === activeSection) + 1} {t('dormitories.createDormitory.of')} {sections.length}</span>
-                                    <span className="font-medium">{Math.round(calculateProgress())}% {t('dormitories.createDormitory.completed')}</span>
                                 </div>
                             </div>
                         )}

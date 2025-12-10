@@ -48,89 +48,89 @@ export const UserSideMenu = memo(function UserSideMenu ({children}:UserSideMenuP
         {
             id: 'dormitories',
             image: '/workplace.svg',
-            label: t('sideMenu.dormitoriesInfo'),
+            label: 'Dormitories Information',
             href: "/dormitories",
         },
         {
             id: 'announcements',
             image: '/clipboard-check.svg',
-            label: t('sideMenu.announcements'),
+            label: 'Announcements',
             href: "/announcements-public"
         },
         {
             id: 'rooms',
             image: '/home.svg',
-            label: t('sideMenu.rooms'),
+            label: 'Available Rooms',
             href: '/rooms',
         },
         {
             id: 'signin',
             image: '/user.svg',
-            label: t('sideMenu.signin'),
+            label: 'Sign In',
             href: "/auth/login",
         }
-    ], [t])
+    ], [])
 
     const RegularMenuItems: MenuItem[] = useMemo(() => [
         {
             id: 'profile',
             image: '/user.svg',
-            label: t('sideMenu.profile'),
+            label: 'My Profile',
             href: '/profile'
         },
         {
             id: 'dormitories',
             image: '/workplace.svg',
-            label: t('sideMenu.dormitoriesInfo'),
+            label: 'Dormitories Information',
             href: "/dormitories",
         },
         {
             id: 'announcements',
             image: '/clipboard-check.svg',
-            label: t('sideMenu.announcements'),
+            label: 'Announcements',
             href: "/announcements-public"
         },
         {
             id: 'rooms',
             image: '/home.svg',
-            label: t('sideMenu.rooms'),
+            label: 'Available Rooms',
             href: "/rooms",
         },
         {
             id: 'signin',
             image: '/user.svg',
-            label: t('sideMenu.signin'),
+            label: 'Sign In',
             href: "/auth/login",
         }
-    ], [t])
+    ], [])
 
     const SignedInMenuItems:MenuItem[] = useMemo(() => [
         {
             id: 'profile',
             image: '/user.svg',
-            label: t('sideMenu.profile'),
+            label: 'My Profile',
             href: '/profile'
         },
         {
             id: 'living',
             image: '/home.svg',
-            label: t('sideMenu.living'),
+            label: 'Living',
             subMenu: [
                 {
                     id: 'dormitories',
-                    label: t('sideMenu.dormitories'),
+                    label: 'Dormitories',
                     image: '/workplace.svg',
                     href: '/dormitories',
                 },
                 {
                     id:'rooms',
-                    label: t('sideMenu.rooms'),
+                    label: 'Available Rooms',
                     image: '/home.svg',
                     href: '/rooms',
                 },
                 {
                     id: 'maintenance',
-                    label: t('sideMenu.maintenance'),
+                    label: 'Maintenance',
                     image: '/wrench.svg',
                     href: '/maintenance',
                 }
@@ -139,11 +139,11 @@ export const UserSideMenu = memo(function UserSideMenu ({children}:UserSideMenuP
         {
             id: 'services',
             image: '/cash.svg',
-            label: t('sideMenu.services'),
+            label: 'Services',
             subMenu: [
                 {
                     id:'payments',
-                    label: t('sideMenu.payments'),
+                    label: 'Payments',
                     image: '/cash.svg',
                     href: '/payments',
                 },
@@ -152,23 +152,23 @@ export const UserSideMenu = memo(function UserSideMenu ({children}:UserSideMenuP
         {
             id: 'communication',
             image: '/comments.svg',
-            label: t('sideMenu.communication'),
+            label: 'Communication',
             subMenu: [
                 {
                     id: 'announcements',
-                    label: t('sideMenu.announcements'),
+                    label: 'Announcements',
                     image: '/clipboard-text.svg',
                     href: '/announcements',
                 },
                 {
                     id: 'messages',
-                    label: t('sideMenu.messages'),
+                    label: 'Messages',
                     image: '/envelope.svg',
                     href: '/messaging',
                 },
                 {
                     id: 'notifications',
-                    label: t('sideMenu.notifications'),
+                    label: 'Notifications',
                     image: '/bell.svg',
                     href: '/notifications',
                 }
@@ -177,9 +177,9 @@ export const UserSideMenu = memo(function UserSideMenu ({children}:UserSideMenuP
         {
             id:'logout',
             image:'/sign-out.svg',
-            label: t('sideMenu.logout'),
+            label: 'Logout',
         }
-    ], [t])
+    ], [])
 
     const currentMenuItems = useMemo(() => {
         if(user && user.isVerified){
@@ -204,7 +204,7 @@ export const UserSideMenu = memo(function UserSideMenu ({children}:UserSideMenuP
                         alt="Dormitory Logo"
                         className="w-8 h-8 filter brightness-0 invert"
                     />
-                    <h1 className="text-lg font-bold">{t('sideMenu.dormitorySystem')}</h1>
+                    <h1 className="text-lg font-bold">Dormitory System</h1>
                 </div>
                 <button
                     onClick={toggleMobileMenu}
@@ -236,7 +236,7 @@ export const UserSideMenu = memo(function UserSideMenu ({children}:UserSideMenuP
                             className="w-16 h-16 lg:w-24 lg:h-24 filter brightness-0 invert"
                         />
                     </div>
-                    <h1 className="text-lg lg:text-xl font-bold">{t('sideMenu.dormitorySystem')}</h1>
+                    <h1 className="text-lg lg:text-xl font-bold">Dormitory System</h1>
                 </div>
 
                 {/* Mobile Header inside sidebar */}
@@ -247,7 +247,7 @@ export const UserSideMenu = memo(function UserSideMenu ({children}:UserSideMenuP
                             alt="Dormitory Logo"
                             className="w-10 h-10 filter brightness-0 invert"
                         />
-                        <h1 className="text-lg font-bold">{t('sideMenu.dormitorySystem')}</h1>
+                        <h1 className="text-lg font-bold">Dormitory System</h1>
                     </div>
                     <button
                         onClick={toggleMobileMenu}

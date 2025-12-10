@@ -1,5 +1,6 @@
 {
-  "createDormitory": {
+  "dialogs": {
+    "createDormitory": {
     "title": "Utwórz Nowy Akademik",
     "subtitle": "Skonfiguruj szczegóły akademika i szablony pokoi",
     "sections": {
@@ -288,5 +289,6 @@
       "newDescription": "Zdjęcia dla nowego szablonu"
     },
     "priceCategoryFormat": "{{name}} ({{monthly}} zł/miesiąc, {{daily}} zł/dzień)"
+  }
   }
 }

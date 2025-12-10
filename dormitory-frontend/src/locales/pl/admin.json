@@ -118,35 +118,35 @@
         "title": "Nie wybrano akademika",
         "message": "Wybierz akademik z listy, aby zobaczyć jego szczegóły i zarządzać ustawieniami."
       }
-    }
-  },
-  "notifications": {
-    "title": "Powiadomienia",
-    "subtitle": "Zarządzaj i śledź powiadomienia systemowe",
-    "loading": "Ładowanie powiadomień...",
-    "filters": "Filtry",
-    "notificationType": "Typ powiadomienia",
-    "allTypes": "Wszystkie typy",
-    "readStatus": "Status odczytu",
-    "unread": "Nieprzeczytane",
-    "read": "Przeczytane",
-    "errorTitle": "Błąd ładowania powiadomień",
-    "errorMessage": "Nie można załadować danych powiadomień. Spróbuj ponownie później.",
-    "notificationsCount": "Powiadomienia",
-    "markAsRead": "Oznacz jako przeczytane",
-    "readAt": "Przeczytano:",
-    "noNotificationsTitle": "Nie znaleziono powiadomień",
-    "noNotificationsMessage": "Nie ma powiadomień pasujących do Twoich obecnych filtrów.",
-    "notificationDialog": {
-      "detailsTitle": "Szczegóły powiadomienia",
-      "createTitle": "Utwórz powiadomienie",
-      "detailsSubtitle": "Wyświetl informacje o powiadomieniu",
-      "createSubtitle": "Utwórz nowe powiadomienie dla użytkowników",
-      "titleLabel": "Tytuł",
-      "messageLabel": "Wiadomość",
-      "addressesLabel": "Adresy",
-      "close": "Zamknij",
-      "save": "Zapisz"
+    },
+    "notifications": {
+      "title": "Powiadomienia",
+      "subtitle": "Zarządzaj i śledź powiadomienia systemowe",
+      "loading": "Ładowanie powiadomień...",
+      "filters": "Filtry",
+      "notificationType": "Typ powiadomienia",
+      "allTypes": "Wszystkie typy",
+      "readStatus": "Status odczytu",
+      "unread": "Nieprzeczytane",
+      "read": "Przeczytane",
+      "errorTitle": "Błąd ładowania powiadomień",
+      "errorMessage": "Nie można załadować danych powiadomień. Spróbuj ponownie później.",
+      "notificationsCount": "Powiadomienia",
+      "markAsRead": "Oznacz jako przeczytane",
+      "readAt": "Przeczytano:",
+      "noNotificationsTitle": "Nie znaleziono powiadomień",
+      "noNotificationsMessage": "Nie ma powiadomień pasujących do Twoich obecnych filtrów.",
+      "notificationDialog": {
+        "detailsTitle": "Szczegóły powiadomienia",
+        "createTitle": "Utwórz powiadomienie",
+        "detailsSubtitle": "Wyświetl informacje o powiadomieniu",
+        "createSubtitle": "Utwórz nowe powiadomienie dla użytkowników",
+        "titleLabel": "Tytuł",
+        "messageLabel": "Wiadomość",
+        "addressesLabel": "Adresy",
+        "close": "Zamknij",
+        "save": "Zapisz"
+      }
     }
   }
 }

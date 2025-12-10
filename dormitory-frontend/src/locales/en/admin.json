@@ -118,35 +118,35 @@
         "title": "No Dormitory Selected",
         "message": "Select a dormitory from the list to view its details and manage settings."
       }
-    }
-  },
-  "notifications": {
-    "title": "Notifications",
-    "subtitle": "Manage and track system notifications",
-    "loading": "Loading notifications...",
-    "filters": "Filters",
-    "notificationType": "Notification Type",
-    "allTypes": "All Types",
-    "readStatus": "Read Status",
-    "unread": "Unread",
-    "read": "Read",
-    "errorTitle": "Error Loading Notifications",
-    "errorMessage": "Unable to load notification data. Please try again later.",
-    "notificationsCount": "Notifications",
-    "markAsRead": "Mark as read",
-    "readAt": "Read:",
-    "noNotificationsTitle": "No Notifications Found",
-    "noNotificationsMessage": "There are no notifications matching your current filters.",
-    "notificationDialog": {
-      "detailsTitle": "Notification Details",
-      "createTitle": "Create Notification",
-      "detailsSubtitle": "View notification information",
-      "createSubtitle": "Create a new notification for users",
-      "titleLabel": "Title",
-      "messageLabel": "Message",
-      "addressesLabel": "Addresses",
-      "close": "Close",
-      "save": "Save"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "subtitle": "Manage and track system notifications",
+      "loading": "Loading notifications...",
+      "filters": "Filters",
+      "notificationType": "Notification Type",
+      "allTypes": "All Types",
+      "readStatus": "Read Status",
+      "unread": "Unread",
+      "read": "Read",
+      "errorTitle": "Error Loading Notifications",
+      "errorMessage": "Unable to load notification data. Please try again later.",
+      "notificationsCount": "Notifications",
+      "markAsRead": "Mark as read",
+      "readAt": "Read:",
+      "noNotificationsTitle": "No Notifications Found",
+      "noNotificationsMessage": "There are no notifications matching your current filters.",
+      "notificationDialog": {
+        "detailsTitle": "Notification Details",
+        "createTitle": "Create Notification",
+        "detailsSubtitle": "View notification information",
+        "createSubtitle": "Create a new notification for users",
+        "titleLabel": "Title",
+        "messageLabel": "Message",
+        "addressesLabel": "Addresses",
+        "close": "Close",
+        "save": "Save"
+      }
     }
   }
 }

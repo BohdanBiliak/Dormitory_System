@@ -174,7 +174,7 @@ export function AdminSideMenu ({children}:AdminSideMenuProps){
                         alt="Dormitory Logo"
                         className="w-8 h-8 filter brightness-0 invert"
                     />
-                    <h1 className="text-lg font-bold">{t('sideMenu.dormitorySystem')}</h1>
+                    <h1 className="text-lg font-bold">Dormitory System</h1>
                 </div>
                 <button
                     onClick={toggleMobileMenu}
@@ -206,7 +206,7 @@ export function AdminSideMenu ({children}:AdminSideMenuProps){
                             className="w-16 h-16 lg:w-24 lg:h-24 filter brightness-0 invert"
                         />
                     </div>
-                    <h1 className="text-lg lg:text-xl font-bold">{t('sideMenu.dormitorySystem')}</h1>
+                    <h1 className="text-lg lg:text-xl font-bold">Dormitory System</h1>
                 </div>
 
                 {/* Mobile Header inside sidebar */}
@@ -217,7 +217,7 @@ export function AdminSideMenu ({children}:AdminSideMenuProps){
                             alt="Dormitory Logo"
                             className="w-10 h-10 filter brightness-0 invert"
                         />
-                        <h1 className="text-lg font-bold">{t('sideMenu.dormitorySystem')}</h1>
+                        <h1 className="text-lg font-bold">Dormitory System</h1>
                     </div>
                     <button
                         onClick={toggleMobileMenu}
