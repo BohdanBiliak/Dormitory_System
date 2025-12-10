@@ -1,6 +1,7 @@
 import React from "react";
 import { Plus, Edit, Trash2, Save, X, DollarSign } from "lucide-react";
 import { PriceCategory, PriceCategoryPostData } from "@/types/dormitories.types";
+import { useLanguage } from "@/providers/language.provider";
 
 interface ValidationErrors {
     priceCategories?: {
@@ -57,15 +58,17 @@ export default function PriceCategoriesComponent({
                                                      validationErrors = {}
                                                  }: PriceCategoriesProps) {
 
+    const { t } = useLanguage();
+
     return (
         <div className="w-full h-full min-h-[600px]">
             <div className="p-6 space-y-8 max-w-6xl mx-auto">
                 <div className="text-center mb-8">
                     <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                        Kategorie Cenowe
+                        {t('dialogs.priceCategoriesSection.pageTitle')}
                     </h2>
                     <p className="text-gray-600">
-                        Zarządzaj poziomami cenowymi dla różnych typów pokoi
+                        {t('dialogs.priceCategoriesSection.pageSubtitle')}
                     </p>
                 </div>
 
@@ -76,7 +79,7 @@ export default function PriceCategoriesComponent({
                             <div className="p-6 border-b border-gray-200">
                                 <h3 className="text-lg font-semibold text-gray-900 flex items-center">
                                     <DollarSign className="w-5 h-5 mr-2 text-green-600" />
-                                    Kategorie
+                                    {t('dialogs.priceCategoriesSection.listTitle')}
                                 </h3>
                             </div>
 
@@ -84,8 +87,8 @@ export default function PriceCategoriesComponent({
                                 {pCategoriesList.length === 0 ? (
                                     <div className="text-center py-8 text-gray-500">
                                         <DollarSign className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-                                        <p>Brak kategorii</p>
-                                        <p className="text-sm">Utwórz swoją pierwszą kategorię</p>
+                                        <p>{t('dialogs.priceCategoriesSection.noCategories')}</p>
+                                        <p className="text-sm">{t('dialogs.priceCategoriesSection.createFirst')}</p>
                                     </div>
                                 ) : (
                                     pCategoriesList.map((category) => (
@@ -119,7 +122,7 @@ export default function PriceCategoriesComponent({
                                         <span>
                                         {newPCategory && newPCategory.name
                                             ? newPCategory.name
-                                            : 'Nowa kategoria'
+                                            : t('dialogs.priceCategoriesSection.newCategory')
                                         }
                                     </span>
                                     </div>
@@ -135,7 +138,7 @@ export default function PriceCategoriesComponent({
                                 <div className="p-6 border-b border-gray-200">
                                     <div className="flex items-center justify-between">
                                         <h3 className="text-lg font-semibold text-gray-900">
-                                            Szczegóły kategorii
+                                            {t('dialogs.priceCategoriesSection.detailsTitle')}
                                         </h3>
                                         {!editPCategory ? (
                                             <div className="flex space-x-2">
@@ -179,7 +182,7 @@ export default function PriceCategoriesComponent({
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-3">
-                                                Nazwa kategorii <span className="text-red-500">*</span>
+                                                {t('dialogs.priceCategoriesSection.fields.categoryName')} <span className="text-red-500">*</span>
                                             </label>
                                             <input
                                                 name="name"
@@ -200,7 +203,7 @@ export default function PriceCategoriesComponent({
 
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-3">
-                                                Opis
+                                                {t('dialogs.priceCategoriesSection.fields.description')}
                                             </label>
                                             <input
                                                 name="description"
@@ -217,7 +220,7 @@ export default function PriceCategoriesComponent({
 
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-3">
-                                                Cena za miesiąc (zł) <span className="text-red-500">*</span>
+                                                {t('dialogs.priceCategoriesSection.fields.pricePerMonth')} <span className="text-red-500">*</span>
                                             </label>
                                             <input
                                                 type="number"
@@ -241,7 +244,7 @@ export default function PriceCategoriesComponent({
 
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-3">
-                                                Cena za dzień (zł) <span className="text-red-500">*</span>
+                                                {t('dialogs.priceCategoriesSection.fields.pricePerDay')} <span className="text-red-500">*</span>
                                             </label>
                                             <input
                                                 type="number"
@@ -266,19 +269,19 @@ export default function PriceCategoriesComponent({
 
                                     {/* Preview Card */}
                                     <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-                                        <h4 className="font-semibold text-gray-900 mb-4">Podgląd cen</h4>
+                                        <h4 className="font-semibold text-gray-900 mb-4">{t('dialogs.priceCategoriesSection.preview.title')}</h4>
                                         <div className="grid grid-cols-2 gap-4">
                                             <div className="text-center">
                                                 <div className="text-2xl font-bold text-green-600">
                                                     {selectedPCategory.pricePerMonth} zł
                                                 </div>
-                                                <div className="text-sm text-gray-600">za miesiąc</div>
+                                                <div className="text-sm text-gray-600">{t('dialogs.priceCategoriesSection.preview.perMonth')}</div>
                                             </div>
                                             <div className="text-center">
                                                 <div className="text-2xl font-bold text-blue-600">
                                                     {selectedPCategory.pricePerDay} zł
                                                 </div>
-                                                <div className="text-sm text-gray-600">za dzień</div>
+                                                <div className="text-sm text-gray-600">{t('dialogs.priceCategoriesSection.preview.perDay')}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -292,14 +295,14 @@ export default function PriceCategoriesComponent({
                                 <div className="p-6 border-b border-gray-200">
                                     <div className="flex items-center justify-between">
                                         <h3 className="text-lg font-semibold text-gray-900">
-                                            Utwórz nową kategorię
+                                            {t('dialogs.priceCategoriesSection.createTitle')}
                                         </h3>
                                         <button
                                             onClick={() => onCreateCategory(newPCategory)}
                                             disabled={!newPCategory.name.trim()}
                                             className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
                                         >
-                                            Utwórz kategorię
+                                            {t('dialogs.priceCategoriesSection.buttons.createCategory')}
                                         </button>
                                     </div>
                                 </div>
@@ -308,13 +311,13 @@ export default function PriceCategoriesComponent({
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-3">
-                                                Nazwa kategorii <span className="text-red-500">*</span>
+                                                {t('dialogs.priceCategoriesSection.fields.categoryName')} <span className="text-red-500">*</span>
                                             </label>
                                             <input
                                                 type="text"
                                                 name="name"
                                                 value={newPCategory.name}
-                                                placeholder="np. Premium, Standard, Budżetowy"
+                                                placeholder={t('dialogs.priceCategoriesSection.fields.namePlaceholder')}
                                                 onChange={onChangeNewPriceCategoryInput}
                                                 className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:border-transparent ${
                                                     validationErrors.priceCategories?.name
@@ -328,13 +331,13 @@ export default function PriceCategoriesComponent({
 
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-3">
-                                                Opis
+                                                {t('dialogs.priceCategoriesSection.fields.description')}
                                             </label>
                                             <input
                                                 type="text"
                                                 name="description"
                                                 value={newPCategory.description}
-                                                placeholder="Krótki opis kategorii"
+                                                placeholder={t('dialogs.priceCategoriesSection.fields.descriptionPlaceholder')}
                                                 onChange={onChangeNewPriceCategoryInput}
                                                 className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
                                             />
@@ -342,7 +345,7 @@ export default function PriceCategoriesComponent({
 
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-3">
-                                                Cena za miesiąc (zł) <span className="text-red-500">*</span>
+                                                {t('dialogs.priceCategoriesSection.fields.pricePerMonth')} <span className="text-red-500">*</span>
                                             </label>
                                             <input
                                                 type="number"
@@ -350,7 +353,7 @@ export default function PriceCategoriesComponent({
                                                 value={newPCategory.pricePerMonth}
                                                 min="0"
                                                 step="0.01"
-                                                placeholder="Minimum 0"
+                                                placeholder={t('dialogs.priceCategoriesSection.fields.minPrice')}
                                                 onChange={onChangeNewPriceCategoryInput}
                                                 className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:border-transparent ${
                                                     validationErrors.priceCategories?.pricePerMonth
@@ -364,7 +367,7 @@ export default function PriceCategoriesComponent({
 
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-3">
-                                                Cena za dzień (zł) <span className="text-red-500">*</span>
+                                                {t('dialogs.priceCategoriesSection.fields.pricePerDay')} <span className="text-red-500">*</span>
                                             </label>
                                             <input
                                                 type="number"
@@ -372,7 +375,7 @@ export default function PriceCategoriesComponent({
                                                 value={newPCategory.pricePerDay}
                                                 min="0"
                                                 step="0.01"
-                                                placeholder="Minimum 0"
+                                                placeholder={t('dialogs.priceCategoriesSection.fields.minPrice')}
                                                 onChange={onChangeNewPriceCategoryInput}
                                                 className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:border-transparent ${
                                                     validationErrors.priceCategories?.pricePerDay
@@ -387,19 +390,19 @@ export default function PriceCategoriesComponent({
 
                                     {/* Preview Card */}
                                     <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-                                        <h4 className="font-semibold text-gray-900 mb-4">Podgląd cen</h4>
+                                        <h4 className="font-semibold text-gray-900 mb-4">{t('dialogs.priceCategoriesSection.preview.title')}</h4>
                                         <div className="grid grid-cols-2 gap-4">
                                             <div className="text-center">
                                                 <div className="text-2xl font-bold text-green-600">
                                                     {newPCategory.pricePerMonth || 0} zł
                                                 </div>
-                                                <div className="text-sm text-gray-600">za miesiąc</div>
+                                                <div className="text-sm text-gray-600">{t('dialogs.priceCategoriesSection.preview.perMonth')}</div>
                                             </div>
                                             <div className="text-center">
                                                 <div className="text-2xl font-bold text-blue-600">
                                                     {newPCategory.pricePerDay || 0} zł
                                                 </div>
-                                                <div className="text-sm text-gray-600">za dzień</div>
+                                                <div className="text-sm text-gray-600">{t('dialogs.priceCategoriesSection.preview.perDay')}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -411,8 +414,8 @@ export default function PriceCategoriesComponent({
                         {!selectedPCategory && !newPCategory && (
                             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center">
                                 <DollarSign className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-                                <h3 className="text-lg font-medium text-gray-900 mb-2">Wybierz kategorię</h3>
-                                <p className="text-gray-500">Wybierz kategorię z lewej strony, aby wyświetlić i edytować jej szczegóły</p>
+                                <h3 className="text-lg font-medium text-gray-900 mb-2">{t('dialogs.priceCategoriesSection.emptyStateTitle')}</h3>
+                                <p className="text-gray-500">{t('dialogs.priceCategoriesSection.emptyStateSubtitle')}</p>
                             </div>
                         )}
                     </div>

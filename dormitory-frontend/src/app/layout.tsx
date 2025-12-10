@@ -36,7 +36,6 @@ export default function RootLayout({
           <QueryProvider>
             <PushNotificationProvider>
               {children}
-              <TranslationButton variant="floating" />
               <Toaster position="top-right" />
             </PushNotificationProvider>
           </QueryProvider>

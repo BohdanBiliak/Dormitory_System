@@ -55,6 +55,7 @@
     "connect-redis": "^9.0.0",
     "cookie-parser": "^1.4.7",
     "csurf": "^1.11.0",
+    "exceljs": "^4.4.0",
     "express-rate-limit": "^8.0.1",
     "express-session": "^1.18.1",
     "helmet": "^8.1.0",

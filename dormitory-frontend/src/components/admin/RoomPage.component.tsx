@@ -10,12 +10,14 @@ import { Description, Dialog, DialogBackdrop, DialogPanel, DialogTitle } from "@
 import EvictionFlowDialogsComponent from "@/components/dialogs/admin/EvictionFlowDialogs.component";
 import { RoomStatusTypesModal } from "@/components/dialogs/admin/RoomStatusTypesModal.component";
 import { useGetRoomStatusTypes } from "@/hooks/roomStatusTypes.hook";
+import { useLanguage } from "@/providers/language.provider";
 
 interface RoomPageProps {
     roomId: string
 }
 
 export function RoomPage({ roomId }: RoomPageProps) {
+    const { t } = useLanguage();
     const { updateRoom, postRoomStatus, removeRoomStatus, evictUser, uploadRoomPhoto } = useUpdateRoom();
     const { data: urls, mutateAsync: uploadPhotos } = useUploadRoomPhoto()
     const [showStatusTypesManager, setShowStatusTypesManager] = useState(false);
@@ -446,7 +448,7 @@ export function RoomPage({ roomId }: RoomPageProps) {
                 <div className="bg-white shadow-xl rounded-2xl p-8 max-w-md mx-4 border border-slate-200">
                     <div className="flex items-center justify-center">
                         <div className="animate-spin rounded-full h-10 w-10 border-4 border-blue-500 border-t-transparent"></div>
-                        <span className="ml-4 text-slate-700 font-medium text-lg">Loading room data...</span>
+                        <span className="ml-4 text-slate-700 font-medium text-lg">{t('rooms.userRoomPage.loading')}</span>
                     </div>
                 </div>
             </div>
@@ -461,8 +463,8 @@ export function RoomPage({ roomId }: RoomPageProps) {
                         <div className="text-red-500 mb-4 animate-in zoom-in-50 duration-500 delay-150">
                             <AlertTriangle className="mx-auto h-16 w-16" />
                         </div>
-                        <h3 className="text-xl font-semibold text-slate-800 mb-2 animate-in fade-in duration-300 delay-200">Error Loading Room</h3>
-                        <p className="text-slate-600 animate-in fade-in duration-300 delay-300">Unable to load room data. Please try again later.</p>
+                        <h3 className="text-xl font-semibold text-slate-800 mb-2 animate-in fade-in duration-300 delay-200">{t('rooms.userRoomPage.errorLoading')}</h3>
+                        <p className="text-slate-600 animate-in fade-in duration-300 delay-300">{t('rooms.userRoomPage.errorMessage')}</p>
                     </div>
                 </div>
             </div>
@@ -475,11 +477,11 @@ export function RoomPage({ roomId }: RoomPageProps) {
         <div className="min-h-screen bg-slate-50">
             {/* Header */}
             <div className="bg-white border-b border-slate-200 shadow-sm animate-in slide-in-from-top-4 duration-500">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                <div className="w-full px-6 py-6">
                     <div className="flex items-center justify-between">
                         <div className="animate-in fade-in-0 slide-in-from-left-4 duration-500">
-                            <h1 className="text-3xl font-bold text-slate-900">Room {roomInfo.name}</h1>
-                            <p className="text-slate-600 mt-1">Manage room details and residents</p>
+                            <h1 className="text-3xl font-bold text-slate-900">{t('rooms.userRoomPage.title', { roomNumber: roomInfo.name })}</h1>
+                            <p className="text-slate-600 mt-1">{t('rooms.userRoomPage.subtitle')}</p>
                         </div>
                         <div className="flex items-center space-x-3 animate-in fade-in-0 slide-in-from-right-4 duration-500">
                             {hasChanges && (
@@ -489,14 +491,14 @@ export function RoomPage({ roomId }: RoomPageProps) {
                                         className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2  hover:scale-105 transform hover:shadow-lg"
                                     >
                                         <Check className="w-4 h-4 mr-2 transition-transform duration-200 group-hover:rotate-12" />
-                                        Save Changes
+                                        {t('rooms.userRoomPage.saveChanges')}
                                     </button>
                                     <button
                                         onClick={handleCancelRoomUpdate}
                                         className="inline-flex items-center px-4 py-2 bg-slate-200 text-slate-700 text-sm font-medium rounded-lg hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2  hover:scale-105 transform"
                                     >
                                         <X className="w-4 h-4 mr-2 transition-transform duration-200 group-hover:rotate-90" />
-                                        Cancel
+                                        {t('rooms.userRoomPage.cancel')}
                                     </button>
                                 </div>
                             )}
@@ -506,7 +508,7 @@ export function RoomPage({ roomId }: RoomPageProps) {
             </div>
 
             {/* Main Content */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="w-full px-6 py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
                     {/* Left Column - Room Details */}
@@ -517,14 +519,14 @@ export function RoomPage({ roomId }: RoomPageProps) {
                             <div className="px-6 py-4 bg-slate-50 border-b border-slate-200">
                                 <h2 className="text-lg font-semibold text-slate-900 flex items-center">
                                     <Settings className="w-5 h-5 mr-2 text-blue-600 animate-in spin-in-180 duration-700 delay-200" />
-                                    Basic Information
+                                    {t('rooms.userRoomPage.basicInformation')}
                                 </h2>
                             </div>
                             <div className="p-6 space-y-6">
                                 {/* Room Number */}
                                 <div className="group delay-100">
                                     <div className="flex items-center justify-between mb-2">
-                                        <label className="text-sm font-medium text-slate-700">Room Number</label>
+                                        <label className="text-sm font-medium text-slate-700">{t('rooms.userRoomPage.roomName')}</label>
                                         <button
                                             name="name"
                                             onClick={handleEditField}
@@ -550,7 +552,7 @@ export function RoomPage({ roomId }: RoomPageProps) {
                                 <div className="group delay-150">
                                     <div className="flex items-center justify-between mb-2">
                                         <label className="text-sm font-medium text-slate-700">
-                                            Room Capacity ({roomInfo.residents.length} / {roomInfo.capacity})
+                                            {t('rooms.userRoomPage.roomCapacity')} ({roomInfo.residents.length} / {roomInfo.capacity})
                                         </label>
                                         <button
                                             name="capacity"
@@ -578,10 +580,10 @@ export function RoomPage({ roomId }: RoomPageProps) {
                                     <div className="group">
                                         <div className="flex flex-col mb-2">
                                             <div className="flex items-center justify-between">
-                                                <label className="text-sm font-medium text-slate-700">Price per Day</label>
+                                                <label className="text-sm font-medium text-slate-700">{t('rooms.pricePerDay')}</label>
                                             </div>
                                             {room?.priceCategory && (
-                                                <span className="text-xs text-blue-600 mt-0.5">From price category: {room.priceCategory.name}</span>
+                                                <span className="text-xs text-blue-600 mt-0.5">{t('rooms.userRoomPage.fromPriceCategory', { categoryName: room.priceCategory.name })}</span>
                                             )}
                                         </div>
                                         <div className="relative">
@@ -599,10 +601,10 @@ export function RoomPage({ roomId }: RoomPageProps) {
                                     <div className="group">
                                         <div className="flex flex-col mb-2">
                                             <div className="flex items-center justify-between">
-                                                <label className="text-sm font-medium text-slate-700">Price per Month</label>
+                                                <label className="text-sm font-medium text-slate-700">{t('rooms.pricePerMonth')}</label>
                                             </div>
                                             {room?.priceCategory && (
-                                                <span className="text-xs text-blue-600 mt-0.5">From price category: {room.priceCategory.name}</span>
+                                                <span className="text-xs text-blue-600 mt-0.5">{t('rooms.userRoomPage.fromPriceCategory', { categoryName: room.priceCategory.name })}</span>
                                             )}
                                         </div>
                                         <div className="relative">
@@ -626,7 +628,7 @@ export function RoomPage({ roomId }: RoomPageProps) {
                             <div className="px-6 py-4 bg-slate-50 border-b border-slate-200">
                                 <h2 className="text-lg font-semibold text-slate-900 flex items-center">
                                     <Users className="w-5 h-5 mr-2 text-blue-600 animate-in spin-in-180 duration-700 delay-300" />
-                                    Current Residents ({roomInfo.residents.length})
+                                    {t('rooms.userRoomPage.currentResidentsCount', { count: roomInfo.residents.length })}
                                 </h2>
                             </div>
                             <div className="p-6">
@@ -651,7 +653,7 @@ export function RoomPage({ roomId }: RoomPageProps) {
                                                     value={index.toString()}
                                                     onClick={handleChoseResidentToEvict}
                                                 >
-                                                    Evict
+                                                    {t('rooms.userRoomPage.evict')}
                                                 </button>
                                             </div>
                                         ))}
@@ -659,7 +661,7 @@ export function RoomPage({ roomId }: RoomPageProps) {
                                 ) : (
                                     <div className="text-center py-8 animate-in fade-in-0 zoom-in-50 duration-500">
                                         <Users className="mx-auto h-12 w-12 text-slate-300" />
-                                        <p className="mt-2 text-slate-500">No residents currently assigned</p>
+                                        <p className="mt-2 text-slate-500">{t('rooms.userRoomPage.noResidents')}</p>
                                     </div>
                                 )}
                             </div>
@@ -671,7 +673,7 @@ export function RoomPage({ roomId }: RoomPageProps) {
                                 <div className="flex items-center justify-between">
                                     <h2 className="text-lg font-semibold text-slate-900 flex items-center">
                                         <Settings className="w-5 h-5 mr-2 text-blue-600 animate-in spin-in-180 duration-700 delay-400" />
-                                        Room Equipment
+                                        {t('rooms.userRoomPage.roomEquipment')}
                                     </h2>
                                     <button
                                         name="roomEquipment"
@@ -701,7 +703,7 @@ export function RoomPage({ roomId }: RoomPageProps) {
                                                         ? 'border-blue-500 ring-2 ring-blue-100 bg-white'
                                                         : 'border-slate-200 bg-slate-50'
                                                         } focus:outline-none focus:ring-2 focus:ring-blue-500`}
-                                                    placeholder={`Equipment item ${index + 1}`}
+                                                    placeholder={t('rooms.userRoomPage.equipmentItem', { index: index + 1 })}
                                                 />
                                                 {isEditing.roomEquipment && (
                                                     <button
@@ -726,7 +728,7 @@ export function RoomPage({ roomId }: RoomPageProps) {
                                                     value={""}
                                                     disabled={!isEditing.roomEquipment}
                                                     className="w-full px-3 py-2 border rounded-lg text-sm  hover:shadow-sm border-blue-500 ring-2 ring-blue-100 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                                    placeholder={`Equipment item ${roomInfo.roomEquipment.length + 1}`}
+                                                    placeholder={t('rooms.userRoomPage.equipmentItem', { index: roomInfo.roomEquipment.length + 1 })}
                                                 />
                                             </div>
                                         ) : (<></>)}
@@ -735,7 +737,7 @@ export function RoomPage({ roomId }: RoomPageProps) {
 
                                     <div className="text-center py-8 animate-in fade-in-0 zoom-in-50 duration-500">
                                         <Settings className="mx-auto h-12 w-12 text-slate-300" />
-                                        <p className="mt-2 text-slate-500">No equipment listed</p>
+                                        <p className="mt-2 text-slate-500">{t('rooms.userRoomPage.noEquipment')}</p>
                                     </div>
                                 )}
                             </div>
@@ -744,7 +746,7 @@ export function RoomPage({ roomId }: RoomPageProps) {
                         {/* Calendar Card */}
                         <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden animate-in fade-in-0 slide-in-from-bottom-4 duration-500 delay-300 hover:shadow-md transition-all">
                             <div className="px-6 py-4 bg-slate-50 border-b border-slate-200 flex flex-row space-x-6">
-                                <h2 className="text-lg font-semibold text-slate-900 delay-500">Availability Calendar</h2>
+                                <h2 className="text-lg font-semibold text-slate-900 delay-500">{t('rooms.userRoomPage.availabilityCalendar')}</h2>
                                 <button
                                     name="statuses"
                                     onClick={handleEditField}
@@ -766,7 +768,7 @@ export function RoomPage({ roomId }: RoomPageProps) {
                                 <div className="flex items-center justify-between">
                                     <h2 className="text-lg font-semibold text-slate-900 flex items-center">
                                         <Camera className="w-5 h-5 mr-2 text-blue-600 animate-in spin-in-180 duration-700 delay-500" />
-                                        Photos
+                                        {t('rooms.userRoomPage.photos')}
                                     </h2>
                                     <button
                                         name="photos"
@@ -831,7 +833,7 @@ export function RoomPage({ roomId }: RoomPageProps) {
                                 ) : (
                                     <div className="text-center py-12 animate-in fade-in-0 zoom-in-50 duration-500">
                                         <Camera className="mx-auto h-12 w-12 text-slate-300" />
-                                        <p className="mt-2 text-slate-500">No photos available</p>
+                                        <p className="mt-2 text-slate-500">{t('rooms.userRoomPage.noPhotos')}</p>
                                     </div>
                                 )}
                             </div>
@@ -858,10 +860,10 @@ export function RoomPage({ roomId }: RoomPageProps) {
                                     </div>
                                     <div className="min-w-0 flex-1">
                                         <DialogTitle className="text-sm xs:text-base sm:text-lg font-semibold text-white truncate">
-                                            Room Availability Status
+                                            {t('rooms.userRoomPage.roomAvailabilityStatus')}
                                         </DialogTitle>
                                         <Description className="text-emerald-100 text-xs sm:text-sm mt-0.5 xs:mt-1 line-clamp-1">
-                                            Manage room availability and booking statuses
+                                            {t('rooms.userRoomPage.manageBookingStatuses')}
                                         </Description>
                                     </div>
                                 </div>
@@ -886,7 +888,7 @@ export function RoomPage({ roomId }: RoomPageProps) {
                                             <svg className="w-4 h-4 xs:w-5 xs:h-5 mr-2 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                             </svg>
-                                            Availability Calendar
+                                            {t('rooms.userRoomPage.availabilityCalendar')}
                                         </h2>
 
                                         {/* Room Info Cards */}
@@ -894,7 +896,7 @@ export function RoomPage({ roomId }: RoomPageProps) {
                                             <div className="bg-white rounded-lg p-3 xs:p-4 shadow-sm border border-slate-200">
                                                 <div className="flex items-center justify-between">
                                                     <div>
-                                                        <p className="text-xs xs:text-sm text-slate-600">Current Occupancy</p>
+                                                        <p className="text-xs xs:text-sm text-slate-600">{t('rooms.userRoomPage.currentOccupancy')}</p>
                                                         <p className="text-lg xs:text-xl sm:text-2xl font-bold text-slate-900">{roomInfo.residents.length}/{roomInfo.capacity}</p>
                                                     </div>
                                                     <div className="flex items-center justify-center w-10 h-10 xs:w-12 xs:h-12 bg-blue-100 rounded-full">
@@ -916,7 +918,7 @@ export function RoomPage({ roomId }: RoomPageProps) {
                                             <div className="bg-white rounded-lg p-3 xs:p-4 shadow-sm border border-slate-200">
                                                 <div className="flex items-center justify-between">
                                                     <div>
-                                                        <p className="text-xs xs:text-sm text-slate-600">Active Statuses</p>
+                                                        <p className="text-xs xs:text-sm text-slate-600">{t('rooms.userRoomPage.activeStatuses')}</p>
                                                         <p className="text-lg xs:text-xl sm:text-2xl font-bold text-slate-900">{dateStatuses.length}</p>
                                                     </div>
                                                     <div className="flex items-center justify-center w-10 h-10 xs:w-12 xs:h-12 bg-emerald-100 rounded-full">
@@ -941,7 +943,7 @@ export function RoomPage({ roomId }: RoomPageProps) {
                                         onClick={() => setShowStatusTypesManager(true)}
                                         className="w-full mt-4 px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm transition"
                                     >
-                                        Manage Status Types
+                                        {t('rooms.userRoomPage.manageStatusTypes')}
                                     </button>
 
                                     <RoomStatusTypesModal
@@ -957,12 +959,12 @@ export function RoomPage({ roomId }: RoomPageProps) {
                                         <svg className="w-4 h-4 xs:w-5 xs:h-5 mr-2 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4" />
                                         </svg>
-                                        Status Management
+                                        {t('rooms.userRoomPage.statusManagement')}
                                     </h3>
 
                                     {/* Current Statuses */}
                                     <div className="mb-4 xs:mb-6">
-                                        <h4 className="text-xs xs:text-sm font-medium text-slate-700 mb-2 xs:mb-3">Current Statuses</h4>
+                                        <h4 className="text-xs xs:text-sm font-medium text-slate-700 mb-2 xs:mb-3">{t('rooms.userRoomPage.currentStatuses')}</h4>
                                         {dateStatuses.length > 0 ? (
                                             <div className="space-y-2 xs:space-y-3 max-h-48 xs:max-h-64 overflow-y-auto">
                                                 {dateStatuses.map(status => (
@@ -994,7 +996,7 @@ export function RoomPage({ roomId }: RoomPageProps) {
                                                 <svg className="w-6 h-6 xs:w-8 xs:h-8 mx-auto mb-2 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                                                 </svg>
-                                                <p className="text-xs xs:text-sm">No active statuses</p>
+                                                <p className="text-xs xs:text-sm">{t('rooms.userRoomPage.noActiveStatuses')}</p>
                                             </div>
                                         )}
                                     </div>
@@ -1006,7 +1008,7 @@ export function RoomPage({ roomId }: RoomPageProps) {
                                         </h4>
                                         {/* Status Type */}
                                         <div>
-                                            <label className="block text-xs font-medium text-slate-700 mb-1">Status Type</label>
+                                            <label className="block text-xs font-medium text-slate-700 mb-1">{t('rooms.userRoomPage.statusType')}</label>
 
                                             <select
                                                 name="statusTypeId"
@@ -1023,7 +1025,7 @@ export function RoomPage({ roomId }: RoomPageProps) {
                                                 }}
                                                 className="w-full px-2 xs:px-3 py-1.5 xs:py-2 border border-slate-300 rounded-lg"
                                             >
-                                                <option value="">Select type...</option>
+                                                <option value="">{t('rooms.userRoomPage.selectType')}</option>
                                                 {statusTypes?.map((type) => (
                                                     <option key={type.id} value={type.id}>
                                                         {type.name}
@@ -1037,7 +1039,7 @@ export function RoomPage({ roomId }: RoomPageProps) {
                                         <div className="space-y-3 xs:space-y-4">
 
                                             <div>
-                                                <label className="block text-xs font-medium text-slate-700 mb-1">Start Date</label>
+                                                <label className="block text-xs font-medium text-slate-700 mb-1">{t('rooms.userRoomPage.startDate')}</label>
                                                 <input
                                                     type="date"
                                                     name="dateOfStart"
@@ -1048,7 +1050,7 @@ export function RoomPage({ roomId }: RoomPageProps) {
                                             </div>
 
                                             <div>
-                                                <label className="block text-xs font-medium text-slate-700 mb-1">End Date</label>
+                                                <label className="block text-xs font-medium text-slate-700 mb-1">{t('rooms.userRoomPage.endDate')}</label>
                                                 <input
                                                     type="date"
                                                     name="dateOfEnd"
@@ -1070,7 +1072,7 @@ export function RoomPage({ roomId }: RoomPageProps) {
                                                     onClick={handlePostStatus}
                                                     className="flex-1 px-2 xs:px-3 py-1.5 xs:py-2 text-xs xs:text-sm font-medium text-white bg-emerald-600 border border-emerald-600 rounded-lg hover:bg-emerald-700 transition-colors duration-200"
                                                 >
-                                                    Create
+                                                    {t('rooms.userRoomPage.create')}
                                                 </button>
                                             </div>
                                         </div>
@@ -1096,10 +1098,10 @@ export function RoomPage({ roomId }: RoomPageProps) {
                                     </div>
                                     <div className="min-w-0 flex-1">
                                         <DialogTitle className="text-lg sm:text-xl font-semibold text-white truncate">
-                                            Room Photos
+                                            {t('rooms.userRoomPage.roomPhotos')}
                                         </DialogTitle>
                                         <Description className="text-blue-100 text-sm mt-1 line-clamp-1">
-                                            Manage and organize photos for this room
+                                            {t('rooms.userRoomPage.managePhotos')}
                                         </Description>
                                     </div>
                                 </div>
@@ -1122,7 +1124,7 @@ export function RoomPage({ roomId }: RoomPageProps) {
                                     <div className="h-full flex flex-col">
                                         <h2 className="text-base sm:text-lg font-semibold text-slate-900 flex items-center mb-4">
                                             <Camera className="w-5 h-5 mr-2 text-blue-600" />
-                                            Current View
+                                            {t('rooms.userRoomPage.currentView')}
                                         </h2>
 
                                         {roomInfo.photos.length > 0 ? (
@@ -1185,7 +1187,7 @@ export function RoomPage({ roomId }: RoomPageProps) {
                                                         <svg className="w-3 h-3 xs:w-4 xs:h-4 mr-1.5 xs:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                         </svg>
-                                                        Delete Photo
+                                                        {t('rooms.userRoomPage.deletePhoto')}
                                                     </button>
                                                 </div>
                                             </div>
@@ -1193,8 +1195,8 @@ export function RoomPage({ roomId }: RoomPageProps) {
                                             <div className="flex-1 flex items-center justify-center text-center py-8 xs:py-12 animate-in fade-in-0 zoom-in-50 duration-500">
                                                 <div>
                                                     <Camera className="mx-auto h-12 w-12 xs:h-16 xs:w-16 text-slate-300 mb-3 xs:mb-4" />
-                                                    <h3 className="text-base xs:text-lg font-semibold text-slate-900 mb-2">No Photos Available</h3>
-                                                    <p className="text-slate-500 text-sm xs:text-base">Add your first photo to get started</p>
+                                                    <h3 className="text-base xs:text-lg font-semibold text-slate-900 mb-2">{t('rooms.userRoomPage.noPhotosTitle')}</h3>
+                                                    <p className="text-slate-500 text-sm xs:text-base">{t('rooms.userRoomPage.noPhotosMessage')}</p>
                                                 </div>
                                             </div>
                                         )}
@@ -1207,7 +1209,7 @@ export function RoomPage({ roomId }: RoomPageProps) {
                                         <svg className="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                                         </svg>
-                                        Photo Gallery
+                                        {t('rooms.userRoomPage.photoGallery')}
                                     </h3>
 
                                     <div className="space-y-3 max-h-96 overflow-y-auto">
@@ -1256,7 +1258,7 @@ export function RoomPage({ roomId }: RoomPageProps) {
                                             <svg className="w-8 h-8 text-slate-400 group-hover:text-blue-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                                             </svg>
-                                            <span className="text-sm font-medium text-slate-600 group-hover:text-blue-600">Add Photo</span>
+                                            <span className="text-sm font-medium text-slate-600 group-hover:text-blue-600">{t('rooms.userRoomPage.addPhoto')}</span>
                                         </label>
                                     </div>
                                 </div>

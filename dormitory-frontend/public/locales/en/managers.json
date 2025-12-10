@@ -1,0 +1,26 @@
+{
+  "managerCreation": {
+    "title": "New Manager",
+    "subtitle": "Manager Info",
+    "name": "Name",
+    "middleName": "Middle name",
+    "lastName": "Last name",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "dormitory": "Dormitory",
+    "placeholders": {
+      "name": "Enter name",
+      "middleName": "Enter middle name",
+      "lastName": "Enter last name",
+      "email": "Enter email",
+      "password": "Enter password",
+      "confirmPassword": "Confirm password",
+      "dormitory": "Select a dormitory"
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "create": "Create Manager"
+    }
+  }
+}

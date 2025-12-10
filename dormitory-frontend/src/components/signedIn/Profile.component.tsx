@@ -3,9 +3,11 @@ import React, {useEffect, useState, useMemo, memo} from "react";
 import {useCurrentUserProfile} from "@/hooks/user.hook";
 import {User, UserRole} from "@/types/auth.types";
 import {NotificationPermissionBanner, NotificationSettingsButton} from "@/components/ui/NotificationPermission.component";
+import { useLanguage } from "@/providers/language.provider";
 
 
 export const SignedInProfile = memo(function SignedInProfile(){
+    const { t } = useLanguage();
     const defaultProfileData = useMemo(() => ({
         id: '',
         email: '',
@@ -46,10 +48,10 @@ export const SignedInProfile = memo(function SignedInProfile(){
                     </div>
                     <div>
                         <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900">
-                            Your Profile
+                            {t('profile.title')}
                         </h1>
                         <p className="text-gray-600 text-sm md:text-base">
-                            Here is your personal information
+                            {t('profile.viewCurrentInformation')}
                         </p>
                     </div>
                 </div>
@@ -68,7 +70,7 @@ export const SignedInProfile = memo(function SignedInProfile(){
                             </div>
                             <div>
                                 <h2 className="text-lg md:text-xl font-semibold text-white">
-                                    Personal Information
+                                    {t('profile.personalInformation')}
                                 </h2>
                             </div>
                         </div>
@@ -77,7 +79,7 @@ export const SignedInProfile = memo(function SignedInProfile(){
                         <div className="mt-3 sm:mt-0">
                 <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
                   <div className="w-2 h-2 bg-green-400 rounded-full mr-2"></div>
-                  Active
+                  {t('admin.users.active')}
                 </span>
                         </div>
                     </div>
@@ -107,7 +109,7 @@ export const SignedInProfile = memo(function SignedInProfile(){
                                         </div>
                                     </div>
 
-                                    <h3 className="font-semibold text-gray-900 mb-1">Profile Photo</h3>
+                                    <h3 className="font-semibold text-gray-900 mb-1">{t('profile.profilePhoto')}</h3>
                                 </div>
                             </div>
                         </div>
@@ -121,13 +123,13 @@ export const SignedInProfile = memo(function SignedInProfile(){
                                     <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                     </svg>
-                                    <h3 className="text-lg font-semibold text-gray-900">Personal Details</h3>
+                                    <h3 className="text-lg font-semibold text-gray-900">{t('profile.personalDetails')}</h3>
                                 </div>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div className="space-y-2">
                                         <label className="block text-sm font-medium text-gray-700">
-                                            Display Name
+                                            {t('profile.displayName')}
                                         </label>
                                         <div className="relative">
                                             <input
@@ -136,14 +138,14 @@ export const SignedInProfile = memo(function SignedInProfile(){
                                                 value={profileData?.displayName || ''}
                                                 disabled={true}
                                                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500 transition-colors"
-                                                placeholder="Enter your display name"
+                                                placeholder={t('profile.enterDisplayName')}
                                             />
                                         </div>
                                     </div>
 
                                     <div className="space-y-2">
                                         <label className="block text-sm font-medium text-gray-700">
-                                            Last Name
+                                            {t('profile.lastName')}
                                         </label>
                                         <div className="relative">
                                             <input
@@ -152,7 +154,7 @@ export const SignedInProfile = memo(function SignedInProfile(){
                                                 value={profileData?.secondName || ''}
                                                 disabled={true}
                                                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500 transition-colors"
-                                                placeholder="Enter your last name"
+                                                placeholder={t('profile.enterLastName')}
                                             />
                                         </div>
                                     </div>
@@ -160,7 +162,7 @@ export const SignedInProfile = memo(function SignedInProfile(){
 
                                 <div className="space-y-2">
                                     <label className="block text-sm font-medium text-gray-700">
-                                        Email Address
+                                        {t('profile.emailAddress')}
                                     </label>
                                     <div className="relative">
                                         <input
@@ -169,7 +171,7 @@ export const SignedInProfile = memo(function SignedInProfile(){
                                             value={profileData?.email}
                                             disabled={true}
                                             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500 transition-colors"
-                                            placeholder="Enter your email address"
+                                            placeholder={t('profile.enterEmailAddress')}
                                         />
                                     </div>
                                 </div>
@@ -181,7 +183,7 @@ export const SignedInProfile = memo(function SignedInProfile(){
                                     <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                                     </svg>
-                                    <h3 className="text-lg font-semibold text-gray-900">Account Information</h3>
+                                    <h3 className="text-lg font-semibold text-gray-900">{t('profile.accountInformation')}</h3>
                                 </div>
 
                                 <div className="bg-gray-50 rounded-lg p-4">
@@ -194,20 +196,20 @@ export const SignedInProfile = memo(function SignedInProfile(){
                                             </div>
                                             {user?.role && user.role === UserRole.Regular ? (
                                                 <div>
-                                                    <p className="font-medium text-gray-900">Regular</p>
-                                                    <p className="text-sm text-gray-600">Admin will confirm your profile shortly</p>
+                                                    <p className="font-medium text-gray-900">{t('profile.roles.regular')}</p>
+                                                    <p className="text-sm text-gray-600">{t('profile.roles.regularDescription')}</p>
                                                 </div>
                                             ):(
                                                 user?.role && user.role === UserRole.SignedInUser ? (
                                                     <div>
-                                                        <p className="font-medium text-gray-900">Signed in user</p>
-                                                        <p className="text-sm text-gray-600">You are ready to book a room</p>
+                                                        <p className="font-medium text-gray-900">{t('profile.roles.signedInUser')}</p>
+                                                        <p className="text-sm text-gray-600">{t('profile.roles.signedInUserDescription')}</p>
                                                     </div>
                                                 ):(
                                                     user?.role && user.role === UserRole.Resident ? (
                                                         <div>
-                                                            <p className="font-medium text-gray-900">Resident</p>
-                                                            <p className="text-sm text-gray-600">You already have a room</p>
+                                                            <p className="font-medium text-gray-900">{t('profile.roles.resident')}</p>
+                                                            <p className="text-sm text-gray-600">{t('profile.roles.residentDescription')}</p>
                                                         </div>
                                                     ):(
                                                         <></>
@@ -228,15 +230,15 @@ export const SignedInProfile = memo(function SignedInProfile(){
                                     <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                                     </svg>
-                                    <h3 className="text-lg font-semibold text-gray-900">Notifications</h3>
+                                    <h3 className="text-lg font-semibold text-gray-900">{t('profile.notifications.title')}</h3>
                                 </div>
 
                                 <div className="bg-gray-50 rounded-lg p-4">
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <p className="font-medium text-gray-900 mb-1">Browser Notifications</p>
+                                            <p className="font-medium text-gray-900 mb-1">{t('profile.notifications.browserNotifications')}</p>
                                             <p className="text-sm text-gray-600">
-                                                Get notified about messages, maintenance updates, and announcements
+                                                {t('profile.notifications.browserNotificationsDescription')}
                                             </p>
                                         </div>
                                         <div className="ml-4">

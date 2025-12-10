@@ -1,0 +1,54 @@
+{
+  "dormitories": {
+    "availableDormitories": "Available Dormitories",
+    "browseAccommodations": "Browse available dormitory accommodations",
+    "errorLoading": "Error loading dormitories. Please try again.",
+    "viewDetails": "View Details",
+    "noDormitories": "No Dormitories Available",
+    "noDormitoriesMessage": "There are currently no dormitories available for viewing."
+  },
+  "createDormitory": {
+    "title": "Create New Dormitory",
+    "subtitle": "Create and configure your new dormitory",
+    "successTitle": "Dormitory Created Successfully!",
+    "successSubtitle": "Your dormitory has been created and is ready for use",
+    "creating": "Creating...",
+    "cancel": "Cancel",
+    "clearAll": "Clear All",
+    "createButton": "Create Dormitory",
+    "step": "Step",
+    "of": "of",
+    "completed": "Completed",
+    "sections": {
+      "generalInfo": "General Information",
+      "roomGeneration": "Room Generation",
+      "roomTemplates": "Room Templates",
+      "priceCategories": "Price Categories"
+    },
+    "hints": {
+      "generalInfo": "Fill in basic dormitory information",
+      "roomGeneration": "Configure floors and room layout",
+      "roomTemplates": "Manage room templates",
+      "priceCategories": "Set pricing categories"
+    },
+    "validation": {
+      "nameRequired": "Dormitory name is required",
+      "addressRequired": "Address is required",
+      "phoneRequired": "Phone number is required",
+      "phoneInvalid": "Phone number must start with + and contain exactly 11 digits (e.g., +48123456789)",
+      "floorRequired": "Dormitory should have at least one floor",
+      "floorEmpty": "Floor {floor} cannot be empty",
+      "floorNumberInvalid": "Floor number must be a valid number (e.g., 0, 1, 2)",
+      "floorNumberRequired": "Floor number is required",
+      "templateNameRequired": "Template name is required",
+      "templateCodeRequired": "Template code is required",
+      "capacityMinimum": "Capacity must be at least 1",
+      "equipmentMinimum": "At least 3 equipment positions is required",
+      "categoryNameRequired": "Category name is required",
+      "categoryNameDuplicate": "A category with this name already exists",
+      "priceMonthMinimum": "Price per month must be greater than 0",
+      "priceDayMinimum": "Price per day must be greater than 0",
+      "fillGeneralInfo": "Please fill in all required fields correctly in General Information section"
+    }
+  }
+}

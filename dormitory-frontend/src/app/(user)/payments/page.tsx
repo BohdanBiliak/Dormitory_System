@@ -7,8 +7,10 @@ import { Payment, PaymentStatus } from '@/types/payments.types';
 import { paymentsApi } from '@/app/lib/payments.api';
 import { toast } from 'sonner';
 import { PaymentDetailsDialog } from '@/components/dialogs/PaymentDetailsDialog.component';
+import { useLanguage } from '@/providers/language.provider';
 
 export default function MyPaymentsPage() {
+  const {t} = useLanguage();
   const [limit] = useState(20);
   const [offset] = useState(0);
   const [uploadingPaymentId, setUploadingPaymentId] = useState<string | null>(null);
@@ -27,14 +29,14 @@ export default function MyPaymentsPage() {
     // Validate file type
     const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
     if (!allowedTypes.includes(file.type)) {
-      toast.error('Invalid file type. Please upload JPG, PNG, or PDF files only.');
+      toast.error(t('payments.myPayments.upload.invalidFileType'));
       return;
     }
 
     // Validate file size (max 5MB)
     const maxSize = 5 * 1024 * 1024; // 5MB
     if (file.size > maxSize) {
-      toast.error('File too large. Maximum size is 5MB.');
+      toast.error(t('payments.myPayments.upload.fileTooLarge'));
       return;
     }
 
@@ -64,10 +66,10 @@ export default function MyPaymentsPage() {
       a.click();
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
-      toast.success('Payment proof downloaded successfully');
+      toast.success(t('payments.details.downloadSuccess'));
     } catch (error) {
       console.error('Error downloading payment proof:', error);
-      toast.error('Failed to download payment proof');
+      toast.error(t('payments.details.downloadError'));
     }
   };
 
@@ -125,8 +127,8 @@ export default function MyPaymentsPage() {
       <div className="max-w-7xl mx-auto p-4 md:p-6">
         {/* Header */}
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-slate-900 mb-2">My Payments</h1>
-          <p className="text-slate-600">View and manage your payment history</p>
+          <h1 className="text-3xl font-bold text-slate-900 mb-2">{t('payments.myPayments.title')}</h1>
+          <p className="text-slate-600">{t('payments.myPayments.subtitle')}</p>
         </div>
 
         {/* Statistics Cards */}
@@ -135,7 +137,7 @@ export default function MyPaymentsPage() {
             <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-slate-600 mb-1">Total Payments</p>
+                  <p className="text-sm text-slate-600 mb-1">{t('payments.myPayments.stats.totalPayments')}</p>
                   <p className="text-2xl font-bold text-slate-900">{stats.total}</p>
                 </div>
                 <CreditCard className="w-8 h-8 text-blue-600" />
@@ -145,7 +147,7 @@ export default function MyPaymentsPage() {
             <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-slate-600 mb-1">Paid</p>
+                  <p className="text-sm text-slate-600 mb-1">{t('payments.myPayments.stats.paid')}</p>
                   <p className="text-2xl font-bold text-green-600">{stats.paid}</p>
                 </div>
                 <CheckCircle className="w-8 h-8 text-green-600" />
@@ -155,7 +157,7 @@ export default function MyPaymentsPage() {
             <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-slate-600 mb-1">Pending</p>
+                  <p className="text-sm text-slate-600 mb-1">{t('payments.myPayments.stats.pending')}</p>
                   <p className="text-2xl font-bold text-yellow-600">{stats.pending}</p>
                 </div>
                 <Clock className="w-8 h-8 text-yellow-600" />
@@ -165,7 +167,7 @@ export default function MyPaymentsPage() {
             <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-slate-600 mb-1">Overdue</p>
+                  <p className="text-sm text-slate-600 mb-1">{t('payments.myPayments.stats.overdue')}</p>
                   <p className="text-2xl font-bold text-red-600">{stats.overdue}</p>
                 </div>
                 <AlertCircle className="w-8 h-8 text-red-600" />
@@ -177,13 +179,13 @@ export default function MyPaymentsPage() {
         {/* Payments List */}
         <div className="bg-white rounded-lg shadow-sm border border-slate-200">
           <div className="p-4 border-b border-slate-200">
-            <h2 className="text-xl font-semibold text-slate-900">Payment History</h2>
+            <h2 className="text-xl font-semibold text-slate-900">{t('payments.myPayments.history.title')}</h2>
           </div>
 
           {loadingPayments ? (
             <div className="p-8 text-center">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-              <p className="mt-4 text-slate-600">Loading payments...</p>
+              <p className="mt-4 text-slate-600">{t('payments.myPayments.history.loading')}</p>
             </div>
           ) : payments && payments.length > 0 ? (
             <div className="overflow-x-auto">
@@ -191,22 +193,22 @@ export default function MyPaymentsPage() {
                 <thead className="bg-slate-50 border-b border-slate-200">
                   <tr>
                     <th className="px-4 py-3 text-left text-xs font-medium text-slate-600 uppercase tracking-wider">
-                      Payment Type
+                      {t('payments.myPayments.table.paymentType')}
                     </th>
                     <th className="px-4 py-3 text-left text-xs font-medium text-slate-600 uppercase tracking-wider">
-                      Amount
+                      {t('payments.myPayments.table.amount')}
                     </th>
                     <th className="px-4 py-3 text-left text-xs font-medium text-slate-600 uppercase tracking-wider">
-                      Due Date
+                      {t('payments.myPayments.table.dueDate')}
                     </th>
                     <th className="px-4 py-3 text-left text-xs font-medium text-slate-600 uppercase tracking-wider">
-                      Status
+                      {t('payments.myPayments.table.status')}
                     </th>
                     <th className="px-4 py-3 text-left text-xs font-medium text-slate-600 uppercase tracking-wider">
-                      Method
+                      {t('payments.myPayments.table.method')}
                     </th>
                     <th className="px-4 py-3 text-left text-xs font-medium text-slate-600 uppercase tracking-wider">
-                      Actions
+                      {t('payments.myPayments.table.actions')}
                     </th>
                   </tr>
                 </thead>
@@ -231,7 +233,7 @@ export default function MyPaymentsPage() {
                           {payment.paymentProofUrl && (
                             <p className="text-xs text-blue-600 mt-1 flex items-center gap-1">
                               <CheckCircle className="w-3 h-3" />
-                              Proof uploaded
+                              {t('payments.myPayments.table.proofUploaded')}
                             </p>
                           )}
                         </div>
@@ -249,7 +251,7 @@ export default function MyPaymentsPage() {
                           </div>
                           {payment.paidAt && (
                             <p className="text-xs text-green-600 mt-1">
-                              Paid: {formatDate(payment.paidAt)}
+                              {t('payments.myPayments.table.paid')}: {formatDate(payment.paidAt)}
                             </p>
                           )}
                         </div>
@@ -279,7 +281,7 @@ export default function MyPaymentsPage() {
                             className="inline-flex items-center gap-2 px-3 py-1.5 bg-slate-600 text-white rounded-md hover:bg-slate-700 transition-colors text-sm"
                           >
                             <Eye className="w-4 h-4" />
-                            View Details
+                            {t('payments.myPayments.buttons.viewDetails')}
                           </button>
                           {payment.paymentProofUrl ? (
                             <button
@@ -289,7 +291,7 @@ export default function MyPaymentsPage() {
                               className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm"
                             >
                               <Download className="w-4 h-4" />
-                              Download
+                              {t('payments.myPayments.buttons.download')}
                             </button>
                           ) : (
                             (payment.status === PaymentStatus.PENDING || payment.status === PaymentStatus.REJECTED) && (
@@ -312,12 +314,12 @@ export default function MyPaymentsPage() {
                                   {uploadingPaymentId === payment.id ? (
                                     <>
                                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                                      Uploading...
+                                      {t('payments.myPayments.buttons.uploading')}
                                     </>
                                   ) : (
                                     <>
                                       <Upload className="w-4 h-4" />
-                                      Upload Proof
+                                      {t('payments.myPayments.buttons.uploadProof')}
                                     </>
                                   )}
                                 </button>
@@ -334,9 +336,9 @@ export default function MyPaymentsPage() {
           ) : (
             <div className="p-8 text-center">
               <CreditCard className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-              <p className="text-slate-600 text-lg">No payments found</p>
+              <p className="text-slate-600 text-lg">{t('payments.myPayments.history.noPayments')}</p>
               <p className="text-slate-500 text-sm mt-2">
-                Your payment history will appear here once payments are created
+                {t('payments.myPayments.history.noPaymentsMessage')}
               </p>
             </div>
           )}

@@ -6,6 +6,7 @@ import {
     PriceCategory
 } from "@/types/dormitories.types";
 import { ImageCarouselComponent } from "@/components/ui/ImageCarousel.component";
+import { useLanguage } from "@/providers/language.provider";
 
 interface ValidationErrors {
     roomTemplates?: {
@@ -91,6 +92,8 @@ export default function RoomTemplatesComponent({
                                                    validationErrors = {}
                                                }: RoomTemplatesProps) {
 
+    const { t } = useLanguage();
+
     return (
         <div className="w-full h-full min-h-[600px]">
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 h-full">
@@ -101,9 +104,9 @@ export default function RoomTemplatesComponent({
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                             </svg>
                         </div>
-                        Szablony Pokoi
+                        {t('dialogs.roomTemplatesSection.title')}
                         <span className="ml-3 text-sm bg-purple-100 text-purple-700 px-2 py-1 rounded-full">
-                            {roomTemplates?.length || 0} dostępnych
+                            {roomTemplates?.length || 0} {t('dialogs.roomTemplatesSection.available')}
                         </span>
                     </h3>
                 </div>
@@ -153,7 +156,7 @@ export default function RoomTemplatesComponent({
                     {selectedTemplate && (
                         <div className="bg-purple-50 border border-purple-200 rounded-lg p-6 space-y-6">
                             <div className="flex items-center justify-between">
-                                <h4 className="font-semibold text-gray-900">Informacje o szablonie</h4>
+                                <h4 className="font-semibold text-gray-900">{t('dialogs.roomTemplatesSection.templateInfo')}</h4>
                                 {!editRoomTemplate ? (
                                     <div className="flex space-x-2">
                                         <button
@@ -195,7 +198,7 @@ export default function RoomTemplatesComponent({
                                 <div className="space-y-4">
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            Nazwa szablonu <span className="text-red-500">*</span>
+                                            {t('dialogs.roomTemplatesSection.fields.templateName')} <span className="text-red-500">*</span>
                                         </label>
                                         <input
                                             type="text"
@@ -216,7 +219,7 @@ export default function RoomTemplatesComponent({
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            Kod szablonu <span className="text-red-500">*</span>
+                                            {t('dialogs.roomTemplatesSection.fields.templateCode')} <span className="text-red-500">*</span>
                                         </label>
                                         <input
                                             type="text"
@@ -237,7 +240,7 @@ export default function RoomTemplatesComponent({
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            Opis
+                                            {t('dialogs.roomTemplatesSection.fields.description')}
                                         </label>
                                         <input
                                             type="text"
@@ -254,7 +257,7 @@ export default function RoomTemplatesComponent({
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            Pojemność <span className="text-red-500">*</span>
+                                            {t('dialogs.roomTemplatesSection.fields.capacity')} <span className="text-red-500">*</span>
                                         </label>
                                         <input
                                             type="number"
@@ -276,7 +279,7 @@ export default function RoomTemplatesComponent({
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            Kategoria cenowa
+                                            {t('dialogs.roomTemplatesSection.fields.priceCategory')}
                                         </label>
                                         <select
                                             value={selectedTemplate.priceCategoryId || ''}
@@ -288,7 +291,7 @@ export default function RoomTemplatesComponent({
                                                     : 'border-gray-200 bg-gray-50 text-gray-600'
                                             }`}
                                         >
-                                            <option value="">--Brak--</option>
+                                            <option value="">{t('dialogs.roomTemplatesSection.fields.none')}</option>
                                             {pCategoriesList.map(item => (
                                                 <option key={item.id} value={item.id}>
                                                     {item.name} ({item.pricePerMonth} zł/miesiąc, {item.pricePerDay} zł/dzień)
@@ -302,7 +305,7 @@ export default function RoomTemplatesComponent({
                                     <div>
                                         <div className="flex items-center justify-between mb-2">
                                             <label className="block text-sm font-medium text-gray-700">
-                                                Zdjęcia
+                                                {t('dialogs.roomTemplatesSection.fields.photos')}
                                             </label>
                                             <button
                                                 onClick={onOpenTemplatePhotosEdit}
@@ -319,14 +322,14 @@ export default function RoomTemplatesComponent({
                                             showEditMenu={showTemplatePhotosEdit}
                                             closeEditMenu={onCloseTemplatePhotosEdit}
                                             editionMenuLabels={{
-                                                title:"Zdjęcia szablonu",
-                                                description:`Zdjęcia dla szablonu ${selectedTemplate.typeCode}`
+                                                title: t('dialogs.roomTemplatesSection.photoLabels.title'),
+                                                description: t('dialogs.roomTemplatesSection.photoLabels.description', { typeCode: selectedTemplate.typeCode })
                                             }}
                                         />
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            Wyposażenie
+                                            {t('dialogs.roomTemplatesSection.fields.equipment')}
                                         </label>
                                         <div className="space-y-2 max-h-32 overflow-y-auto bg-white border border-gray-200 rounded-lg p-3">
                                             {selectedTemplate.equipment.map((item, index) => (
@@ -358,7 +361,7 @@ export default function RoomTemplatesComponent({
                                                     onClick={onAddEquipmentToTemplate}
                                                     className="w-full px-2 py-1 text-sm border border-dashed border-gray-300 rounded text-gray-500 hover:border-purple-400 hover:text-purple-600 transition-colors"
                                                 >
-                                                    Dodaj nowe wyposażenie
+                                                    {t('dialogs.roomTemplatesSection.buttons.addEquipment')}
                                                 </button>
                                             )}
                                         </div>
@@ -372,12 +375,12 @@ export default function RoomTemplatesComponent({
                     {newRoomTemplate && !selectedTemplate && (
                         <div className="bg-green-50 border border-green-200 rounded-lg p-6 space-y-6">
                             <div className="flex items-center justify-between">
-                                <h4 className="font-semibold text-gray-900">Utwórz nowy szablon</h4>
+                                <h4 className="font-semibold text-gray-900">{t('dialogs.roomTemplatesSection.createNew')}</h4>
                                 <button
                                     onClick={onCreateNewRoomTemplate}
                                     className="px-4 py-2 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700 transition-colors"
                                 >
-                                    Utwórz szablon
+                                    {t('dialogs.roomTemplatesSection.buttons.createTemplate')}
                                 </button>
                             </div>
 
@@ -385,14 +388,14 @@ export default function RoomTemplatesComponent({
                                 <div className="space-y-4">
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            Nazwa szablonu <span className="text-red-500">*</span>
+                                            {t('dialogs.roomTemplatesSection.fields.templateName')} <span className="text-red-500">*</span>
                                         </label>
                                         <input
                                             type="text"
                                             name="name"
                                             value={newRoomTemplate.name}
                                             onChange={onNewTemplateInputChange}
-                                            placeholder="Wprowadź nazwę szablonu"
+                                            placeholder={t('dialogs.roomTemplatesSection.fields.namePlaceholder')}
                                             className={`w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:border-transparent ${
                                                 validationErrors.roomTemplates?.name
                                                     ? 'border-red-500 focus:ring-red-500'
@@ -404,14 +407,14 @@ export default function RoomTemplatesComponent({
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            Kod szablonu <span className="text-red-500">*</span>
+                                            {t('dialogs.roomTemplatesSection.fields.templateCode')} <span className="text-red-500">*</span>
                                         </label>
                                         <input
                                             type="text"
                                             name="typeCode"
                                             value={newRoomTemplate.typeCode}
                                             onChange={onNewTemplateInputChange}
-                                            placeholder="Wprowadź kod szablonu"
+                                            placeholder={t('dialogs.roomTemplatesSection.fields.codePlaceholder')}
                                             className={`w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:border-transparent ${
                                                 validationErrors.roomTemplates?.typeCode
                                                     ? 'border-red-500 focus:ring-red-500'
@@ -423,20 +426,20 @@ export default function RoomTemplatesComponent({
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            Opis
+                                            {t('dialogs.roomTemplatesSection.fields.description')}
                                         </label>
                                         <input
                                             type="text"
                                             name="description"
                                             value={newRoomTemplate.description}
                                             onChange={onNewTemplateInputChange}
-                                            placeholder="Wprowadź opis"
+                                            placeholder={t('dialogs.roomTemplatesSection.fields.descriptionPlaceholder')}
                                             className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                                         />
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            Pojemność <span className="text-red-500">*</span>
+                                            {t('dialogs.roomTemplatesSection.fields.capacity')} <span className="text-red-500">*</span>
                                         </label>
                                         <input
                                             type="number"
@@ -444,7 +447,7 @@ export default function RoomTemplatesComponent({
                                             min={1}
                                             value={newRoomTemplate.capacity}
                                             onChange={onNewTemplateInputChange}
-                                            placeholder="Minimum 1"
+                                            placeholder={t('dialogs.roomTemplatesSection.fields.capacityPlaceholder')}
                                             className={`w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:border-transparent ${
                                                 validationErrors.roomTemplates?.capacity
                                                     ? 'border-red-500 focus:ring-red-500'
@@ -456,14 +459,14 @@ export default function RoomTemplatesComponent({
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            Kategoria cenowa
+                                            {t('dialogs.roomTemplatesSection.fields.priceCategory')}
                                         </label>
                                         <select
                                             value={newRoomTemplate.priceCategoryId || ''}
                                             onChange={onChangeNewTemplateCategory}
                                             className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                                         >
-                                            <option value="">--Brak--</option>
+                                            <option value="">{t('dialogs.roomTemplatesSection.fields.none')}</option>
                                             {pCategoriesList.map(item => (
                                                 <option key={item.id} value={item.id}>
                                                     {item.name} ({item.pricePerMonth} zł/miesiąc, {item.pricePerDay} zł/dzień)
@@ -477,7 +480,7 @@ export default function RoomTemplatesComponent({
                                     <div>
                                         <div className="flex items-center justify-between mb-2">
                                             <label className="block text-sm font-medium text-gray-700">
-                                                Zdjęcia
+                                                {t('dialogs.roomTemplatesSection.fields.photos')}
                                             </label>
                                             <button
                                                 onClick={onOpenTemplatePhotosEdit}
@@ -493,14 +496,14 @@ export default function RoomTemplatesComponent({
                                             showEditMenu={showTemplatePhotosEdit}
                                             closeEditMenu={onCloseTemplatePhotosEdit}
                                             editionMenuLabels={{
-                                                title:"Zdjęcia szablonu",
-                                                description:"Zdjęcia dla nowego szablonu"
+                                                title: t('dialogs.roomTemplatesSection.photoLabels.title'),
+                                                description: t('dialogs.roomTemplatesSection.photoLabels.newDescription')
                                             }}
                                         />
                                     </div>
                                     <div>
                                         <label className={`block text-sm font-medium text-gray-700 mb-2 `}>
-                                            Wyposażenie
+                                            {t('dialogs.roomTemplatesSection.fields.equipment')}
                                         </label>
                                         <div className={`space-y-2 max-h-32 overflow-y-auto bg-white border border-gray-200 rounded-lg p-3 ${validationErrors.roomTemplates?.equipment
                                             ? 'border-red-500 focus:ring-red-500'
@@ -512,7 +515,7 @@ export default function RoomTemplatesComponent({
                                                         name={`equipment-${index}`}
                                                         value={item}
                                                         onChange={onNewTemplateInputChange}
-                                                        placeholder="Wprowadź wyposażenie"
+                                                        placeholder={t('dialogs.roomTemplatesSection.fields.equipmentPlaceholder')}
                                                         className="flex-1 px-2 py-1 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-green-500 focus:border-green-500"
                                                     />
                                                     <button
@@ -527,7 +530,7 @@ export default function RoomTemplatesComponent({
                                                 onClick={onAddEquipmentToNewTemplate}
                                                 className="w-full px-2 py-1 text-sm border border-dashed border-gray-300 rounded text-gray-500 hover:border-green-400 hover:text-green-600 transition-colors"
                                             >
-                                                Dodaj nowe wyposażenie
+                                                {t('dialogs.roomTemplatesSection.buttons.addEquipment')}
                                             </button>
                                         </div>
                                         <ValidationError error={validationErrors?.roomTemplates?.equipment}/>

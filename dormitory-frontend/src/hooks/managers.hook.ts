@@ -28,11 +28,24 @@ export function useManagers(){
         }
     })
 
+    const resetManagerPassword = useMutation({
+        mutationFn: ({managerId, newPassword, confirmPassword}:{managerId:string, newPassword: string, confirmPassword: string}) => 
+            managersApi.resetManagerPassword(managerId, newPassword, confirmPassword),
+        onSuccess: () => {
+            toast.success("Password reset successfully!");
+        },
+        onError: (error) => {
+            toast.error(error.message);
+        }
+    })
+
     return {
         createManager: createManager.mutate,
         creatingManager: createManager.isPending,
         updateManager: updateManager.mutate,
         updatingManager: updateManager.isPending,
+        resetManagerPassword: resetManagerPassword.mutate,
+        resettingManagerPassword: resetManagerPassword.isPending,
     }
 
 }

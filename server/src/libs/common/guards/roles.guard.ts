@@ -22,12 +22,36 @@ export class RolesGuard implements CanActivate {
       [context.getHandler(), context.getClass()],
     );
 
-    if (!requiredRoles) return true;
+    console.log('🔍 Role check starting:', {
+      hasUser: !!user,
+      hasRequestUser: !!request.user,
+      hasSessionUser: !!request.session?.user,
+      userRole: user?.role,
+      userId: user?.id,
+      userDisplayName: user?.displayName,
+      requiredRoles,
+      endpoint: request.url,
+      method: request.method
+    });
+
+    if (!requiredRoles) {
+      console.log('✅ No role requirements, access granted');
+      return true;
+    }
 
     if (!user || !requiredRoles.includes(user.role)) {
+      console.log('❌ Role check failed:', {
+        hasUser: !!user,
+        userRole: user?.role,
+        requiredRoles,
+        roleMatch: user ? requiredRoles.includes(user.role) : false,
+        endpoint: request.url,
+        method: request.method
+      });
       throw new ForbiddenException("Not enough permissions for this role");
     }
 
+    console.log('✅ Role check passed');
     return true;
   }
 }

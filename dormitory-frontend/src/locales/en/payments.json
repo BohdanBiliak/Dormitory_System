@@ -1,0 +1,244 @@
+{
+  "payments": {
+    "title": "Payments",
+    "allPayments": "All Payments",
+    "pendingPayments": "Pending Payments",
+    "paidPayments": "Paid Payments",
+    "overduePayments": "Overdue Payments",
+    "statuses": {
+      "PENDING": "Pending",
+      "PAID": "Paid",
+      "OVERDUE": "Overdue",
+      "CANCELLED": "Cancelled",
+      "PARTIALLY_PAID": "Partially Paid",
+      "REJECTED": "Rejected",
+      "AWAITING_VERIFICATION": "Awaiting Verification"
+    },
+    "types": {
+      "MONTHLY_RENT": "Monthly Rent",
+      "DAILY_RENT": "Daily Rent",
+      "LATE_FEE": "Late Fee",
+      "SECURITY_DEPOSIT": "Security Deposit",
+      "UTILITIES": "Utilities",
+      "DAMAGE_FEE": "Damage Fee",
+      "MAINTENANCE_FEE": "Maintenance Fee",
+      "CLEANING_FEE": "Cleaning Fee",
+      "OTHER": "Other"
+    },
+    "methods": {
+      "BANK_TRANSFER": "Bank Transfer",
+      "CASH_TO_MANAGER": "Cash to Manager",
+      "STRIPE_CARD": "Stripe Card",
+      "CASH": "Cash",
+      "CARD": "Card",
+      "ONLINE": "Online Payment",
+      "OTHER": "Other"
+    },
+    "details": {
+      "title": "Payment Details",
+      "paymentDetails": "Payment Details",
+      "amount": "Amount",
+      "type": "Type",
+      "status": "Status",
+      "dueDate": "Due Date",
+      "paidDate": "Paid Date",
+      "paidAt": "Paid At",
+      "createdAt": "Created At",
+      "description": "Description",
+      "room": "Room",
+      "dormitory": "Dormitory",
+      "resident": "Resident",
+      "paymentProof": "Payment Proof",
+      "uploadProof": "Upload Proof",
+      "paymentInformation": "Payment Information",
+      "paymentMethod": "Payment Method",
+      "paymentItems": "Payment Items",
+      "uploadedProofDocument": "Uploaded proof document",
+      "download": "Download",
+      "downloadSuccess": "Payment proof downloaded successfully",
+      "downloadError": "Failed to download payment proof",
+      "rejectionReason": "Rejection Reason",
+      "managerNotes": "Manager Notes",
+      "close": "Close",
+      "na": "N/A",
+      "viewProof": "View Proof"
+    },
+    "create": {
+      "title": "Create Payment",
+      "bulkTitle": "Create Bulk Payments",
+      "bulkSubtitle": "Create payments for multiple users at once",
+      "selectRooms": "Select Rooms",
+      "pricingStrategy": "Pricing Strategy",
+      "fixedAmount": "Fixed Amount",
+      "roomBased": "Room-Based",
+      "useRoomPriceCategory": "Use room's price category",
+      "sameAmountForAll": "Same amount for all",
+      "roomPrice": "Room Price",
+      "baseAmount": "Base Amount (PLN)",
+      "enterAmount": "Enter amount",
+      "paymentType": "Payment Type",
+      "paymentMethod": "Payment Method",
+      "period": "Period (Days)",
+      "numberOfDays": "Number of days",
+      "dueDate": "Due Date",
+      "description": "Description",
+      "descriptionOptional": "Description (Optional)",
+      "descriptionPlaceholder": "Add a description for these payments...",
+      "noRooms": "No rooms available",
+      "loadingRooms": "Loading rooms...",
+      "roomsSelected": "rooms selected",
+      "selected": "selected",
+      "occupiedOnly": "Occupied Only",
+      "selectAll": "Select All",
+      "clear": "Clear",
+      "occupied": "occupied",
+      "summary": "Summary",
+      "summaryText": "This will create payments for residents in",
+      "summaryDetail": "Amounts will be calculated automatically based on each room's price category.",
+      "cancel": "Cancel",
+      "creating": "Creating...",
+      "createBulkPayments": "Create Bulk Payments"
+    },
+    "introduce": {
+      "title": "Introduce Payment",
+      "subtitle": "Here you can introduce new payments",
+      "paymentInformation": "Payment Information",
+      "payerDetails": "Payer Details",
+      "selectPayer": "Select Payer",
+      "loadingUsers": "Loading users...",
+      "paymentSummary": "Payment Summary",
+      "amount": "Amount ($)",
+      "type": "Type",
+      "notSet": "Not set",
+      "selectUser": "Select User",
+      "searchUsers": "Search users...",
+      "cancel": "Cancel",
+      "createPayment": "Create Payment"
+    },
+    "actions": {
+      "pay": "Pay Now",
+      "markAsPaid": "Mark as Paid",
+      "cancel": "Cancel Payment",
+      "create": "Create Payment",
+      "uploadProof": "Upload Proof"
+    },
+    "messages": {
+      "created": "Payment created successfully",
+      "updated": "Payment updated successfully",
+      "updateFailed": "Failed to update payment",
+      "deleted": "Payment deleted successfully",
+      "proofUploaded": "Payment proof uploaded successfully",
+      "failed": "Action failed. Please try again."
+    },
+    "filters": {
+      "all": "All",
+      "pending": "Pending",
+      "paid": "Paid",
+      "overdue": "Overdue",
+      "searchPlaceholder": "Search payments..."
+    },
+    "summary": {
+      "total": "Total",
+      "paid": "Paid",
+      "pending": "Pending",
+      "overdue": "Overdue"
+    },
+    "editDialog": {
+      "title": "Edit Payment",
+      "subtitle": "Update payment details for {{userName}}",
+      "amountLabel": "Amount ($)",
+      "amountPlaceholder": "Enter amount",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Enter description",
+      "dueDateLabel": "Due Date",
+      "paymentMethodLabel": "Payment Method",
+      "saveButton": "Save Changes"
+    },
+    "list": {
+      "title": "Payments Management",
+      "subtitle": "Manage and track all payment records",
+      "bulkCreate": "Bulk Create",
+      "createNew": "Create New Payment",
+      "searchPlaceholder": "Search payments...",
+      "statusFilter": "Status:",
+      "allStatuses": "All Statuses",
+      "loading": "Loading payments...",
+      "errorTitle": "Error Loading Payments",
+      "errorMessage": "Unable to load payment data. Please try again later.",
+      "noPaymentsTitle": "No Payments Found",
+      "noPaymentsMessage": "There are no payments matching your current filters.",
+      "createFirst": "Create First Payment",
+      "tableHeaders": {
+        "status": "Status",
+        "payerName": "Payer Name",
+        "amount": "Amount",
+        "dueDate": "Due Date",
+        "actions": "Actions"
+      },
+      "actions": {
+        "proof": "Proof",
+        "approve": "Approve",
+        "reject": "Reject",
+        "recreate": "Recreate Payment",
+        "edit": "Edit Payment"
+      },
+      "toast": {
+        "approveSuccess": "Payment approved successfully",
+        "approveFailed": "Failed to approve payment",
+        "rejectSuccess": "Payment rejected successfully",
+        "rejectFailed": "Failed to reject payment",
+        "recreateSuccess": "New payment created successfully",
+        "recreateFailed": "Failed to recreate payment",
+        "proofDownloaded": "Payment proof downloaded",
+        "proofDownloadFailed": "Failed to download payment proof"
+      }
+    },
+    "myPayments": {
+      "title": "My Payments",
+      "subtitle": "View and manage your payment history",
+      "stats": {
+        "totalPayments": "Total Payments",
+        "paid": "Paid",
+        "pending": "Pending",
+        "overdue": "Overdue"
+      },
+      "history": {
+        "title": "Payment History",
+        "loading": "Loading payments...",
+        "noPayments": "No payments found",
+        "noPaymentsMessage": "Your payment history will appear here once payments are created"
+      },
+      "table": {
+        "paymentType": "Payment Type",
+        "amount": "Amount",
+        "dueDate": "Due Date",
+        "status": "Status",
+        "method": "Method",
+        "actions": "Actions",
+        "proofUploaded": "Proof uploaded",
+        "paid": "Paid"
+      },
+      "buttons": {
+        "viewDetails": "View Details",
+        "download": "Download",
+        "uploadProof": "Upload Proof",
+        "uploading": "Uploading..."
+      },
+      "upload": {
+        "invalidFileType": "Invalid file type. Please upload JPG, PNG, or PDF files only.",
+        "fileTooLarge": "File too large. Maximum size is 5MB.",
+        "uploadError": "Failed to upload payment proof. Please try again."
+      }
+    },
+    "bulkPayment": {
+      "validation": {
+        "selectDueDate": "Please select a due date",
+        "selectRooms": "Please select at least one room",
+        "selectPriceCategory": "Please select a price category",
+        "enterAmount": "Please enter an amount",
+        "amountGreaterThanZero": "Amount must be greater than 0",
+        "dueDateNotPast": "Due date cannot be in the past"
+      }
+    }
+  }
+}

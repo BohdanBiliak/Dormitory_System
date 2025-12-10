@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { CreateConversationData } from '@/types/messaging.types';
 import { X, Search, Users, User } from 'lucide-react';
+import { useLanguage } from '@/providers/language.provider';
 
 interface CreateConversationModalProps {
   isOpen: boolean;
@@ -23,6 +24,7 @@ export const CreateConversationModal: React.FC<CreateConversationModalProps> = (
   onClose,
   onCreateConversation,
 }) => {
+  const { t } = useLanguage();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedUsers, setSelectedUsers] = useState<UserOption[]>([]);
   const [conversationTitle, setConversationTitle] = useState('');
@@ -62,7 +64,7 @@ export const CreateConversationModal: React.FC<CreateConversationModalProps> = (
       const users = response.data.users || response.data.data || response.data;
       setAvailableUsers(Array.isArray(users) ? users : []);
     } catch (error: any) {
-      const errorMessage = error.response?.data?.message || 'Failed to load users. Please try again.';
+      const errorMessage = error.response?.data?.message || t('messaging.createConversation.failedToLoadUsers');
       setUsersError(errorMessage);
       console.error('Error fetching users:', error);
     } finally {
@@ -131,7 +133,7 @@ export const CreateConversationModal: React.FC<CreateConversationModalProps> = (
         <div className="flex items-center justify-between p-6 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-t-2xl">
           <h3 className="text-xl font-bold text-gray-900 flex items-center">
             <Users className="w-6 h-6 mr-3 text-blue-600" />
-            New Conversation
+            {t('messaging.newConversation')}
           </h3>
           <button
             onClick={onClose}
@@ -148,13 +150,13 @@ export const CreateConversationModal: React.FC<CreateConversationModalProps> = (
             {(isGroup || selectedUsers.length > 1) && (
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Group Name (Optional)
+                  {t('messaging.createConversation.groupName')}
                 </label>
                 <input
                   type="text"
                   value={conversationTitle}
                   onChange={(e) => setConversationTitle(e.target.value)}
-                  placeholder="Enter group name"
+                  placeholder={t('messaging.createConversation.enterGroupName')}
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
@@ -164,11 +166,11 @@ export const CreateConversationModal: React.FC<CreateConversationModalProps> = (
             <div className="flex items-center justify-between">
               <div className="flex flex-col">
                 <label className="text-sm font-medium text-gray-700">
-                  Group Conversation
+                  {t('messaging.createConversation.groupConversation')}
                 </label>
                 {selectedUsers.length > 0 && (
                   <span className="text-xs text-gray-500 mt-1">
-                    {selectedUsers.length} participant{selectedUsers.length !== 1 ? 's' : ''} selected
+                    {selectedUsers.length} {t('messaging.createConversation.participantsSelected')}
                   </span>
                 )}
               </div>
@@ -190,7 +192,7 @@ export const CreateConversationModal: React.FC<CreateConversationModalProps> = (
             {/* User Search */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Add Participants
+                {t('messaging.createConversation.addParticipants')}
               </label>
               <div className="relative">
                 <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
@@ -198,7 +200,7 @@ export const CreateConversationModal: React.FC<CreateConversationModalProps> = (
                   type="text"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Search users..."
+                  placeholder={t('messaging.createConversation.searchUsers')}
                   className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
@@ -208,7 +210,7 @@ export const CreateConversationModal: React.FC<CreateConversationModalProps> = (
             {selectedUsers.length > 0 && (
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Selected ({selectedUsers.length})
+                  {t('messaging.createConversation.selected')} ({selectedUsers.length})
                 </label>
                 <div className="flex flex-wrap gap-2">
                   {selectedUsers.map(user => (
@@ -233,12 +235,12 @@ export const CreateConversationModal: React.FC<CreateConversationModalProps> = (
             {/* User List */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Available Users
+                {t('messaging.createConversation.availableUsers')}
               </label>
               <div className="border border-gray-200 rounded-lg max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
                 {isLoadingUsers ? (
                   <div className="p-4 text-center text-gray-500">
-                    Loading users...
+                    {t('messaging.createConversation.loadingUsers')}
                   </div>
                 ) : usersError ? (
                   <div className="p-4 text-center">
@@ -248,7 +250,7 @@ export const CreateConversationModal: React.FC<CreateConversationModalProps> = (
                       onClick={fetchUsers}
                       className="text-blue-600 hover:text-blue-800 text-sm"
                     >
-                      Try again
+                      {t('messaging.createConversation.tryAgain')}
                     </button>
                   </div>
                 ) : filteredUsers.length > 0 ? (
@@ -301,7 +303,7 @@ export const CreateConversationModal: React.FC<CreateConversationModalProps> = (
                   })
                 ) : (
                   <div className="p-4 text-center text-gray-500">
-                    {searchTerm ? 'No users found matching your search' : 'No users available'}
+                    {searchTerm ? t('messaging.createConversation.noUsersFound') : t('messaging.createConversation.noUsersAvailable')}
                   </div>
                 )}
               </div>
@@ -315,14 +317,14 @@ export const CreateConversationModal: React.FC<CreateConversationModalProps> = (
               onClick={onClose}
               className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50"
             >
-              Cancel
+              {t('messaging.createConversation.cancel')}
             </button>
             <button
               type="submit"
               disabled={selectedUsers.length === 0}
               className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
             >
-              <span>Create Conversation</span>
+              <span>{t('messaging.createConversation.createConversation')}</span>
               {selectedUsers.length > 0 && (
                 <span className="bg-blue-500 text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center">
                   {selectedUsers.length}

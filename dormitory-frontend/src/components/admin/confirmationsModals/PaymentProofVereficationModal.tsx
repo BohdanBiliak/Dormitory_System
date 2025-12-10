@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react'
 import { Description, Dialog, DialogBackdrop, DialogPanel, DialogTitle } from "@headlessui/react"
+import { useLanguage } from '@/providers/language.provider';
 
 interface PaymentProofModalProps {
     confirmation: any
@@ -16,6 +17,7 @@ export function PaymentProofModal({
                                       onApprove,
                                       onReject
                                   }: PaymentProofModalProps) {
+    const { t } = useLanguage();
     const [selectedImage, setSelectedImage] = useState<string | null>(null)
     const [showRejectionMenu, setShowRejectionMenu] = useState<boolean>(false)
     const [rejectionReason, setRejectionReason] = useState<string>("")
@@ -63,26 +65,11 @@ export function PaymentProofModal({
     }
 
     const getPaymentTypeLabel = (type: string) => {
-        const types: Record<string, string> = {
-            'MONTHLY_RENT': 'Monthly Rent',
-            'LATE_FEE': 'Late Fee',
-            'SECURITY_DEPOSIT': 'Security Deposit',
-            'UTILITIES': 'Utilities',
-            'DAMAGE_FEE': 'Damage Fee',
-            'OTHER': 'Other'
-        }
-        return types[type] || type
+        return t(`confirmations.paymentProof.paymentTypes.${type}`)
     }
 
     const getPaymentMethodLabel = (method: string) => {
-        const methods: Record<string, string> = {
-            'BANK_TRANSFER': 'Bank Transfer',
-            'CASH': 'Cash',
-            'CARD': 'Card',
-            'ONLINE': 'Online Payment',
-            'OTHER': 'Other'
-        }
-        return methods[method] || method
+        return t(`payments.methods.${method}`, method)
     }
 
     return (
@@ -132,7 +119,7 @@ export function PaymentProofModal({
                                     <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                     </svg>
-                                    <h3 className="text-xl font-bold text-gray-900">Payment Proof Document</h3>
+                                    <h3 className="text-xl font-bold text-gray-900">{t('confirmations.paymentProof.proofImage')}</h3>
                                 </div>
 
                                 {/* Payment Proof */}
@@ -142,7 +129,7 @@ export function PaymentProofModal({
                                             <svg className="w-5 h-5 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                             </svg>
-                                            Proof of Payment
+                                            {t('confirmations.paymentProof.proofImage')}
                                         </h4>
                                         <div
                                             className="relative group cursor-pointer overflow-hidden rounded-lg shadow-lg"
@@ -160,7 +147,7 @@ export function PaymentProofModal({
                                             </div>
                                         </div>
                                         <div className="mt-4 text-sm text-gray-600">
-                                            <p><span className="font-semibold">Uploaded:</span> {formatDate(confirmation.metadata.uploadedAt)}</p>
+                                            <p><span className="font-semibold">{t('confirmations.paymentProof.uploadedAt')}:</span> {formatDate(confirmation.metadata.uploadedAt)}</p>
                                         </div>
                                     </div>
                                 )}
@@ -171,8 +158,8 @@ export function PaymentProofModal({
                                         <svg className="mx-auto h-16 w-16 text-gray-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                         </svg>
-                                        <h3 className="text-lg font-semibold text-gray-700 mb-2">No Document Uploaded</h3>
-                                        <p className="text-gray-500">The payment proof hasn't been uploaded yet.</p>
+                                        <h3 className="text-lg font-semibold text-gray-700 mb-2">{t('payments.details.paymentProof', 'No Document')}</h3>
+                                        <p className="text-gray-500">{t('confirmations.paymentProof.noProof', 'No proof uploaded yet')}</p>
                                     </div>
                                 )}
                             </div>
@@ -185,7 +172,7 @@ export function PaymentProofModal({
                                         <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                         </svg>
-                                        <h3 className="text-xl font-bold text-gray-900">Student Information</h3>
+                                        <h3 className="text-xl font-bold text-gray-900">{t('confirmations.accommodationApproval.requestedBy', 'Student')}</h3>
                                     </div>
 
                                     <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
@@ -217,14 +204,14 @@ export function PaymentProofModal({
                                         <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
                                         </svg>
-                                        <h3 className="text-xl font-bold text-gray-900">Payment Details</h3>
+                                        <h3 className="text-xl font-bold text-gray-900">{t('payments.details.title')}</h3>
                                     </div>
 
                                     <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm space-y-4">
                                         {/* Amount - Large and prominent */}
                                         <div className="bg-green-50 rounded-lg p-4 border border-green-200">
                                             <label className="block text-sm font-semibold text-green-700 uppercase tracking-wide mb-1">
-                                                Amount
+                                                {t('payments.details.amount')}
                                             </label>
                                             <p className="text-3xl font-bold text-green-900">
                                                 {formatCurrency(confirmation.payment?.amount || confirmation.metadata?.amount || 0, confirmation.payment?.currency || 'PLN')}
@@ -234,7 +221,7 @@ export function PaymentProofModal({
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                             <div className="space-y-1">
                                                 <label className="block text-sm font-semibold text-gray-700 uppercase tracking-wide">
-                                                    Payment Type
+                                                    {t('payments.details.type')}
                                                 </label>
                                                 <p className="text-base text-gray-900 font-medium">
                                                     {getPaymentTypeLabel(confirmation.payment?.paymentType || confirmation.metadata?.paymentType || 'N/A')}
@@ -243,7 +230,7 @@ export function PaymentProofModal({
 
                                             <div className="space-y-1">
                                                 <label className="block text-sm font-semibold text-gray-700 uppercase tracking-wide">
-                                                    Payment Method
+                                                    {t('payments.details.method', 'Payment Method')}
                                                 </label>
                                                 <p className="text-base text-gray-900 font-medium">
                                                     {getPaymentMethodLabel(confirmation.payment?.paymentMethod || 'N/A')}
@@ -252,7 +239,7 @@ export function PaymentProofModal({
 
                                             <div className="space-y-1">
                                                 <label className="block text-sm font-semibold text-gray-700 uppercase tracking-wide">
-                                                    Due Date
+                                                    {t('payments.details.dueDate')}
                                                 </label>
                                                 <p className="text-base text-gray-900 font-medium">
                                                     {confirmation.payment?.dueDate ? formatDate(confirmation.payment.dueDate) : 'N/A'}
@@ -261,7 +248,7 @@ export function PaymentProofModal({
 
                                             <div className="space-y-1">
                                                 <label className="block text-sm font-semibold text-gray-700 uppercase tracking-wide">
-                                                    Status
+                                                    {t('payments.details.status')}
                                                 </label>
                                                 <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-bold ${
                                                     confirmation.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
@@ -279,7 +266,7 @@ export function PaymentProofModal({
                                         {confirmation.payment?.description && (
                                             <div className="space-y-1 pt-2 border-t border-gray-200">
                                                 <label className="block text-sm font-semibold text-gray-700 uppercase tracking-wide">
-                                                    Description
+                                                    {t('payments.details.description')}
                                                 </label>
                                                 <p className="text-base text-gray-900">
                                                     {confirmation.payment.description}
@@ -290,7 +277,7 @@ export function PaymentProofModal({
                                         {confirmation.rejectionReason && (
                                             <div className="space-y-1 pt-2 border-t border-red-200 bg-red-50 -mx-6 -mb-6 px-6 py-4 rounded-b-xl">
                                                 <label className="block text-sm font-semibold text-red-700 uppercase tracking-wide">
-                                                    Rejection Reason
+                                                    {t('confirmations.rejectionReason', 'Rejection Reason')}
                                                 </label>
                                                 <p className="text-base text-red-900 font-medium">
                                                     {confirmation.rejectionReason}

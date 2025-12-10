@@ -41,6 +41,112 @@
     "status": "Status",
     "active": "Active",
     "inactive": "Inactive",
-    "pending": "Pending"
+    "pending": "Pending",
+    "users": {
+      "title": "User Management",
+      "subtitle": "Manage dormitory residents and their information",
+      "createManager": "Create Manager",
+      "loading": "Loading user list...",
+      "errorLoading": "Error Loading Users",
+      "errorMessage": "Unable to load user list. Please try again later.",
+      "filters": "Filters",
+      "sortBy": "Sort by",
+      "sortByName": "Name",
+      "sortById": "ID",
+      "sortByRoom": "Room",
+      "userType": "User Type",
+      "allUsers": "All Users",
+      "nonResidents": "Non-residents",
+      "regular": "Regular",
+      "roomFloor": "Room Floor",
+      "selectFloors": "Select floors",
+      "paymentStatus": "Payment Status",
+      "allStatuses": "All Statuses",
+      "paid": "Paid",
+      "awaiting": "Awaiting",
+      "overdue": "Overdue",
+      "usersFound": "Users ({count} found)",
+      "noUsersFound": "No users found",
+      "noUsersMessage": "Try adjusting your filters to see more results",
+      "pagination": {
+        "page": "Page {current} of {total}",
+        "previous": "Previous",
+        "next": "Next"
+      }
+    },
+    "dormitories": {
+      "title": "Dormitory Management",
+      "createNew": "Create New Dormitory",
+      "loadingDormitories": "Loading dormitories...",
+      "activeDormitories": "Active Dormitories",
+      "deactivatedDormitories": "Deactivated Dormitories",
+      "active": "Active",
+      "inactive": "Inactive",
+      "noDormitories": "No Dormitories",
+      "noDormitoriesMessage": "Create your first dormitory to get started.",
+      "details": {
+        "title": "Dormitory Details",
+        "basicInfo": "Basic Information",
+        "name": "Dormitory Name",
+        "address": "Address",
+        "phone": "Ground Floor Phone",
+        "statistics": "Statistics",
+        "floors": "Floors",
+        "rooms": "Rooms",
+        "occupied": "Occupied",
+        "available": "Available",
+        "residents": "Residents",
+        "occupancyRate": "Occupancy Rate",
+        "photos": "Photos",
+        "noPhotos": "No photos available"
+      },
+      "management": {
+        "title": "Management",
+        "priceCategories": "Manage Price Categories",
+        "roomTemplates": "Manage Room Templates",
+        "roomStatus": "Manage Room Status"
+      },
+      "actions": {
+        "editDetails": "Edit Details",
+        "saveChanges": "Save Changes",
+        "cancel": "Cancel",
+        "viewRooms": "View Rooms",
+        "deactivate": "Deactivate",
+        "activate": "Activate"
+      },
+      "noSelection": {
+        "title": "No Dormitory Selected",
+        "message": "Select a dormitory from the list to view its details and manage settings."
+      }
+    }
+  },
+  "notifications": {
+    "title": "Notifications",
+    "subtitle": "Manage and track system notifications",
+    "loading": "Loading notifications...",
+    "filters": "Filters",
+    "notificationType": "Notification Type",
+    "allTypes": "All Types",
+    "readStatus": "Read Status",
+    "unread": "Unread",
+    "read": "Read",
+    "errorTitle": "Error Loading Notifications",
+    "errorMessage": "Unable to load notification data. Please try again later.",
+    "notificationsCount": "Notifications",
+    "markAsRead": "Mark as read",
+    "readAt": "Read:",
+    "noNotificationsTitle": "No Notifications Found",
+    "noNotificationsMessage": "There are no notifications matching your current filters.",
+    "notificationDialog": {
+      "detailsTitle": "Notification Details",
+      "createTitle": "Create Notification",
+      "detailsSubtitle": "View notification information",
+      "createSubtitle": "Create a new notification for users",
+      "titleLabel": "Title",
+      "messageLabel": "Message",
+      "addressesLabel": "Addresses",
+      "close": "Close",
+      "save": "Save"
+    }
   }
 }

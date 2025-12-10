@@ -1,5 +1,7 @@
 FROM node:20-bullseye AS build
+
 WORKDIR /app
+
 RUN apt-get update && apt-get install -y \
     build-essential \
     libcairo2-dev \
@@ -9,17 +11,29 @@ RUN apt-get update && apt-get install -y \
     librsvg2-dev \
     python3 \
     && rm -rf /var/lib/apt/lists/*
+
 COPY package*.json ./
-RUN npm install --include=optional
+
+RUN npm config set fetch-retries 5 \
+ && npm config set fetch-retry-factor 2 \
+ && npm config set fetch-retry-mintimeout 20000 \
+ && npm config set fetch-retry-maxtimeout 120000 \
+ && npm config set fetch-timeout 600000
+
+
+RUN if [ -f package-lock.json ]; then npm ci --include=optional; else npm install --include=optional; fi
 
 COPY . .
 
 ENV POSTGRES_URI="postgresql://dummy:dummy@localhost:5432/dummy"
 RUN npx prisma generate
+
 RUN NODE_OPTIONS="--max-old-space-size=4096" npm run build
 
-FROM node:20-bookworm-slim AS prod
 
+
+### --- PROD IMAGE ---
+FROM node:20-bookworm-slim AS prod
 WORKDIR /app
 
 RUN apt-get update && apt-get install -y \
@@ -34,9 +48,7 @@ RUN apt-get update && apt-get install -y \
 COPY --from=build /app/package*.json ./
 COPY --from=build /app/prisma ./prisma
 COPY --from=build /app/dist ./dist
-
 COPY --from=build /app/node_modules ./node_modules
 
 EXPOSE 4000
-
 CMD ["node", "dist/src/main.js"]

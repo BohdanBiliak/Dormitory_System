@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import {Confirmation} from "@/types/confirmations.types";
 import {Description, Dialog, DialogBackdrop, DialogPanel, DialogTitle} from "@headlessui/react";
+import { useLanguage } from '@/providers/language.provider';
 
 interface IdentityVerificationModalProps {
   confirmation: Confirmation
@@ -17,6 +18,7 @@ export function IdentityVerificationModal({
   onApprove,
   onReject
 }: IdentityVerificationModalProps) {
+  const { t } = useLanguage();
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [showRejectionMenu, setShowRejectionMenu] = useState<boolean>(false)
   const [rejectionReason, setRejectionReason] = useState<string>("")
@@ -72,14 +74,14 @@ export function IdentityVerificationModal({
               </div>
               <div>
                 <h2 className="text-2xl font-bold text-gray-900">
-                  Identity Verification
+                  {t('confirmations.identityVerification.title')}
                 </h2>
-                <p className="text-gray-600 mt-1">Review student identification documents</p>
+                <p className="text-gray-600 mt-1">{t('confirmations.identityVerification.description')}</p>
               </div>
             </div>
             <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
               <div className="text-sm text-gray-600">
-                <span className="font-semibold">From:</span> {confirmation.requester.displayName}
+                <span className="font-semibold">{t('confirmations.identityVerification.from')}</span> {confirmation.requester.displayName}
               </div>
               <div className="text-sm text-gray-500">
                 {formatDate(confirmation.createdAt)}
@@ -104,7 +106,7 @@ export function IdentityVerificationModal({
                   <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2m-9 4V4h10v2M7 8h10m-5 8l-3 3 3 3" />
                   </svg>
-                  <h3 className="text-xl font-bold text-gray-900">Student ID Documents</h3>
+                  <h3 className="text-xl font-bold text-gray-900">{t('confirmations.identityVerification.studentIdDocuments')}</h3>
                 </div>
                 
                 {/* Front ID */}
@@ -122,7 +124,7 @@ export function IdentityVerificationModal({
                     >
                       <img
                         src={confirmation.frontIdUrl}
-                        alt="Student ID Front"
+                        alt={t('confirmations.identityVerification.studentIdFront')}
                         className="w-full h-auto rounded-lg border border-gray-300 group-hover:scale-105 transition-transform duration-300"
                       />
                       <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20  flex items-center justify-center">
@@ -149,7 +151,7 @@ export function IdentityVerificationModal({
                     >
                       <img
                         src={confirmation.backIdUrl}
-                        alt="Student ID Back"
+                        alt={t('confirmations.identityVerification.studentIdBack')}
                         className="w-full h-auto rounded-lg border border-gray-300 group-hover:scale-105 transition-transform duration-300"
                       />
                       <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20  flex items-center justify-center">
@@ -167,8 +169,8 @@ export function IdentityVerificationModal({
                     <svg className="mx-auto h-16 w-16 text-gray-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
-                    <h3 className="text-lg font-semibold text-gray-700 mb-2">No Documents Uploaded</h3>
-                    <p className="text-gray-500">The student hasn't uploaded their ID documents yet.</p>
+                    <h3 className="text-lg font-semibold text-gray-700 mb-2">{t('confirmations.identityVerification.noDocumentsUploaded')}</h3>
+                    <p className="text-gray-500">{t('confirmations.identityVerification.noDocumentsDescription')}</p>
                   </div>
                 )}
               </div>
@@ -179,7 +181,7 @@ export function IdentityVerificationModal({
                   <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
-                  <h3 className="text-xl font-bold text-gray-900">Student Information</h3>
+                  <h3 className="text-xl font-bold text-gray-900">{t('confirmations.identityVerification.studentInformation')}</h3>
                 </div>
                 
                 <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
@@ -190,7 +192,7 @@ export function IdentityVerificationModal({
                         {confirmation.requester.picture ? (
                           <img
                             src={confirmation.requester.picture}
-                            alt="Student"
+                            alt={t('confirmations.identityVerification.student')}
                             className="w-full h-full rounded-full object-cover"
                           />
                         ) : (
@@ -209,30 +211,30 @@ export function IdentityVerificationModal({
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                       <div className="space-y-1">
                         <label className="block text-sm font-semibold text-gray-700 uppercase tracking-wide">
-                          First Name
+                          {t('confirmations.identityVerification.firstName')}
                         </label>
                         <p className="text-lg text-gray-900 font-medium">{confirmation.requester.displayName}</p>
                       </div>
 
                       <div className="space-y-1">
                         <label className="block text-sm font-semibold text-gray-700 uppercase tracking-wide">
-                          Last Name
+                          {t('confirmations.identityVerification.lastName')}
                         </label>
                         <p className="text-lg text-gray-900 font-medium">
-                          {confirmation.requester.secondName || <span className="text-gray-400 italic">Not provided</span>}
+                          {confirmation.requester.secondName || <span className="text-gray-400 italic">{t('confirmations.identityVerification.notProvided')}</span>}
                         </p>
                       </div>
 
                       <div className="space-y-1 sm:col-span-2">
                         <label className="block text-sm font-semibold text-gray-700 uppercase tracking-wide">
-                          Email Address
+                          {t('confirmations.identityVerification.emailAddress')}
                         </label>
                         <p className="text-lg text-gray-900 font-medium">{confirmation.requester.email}</p>
                       </div>
 
                       <div className="space-y-1">
                         <label className="block text-sm font-semibold text-gray-700 uppercase tracking-wide">
-                          Status
+                          {t('confirmations.identityVerification.status')}
                         </label>
                         <span className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-bold ${
                           confirmation.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
@@ -250,7 +252,7 @@ export function IdentityVerificationModal({
 
                       <div className="space-y-1">
                         <label className="block text-sm font-semibold text-gray-700 uppercase tracking-wide">
-                          Request Date
+                          {t('confirmations.identityVerification.requestDate')}
                         </label>
                         <p className="text-lg text-gray-900 font-medium">{formatDate(confirmation.createdAt)}</p>
                       </div>
@@ -271,7 +273,7 @@ export function IdentityVerificationModal({
                 <svg className="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
-                Reject Request
+                {t('confirmations.identityVerification.rejectRequest')}
               </button>
               <button
                 onClick={handleApprove}
@@ -280,7 +282,7 @@ export function IdentityVerificationModal({
                 <svg className="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
-                Approve Request
+                {t('confirmations.identityVerification.approveRequest')}
               </button>
             </div>
           )}
@@ -298,8 +300,8 @@ export function IdentityVerificationModal({
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   )}
                 </svg>
-                This confirmation has been {confirmation.status.toLowerCase()}
-                {confirmation.resolvedAt && ` on ${formatDate(confirmation.resolvedAt)}`}
+                {t('confirmations.identityVerification.confirmationResolved')} {confirmation.status.toLowerCase()}
+                {confirmation.resolvedAt && ` ${t('confirmations.identityVerification.confirmationResolvedOn')} ${formatDate(confirmation.resolvedAt)}`}
               </div>
             </div>
           )}
@@ -312,7 +314,7 @@ export function IdentityVerificationModal({
           <div className="relative max-w-7xl max-h-full">
             <img
               src={selectedImage}
-              alt="Enlarged view"
+              alt={t('confirmations.identityVerification.enlargedView')}
               className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             />
@@ -336,17 +338,17 @@ export function IdentityVerificationModal({
           <DialogPanel className="w-full max-w-lg bg-white rounded-2xl shadow-2xl animate-in zoom-in-95 fade-in-0 duration-300 slide-in-from-bottom-4">
             <div className="px-6 py-4 bg-red-50 border-b border-red-200">
               <DialogTitle className="text-lg font-semibold text-red-900">
-                Rejection reason
+                {t('confirmations.identityVerification.rejectionReason')}
               </DialogTitle>
               <Description className="text-red-700 text-sm mt-1">
-                Provide rejection reason for {confirmation.requester.displayName} {confirmation.requester.secondName}
+                {t('confirmations.identityVerification.provideRejectionReasonFor')} {confirmation.requester.displayName} {confirmation.requester.secondName}
               </Description>
             </div>
 
             <div className="p-6 space-y-4">
               <div className="animate-in fade-in-0 slide-in-from-left-2 duration-300 delay-150">
                 <label className="block text-sm font-medium text-slate-700 mb-2">
-                  Reason for rejection
+                  {t('confirmations.identityVerification.reasonForRejection')}
                 </label>
                 <input
                     name="description"
@@ -354,7 +356,7 @@ export function IdentityVerificationModal({
                     value={rejectionReason}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {setRejectionReason(event.target.value)}}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500  hover:shadow-sm"
-                    placeholder="Enter reason for eviction..."
+                    placeholder={t('confirmations.identityVerification.enterRejectionReason')}
                 />
               </div>
             </div>
@@ -364,13 +366,13 @@ export function IdentityVerificationModal({
                   className= "flex-1 bg-red-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2  hover:scale-105 hover:shadow-lg"
                   onClick={handleReject}
               >
-                Confirm rejection
+                {t('confirmations.identityVerification.confirmRejection')}
               </button>
               <button
                   className="flex-1 bg-slate-200 text-slate-700 py-2 px-4 rounded-lg font-medium hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2  hover:scale-105"
                   onClick={closeRejectionMenu}
               >
-                Cancel
+                {t('confirmations.actions.cancel')}
               </button>
             </div>
           </DialogPanel>

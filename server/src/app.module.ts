@@ -23,6 +23,7 @@ import { RoomTypesModule } from "./modules/dormitory/room-types/room-types.modul
 import { PriceCategoryModule } from "./modules/price-categories/price-category.module";
 import { MessagingModule } from "./modules/messaging/messaging.module";
 import { MaintenanceModule } from "./modules/maintenance/maintenance.module";
+import { ReportsModule } from "./modules/reports/reports.module";
 
 @Module({
   imports: [
@@ -51,6 +52,7 @@ import { MaintenanceModule } from "./modules/maintenance/maintenance.module";
     PriceCategoryModule,
     MessagingModule,
     MaintenanceModule,
+    ReportsModule,
   ],
   controllers: [],
   providers: [

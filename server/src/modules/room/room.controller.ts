@@ -64,7 +64,7 @@ export class RoomController {
   }
 
   @Patch(":id")
-  @Authorization(UserRole.Admin)
+  @Authorization(UserRole.Admin, UserRole.SuperAdmin)
   @RoomDocs.updateRoom()
   async updateRoom(
     @Param("id") id: string,

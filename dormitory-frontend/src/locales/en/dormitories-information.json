@@ -3,5 +3,38 @@
     "title": "Dormitories Information",
     "description": "Manage dormitory details and information",
     "noData": "No dormitories available"
+  },
+  "dormitoryDetails": {
+    "loading": "Loading dormitory details...",
+    "notFound": "Dormitory not found",
+    "backToList": "← Back to dormitories list",
+    "dormitoryInfo": "Dormitory Information",
+    "fields": {
+      "name": "Name",
+      "address": "Address",
+      "groundFloorPhone": "Ground Floor Phone",
+      "status": "Status",
+      "photos": "Photos"
+    },
+    "statuses": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "availability": {
+      "title": "Availability",
+      "available": "Available",
+      "readyForOccupancy": "Ready for occupancy",
+      "contactInfo": "For more information about room availability and booking, please contact the administration."
+    },
+    "actions": {
+      "writeToManager": "Write to dormitory manager",
+      "viewRooms": "View dormitory rooms"
+    },
+    "contact": {
+      "title": "Contact Information",
+      "groundFloorLabel": "Ground Floor Phone:",
+      "description": "Contact the ground floor reception for inquiries about room availability, applications, and general information."
+    },
+    "applicationNotice": "To apply for accommodation at this dormitory, please contact the administration office or call the ground floor reception."
   }
 }

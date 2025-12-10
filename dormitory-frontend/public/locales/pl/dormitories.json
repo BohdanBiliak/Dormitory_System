@@ -1,0 +1,54 @@
+{
+  "dormitories": {
+    "availableDormitories": "Dostępne akademiki",
+    "browseAccommodations": "Przeglądaj dostępne zakwaterowanie w akademikach",
+    "errorLoading": "Błąd ładowania akademików. Spróbuj ponownie.",
+    "viewDetails": "Zobacz szczegóły",
+    "noDormitories": "Brak dostępnych akademików",
+    "noDormitoriesMessage": "Obecnie brak akademików dostępnych do wyświetlenia."
+  },
+  "createDormitory": {
+    "title": "Utwórz Nowy Akademik",
+    "subtitle": "Utwórz i skonfiguruj nowy akademik",
+    "successTitle": "Akademik Utworzony Pomyślnie!",
+    "successSubtitle": "Twój akademik został utworzony i jest gotowy do użycia",
+    "creating": "Tworzenie...",
+    "cancel": "Anuluj",
+    "clearAll": "Wyczyść wszystko",
+    "createButton": "Utwórz Akademik",
+    "step": "Krok",
+    "of": "z",
+    "completed": "Ukończone",
+    "sections": {
+      "generalInfo": "Informacje Ogólne",
+      "roomGeneration": "Generowanie Pokoi",
+      "roomTemplates": "Szablony Pokoi",
+      "priceCategories": "Kategorie Cenowe"
+    },
+    "hints": {
+      "generalInfo": "Wypełnij podstawowe informacje o akademiku",
+      "roomGeneration": "Skonfiguruj piętra i rozmieszczenie pokoi",
+      "roomTemplates": "Zarządzaj szablonami pokoi",
+      "priceCategories": "Ustaw kategorie cenowe"
+    },
+    "validation": {
+      "nameRequired": "Nazwa akademiku jest wymagana",
+      "addressRequired": "Adres jest wymagany",
+      "phoneRequired": "Numer telefonu jest wymagany",
+      "phoneInvalid": "Numer telefonu musi zaczynać się od + i zawierać dokładnie 11 cyfr (np. +48123456789)",
+      "floorRequired": "Akademik powinien mieć co najmniej jedno piętro",
+      "floorEmpty": "Piętro {floor} nie może być puste",
+      "floorNumberInvalid": "Numer piętra musi być prawidłową liczbą (np. 0, 1, 2)",
+      "floorNumberRequired": "Numer piętra jest wymagany",
+      "templateNameRequired": "Nazwa szablonu jest wymagana",
+      "templateCodeRequired": "Kod szablonu jest wymagany",
+      "capacityMinimum": "Pojemność musi wynosić co najmniej 1",
+      "equipmentMinimum": "Wymagane są co najmniej 3 pozycje wyposażenia",
+      "categoryNameRequired": "Nazwa kategorii jest wymagana",
+      "categoryNameDuplicate": "Kategoria o tej nazwie już istnieje",
+      "priceMonthMinimum": "Cena za miesiąc musi być większa niż 0",
+      "priceDayMinimum": "Cena za dzień musi być większa niż 0",
+      "fillGeneralInfo": "Proszę wypełnić wszystkie wymagane pola poprawnie w sekcji Informacji Ogólnych"
+    }
+  }
+}

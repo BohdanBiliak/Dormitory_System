@@ -6,12 +6,14 @@ import {useState} from "react";
 import {ChevronLeft, ChevronRight} from "lucide-react";
 import {useCurrentUserProfile} from "@/hooks/user.hook";
 import {UserRole} from "@/types/auth.types";
+import { useLanguage } from "@/providers/language.provider";
 
 export interface GuestDormitoryDetailsPageProps{
   id:string;
 }
 
 export function UsersDormitoryDetailsPageComponent({ id }:GuestDormitoryDetailsPageProps) {
+  const { t } = useLanguage();
   const { data: dormitory, isLoading, error } = usePublicDormitoryDetails(id)
   const {data:user, isLoading: isLoadingUserData} = useCurrentUserProfile()
 
@@ -32,7 +34,7 @@ export function UsersDormitoryDetailsPageComponent({ id }:GuestDormitoryDetailsP
         <div className="bg-white shadow-lg rounded-lg p-8 max-w-md mx-4">
           <div className="flex items-center justify-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-            <span className="ml-3 text-gray-700 font-medium">Loading dormitory details...</span>
+            <span className="ml-3 text-gray-700 font-medium">{t('dormitoryDetails.loading')}</span>
           </div>
         </div>
       </div>
@@ -49,9 +51,9 @@ export function UsersDormitoryDetailsPageComponent({ id }:GuestDormitoryDetailsP
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
               </svg>
             </div>
-            <p className="text-gray-700 font-medium">Dormitory not found</p>
+            <p className="text-gray-700 font-medium">{t('dormitoryDetails.notFound')}</p>
             <Link href="/dormitories" className="text-blue-600 hover:text-blue-700 text-sm mt-2 inline-block">
-              ← Back to dormitories list
+              {t('dormitoryDetails.backToList')}
             </Link>
           </div>
         </div>
@@ -80,7 +82,7 @@ export function UsersDormitoryDetailsPageComponent({ id }:GuestDormitoryDetailsP
                 {dormitory.name}
               </h1>
               <p className="text-gray-600 text-sm md:text-base">
-                Dormitory Information
+                {t('dormitoryDetails.dormitoryInfo')}
               </p>
             </div>
           </div>
@@ -135,27 +137,27 @@ export function UsersDormitoryDetailsPageComponent({ id }:GuestDormitoryDetailsP
                     <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <h3 className="text-lg font-semibold text-gray-900">Dormitory Information</h3>
+                    <h3 className="text-lg font-semibold text-gray-900">{t('dormitoryDetails.dormitoryInfo')}</h3>
                   </div>
 
                   <div className="space-y-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-500 mb-1">Name</label>
+                      <label className="block text-sm font-medium text-gray-500 mb-1">{t('dormitoryDetails.fields.name')}</label>
                       <div className="text-base font-semibold text-gray-900">{dormitory.name}</div>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-500 mb-1">Address</label>
+                      <label className="block text-sm font-medium text-gray-500 mb-1">{t('dormitoryDetails.fields.address')}</label>
                       <div className="text-base text-gray-900">{dormitory.address}</div>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-500 mb-1">Ground Floor Phone</label>
+                      <label className="block text-sm font-medium text-gray-500 mb-1">{t('dormitoryDetails.fields.groundFloorPhone')}</label>
                       <div className="text-base text-gray-900">{dormitory.groundFloorPhoneNumber}</div>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-500 mb-1">Status</label>
+                      <label className="block text-sm font-medium text-gray-500 mb-1">{t('dormitoryDetails.fields.status')}</label>
                       <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
                         dormitory.status === 'Active' 
                           ? 'bg-green-100 text-green-800' 
@@ -164,12 +166,12 @@ export function UsersDormitoryDetailsPageComponent({ id }:GuestDormitoryDetailsP
                         <div className={`w-2 h-2 rounded-full mr-2 ${
                           dormitory.status === 'Active' ? 'bg-green-400' : 'bg-red-400'
                         }`}></div>
-                        {dormitory.status}
+                        {dormitory.status === 'Active' ? t('dormitoryDetails.statuses.active') : t('dormitoryDetails.statuses.inactive')}
                       </span>
                     </div>
                     {dormitory.photos.length > 0 ? (
                         <div>
-                          <label className="block text-xs sm:text-sm font-medium text-gray-500 mb-1">Photos</label>
+                          <label className="block text-xs sm:text-sm font-medium text-gray-500 mb-1">{t('dormitoryDetails.fields.photos')}</label>
                           <div className="relative h-64 md:h-96 rounded-lg overflow-hidden">
                             <img
                                 src={dormitory.photos[currentIndex]}
@@ -229,24 +231,24 @@ export function UsersDormitoryDetailsPageComponent({ id }:GuestDormitoryDetailsP
                   <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                   </svg>
-                  <h3 className="text-lg font-semibold text-gray-900">Availability</h3>
+                  <h3 className="text-lg font-semibold text-gray-900">{t('dormitoryDetails.availability.title')}</h3>
                 </div>
                 
                 <div className="space-y-3">
                   <div className="bg-blue-50 p-4 rounded-lg">
-                    <div className="text-2xl font-bold text-blue-900">Available</div>
-                    <div className="text-sm text-blue-600">Ready for occupancy</div>
+                    <div className="text-2xl font-bold text-blue-900">{t('dormitoryDetails.availability.available')}</div>
+                    <div className="text-sm text-blue-600">{t('dormitoryDetails.availability.readyForOccupancy')}</div>
                   </div>
                   
                   <div className="bg-gray-50 p-4 rounded-lg">
-                    <div className="text-sm text-gray-600">For more information about room availability and booking, please contact the administration.</div>
+                    <div className="text-sm text-gray-600">{t('dormitoryDetails.availability.contactInfo')}</div>
                   </div>
                 </div>
 
                 {user && user?.role && user?.role === UserRole.SignedInUser? (
                     <div className="flex flex-col items-center space-y-2">
-                      <button className="w-full sm:w-auto px-6 py-3 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" >Write to dormitory manager</button>
-                      <button className="w-full sm:w-auto px-6 py-3 bg-blue-800 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2">View dormitory rooms</button>
+                      <button className="w-full sm:w-auto px-6 py-3 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" >{t('dormitoryDetails.actions.writeToManager')}</button>
+                      <button className="w-full sm:w-auto px-6 py-3 bg-blue-800 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2">{t('dormitoryDetails.actions.viewRooms')}</button>
                     </div>
                 ):(
                     <></>
@@ -261,14 +263,14 @@ export function UsersDormitoryDetailsPageComponent({ id }:GuestDormitoryDetailsP
                   <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                   </svg>
-                  <h3 className="text-lg font-semibold text-blue-900">Contact Information</h3>
+                  <h3 className="text-lg font-semibold text-blue-900">{t('dormitoryDetails.contact.title')}</h3>
                 </div>
                 <div className="space-y-2">
                   <p className="text-blue-800">
-                    <span className="font-medium">Ground Floor Phone:</span> {dormitory.groundFloorPhoneNumber}
+                    <span className="font-medium">{t('dormitoryDetails.contact.groundFloorLabel')}</span> {dormitory.groundFloorPhoneNumber}
                   </p>
                   <p className="text-blue-700 text-sm">
-                    Contact the ground floor reception for inquiries about room availability, applications, and general information.
+                    {t('dormitoryDetails.contact.description')}
                   </p>
                 </div>
               </div>
@@ -281,7 +283,7 @@ export function UsersDormitoryDetailsPageComponent({ id }:GuestDormitoryDetailsP
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 <p className="text-yellow-800 font-medium">
-                  To apply for accommodation at this dormitory, please contact the administration office or call the ground floor reception.
+                  {t('dormitoryDetails.applicationNotice')}
                 </p>
               </div>
             </div>

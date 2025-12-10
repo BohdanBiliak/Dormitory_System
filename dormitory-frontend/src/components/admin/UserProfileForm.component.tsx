@@ -7,15 +7,17 @@ import {SquarePen} from "lucide-react";
 import {useManagers} from "@/hooks/managers.hook";
 import {ManagerEditionData} from "@/types/managers.types";
 import {useGetActiveDormitories} from "@/hooks/dormitories.hook";
+import { useLanguage } from "@/providers/language.provider";
 
 interface UserProfileFormProps {
     userId:string;
 }
 
 export function UserProfileForm({userId}:UserProfileFormProps){
+    const { t } = useLanguage();
     const {activateUser, deactivateUser, activatingUser, deactivatingUser} = useUserList();
 
-    const {updateManager, updatingManager} = useManagers();
+    const {updateManager, updatingManager, resetManagerPassword, resettingManagerPassword} = useManagers();
     const {data: activeDormitories, isLoading: loadingDormitories, error: errorDormitories} = useGetActiveDormitories();
 
     const [profileData, setProfileData] = useState({
@@ -27,6 +29,11 @@ export function UserProfileForm({userId}:UserProfileFormProps){
         dormitoryId: '',
     })
     const [editingUser, setEditingUser] = useState<boolean>(false)
+    const [showResetPasswordDialog, setShowResetPasswordDialog] = useState(false)
+    const [resetPasswordData, setResetPasswordData] = useState({
+        newPassword: '',
+        confirmPassword: ''
+    })
 
     const {data: userProfileData, isLoading, error} = useUserProfile(userId);
 
@@ -99,6 +106,29 @@ export function UserProfileForm({userId}:UserProfileFormProps){
         setEditingUser(false);
     }
 
+    const handleResetPassword = () => {
+        // Check if passwords match
+        if (resetPasswordData.newPassword !== resetPasswordData.confirmPassword) {
+            toast.error(t('profile.userProfile.passwordsDoNotMatch'));
+            return;
+        }
+
+        // Validate password format
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+        if (!passwordRegex.test(resetPasswordData.newPassword)) {
+            toast.error(t('profile.userProfile.passwordRequirements'));
+            return;
+        }
+
+        resetManagerPassword({
+            managerId: userId, 
+            newPassword: resetPasswordData.newPassword,
+            confirmPassword: resetPasswordData.confirmPassword
+        });
+        setShowResetPasswordDialog(false);
+        setResetPasswordData({newPassword: '', confirmPassword: ''});
+    }
+
     const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = e.target;
 
@@ -127,7 +157,7 @@ export function UserProfileForm({userId}:UserProfileFormProps){
                 <div className="bg-white shadow-lg rounded-lg p-8 max-w-md mx-4">
                     <div className="flex items-center justify-center">
                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-                        <span className="ml-3 text-gray-700 font-medium">Loading user profile...</span>
+                        <span className="ml-3 text-gray-700 font-medium">{t('profile.userProfile.loadingProfile')}</span>
                     </div>
                 </div>
             </div>
@@ -144,7 +174,7 @@ export function UserProfileForm({userId}:UserProfileFormProps){
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
                             </svg>
                         </div>
-                        <p className="text-gray-700 font-medium">Error loading user profile. Please try again.</p>
+                        <p className="text-gray-700 font-medium">{t('profile.userProfile.errorLoadingProfile')}</p>
                     </div>
                 </div>
             </div>
@@ -164,10 +194,10 @@ export function UserProfileForm({userId}:UserProfileFormProps){
                         </div>
                         <div>
                             <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900">
-                                User Profile
+                                {t('profile.userProfile.title')}
                             </h1>
                             <p className="text-gray-600 text-sm md:text-base">
-                                View and manage user account information
+                                {t('profile.userProfile.viewAndManageUser')}
                             </p>
                         </div>
                     </div>
@@ -189,7 +219,7 @@ export function UserProfileForm({userId}:UserProfileFormProps){
                                         {profileData.displayName} {profileData.lastName}
                                     </h2>
                                     <p className="text-blue-100 text-sm">
-                                        User ID: {userId}
+                                        {t('profile.userProfile.userId')} {userId}
                                     </p>
                                 </div>
                             </div>
@@ -204,7 +234,7 @@ export function UserProfileForm({userId}:UserProfileFormProps){
                                     <div className={`w-2 h-2 rounded-full mr-2 ${
                                         userProfileData?.isActive ? 'bg-green-400' : 'bg-red-400'
                                     }`}></div>
-                                    {userProfileData?.isActive ? 'Active' : 'Inactive'}
+                                    {userProfileData?.isActive ? t('profile.userProfile.active') : t('profile.userProfile.inactive')}
                                 </span>
                             </div>
                         </div>
@@ -221,7 +251,7 @@ export function UserProfileForm({userId}:UserProfileFormProps){
                                         {userProfileData?.picture ? (
                                             <img
                                                 src={profileData.photo}
-                                                alt="Profile"
+                                                alt={t('profile.profilePhoto')}
                                                 className="w-full h-full object-cover"
                                             />
                                         ) : (
@@ -230,9 +260,9 @@ export function UserProfileForm({userId}:UserProfileFormProps){
                                             </svg>
                                         )}
                                     </div>
-                                    <h3 className="font-semibold text-gray-900 mb-1">Profile Photo</h3>
+                                    <h3 className="font-semibold text-gray-900 mb-1">{t('profile.profilePhoto')}</h3>
                                     <p className="text-sm text-gray-600">
-                                        User avatar image
+                                        {t('profile.userProfile.userAvatarImage')}
                                     </p>
                                 </div>
                             </div>
@@ -246,13 +276,13 @@ export function UserProfileForm({userId}:UserProfileFormProps){
                                         <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                         </svg>
-                                        <h3 className="text-lg font-semibold text-gray-900">Personal Information</h3>
+                                        <h3 className="text-lg font-semibold text-gray-900">{t('profile.personalInformation')}</h3>
                                     </div>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <div className="space-y-2">
                                             <label className="block text-sm font-medium text-gray-700">
-                                                First Name
+                                                {t('profile.userProfile.firstName')}
                                             </label>
                                             <input
                                                 type="text"
@@ -266,7 +296,7 @@ export function UserProfileForm({userId}:UserProfileFormProps){
 
                                         <div className="space-y-2">
                                             <label className="block text-sm font-medium text-gray-700">
-                                                Last Name
+                                                {t('profile.lastName')}
                                             </label>
                                             <input
                                                 type="text"
@@ -281,7 +311,7 @@ export function UserProfileForm({userId}:UserProfileFormProps){
 
                                     <div className="space-y-2">
                                         <label className="block text-sm font-medium text-gray-700">
-                                            Email Address
+                                            {t('profile.emailAddress')}
                                         </label>
                                         <div className="relative">
                                             <input
@@ -303,7 +333,7 @@ export function UserProfileForm({userId}:UserProfileFormProps){
                                     {userProfileData && userProfileData.role === "Admin" && (
                                         <div className="space-y-2">
                                             <label className="block text-sm font-medium text-gray-700">
-                                                Manged dormitory
+                                                {t('profile.userProfile.dormitory')}
                                             </label>
                                             <div className="relative">
                                                 <select
@@ -312,7 +342,7 @@ export function UserProfileForm({userId}:UserProfileFormProps){
                                                     onChange={handleSelectChange}
                                                     disabled={!editingUser}
                                                 >
-                                                    <option value={''}>--None--</option>
+                                                    <option value={''}>{t('profile.userProfile.noDormitory')}</option>
                                                     {activeDormitories && activeDormitories.data && activeDormitories.data.length > 0 && (
                                                         activeDormitories.data.map((dormitory,index) => (
                                                             <option value={dormitory.id} key={index}>{dormitory.name}</option>
@@ -330,7 +360,7 @@ export function UserProfileForm({userId}:UserProfileFormProps){
                                         <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                                         </svg>
-                                        <h3 className="text-lg font-semibold text-gray-900">Account Information</h3>
+                                        <h3 className="text-lg font-semibold text-gray-900">{t('profile.accountInformation')}</h3>
                                     </div>
 
                                     <div className="bg-gray-50 rounded-lg p-4">
@@ -342,8 +372,8 @@ export function UserProfileForm({userId}:UserProfileFormProps){
                                                     </svg>
                                                 </div>
                                                 <div>
-                                                    <p className="font-medium text-gray-900">User Role</p>
-                                                    <p className="text-sm text-gray-600">Account permission level</p>
+                                                    <p className="font-medium text-gray-900">{t('profile.userProfile.userRole')}</p>
+                                                    <p className="text-sm text-gray-600">{t('profile.userProfile.accountPermissionLevel')}</p>
                                                 </div>
                                             </div>
                                             <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
@@ -361,7 +391,7 @@ export function UserProfileForm({userId}:UserProfileFormProps){
                                 <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                                 </svg>
-                                <h3 className="text-lg font-semibold text-gray-900">Quick Actions</h3>
+                                <h3 className="text-lg font-semibold text-gray-900">{t('profile.userProfile.quickActions')}</h3>
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
@@ -372,8 +402,8 @@ export function UserProfileForm({userId}:UserProfileFormProps){
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                                             </svg>
                                             <div>
-                                                <h4 className="font-medium text-blue-900">Messages</h4>
-                                                <p className="text-sm text-blue-600">View conversations</p>
+                                                <h4 className="font-medium text-blue-900">{t('profile.userProfile.messages')}</h4>
+                                                <p className="text-sm text-blue-600">{t('profile.userProfile.viewConversations')}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -386,8 +416,8 @@ export function UserProfileForm({userId}:UserProfileFormProps){
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
                                             </svg>
                                             <div>
-                                                <h4 className="font-medium text-green-900">Payments</h4>
-                                                <p className="text-sm text-green-600">Payment history</p>
+                                                <h4 className="font-medium text-green-900">{t('profile.userProfile.payments')}</h4>
+                                                <p className="text-sm text-green-600">{t('profile.userProfile.paymentHistory')}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -400,8 +430,8 @@ export function UserProfileForm({userId}:UserProfileFormProps){
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                                             </svg>
                                             <div>
-                                                <h4 className="font-medium text-purple-900">Room</h4>
-                                                <p className="text-sm text-purple-600">Room details</p>
+                                                <h4 className="font-medium text-purple-900">{t('profile.userProfile.room')}</h4>
+                                                <p className="text-sm text-purple-600">{t('profile.userProfile.roomDetails')}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -412,11 +442,11 @@ export function UserProfileForm({userId}:UserProfileFormProps){
                             <div className="flex flex-col sm:flex-row sm:justify-end space-y-3 sm:space-y-0 sm:space-x-4">
                                 {(userProfileData && userProfileData.role === 'Admin') && (
                                     <button
-                                        //onClick={handleManagerPasswordReset}
+                                        onClick={() => setShowResetPasswordDialog(true)}
                                         className="w-full sm:w-auto px-6 py-3 bg-gray-600 text-white font-medium rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors flex items-center justify-center space-x-2"
                                     >
 
-                                        <span>Reset Password</span>
+                                        <span>{t('profile.userProfile.resetPassword')}</span>
                                     </button>
                                 )}
                                 {(userProfileData && userProfileData.role === 'Admin') && (
@@ -427,14 +457,14 @@ export function UserProfileForm({userId}:UserProfileFormProps){
                                                 className="w-full sm:w-auto px-6 py-3 bg-gray-600 text-white font-medium rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors flex items-center justify-center space-x-2"
                                             >
                                                 <SquarePen className="w-5 h-5" fill="none" viewBox="0 0 24 24"/>
-                                                <span>Cancel changes</span>
+                                                <span>{t('profile.userProfile.cancelButton')}</span>
                                             </button>
                                             <button
                                                 onClick={handleSaveManagersChanges}
                                                 className="w-full sm:w-auto px-6 py-3 bg-gray-600 text-white font-medium rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors flex items-center justify-center space-x-2"
                                             >
                                                 <SquarePen className="w-5 h-5" fill="none" viewBox="0 0 24 24"/>
-                                                <span>Save changes</span>
+                                                <span>{t('profile.userProfile.saveChangesButton')}</span>
                                             </button>
                                         </>
                                     ):(
@@ -443,7 +473,7 @@ export function UserProfileForm({userId}:UserProfileFormProps){
                                             className="w-full sm:w-auto px-6 py-3 bg-gray-600 text-white font-medium rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors flex items-center justify-center space-x-2"
                                         >
                                             <SquarePen className="w-5 h-5" fill="none" viewBox="0 0 24 24"/>
-                                            <span>Edit Profile</span>
+                                            <span>{t('profile.userProfile.editProfileButton')}</span>
                                         </button>
                                     )
                                 )}
@@ -455,7 +485,7 @@ export function UserProfileForm({userId}:UserProfileFormProps){
                                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L18.364 5.636M5.636 18.364l12.728-12.728" />
                                         </svg>
-                                        <span>Deactivate Profile</span>
+                                        <span>{t('profile.userProfile.deactivateProfileButton')}</span>
                                     </button>
                                 ) : (
                                     <button 
@@ -465,7 +495,7 @@ export function UserProfileForm({userId}:UserProfileFormProps){
                                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
-                                        <span>Activate Profile</span>
+                                        <span>{t('profile.userProfile.activateProfileButton')}</span>
                                     </button>
                                 )}
                             </div>
@@ -473,6 +503,75 @@ export function UserProfileForm({userId}:UserProfileFormProps){
                     </div>
                 </div>
             </div>
+
+            {/* Reset Password Dialog */}
+            {showResetPasswordDialog && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-xl shadow-2xl max-w-md w-full p-6">
+                        <h3 className="text-xl font-bold text-gray-900 mb-4">{t('profile.userProfile.resetManagerPassword')}</h3>
+                        <div className="space-y-4">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    {t('profile.userProfile.newPassword')}
+                                </label>
+                                <input
+                                    type="password"
+                                    value={resetPasswordData.newPassword}
+                                    onChange={(e) => setResetPasswordData({...resetPasswordData, newPassword: e.target.value})}
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    placeholder={t('profile.userProfile.enterNewPassword')}
+                                    minLength={8}
+                                />
+                                <p className="text-xs text-gray-500 mt-1">
+                                    {t('profile.userProfile.passwordRequirementsDescription')}
+                                </p>
+                                {resetPasswordData.newPassword && !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(resetPasswordData.newPassword) && (
+                                    <p className="text-xs text-red-500 mt-1">{t('profile.userProfile.passwordDoesNotMeetRequirements')}</p>
+                                )}
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    {t('profile.userProfile.confirmPassword')}
+                                </label>
+                                <input
+                                    type="password"
+                                    value={resetPasswordData.confirmPassword}
+                                    onChange={(e) => setResetPasswordData({...resetPasswordData, confirmPassword: e.target.value})}
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    placeholder={t('profile.userProfile.confirmNewPassword')}
+                                />
+                                {resetPasswordData.confirmPassword && resetPasswordData.newPassword !== resetPasswordData.confirmPassword && (
+                                    <p className="text-xs text-red-500 mt-1">{t('profile.userProfile.passwordsDoNotMatchError')}</p>
+                                )}
+                            </div>
+                            <div className="flex space-x-3 pt-4">
+                                <button
+                                    onClick={() => {
+                                        setShowResetPasswordDialog(false);
+                                        setResetPasswordData({newPassword: '', confirmPassword: ''});
+                                    }}
+                                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                                >
+                                    {t('profile.userProfile.cancelButton')}
+                                </button>
+                                <button
+                                    onClick={handleResetPassword}
+                                    disabled={
+                                        !resetPasswordData.newPassword || 
+                                        !resetPasswordData.confirmPassword || 
+                                        resetPasswordData.newPassword !== resetPasswordData.confirmPassword || 
+                                        !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(resetPasswordData.newPassword) ||
+                                        resettingManagerPassword
+                                    }
+                                    className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    {resettingManagerPassword ? t('profile.userProfile.resettingPasswordButton') : t('profile.userProfile.resetPasswordButton')}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
-    )
+    );
 };

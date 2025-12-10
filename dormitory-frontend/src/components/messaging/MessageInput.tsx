@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Paperclip, X } from 'lucide-react';
 import { Message } from '@/types/messaging.types';
+import { useLanguage } from '@/providers/language.provider';
 
 interface MessageInputProps {
   onSendMessage: (content: string, attachments?: { url: string; name: string; type: string }) => void;
@@ -21,8 +22,9 @@ export const MessageInput: React.FC<MessageInputProps> = React.memo(({
   replyTo,
   onCancelReply,
   disabled = false,
-  placeholder = 'Type a message...',
+  placeholder,
 }) => {
+  const { t } = useLanguage();
   const [message, setMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [attachments, setAttachments] = useState<{ url: string; name: string; type: string } | null>(null);
@@ -134,7 +136,7 @@ export const MessageInput: React.FC<MessageInputProps> = React.memo(({
           <div className="flex items-start justify-between">
             <div className="flex-1 min-w-0">
               <div className="text-xs sm:text-sm font-semibold text-blue-900 mb-1">
-                Replying to {replyTo.sender.displayName}
+                {t('messaging.messages.replyingTo')} {replyTo.sender.displayName}
               </div>
               <div className="text-xs sm:text-sm text-gray-700 truncate bg-white bg-opacity-50 rounded px-2 py-1">
                 {replyTo.content}
@@ -160,7 +162,7 @@ export const MessageInput: React.FC<MessageInputProps> = React.memo(({
               </div>
               <div className="min-w-0 flex-1">
                 <span className="text-sm font-medium text-gray-800 truncate block">{attachments.name}</span>
-                <span className="text-xs text-gray-500">Ready to send</span>
+                <span className="text-xs text-gray-500">{t('messaging.messages.readyToSend')}</span>
               </div>
             </div>
             <button
@@ -181,7 +183,7 @@ export const MessageInput: React.FC<MessageInputProps> = React.memo(({
             value={message}
             onChange={handleInputChange}
             onKeyPress={handleKeyPress}
-            placeholder={placeholder}
+            placeholder={placeholder || t('messaging.typeMessage')}
             disabled={disabled}
             rows={1}
             className="w-full resize-none border border-gray-300 rounded-2xl px-4 py-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 max-h-32 overflow-y-auto disabled:bg-gray-100 disabled:cursor-not-allowed transition-all duration-200 shadow-sm focus:shadow-md bg-gray-50 focus:bg-white scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100"
@@ -193,7 +195,7 @@ export const MessageInput: React.FC<MessageInputProps> = React.memo(({
           onClick={() => fileInputRef.current?.click()}
           disabled={disabled}
           className="p-3 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-2xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0 hover:scale-105"
-          title="Attach file"
+          title={t('messaging.attachFile')}
         >
           <Paperclip size={20} />
         </button>
@@ -203,7 +205,7 @@ export const MessageInput: React.FC<MessageInputProps> = React.memo(({
           onClick={handleSendMessage}
           disabled={disabled || (!message.trim() && !attachments)}
           className="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-3 rounded-2xl hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl disabled:hover:shadow-lg flex-shrink-0 hover:scale-105 disabled:hover:scale-100"
-          title="Send message"
+          title={t('messaging.sendMessage')}
         >
           <Send size={20} />
         </button>
@@ -221,7 +223,7 @@ export const MessageInput: React.FC<MessageInputProps> = React.memo(({
       {/* Disabled message */}
       {disabled && (
         <div className="mt-2 text-xs text-gray-500 text-center">
-          Connecting to server...
+          {t('messaging.messages.connectingToServer')}
         </div>
       )}
     </div>

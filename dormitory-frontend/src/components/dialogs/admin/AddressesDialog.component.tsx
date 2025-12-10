@@ -5,6 +5,7 @@ import {Room, RoomResident} from "@/types/rooms.types";
 import { User } from "@/types/auth.types";
 import {useGetActiveDormitories} from "@/hooks/dormitories.hook";
 import {useGetRooms} from "@/hooks/rooms.hook";
+import { useLanguage } from "@/providers/language.provider";
 
 export interface AddressesDialogProps {
     open: boolean;
@@ -34,6 +35,7 @@ export interface AddresseeItem {
 
 export default function AddressesDialogComponent({open, onClose, onConfirm, preSelected}: AddressesDialogProps) {
 
+    const { t } = useLanguage();
     const {data: activeDorms, isLoading: loadingDormitories, error: dormitoriesError} = useGetActiveDormitories()
 
     const [chosenAddresses, setChosenAddresses] = useState<AddresseeItem[]>([]);
@@ -155,7 +157,7 @@ export default function AddressesDialogComponent({open, onClose, onConfirm, preS
                             type="button"
                             onClick={() => (toggleShowChildren(item))}
                             className="flex-shrink-0 w-5 h-5 flex items-center justify-center hover:bg-gray-300 rounded"
-                            aria-label={item.showChildren ? "Collapse" : "Expand"}
+                            aria-label={item.showChildren ? t('dialogs.addresses.ariaLabels.collapse') : t('dialogs.addresses.ariaLabels.expand')}
                         >
                             <svg
                                 className={`w-4 h-4 transition-transform ${item.showChildren ? 'rotate-90' : ''}`}
@@ -182,7 +184,7 @@ export default function AddressesDialogComponent({open, onClose, onConfirm, preS
                     </label>
 
                     <span className="text-xs text-gray-500 bg-gray-200 px-2 py-1 rounded">
-                        {AddresseeType[item.type]}
+                        {t(`dialogs.addresses.types.${AddresseeType[item.type]}`)}
                     </span>
                 </div>
 
@@ -260,10 +262,10 @@ export default function AddressesDialogComponent({open, onClose, onConfirm, preS
                                 </div>
                                 <div>
                                     <DialogTitle className="text-xl font-semibold text-white">
-                                        Select Recipients
+                                        {t('dialogs.addresses.title')}
                                     </DialogTitle>
                                     <Description className="text-blue-100 text-sm mt-1">
-                                        Choose dormitories, floors, rooms, or residents to contact
+                                        {t('dialogs.addresses.subtitle')}
                                     </Description>
                                 </div>
                             </div>
@@ -285,7 +287,7 @@ export default function AddressesDialogComponent({open, onClose, onConfirm, preS
                                 shownAddresses.map((item) => renderItemWithChildren(item))
                             ) : (
                                 <div className="text-center py-8 text-gray-500">
-                                    No dormitories available
+                                    {t('dialogs.addresses.noDormitories')}
                                 </div>
                             )}
                         </div>
@@ -297,13 +299,13 @@ export default function AddressesDialogComponent({open, onClose, onConfirm, preS
                             onClick={onClose}
                             className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
                         >
-                            Cancel
+                            {t('dialogs.addresses.buttons.cancel')}
                         </button>
                         <button
                             onClick={handleConfirm}
                             className="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
                         >
-                            Confirm Selection
+                            {t('dialogs.addresses.buttons.confirm')}
                         </button>
                     </div>
                 </DialogPanel>

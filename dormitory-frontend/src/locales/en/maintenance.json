@@ -1,0 +1,106 @@
+{
+  "maintenance": {
+    "title": "Maintenance Requests",
+    "reportMaintenance": "Report Maintenance",
+    "viewDetails": "View Details",
+    "createReport": "Create Report",
+    "submitting": "Submitting...",
+    "categories": {
+      "PLUMBING": "Plumbing",
+      "ELECTRICAL": "Electrical",
+      "HEATING": "Heating",
+      "FURNITURE": "Furniture",
+      "APPLIANCES": "Appliances",
+      "WINDOWS_DOORS": "Windows & Doors",
+      "CLEANING": "Cleaning",
+      "INTERNET": "Internet",
+      "OTHER": "Other"
+    },
+    "priorities": {
+      "LOW": "Low",
+      "MEDIUM": "Medium",
+      "HIGH": "High",
+      "URGENT": "Urgent"
+    },
+    "statuses": {
+      "PENDING": "Pending",
+      "IN_PROGRESS": "In Progress",
+      "RESOLVED": "Resolved",
+      "CANCELLED": "Cancelled"
+    },
+    "fields": {
+      "title": "Title",
+      "titlePlaceholder": "Brief summary of the issue",
+      "category": "Category",
+      "categoryPlaceholder": "Select a category",
+      "priority": "Priority Level",
+      "location": "Location",
+      "locationPlaceholder": "e.g., Room 204, Kitchen",
+      "description": "Description",
+      "descriptionPlaceholder": "Please provide detailed information about the maintenance issue...",
+      "attachments": "Attachments",
+      "attachmentsHelp": "Upload images (max 5 files, 5MB each)"
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "submit": "Submit Report",
+      "uploadFiles": "Upload Files",
+      "selectFiles": "Select Files"
+    },
+    "messages": {
+      "maxFiles": "You can upload a maximum of 5 files",
+      "reportSubmitted": "Maintenance report submitted successfully",
+      "reportFailed": "Failed to submit maintenance report",
+      "required": "This field is required"
+    },
+    "dashboard": {
+      "title": "Maintenance Reports",
+      "subtitle": "Manage and respond to resident maintenance requests",
+      "filters": "Filters",
+      "all": "All",
+      "stats": {
+        "pending": "Pending",
+        "inProgress": "In Progress",
+        "resolved": "Resolved"
+      },
+      "empty": "No maintenance requests found",
+      "emptySubtitle": "There are no maintenance requests at the moment"
+    },
+    "details": {
+      "reportDetails": "Report Details",
+      "category": "Category",
+      "priority": "Priority",
+      "status": "Status",
+      "location": "Location",
+      "description": "Description",
+      "reported": "Reported",
+      "resolved": "Resolved",
+      "chatActive": "Chat Active",
+      "noChatYet": "No chat yet",
+      "attachments": "Attachments",
+      "actions": "Actions",
+      "createConversation": "Create Conversation",
+      "viewConversation": "View Conversation"
+    },
+    "createDialog": {
+      "title": "Report Maintenance Issue",
+      "alertTitle": "Important Information",
+      "alertMessage": "An admin will be notified immediately and a conversation will be created to discuss the issue with you.",
+      "categoryLabel": "Issue Category",
+      "priorityLabel": "Priority Level",
+      "titleLabel": "Issue Title",
+      "titlePlaceholder": "e.g., Broken faucet in bathroom",
+      "locationLabel": "Specific Location",
+      "locationPlaceholder": "e.g., Room 204, Bathroom sink",
+      "descriptionLabel": "Detailed Description",
+      "descriptionPlaceholder": "Describe the issue in detail...",
+      "attachPhotosLabel": "Attach Photos (Optional)",
+      "uploadText": "Click to upload photos",
+      "uploading": "Uploading...",
+      "uploadHint": "PNG, JPG up to 10MB",
+      "cancel": "Cancel",
+      "submit": "Submit Report",
+      "submitting": "Submitting..."
+    }
+  }
+}

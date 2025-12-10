@@ -10,6 +10,7 @@ import {useGetAvailableRoom, useGetRoom, useGetRooms, useUpdateRoom} from "@/hoo
 import {AvailableRoomsRequest, Room, RoomResident} from "@/types/rooms.types";
 import { CalendarOfAvailability2WVerComponent } from "@/components/ui/CalendarOfAvailability2WVer.component";
 import EvictionFlowDialogsComponent from "@/components/dialogs/admin/EvictionFlowDialogs.component";
+import { useLanguage } from "@/providers/language.provider";
 
 interface Filters {
     dateFrom: string;
@@ -19,6 +20,7 @@ interface Filters {
 }
 
 export default function AllRoomsPage() {
+    const { t } = useLanguage();
 
     // Dormitories, floors and rooms
     const [dormitoriesList, setDormitoriesList] = useState<Dormitory[]>([]);
@@ -189,15 +191,15 @@ export default function AllRoomsPage() {
     }
 
     return (
-        <div className="min-h-screen bg-slate-50">
+        <div className="h-screen bg-slate-50 flex flex-col overflow-hidden">
             {/* Header */}
-            <div className="bg-white border-b border-slate-200 shadow-sm animate-in slide-in-from-top-4 duration-500">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-6">
+            <div className="bg-white border-b border-slate-200 shadow-sm animate-in slide-in-from-top-4 duration-500 flex-shrink-0">
+                <div className="w-full px-6 py-6">
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                         <div className="animate-in fade-in-0 slide-in-from-left-4 duration-500">
                             <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 flex items-center">
                                 <Building className="w-6 h-6 sm:w-8 sm:h-8 mr-2 sm:mr-3 text-blue-600 flex-shrink-0" />
-                                <span className="truncate">Available Rooms</span>
+                                <span className="truncate">{t('rooms.adminAllRooms.title')}</span>
                             </h1>
                             <p className="text-slate-600 mt-1 text-sm sm:text-base">Manage and view all dormitory rooms</p>
                         </div>
@@ -218,8 +220,8 @@ export default function AllRoomsPage() {
 
             {/* Filters Section */}
             {showFilters && (
-                <div className="bg-white border-b border-slate-200 shadow-sm animate-in slide-in-from-top-2 duration-300">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+                <div className="bg-white border-b border-slate-200 shadow-sm animate-in slide-in-from-top-2 duration-300 flex-shrink-0">
+                    <div className="w-full px-6 py-4">
                         <div className="space-y-4">
                             <span className="text-sm font-medium text-slate-700">Filters:</span>
 
@@ -262,7 +264,7 @@ export default function AllRoomsPage() {
                                 <div className="flex items-center justify-between sm:justify-start space-x-2 bg-slate-100 rounded-lg px-3 py-2 delay-75">
                                     <div className="flex items-center space-x-2">
                                         <Users className="w-4 h-4 text-slate-500" />
-                                        <span className="text-sm text-slate-700">Empty room:</span>
+                                        <span className="text-sm text-slate-700">{t('rooms.adminAllRooms.emptyRoom')}</span>
                                     </div>
                                     <div className="flex items-center space-x-2">
                                         <select
@@ -270,9 +272,9 @@ export default function AllRoomsPage() {
                                             onChange={(e) => handleFilterChange('residents', e.target.value)}
                                             className="text-sm border-none bg-white rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                         >
-                                            <option value="empty">Yes</option>
-                                            <option value="occupied">No</option>
-                                            <option value="either">Doesn't matter</option>
+                                            <option value="empty">{t('rooms.adminAllRooms.yes')}</option>
+                                            <option value="occupied">{t('rooms.adminAllRooms.no')}</option>
+                                            <option value="either">{t('rooms.adminAllRooms.doesntMatter')}</option>
                                         </select>
                                         <button
                                             onClick={() => clearFilter('residents')}
@@ -285,7 +287,7 @@ export default function AllRoomsPage() {
 
                                 {/* Group Booking */}
                                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-2 bg-slate-100 rounded-lg p-3 sm:px-3 sm:py-2 delay-225">
-                                    <span className="text-sm text-slate-700">Book a room for group:</span>
+                                    <span className="text-sm text-slate-700">{t('rooms.adminAllRooms.bookForGroup')}</span>
                                     <div className="flex items-center space-x-2">
                                         <input
                                             type="number"
@@ -294,7 +296,7 @@ export default function AllRoomsPage() {
                                             onChange={(e) => handleFilterChange('groupSize', parseInt(e.target.value))}
                                             className="w-16 text-sm text-center border-none bg-white rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                         />
-                                        <span className="text-sm text-slate-700">people</span>
+                                        <span className="text-sm text-slate-700">{t('rooms.adminAllRooms.people')}</span>
                                         <button
                                             onClick={() => clearFilter('groupSize')}
                                             className="text-slate-500 hover:text-slate-700 transition-colors p-1"
@@ -310,7 +312,7 @@ export default function AllRoomsPage() {
             )}
 
             {/* Main Content */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-6">
+            <div className="w-full px-6 py-6 flex-1 overflow-y-auto">
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-6">
 
                     {/* Left Column - Dormitory and Floor Selection */}
@@ -321,14 +323,14 @@ export default function AllRoomsPage() {
                             <div className="px-3 sm:px-4 py-2 sm:py-3 bg-slate-50 border-b border-slate-200">
                                 <h2 className="text-sm sm:text-base font-semibold text-slate-900 flex items-center">
                                     <MapPin className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-blue-600 flex-shrink-0" />
-                                    <span className="truncate">Dormitory:
+                                    <span className="truncate">{t('rooms.adminAllRooms.dormitory')}
                                         <select name="currentDormitory" id="dormitory-select" onChange={handleDormitoryChange} className="ml-2 text-sm border rounded px-2 py-1">
                                             {dormitoriesList ? (
                                                 dormitoriesList.map((dormitory) => (
                                                     <option key={dormitory.id} value={dormitory.id}>{dormitory.name}</option>
                                                 ))
                                             ) : (
-                                                <option value={""}>No dormitories available</option>
+                                                <option value="">{t('rooms.adminAllRooms.noDormitories')}</option>
                                             )}
                                         </select>
                                     </span>
@@ -336,7 +338,7 @@ export default function AllRoomsPage() {
                             </div>
                             <div className="p-3 sm:p-4">
                                 <div className="space-y-2">
-                                    <span className="text-sm font-medium text-slate-700">Floor:</span>
+                                    <span className="text-sm font-medium text-slate-700">{t('rooms.adminAllRooms.floor')}</span>
                                     <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-2">
                                         {currentDormitory && currentDormitory.floors &&  currentDormitory.floors.length > 0 ? (
                                             currentDormitory.floors.map((floor, index) => (
@@ -389,20 +391,20 @@ export default function AllRoomsPage() {
                                 <div className="mt-3 sm:mt-4 grid grid-cols-1 sm:grid-cols-4 gap-2 sm:gap-3 text-xs sm:text-sm delay-300">
                                     <div className="flex items-center space-x-2">
                                         <div className="w-3 h-3 bg-green-500 rounded flex-shrink-0"></div>
-                                        <span className="text-slate-700">Available</span>
+                                        <span className="text-slate-700">{t('rooms.adminAllRooms.available')}</span>
                                     </div>
                                     <div className="flex items-center space-x-2">
                                         <div className="w-3 h-3 bg-blue-500 rounded flex-shrink-0"></div>
-                                        <span className="text-slate-700">Partially occupied</span>
+                                        <span className="text-slate-700">{t('rooms.adminAllRooms.partiallyOccupied')}</span>
                                     </div>
                                     <div className="flex items-center space-x-2">
                                         <div className="w-3 h-3 bg-red-500 rounded flex-shrink-0"></div>
-                                        <span className="text-slate-700">Fully occupied</span>
+                                        <span className="text-slate-700">{t('rooms.adminAllRooms.fullyOccupied')}</span>
                                     </div>
 
                                     <div className="flex items-center space-x-2">
                                         <div className="w-3 h-3 bg-gray-400 rounded flex-shrink-0"></div>
-                                        <span className="text-slate-700">Excluded by filters</span>
+                                        <span className="text-slate-700">{t('rooms.adminAllRooms.excludedByFilters')}</span>
                                     </div>
                                 </div>
                             </div>
@@ -417,22 +419,22 @@ export default function AllRoomsPage() {
                                     <div className="px-4 py-3 bg-slate-50 border-b border-slate-200">
                                         <div className="space-y-2">
                                             <h3 className="text-sm font-semibold text-slate-900">
-                                                Room {selectedRoom.number}:
+                                                {t('rooms.adminAllRooms.roomNumber', { number: selectedRoom.number })}
                                             </h3>
                                             {meetsSearchRequirements(selectedRoom) ? (
                                                 <span className="inline-block text-xs text-green-600 bg-green-100 px-2 py-1 rounded-full">
-                                                    Room meets the search requirements
+                                                    {t('rooms.adminAllRooms.meetsRequirements')}
                                                 </span>
                                             ) : (
                                                 <span className="inline-block text-xs text-red-600 bg-red-100 px-2 py-1 rounded-full">
-                                                    Room doesn't meet the search requirements
+                                                    {t('rooms.adminAllRooms.doesntMeetRequirements')}
                                                 </span>
                                             )}
                                             <Link
                                                 href={`/admin/rooms/${selectedRoom.id}`}
                                                 className="inline-flex items-center mt-2 px-3 py-1 bg-blue-600 text-white text-xs font-medium rounded-md hover:bg-blue-700 transition-colors"
                                             >
-                                                To room page →
+                                                {t('rooms.adminAllRooms.toRoomPage')}
                                             </Link>
                                         </div>
                                     </div>
@@ -443,7 +445,7 @@ export default function AllRoomsPage() {
                                     {/* Residents */}
                                     <div className="px-4 py-3">
                                         <h4 className="text-sm font-medium text-slate-900 mb-2">
-                                            Residents, {selectedRoom.residents ? selectedRoom.residents.length : 0}/{selectedRoom.capacity}:
+                                            {t('rooms.adminAllRooms.residents', { current: selectedRoom.residents ? selectedRoom.residents.length : 0, total: selectedRoom.capacity })}
                                         </h4>
                                         <div className="space-y-2">
                                             {selectedRoom.residents && selectedRoom.residents.map((resident, index) => (
@@ -500,11 +502,11 @@ export default function AllRoomsPage() {
                                     <div className="flex items-center justify-between">
                                         <div className="space-y-2 flex-1">
                                             <h3 className="text-lg font-semibold text-slate-900">
-                                                Room {selectedRoom.number}
+                                                {t('rooms.adminAllRooms.roomNumber', { number: selectedRoom.number })}
                                             </h3>
                                             {meetsSearchRequirements(selectedRoom) && (
                                                 <span className="inline-block text-xs text-green-600 bg-green-100 px-2 py-1 rounded-full">
-                                                    Meets search requirements
+                                                    {t('rooms.adminAllRooms.meetsSearchRequirements')}
                                                 </span>
                                             )}
                                         </div>
@@ -519,7 +521,7 @@ export default function AllRoomsPage() {
                                         href={`/admin/rooms/${selectedRoom.id}`}
                                         className="inline-flex items-center mt-3 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors w-full justify-center"
                                     >
-                                        To room page →
+                                        {t('rooms.adminAllRooms.toRoomPage')}
                                     </Link>
                                 </div>
 
@@ -527,7 +529,7 @@ export default function AllRoomsPage() {
                                     {/* Availability Calendar */}
                                     <div className="px-6 py-4 border-b border-slate-200">
                                         <h4 className="text-sm font-medium text-slate-900 mb-3">
-                                            Availability during next 2 weeks:
+                                            {t('rooms.adminAllRooms.availabilityNext2Weeks')}
                                         </h4>
                                         <div className="grid grid-cols-7 gap-1 text-xs">
                                             {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, index) => (
@@ -553,7 +555,7 @@ export default function AllRoomsPage() {
                                     {/* Residents */}
                                     <div className="px-6 py-4">
                                         <h4 className="text-sm font-medium text-slate-900 mb-3">
-                                            Residents, {selectedRoom.residents ? selectedRoom.residents.length : 0}/{selectedRoom.capacity}:
+                                            {t('rooms.adminAllRooms.residents', { current: selectedRoom.residents ? selectedRoom.residents.length : 0, total: selectedRoom.capacity })}
                                         </h4>
                                         <div className="space-y-3">
                                             {selectedRoom.residents && selectedRoom.residents.map((resident, index) => (
@@ -570,11 +572,11 @@ export default function AllRoomsPage() {
                                                         </div>
                                                         <div className="flex items-center justify-between">
                                                             <div className="flex items-center space-x-2">
-                                                                <span className="text-sm">Payments</span>
+                                                                <span className="text-sm">{t('rooms.adminAllRooms.payments')}</span>
                                                             </div>
                                                             <div onClick={(e)=>e.stopPropagation()}>
                                                             <button name={`eviction${index}`} className="px-3 py-2 bg-red-600 text-white text-sm rounded-lg hover:bg-red-700 transition-colors" onClick={()=>{setUserToEvict(resident); setShowEvictionConfirmation(true)}}>
-                                                                Evict
+                                                                {t('rooms.adminAllRooms.evict')}
                                                             </button>
                                                             </div>
                                                         </div>
@@ -583,7 +585,7 @@ export default function AllRoomsPage() {
                                             ))}
                                             {Array.from({ length: selectedRoom.capacity - (selectedRoom.residents ? selectedRoom.residents.length : 0) }, (_, i) => (
                                                 <div key={`empty-${i}`} className="bg-slate-50 border-2 border-dashed border-slate-300 rounded-lg p-4 text-center text-slate-500 animate-in fade-in-0 zoom-in-95 duration-300">
-                                                    Available for accommodation
+                                                    {t('rooms.adminAllRooms.availableForAccommodation')}
                                                 </div>
                                             ))}
                                         </div>

@@ -6,6 +6,7 @@ import { User } from "@/types/auth.types";
 import { Room, RoomReservationData } from "@/types/rooms.types";
 import Link from "next/link";
 import { useBookARoom } from "@/hooks/rooms.hook";
+import { useLanguage } from '@/providers/language.provider';
 
 
 export interface BookingDialogProps {
@@ -17,7 +18,7 @@ export interface BookingDialogProps {
 
 export default function BookingDialog({ open, onClose, user, room }: BookingDialogProps) {
 
-
+    const { t } = useLanguage();
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1)
 
@@ -110,8 +111,8 @@ export default function BookingDialog({ open, onClose, user, room }: BookingDial
                             </div>
 
                             <div>
-                                <DialogTitle className="text-lg sm:text-xl font-semibold">Book a Room</DialogTitle>
-                                <Description className="text-blue-100 text-sm">Fill in the reservation details</Description>
+                                <DialogTitle className="text-lg sm:text-xl font-semibold">{t('rooms.booking.title')}</DialogTitle>
+                                <Description className="text-blue-100 text-sm">{t('rooms.booking.subtitle')}</Description>
                             </div>
                         </div>
 
@@ -140,11 +141,11 @@ export default function BookingDialog({ open, onClose, user, room }: BookingDial
 
                                 {/* Reservation Time */}
                                 <div className="space-y-2">
-                                    <div className="font-semibold text-gray-800">Time of reservation</div>
+                                    <div className="font-semibold text-gray-800">{t('rooms.booking.timeOfReservation')}</div>
 
                                     <div className="space-y-3">
                                         <div className="flex flex-col">
-                                            <label className="text-gray-600 mb-1">Date of start</label>
+                                            <label className="text-gray-600 mb-1">{t('rooms.booking.dateOfStart')}</label>
                                             <input
                                                 type="date"
                                                 name="startDate"
@@ -156,7 +157,7 @@ export default function BookingDialog({ open, onClose, user, room }: BookingDial
                                         </div>
 
                                         <div className="flex flex-col">
-                                            <label className="text-gray-600 mb-1">Date of end</label>
+                                            <label className="text-gray-600 mb-1">{t('rooms.booking.dateOfEnd')}</label>
                                             <input
                                                 type="date"
                                                 name="endDate"
@@ -172,13 +173,13 @@ export default function BookingDialog({ open, onClose, user, room }: BookingDial
                                 {/* Price */}
                                 {room.price && (
                                     <div className="text-gray-700 font-medium">
-                                        Price per day: <span className="text-blue-700">${room.price.pricePerDay}</span> (per person)
+                                        {t('rooms.booking.pricePerDay')}: <span className="text-blue-700">${room.price.pricePerDay}</span> {t('rooms.booking.pricePerDayPerPerson')}
                                     </div>
                                 )}
 
                                 {/* Suggested Time */}
                                 <div className="flex flex-col">
-                                    <label className="text-gray-600 mb-1">Suggested accommodation time</label>
+                                    <label className="text-gray-600 mb-1">{t('rooms.booking.suggestedTime')}</label>
                                     <input
                                         name="suggestedTime"
                                         type="text"
@@ -197,20 +198,20 @@ export default function BookingDialog({ open, onClose, user, room }: BookingDial
                                         onChange={handleInputChange}
                                         className="h-5 w-5"
                                     />
-                                    <span className="text-gray-700">Book any similar room in this dormitory</span>
+                                    <span className="text-gray-700">{t('rooms.booking.alternativeRooms')}</span>
                                 </div>
                             </div>
                         </div>
 
                         {/* Navigation Buttons Section */}
                         <div className="w-full sm:w-56 p-6 bg-white flex flex-col space-y-4">
-                            <div className="font-semibold text-gray-800">Room Actions:</div>
+                            <div className="font-semibold text-gray-800">{t('rooms.booking.roomActions')}</div>
 
                             <Link
                                 href={`/rooms/${room.id}`}
                                 className="w-full text-center bg-blue-600 text-white py-2 rounded-lg shadow hover:bg-blue-700 transition"
                             >
-                                To Room Page
+                                {t('rooms.booking.toRoomPage')}
                             </Link>
                         </div>
                     </div>
@@ -221,14 +222,14 @@ export default function BookingDialog({ open, onClose, user, room }: BookingDial
                             onClick={onClose}
                             className="px-4 py-2 rounded-lg bg-gray-200 text-gray-800 border border-gray-300 hover:bg-gray-300 transition"
                         >
-                            Cancel
+                            {t('rooms.booking.cancel')}
                         </button>
 
                         <button
                             onClick={handleRequestAccommodation}
                             className="px-4 py-2 rounded-lg bg-blue-600 text-white border border-blue-700 hover:bg-blue-700 active:bg-blue-800 transition shadow-md"
                         >
-                            Book
+                            {t('rooms.booking.book')}
                         </button>
                     </div>
                 </DialogPanel>

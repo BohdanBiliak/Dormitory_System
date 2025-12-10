@@ -8,8 +8,10 @@ import {PaymentProofModal} from "@/components/admin/confirmationsModals/PaymentP
 import {
   AccommodationConfirmationModal
 } from "@/components/admin/confirmationsModals/AccomodationConfirmationModal.component";
+import { useLanguage } from '@/providers/language.provider';
 
 export function ConfirmationsTable() {
+  const { t } = useLanguage();
   const [selectedConfirmation, setSelectedConfirmation] = useState<Confirmation | null>(null)
   const [sortBy, setSortBy] = useState<'newest' | 'oldest'>('newest')
   const [typeFilter, setTypeFilter] = useState<string>('All')
@@ -49,13 +51,8 @@ export function ConfirmationsTable() {
   }
 
   const getDisplayType = (type: string) => {
-    const typeMap: Record<string, string> = {
-      'IDENTITY_VERIFICATION': 'Identity Verification',
-      'ACCOMMODATION': 'Accommodation',
-      'ROOM_CHANGE': 'Room change',
-      'ROOM_VACATION': 'Room vacation'
-    }
-    return typeMap[type] || type
+    const typeKey = `confirmations.table.confirmationTypes.${type}` as const;
+    return t(typeKey) || type;
   }
 
   const formatDate = (dateString: string) => {
@@ -75,8 +72,8 @@ export function ConfirmationsTable() {
               <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-200 border-t-blue-600"></div>
               <div className="absolute inset-0 rounded-full bg-blue-50 opacity-20"></div>
             </div>
-            <span className="mt-4 text-gray-700 font-medium text-lg">Loading confirmations...</span>
-            <p className="text-gray-500 text-sm mt-1">Please wait while we fetch the data</p>
+            <span className="mt-4 text-gray-700 font-medium text-lg">{t('confirmations.table.loading')}</span>
+            <p className="text-gray-500 text-sm mt-1">{t('confirmations.table.loadingSubtitle')}</p>
           </div>
         </div>
       </div>
@@ -93,13 +90,13 @@ export function ConfirmationsTable() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
               </svg>
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">Oops! Something went wrong</h3>
-            <p className="text-gray-600 mb-4">Error loading confirmations. Please try again.</p>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">{t('confirmations.table.errorTitle')}</h3>
+            <p className="text-gray-600 mb-4">{t('confirmations.table.errorMessage')}</p>
             <button 
               onClick={() => window.location.reload()} 
               className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
             >
-              Retry
+              {t('confirmations.table.retry')}
             </button>
           </div>
         </div>
@@ -125,10 +122,10 @@ export function ConfirmationsTable() {
             </div>
             <div className="flex-1 min-w-0">
               <h1 className="text-3xl font-bold text-gray-900 leading-tight">
-                Confirmations
+                {t('confirmations.table.title')}
               </h1>
               <p className="text-gray-600 text-base mt-1 leading-relaxed">
-                Review and manage pending verification requests from students
+                {t('confirmations.table.subtitle')}
               </p>
             </div>
           </div>
@@ -143,23 +140,23 @@ export function ConfirmationsTable() {
               <svg className="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.414A1 1 0 013 6.707V4z" />
               </svg>
-              Filters
+              {t('confirmations.table.filters.filterByType')}
             </h3>
             
             <div className="flex flex-wrap gap-4">
               {/* Type Filter */}
               <div className="flex items-center space-x-2">
-                <label className="text-sm font-semibold text-gray-700 whitespace-nowrap">Filter by Type:</label>
+                <label className="text-sm font-semibold text-gray-700 whitespace-nowrap">{t('confirmations.table.filters.filterByType')}:</label>
                 <select
                   value={typeFilter}
                   onChange={(e) => setTypeFilter(e.target.value)}
                   className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-sm font-medium shadow-sm transition-all"
                 >
-                  <option value="All">All Types</option>
-                  <option value="Identity Verification">Identity Verification</option>
-                  <option value="Accommodation">Accommodation</option>
-                  <option value="Room change">Room Change</option>
-                  <option value="Room vacation">Room Vacation</option>
+                  <option value="All">{t('confirmations.table.filters.all')}</option>
+                  <option value="Identity Verification">{t('confirmations.table.confirmationTypes.IDENTITY_VERIFICATION')}</option>
+                  <option value="Accommodation">{t('confirmations.table.confirmationTypes.ACCOMMODATION')}</option>
+                  <option value="Room change">{t('confirmations.table.confirmationTypes.ROOM_CHANGE')}</option>
+                  <option value="Room vacation">{t('confirmations.table.confirmationTypes.ROOM_VACATION')}</option>
                 </select>
               </div>
 
@@ -180,19 +177,19 @@ export function ConfirmationsTable() {
                     }`}></div>
                   </div>
                 </div>
-                <span className="ml-2 text-sm font-semibold text-gray-700">Show Resolved</span>
+                <span className="ml-2 text-sm font-semibold text-gray-700">{t('confirmations.table.filters.showResolved')}</span>
               </label>
 
               {/* Sort Filter */}
               <div className="flex items-center space-x-2">
-                <label className="text-sm font-semibold text-gray-700 whitespace-nowrap">Sort by:</label>
+                <label className="text-sm font-semibold text-gray-700 whitespace-nowrap">{t('confirmations.table.filters.sortBy')}:</label>
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as 'newest' | 'oldest')}
                   className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-sm font-medium shadow-sm transition-all"
                 >
-                  <option value="newest">Newest First</option>
-                  <option value="oldest">Oldest First</option>
+                  <option value="newest">{t('confirmations.table.filters.newest')}</option>
+                  <option value="oldest">{t('confirmations.table.filters.oldest')}</option>
                 </select>
               </div>
             </div>
@@ -227,9 +224,9 @@ export function ConfirmationsTable() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V9a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">No confirmations found</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">{t('confirmations.table.emptyTitle')}</h3>
                 <p className="text-gray-600 text-base max-w-md mx-auto leading-relaxed">
-                  {showResolved ? "No confirmations match your current filters. Try adjusting your search criteria." : "No pending confirmations at this time. New requests will appear here."}
+                  {t('confirmations.table.emptyMessage')}
                 </p>
               </div>
             </div>
@@ -241,11 +238,11 @@ export function ConfirmationsTable() {
                   <thead className="bg-gray-50 sticky top-0 z-10">
                     <tr>
                       <th className="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">#</th>
-                      <th className="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Requester</th>
-                      <th className="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Type</th>
-                      <th className="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Status</th>
-                      <th className="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Date</th>
-                      <th className="relative px-6 py-3"><span className="sr-only">Actions</span></th>
+                      <th className="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">{t('confirmations.table.columns.user')}</th>
+                      <th className="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">{t('confirmations.table.columns.type')}</th>
+                      <th className="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">{t('confirmations.table.columns.status')}</th>
+                      <th className="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">{t('confirmations.table.columns.submitted')}</th>
+                      <th className="relative px-6 py-3"><span className="sr-only">{t('confirmations.table.columns.action')}</span></th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-100">
@@ -360,13 +357,14 @@ export function ConfirmationsTable() {
               <div className="px-6 py-4">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
                   <div className="text-sm text-gray-700 font-medium">
-                    Page {page} of {totalPages} ({confirmations.length} results)
+                    {t('confirmations.table.pagination.pageOf', { page: page.toString(), total: totalPages.toString() }).replace('{page}', page.toString()).replace('{total}', totalPages.toString())} ({confirmations.length} {confirmations.length === 1 ? 'result' : 'results'})
                   </div>
                   <div className="flex justify-center sm:justify-end items-center space-x-1">
                     <button
                       onClick={() => setPage(Math.max(1, page - 1))}
                       disabled={page === 1}
                       className="px-3 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm"
+                      aria-label={t('confirmations.table.pagination.previous')}
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -404,6 +402,7 @@ export function ConfirmationsTable() {
                       onClick={() => setPage(Math.min(totalPages, page + 1))}
                       disabled={page === totalPages}
                       className="px-3 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm"
+                      aria-label={t('confirmations.table.pagination.next')}
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

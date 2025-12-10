@@ -4,9 +4,11 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useAuth } from '@/hooks/auth.hook'
 import { PasswordResetTutorial } from '../../app/tutorials/auth/password-reset'
+import { useLanguage } from '@/providers/language.provider'
 
 export function PasswordResetForm() {
   const { resetPassword, isResettingPassword } = useAuth()
+  const { t } = useLanguage()
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
   const [isSubmitted, setIsSubmitted] = useState(false)
@@ -15,12 +17,12 @@ export function PasswordResetForm() {
     e.preventDefault()
     
     if (!email.trim()) {
-      setError('Email is required')
+      setError(t('auth.passwordReset.validation.emailRequired'))
       return
     }
 
     if (!/\S+@\S+\.\S+/.test(email)) {
-      setError('Please enter a valid email address')
+      setError(t('auth.passwordReset.validation.emailInvalid'))
       return
     }
 
@@ -49,15 +51,15 @@ export function PasswordResetForm() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2 sm:mb-4">Check Your Email</h2>
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2 sm:mb-4">{t('auth.passwordReset.checkEmail')}</h2>
             <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-blue-50 border border-blue-200 rounded-md email-confirmation-notice">
               <p className="text-gray-600 text-sm sm:text-base">
-                We've sent a password reset link to{' '}
+                {t('auth.passwordReset.emailSentTo')}{' '}
                 <span className="font-semibold text-blue-900 break-all">{email}</span>
               </p>
             </div>
             <p className="text-xs sm:text-sm text-gray-500 mb-6 sm:mb-8 px-2">
-              If you don't see the email, check your spam folder or{' '}
+              {t('auth.passwordReset.checkSpam')}{' '}
               <button
                 onClick={() => {
                   setIsSubmitted(false)
@@ -65,7 +67,7 @@ export function PasswordResetForm() {
                 }}
                 className="text-blue-600 hover:text-blue-500 font-medium transition-colors underline hover:no-underline try-again-button"
               >
-                try again
+                {t('auth.passwordReset.tryAgain')}
               </button>
             </p>
             <div className="reset-success-actions">
@@ -73,7 +75,7 @@ export function PasswordResetForm() {
                 href="/auth/login"
                 className="inline-block bg-blue-900 text-white py-2.5 sm:py-3 lg:py-4 px-4 sm:px-6 lg:px-8 rounded-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2  text-sm sm:text-base font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
               >
-                Back to Sign In
+                {t('auth.passwordReset.backToSignIn')}
               </Link>
             </div>
           </div>
@@ -91,9 +93,9 @@ export function PasswordResetForm() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
           </div>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900">Reset Password</h2>
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900">{t('auth.passwordReset.title')}</h2>
           <p className="text-gray-600 mt-2 text-sm sm:text-base lg:text-lg">
-            Enter your email and we'll send you a reset link
+            {t('auth.passwordReset.subtitle')}
           </p>
         </div>
 
@@ -103,7 +105,7 @@ export function PasswordResetForm() {
               <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
               </svg>
-              Email Address
+              {t('auth.passwordReset.email')}
             </label>
             <input
               type="email"
@@ -113,7 +115,7 @@ export function PasswordResetForm() {
               className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 transition-colors text-sm sm:text-base ${
                 error ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
               }`}
-              placeholder="Enter your email address"
+              placeholder={t('auth.passwordReset.emailPlaceholder')}
               required
               autoFocus
             />
@@ -136,7 +138,7 @@ export function PasswordResetForm() {
               {isResettingPassword && (
                 <div className="animate-spin rounded-full h-4 w-4 sm:h-5 sm:w-5 border-b-2 border-white"></div>
               )}
-              <span>{isResettingPassword ? 'Sending...' : 'Send Reset Link'}</span>
+              <span>{isResettingPassword ? t('auth.passwordReset.sending') : t('auth.passwordReset.sendInstructions')}</span>
             </button>
 
             <div className="back-to-login">
@@ -144,7 +146,7 @@ export function PasswordResetForm() {
                 href="/auth/login"
                 className="w-full bg-gray-100 text-gray-700 py-2.5 sm:py-3 lg:py-4 px-4 sm:px-6 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2  font-medium text-center block text-sm sm:text-base shadow-md hover:shadow-lg"
               >
-                Back to Login
+                {t('auth.passwordReset.backToLogin')}
               </Link>
             </div>
           </div>

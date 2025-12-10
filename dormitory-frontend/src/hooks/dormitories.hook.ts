@@ -88,6 +88,7 @@ export function useDormitories() {
     const activateDormitory=useMutation({
         mutationFn: ({id}:{id:string})=>dormitoryApi.activateDormitory(id),
         onSuccess: (result:Dormitory) => {
+            queryClient.invalidateQueries({queryKey: ['dormitories']})
             queryClient.invalidateQueries({queryKey: ['dormitory', result]})
             toast.success("Dormitory has been activated!")
         },

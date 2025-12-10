@@ -115,5 +115,178 @@
         "description": "Skonfiguruj różne typy pokoi i ich układy dla tego akademika."
       }
     }
+  },
+  "priceCategories": {
+    "title": "Zarządzaj kategoriami cenowymi",
+    "listTitle": "Kategorie cenowe",
+    "addNew": "Dodaj nową",
+    "loading": "Ładowanie...",
+    "noCategories": "Nie znaleziono kategorii cenowych. Utwórz jedną, aby rozpocząć.",
+    "formTitle": {
+      "create": "Utwórz nową kategorię cenową",
+      "edit": "Edytuj kategorię cenową"
+    },
+    "fields": {
+      "name": "Nazwa",
+      "description": "Opis",
+      "pricePerMonth": "Cena za miesiąc",
+      "pricePerDay": "Cena za dzień",
+      "active": "Aktywna"
+    },
+    "status": {
+      "active": "Aktywna",
+      "inactive": "Nieaktywna"
+    },
+    "buttons": {
+      "create": "Utwórz",
+      "update": "Aktualizuj",
+      "cancel": "Anuluj"
+    },
+    "confirmDelete": "Czy na pewno chcesz usunąć tę kategorię cenową?"
+  },
+  "roomStatusTypes": {
+    "title": "Zarządzaj typami statusu pokoju",
+    "listTitle": "Typy statusu pokoju",
+    "addNew": "Dodaj nowy",
+    "loading": "Ładowanie...",
+    "noStatusTypes": "Nie znaleziono typów statusu pokoju. Utwórz jeden, aby rozpocząć.",
+    "formTitle": {
+      "create": "Utwórz nowy typ statusu pokoju",
+      "edit": "Edytuj typ statusu pokoju"
+    },
+    "fields": {
+      "name": "Nazwa",
+      "description": "Opis",
+      "color": "Kolor",
+      "active": "Aktywny"
+    },
+    "status": {
+      "active": "Aktywny",
+      "inactive": "Nieaktywny"
+    },
+    "actions": {
+      "deactivate": "Dezaktywuj",
+      "activate": "Aktywuj"
+    },
+    "buttons": {
+      "create": "Utwórz",
+      "update": "Aktualizuj",
+      "cancel": "Anuluj"
+    }
+  },
+  "roomTemplates": {
+    "title": "Zarządzaj szablonami pokoi",
+    "listTitle": "Szablony pokoi",
+    "addNew": "Dodaj nowy",
+    "loading": "Ładowanie...",
+    "noTemplates": "Nie znaleziono szablonów pokoi. Utwórz jeden, aby rozpocząć.",
+    "formTitle": {
+      "create": "Utwórz nowy szablon pokoju",
+      "edit": "Edytuj szablon pokoju"
+    },
+    "fields": {
+      "name": "Nazwa",
+      "typeCode": "Kod typu",
+      "typeCodePlaceholder": "np. SINGLE, DOUBLE, SUITE",
+      "description": "Opis",
+      "capacity": "Pojemność",
+      "equipment": "Wyposażenie",
+      "equipmentPlaceholder": "Dodaj element wyposażenia..."
+    },
+    "labels": {
+      "capacity": "Pojemność:",
+      "people": "osób",
+      "equipment": "Wyposażenie:"
+    },
+    "buttons": {
+      "add": "Dodaj",
+      "create": "Utwórz",
+      "update": "Aktualizuj",
+      "cancel": "Anuluj"
+    },
+    "confirmDelete": "Czy na pewno chcesz usunąć ten szablon pokoju?"
+  },
+  "addresses": {
+    "title": "Wybierz odbiorców",
+    "subtitle": "Wybierz akademiki, piętra, pokoje lub mieszkańców do kontaktu",
+    "noDormitories": "Brak dostępnych akademików",
+    "types": {
+      "Resident": "Mieszkaniec",
+      "Room": "Pokój",
+      "Floor": "Piętro",
+      "Dormitory": "Akademik"
+    },
+    "ariaLabels": {
+      "collapse": "Zwiń",
+      "expand": "Rozwiń"
+    },
+    "buttons": {
+      "cancel": "Anuluj",
+      "confirm": "Potwierdź wybór"
+    }
+  },
+  "priceCategoriesSection": {
+    "pageTitle": "Kategorie Cenowe",
+    "pageSubtitle": "Zarządzaj poziomami cenowymi dla różnych typów pokoi",
+    "listTitle": "Kategorie",
+    "noCategories": "Brak kategorii",
+    "createFirst": "Utwórz swoją pierwszą kategorię",
+    "newCategory": "Nowa kategoria",
+    "detailsTitle": "Szczegóły kategorii",
+    "createTitle": "Utwórz nową kategorię",
+    "emptyStateTitle": "Wybierz kategorię",
+    "emptyStateSubtitle": "Wybierz kategorię z lewej strony, aby wyświetlić i edytować jej szczegóły",
+    "fields": {
+      "categoryName": "Nazwa kategorii",
+      "description": "Opis",
+      "pricePerMonth": "Cena za miesiąc (zł)",
+      "pricePerDay": "Cena za dzień (zł)",
+      "namePlaceholder": "np. Premium, Standard, Budżetowy",
+      "descriptionPlaceholder": "Krótki opis kategorii",
+      "minPrice": "Minimum 0"
+    },
+    "preview": {
+      "title": "Podgląd cen",
+      "perMonth": "za miesiąc",
+      "perDay": "za dzień"
+    },
+    "buttons": {
+      "createCategory": "Utwórz kategorię"
+    },
+    "priceFormat": "{{price}} zł/miesiąc • {{dayPrice}} zł/dzień"
+  },
+  "roomTemplatesSection": {
+    "title": "Szablony Pokoi",
+    "available": "dostępnych",
+    "people": "osób",
+    "new": "Nowy",
+    "newTemplate": "Nowy szablon",
+    "templateInfo": "Informacje o szablonie",
+    "createNew": "Utwórz nowy szablon",
+    "fields": {
+      "templateName": "Nazwa szablonu",
+      "templateCode": "Kod szablonu",
+      "description": "Opis",
+      "capacity": "Pojemność",
+      "priceCategory": "Kategoria cenowa",
+      "photos": "Zdjęcia",
+      "equipment": "Wyposażenie",
+      "none": "--Brak--",
+      "namePlaceholder": "Wprowadź nazwę szablonu",
+      "codePlaceholder": "Wprowadź kod szablonu",
+      "descriptionPlaceholder": "Wprowadź opis",
+      "capacityPlaceholder": "Minimum 1",
+      "equipmentPlaceholder": "Wprowadź wyposażenie"
+    },
+    "buttons": {
+      "createTemplate": "Utwórz szablon",
+      "addEquipment": "Dodaj nowe wyposażenie"
+    },
+    "photoLabels": {
+      "title": "Zdjęcia szablonu",
+      "description": "Zdjęcia dla szablonu {{typeCode}}",
+      "newDescription": "Zdjęcia dla nowego szablonu"
+    },
+    "priceCategoryFormat": "{{name}} ({{monthly}} zł/miesiąc, {{daily}} zł/dzień)"
   }
 }

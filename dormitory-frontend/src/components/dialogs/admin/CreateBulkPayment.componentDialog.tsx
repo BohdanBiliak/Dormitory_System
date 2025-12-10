@@ -7,6 +7,7 @@ import { useUpdatePayments, useGetOccupiedRooms } from '@/hooks/payment.hook';
 import { useGetRooms } from '@/hooks/rooms.hook';
 import { useGetPriceCategories } from '@/hooks/priceCategories.hook';
 import { PaymentType, PaymentMethod, CreateBulkPaymentDto } from '@/types/payments.types';
+import { useLanguage } from '@/providers/language.provider';
 
 interface CreateBulkPaymentDialogProps {
   open: boolean;
@@ -16,6 +17,7 @@ interface CreateBulkPaymentDialogProps {
 type PricingStrategy = 'room' | 'category' | 'fixed' | 'custom';
 
 export default function CreateBulkPaymentDialog({ open, onClose }: CreateBulkPaymentDialogProps) {
+  const { t } = useLanguage();
   const { createBulkPayments, creatingBulkPayments } = useUpdatePayments();
   const { data: rooms, isLoading: loadingRooms } = useGetRooms();
   const { data: occupiedRooms, isLoading: loadingOccupiedRooms } = useGetOccupiedRooms();
@@ -55,27 +57,27 @@ export default function CreateBulkPaymentDialog({ open, onClose }: CreateBulkPay
     
     // Validation
     if (!formData.dueDate) {
-      toast.error('Please select a due date');
+      toast.error(t('payments.bulkPayment.validation.selectDueDate'));
       return;
     }
 
     if (pricingStrategy === 'room' && selectedRooms.length === 0) {
-      toast.error('Please select at least one room');
+      toast.error(t('payments.bulkPayment.validation.selectRooms'));
       return;
     }
 
     if (pricingStrategy === 'category' && !formData.priceCategoryId) {
-      toast.error('Please select a price category');
+      toast.error(t('payments.bulkPayment.validation.selectPriceCategory'));
       return;
     }
 
     if (pricingStrategy === 'fixed' && !formData.baseAmount) {
-      toast.error('Please enter an amount');
+      toast.error(t('payments.bulkPayment.validation.enterAmount'));
       return;
     }
 
     if (formData.baseAmount && formData.baseAmount <= 0) {
-      toast.error('Amount must be greater than 0');
+      toast.error(t('payments.bulkPayment.validation.amountGreaterThanZero'));
       return;
     }
 
@@ -84,7 +86,7 @@ export default function CreateBulkPaymentDialog({ open, onClose }: CreateBulkPay
     today.setHours(0, 0, 0, 0);
     
     if (dueDate < today) {
-      toast.error('Due date cannot be in the past');
+      toast.error(t('payments.bulkPayment.validation.dueDateNotPast'));
       return;
     }
     
@@ -153,8 +155,8 @@ export default function CreateBulkPaymentDialog({ open, onClose }: CreateBulkPay
               <Users className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-white">Create Bulk Payments</h2>
-              <p className="text-blue-100 text-sm">Create payments for multiple users at once</p>
+              <h2 className="text-xl font-bold text-white">{t('payments.create.bulkTitle')}</h2>
+              <p className="text-blue-100 text-sm">{t('payments.create.bulkSubtitle')}</p>
             </div>
           </div>
           <button
@@ -171,7 +173,7 @@ export default function CreateBulkPaymentDialog({ open, onClose }: CreateBulkPay
             {/* Pricing Strategy */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
-                Pricing Strategy
+                {t('payments.create.pricingStrategy')}
               </label>
               <div className="grid grid-cols-2 gap-3">
                 <button
@@ -184,8 +186,8 @@ export default function CreateBulkPaymentDialog({ open, onClose }: CreateBulkPay
                   }`}
                 >
                   <Home className="w-5 h-5 mb-2 text-blue-600" />
-                  <div className="font-medium text-sm">Room-Based</div>
-                  <div className="text-xs text-slate-500">Use room's price category</div>
+                  <div className="font-medium text-sm">{t('payments.create.roomBased')}</div>
+                  <div className="text-xs text-slate-500">{t('payments.create.useRoomPriceCategory')}</div>
                 </button>
                 <button
                   type="button"
@@ -197,8 +199,8 @@ export default function CreateBulkPaymentDialog({ open, onClose }: CreateBulkPay
                   }`}
                 >
                   <DollarSign className="w-5 h-5 mb-2 text-blue-600" />
-                  <div className="font-medium text-sm">Fixed Amount</div>
-                  <div className="text-xs text-slate-500">Same amount for all</div>
+                  <div className="font-medium text-sm">{t('payments.create.fixedAmount')}</div>
+                  <div className="text-xs text-slate-500">{t('payments.create.sameAmountForAll')}</div>
                 </button>
               </div>
             </div>
@@ -208,7 +210,7 @@ export default function CreateBulkPaymentDialog({ open, onClose }: CreateBulkPay
               <div>
                 <div className="flex items-center justify-between mb-3">
                   <label className="text-sm font-medium text-slate-700">
-                    Select Rooms ({selectedRooms.length} selected)
+                    {t('payments.create.selectRooms')} ({selectedRooms.length} {t('payments.create.selected')})
                   </label>
                   <div className="flex gap-2">
                     <button
@@ -216,14 +218,14 @@ export default function CreateBulkPaymentDialog({ open, onClose }: CreateBulkPay
                       onClick={selectAllOccupiedRooms}
                       className="text-xs text-emerald-600 hover:text-emerald-700 font-medium px-2 py-1 rounded hover:bg-emerald-50 transition-colors"
                     >
-                      Occupied Only
+                      {t('payments.create.occupiedOnly')}
                     </button>
                     <button
                       type="button"
                       onClick={selectAllRooms}
                       className="text-xs text-blue-600 hover:text-blue-700 font-medium px-2 py-1 rounded hover:bg-blue-50 transition-colors"
                     >
-                      Select All
+                      {t('payments.create.selectAll')}
                     </button>
                     {selectedRooms.length > 0 && (
                       <button
@@ -231,14 +233,14 @@ export default function CreateBulkPaymentDialog({ open, onClose }: CreateBulkPay
                         onClick={clearSelection}
                         className="text-xs text-slate-500 hover:text-slate-700 font-medium px-2 py-1 rounded hover:bg-slate-50 transition-colors"
                       >
-                        Clear
+                        {t('payments.create.clear')}
                       </button>
                     )}
                   </div>
                 </div>
                 <div className="border border-slate-200 rounded-lg max-h-48 overflow-y-auto">
                   {loadingRooms ? (
-                    <div className="p-4 text-center text-slate-500">Loading rooms...</div>
+                    <div className="p-4 text-center text-slate-500">{t('payments.create.loadingRooms')}</div>
                   ) : rooms && rooms.length > 0 ? (
                     <div className="divide-y divide-slate-100">
                       {rooms.map((room) => (
@@ -269,7 +271,7 @@ export default function CreateBulkPaymentDialog({ open, onClose }: CreateBulkPay
                       ))}
                     </div>
                   ) : (
-                    <div className="p-4 text-center text-slate-500">No rooms available</div>
+                    <div className="p-4 text-center text-slate-500">{t('payments.create.noRooms')}</div>
                   )}
                 </div>
               </div>
@@ -279,7 +281,7 @@ export default function CreateBulkPaymentDialog({ open, onClose }: CreateBulkPay
             {pricingStrategy === 'fixed' && (
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">
-                  Base Amount (PLN)
+                  {t('payments.create.baseAmount')}
                 </label>
                 <input
                   type="number"
@@ -288,7 +290,7 @@ export default function CreateBulkPaymentDialog({ open, onClose }: CreateBulkPay
                   value={formData.baseAmount || ''}
                   onChange={(e) => setFormData({ ...formData, baseAmount: parseFloat(e.target.value) })}
                   className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Enter amount"
+                  placeholder={t('payments.create.enterAmount')}
                   required
                 />
               </div>
@@ -297,7 +299,7 @@ export default function CreateBulkPaymentDialog({ open, onClose }: CreateBulkPay
             {/* Payment Type */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
-                Payment Type
+                {t('payments.create.paymentType')}
               </label>
               <select
                 value={formData.paymentType}
@@ -305,14 +307,9 @@ export default function CreateBulkPaymentDialog({ open, onClose }: CreateBulkPay
                 className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 required
               >
-                <option value={PaymentType.MONTHLY_RENT}>Monthly Rent</option>
-                <option value={PaymentType.DAILY_RENT}>Daily Rent</option>
-                <option value={PaymentType.UTILITIES}>Utilities</option>
-                <option value={PaymentType.MAINTENANCE_FEE}>Maintenance Fee</option>
-                <option value={PaymentType.SECURITY_DEPOSIT}>Security Deposit</option>
-                <option value={PaymentType.LATE_FEE}>Late Fee</option>
-                <option value={PaymentType.CLEANING_FEE}>Cleaning Fee</option>
-                <option value={PaymentType.OTHER}>Other</option>
+                {Object.values(PaymentType).map(type => (
+                  <option key={type} value={type}>{t(`payments.types.${type}`)}</option>
+                ))}
               </select>
             </div>
 
@@ -320,7 +317,7 @@ export default function CreateBulkPaymentDialog({ open, onClose }: CreateBulkPay
             {formData.paymentType === PaymentType.DAILY_RENT && (
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">
-                  Period (Days)
+                  {t('payments.create.period')}
                 </label>
                 <input
                   type="number"
@@ -328,7 +325,7 @@ export default function CreateBulkPaymentDialog({ open, onClose }: CreateBulkPay
                   value={formData.periodInDays || ''}
                   onChange={(e) => setFormData({ ...formData, periodInDays: parseInt(e.target.value) })}
                   className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Number of days"
+                  placeholder={t('payments.create.numberOfDays')}
                   required
                 />
               </div>
@@ -337,7 +334,7 @@ export default function CreateBulkPaymentDialog({ open, onClose }: CreateBulkPay
             {/* Payment Method */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
-                Payment Method
+                {t('payments.create.paymentMethod')}
               </label>
               <select
                 value={formData.paymentMethod}
@@ -345,10 +342,9 @@ export default function CreateBulkPaymentDialog({ open, onClose }: CreateBulkPay
                 className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 required
               >
-                <option value={PaymentMethod.BANK_TRANSFER}>Bank Transfer</option>
-                <option value={PaymentMethod.CASH_TO_MANAGER}>Cash to Manager</option>
-                <option value={PaymentMethod.STRIPE_CARD}>Stripe Card</option>
-                <option value={PaymentMethod.OTHER}>Other</option>
+                {Object.values(PaymentMethod).map(method => (
+                  <option key={method} value={method}>{t(`payments.methods.${method}`)}</option>
+                ))}
               </select>
             </div>
 
@@ -356,7 +352,7 @@ export default function CreateBulkPaymentDialog({ open, onClose }: CreateBulkPay
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
                 <Calendar className="w-4 h-4 inline mr-1" />
-                Due Date
+                {t('payments.create.dueDate')}
               </label>
               <input
                 type="date"
@@ -372,24 +368,24 @@ export default function CreateBulkPaymentDialog({ open, onClose }: CreateBulkPay
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
                 <FileText className="w-4 h-4 inline mr-1" />
-                Description (Optional)
+                {t('payments.create.descriptionOptional')}
               </label>
               <textarea
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
                 rows={3}
-                placeholder="Add a description for these payments..."
+                placeholder={t('payments.create.descriptionPlaceholder')}
               />
             </div>
 
             {/* Summary */}
             {pricingStrategy === 'room' && selectedRooms.length > 0 && (
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <div className="text-sm font-medium text-blue-900 mb-2">Summary</div>
+                <div className="text-sm font-medium text-blue-900 mb-2">{t('payments.create.summary')}</div>
                 <div className="text-sm text-blue-700">
-                  This will create payments for residents in <strong>{selectedRooms.length} room(s)</strong>.
-                  Amounts will be calculated automatically based on each room's price category.
+                  {t('payments.create.summaryText')} <strong>{selectedRooms.length} {t('payments.create.roomsSelected')}</strong>.
+                  {t('payments.create.summaryDetail')}
                 </div>
               </div>
             )}
@@ -403,7 +399,7 @@ export default function CreateBulkPaymentDialog({ open, onClose }: CreateBulkPay
               className="px-4 py-2 text-slate-700 hover:text-slate-900 font-medium rounded-lg hover:bg-slate-100 transition-colors"
               disabled={creatingBulkPayments}
             >
-              Cancel
+              {t('payments.create.cancel')}
             </button>
             <button
               type="submit"
@@ -413,10 +409,10 @@ export default function CreateBulkPaymentDialog({ open, onClose }: CreateBulkPay
               {creatingBulkPayments ? (
                 <span className="flex items-center gap-2">
                   <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
-                  Creating...
+                  {t('payments.create.creating')}
                 </span>
               ) : (
-                'Create Bulk Payments'
+                t('payments.create.createBulkPayments')
               )}
             </button>
           </div>

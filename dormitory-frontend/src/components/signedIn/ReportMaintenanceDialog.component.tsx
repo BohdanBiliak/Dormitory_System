@@ -8,31 +8,13 @@ import {
   CreateMaintenanceReportRequest,
 } from '@/types/maintenance.types';
 import { useCreateMaintenanceReport, useUploadMaintenanceAttachments } from '@/hooks/maintenance.hook';
+import { useLanguage } from '@/providers/language.provider';
 
 interface ReportMaintenanceDialogProps {
   isOpen: boolean;
   onClose: () => void;
   roomId?: string;
 }
-
-const CATEGORY_LABELS: Record<MaintenanceCategory, string> = {
-  PLUMBING: 'Plumbing',
-  ELECTRICAL: 'Electrical',
-  HEATING: 'Heating',
-  FURNITURE: 'Furniture',
-  APPLIANCES: 'Appliances',
-  WINDOWS_DOORS: 'Windows & Doors',
-  CLEANING: 'Cleaning',
-  INTERNET: 'Internet',
-  OTHER: 'Other',
-};
-
-const PRIORITY_LABELS: Record<MaintenancePriority, string> = {
-  LOW: 'Low',
-  MEDIUM: 'Medium',
-  HIGH: 'High',
-  URGENT: 'Urgent',
-};
 
 const PRIORITY_COLORS: Record<MaintenancePriority, string> = {
   LOW: 'bg-gray-100 text-gray-700 border-gray-300',
@@ -46,6 +28,7 @@ export const ReportMaintenanceDialog: React.FC<ReportMaintenanceDialogProps> = (
   onClose,
   roomId,
 }) => {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState<CreateMaintenanceReportRequest>({
     category: MaintenanceCategory.OTHER,
     priority: MaintenancePriority.MEDIUM,
@@ -66,7 +49,7 @@ export const ReportMaintenanceDialog: React.FC<ReportMaintenanceDialogProps> = (
     if (e.target.files) {
       const files = Array.from(e.target.files);
       if (files.length + selectedFiles.length > 5) {
-        alert('You can upload a maximum of 5 files');
+        alert(t('maintenance.messages.maxFiles'));
         return;
       }
       setSelectedFiles([...selectedFiles, ...files]);
@@ -128,9 +111,9 @@ export const ReportMaintenanceDialog: React.FC<ReportMaintenanceDialogProps> = (
                 <Wrench className="w-6 h-6" />
               </div>
               <div>
-                <h2 className="text-2xl font-bold">Report Maintenance Issue</h2>
+                <h2 className="text-2xl font-bold">{t('maintenance.reportMaintenance')}</h2>
                 <p className="text-orange-100 text-sm mt-1">
-                  Tell us about the problem and we'll get it fixed
+                  {t('maintenance.dashboard.subtitle')}
                 </p>
               </div>
             </div>
@@ -150,15 +133,15 @@ export const ReportMaintenanceDialog: React.FC<ReportMaintenanceDialogProps> = (
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 flex items-start space-x-3">
             <AlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
             <div className="text-sm text-blue-800">
-              <p className="font-medium mb-1">Quick Response Guarantee</p>
-              <p>Our maintenance team will review your report and contact you within 24 hours.</p>
+              <p className="font-medium mb-1">{t('maintenance.dashboard.subtitle')}</p>
+              <p>{t('maintenance.messages.reportSubmitted')}</p>
             </div>
           </div>
 
           {/* Category */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Issue Category <span className="text-red-500">*</span>
+              {t('maintenance.fields.category')} <span className="text-red-500">*</span>
             </label>
             <select
               value={formData.category}
@@ -166,9 +149,9 @@ export const ReportMaintenanceDialog: React.FC<ReportMaintenanceDialogProps> = (
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               required
             >
-              {Object.entries(CATEGORY_LABELS).map(([value, label]) => (
+              {Object.keys(MaintenanceCategory).map((value) => (
                 <option key={value} value={value}>
-                  {label}
+                  {t(`maintenance.categories.${value}`)}
                 </option>
               ))}
             </select>
@@ -177,10 +160,10 @@ export const ReportMaintenanceDialog: React.FC<ReportMaintenanceDialogProps> = (
           {/* Priority */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Priority Level <span className="text-red-500">*</span>
+              {t('maintenance.fields.priority')} <span className="text-red-500">*</span>
             </label>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              {Object.entries(PRIORITY_LABELS).map(([value, label]) => (
+              {Object.keys(MaintenancePriority).map((value) => (
                 <button
                   key={value}
                   type="button"
@@ -191,7 +174,7 @@ export const ReportMaintenanceDialog: React.FC<ReportMaintenanceDialogProps> = (
                       : 'bg-white text-gray-600 border-gray-200 hover:border-gray-300'
                   }`}
                 >
-                  {label}
+                  {t(`maintenance.priorities.${value}`)}
                 </button>
               ))}
             </div>
@@ -200,13 +183,13 @@ export const ReportMaintenanceDialog: React.FC<ReportMaintenanceDialogProps> = (
           {/* Title */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Issue Title <span className="text-red-500">*</span>
+              {t('maintenance.fields.title')} <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               value={formData.title}
               onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-              placeholder="e.g., Broken faucet in bathroom"
+              placeholder={t('maintenance.fields.titlePlaceholder')}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               required
               minLength={5}
@@ -218,13 +201,13 @@ export const ReportMaintenanceDialog: React.FC<ReportMaintenanceDialogProps> = (
           {/* Location */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Specific Location <span className="text-red-500">*</span>
+              {t('maintenance.fields.location')} <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               value={formData.location}
               onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-              placeholder="e.g., Room 203, Bathroom, Near the sink"
+              placeholder={t('maintenance.fields.locationPlaceholder')}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               required
               minLength={3}
@@ -234,12 +217,12 @@ export const ReportMaintenanceDialog: React.FC<ReportMaintenanceDialogProps> = (
           {/* Description */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Detailed Description <span className="text-red-500">*</span>
+              {t('maintenance.fields.description')} <span className="text-red-500">*</span>
             </label>
             <textarea
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              placeholder="Please describe the issue in detail. Include when you first noticed it, how it affects you, and any other relevant information..."
+              placeholder={t('maintenance.fields.descriptionPlaceholder')}
               rows={6}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none"
               required
@@ -253,7 +236,7 @@ export const ReportMaintenanceDialog: React.FC<ReportMaintenanceDialogProps> = (
           {/* File Upload */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Attachments (Optional)
+              {t('maintenance.fields.attachments')}
             </label>
             <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-orange-400 transition-colors">
               <input
@@ -271,10 +254,10 @@ export const ReportMaintenanceDialog: React.FC<ReportMaintenanceDialogProps> = (
               >
                 <Upload className="w-10 h-10 text-gray-400 mb-2" />
                 <p className="text-sm font-medium text-gray-700">
-                  Click to upload photos or documents
+                  {t('maintenance.buttons.uploadFiles')}
                 </p>
                 <p className="text-xs text-gray-500 mt-1">
-                  Max 5 files. Supports: JPG, PNG, PDF, DOC
+                  {t('maintenance.fields.attachmentsHelp')}
                 </p>
               </label>
             </div>
@@ -311,7 +294,7 @@ export const ReportMaintenanceDialog: React.FC<ReportMaintenanceDialogProps> = (
               disabled={isSubmitting}
               className="px-6 py-3 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors font-medium disabled:opacity-50"
             >
-              Cancel
+              {t('maintenance.buttons.cancel')}
             </button>
             <button
               type="submit"
@@ -321,12 +304,12 @@ export const ReportMaintenanceDialog: React.FC<ReportMaintenanceDialogProps> = (
               {isSubmitting ? (
                 <>
                   <Loader2 className="w-5 h-5" />
-                  <span>Submitting...</span>
+                  <span>{t('maintenance.submitting')}</span>
                 </>
               ) : (
                 <>
                   <Wrench className="w-5 h-5" />
-                  <span>Submit Report</span>
+                  <span>{t('maintenance.buttons.submit')}</span>
                 </>
               )}
             </button>

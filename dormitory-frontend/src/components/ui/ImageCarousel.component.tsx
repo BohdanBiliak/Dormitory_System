@@ -1,6 +1,7 @@
 import {Camera, ChevronLeft, ChevronRight} from "lucide-react";
 import React, {useEffect, useState} from "react";
 import {Description, Dialog, DialogBackdrop, DialogPanel, DialogTitle} from "@headlessui/react";
+import { useLanguage } from "@/providers/language.provider";
 
 export interface ImageCarouselProps {
     photos:string[],
@@ -18,6 +19,7 @@ export interface ImageCarouselProps {
 }
 
 export function ImageCarouselComponent({photos, setPhotos, newPhotos, setNewPhotos, showEditMenu, closeEditMenu, editionMenuLabels}:ImageCarouselProps) {
+    const { t } = useLanguage();
     const[photosTemp, setPhotosTemp] = useState(photos);
     const[newPhotosTemp, setNewPhotosTemp] = useState(newPhotos);
 
@@ -173,8 +175,8 @@ export function ImageCarouselComponent({photos, setPhotos, newPhotos, setNewPhot
             ) : (
                 <div className="aspect-video rounded-lg bg-gray-50 border-2 border-dashed border-gray-200 flex flex-col items-center justify-center text-center p-6">
                     <Camera className="mx-auto h-8 w-8 sm:h-12 sm:w-12 text-gray-400 mb-3" />
-                    <p className="text-sm sm:text-base text-gray-500 font-medium">No photos available</p>
-                    <p className="text-xs sm:text-sm text-gray-400 mt-1">Add photos to see them here</p>
+                    <p className="text-sm sm:text-base text-gray-500 font-medium">{t('ui.noPhotos')}</p>
+                    <p className="text-xs sm:text-sm text-gray-400 mt-1">{t('ui.addPhotosHere')}</p>
                 </div>
             )}
 
@@ -210,7 +212,7 @@ export function ImageCarouselComponent({photos, setPhotos, newPhotos, setNewPhot
                                 <div className="lg:col-span-2 space-y-4">
                                     <h3 className="text-lg font-semibold text-gray-900 flex items-center">
                                         <Camera className="w-5 h-5 mr-2 text-blue-600" />
-                                        Preview
+                                        {t('ui.preview')}
                                     </h3>
                                     
                                     {photosTemp.length + newPhotosTemp.length > 0 ? (
@@ -280,8 +282,8 @@ export function ImageCarouselComponent({photos, setPhotos, newPhotos, setNewPhot
                                     ) : (
                                         <div className="aspect-video rounded-lg bg-gray-50 border-2 border-dashed border-gray-200 flex flex-col items-center justify-center">
                                             <Camera className="mx-auto h-12 w-12 text-gray-400 mb-3" />
-                                            <p className="text-gray-500 font-medium">No photos available</p>
-                                            <p className="text-gray-400 text-sm mt-1">Add photos to see them here</p>
+                                            <p className="text-gray-500 font-medium">{t('ui.noPhotos')}</p>
+                                            <p className="text-gray-400 text-sm mt-1">{t('ui.addPhotosHere')}</p>
                                         </div>
                                     )}
                                 </div>
@@ -289,13 +291,13 @@ export function ImageCarouselComponent({photos, setPhotos, newPhotos, setNewPhot
                                 {/* Thumbnail Gallery */}
                                 <div className="space-y-4">
                                     <div className="flex items-center justify-between">
-                                        <h3 className="text-lg font-semibold text-gray-900">Gallery</h3>
+                                        <h3 className="text-lg font-semibold text-gray-900">{t('ui.gallery')}</h3>
                                         {setNewPhotos && (
                                             <label className="cursor-pointer inline-flex items-center px-3 py-1.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
                                                 <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                                                 </svg>
-                                                Add
+                                                {t('common.add')}
                                                 <input
                                                     type="file"
                                                     name="newImage"
@@ -325,9 +327,9 @@ export function ImageCarouselComponent({photos, setPhotos, newPhotos, setNewPhot
                                                 </button>
                                                 <div className="flex-1 min-w-0">
                                                     <p className="text-sm font-medium text-gray-900 truncate">
-                                                        Photo {index + 1}
+                                                        {t('ui.photo')} {index + 1}
                                                     </p>
-                                                    <p className="text-xs text-gray-500">Existing photo</p>
+                                                    <p className="text-xs text-gray-500">{t('ui.existingPhoto')}</p>
                                                 </div>
                                                 {setPhotos && (
                                                     <button
@@ -363,7 +365,7 @@ export function ImageCarouselComponent({photos, setPhotos, newPhotos, setNewPhot
                                                     <p className="text-sm font-medium text-gray-900 truncate">
                                                         {photo.name}
                                                     </p>
-                                                    <p className="text-xs text-green-600">New photo</p>
+                                                    <p className="text-xs text-green-600">{t('ui.newPhoto')}</p>
                                                 </div>
                                                 {setNewPhotos && (
                                                     <button
@@ -383,7 +385,7 @@ export function ImageCarouselComponent({photos, setPhotos, newPhotos, setNewPhot
                                         {photosTemp.length + newPhotosTemp.length === 0 && (
                                             <div className="text-center py-8">
                                                 <Camera className="mx-auto h-8 w-8 text-gray-400 mb-2" />
-                                                <p className="text-sm text-gray-500">No photos to display</p>
+                                                <p className="text-sm text-gray-500">{t('ui.noPhotosDisplay')}</p>
                                             </div>
                                         )}
                                     </div>
@@ -398,13 +400,13 @@ export function ImageCarouselComponent({photos, setPhotos, newPhotos, setNewPhot
                                     onClick={handleCancelChanges}
                                     className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
                                 >
-                                    Cancel
+                                    {t('common.cancel')}
                                 </button>
                                 <button 
                                     onClick={handleSaveChanges}
                                     className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
                                 >
-                                    Save Changes
+                                    {t('ui.saveChanges')}
                                 </button>
                             </div>
                         )}

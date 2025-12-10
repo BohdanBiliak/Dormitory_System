@@ -1,12 +1,62 @@
 {
   "availableRooms": {
     "title": "Dostępne Pokoje",
+    "subtitle": "Zarządzaj i przeglądaj wszystkie pokoje w akademiku",
     "search": "Szukaj pokoi...",
     "filter": {
       "all": "Wszystkie",
       "available": "Dostępne",
       "occupied": "Zajęte"
     },
-    "noRooms": "Nie znaleziono pokoi"
+    "noRooms": "Nie znaleziono pokoi",
+    "filters": {
+      "title": "Filtry:",
+      "showFilters": "Pokaż Filtry",
+      "hideFilters": "Ukryj Filtry",
+      "filtersShort": "Filtry",
+      "date": "Data:",
+      "emptyRoom": "Pusty pokój:",
+      "emptyRoomYes": "Tak",
+      "emptyRoomNo": "Nie",
+      "emptyRoomEither": "Nie ma znaczenia",
+      "groupBooking": "Zarezerwuj pokój dla grupy:",
+      "people": "osób"
+    },
+    "dormitory": {
+      "title": "Akademik:",
+      "noDormitories": "Brak dostępnych akademików",
+      "floor": "Piętro:"
+    },
+    "rooms": {
+      "title": "Pokoje:",
+      "legend": {
+        "available": "Dostępny",
+        "partiallyOccupied": "Częściowo zajęty",
+        "fullyOccupied": "Całkowicie zajęty"
+      }
+    },
+    "roomDetails": {
+      "title": "Pokój {{number}}",
+      "titleShort": "Pokój {{number}}:",
+      "meetsRequirements": "Pokój spełnia wymagania wyszukiwania",
+      "meetsRequirementsShort": "Spełnia wymagania wyszukiwania",
+      "doesNotMeetRequirements": "Pokój nie spełnia wymagań wyszukiwania",
+      "toRoomPage": "Do strony pokoju →",
+      "selectRoom": "Wybierz pokój, aby zobaczyć szczegóły",
+      "adminConfirmFirst": "Administrator musi najpierw potwierdzić Twój profil",
+      "bookRoom": "Zarezerwuj ten pokój",
+      "moveToRoom": "Przenieś się do tego pokoju",
+      "loginFirst": "Proszę najpierw się zalogować.",
+      "availabilityNext2Weeks": "Dostępność przez najbliższe 2 tygodnie:",
+      "weekDays": {
+        "mon": "Pon",
+        "tue": "Wt",
+        "wed": "Śr",
+        "thu": "Czw",
+        "fri": "Pt",
+        "sat": "Sob",
+        "sun": "Ndz"
+      }
+    }
   }
 }

@@ -6,11 +6,13 @@ import Link from 'next/link'
 import { authApi } from '@/app/lib/auth.api'
 import { toast } from 'sonner'
 import { NewPasswordTutorial } from '../../app/tutorials/auth/mew-password'
+import { useLanguage } from '@/providers/language.provider'
 
 export function NewPasswordForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const token = searchParams.get('token')
+  const { t } = useLanguage()
   
   const [formData, setFormData] = useState({
     password: '',
@@ -22,10 +24,10 @@ export function NewPasswordForm() {
 
   useEffect(() => {
     if (!token) {
-      toast.error('Invalid reset link')
+      toast.error(t('auth.emailVerification.invalidResetLink'))
       router.push('/auth/reset-password')
     }
-  }, [token, router])
+  }, [token, router, t])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -40,15 +42,15 @@ export function NewPasswordForm() {
     const newErrors: Record<string, string> = {}
 
     if (!formData.password) {
-      newErrors.password = 'Password is required'
+      newErrors.password = t('auth.newPassword.validation.passwordRequired')
     } else if (formData.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters'
+      newErrors.password = t('auth.newPassword.validation.passwordTooShort')
     }
 
     if (!formData.confirmPassword) {
-      newErrors.confirmPassword = 'Please confirm your password'
+      newErrors.confirmPassword = t('auth.newPassword.validation.confirmPasswordRequired')
     } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Passwords do not match'
+      newErrors.confirmPassword = t('auth.newPassword.validation.passwordsNotMatch')
     }
 
     setErrors(newErrors)
@@ -65,7 +67,7 @@ export function NewPasswordForm() {
       await authApi.setNewPassword(token, formData.password)
       
       setIsSuccess(true)
-      toast.success('Password reset successfully!')
+      toast.success(t('auth.emailVerification.passwordResetSuccess'))
       
       setTimeout(() => {
         router.push('/auth/login')
@@ -88,19 +90,19 @@ export function NewPasswordForm() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2 sm:mb-4">Password Reset Successfully</h2>
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2 sm:mb-4">{t('auth.newPassword.success')}</h2>
             <p className="text-gray-600 mb-4 sm:mb-6 text-sm sm:text-base lg:text-lg px-2">
-              Your password has been changed. You can now sign in with your new password.
+              {t('auth.newPassword.successMessage')}
             </p>
             <p className="text-xs sm:text-sm text-gray-500 mb-6 sm:mb-8 px-2">
-              Redirecting you to sign in...
+              {t('auth.newPassword.redirecting')}
             </p>
             <div className="password-success-actions">
               <Link
                 href="/auth/login"
                 className="inline-block bg-blue-900 text-white py-2.5 sm:py-3 lg:py-4 px-4 sm:px-6 lg:px-8 rounded-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2  text-sm sm:text-base font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
               >
-                Sign In Now
+                {t('auth.newPassword.signInNow')}
               </Link>
             </div>
           </div>
@@ -122,9 +124,9 @@ export function NewPasswordForm() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
           </div>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900">Create New Password</h2>
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900">{t('auth.newPassword.title')}</h2>
           <p className="text-gray-600 mt-2 text-sm sm:text-base lg:text-lg">
-            Enter your new password below
+            {t('auth.newPassword.subtitle')}
           </p>
         </div>
 
@@ -134,13 +136,13 @@ export function NewPasswordForm() {
               <svg className="w-5 h-5 sm:w-6 sm:h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
-              Set New Password
+              {t('auth.newPassword.setNewPassword')}
             </h3>
             
             <div className="space-y-4 sm:space-y-6">
               <div className="new-password-input">
                 <label className="block text-sm sm:text-base font-medium text-gray-700 mb-1 sm:mb-2">
-                  New Password
+                  {t('auth.newPassword.password')}
                 </label>
                 <input
                   type="password"
@@ -151,7 +153,7 @@ export function NewPasswordForm() {
                   className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 transition-colors text-sm sm:text-base ${
                     errors.password ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
                   }`}
-                  placeholder="Enter new password"
+                  placeholder={t('auth.newPassword.passwordPlaceholder')}
                   autoFocus
                 />
                 {errors.password && (
@@ -166,7 +168,7 @@ export function NewPasswordForm() {
 
               <div className="confirm-password-input">
                 <label className="block text-sm sm:text-base font-medium text-gray-700 mb-1 sm:mb-2">
-                  Confirm New Password
+                  {t('auth.newPassword.confirmPassword')}
                 </label>
                 <input
                   type="password"
@@ -177,7 +179,7 @@ export function NewPasswordForm() {
                   className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 transition-colors text-sm sm:text-base ${
                     errors.confirmPassword ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
                   }`}
-                  placeholder="Confirm new password"
+                  placeholder={t('auth.newPassword.confirmPasswordPlaceholder')}
                 />
                 {errors.confirmPassword && (
                   <p className="text-red-500 text-xs sm:text-sm mt-1 flex items-center">
@@ -200,7 +202,7 @@ export function NewPasswordForm() {
               {isLoading && (
                 <div className="animate-spin rounded-full h-4 w-4 sm:h-5 sm:w-5 border-b-2 border-white"></div>
               )}
-              <span>{isLoading ? 'Updating Password...' : 'Update Password'}</span>
+              <span>{isLoading ? t('auth.newPassword.resetting') : t('auth.newPassword.resetPassword')}</span>
             </button>
 
             <div className="text-center pt-2 back-to-signin">
@@ -208,7 +210,7 @@ export function NewPasswordForm() {
                 href="/auth/login" 
                 className="text-sm sm:text-base text-blue-600 hover:text-blue-500 font-medium transition-colors underline hover:no-underline"
               >
-                ← Back to Sign In
+                ← {t('auth.passwordReset.backToLogin')}
               </Link>
             </div>
           </div>

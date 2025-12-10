@@ -20,6 +20,7 @@ import {
 import { MessageSquare, Plus, ArrowLeft, Settings, Search, Trash2, X, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { CreateConversationModal } from './CreateConversationModal';
+import { useLanguage } from '@/providers/language.provider';
 
 interface MessagingInterfaceProps {
   currentUserId: string;
@@ -28,6 +29,7 @@ interface MessagingInterfaceProps {
 export const MessagingInterface = memo<MessagingInterfaceProps>(({
   currentUserId,
 }) => {
+  const { t } = useLanguage();
   const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [replyToMessage, setReplyToMessage] = useState<Message | null>(null);
@@ -197,7 +199,7 @@ export const MessagingInterface = memo<MessagingInterfaceProps>(({
       setReplyToMessage(null);
     } catch (error) {
       console.error('Failed to send message:', error);
-      toast.error('Failed to send message');
+      toast.error(t('messaging.interface.failedToSendMessage'));
     } finally {
       setIsSendingMessage(false);
     }
@@ -212,18 +214,18 @@ export const MessagingInterface = memo<MessagingInterfaceProps>(({
       await createConversationMutation.mutateAsync(data);
       
       setShowCreateModal(false);
-      toast.success('Conversation created successfully');
+      toast.success(t('messaging.interface.conversationCreatedSuccessfully'));
       refetchConversations();
       
     } catch (error) {
-      toast.error('Failed to create conversation');
+      toast.error(t('messaging.interface.failedToCreateConversation'));
     }
   };
 
   const handleDeleteConversation = async (conversationId: string) => {
     try {
       await deleteConversationMutation.mutateAsync(conversationId);
-      toast.success('Conversation deleted successfully');
+      toast.success(t('messaging.interface.conversationDeletedSuccessfully'));
       
       if (selectedConversation?.id === conversationId) {
         setSelectedConversation(null);
@@ -244,7 +246,7 @@ export const MessagingInterface = memo<MessagingInterfaceProps>(({
         )
       );
       
-      toast.success('Message updated');
+      toast.success(t('messaging.interface.messageUpdated'));
       
       refetchConversations();
     } catch (error) {
@@ -255,7 +257,7 @@ export const MessagingInterface = memo<MessagingInterfaceProps>(({
             : msg
         )
       );
-      toast.error('Failed to update message');
+      toast.error(t('messaging.interface.failedToUpdateMessage'));
     }
   };
 
@@ -265,7 +267,7 @@ export const MessagingInterface = memo<MessagingInterfaceProps>(({
     try {
       setMessages(prev => prev.filter(msg => msg.id !== messageId));
       
-      toast.success('Message deleted');
+      toast.success(t('messaging.interface.messageDeleted'));
       
       refetchConversations();
     } catch (error) {
@@ -274,7 +276,7 @@ export const MessagingInterface = memo<MessagingInterfaceProps>(({
           new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
         ));
       }
-      toast.error('Failed to delete message');
+      toast.error(t('messaging.interface.failedToDeleteMessage'));
     }
   };
 
@@ -293,7 +295,7 @@ export const MessagingInterface = memo<MessagingInterfaceProps>(({
 
     const title = selectedConversation.title || 
       (selectedConversation.isGroup 
-        ? `Group (${selectedConversation.participants.length})`
+        ? `${t('messaging.interface.group')} (${selectedConversation.participants.length})`
         : selectedConversation.participants.find(p => p.userId !== currentUserId)?.user.displayName
       );
 
@@ -302,7 +304,7 @@ export const MessagingInterface = memo<MessagingInterfaceProps>(({
       : selectedConversation.participants.some(p => onlineUsers.has(p.userId) && p.userId !== currentUserId);
 
     return (
-      <div className="border-b border-gray-200 bg-white shadow-sm">
+      <div className="border-b px-6 py-6 border-gray-200 bg-white shadow-sm">
         <div className="p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3 flex-1 min-w-0">
@@ -488,9 +490,9 @@ export const MessagingInterface = memo<MessagingInterfaceProps>(({
               <div className="bg-blue-100 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6">
                 <MessageSquare className="w-12 h-12 text-blue-600" />
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-gray-700">No conversation selected</h3>
+              <h3 className="text-xl font-semibold mb-2 text-gray-700">{t('messaging.interface.noConversationSelected')}</h3>
               <p className="text-gray-600 max-w-sm">
-                Choose a conversation from the sidebar to start messaging with your dormitory community
+                {t('messaging.interface.chooseConversation')}
               </p>
             </div>
           </div>

@@ -1,0 +1,124 @@
+{
+  "reports": {
+    "title": "Raporty",
+    "subtitle": "Generuj kompleksowe raporty Excel z niestandardowymi filtrami",
+    "generateReport": "Generuj raport",
+    "reportType": "Typ raportu",
+    "dateRange": "Zakres dat",
+    "startDate": "Data początkowa",
+    "endDate": "Data końcowa",
+    "dormitory": "Akademik",
+    "selectDormitory": "Wybierz akademik",
+    "allDormitories": "Wszystkie akademiki",
+    "format": "Format",
+    "infoCards": {
+      "excelFormat": "Format Excel",
+      "excelDescription": "Wszystkie raporty są generowane w formacie Excel (.xlsx) do łatwej analizy danych",
+      "customFilters": "Niestandardowe filtry",
+      "filtersDescription": "Filtruj dane według zakresu dat, statusu, akademika i więcej, w zależności od typu raportu",
+      "realTimeData": "Dane w czasie rzeczywistym",
+      "realTimeDescription": "Raporty są generowane z bieżących danych bazodanowych z aktualnymi statystykami"
+    },
+    "availableReports": {
+      "title": "Dostępne raporty",
+      "subtitle": "Przegląd wszystkich typów raportów, które możesz wygenerować",
+      "users": {
+        "title": "Raport użytkowników",
+        "description": "Pełna lista użytkowników z informacjami osobistymi, przydziałami pokoi i statusem konta"
+      },
+      "dormitories": {
+        "title": "Raport akademików",
+        "description": "Statystyki akademików, w tym łączna liczba pięter, pokoi i aktualne wskaźniki obłożenia"
+      },
+      "rooms": {
+        "title": "Raport pokoi",
+        "description": "Szczegółowe informacje o pokojach z pojemnością, obłożeniem, cenami i statusem dostępności"
+      },
+      "bookings": {
+        "title": "Raport rezerwacji",
+        "description": "Wszystkie żądania rezerwacji pokoi ze szczegółami użytkownika, datami i statusem zatwierdzenia"
+      },
+      "payments": {
+        "title": "Raport płatności",
+        "description": "Transakcje płatności z kwotami, metodami, statusem i informacjami o użytkownikach"
+      },
+      "maintenance": {
+        "title": "Raport konserwacji",
+        "description": "Żądania konserwacji z priorytetem, statusem, przypisanymi pokojami i czasami rozwiązania"
+      },
+      "announcements": {
+        "title": "Raport ogłoszeń",
+        "description": "Wszystkie ogłoszenia z grupą docelową, statusem widoczności i datami wygaśnięcia"
+      },
+      "confirmations": {
+        "title": "Raport potwierdzeń",
+        "description": "Wszystkie żądania potwierdzeń, w tym typ, status i powiązane szczegóły użytkownika/pokoju"
+      }
+    },
+    "types": {
+      "occupancy": "Raport obłożenia",
+      "payments": "Raport płatności",
+      "maintenance": "Raport konserwacji",
+      "revenue": "Raport przychodów",
+      "residents": "Raport mieszkańców"
+    },
+    "formats": {
+      "pdf": "PDF",
+      "excel": "Excel",
+      "csv": "CSV"
+    },
+    "filters": {
+      "thisMonth": "Ten miesiąc",
+      "lastMonth": "Ostatni miesiąc",
+      "thisYear": "Ten rok",
+      "custom": "Własny zakres"
+    },
+    "actions": {
+      "generate": "Generuj",
+      "download": "Pobierz",
+      "export": "Eksportuj",
+      "print": "Drukuj",
+      "cancel": "Anuluj",
+      "clearFilters": "Wyczyść filtry"
+    },
+    "messages": {
+      "generating": "Generowanie...",
+      "generated": "Raport wygenerowany pomyślnie",
+      "generatedAndDownloaded": "Raport wygenerowany i pobrany pomyślnie!",
+      "failed": "Nie udało się wygenerować raportu",
+      "noData": "Brak danych dla wybranego okresu"
+    },
+    "generator": {
+      "title": "Generuj raport Excel",
+      "description": "Wybierz typ raportu i filtry, aby wygenerować kompleksowy raport Excel",
+      "reportType": "Typ raportu",
+      "reportTypeRequired": "Typ raportu *",
+      "selectReportType": "Wybierz typ raportu",
+      "filtersSection": "Filtry (Opcjonalne)",
+      "allDormitories": "Wszystkie akademiki",
+      "allRoles": "Wszystkie role",
+      "allStatuses": "Wszystkie statusy",
+      "roles": {
+        "resident": "Mieszkaniec",
+        "signedInUser": "Zalogowany użytkownik",
+        "regular": "Zwykły",
+        "admin": "Administrator",
+        "superAdmin": "Super Administrator"
+      },
+      "statuses": {
+        "active": "Aktywny",
+        "inactive": "Nieaktywny",
+        "occupied": "Zajęty",
+        "available": "Dostępny",
+        "pending": "Oczekujący",
+        "approved": "Zatwierdzony",
+        "rejected": "Odrzucony",
+        "completed": "Ukończony",
+        "failed": "Nieudany",
+        "refunded": "Zwrócony",
+        "inProgress": "W trakcie",
+        "cancelled": "Anulowany"
+      }
+    }
+  }
+}

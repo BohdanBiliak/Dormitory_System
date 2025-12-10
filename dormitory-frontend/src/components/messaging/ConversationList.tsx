@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Conversation } from '@/types/messaging.types';
 import { format, isToday, isYesterday } from 'date-fns';
 import { Users, User, CheckCheck, MoreVertical, Trash2, AlertTriangle } from 'lucide-react';
+import { useLanguage } from '@/providers/language.provider';
 
 interface ConversationListProps {
   conversations: Conversation[];
@@ -20,6 +21,7 @@ export const ConversationList: React.FC<ConversationListProps> = React.memo(({
   onDeleteConversation,
   currentUserId,
 }) => {
+  const { t } = useLanguage();
   const [showActionsMenu, setShowActionsMenu] = useState<string | null>(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -88,7 +90,7 @@ export const ConversationList: React.FC<ConversationListProps> = React.memo(({
     }
 
     return (
-      <div className="w-12 h-12 bg-gray-400 rounded-full flex items-center justify-center">
+      <div className=" px-6 py-6 w-12 h-12 bg-gray-400 rounded-full flex items-center justify-center">
         <User className="w-6 h-6 text-white" />
       </div>
     );
@@ -225,7 +227,7 @@ export const ConversationList: React.FC<ConversationListProps> = React.memo(({
                             className="w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center space-x-2"
                           >
                             <Trash2 size={14} />
-                            <span>Delete</span>
+                            <span>{t('common.delete')}</span>
                           </button>
                         </div>
                       )}
@@ -262,11 +264,11 @@ export const ConversationList: React.FC<ConversationListProps> = React.memo(({
               <div className="bg-red-100 rounded-full p-3 mr-4">
                 <AlertTriangle className="w-6 h-6 text-red-600" />
               </div>
-              <h3 className="text-lg font-semibold text-gray-900">Delete Conversation</h3>
+              <h3 className="text-lg font-semibold text-gray-900">{t('messaging.deleteConversation', 'Delete Conversation')}</h3>
             </div>
             
             <p className="text-gray-600 mb-6">
-              Are you sure you want to delete this conversation? This action cannot be undone and all messages will be permanently removed.
+              {t('messaging.deleteConfirm', 'Are you sure you want to delete this conversation? This action cannot be undone.')}
             </p>
             
             <div className="flex justify-end space-x-3">
@@ -277,13 +279,13 @@ export const ConversationList: React.FC<ConversationListProps> = React.memo(({
                 }}
                 className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors font-medium"
               >
-                Cancel
+                {t('common.cancel')}
               </button>
               <button
                 onClick={() => handleDeleteConversation(showDeleteConfirm)}
                 className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium shadow-sm"
               >
-                Delete
+                {t('common.delete')}
               </button>
             </div>
           </div>

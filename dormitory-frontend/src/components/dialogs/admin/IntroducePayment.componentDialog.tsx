@@ -5,6 +5,7 @@ import {Receipt} from "lucide-react";
 import {useUpdatePayments} from "@/hooks/payment.hook";
 import {User} from "@/types/auth.types";
 import {useUserListQuery} from "@/hooks/userList.hook";
+import { useLanguage } from '@/providers/language.provider';
 
 export interface IntroducePaymentProps {
     open: boolean;
@@ -12,6 +13,7 @@ export interface IntroducePaymentProps {
 }
 
 export default function IntroducePaymentComponentDialog({open, onClose}: IntroducePaymentProps) {
+    const { t } = useLanguage();
     const {createPayment} = useUpdatePayments();
 
     const {data: users, isLoading: loadingUsers, error: usersError} = useUserListQuery();
@@ -97,10 +99,10 @@ export default function IntroducePaymentComponentDialog({open, onClose}: Introdu
                                     </div>
                                     <div>
                                         <DialogTitle className="text-lg sm:text-xl font-semibold text-white delay-200">
-                                            Introduce Payment
+                                            {t('payments.introduce.title')}
                                         </DialogTitle>
                                         <Description className="text-blue-100 text-sm mt-1 delay-250">
-                                            Here you can introduce new payments
+                                            {t('payments.introduce.subtitle')}
                                         </Description>
                                     </div>
                                 </div>
@@ -139,14 +141,14 @@ export default function IntroducePaymentComponentDialog({open, onClose}: Introdu
                                     <div className="bg-slate-50 rounded-xl p-6 border border-slate-200 animate-in fade-in-0 slide-in-from-left-4 duration-500">
                                         <h3 className="text-xl font-semibold text-slate-900 mb-6 flex items-center">
                                             <Receipt className="w-5 h-5 mr-2 text-blue-600" />
-                                            Payment Information
+                                            {t('payments.introduce.paymentInformation')}
                                         </h3>
                                         
                                         <div className="space-y-6">
                                             {/* Description */}
                                             <div className="animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-100">
                                                 <label className="block text-sm font-medium text-slate-700 mb-2">
-                                                    Description
+                                                    {t('payments.details.description')}
                                                 </label>
                                                 <input
                                                     name="description"
@@ -161,7 +163,7 @@ export default function IntroducePaymentComponentDialog({open, onClose}: Introdu
                                             {/* Amount */}
                                             <div className="animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-150">
                                                 <label className="block text-sm font-medium text-slate-700 mb-2">
-                                                    Amount ($)
+                                                    {t('payments.introduce.amount')}
                                                 </label>
                                                 <input
                                                     name="amount"
@@ -178,7 +180,7 @@ export default function IntroducePaymentComponentDialog({open, onClose}: Introdu
                                             {/* Payment Type */}
                                             <div className="animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-200">
                                                 <label className="block text-sm font-medium text-slate-700 mb-2">
-                                                    Payment Type
+                                                    {t('payments.create.paymentType')}
                                                 </label>
                                                 <select
                                                     value={newPayment.paymentType}
@@ -192,7 +194,7 @@ export default function IntroducePaymentComponentDialog({open, onClose}: Introdu
                                                 >
                                                     {Object.values(PaymentType).map(value => (
                                                         <option key={value} value={value}>
-                                                            {value.replace(/_/g, ' ')}
+                                                            {t(`payments.types.${value}`)}
                                                         </option>
                                                     ))}
                                                 </select>
@@ -201,7 +203,7 @@ export default function IntroducePaymentComponentDialog({open, onClose}: Introdu
                                             {/* Due Date */}
                                             <div className="animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-250">
                                                 <label className="block text-sm font-medium text-slate-700 mb-2">
-                                                    Due Date
+                                                    {t('payments.create.dueDate')}
                                                 </label>
                                                 <input
                                                     name="dueDate"
@@ -219,19 +221,19 @@ export default function IntroducePaymentComponentDialog({open, onClose}: Introdu
                                     <div className="bg-slate-50 rounded-xl p-6 border border-slate-200 animate-in fade-in-0 slide-in-from-right-4 duration-500 delay-100">
                                         <h3 className="text-xl font-semibold text-slate-900 mb-6 flex items-center">
                                             <Receipt className="w-5 h-5 mr-2 text-blue-600" />
-                                            Payer Details
+                                            {t('payments.introduce.payerDetails')}
                                         </h3>
                                         
                                         <div className="space-y-6">
                                             {/* Payer Selection */}
                                             <div className="animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-300">
                                                 <label className="block text-sm font-medium text-slate-700 mb-2">
-                                                    Select Payer
+                                                    {t('payments.introduce.selectPayer')}
                                                 </label>
                                                 {loadingUsers ? (
                                                     <div className="flex items-center justify-center py-8">
                                                         <div className="animate-spin rounded-full h-6 w-6 border-2 border-blue-500 border-t-transparent"></div>
-                                                        <span className="ml-2 text-slate-600">Loading users...</span>
+                                                        <span className="ml-2 text-slate-600">{t('payments.introduce.loadingUsers')}</span>
                                                     </div>
                                                 ) : (
                                                     <select
@@ -256,7 +258,7 @@ export default function IntroducePaymentComponentDialog({open, onClose}: Introdu
                                             {/* Payment Method */}
                                             <div className="animate-in fade-in-0 slide-in-from-bottom-2 duration-300 delay-350">
                                                 <label className="block text-sm font-medium text-slate-700 mb-2">
-                                                    Payment Method
+                                                    {t('payments.create.paymentMethod')}
                                                 </label>
                                                 <select
                                                     value={newPayment.paymentMethod}
@@ -270,7 +272,7 @@ export default function IntroducePaymentComponentDialog({open, onClose}: Introdu
                                                 >
                                                     {Object.values(PaymentMethod).map((item) => (
                                                         <option key={item} value={item}>
-                                                            {item.replace(/_/g, ' ')}
+                                                            {t(`payments.methods.${item}`)}
                                                         </option>
                                                     ))}
                                                 </select>
@@ -278,20 +280,20 @@ export default function IntroducePaymentComponentDialog({open, onClose}: Introdu
 
                                             {/* Payment Summary */}
                                             <div className="bg-white rounded-lg p-4 border border-slate-200 delay-400">
-                                                <h4 className="text-sm font-medium text-slate-700 mb-3">Payment Summary</h4>
+                                                <h4 className="text-sm font-medium text-slate-700 mb-3">{t('payments.introduce.paymentSummary')}</h4>
                                                 <div className="space-y-2 text-sm">
                                                     <div className="flex justify-between">
-                                                        <span className="text-slate-600">Amount:</span>
+                                                        <span className="text-slate-600">{t('payments.details.amount')}:</span>
                                                         <span className="font-medium">${newPayment.amount || '0.00'}</span>
                                                     </div>
                                                     <div className="flex justify-between">
-                                                        <span className="text-slate-600">Type:</span>
-                                                        <span className="font-medium">{newPayment.paymentType.replace(/_/g, ' ')}</span>
+                                                        <span className="text-slate-600">{t('payments.introduce.type')}:</span>
+                                                        <span className="font-medium">{t(`payments.types.${newPayment.paymentType}`)}</span>
                                                     </div>
                                                     <div className="flex justify-between">
-                                                        <span className="text-slate-600">Due Date:</span>
+                                                        <span className="text-slate-600">{t('payments.create.dueDate')}:</span>
                                                         <span className="font-medium">
-                                                            {newPayment.dueDate ? new Date(newPayment.dueDate).toLocaleDateString() : 'Not set'}
+                                                            {newPayment.dueDate ? new Date(newPayment.dueDate).toLocaleDateString() : t('payments.introduce.notSet')}
                                                         </span>
                                                     </div>
                                                 </div>
@@ -306,14 +308,14 @@ export default function IntroducePaymentComponentDialog({open, onClose}: Introdu
                                         onClick={handleCancel}
                                         className="px-6 py-3 bg-slate-200 text-slate-700 text-sm font-medium rounded-lg hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2  hover:scale-105 transform"
                                     >
-                                        Cancel
+                                        {t('payments.introduce.cancel')}
                                     </button>
                                     <button
                                         onClick={handleSubmit}
                                         disabled={!newPayment.userId || !newPayment.amount || !newPayment.dueDate}
                                         className="px-6 py-3 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2  hover:scale-105 transform hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                                     >
-                                        Create Payment
+                                        {t('payments.introduce.createPayment')}
                                     </button>
                                 </div>
                             </div>

@@ -6,11 +6,13 @@ import Link from 'next/link'
 import { useAuth } from '@/hooks/auth.hook'
 import { toast } from 'sonner'
 import { LoginTutorial } from '@/app/tutorials/auth/login'
+import { useLanguage } from '@/providers/language.provider'
 
 export const LoginForm = memo(function LoginForm() {
   const searchParams = useSearchParams()
   const verified = useMemo(() => searchParams.get('verified'), [searchParams])
   const { login, isLoggingIn } = useAuth()
+  const { t } = useLanguage()
   
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -22,9 +24,9 @@ export const LoginForm = memo(function LoginForm() {
 
   useEffect(() => {
     if (verified === 'true') {
-      toast.success('Email verified successfully! You can now sign in.')
+      toast.success(t('auth.login.emailVerified'))
     }
-  }, [verified])
+  }, [verified, t])
 
   const emailPattern = useMemo(() => /^[^\s@]+@[^\s@]+\.[^\s@]+$/, [])
 
@@ -38,7 +40,7 @@ export const LoginForm = memo(function LoginForm() {
           if(!prevState) return prevState;
           return {
             ...prevState,
-            email: "Field must not be empty",
+            email: t('auth.login.validation.emailRequired'),
           }
         })
       }else if(emailPattern.test(value)) {
@@ -54,7 +56,7 @@ export const LoginForm = memo(function LoginForm() {
           if(!prevState) return prevState;
           return {
             ...prevState,
-            email: "Email is invalid",
+            email: t('auth.login.validation.emailInvalid'),
           }
         })
       }
@@ -66,7 +68,7 @@ export const LoginForm = memo(function LoginForm() {
           if(!prevState) return prevState;
           return {
             ...prevState,
-            password: "Field must not be empty",
+            password: t('auth.login.validation.passwordRequired'),
           }
         })
       }else if(value.length < 6) {
@@ -74,22 +76,22 @@ export const LoginForm = memo(function LoginForm() {
           if(!prevState) return prevState;
           return {
             ...prevState,
-            password: "Password should be 6 symbols or longer"
+            password: t('auth.login.validation.passwordTooShort')
           }
         })
       }
     }
 
-  }, [emailPattern])
+  }, [emailPattern, t])
 
   const validateBeforeSubmit = useCallback(() => {
     if(!email.trim()){setValidationErrors(prevState => {
       if(!prevState)return prevState;
-      return{...prevState, email: 'Email is required'}})}
+      return{...prevState, email: t('auth.login.validation.emailRequiredSubmit')}})}
     if(!password.trim()){setValidationErrors(prevState => {
       if(!prevState)return prevState;
-      return{...prevState, password: 'Password is required'}})}
-  }, [email, password])
+      return{...prevState, password: t('auth.login.validation.passwordRequiredSubmit')}})}
+  }, [email, password, t])
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault()
@@ -133,11 +135,11 @@ export const LoginForm = memo(function LoginForm() {
     <LoginTutorial>
       <div className="w-full max-w-md mx-auto my-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-6 sm:mb-8 login-form-header">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Welcome Back</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">{t('auth.login.title')}</h2>
           <p className="text-gray-600 mt-2 text-sm sm:text-base signup-link">
-            Don't have an account?{' '}
+            {t('auth.login.subtitle')}{' '}
             <Link href="/auth/register" className="text-blue-600 hover:underline font-medium">
-              Sign up
+              {t('auth.login.signUp')}
             </Link>
           </p>
         </div>
@@ -145,7 +147,7 @@ export const LoginForm = memo(function LoginForm() {
         {verified === 'true' && (
           <div className="mb-6 p-3 sm:p-4 bg-green-50 border border-green-200 rounded-md verification-success">
             <p className="text-sm text-green-800 text-center">
-              ✅ Your email has been verified! You can now sign in.
+              {t('auth.login.emailVerified')}
             </p>
           </div>
         )}
@@ -161,7 +163,7 @@ export const LoginForm = memo(function LoginForm() {
               className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 transition-colors text-sm sm:text-base ${
                   validationErrors.email ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
               }`}
-              placeholder="Email"
+              placeholder={t('auth.login.email')}
               required
             />
             {validationErrors.email && <p className="text-red-500 text-xs sm:text-sm mt-1 flex items-center">
@@ -182,7 +184,7 @@ export const LoginForm = memo(function LoginForm() {
               className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 transition-colors text-sm sm:text-base ${
                   validationErrors.password ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
               }`}
-              placeholder="Password"
+              placeholder={t('auth.login.password')}
               required
             />
             {validationErrors.password && <p className="text-red-500 text-xs sm:text-sm mt-1 flex items-center">
@@ -198,7 +200,7 @@ export const LoginForm = memo(function LoginForm() {
             >
               <img 
                 src={showPassword ? '/eye.svg' : '/eye-slash.svg'} 
-                alt={showPassword ? 'Hide password' : 'Show password'} 
+                alt={showPassword ? t('auth.login.hidePassword') : t('auth.login.showPassword')} 
                 className="h-6 w-6"
               />
             </button>
@@ -206,7 +208,7 @@ export const LoginForm = memo(function LoginForm() {
 
           <div className="text-right forgot-password-link">
             <Link href="/auth/reset-password" className="text-sm text-blue-600 hover:underline">
-              Forgot your password?
+              {t('auth.login.forgotPassword')}
             </Link>
           </div>
 
@@ -218,7 +220,7 @@ export const LoginForm = memo(function LoginForm() {
             {isLoggingIn && (
               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
             )}
-            <span>{isLoggingIn ? 'Signing in...' : 'Login'}</span>
+            <span>{isLoggingIn ? t('auth.login.signingIn') : t('auth.login.loginButton')}</span>
           </button>
         </form>
       </div>

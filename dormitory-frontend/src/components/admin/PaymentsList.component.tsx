@@ -13,8 +13,10 @@ import { Button } from "@/components/ui/button";
 import { paymentsApi } from "@/app/lib/payments.api";
 import { toast } from "sonner";
 import { api } from "@/app/lib/api.api";
+import { useLanguage } from '@/providers/language.provider';
 
 export function PaymentsListPage(){
+    const { t } = useLanguage();
 
     const[payments, setPayments] = useState<Payment[]>([]);
     const[searchText, setSearchText] = useState('');
@@ -48,11 +50,11 @@ export function PaymentsListPage(){
             await api.put(`/payments/${paymentId}/confirm`, {
                 managerNotes: "Payment proof approved"
             });
-            toast.success("Payment approved successfully");
+            toast.success(t('payments.list.toast.approveSuccess'));
             // Refresh the list
             window.location.reload();
         } catch (error: any) {
-            toast.error("Failed to approve payment", {
+            toast.error(t('payments.list.toast.approveFailed'), {
                 description: error.response?.data?.message || error.message
             });
         } finally {
@@ -66,11 +68,11 @@ export function PaymentsListPage(){
             await api.put(`/payments/${paymentId}/reject`, {
                 rejectionReason: "Payment proof rejected - please re-upload"
             });
-            toast.success("Payment rejected successfully");
+            toast.success(t('payments.list.toast.rejectSuccess'));
             // Refresh the list
             window.location.reload();
         } catch (error: any) {
-            toast.error("Failed to reject payment", {
+            toast.error(t('payments.list.toast.rejectFailed'), {
                 description: error.response?.data?.message || error.message
             });
         } finally {
@@ -89,10 +91,10 @@ export function PaymentsListPage(){
                 dueDate: payment.dueDate,
                 paymentMethod: payment.paymentMethod || PaymentMethod.BANK_TRANSFER,
             });
-            toast.success("New payment created successfully");
+            toast.success(t('payments.list.toast.recreateSuccess'));
             window.location.reload();
         } catch (error: any) {
-            toast.error("Failed to recreate payment", {
+            toast.error(t('payments.list.toast.recreateFailed'), {
                 description: error.response?.data?.message || error.message
             });
         } finally {
@@ -116,9 +118,9 @@ export function PaymentsListPage(){
             a.click();
             window.URL.revokeObjectURL(url);
             document.body.removeChild(a);
-            toast.success('Payment proof downloaded');
+            toast.success(t('payments.list.toast.proofDownloaded'));
         } catch (error) {
-            toast.error('Failed to download payment proof');
+            toast.error(t('payments.list.toast.proofDownloadFailed'));
         }
     };
 
@@ -127,14 +129,14 @@ export function PaymentsListPage(){
         <div className="min-h-screen bg-slate-50 w-full">
             {/* Header */}
             <div className="bg-white border-b border-slate-200 shadow-sm animate-in slide-in-from-top-4 duration-500 w-full">
-                <div className="w-full px-2 xs:px-4 sm:px-6 lg:px-8 py-3 xs:py-4 sm:py-6">
+                <div className="w-full px-6 py-6">
                     <div className="flex flex-col gap-3 xs:gap-4 lg:flex-row lg:items-center lg:justify-between">
                         <div className="animate-in fade-in-0 slide-in-from-left-4 duration-500">
                             <h1 className="text-xl xs:text-2xl sm:text-3xl font-bold text-slate-900 flex items-center">
                                 <HandCoins className="w-5 h-5 xs:w-6 xs:h-6 sm:w-8 sm:h-8 mr-2 xs:mr-3 text-blue-600" />
-                                <span className="leading-tight">Payments Management</span>
+                                <span className="leading-tight">{t('payments.list.title')}</span>
                             </h1>
-                            <p className="text-slate-600 mt-1 text-xs xs:text-sm sm:text-base">Manage and track all payment records</p>
+                            <p className="text-slate-600 mt-1 text-xs xs:text-sm sm:text-base">{t('payments.list.subtitle')}</p>
                         </div>
                         <div className="animate-in fade-in-0 slide-in-from-right-4 duration-500 w-full lg:w-auto">
                             <div className="flex flex-col xs:flex-row gap-2">
@@ -143,14 +145,14 @@ export function PaymentsListPage(){
                                     className="w-full lg:w-auto inline-flex items-center justify-center px-3 xs:px-4 sm:px-6 py-2.5 xs:py-3 bg-emerald-600 text-white text-xs xs:text-sm font-medium rounded-lg xs:rounded-xl hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2  hover:scale-105 transform hover:shadow-lg"
                                 >
                                     <Users className="w-3 h-3 xs:w-4 xs:h-4 sm:w-5 sm:h-5 mr-1.5 xs:mr-2 transition-transform duration-200 group-hover:rotate-12" />
-                                    <span className="whitespace-nowrap text-xs xs:text-sm">Bulk Create</span>
+                                    <span className="whitespace-nowrap text-xs xs:text-sm">{t('payments.list.bulkCreate')}</span>
                                 </button>
                                 <button 
                                     onClick={() => setShowCreateDialog(true)}
                                     className="w-full lg:w-auto inline-flex items-center justify-center px-3 xs:px-4 sm:px-6 py-2.5 xs:py-3 bg-blue-600 text-white text-xs xs:text-sm font-medium rounded-lg xs:rounded-xl hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2  hover:scale-105 transform hover:shadow-lg"
                                 >
                                     <HandCoins className="w-3 h-3 xs:w-4 xs:h-4 sm:w-5 sm:h-5 mr-1.5 xs:mr-2 transition-transform duration-200 group-hover:rotate-12" />
-                                    <span className="whitespace-nowrap text-xs xs:text-sm">Create New Payment</span>
+                                    <span className="whitespace-nowrap text-xs xs:text-sm">{t('payments.list.createNew')}</span>
                                 </button>
                             </div>
                         </div>
@@ -160,13 +162,13 @@ export function PaymentsListPage(){
 
             {/* Filters */}
             <div className="bg-white border-b border-slate-200 shadow-sm animate-in slide-in-from-top-4 duration-500 delay-100 w-full">
-                <div className="w-full px-2 xs:px-4 sm:px-6 lg:px-8 py-3 xs:py-4">
+                <div className="w-full px-6 py-4">
                     <div className="flex flex-col gap-3 xs:gap-4 md:flex-row md:items-center md:justify-between">
                         {/* Search */}
                         <div className="relative flex-1 w-full md:max-w-md">
                             <input
                                 type="text"
-                                placeholder="Search payments..."
+                                placeholder={t('payments.list.searchPlaceholder')}
                                 value={searchText}
                                 onChange={(e) => setSearchText(e.target.value)}
                                 className="w-full pl-8 xs:pl-10 pr-3 xs:pr-4 py-2 border border-slate-300 rounded-lg text-xs xs:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500  hover:shadow-sm"
@@ -176,16 +178,16 @@ export function PaymentsListPage(){
                         
                         {/* Status Filter */}
                         <div className="flex flex-col gap-2 xs:gap-3 xs:flex-row xs:items-center">
-                            <label className="text-xs xs:text-sm font-medium text-slate-700">Status:</label>
+                            <label className="text-xs xs:text-sm font-medium text-slate-700">{t('payments.list.statusFilter')}</label>
                             <select
                                 value={searchStatus}
                                 onChange={(e) => setSearchStatus(e.target.value)}
                                 className="w-full xs:w-auto px-2 xs:px-3 py-2 border border-slate-300 rounded-lg text-xs xs:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500  hover:shadow-sm bg-white"
                             >
-                                <option value="">All Statuses</option>
-                                <option value="PAID">Paid</option>
-                                <option value="UNPAID">Unpaid</option>
-                                <option value="PENDING">Pending</option>
+                                <option value="">{t('payments.list.allStatuses')}</option>
+                                <option value="PAID">{t('payments.statuses.PAID')}</option>
+                                <option value="UNPAID">{t('payments.statuses.PENDING')}</option>
+                                <option value="PENDING">{t('payments.statuses.PENDING')}</option>
                             </select>
                         </div>
                     </div>
@@ -193,30 +195,30 @@ export function PaymentsListPage(){
             </div>
 
             {/* Main Content */}
-            <div className="w-full px-2 xs:px-4 sm:px-6 lg:px-8 py-4 xs:py-6 sm:py-8">
+            <div className="w-full px-6 py-8">
                 {loadingPayments ? (
                     <div className="flex items-center justify-center py-8 xs:py-12">
                         <div className="animate-spin rounded-full h-6 w-6 xs:h-8 xs:w-8 sm:h-10 sm:w-10 border-4 border-blue-500 border-t-transparent"></div>
-                        <span className="ml-3 xs:ml-4 text-slate-700 font-medium text-sm xs:text-base sm:text-lg">Loading payments...</span>
+                        <span className="ml-3 xs:ml-4 text-slate-700 font-medium text-sm xs:text-base sm:text-lg">{t('payments.list.loading')}</span>
                     </div>
                 ) : paymentsError ? (
                     <div className="bg-red-50 border border-red-200 rounded-lg xs:rounded-xl p-4 xs:p-6 text-center">
                         <div className="text-red-600 mb-2">
                             <HandCoins className="mx-auto h-8 w-8 xs:h-10 xs:w-10 sm:h-12 sm:w-12" />
                         </div>
-                        <h3 className="text-base xs:text-lg font-semibold text-red-900 mb-2">Error Loading Payments</h3>
-                        <p className="text-red-700 text-sm xs:text-base">Unable to load payment data. Please try again later.</p>
+                        <h3 className="text-base xs:text-lg font-semibold text-red-900 mb-2">{t('payments.list.errorTitle')}</h3>
+                        <p className="text-red-700 text-sm xs:text-base">{t('payments.list.errorMessage')}</p>
                     </div>
                 ) : payments.length > 0 ? (
                     <div className="bg-white rounded-lg xs:rounded-xl shadow-sm border border-slate-200 overflow-hidden animate-in fade-in-0 slide-in-from-bottom-4 duration-500">
                         {/* Table Header - Hidden on mobile */}
                         <div className="hidden md:block bg-slate-50 px-3 xs:px-4 sm:px-6 py-3 xs:py-4 border-b border-slate-200">
                             <div className="grid grid-cols-5 gap-2 xs:gap-4 font-medium text-slate-700 text-sm xs:text-base">
-                                <div>Status</div>
-                                <div>Payer Name</div>
-                                <div>Amount</div>
-                                <div>Due Date</div>
-                                <div className="text-right">Actions</div>
+                                <div>{t('payments.list.tableHeaders.status')}</div>
+                                <div>{t('payments.list.tableHeaders.payerName')}</div>
+                                <div>{t('payments.list.tableHeaders.amount')}</div>
+                                <div>{t('payments.list.tableHeaders.dueDate')}</div>
+                                <div className="text-right">{t('payments.list.tableHeaders.actions')}</div>
                             </div>
                         </div>
                         
@@ -411,14 +413,14 @@ export function PaymentsListPage(){
                 ) : (
                     <div className="bg-white rounded-lg xs:rounded-xl shadow-sm border border-slate-200 p-4 xs:p-6 sm:p-8 text-center animate-in fade-in-0 zoom-in-50 duration-500">
                         <HandCoins className="mx-auto h-10 w-10 xs:h-12 xs:w-12 sm:h-16 sm:w-16 text-slate-300 mb-3 xs:mb-4" />
-                        <h3 className="text-base xs:text-lg sm:text-xl font-semibold text-slate-900 mb-2">No Payments Found</h3>
-                        <p className="text-slate-600 mb-4 xs:mb-6 text-xs xs:text-sm sm:text-base">There are no payments matching your current filters.</p>
+                        <h3 className="text-base xs:text-lg sm:text-xl font-semibold text-slate-900 mb-2">{t('payments.list.noPaymentsTitle')}</h3>
+                        <p className="text-slate-600 mb-4 xs:mb-6 text-xs xs:text-sm sm:text-base">{t('payments.list.noPaymentsMessage')}</p>
                         <button 
                             onClick={() => setShowCreateDialog(true)}
                             className="w-full xs:w-auto inline-flex items-center justify-center px-4 xs:px-6 py-2.5 xs:py-3 bg-blue-600 text-white text-xs xs:text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2  hover:scale-105 transform"
                         >
                             <HandCoins className="w-3 h-3 xs:w-4 xs:h-4 mr-1.5 xs:mr-2" />
-                            Create First Payment
+                            {t('payments.list.createFirst')}
                         </button>
                     </div>
                 )}

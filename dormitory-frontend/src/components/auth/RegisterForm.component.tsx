@@ -4,9 +4,11 @@ import {useEffect, useState, useCallback, useMemo, memo} from 'react'
 import Link from 'next/link'
 import { useAuth } from '@/hooks/auth.hook'
 import { RegisterFormTutorial } from '@/app/tutorials/auth/register'
+import { useLanguage } from '@/providers/language.provider'
 
 export const RegisterForm = memo(function RegisterForm() {
   const { register, isLoading } = useAuth()
+  const { t } = useLanguage()
   const [formData, setFormData] = useState({
     name: '',
     secondName: '',
@@ -62,7 +64,7 @@ export const RegisterForm = memo(function RegisterForm() {
           if(!prevState) return prevState;
           return {
             ...prevState,
-            name: 'Field should not be empty'
+            name: t('auth.register.validation.nameRequired')
           }
         })
       }else if(value.trim().length < 3){
@@ -70,7 +72,7 @@ export const RegisterForm = memo(function RegisterForm() {
           if(!prevState) return prevState;
           return {
             ...prevState,
-            name: 'Field should be at least 3 characters long',
+            name: t('auth.register.validation.nameTooShort'),
           }
         })
       }else{
@@ -91,7 +93,7 @@ export const RegisterForm = memo(function RegisterForm() {
           if(!prevState) return prevState;
           return {
             ...prevState,
-            secondName: 'Field should not be empty'
+            secondName: t('auth.register.validation.lastNameRequired')
           }
         })
       }else if(value.trim().length < 3){
@@ -99,7 +101,7 @@ export const RegisterForm = memo(function RegisterForm() {
           if(!prevState) return prevState;
           return {
             ...prevState,
-            secondName: 'Field should be at least 3 characters long',
+            secondName: t('auth.register.validation.lastNameTooShort'),
           }
         })
       }else{
@@ -120,7 +122,7 @@ export const RegisterForm = memo(function RegisterForm() {
           if(!prevState) return prevState;
           return {
             ...prevState,
-            email: 'Field should not be empty'
+            email: t('auth.register.validation.emailRequired')
           }
         })
       }else if(!email_pattern.test(value)){
@@ -128,7 +130,7 @@ export const RegisterForm = memo(function RegisterForm() {
           if(!prevState) return prevState;
           return {
             ...prevState,
-            email: 'Email is invalid',
+            email: t('auth.register.validation.emailInvalid'),
           }
         })
       }else{
@@ -149,7 +151,7 @@ export const RegisterForm = memo(function RegisterForm() {
           if(!prevState) return prevState;
           return {
             ...prevState,
-            password: 'Field should not be empty'
+            password: t('auth.register.validation.passwordRequired')
           }
         })
       }else if(value.trim().length < 6){
@@ -157,7 +159,7 @@ export const RegisterForm = memo(function RegisterForm() {
           if(!prevState) return prevState;
           return{
             ...prevState,
-            password: "Password should be at least 6 characters long",
+            password: t('auth.register.validation.passwordTooShort'),
           }
         })
       }else{
@@ -178,7 +180,7 @@ export const RegisterForm = memo(function RegisterForm() {
           if(!prevState) return prevState;
           return {
             ...prevState,
-            passwordRepeat: 'Field should not be empty'
+            passwordRepeat: t('auth.register.validation.confirmPasswordRequired')
           }
         })
       }else if(value.trim().length < 6){
@@ -186,7 +188,7 @@ export const RegisterForm = memo(function RegisterForm() {
           if(!prevState) return prevState;
           return{
             ...prevState,
-            passwordRepeat: "Password should be at least 6 characters long",
+            passwordRepeat: t('auth.register.validation.confirmPasswordTooShort'),
           }
         })
       }else if(value !==formData.password){
@@ -194,7 +196,7 @@ export const RegisterForm = memo(function RegisterForm() {
           if(!prevState) return prevState;
           return {
             ...prevState,
-            passwordRepeat: 'Passwords do not match',
+            passwordRepeat: t('auth.register.validation.passwordsNotMatch'),
           }
         })
       }else{
@@ -211,15 +213,15 @@ export const RegisterForm = memo(function RegisterForm() {
 
   const validateForm = () => {
 
-    if (!formData.name.trim()) setValidationErrors(prevState=>{if(!prevState)return prevState; return {...prevState, name:'Name is required'}})
-    if (!formData.secondName.trim()) setValidationErrors(prevState=>{if(!prevState)return prevState; return {...prevState, secondName:'Second name is required'}})
-    if (!formData.email.trim()) setValidationErrors(prevState=>{if(!prevState)return prevState; return {...prevState, email:'Email is required'}})
-    else if (!/\S+@\S+\.\S+/.test(formData.email)) setValidationErrors(prevState=>{if(!prevState)return prevState; return {...prevState, email:'Email is invalid'}})
-    if (!formData.password) setValidationErrors(prevState=>{if(!prevState)return prevState; return {...prevState, password:'Password is required'}})
-    else if (formData.password.length < 6) setValidationErrors(prevState=>{if(!prevState)return prevState; return {...prevState, password:'Password must be at least 6 symbols long'}})
-    if (!formData.passwordRepeat) setValidationErrors(prevState=>{if(!prevState)return prevState; return {...prevState,passwordRepeat:'Please repeat your password'}})
-    else if (formData.password !== formData.passwordRepeat) setValidationErrors(prevState=>{if(!prevState)return prevState; return {...prevState,passwordRepeat:'Passwords do not match'}})
-    if (!formData.studentIdFront) setValidationErrors(prevState=>{if(!prevState)return prevState; return {...prevState,studentIdFront:'Student ID front image is required'}})
+    if (!formData.name.trim()) setValidationErrors(prevState=>{if(!prevState)return prevState; return {...prevState, name:t('auth.register.validation.nameRequiredSubmit')}})
+    if (!formData.secondName.trim()) setValidationErrors(prevState=>{if(!prevState)return prevState; return {...prevState, secondName:t('auth.register.validation.lastNameRequiredSubmit')}})
+    if (!formData.email.trim()) setValidationErrors(prevState=>{if(!prevState)return prevState; return {...prevState, email:t('auth.register.validation.emailRequiredSubmit')}})
+    else if (!/\S+@\S+\.\S+/.test(formData.email)) setValidationErrors(prevState=>{if(!prevState)return prevState; return {...prevState, email:t('auth.register.validation.emailInvalid')}})
+    if (!formData.password) setValidationErrors(prevState=>{if(!prevState)return prevState; return {...prevState, password:t('auth.register.validation.passwordRequiredSubmit')}})
+    else if (formData.password.length < 6) setValidationErrors(prevState=>{if(!prevState)return prevState; return {...prevState, password:t('auth.register.validation.passwordTooShortSubmit')}})
+    if (!formData.passwordRepeat) setValidationErrors(prevState=>{if(!prevState)return prevState; return {...prevState,passwordRepeat:t('auth.register.validation.confirmPasswordRequiredSubmit')}})
+    else if (formData.password !== formData.passwordRepeat) setValidationErrors(prevState=>{if(!prevState)return prevState; return {...prevState,passwordRepeat:t('auth.register.validation.passwordsNotMatch')}})
+    if (!formData.studentIdFront) setValidationErrors(prevState=>{if(!prevState)return prevState; return {...prevState,studentIdFront:t('auth.register.validation.studentIdRequired')}})
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -255,9 +257,9 @@ export const RegisterForm = memo(function RegisterForm() {
     <RegisterFormTutorial>
       <div className="w-full max-w-2xl mx-auto my-4 sm:my-6 lg:my-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-6 sm:mb-8 register-form-header">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900">Create Account</h2>
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900">{t('auth.register.title')}</h2>
           <p className="text-gray-600 mt-2 text-sm sm:text-base lg:text-lg">
-            Join the dormitory system
+            {t('auth.register.subtitle')}
           </p>
         </div>
 
@@ -267,13 +269,13 @@ export const RegisterForm = memo(function RegisterForm() {
               <svg className="w-5 h-5 sm:w-6 sm:h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
-              Personal Information
+              {t('auth.register.personalInformation')}
             </h3>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               <div className="first-name-input">
                 <label className="block text-sm sm:text-base font-medium text-gray-700 mb-1 sm:mb-2">
-                  First Name *
+                  {t('auth.register.firstName')}
                 </label>
                 <input
                   type="text"
@@ -285,7 +287,7 @@ export const RegisterForm = memo(function RegisterForm() {
                   className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 transition-colors text-sm sm:text-base ${
                     validationErrors.name ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
                   }`}
-                  placeholder="Enter your first name"
+                  placeholder={t('auth.register.firstNamePlaceholder')}
                 />
                 {validationErrors.name && <p className="text-red-500 text-xs sm:text-sm mt-1 flex items-center">
                   <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
@@ -297,7 +299,7 @@ export const RegisterForm = memo(function RegisterForm() {
 
               <div className="last-name-input">
                 <label className="block text-sm sm:text-base font-medium text-gray-700 mb-1 sm:mb-2">
-                  Last Name *
+                  {t('auth.register.lastName')}
                 </label>
                 <input
                   type="text"
@@ -309,7 +311,7 @@ export const RegisterForm = memo(function RegisterForm() {
                   className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 transition-colors text-sm sm:text-base ${
                     validationErrors.secondName ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
                   }`}
-                  placeholder="Enter your last name"
+                  placeholder={t('auth.register.lastNamePlaceholder')}
                 />
                 {validationErrors.secondName && <p className="text-red-500 text-xs sm:text-sm mt-1 flex items-center">
                   <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
@@ -322,7 +324,7 @@ export const RegisterForm = memo(function RegisterForm() {
 
             <div className="mt-4 sm:mt-6 email-input">
               <label className="block text-sm sm:text-base font-medium text-gray-700 mb-1 sm:mb-2">
-                Email Address *
+                {t('auth.register.email')}
               </label>
               <input
                 type="email"
@@ -334,7 +336,7 @@ export const RegisterForm = memo(function RegisterForm() {
                 className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 transition-colors text-sm sm:text-base ${
                   validationErrors.email? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
                 }`}
-                placeholder="Enter your email address"
+                placeholder={t('auth.register.emailPlaceholder')}
               />
               {validationErrors.email && <p className="text-red-500 text-xs sm:text-sm mt-1 flex items-center">
                 <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
@@ -350,13 +352,13 @@ export const RegisterForm = memo(function RegisterForm() {
               <svg className="w-5 h-5 sm:w-6 sm:h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
-              Security
+              {t('auth.register.security')}
             </h3>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               <div className="password-input">
                 <label className="block text-sm sm:text-base font-medium text-gray-700 mb-1 sm:mb-2">
-                  Password *
+                  {t('auth.register.password')}
                 </label>
                 <div className={`relative`}>
                   <input
@@ -369,7 +371,7 @@ export const RegisterForm = memo(function RegisterForm() {
                     className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 transition-colors text-sm sm:text-base ${
                       validationErrors.password ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
                     }`}
-                    placeholder="Enter password"
+                    placeholder={t('auth.register.passwordPlaceholder')}
                   />
                   {validationErrors.password && <p className="text-red-500 text-xs sm:text-sm mt-1 flex items-center">
                     <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
@@ -384,7 +386,7 @@ export const RegisterForm = memo(function RegisterForm() {
                   >
                     <img
                         src={showPassword ? '/eye.svg' : '/eye-slash.svg'}
-                        alt={showPassword ? 'Hide password' : 'Show password'}
+                        alt={showPassword ? t('auth.register.hidePassword') : t('auth.register.showPassword')}
                         className="h-6 w-6"
                     />
                   </button>
@@ -393,7 +395,7 @@ export const RegisterForm = memo(function RegisterForm() {
 
               <div className="password-confirm-input">
                 <label className="block text-sm sm:text-base font-medium text-gray-700 mb-1 sm:mb-2">
-                  Confirm Password *
+                  {t('auth.register.confirmPassword')}
                 </label>
                 <div className={`relative`}>
                   <input
@@ -406,7 +408,7 @@ export const RegisterForm = memo(function RegisterForm() {
                     className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 transition-colors text-sm sm:text-base ${
                       validationErrors.passwordRepeat ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
                     }`}
-                    placeholder="Confirm password"
+                    placeholder={t('auth.register.confirmPasswordPlaceholder')}
                   />
                   {validationErrors.passwordRepeat && <p className="text-red-500 text-xs sm:text-sm mt-1 flex items-center">
                     <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
@@ -421,7 +423,7 @@ export const RegisterForm = memo(function RegisterForm() {
                   >
                     <img
                         src={showRepeatPassword ? '/eye.svg' : '/eye-slash.svg'}
-                        alt={showRepeatPassword ? 'Hide password' : 'Show password'}
+                        alt={showRepeatPassword ? t('auth.register.hidePassword') : t('auth.register.showPassword')}
                         className="h-6 w-6"
                     />
                   </button>
@@ -435,13 +437,13 @@ export const RegisterForm = memo(function RegisterForm() {
               <svg className="w-5 h-5 sm:w-6 sm:h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
               </svg>
-              Document Upload
+              {t('auth.register.documentUpload')}
             </h3>
             
             <div className="space-y-4 sm:space-y-6">
               <div className="avatar-upload">
                 <label className="block text-sm sm:text-base font-medium text-gray-700 mb-2">
-                  Profile Avatar (Optional)
+                  {t('auth.register.profileAvatarOptional')}
                 </label>
                 <div className="relative">
                   <input
@@ -459,7 +461,7 @@ export const RegisterForm = memo(function RegisterForm() {
                       <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                       </svg>
-                      Selected: {formData.avatar.name}
+                      {t('auth.register.selectedFile')}{formData.avatar.name}
                     </p>
                   </div>
                 )}
@@ -467,7 +469,7 @@ export const RegisterForm = memo(function RegisterForm() {
 
               <div className="student-id-front-upload">
                 <label className="block text-sm sm:text-base font-medium text-gray-700 mb-2">
-                  Student ID (Front) *
+                  {t('auth.register.studentIdFront')}
                 </label>
                 <div className="relative">
                   <input
@@ -493,7 +495,7 @@ export const RegisterForm = memo(function RegisterForm() {
                       <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                       </svg>
-                      Selected: {formData.studentIdFront.name}
+                      {t('auth.register.selectedFile')}{formData.studentIdFront.name}
                     </p>
                   </div>
                 )}
@@ -501,7 +503,7 @@ export const RegisterForm = memo(function RegisterForm() {
 
               <div className="student-id-back-upload">
                 <label className="block text-sm sm:text-base font-medium text-gray-700 mb-2">
-                  Student ID (Back) (Optional)
+                  {t('auth.register.studentIdBackOptional')}
                 </label>
                 <div className="relative">
                   <input
@@ -519,7 +521,7 @@ export const RegisterForm = memo(function RegisterForm() {
                       <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                       </svg>
-                      Selected: {formData.studentIdBack.name}
+                      {t('auth.register.selectedFile')}{formData.studentIdBack.name}
                     </p>
                   </div>
                 )}
@@ -536,18 +538,18 @@ export const RegisterForm = memo(function RegisterForm() {
               {isLoading && (
                 <div className="animate-spin rounded-full h-4 w-4 sm:h-5 sm:w-5 border-b-2 border-white"></div>
               )}
-              <span>{isLoading ? 'Creating Account...' : 'Create Account'}</span>
+              <span>{isLoading ? t('auth.register.creatingAccount') : t('auth.register.createAccount')}</span>
             </button>
           </div>
 
           <div className="text-center pt-4 border-t border-gray-200 login-link">
             <p className="text-sm sm:text-base text-gray-600">
-              Already have an account?{' '}
+              {t('auth.register.haveAccount')}{' '}
               <Link 
                 href="/auth/login" 
                 className="text-blue-600 hover:text-blue-500 font-medium transition-colors underline hover:no-underline"
               >
-                Sign in here
+                {t('auth.register.signIn')}
               </Link>
             </p>
           </div>

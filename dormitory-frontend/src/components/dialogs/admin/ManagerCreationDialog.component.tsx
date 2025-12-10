@@ -6,6 +6,7 @@ import { ManagerCreationData } from "@/types/managers.types";
 import { useGetActiveDormitories } from "@/hooks/dormitories.hook";
 import { Dormitory } from "@/types/dormitories.types";
 import { useManagers } from "@/hooks/managers.hook";
+import { useLanguage } from "@/providers/language.provider";
 
 export interface ManagerCreationProps {
     open: boolean,
@@ -15,6 +16,7 @@ export interface ManagerCreationProps {
 export function ManagerCreationDialog({ open, onClose }: ManagerCreationProps) {
     const { data: dormitories, isLoading: loadingDormitories, error: dormitoriesError } = useGetActiveDormitories()
     const { createManager } = useManagers()
+    const { t } = useLanguage();
 
     const [dormitoriesList, setDormitoriesList] = useState<Dormitory[]>([])
 
@@ -90,7 +92,7 @@ export function ManagerCreationDialog({ open, onClose }: ManagerCreationProps) {
 
                 {/* Header */}
                 <div className="flex items-center justify-between px-6 py-4 bg-gray-100 border-b border-gray-300">
-                    <h2 className="text-xl font-semibold text-gray-800">New Manager</h2>
+                    <h2 className="text-xl font-semibold text-gray-800">{t('managers.managerCreation.title')}</h2>
 
                     <button
                         onClick={onClose}
@@ -104,72 +106,72 @@ export function ManagerCreationDialog({ open, onClose }: ManagerCreationProps) {
 
                 {/* Content */}
                 <div className="p-6 space-y-4">
-                    <h3 className="text-lg font-medium text-gray-800">Manager Info</h3>
+                    <h3 className="text-lg font-medium text-gray-800">{t('managers.managerCreation.subtitle')}</h3>
 
                     {/* Form fields */}
                     <div className="flex flex-col gap-4">
 
                         {/* Name */}
                         <div className="flex flex-col">
-                            <label className="text-gray-700 mb-1">Name</label>
+                            <label className="text-gray-700 mb-1">{t('managers.managerCreation.name')}</label>
                             <input
                                 name="name"
                                 type="text"
                                 value={newManager.name}
                                 onChange={handleInputChange}
-                                placeholder="Enter name"
+                                placeholder={t('managers.managerCreation.placeholders.name')}
                                 className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 outline-none"
                             />
                         </div>
 
                         {/* Middle name */}
                         <div className="flex flex-col">
-                            <label className="text-gray-700 mb-1">Middle name</label>
+                            <label className="text-gray-700 mb-1">{t('managers.managerCreation.middleName')}</label>
                             <input
                                 name="middleName"
                                 type="text"
                                 value={newManager.middleName}
                                 onChange={handleInputChange}
-                                placeholder="Enter middle name"
+                                placeholder={t('managers.managerCreation.placeholders.middleName')}
                                 className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 outline-none"
                             />
                         </div>
 
                         {/* Last name */}
                         <div className="flex flex-col">
-                            <label className="text-gray-700 mb-1">Last name</label>
+                            <label className="text-gray-700 mb-1">{t('managers.managerCreation.lastName')}</label>
                             <input
                                 name="lastName"
                                 type="text"
                                 value={newManager.lastName}
                                 onChange={handleInputChange}
-                                placeholder="Enter last name"
+                                placeholder={t('managers.managerCreation.placeholders.lastName')}
                                 className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 outline-none"
                             />
                         </div>
 
                         {/* Email */}
                         <div className="flex flex-col">
-                            <label className="text-gray-700 mb-1">Email</label>
+                            <label className="text-gray-700 mb-1">{t('managers.managerCreation.email')}</label>
                             <input
                                 name="email"
                                 type="email"
                                 value={newManager.email}
                                 onChange={handleInputChange}
-                                placeholder="Enter email"
+                                placeholder={t('managers.managerCreation.placeholders.email')}
                                 className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 outline-none"
                             />
                         </div>
 
                         {/* Password */}
                         <div className="flex flex-col relative">
-                            <label className="text-gray-700 mb-1">Password</label>
+                            <label className="text-gray-700 mb-1">{t('managers.managerCreation.password')}</label>
                             <input
                                 name="password"
                                 type={showPassword ? "text" : "password"}
                                 value={newManager.password}
                                 onChange={handleInputChange}
-                                placeholder="Enter password"
+                                placeholder={t('managers.managerCreation.placeholders.password')}
                                 className="border border-gray-300 rounded-lg px-3 py-2 pr-10 focus:ring-2 focus:ring-blue-400 outline-none"
                             />
                             <button
@@ -186,13 +188,13 @@ export function ManagerCreationDialog({ open, onClose }: ManagerCreationProps) {
 
                         {/* Confirm password */}
                         <div className="flex flex-col relative">
-                            <label className="text-gray-700 mb-1">Confirm password</label>
+                            <label className="text-gray-700 mb-1">{t('managers.managerCreation.confirmPassword')}</label>
                             <input
                                 name="repeatPassword"
                                 type={showConfirmPassword ? "text" : "password"}
                                 value={newManager.repeatPassword}
                                 onChange={handleInputChange}
-                                placeholder="Confirm password"
+                                placeholder={t('managers.managerCreation.placeholders.confirmPassword')}
                                 className="border border-gray-300 rounded-lg px-3 py-2 pr-10 focus:ring-2 focus:ring-blue-400 outline-none"
                             />
                             <button
@@ -209,14 +211,14 @@ export function ManagerCreationDialog({ open, onClose }: ManagerCreationProps) {
 
                         {/* Dormitory */}
                         <div className="flex flex-col">
-                            <label className="text-gray-700 mb-1">Dormitory</label>
+                            <label className="text-gray-700 mb-1">{t('managers.managerCreation.dormitory')}</label>
                             <select
                                 name="dormitoryId"
                                 value={newManager?.dormitoryId || ""}
                                 onChange={handleSelectChange}
                                 className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 outline-none"
                             >
-                                <option value="">Select a dormitory</option>
+                                <option value="">{t('managers.managerCreation.placeholders.dormitory')}</option>
                                 {dormitoriesList.map(d => (
                                     <option key={d.id} value={d.id}>{d.name}</option>
                                 ))}
@@ -232,14 +234,14 @@ export function ManagerCreationDialog({ open, onClose }: ManagerCreationProps) {
                         onClick={handleCancel}
                         className="px-4 py-2 rounded-lg bg-gray-200 text-gray-800 border border-gray-400 hover:bg-gray-300 transition shadow-sm"
                     >
-                        Cancel
+                        {t('managers.managerCreation.buttons.cancel')}
                     </button>
 
                     <button
                         onClick={handleCreateManager}
                         className="px-4 py-2 rounded-lg bg-blue-600 text-white border border-blue-700 hover:bg-blue-700 active:bg-blue-800 transition shadow-md"
                     >
-                        Create Manager
+                        {t('managers.managerCreation.buttons.create')}
                     </button>
                 </div>
 

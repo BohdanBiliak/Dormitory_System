@@ -1,0 +1,124 @@
+{
+  "reports": {
+    "title": "Reports",
+    "subtitle": "Generate comprehensive Excel reports with custom filters",
+    "generateReport": "Generate Report",
+    "reportType": "Report Type",
+    "dateRange": "Date Range",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "dormitory": "Dormitory",
+    "selectDormitory": "Select Dormitory",
+    "allDormitories": "All Dormitories",
+    "format": "Format",
+    "infoCards": {
+      "excelFormat": "Excel Format",
+      "excelDescription": "All reports are generated in Excel format (.xlsx) for easy data analysis",
+      "customFilters": "Custom Filters",
+      "filtersDescription": "Filter data by date range, status, dormitory, and more based on report type",
+      "realTimeData": "Real-time Data",
+      "realTimeDescription": "Reports are generated from live database data with current statistics"
+    },
+    "availableReports": {
+      "title": "Available Reports",
+      "subtitle": "Overview of all report types you can generate",
+      "users": {
+        "title": "Users Report",
+        "description": "Complete list of users with personal information, room assignments, and account status"
+      },
+      "dormitories": {
+        "title": "Dormitories Report",
+        "description": "Dormitory statistics including total floors, rooms, and current occupancy rates"
+      },
+      "rooms": {
+        "title": "Rooms Report",
+        "description": "Detailed room information with capacity, occupancy, pricing, and availability status"
+      },
+      "bookings": {
+        "title": "Bookings Report",
+        "description": "All room booking requests with user details, dates, and approval status"
+      },
+      "payments": {
+        "title": "Payments Report",
+        "description": "Payment transactions with amounts, methods, status, and user information"
+      },
+      "maintenance": {
+        "title": "Maintenance Report",
+        "description": "Maintenance requests with priority, status, assigned rooms, and resolution times"
+      },
+      "announcements": {
+        "title": "Announcements Report",
+        "description": "All announcements with target audience, visibility status, and expiration dates"
+      },
+      "confirmations": {
+        "title": "Confirmations Report",
+        "description": "All confirmation requests including type, status, and associated user/room details"
+      }
+    },
+    "types": {
+      "occupancy": "Occupancy Report",
+      "payments": "Payments Report",
+      "maintenance": "Maintenance Report",
+      "revenue": "Revenue Report",
+      "residents": "Residents Report"
+    },
+    "formats": {
+      "pdf": "PDF",
+      "excel": "Excel",
+      "csv": "CSV"
+    },
+    "filters": {
+      "thisMonth": "This Month",
+      "lastMonth": "Last Month",
+      "thisYear": "This Year",
+      "custom": "Custom Range"
+    },
+    "actions": {
+      "generate": "Generate",
+      "download": "Download",
+      "export": "Export",
+      "print": "Print",
+      "cancel": "Cancel",
+      "clearFilters": "Clear Filters"
+    },
+    "messages": {
+      "generating": "Generating...",
+      "generated": "Report generated successfully",
+      "generatedAndDownloaded": "Report generated and downloaded successfully!",
+      "failed": "Failed to generate report",
+      "noData": "No data available for the selected period"
+    },
+    "generator": {
+      "title": "Generate Excel Report",
+      "description": "Select report type and filters to generate a comprehensive Excel report",
+      "reportType": "Report Type",
+      "reportTypeRequired": "Report Type *",
+      "selectReportType": "Select report type",
+      "filtersSection": "Filters (Optional)",
+      "allDormitories": "All Dormitories",
+      "allRoles": "All Roles",
+      "allStatuses": "All Statuses",
+      "roles": {
+        "resident": "Resident",
+        "signedInUser": "Signed In User",
+        "regular": "Regular",
+        "admin": "Admin",
+        "superAdmin": "Super Admin"
+      },
+      "statuses": {
+        "active": "Active",
+        "inactive": "Inactive",
+        "occupied": "Occupied",
+        "available": "Available",
+        "pending": "Pending",
+        "approved": "Approved",
+        "rejected": "Rejected",
+        "completed": "Completed",
+        "failed": "Failed",
+        "refunded": "Refunded",
+        "inProgress": "In Progress",
+        "cancelled": "Cancelled"
+      }
+    }
+  }
+}

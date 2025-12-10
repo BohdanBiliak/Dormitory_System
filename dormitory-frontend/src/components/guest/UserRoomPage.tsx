@@ -6,12 +6,14 @@ import {RoomStatus} from "@/types/rooms.types";
 import {CalendarOfAvailabilityComponent} from "@/components/ui/CalendarOfAvailability.component";
 import {ChevronLeft, ChevronRight, Edit3, Users, DollarSign, Camera, Settings, AlertTriangle, X, Check} from "lucide-react";
 import {Description, Dialog, DialogBackdrop, DialogPanel, DialogTitle} from "@headlessui/react";
+import { useLanguage } from "@/providers/language.provider";
 
 interface RoomPageProps {
     roomId: string
 }
 
 export function UserRoomPage({roomId}: RoomPageProps) {
+    const { t } = useLanguage();
     {/*Initial values*/}
     const {data: room, isLoading, error} = useGetRoom(roomId)
 
@@ -96,7 +98,7 @@ export function UserRoomPage({roomId}: RoomPageProps) {
                 <div className="bg-white shadow-xl rounded-2xl p-8 max-w-md mx-4 border border-slate-200">
                     <div className="flex items-center justify-center">
                         <div className="animate-spin rounded-full h-10 w-10 border-4 border-blue-500 border-t-transparent"></div>
-                        <span className="ml-4 text-slate-700 font-medium text-lg">Loading room data...</span>
+                        <span className="ml-4 text-slate-700 font-medium text-lg">{t('rooms.userRoomPage.loading')}</span>
                     </div>
                 </div>
             </div>
@@ -111,8 +113,8 @@ export function UserRoomPage({roomId}: RoomPageProps) {
                         <div className="text-red-500 mb-4 animate-in zoom-in-50 duration-500 delay-150">
                             <AlertTriangle className="mx-auto h-16 w-16" />
                         </div>
-                        <h3 className="text-xl font-semibold text-slate-800 mb-2 animate-in fade-in duration-300 delay-200">Error Loading Room</h3>
-                        <p className="text-slate-600 animate-in fade-in duration-300 delay-300">Unable to load room data. Please try again later.</p>
+                        <h3 className="text-xl font-semibold text-slate-800 mb-2 animate-in fade-in duration-300 delay-200">{t('rooms.userRoomPage.errorLoading')}</h3>
+                        <p className="text-slate-600 animate-in fade-in duration-300 delay-300">{t('rooms.userRoomPage.errorMessage')}</p>
                     </div>
                 </div>
             </div>
@@ -127,7 +129,7 @@ export function UserRoomPage({roomId}: RoomPageProps) {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
                     <div className="flex items-center justify-between">
                         <div className="animate-in fade-in-0 slide-in-from-left-4 duration-500">
-                            <h1 className="text-3xl font-bold text-slate-900">Room {roomInfo.name}</h1>
+                            <h1 className="text-3xl font-bold text-slate-900">{t('rooms.userRoomPage.title', { roomNumber: roomInfo.name })}</h1>
                         </div>
                     </div>
                 </div>
@@ -145,14 +147,14 @@ export function UserRoomPage({roomId}: RoomPageProps) {
                             <div className="px-6 py-4 bg-slate-50 border-b border-slate-200">
                                 <h2 className="text-lg font-semibold text-slate-900 flex items-center">
                                     <Settings className="w-5 h-5 mr-2 text-blue-600 animate-in spin-in-180 duration-700 delay-200" />
-                                    Basic Information
+                                    {t('rooms.userRoomPage.basicInformation')}
                                 </h2>
                             </div>
                             <div className="p-6 space-y-6">
                                 {/* Room Number */}
                                 <div className="group delay-100">
                                     <div className="flex items-center justify-between mb-2">
-                                        <label className="text-sm font-medium text-slate-700">Room Number</label>
+                                        <label className="text-sm font-medium text-slate-700">{t('rooms.roomNumber')}</label>
                                     </div>
                                     <input
                                         type="text"
@@ -167,7 +169,7 @@ export function UserRoomPage({roomId}: RoomPageProps) {
                                 <div className="group delay-150">
                                     <div className="flex items-center justify-between mb-2">
                                         <label className="text-sm font-medium text-slate-700">
-                                            Room Capacity
+                                            {t('rooms.userRoomPage.roomCapacity')}
                                         </label>
                                     </div>
                                     <input
@@ -184,10 +186,10 @@ export function UserRoomPage({roomId}: RoomPageProps) {
                                     <div className="group">
                                         <div className="flex flex-col mb-2">
                                             <div className="flex items-center justify-between">
-                                                <label className="text-sm font-medium text-slate-700">Price per Day</label>
+                                                <label className="text-sm font-medium text-slate-700">{t('rooms.pricePerDay')}</label>
                                             </div>
                                             {room?.priceCategory && (
-                                                <span className="text-xs text-blue-600 mt-0.5">From price category: {room.priceCategory.name}</span>
+                                                <span className="text-xs text-blue-600 mt-0.5">{t('rooms.userRoomPage.fromPriceCategory', { categoryName: room.priceCategory.name })}</span>
                                             )}
                                         </div>
                                         <div className="relative">
@@ -204,10 +206,10 @@ export function UserRoomPage({roomId}: RoomPageProps) {
                                     <div className="group">
                                         <div className="flex flex-col mb-2">
                                             <div className="flex items-center justify-between">
-                                                <label className="text-sm font-medium text-slate-700">Price per Month</label>
+                                                <label className="text-sm font-medium text-slate-700">{t('rooms.pricePerMonth')}</label>
                                             </div>
                                             {room?.priceCategory && (
-                                                <span className="text-xs text-blue-600 mt-0.5">From price category: {room.priceCategory.name}</span>
+                                                <span className="text-xs text-blue-600 mt-0.5">{t('rooms.userRoomPage.fromPriceCategory', { categoryName: room.priceCategory.name })}</span>
                                             )}
                                         </div>
                                         <div className="relative">
@@ -232,7 +234,7 @@ export function UserRoomPage({roomId}: RoomPageProps) {
                                 <div className="flex items-center justify-between">
                                     <h2 className="text-lg font-semibold text-slate-900 flex items-center">
                                         <Settings className="w-5 h-5 mr-2 text-blue-600 animate-in spin-in-180 duration-700 delay-400" />
-                                        Room Equipment
+                                        {t('rooms.userRoomPage.roomEquipment')}
                                     </h2>
                                 </div>
                             </div>
@@ -250,7 +252,7 @@ export function UserRoomPage({roomId}: RoomPageProps) {
                                                     value={roomInfo.roomEquipment[index]}
                                                     disabled={true}
                                                     className={`flex-1 px-3 py-2 border rounded-lg text-sm  hover:shadow-sm ring-blue-100 bg-white focus:outline-none focus:ring-2`}
-                                                    placeholder={`Equipment item ${index + 1}`}
+                                                    placeholder={t('rooms.userRoomPage.equipmentItem', { index: index + 1 })}
                                                 />
                                             </div>
                                         ))}
@@ -259,7 +261,7 @@ export function UserRoomPage({roomId}: RoomPageProps) {
 
                                     <div className="text-center py-8 animate-in fade-in-0 zoom-in-50 duration-500">
                                         <Settings className="mx-auto h-12 w-12 text-slate-300" />
-                                        <p className="mt-2 text-slate-500">No equipment listed</p>
+                                        <p className="mt-2 text-slate-500">{t('rooms.manage.noEquipment')}</p>
                                     </div>
                                 )}
                             </div>
@@ -268,7 +270,7 @@ export function UserRoomPage({roomId}: RoomPageProps) {
                         {/* Calendar Card */}
                         <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden animate-in fade-in-0 slide-in-from-bottom-4 duration-500 delay-300 hover:shadow-md transition-all">
                             <div className="px-6 py-4 bg-slate-50 border-b border-slate-200 flex flex-row space-x-6">
-                                <h2 className="text-lg font-semibold text-slate-900 delay-500">Availability Calendar</h2>
+                                <h2 className="text-lg font-semibold text-slate-900 delay-500">{t('rooms.userRoomPage.availabilityCalendar')}</h2>
                             </div>
                             <div className="p-6 animate-in fade-in-0 zoom-in-95 duration-500 delay-600">
                                 <CalendarOfAvailabilityComponent statuses={roomInfo.statuses} showLegend={true}/>
@@ -283,7 +285,7 @@ export function UserRoomPage({roomId}: RoomPageProps) {
                                 <div className="flex items-center justify-between">
                                     <h2 className="text-lg font-semibold text-slate-900 flex items-center">
                                         <Camera className="w-5 h-5 mr-2 text-blue-600 animate-in spin-in-180 duration-700 delay-500" />
-                                        Photos
+                                        {t('rooms.photos')}
                                     </h2>
                                 </div>
                             </div>
@@ -342,7 +344,7 @@ export function UserRoomPage({roomId}: RoomPageProps) {
                                 ) : (
                                     <div className="text-center py-12 animate-in fade-in-0 zoom-in-50 duration-500">
                                         <Camera className="mx-auto h-12 w-12 text-slate-300" />
-                                        <p className="mt-2 text-slate-500">No photos available</p>
+                                        <p className="mt-2 text-slate-500">{t('rooms.manage.noPhotos')}</p>
                                     </div>
                                 )}
                             </div>
@@ -367,10 +369,10 @@ export function UserRoomPage({roomId}: RoomPageProps) {
                                     </div>
                                     <div className="min-w-0 flex-1">
                                         <DialogTitle className="text-sm xs:text-base sm:text-lg font-semibold text-white truncate">
-                                            Room Availability Status
+                                            {t('rooms.userRoomPage.roomAvailabilityStatus')}
                                         </DialogTitle>
                                         <Description className="text-emerald-100 text-xs sm:text-sm mt-0.5 xs:mt-1 line-clamp-1">
-                                            Manage room availability and booking statuses
+                                            {t('rooms.userRoomPage.manageBookingStatuses')}
                                         </Description>
                                     </div>
                                 </div>
@@ -395,7 +397,7 @@ export function UserRoomPage({roomId}: RoomPageProps) {
                                             <svg className="w-4 h-4 xs:w-5 xs:h-5 mr-2 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                             </svg>
-                                            Availability Calendar
+                                            {t('rooms.userRoomPage.availabilityCalendar')}
                                         </h2>
 
                                         {/* Room Info Cards */}
@@ -403,7 +405,7 @@ export function UserRoomPage({roomId}: RoomPageProps) {
                                             <div className="bg-white rounded-lg p-3 xs:p-4 shadow-sm border border-slate-200">
                                                 <div className="flex items-center justify-between">
                                                     <div>
-                                                        <p className="text-xs xs:text-sm text-slate-600">Current Occupancy</p>
+                                                        <p className="text-xs xs:text-sm text-slate-600">{t('rooms.userRoomPage.currentOccupancy')}</p>
                                                         <p className="text-lg xs:text-xl sm:text-2xl font-bold text-slate-900">{roomInfo.residents.length}/{roomInfo.capacity}</p>
                                                     </div>
                                                     <div className="flex items-center justify-center w-10 h-10 xs:w-12 xs:h-12 bg-blue-100 rounded-full">
@@ -425,7 +427,7 @@ export function UserRoomPage({roomId}: RoomPageProps) {
                                             <div className="bg-white rounded-lg p-3 xs:p-4 shadow-sm border border-slate-200">
                                                 <div className="flex items-center justify-between">
                                                     <div>
-                                                        <p className="text-xs xs:text-sm text-slate-600">Active Statuses</p>
+                                                        <p className="text-xs xs:text-sm text-slate-600">{t('rooms.userRoomPage.activeStatuses')}</p>
                                                         <p className="text-lg xs:text-xl sm:text-2xl font-bold text-slate-900">{dateStatuses.length}</p>
                                                     </div>
                                                     <div className="flex items-center justify-center w-10 h-10 xs:w-12 xs:h-12 bg-emerald-100 rounded-full">
@@ -454,12 +456,12 @@ export function UserRoomPage({roomId}: RoomPageProps) {
                                         <svg className="w-4 h-4 xs:w-5 xs:h-5 mr-2 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4" />
                                         </svg>
-                                        Status Management
+                                        {t('rooms.userRoomPage.statusManagement')}
                                     </h3>
 
                                     {/* Current Statuses */}
                                     <div className="mb-4 xs:mb-6">
-                                        <h4 className="text-xs xs:text-sm font-medium text-slate-700 mb-2 xs:mb-3">Current Statuses</h4>
+                                        <h4 className="text-xs xs:text-sm font-medium text-slate-700 mb-2 xs:mb-3">{t('rooms.userRoomPage.currentStatuses')}</h4>
                                         {dateStatuses.length > 0 ? (
                                             <div className="space-y-2 xs:space-y-3 max-h-48 xs:max-h-64 overflow-y-auto">
                                                 {dateStatuses.map(status => (
@@ -470,7 +472,7 @@ export function UserRoomPage({roomId}: RoomPageProps) {
                                                                 <div className="text-xs text-slate-600 mt-1">
                                                                     <span>{new Date(status.dateOfStart).toLocaleDateString()}</span>
                                                                     <span className="mx-1">→</span>
-                                                                    <span>{new Date(status.dateOfEnd).toLocaleDateString()}</span>
+                                                                    <span>{status.dateOfEnd ? new Date(status.dateOfEnd).toLocaleDateString() : t('rooms.userRoomPage.ongoing')}</span>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -482,7 +484,7 @@ export function UserRoomPage({roomId}: RoomPageProps) {
                                                 <svg className="w-6 h-6 xs:w-8 xs:h-8 mx-auto mb-2 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                                                 </svg>
-                                                <p className="text-xs xs:text-sm">No active statuses</p>
+                                                <p className="text-xs xs:text-sm">{t('rooms.userRoomPage.noActiveStatuses')}</p>
                                             </div>
                                         )}
                                     </div>
@@ -507,10 +509,10 @@ export function UserRoomPage({roomId}: RoomPageProps) {
                                     </div>
                                     <div className="min-w-0 flex-1">
                                         <DialogTitle className="text-lg sm:text-xl font-semibold text-white truncate">
-                                            Room Photos
+                                            {t('rooms.userRoomPage.roomPhotos')}
                                         </DialogTitle>
                                         <Description className="text-blue-100 text-sm mt-1 line-clamp-1">
-                                            Manage and organize photos for this room
+                                            {t('rooms.userRoomPage.managePhotos')}
                                         </Description>
                                     </div>
                                 </div>
@@ -533,7 +535,7 @@ export function UserRoomPage({roomId}: RoomPageProps) {
                                     <div className="h-full flex flex-col">
                                         <h2 className="text-base sm:text-lg font-semibold text-slate-900 flex items-center mb-4">
                                             <Camera className="w-5 h-5 mr-2 text-blue-600" />
-                                            Current View
+                                            {t('rooms.userRoomPage.currentView')}
                                         </h2>
 
                                         {roomInfo.photos.length > 0 ? (
@@ -591,8 +593,8 @@ export function UserRoomPage({roomId}: RoomPageProps) {
                                             <div className="flex-1 flex items-center justify-center text-center py-8 xs:py-12 animate-in fade-in-0 zoom-in-50 duration-500">
                                                 <div>
                                                     <Camera className="mx-auto h-12 w-12 xs:h-16 xs:w-16 text-slate-300 mb-3 xs:mb-4" />
-                                                    <h3 className="text-base xs:text-lg font-semibold text-slate-900 mb-2">No Photos Available</h3>
-                                                    <p className="text-slate-500 text-sm xs:text-base">Add your first photo to get started</p>
+                                                    <h3 className="text-base xs:text-lg font-semibold text-slate-900 mb-2">{t('rooms.userRoomPage.noPhotosTitle')}</h3>
+                                                    <p className="text-slate-500 text-sm xs:text-base">{t('rooms.userRoomPage.noPhotosMessage')}</p>
                                                 </div>
                                             </div>
                                         )}
@@ -605,7 +607,7 @@ export function UserRoomPage({roomId}: RoomPageProps) {
                                         <svg className="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                                         </svg>
-                                        Photo Gallery
+                                        {t('rooms.userRoomPage.photoGallery')}
                                     </h3>
 
                                     <div className="space-y-3 max-h-96 overflow-y-auto">

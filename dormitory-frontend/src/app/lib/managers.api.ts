@@ -13,4 +13,12 @@ export  const managersApi = {
         return response.data;
     },
 
+    async resetManagerPassword(managerId: string, newPassword: string, confirmPassword: string):Promise<{message: string}>{
+        const response = await api.post(`/admin/managers/${managerId}/reset-password`, {
+            newPassword,
+            confirmPassword
+        });
+        return response.data;
+    },
+
 }

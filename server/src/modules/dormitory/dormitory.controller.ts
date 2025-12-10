@@ -27,6 +27,7 @@ export class DormitoryController {
   constructor(private readonly dormitoryService: DormitoryService) {}
 
   @Post()
+  @Authorization(UserRole.Admin, UserRole.SuperAdmin)
   @UseInterceptors(MultipartTransformInterceptor)
   @DormitoryDocs.create()
   @UseInterceptors(FileFieldsInterceptor([{ name: "photos", maxCount: 10 }]))
@@ -49,7 +50,7 @@ export class DormitoryController {
   }
 
   @Get("with-pricing")
-  @Authorization()
+  @Authorization(UserRole.Admin, UserRole.SuperAdmin)
   findAllWithPricing() {
     return this.dormitoryService.findAllWithPricing();
   }
@@ -62,33 +63,32 @@ export class DormitoryController {
   }
 
   @Get(":id")
-  @DormitoryDocs.findOne()
+    @DormitoryDocs.findOne()
   findOne(@Param("id") id: string) {
     return this.dormitoryService.findOne(id);
   }
 
   @Get(":id/pricing")
-  @Authorization()
+    @Authorization(UserRole.Admin, UserRole.SuperAdmin)
   getPricing(@Param("id") id: string) {
     return this.dormitoryService.getDormitoryPricing(id);
   }
 
   @Patch(":id")
-  @Authorization(UserRole.Admin)
+  @Authorization(UserRole.Admin, UserRole.SuperAdmin)
   @DormitoryDocs.update()
   update(@Param("id") id: string, @Body() dto: UpdateDormitoryDto) {
     return this.dormitoryService.update(id, dto);
   }
 
   @Patch(":id/activate")
-  @Authorization(UserRole.Admin, UserRole.SuperAdmin)
   @DormitoryDocs.activate()
   activate(@Param("id") id: string) {
     return this.dormitoryService.activate(id);
   }
 
   @Patch(":id/deactivate")
-  @Authorization(UserRole.Admin)
+  @Authorization(UserRole.Admin, UserRole.SuperAdmin)
   @DormitoryDocs.deactivate()
   deactivate(@Param("id") id: string) {
     return this.dormitoryService.deactivate(id);

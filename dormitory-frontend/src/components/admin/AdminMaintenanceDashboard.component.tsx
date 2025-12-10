@@ -27,6 +27,7 @@ import {
   useGetMaintenanceStats,
 } from '@/hooks/maintenance.hook';
 import { toast } from 'sonner';
+import { useLanguage } from '@/providers/language.provider';
 
 const STATUS_COLORS: Record<MaintenanceStatus, string> = {
   PENDING: 'bg-yellow-100 text-yellow-800 border-yellow-300',
@@ -62,6 +63,7 @@ const CATEGORY_LABELS: Record<MaintenanceCategory, string> = {
 };
 
 export const AdminMaintenanceDashboard: React.FC = () => {
+  const { t } = useLanguage();
   const [selectedStatus, setSelectedStatus] = useState<MaintenanceStatus | undefined>();
   const [page, setPage] = useState(1);
   const [selectedReport, setSelectedReport] = useState<MaintenanceReport | null>(null);
@@ -106,16 +108,16 @@ export const AdminMaintenanceDashboard: React.FC = () => {
   const pagination = reportsData?.pagination;
 
   return (
-    <div className="p-6 space-y-6">
+    <div className=" px-6 py-6 space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-gray-900 flex items-center">
             <Wrench className="w-8 h-8 mr-3 text-orange-600" />
-            Maintenance Reports
+            {t('maintenance.dashboard.title')}
           </h1>
           <p className="text-gray-600 mt-1">
-            Manage and respond to resident maintenance requests
+            {t('maintenance.dashboard.subtitle')}
           </p>
         </div>
       </div>
@@ -126,7 +128,7 @@ export const AdminMaintenanceDashboard: React.FC = () => {
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Total Reports</p>
+                <p className="text-sm text-gray-600">{t('maintenance.dashboard.stats.total', 'Total Reports')}</p>
                 <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
               </div>
               <Wrench className="w-10 h-10 text-gray-400" />
@@ -136,7 +138,7 @@ export const AdminMaintenanceDashboard: React.FC = () => {
           <div className="bg-yellow-50 rounded-lg shadow-sm border border-yellow-200 p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-yellow-700">Pending</p>
+                <p className="text-sm text-yellow-700">{t('maintenance.dashboard.stats.pending')}</p>
                 <p className="text-2xl font-bold text-yellow-900">{stats.pending}</p>
               </div>
               <AlertCircle className="w-10 h-10 text-yellow-500" />
@@ -146,7 +148,7 @@ export const AdminMaintenanceDashboard: React.FC = () => {
           <div className="bg-blue-50 rounded-lg shadow-sm border border-blue-200 p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-blue-700">In Progress</p>
+                <p className="text-sm text-blue-700">{t('maintenance.dashboard.stats.inProgress')}</p>
                 <p className="text-2xl font-bold text-blue-900">{stats.inProgress}</p>
               </div>
               <Clock className="w-10 h-10 text-blue-500" />
@@ -156,7 +158,7 @@ export const AdminMaintenanceDashboard: React.FC = () => {
           <div className="bg-green-50 rounded-lg shadow-sm border border-green-200 p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-green-700">Resolved</p>
+                <p className="text-sm text-green-700">{t('maintenance.dashboard.stats.resolved')}</p>
                 <p className="text-2xl font-bold text-green-900">{stats.resolved}</p>
               </div>
               <CheckCircle className="w-10 h-10 text-green-500" />
@@ -166,7 +168,7 @@ export const AdminMaintenanceDashboard: React.FC = () => {
           <div className="bg-red-50 rounded-lg shadow-sm border border-red-200 p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-red-700">Urgent</p>
+                <p className="text-sm text-red-700">{t('maintenance.priorities.URGENT')}</p>
                 <p className="text-2xl font-bold text-red-900">{stats.urgent}</p>
               </div>
               <AlertCircle className="w-10 h-10 text-red-500" />
@@ -188,7 +190,7 @@ export const AdminMaintenanceDashboard: React.FC = () => {
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              All
+              {t('maintenance.dashboard.all')}
             </button>
             {Object.values(MaintenanceStatus).map((status) => (
               <button
@@ -200,7 +202,7 @@ export const AdminMaintenanceDashboard: React.FC = () => {
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
-                {status.replace('_', ' ')}
+                {t(`maintenance.statuses.${status}`)}
               </button>
             ))}
           </div>
@@ -216,7 +218,7 @@ export const AdminMaintenanceDashboard: React.FC = () => {
         ) : reports.length === 0 ? (
           <div className="text-center py-12">
             <Wrench className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500 text-lg">No maintenance reports found</p>
+            <p className="text-gray-500 text-lg">{t('maintenance.dashboard.empty')}</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -224,25 +226,25 @@ export const AdminMaintenanceDashboard: React.FC = () => {
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Report
+                    {t('maintenance.details.reportDetails', 'Report')}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Category
+                    {t('maintenance.details.category')}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Priority
+                    {t('maintenance.details.priority')}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Status
+                    {t('maintenance.details.status')}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Reported By
+                    {t('maintenance.details.reported', 'Reported By')}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Date
+                    {t('maintenance.details.reported', 'Date')}
                   </th>
                   <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Actions
+                    {t('maintenance.details.actions')}
                   </th>
                 </tr>
               </thead>
@@ -259,12 +261,12 @@ export const AdminMaintenanceDashboard: React.FC = () => {
                       </td>
                       <td className="px-6 py-4">
                         <span className="text-sm text-gray-700">
-                          {CATEGORY_LABELS[report.category]}
+                          {t(`maintenance.categories.${report.category}`)}
                         </span>
                       </td>
                       <td className="px-6 py-4">
                         <span className={`text-sm font-medium ${PRIORITY_COLORS[report.priority]}`}>
-                          {report.priority}
+                          {t(`maintenance.priorities.${report.priority}`)}
                         </span>
                       </td>
                       <td className="px-6 py-4">
@@ -275,7 +277,7 @@ export const AdminMaintenanceDashboard: React.FC = () => {
                         >
                           {Object.values(MaintenanceStatus).map((status) => (
                             <option key={status} value={status}>
-                              {status.replace('_', ' ')}
+                              {t(`maintenance.statuses.${status}`)}
                             </option>
                           ))}
                         </select>
@@ -366,7 +368,7 @@ export const AdminMaintenanceDashboard: React.FC = () => {
           <div className="bg-white rounded-xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
             <div className="sticky top-0 bg-orange-600 text-white p-6 rounded-t-xl">
               <div className="flex items-center justify-between">
-                <h3 className="text-2xl font-bold">Maintenance Report Details</h3>
+                <h3 className="text-2xl font-bold">{t('maintenance.details.reportDetails')}</h3>
                 <button
                   onClick={() => setSelectedReport(null)}
                   className="p-2 hover:bg-white hover:bg-opacity-20 rounded-lg transition-colors"
@@ -379,37 +381,37 @@ export const AdminMaintenanceDashboard: React.FC = () => {
             <div className="p-6 space-y-6">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-sm font-medium text-gray-600">Category</label>
+                  <label className="text-sm font-medium text-gray-600">{t('maintenance.details.category')}</label>
                   <p className="text-lg font-semibold text-gray-900">
-                    {CATEGORY_LABELS[selectedReport.category]}
+                    {t(`maintenance.categories.${selectedReport.category}`)}
                   </p>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-gray-600">Priority</label>
+                  <label className="text-sm font-medium text-gray-600">{t('maintenance.details.priority')}</label>
                   <p className={`text-lg font-semibold ${PRIORITY_COLORS[selectedReport.priority]}`}>
-                    {selectedReport.priority}
+                    {t(`maintenance.priorities.${selectedReport.priority}`)}
                   </p>
                 </div>
               </div>
 
               <div>
-                <label className="text-sm font-medium text-gray-600">Title</label>
+                <label className="text-sm font-medium text-gray-600">{t('maintenance.fields.title')}</label>
                 <p className="text-lg font-semibold text-gray-900">{selectedReport.title}</p>
               </div>
 
               <div>
-                <label className="text-sm font-medium text-gray-600">Location</label>
+                <label className="text-sm font-medium text-gray-600">{t('maintenance.details.location')}</label>
                 <p className="text-gray-900">{selectedReport.location}</p>
               </div>
 
               <div>
-                <label className="text-sm font-medium text-gray-600">Description</label>
+                <label className="text-sm font-medium text-gray-600">{t('maintenance.details.description')}</label>
                 <p className="text-gray-900 whitespace-pre-wrap">{selectedReport.description}</p>
               </div>
 
               {selectedReport.attachments && selectedReport.attachments.length > 0 && (
                 <div>
-                  <label className="text-sm font-medium text-gray-600 mb-2 block">Attachments</label>
+                  <label className="text-sm font-medium text-gray-600 mb-2 block">{t('maintenance.details.attachments')}</label>
                   <div className="grid grid-cols-2 gap-4">
                     {selectedReport.attachments.map((url, index) => (
                       <a
@@ -431,7 +433,7 @@ export const AdminMaintenanceDashboard: React.FC = () => {
                   onClick={() => setSelectedReport(null)}
                   className="px-6 py-3 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors font-medium"
                 >
-                  Close
+                  {t('common.close')}
                 </button>
                 {!selectedReport.conversationId && (
                   <button
@@ -439,7 +441,7 @@ export const AdminMaintenanceDashboard: React.FC = () => {
                     className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-all font-medium shadow-lg flex items-center space-x-2"
                   >
                     <MessageSquare className="w-5 h-5" />
-                    <span>Start Conversation</span>
+                    <span>{t('maintenance.details.createConversation')}</span>
                   </button>
                 )}
               </div>
@@ -453,21 +455,21 @@ export const AdminMaintenanceDashboard: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
           <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full">
             <div className="bg-green-600 text-white p-6 rounded-t-xl">
-              <h3 className="text-2xl font-bold">Start Conversation with Resident</h3>
+              <h3 className="text-2xl font-bold">{t('maintenance.details.createConversation')}</h3>
               <p className="text-green-100 text-sm mt-1">
-                Send an initial message to {selectedReport.user.displayName}
+                {t('messaging.createConversation.initialMessage')} {selectedReport.user.displayName}
               </p>
             </div>
 
             <div className="p-6 space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Initial Message (Optional)
+                  {t('messaging.createConversation.initialMessage')}
                 </label>
                 <textarea
                   value={initialMessage}
                   onChange={(e) => setInitialMessage(e.target.value)}
-                  placeholder="Hello! I received your maintenance request. I will be handling this issue. When would be a good time for me to inspect the problem?"
+                  placeholder={t('messaging.createConversation.messagePlaceholder')}
                   rows={6}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none"
                   maxLength={1000}
@@ -484,7 +486,7 @@ export const AdminMaintenanceDashboard: React.FC = () => {
                   className="px-6 py-3 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors font-medium"
                   disabled={createConversationMutation.isPending}
                 >
-                  Cancel
+                  {t('common.cancel')}
                 </button>
                 <button
                   onClick={handleCreateConversation}
@@ -494,12 +496,12 @@ export const AdminMaintenanceDashboard: React.FC = () => {
                   {createConversationMutation.isPending ? (
                     <>
                       <Loader2 className="w-5 h-5" />
-                      <span>Creating...</span>
+                      <span>{t('common.loading')}</span>
                     </>
                   ) : (
                     <>
                       <MessageSquare className="w-5 h-5" />
-                      <span>Create Conversation</span>
+                      <span>{t('messaging.createConversation.create')}</span>
                     </>
                   )}
                 </button>

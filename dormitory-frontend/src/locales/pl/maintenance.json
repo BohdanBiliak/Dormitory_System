@@ -1,0 +1,106 @@
+{
+  "maintenance": {
+    "title": "Zgłoszenia konserwacji",
+    "reportMaintenance": "Zgłoś usterkę",
+    "viewDetails": "Zobacz szczegóły",
+    "createReport": "Utwórz zgłoszenie",
+    "submitting": "Wysyłanie...",
+    "categories": {
+      "PLUMBING": "Hydraulika",
+      "ELECTRICAL": "Elektryka",
+      "HEATING": "Ogrzewanie",
+      "FURNITURE": "Meble",
+      "APPLIANCES": "Urządzenia",
+      "WINDOWS_DOORS": "Okna i drzwi",
+      "CLEANING": "Sprzątanie",
+      "INTERNET": "Internet",
+      "OTHER": "Inne"
+    },
+    "priorities": {
+      "LOW": "Niska",
+      "MEDIUM": "Średnia",
+      "HIGH": "Wysoka",
+      "URGENT": "Pilna"
+    },
+    "statuses": {
+      "PENDING": "Oczekujące",
+      "IN_PROGRESS": "W trakcie",
+      "RESOLVED": "Rozwiązane",
+      "CANCELLED": "Anulowane"
+    },
+    "fields": {
+      "title": "Tytuł",
+      "titlePlaceholder": "Krótki opis problemu",
+      "category": "Kategoria",
+      "categoryPlaceholder": "Wybierz kategorię",
+      "priority": "Poziom priorytetu",
+      "location": "Lokalizacja",
+      "locationPlaceholder": "np. Pokój 204, Kuchnia",
+      "description": "Opis",
+      "descriptionPlaceholder": "Proszę podać szczegółowe informacje o problemie...",
+      "attachments": "Załączniki",
+      "attachmentsHelp": "Prześlij zdjęcia (maks. 5 plików, 5MB każdy)"
+    },
+    "buttons": {
+      "cancel": "Anuluj",
+      "submit": "Wyślij zgłoszenie",
+      "uploadFiles": "Prześlij pliki",
+      "selectFiles": "Wybierz pliki"
+    },
+    "messages": {
+      "maxFiles": "Możesz przesłać maksymalnie 5 plików",
+      "reportSubmitted": "Zgłoszenie konserwacji zostało wysłane",
+      "reportFailed": "Nie udało się wysłać zgłoszenia",
+      "required": "To pole jest wymagane"
+    },
+    "dashboard": {
+      "title": "Zgłoszenia konserwacji",
+      "subtitle": "Zarządzaj i odpowiadaj na zgłoszenia mieszkańców",
+      "filters": "Filtry",
+      "all": "Wszystkie",
+      "stats": {
+        "pending": "Oczekujące",
+        "inProgress": "W trakcie",
+        "resolved": "Rozwiązane"
+      },
+      "empty": "Nie znaleziono zgłoszeń konserwacji",
+      "emptySubtitle": "W tej chwili nie ma żadnych zgłoszeń konserwacji"
+    },
+    "details": {
+      "reportDetails": "Szczegóły zgłoszenia",
+      "category": "Kategoria",
+      "priority": "Priorytet",
+      "status": "Status",
+      "location": "Lokalizacja",
+      "description": "Opis",
+      "reported": "Zgłoszono",
+      "resolved": "Rozwiązano",
+      "chatActive": "Czat aktywny",
+      "noChatYet": "Brak czatu",
+      "attachments": "Załączniki",
+      "actions": "Akcje",
+      "createConversation": "Utwórz rozmowę",
+      "viewConversation": "Zobacz rozmowę"
+    },
+    "createDialog": {
+      "title": "Zgłoś problem konserwacyjny",
+      "alertTitle": "Ważne informacje",
+      "alertMessage": "Administrator zostanie natychmiast powiadomiony i zostanie utworzona konwersacja, aby omówić z Tobą problem.",
+      "categoryLabel": "Kategoria problemu",
+      "priorityLabel": "Poziom priorytetu",
+      "titleLabel": "Tytuł problemu",
+      "titlePlaceholder": "np. Zepsuta bateria w łazience",
+      "locationLabel": "Dokładna lokalizacja",
+      "locationPlaceholder": "np. Pokój 204, Umywalka w łazience",
+      "descriptionLabel": "Szczegółowy opis",
+      "descriptionPlaceholder": "Opisz problem szczegółowo...",
+      "attachPhotosLabel": "Dołącz zdjęcia (opcjonalnie)",
+      "uploadText": "Kliknij, aby przesłać zdjęcia",
+      "uploading": "Przesyłanie...",
+      "uploadHint": "PNG, JPG do 10MB",
+      "cancel": "Anuluj",
+      "submit": "Wyślij zgłoszenie",
+      "submitting": "Wysyłanie..."
+    }
+  }
+}

@@ -30,7 +30,15 @@ const loadLanguageData = async (lang: Language) => {
       profile,
       sideMenu,
       availableRooms,
-      admin
+      admin,
+      maintenance,
+      messaging,
+      confirmations,
+      payments,
+      notifications,
+      rooms,
+      reports,
+      announcements
     ] = await Promise.all([
       import(`@/locales/${lang}/common.json`),
       import(`@/locales/${lang}/dialogs.json`),
@@ -39,7 +47,15 @@ const loadLanguageData = async (lang: Language) => {
       import(`@/locales/${lang}/profile.json`),
       import(`@/locales/${lang}/side-menu.json`),
       import(`@/locales/${lang}/avalible-rooms.json`),
-      import(`@/locales/${lang}/admin.json`)
+      import(`@/locales/${lang}/admin.json`),
+      import(`@/locales/${lang}/maintenance.json`),
+      import(`@/locales/${lang}/messaging.json`),
+      import(`@/locales/${lang}/confirmations.json`),
+      import(`@/locales/${lang}/payments.json`),
+      import(`@/locales/${lang}/notifications.json`),
+      import(`@/locales/${lang}/rooms.json`),
+      import(`@/locales/${lang}/reports.json`),
+      import(`@/locales/${lang}/announcements.json`)
     ])
 
     languageData[lang] = {
@@ -50,7 +66,15 @@ const loadLanguageData = async (lang: Language) => {
       ...profile.default,
       ...sideMenu.default,
       ...availableRooms.default,
-      ...admin.default
+      ...admin.default,
+      ...maintenance.default,
+      ...messaging.default,
+      ...confirmations.default,
+      ...payments.default,
+      ...notifications.default,
+      ...rooms.default,
+      ...reports.default,
+      ...announcements.default
     }
   } catch (error) {
     console.error(`Error loading language data for ${lang}:`, error)

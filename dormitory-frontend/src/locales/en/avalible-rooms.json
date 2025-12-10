@@ -1,12 +1,62 @@
 {
   "availableRooms": {
     "title": "Available Rooms",
+    "subtitle": "Manage and view all dormitory rooms",
     "search": "Search rooms...",
     "filter": {
       "all": "All",
       "available": "Available",
       "occupied": "Occupied"
     },
-    "noRooms": "No rooms found"
+    "noRooms": "No rooms found",
+    "filters": {
+      "title": "Filters:",
+      "showFilters": "Show Filters",
+      "hideFilters": "Hide Filters",
+      "filtersShort": "Filters",
+      "date": "Date:",
+      "emptyRoom": "Empty room:",
+      "emptyRoomYes": "Yes",
+      "emptyRoomNo": "No",
+      "emptyRoomEither": "Doesn't matter",
+      "groupBooking": "Book a room for group:",
+      "people": "people"
+    },
+    "dormitory": {
+      "title": "Dormitory:",
+      "noDormitories": "No dormitories available",
+      "floor": "Floor:"
+    },
+    "rooms": {
+      "title": "Rooms:",
+      "legend": {
+        "available": "Available",
+        "partiallyOccupied": "Partially occupied",
+        "fullyOccupied": "Fully occupied"
+      }
+    },
+    "roomDetails": {
+      "title": "Room {{number}}",
+      "titleShort": "Room {{number}}:",
+      "meetsRequirements": "Room meets the search requirements",
+      "meetsRequirementsShort": "Meets search requirements",
+      "doesNotMeetRequirements": "Room doesn't meet the search requirements",
+      "toRoomPage": "To room page →",
+      "selectRoom": "Select a room to view details",
+      "adminConfirmFirst": "Admin must confirm your profile first",
+      "bookRoom": "Book this room",
+      "moveToRoom": "Move to this room",
+      "loginFirst": "Please log in first.",
+      "availabilityNext2Weeks": "Availability during next 2 weeks:",
+      "weekDays": {
+        "mon": "Mon",
+        "tue": "Tue",
+        "wed": "Wed",
+        "thu": "Thu",
+        "fri": "Fri",
+        "sat": "Sat",
+        "sun": "Sun"
+      }
+    }
   }
 }

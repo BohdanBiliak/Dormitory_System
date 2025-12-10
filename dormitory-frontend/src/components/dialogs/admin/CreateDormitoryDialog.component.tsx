@@ -67,62 +67,62 @@ const validateFloorNumber = (floor: string): boolean => {
     return !isNaN(Number(floor)) && floor.trim() !== '';
 };
 
-const validateGeneralInformation = (data: DormitoryPostData): ValidationErrors => {
+const validateGeneralInformation = (data: DormitoryPostData, t: any): ValidationErrors => {
     const errors: ValidationErrors = {};
 
     if (!data.name.trim()) {
-        errors.name = 'Dormitory name is required';
+        errors.name = t('dormitories.createDormitory.validation.nameRequired');
     }
 
     if (!data.address.trim()) {
-        errors.address = 'Address is required';
+        errors.address = t('dormitories.createDormitory.validation.addressRequired');
     }
 
     if (!data.groundFloorPhoneNumber.trim()) {
-        errors.groundFloorPhoneNumber = 'Phone number is required';
+        errors.groundFloorPhoneNumber = t('dormitories.createDormitory.validation.phoneRequired');
     } else if (!validatePhoneNumber(data.groundFloorPhoneNumber)) {
-        errors.groundFloorPhoneNumber = 'Phone number must start with + and contain exactly 11 digits (e.g., +48123456789)';
+        errors.groundFloorPhoneNumber = t('dormitories.createDormitory.validation.phoneInvalid');
     }
 
     if(data.floorAssignments.length < 1){
-        errors.floorAssignments = 'Dormitory should have at least one floor';
+        errors.floorAssignments = t('dormitories.createDormitory.validation.floorRequired');
     }else{
         const emptyFloor = data.floorAssignments.find((floor) => floor.roomAssignments.length < 1);
         if(emptyFloor) {
-            errors.roomAssignments = `Floor ${emptyFloor.floorNumber} cannot be empty`;
+            errors.roomAssignments = t('dormitories.createDormitory.validation.floorEmpty').replace('{floor}', emptyFloor.floorNumber);
         }
     }
 
     return errors;
 };
 
-const validateRoomTemplate = (template: RoomTemplatePostData | RoomTemplate): ValidationErrors => {
+const validateRoomTemplate = (template: RoomTemplatePostData | RoomTemplate, t: any): ValidationErrors => {
     const errors: ValidationErrors = { roomTemplates: {} };
 
     if (!template.name.trim()) {
-        errors.roomTemplates!.name = 'Template name is required';
+        errors.roomTemplates!.name = t('dormitories.createDormitory.validation.templateNameRequired');
     }
 
     if (!template.typeCode.trim()) {
-        errors.roomTemplates!.typeCode = 'Template code is required';
+        errors.roomTemplates!.typeCode = t('dormitories.createDormitory.validation.templateCodeRequired');
     }
 
     if (template.capacity < 1) {
-        errors.roomTemplates!.capacity = 'Capacity must be at least 1';
+        errors.roomTemplates!.capacity = t('dormitories.createDormitory.validation.capacityMinimum');
     }
 
     if(template.equipment.length < 3){
-        errors.roomTemplates!.equipment = 'At least 3 equipment positions is required';
+        errors.roomTemplates!.equipment = t('dormitories.createDormitory.validation.equipmentMinimum');
     }
 
     return errors;
 };
 
-const validatePriceCategory = (category: PriceCategoryPostData | PriceCategory, existingCategories: PriceCategory[], currentCategoryId?: string): ValidationErrors => {
+const validatePriceCategory = (category: PriceCategoryPostData | PriceCategory, existingCategories: PriceCategory[], t: any, currentCategoryId?: string): ValidationErrors => {
     const errors: ValidationErrors = { priceCategories: {} };
 
     if (!category.name.trim()) {
-        errors.priceCategories!.name = 'Category name is required';
+        errors.priceCategories!.name = t('dormitories.createDormitory.validation.categoryNameRequired');
     } else {
         // Check for duplicate names
         const isDuplicate = existingCategories.some(cat =>
@@ -130,16 +130,16 @@ const validatePriceCategory = (category: PriceCategoryPostData | PriceCategory, 
             cat.id !== currentCategoryId
         );
         if (isDuplicate) {
-            errors.priceCategories!.name = 'A category with this name already exists';
+            errors.priceCategories!.name = t('dormitories.createDormitory.validation.categoryNameDuplicate');
         }
     }
 
     if (category.pricePerMonth <= 0) {
-        errors.priceCategories!.pricePerMonth = 'Price per month must be greater than 0';
+        errors.priceCategories!.pricePerMonth = t('dormitories.createDormitory.validation.priceMonthMinimum');
     }
 
     if (category.pricePerDay <= 0) {
-        errors.priceCategories!.pricePerDay = 'Price per day must be greater than 0';
+        errors.priceCategories!.pricePerDay = t('dormitories.createDormitory.validation.priceDayMinimum');
     }
 
 
@@ -210,26 +210,26 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
     const sections: { key: ActiveSection; label: string; icon: React.ReactNode }[] = [
         {
             key: 'General Information',
-            label: 'General Information',
+            label: t('dormitories.createDormitory.sections.generalInfo'),
             icon: <BuildingIcon className="w-4 h-4" />
         },
         {
             key: 'Room Generation',
-            label: 'Room Generation',
+            label: t('dormitories.createDormitory.sections.roomGeneration'),
             icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
             </svg>
         },
         {
             key: 'Room Templates',
-            label: 'Room Templates',
+            label: t('dormitories.createDormitory.sections.roomTemplates'),
             icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
             </svg>
         },
         {
             key: 'Price Categories',
-            label: 'Price Categories',
+            label: t('dormitories.createDormitory.sections.priceCategories'),
             icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
@@ -262,7 +262,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
             if (value && !validateFloorNumber(value)) {
                 setValidationErrors(prev => ({
                     ...prev,
-                    floorNumber: 'Floor number must be a valid number (e.g., 0, 1, 2)'
+                    floorNumber: t('dormitories.createDormitory.validation.floorNumberInvalid')
                 }));
             } else {
                 setValidationErrors(prev => {
@@ -302,7 +302,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
         if (!newFloorLabel.trim()) {
             setValidationErrors(prev => ({
                 ...prev,
-                floorNumber: 'Floor number is required'
+                floorNumber: t('dormitories.createDormitory.validation.floorNumberRequired')
             }));
             return;
         }
@@ -310,7 +310,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
         if (!validateFloorNumber(newFloorLabel)) {
             setValidationErrors(prev => ({
                 ...prev,
-                floorNumber: 'Floor number must be a valid number'
+                floorNumber: t('dormitories.createDormitory.validation.floorNumberRequired')
             }));
             return;
         }
@@ -339,7 +339,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
         if(newDormitory.floorAssignments.length < 2){
             setValidationErrors(prev => ({
                 ...prev,
-                floorAssignments: 'Dormitory should have at least one floor'
+                floorAssignments: t('dormitories.createDormitory.validation.floorRequired')
             }))
         }
         setNewDormitory(prevState => ({
@@ -416,7 +416,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
 
     const handleCreateNewRoomTemplate = () => {
         if (newRoomTemplate) {
-            const errors = validateRoomTemplate(newRoomTemplate);
+            const errors = validateRoomTemplate(newRoomTemplate, t);
 
             if (Object.keys(errors.roomTemplates || {}).length > 0) {
                 setValidationErrors(errors);
@@ -450,7 +450,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
     };
 
     const handleEditTemplate = (templateId: string, template: RoomTemplate) => {
-        const errors = validateRoomTemplate(template);
+        const errors = validateRoomTemplate(template, t);
 
         if (Object.keys(errors.roomTemplates || {}).length > 0) {
             setValidationErrors(errors);
@@ -726,7 +726,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
     };
 
     const handleSaveEdition = (id: string, changes: PriceCategoryPostData) => {
-        const errors = validatePriceCategory(changes, pCategoriesList, id);
+        const errors = validatePriceCategory(changes, pCategoriesList, t, id);
 
         if (Object.keys(errors.priceCategories || {}).length > 0) {
             setValidationErrors(errors);
@@ -749,7 +749,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
 
 
     const handleCreateCategory = (category: PriceCategoryPostData) => {
-        const errors = validatePriceCategory(category, pCategoriesList);
+        const errors = validatePriceCategory(category, pCategoriesList, t);
 
         if (Object.keys(errors.priceCategories || {}).length > 0) {
             setValidationErrors(errors);
@@ -770,7 +770,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
 
     const handleCreateDormitory = async () => {
         // Validate General Information
-        const errors = validateGeneralInformation(newDormitory);
+        const errors = validateGeneralInformation(newDormitory, t);
 
         if (Object.keys(errors).length > 0) {
             setValidationErrors(errors);
@@ -778,7 +778,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
             setActiveSection('General Information');
 
             // Show error notification
-            alert('Please fill in all required fields correctly in General Information section');
+            alert(t('dormitories.createDormitory.validation.fillGeneralInfo'));
             return;
         }
 
@@ -985,16 +985,16 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                                 <div className="min-w-0 flex-1">
                                     <DialogTitle className="text-sm xs:text-base sm:text-lg md:text-xl font-bold text-white truncate">
                                         {isSuccess ? (
-                                            <span>Dormitory Created Successfully!</span>
+                                            <span>{t('dormitories.createDormitory.successTitle')}</span>
                                         ) : (
-                                            <span>{t('createDormitory.title')}</span>
+                                            <span>{t('dormitories.createDormitory.title')}</span>
                                         )}
                                     </DialogTitle>
                                     <Description className="text-blue-100 text-xs sm:text-sm mt-0.5 xs:mt-1 line-clamp-2">
                                         {isSuccess ? (
-                                            <span>Your dormitory has been created and is ready for use</span>
+                                            <span>{t('dormitories.createDormitory.successSubtitle')}</span>
                                         ) : (
-                                            <span>Create and configure your new dormitory</span>
+                                            <span>{t('dormitories.createDormitory.subtitle')}</span>
                                         )}
                                     </Description>
                                 </div>
@@ -1003,7 +1003,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                                 {isCreating && (
                                     <div className="hidden sm:flex items-center space-x-2 text-white">
                                         <Loader2 className="w-3 h-3 xs:w-4 xs:h-4" />
-                                        <span className="text-xs xs:text-sm">Creating...</span>
+                                        <span className="text-xs xs:text-sm">{t('dormitories.createDormitory.creating')}</span>
                                     </div>
                                 )}
                                 <button 
@@ -1028,8 +1028,8 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                                     />
                                 </div>
                                 <div className="flex justify-between mt-1 xs:mt-2 sm:mt-3 text-xs sm:text-sm text-blue-100">
-                                    <span className="font-medium">Krok {sections.findIndex(s => s.key === activeSection) + 1} z {sections.length}</span>
-                                    <span className="font-medium">{Math.round(calculateProgress())}% Ukończone</span>
+                                    <span className="font-medium">{t('dormitories.createDormitory.step')} {sections.findIndex(s => s.key === activeSection) + 1} {t('dormitories.createDormitory.of')} {sections.length}</span>
+                                    <span className="font-medium">{Math.round(calculateProgress())}% {t('dormitories.createDormitory.completed')}</span>
                                 </div>
                             </div>
                         )}
@@ -1112,12 +1112,12 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                                 <div className="w-1.5 h-1.5 xs:w-2 xs:h-2 bg-blue-500 rounded-full"></div>
                                 <span className="text-center sm:text-left text-xs xs:text-sm">
                                     {activeSection === 'General Information' 
-                                        ? 'Wypełnij podstawowe informacje o akademiku'
+                                        ? t('dormitories.createDormitory.hints.generalInfo')
                                         : activeSection === 'Room Generation'
-                                        ? 'Skonfiguruj piętra i rozmieszczenie pokoi'
+                                        ? t('dormitories.createDormitory.hints.roomGeneration')
                                         : activeSection === 'Room Templates'
-                                        ? 'Zarządzaj szablonami pokoi'
-                                        : 'Ustaw kategorie cenowe'
+                                        ? t('dormitories.createDormitory.hints.roomTemplates')
+                                        : t('dormitories.createDormitory.hints.priceCategories')
                                     }
                                 </span>
                             </div>
@@ -1126,7 +1126,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                                     onClick={onClose}
                                     className="px-3 xs:px-4 sm:px-5 py-2 xs:py-2.5 text-xs xs:text-sm font-medium text-gray-700 bg-white border-2 border-gray-300 rounded-lg xs:rounded-xl hover:bg-gray-50 hover:border-gray-400  shadow-sm"
                                 >
-                                    Anuluj
+                                    {t('dormitories.createDormitory.cancel')}
                                 </button>
                                 <button 
                                     onClick={handleClearAll}
@@ -1135,7 +1135,7 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                                     <svg className="w-3 h-3 xs:w-4 xs:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                     </svg>
-                                    <span>Wyczyść wszystko</span>
+                                    <span>{t('dormitories.createDormitory.clearAll')}</span>
                                 </button>
                                 <button 
                                     onClick={handleCreateDormitory}
@@ -1149,12 +1149,12 @@ export default function CreateDormitoryDialogComponent({open, onClose}: CreateDo
                                     {isCreating ? (
                                         <>
                                             <Loader2 className="w-3 h-3 xs:w-4 xs:h-4 sm:w-5 sm:h-5" />
-                                            <span>Tworzenie...</span>
+                                            <span>{t('dormitories.createDormitory.creating')}</span>
                                         </>
                                     ) : (
                                         <>
                                             <BuildingIcon className="w-3 h-3 xs:w-4 xs:h-4 sm:w-5 sm:h-5" />
-                                            <span>Utwórz Akademik</span>
+                                            <span>{t('dormitories.createDormitory.createButton')}</span>
                                         </>
                                     )}
                                 </button>

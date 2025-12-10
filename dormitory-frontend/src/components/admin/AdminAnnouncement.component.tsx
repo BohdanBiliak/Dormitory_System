@@ -9,12 +9,14 @@ import {useGetRooms} from "@/hooks/rooms.hook";
 import {useGetActiveDormitories} from "@/hooks/dormitories.hook";
 import {Room} from "@/types/rooms.types";
 import { FileText, Download, Calendar, Users, Building, DoorOpen } from "lucide-react";
+import { useLanguage } from "@/providers/language.provider";
 
 export interface AdminAnnouncementProps {
     id: string
 }
 
 export default function AdminAnnouncement({id}:AdminAnnouncementProps){
+    const { t } = useLanguage();
     const [attachedFiles, setAttachedFiles] = useState<File[]>([])
     const [addresses, setAddresses] = useState<{id: string, label: string}[]>([])
     const [addingAddresses, setAddingAddresses] = useState<boolean>(false)
@@ -97,10 +99,10 @@ export default function AdminAnnouncement({id}:AdminAnnouncementProps){
                         </div>
                         <div>
                             <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900">
-                                Announcement
+                                {t('announcements.details.announcementTitle')}
                             </h1>
                             <p>
-                                Click on the arrow to go back
+                                {t('announcements.details.backToList')}
                             </p>
                         </div>
                     </div>
@@ -109,7 +111,7 @@ export default function AdminAnnouncement({id}:AdminAnnouncementProps){
 
             {/* Main Content */}
             <div className="p-4 md:p-6 lg:p-8">
-                <div className="max-w-7xl mx-auto">
+                <div className="w-full px-6">
                     <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
 
                         {/* Main Announcement Form */}
@@ -121,7 +123,7 @@ export default function AdminAnnouncement({id}:AdminAnnouncementProps){
                                         <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
                                         </svg>
-                                        <h2 className="text-xl font-semibold text-white">Announcement Content</h2>
+                                        <h2 className="text-xl font-semibold text-white">{t('announcements.details.announcementContent')}</h2>
                                     </div>
                                 </div>
 
@@ -130,7 +132,7 @@ export default function AdminAnnouncement({id}:AdminAnnouncementProps){
                                     {/* Title Input */}
                                     <div className="space-y-2">
                                         <label className="block text-sm font-medium text-gray-700">
-                                            Announcement Title
+                                            {t('announcements.new.announcementTitle')}
                                         </label>
                                         <input
                                             type="text"
@@ -144,7 +146,7 @@ export default function AdminAnnouncement({id}:AdminAnnouncementProps){
                                     {/* Description Textarea */}
                                     <div className="space-y-2">
                                         <label className="block text-sm font-medium text-gray-700">
-                                            Description
+                                            {t('announcements.details.description')}
                                         </label>
                                         <textarea
                                             value={announcementDetails.content}
@@ -154,14 +156,14 @@ export default function AdminAnnouncement({id}:AdminAnnouncementProps){
                                             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors resize-none"
                                         />
                                         <p className="text-sm text-gray-500">
-                                            {announcementDetails.content.length} characters
+                                            {t('announcements.details.charactersCount', { count: announcementDetails.content.length })}
                                         </p>
                                     </div>
 
                                     {/* Attached Files Section */}
                                     <div className="space-y-4">
                                         <label className="block text-sm font-medium text-gray-700">
-                                            Attached Files
+                                            {t('announcements.details.attachedFiles')}
                                         </label>
                                         {announcementDetails.attachments && announcementDetails.attachments.length > 0 ? (
                                             <div className="bg-gray-50 rounded-lg p-4 space-y-2">
@@ -171,13 +173,13 @@ export default function AdminAnnouncement({id}:AdminAnnouncementProps){
                                                             <FileText className="w-5 h-5 text-blue-600 flex-shrink-0" />
                                                             <div className="min-w-0 flex-1">
                                                                 <p className="text-sm font-medium text-gray-900 truncate">{file.fileName}</p>
-                                                                <p className="text-xs text-gray-500">Attachment</p>
+                                                                <p className="text-xs text-gray-500">{t('announcements.details.attachments')}</p>
                                                             </div>
                                                         </div>
                                                         <button
                                                             onClick={() => handleDownloadAttachment(file.url, file.fileName)}
                                                             className="ml-3 p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors flex-shrink-0"
-                                                            title="Download file"
+                                                            title={t('announcements.details.downloadFile')}
                                                         >
                                                             <Download className="w-5 h-5" />
                                                         </button>
@@ -186,7 +188,7 @@ export default function AdminAnnouncement({id}:AdminAnnouncementProps){
                                             </div>
                                         ) : (
                                             <div className="bg-gray-50 rounded-lg p-4 text-center text-gray-500 text-sm">
-                                                No files attached
+                                                {t('announcements.details.noFilesAttached')}
                                             </div>
                                         )}
                                     </div>
@@ -201,7 +203,7 @@ export default function AdminAnnouncement({id}:AdminAnnouncementProps){
                                 <div className="bg-green-600 px-6 py-4">
                                     <div className="flex items-center space-x-3">
                                         <Users className="w-5 h-5 text-white" />
-                                        <h3 className="text-lg font-semibold text-white">Recipients</h3>
+                                        <h3 className="text-lg font-semibold text-white">{t('announcements.details.recipients')}</h3>
                                     </div>
                                 </div>
 
@@ -213,38 +215,38 @@ export default function AdminAnnouncement({id}:AdminAnnouncementProps){
                                                     {recipient.forEveryone ? (
                                                         <>
                                                             <Users className="w-5 h-5 text-green-600" />
-                                                            <span className="text-sm font-medium text-gray-900">Everyone</span>
+                                                            <span className="text-sm font-medium text-gray-900">{t('announcements.details.everyone')}</span>
                                                         </>
                                                     ) : recipient.userId ? (
                                                         <>
                                                             <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                                             </svg>
-                                                            <span className="text-sm font-medium text-gray-900">User ID: {recipient.userId}</span>
+                                                            <span className="text-sm font-medium text-gray-900">{t('announcements.details.userId', { id: recipient.userId })}</span>
                                                         </>
                                                     ) : recipient.roomId ? (
                                                         <>
                                                             <DoorOpen className="w-5 h-5 text-purple-600" />
-                                                            <span className="text-sm font-medium text-gray-900">Room ID: {recipient.roomId}</span>
+                                                            <span className="text-sm font-medium text-gray-900">{t('announcements.details.roomId', { id: recipient.roomId })}</span>
                                                         </>
                                                     ) : recipient.floorId ? (
                                                         <>
                                                             <Building className="w-5 h-5 text-orange-600" />
-                                                            <span className="text-sm font-medium text-gray-900">Floor: {recipient.floorId}</span>
+                                                            <span className="text-sm font-medium text-gray-900">{t('announcements.details.floorId', { id: recipient.floorId })}</span>
                                                         </>
                                                     ) : recipient.dormitoryId ? (
                                                         <>
                                                             <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                                                             </svg>
-                                                            <span className="text-sm font-medium text-gray-900">Dormitory ID: {recipient.dormitoryId}</span>
+                                                            <span className="text-sm font-medium text-gray-900">{t('announcements.details.dormitoryId', { id: recipient.dormitoryId })}</span>
                                                         </>
                                                     ) : null}
                                                 </div>
                                             ))
                                         ) : (
                                             <div className="text-center py-4 text-gray-500 text-sm">
-                                                No specific recipients
+                                                {t('announcements.details.noRecipients')}
                                             </div>
                                         )}
                                     </div>
@@ -256,7 +258,7 @@ export default function AdminAnnouncement({id}:AdminAnnouncementProps){
                                 <div className="bg-blue-600 px-6 py-4">
                                     <div className="flex items-center space-x-3">
                                         <Calendar className="w-5 h-5 text-white" />
-                                        <h3 className="text-lg font-semibold text-white">Important Dates</h3>
+                                        <h3 className="text-lg font-semibold text-white">{t('announcements.details.importantDates')}</h3>
                                     </div>
                                 </div>
 
@@ -266,9 +268,9 @@ export default function AdminAnnouncement({id}:AdminAnnouncementProps){
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
                                         <div>
-                                            <p className="text-xs font-medium text-blue-900 uppercase tracking-wide">Posted At</p>
+                                            <p className="text-xs font-medium text-blue-900 uppercase tracking-wide">{t('announcements.details.postedAt')}</p>
                                             <p className="text-sm text-blue-800 mt-1">
-                                                {announcementDetails.postedAt ? formatDate(announcementDetails.postedAt) : 'Not available'}
+                                                {announcementDetails.postedAt ? formatDate(announcementDetails.postedAt) : t('announcements.details.notAvailable')}
                                             </p>
                                         </div>
                                     </div>
@@ -278,9 +280,9 @@ export default function AdminAnnouncement({id}:AdminAnnouncementProps){
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                                         </svg>
                                         <div>
-                                            <p className="text-xs font-medium text-orange-900 uppercase tracking-wide">Expires At</p>
+                                            <p className="text-xs font-medium text-orange-900 uppercase tracking-wide">{t('announcements.details.expiresAt')}</p>
                                             <p className="text-sm text-orange-800 mt-1">
-                                                {announcementDetails.expiresAt ? formatDate(announcementDetails.expiresAt) : 'No expiration'}
+                                                {announcementDetails.expiresAt ? formatDate(announcementDetails.expiresAt) : t('announcements.details.noExpiration')}
                                             </p>
                                         </div>
                                     </div>

@@ -3,8 +3,10 @@
 import { usePublicDormitories } from '@/hooks/public-dormitories.hook'
 import Link from 'next/link'
 import { memo, useMemo } from 'react'
+import { useLanguage } from '@/providers/language.provider'
 
 export const UserDormitoriesPageComponent = memo(function UserDormitoriesPageComponent() {
+  const { t } = useLanguage()
   const { data: dormitoriesResponse, isLoading, error } = usePublicDormitories()
 
   const dormitories = useMemo(() => dormitoriesResponse?.data, [dormitoriesResponse?.data])
@@ -15,7 +17,7 @@ export const UserDormitoriesPageComponent = memo(function UserDormitoriesPageCom
         <div className="bg-white shadow-lg rounded-lg p-8 max-w-md mx-4">
           <div className="flex items-center justify-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-            <span className="ml-3 text-gray-700 font-medium">Loading dormitories...</span>
+            <span className="ml-3 text-gray-700 font-medium">{t('common.loading')}</span>
           </div>
         </div>
       </div>
@@ -32,7 +34,7 @@ export const UserDormitoriesPageComponent = memo(function UserDormitoriesPageCom
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
               </svg>
             </div>
-            <p className="text-gray-700 font-medium">Error loading dormitories. Please try again.</p>
+            <p className="text-gray-700 font-medium">{t('dormitories.errorLoading')}</p>
           </div>
         </div>
       </div>
@@ -52,10 +54,10 @@ export const UserDormitoriesPageComponent = memo(function UserDormitoriesPageCom
             </div>
             <div>
               <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900">
-                Available Dormitories
+                {t('dormitories.availableDormitories')}
               </h1>
               <p className="text-gray-600 text-sm md:text-base">
-                Browse available dormitory accommodations
+                {t('dormitories.browseAccommodations')}
               </p>
             </div>
           </div>
@@ -103,7 +105,7 @@ export const UserDormitoriesPageComponent = memo(function UserDormitoriesPageCom
                     
                     <div className="pt-4 border-t border-gray-100">
                       <div className="flex items-center justify-between">
-                        <span className="text-sm text-gray-500">View Details</span>
+                        <span className="text-sm text-gray-500">{t('dormitories.viewDetails')}</span>
                         <svg className="w-4 h-4 text-gray-400 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                         </svg>
@@ -121,9 +123,9 @@ export const UserDormitoriesPageComponent = memo(function UserDormitoriesPageCom
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
               </svg>
             </div>
-            <h3 className="text-xl font-medium text-gray-900 mb-2">No Dormitories Available</h3>
+            <h3 className="text-xl font-medium text-gray-900 mb-2">{t('dormitories.noDormitories')}</h3>
             <p className="text-gray-600">
-              There are currently no dormitories available for viewing.
+              {t('dormitories.noDormitoriesMessage')}
             </p>
           </div>
         )}

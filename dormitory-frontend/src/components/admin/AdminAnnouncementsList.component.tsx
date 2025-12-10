@@ -5,8 +5,10 @@ import Link from "next/link";
 import {Announcement} from "@/types/announcements.types";
 import {announcementsApi} from "@/app/lib/announcements.api";
 import {useGetAnnouncements} from "@/hooks/announcements.hook";
+import { useLanguage } from "@/providers/language.provider";
 
 export function AdminAnnouncementList(){
+    const { t } = useLanguage();
     const [showHidden, setShowHidden] = React.useState(false);
     const [showExpired, setShowExpired] = React.useState(false);
     const [page, setPage] = useState(1);
@@ -39,7 +41,7 @@ export function AdminAnnouncementList(){
                 <div className="bg-white shadow-lg rounded-lg p-8 max-w-md mx-4">
                     <div className="flex items-center justify-center">
                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-                        <span className="ml-3 text-gray-700 font-medium">Loading announcements...</span>
+                        <span className="ml-3 text-gray-700 font-medium">{t('announcements.loadingMessage')}</span>
                     </div>
                 </div>
             </div>
@@ -56,7 +58,7 @@ export function AdminAnnouncementList(){
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
                             </svg>
                         </div>
-                        <p className="text-gray-700 font-medium">Error loading announcements. Please try again.</p>
+                        <p className="text-gray-700 font-medium">{t('announcements.errorMessage')}</p>
                     </div>
                 </div>
             </div>
@@ -78,10 +80,10 @@ export function AdminAnnouncementList(){
                             </div>
                             <div>
                                 <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900">
-                                    Announcements
+                                    {t('announcements.title')}
                                 </h1>
                                 <p className="text-gray-600 text-sm md:text-base mt-1">
-                                    Manage dormitory announcements and notifications
+                                    {t('announcements.subtitle')}
                                 </p>
                             </div>
                         </div>
@@ -95,7 +97,7 @@ export function AdminAnnouncementList(){
                                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                                 </svg>
-                                New Announcement
+                                {t('announcements.newAnnouncement')}
                             </Link>
                         </div>
                     </div>
@@ -106,7 +108,7 @@ export function AdminAnnouncementList(){
             <div className="bg-white shadow-sm border-b border-gray-200">
                 <div className="px-4 py-4 md:px-6 md:py-6">
                     <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                        <h3 className="text-lg font-semibold text-gray-900">Filters</h3>
+                        <h3 className="text-lg font-semibold text-gray-900">{t('announcements.filters.filters')}</h3>
                         <div className="flex flex-col sm:flex-row gap-4">
                             {/* Show Hidden Toggle */}
                             <label className="inline-flex items-center cursor-pointer group">
@@ -126,7 +128,7 @@ export function AdminAnnouncementList(){
                                     </div>
                                 </div>
                                 <span className="ml-3 text-sm font-medium text-gray-700 group-hover:text-gray-900">
-                                    Show Hidden
+                                    {t('announcements.filters.showHidden')}
                                 </span>
                             </label>
 
@@ -148,7 +150,7 @@ export function AdminAnnouncementList(){
                                     </div>
                                 </div>
                                 <span className="ml-3 text-sm font-medium text-gray-700 group-hover:text-gray-900">
-                                    Show Expired
+                                    {t('announcements.filters.showExpired')}
                                 </span>
                             </label>
                         </div>
@@ -171,8 +173,8 @@ export function AdminAnnouncementList(){
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
                             </svg>
                         </div>
-                        <h3 className="text-lg font-semibold text-gray-900 mb-2">No announcements found</h3>
-                        <p className="text-gray-600 mb-6">Get started by creating your first announcement</p>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('announcements.noAnnouncementsFound')}</h3>
+                        <p className="text-gray-600 mb-6">{t('announcements.getStarted')}</p>
                         <Link 
                             href="/admin/announcements/new-announcement"
                             className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
@@ -180,7 +182,7 @@ export function AdminAnnouncementList(){
                             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                             </svg>
-                            Create Announcement
+                            {t('announcements.createAnnouncementBtn')}
                         </Link>
                     </div>
                 ) : (
@@ -191,19 +193,19 @@ export function AdminAnnouncementList(){
                                 <thead className="bg-gray-50">
                                     <tr>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Posted Date
+                                            {t('announcements.table.postedDate')}
                                         </th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Title
+                                            {t('announcements.table.title')}
                                         </th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Expiration Date
+                                            {t('announcements.table.expirationDate')}
                                         </th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Status
+                                            {t('announcements.table.status')}
                                         </th>
                                         <th className="relative px-6 py-3">
-                                            <span className="sr-only">Actions</span>
+                                            <span className="sr-only">{t('announcements.table.actions')}</span>
                                         </th>
                                     </tr>
                                 </thead>
@@ -232,7 +234,7 @@ export function AdminAnnouncementList(){
                                                             ? 'bg-red-100 text-red-800' 
                                                             : 'bg-green-100 text-green-800'
                                                     }`}>
-                                                        {isExpired ? 'Expired' : 'Active'}
+                                                        {isExpired ? t('announcements.table.expired') : t('announcements.table.active')}
                                                     </span>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -272,12 +274,12 @@ export function AdminAnnouncementList(){
                                                         ? 'bg-red-100 text-red-800' 
                                                         : 'bg-green-100 text-green-800'
                                                 }`}>
-                                                    {isExpired ? 'Expired' : 'Active'}
+                                                    {isExpired ? t('announcements.table.expired') : t('announcements.table.active')}
                                                 </span>
                                             </div>
                                             <div className="flex items-center justify-between text-sm text-gray-500">
-                                                <span>Posted: {new Date(announcement.postedAt).toLocaleDateString()}</span>
-                                                <span>Expires: {new Date(announcement.expiresAt).toLocaleDateString()}</span>
+                                                <span>{t('announcements.table.posted')}: {new Date(announcement.postedAt).toLocaleDateString()}</span>
+                                                <span>{t('announcements.table.expires')}: {new Date(announcement.expiresAt).toLocaleDateString()}</span>
                                             </div>
                                         </div>
                                     </Link>
@@ -302,7 +304,7 @@ export function AdminAnnouncementList(){
                                     disabled={page === 1}
                                     className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                                 >
-                                    Previous
+                                    {t('announcements.pagination.previous')}
                                 </button>
                                 
                                 {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
@@ -337,7 +339,7 @@ export function AdminAnnouncementList(){
                                     disabled={page === totalPages}
                                     className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                                 >
-                                    Next
+                                    {t('announcements.pagination.next')}
                                 </button>
                             </div>
                         </div>

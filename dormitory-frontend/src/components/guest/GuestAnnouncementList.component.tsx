@@ -3,8 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { Announcement } from "@/types/announcements.types";
 import { useGetUserAnnouncements } from "@/hooks/announcements.hook";
+import { useLanguage } from "@/providers/language.provider";
 
 export function GuestAnnouncementList() {
+    const { t } = useLanguage();
     const [page, setPage] = useState(1);
     const [announcements, setAnnouncements] = useState<Announcement[]>([]);
     const [selectedAnnouncement, setSelectedAnnouncement] = useState<Announcement | null>(null);
@@ -96,7 +98,7 @@ export function GuestAnnouncementList() {
                 <div className="bg-white shadow-lg rounded-lg p-8 max-w-md mx-4">
                     <div className="flex items-center justify-center">
                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-                        <span className="ml-3 text-gray-700 font-medium">Loading announcements...</span>
+                        <span className="ml-3 text-gray-700 font-medium">{t('announcements.loading')}</span>
                     </div>
                 </div>
             </div>
@@ -113,7 +115,7 @@ export function GuestAnnouncementList() {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
                             </svg>
                         </div>
-                        <p className="text-gray-700 font-medium">Error loading announcements. Please try again.</p>
+                        <p className="text-gray-700 font-medium">{t('announcements.error')}</p>
                     </div>
                 </div>
             </div>
@@ -121,9 +123,9 @@ export function GuestAnnouncementList() {
     }
 
   return (
-    <div className="w-full bg-white min-h-screen">
+    <div className="w-full bg-white h-screen flex flex-col overflow-hidden">
       {/* Header Section with modern gradient */}
-      <div className="bg-blue-600 shadow-xl">
+      <div className="bg-blue-600 shadow-xl flex-shrink-0">
         <div className="px-4 py-8 md:px-8">
           <div className="max-w-7xl mx-auto">
             <div className="flex items-center space-x-4">
@@ -134,10 +136,10 @@ export function GuestAnnouncementList() {
               </div>
               <div className="flex-1">
                 <h1 className="text-3xl md:text-4xl font-bold text-white drop-shadow-lg">
-                  Announcements Board
+                  {t('announcements.guest.title')}
                 </h1>
                 <p className="text-blue-100 text-sm md:text-base mt-2 drop-shadow">
-                  Stay connected with your dormitory community
+                  {t('announcements.guest.subtitle')}
                 </p>
               </div>
             </div>
@@ -151,7 +153,7 @@ export function GuestAnnouncementList() {
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
             <div className="flex items-center space-x-2">
               <div className="w-1 h-6 bg-blue-600 rounded-full"></div>
-              <h3 className="text-lg font-semibold text-gray-900">Filters & Sorting</h3>
+              <h3 className="text-lg font-semibold text-gray-900">{t('announcements.filters.title')}</h3>
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4">
@@ -173,13 +175,13 @@ export function GuestAnnouncementList() {
                   </div>
                 </div>
                 <span className="ml-3 text-sm font-medium text-gray-700 group-hover:text-gray-900 transition-colors">
-                  Show Expired
+                  {t('announcements.filters.showExpired')}
                 </span>
               </label>
 
               {/* Sort Options with modern design */}
               <div className="flex items-center space-x-3">
-                <span className="text-sm font-medium text-gray-700">Sort by:</span>
+                <span className="text-sm font-medium text-gray-700">{t('announcements.filters.sortBy')}:</span>
                 <div className="flex rounded-lg border border-gray-300 bg-white shadow-sm overflow-hidden">
                   <button
                     onClick={() => handleSortChange('newest')}
@@ -189,7 +191,7 @@ export function GuestAnnouncementList() {
                         : 'text-gray-700 hover:bg-gray-50'
                     }`}
                   >
-                    Newest First
+                    {t('announcements.filters.newest')}
                   </button>
                   <button
                     onClick={() => handleSortChange('oldest')}
@@ -199,7 +201,7 @@ export function GuestAnnouncementList() {
                         : 'text-gray-700 hover:bg-gray-50 border-gray-300'
                     }`}
                   >
-                    Oldest First
+                    {t('announcements.filters.oldest')}
                   </button>
                 </div>
               </div>
@@ -209,7 +211,7 @@ export function GuestAnnouncementList() {
       </div>
 
       {/* Content Section - Desk Simulation */}
-      <div className="max-w-7xl mx-auto px-4 py-8 md:px-8">
+      <div className="max-w-7xl mx-auto px-4 py-8 md:px-8 flex-1 overflow-y-auto">
         <div className="mb-6">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-bold text-gray-900">
@@ -232,19 +234,16 @@ export function GuestAnnouncementList() {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                                 </svg>
                             </div>
-                            <h3 className="text-2xl font-bold text-gray-900 mb-3">Your desk is empty</h3>
+                            <h3 className="text-2xl font-bold text-gray-900 mb-3">{t('announcements.guest.noAnnouncementsTitle')}</h3>
                             <p className="text-gray-600 mb-4">
-                                {showExpired 
-                                    ? "No announcements found with the current filters"
-                                    : "No active announcements at the moment"
-                                }
+                                {t('announcements.guest.noAnnouncementsMessage')}
                             </p>
                             {!showExpired && (
                                 <button
                                     onClick={() => setShowExpired(true)}
                                     className="inline-flex items-center px-6 py-3 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:shadow-lg "
                                 >
-                                    📋 Show Expired Announcements
+                                    {t('announcements.filters.showExpired')}
                                 </button>
                             )}
                         </div>
@@ -345,7 +344,7 @@ export function GuestAnnouncementList() {
                     <div className="px-6 py-4">
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                             <div className="text-sm text-gray-700 font-medium">
-                                Page {page} of {totalPages}
+                                {t('announcements.guest.pagination.page')} {page} {t('announcements.guest.pagination.of')} {totalPages}
                             </div>
                             <div className="flex flex-wrap justify-center sm:justify-end gap-2">
                                 <button
@@ -353,7 +352,7 @@ export function GuestAnnouncementList() {
                                     disabled={page === 1}
                                     className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border-2 border-gray-300 rounded-lg hover:bg-gray-50 hover:border-blue-400 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm"
                                 >
-                                    ← Previous
+                                    ← {t('announcements.guest.pagination.previous')}
                                 </button>
                                 
                                 {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
@@ -388,7 +387,7 @@ export function GuestAnnouncementList() {
                                     disabled={page === totalPages}
                                     className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border-2 border-gray-300 rounded-lg hover:bg-gray-50 hover:border-blue-400 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm"
                                 >
-                                    Next →
+                                    {t('announcements.guest.pagination.next')} →
                                 </button>
                             </div>
                         </div>
@@ -405,21 +404,20 @@ export function GuestAnnouncementList() {
                         </div>
 
                         <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full">
+                            <div className="bg-blue-600 px-4 py-3 sm:px-6 sm:py-4 flex items-center justify-between">
+                                <h3 className="text-lg font-semibold text-white flex-1">
+                                    {selectedAnnouncement.title}
+                                </h3>
+                                <button
+                                    onClick={closeModal}
+                                    className="ml-4 text-white hover:text-blue-100 transition-colors"
+                                >
+                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
                             <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                                <div className="flex items-start justify-between mb-4">
-                                    <h3 className="text-lg font-semibold text-gray-900 flex-1">
-                                        {selectedAnnouncement.title}
-                                    </h3>
-                                    <button
-                                        onClick={closeModal}
-                                        className="ml-4 text-gray-400 hover:text-gray-500"
-                                    >
-                                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                        </svg>
-                                    </button>
-                                </div>
-                                
                                 <div className="mb-4">
                                     <div className="flex items-center justify-between text-sm text-gray-500 mb-3">
                                         <span>Posted: {new Date(selectedAnnouncement.postedAt).toLocaleDateString()}</span>

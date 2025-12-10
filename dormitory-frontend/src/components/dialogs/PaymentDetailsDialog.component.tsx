@@ -5,6 +5,7 @@ import { X, Calendar, CreditCard, Clock, CheckCircle, XCircle, AlertCircle, Down
 import { Payment, PaymentStatus } from '@/types/payments.types';
 import { paymentsApi } from '@/app/lib/payments.api';
 import { toast } from 'sonner';
+import { useLanguage } from '@/providers/language.provider';
 
 interface PaymentDetailsDialogProps {
   payment: Payment | null;
@@ -13,6 +14,7 @@ interface PaymentDetailsDialogProps {
 }
 
 export function PaymentDetailsDialog({ payment, isOpen, onClose }: PaymentDetailsDialogProps) {
+  const { t } = useLanguage();
   if (!payment) return null;
 
   const handleDownloadProof = async () => {
@@ -28,10 +30,10 @@ export function PaymentDetailsDialog({ payment, isOpen, onClose }: PaymentDetail
       a.click();
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
-      toast.success('Payment proof downloaded successfully');
+      toast.success(t('payments.details.downloadSuccess'));
     } catch (error) {
       console.error('Error downloading payment proof:', error);
-      toast.error('Failed to download payment proof');
+      toast.error(t('payments.details.downloadError'));
     }
   };
 
@@ -94,7 +96,7 @@ export function PaymentDetailsDialog({ payment, isOpen, onClose }: PaymentDetail
           {/* Header */}
           <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
             <DialogTitle className="text-xl font-semibold text-gray-900">
-              Payment Details
+              {t('payments.details.paymentDetails')}
             </DialogTitle>
             <button
               onClick={onClose}
@@ -124,13 +126,13 @@ export function PaymentDetailsDialog({ payment, isOpen, onClose }: PaymentDetail
 
             {/* Payment Information */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-gray-900">Payment Information</h3>
+              <h3 className="text-lg font-semibold text-gray-900">{t('payments.details.paymentInformation')}</h3>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-1">
                   <div className="flex items-center space-x-2 text-gray-500">
                     <Calendar className="w-4 h-4" />
-                    <span className="text-sm">Due Date</span>
+                    <span className="text-sm">{t('payments.details.dueDate')}</span>
                   </div>
                   <div className="text-gray-900 font-medium">
                     {formatDate(payment.dueDate)}
@@ -140,17 +142,17 @@ export function PaymentDetailsDialog({ payment, isOpen, onClose }: PaymentDetail
                 <div className="space-y-1">
                   <div className="flex items-center space-x-2 text-gray-500">
                     <CreditCard className="w-4 h-4" />
-                    <span className="text-sm">Payment Method</span>
+                    <span className="text-sm">{t('payments.details.paymentMethod')}</span>
                   </div>
                   <div className="text-gray-900 font-medium capitalize">
-                    {payment.paymentMethod ? payment.paymentMethod.replace('_', ' ') : 'N/A'}
+                    {payment.paymentMethod ? payment.paymentMethod.replace('_', ' ') : t('payments.details.na')}
                   </div>
                 </div>
 
                 <div className="space-y-1">
                   <div className="flex items-center space-x-2 text-gray-500">
                     <Clock className="w-4 h-4" />
-                    <span className="text-sm">Created At</span>
+                    <span className="text-sm">{t('payments.details.createdAt')}</span>
                   </div>
                   <div className="text-gray-900 font-medium">
                     {formatDate(payment.createdAt)}
@@ -161,7 +163,7 @@ export function PaymentDetailsDialog({ payment, isOpen, onClose }: PaymentDetail
                   <div className="space-y-1">
                     <div className="flex items-center space-x-2 text-gray-500">
                       <CheckCircle className="w-4 h-4" />
-                      <span className="text-sm">Paid At</span>
+                      <span className="text-sm">{t('payments.details.paidAt')}</span>
                     </div>
                     <div className="text-gray-900 font-medium">
                       {formatDate(payment.paidAt)}
@@ -174,7 +176,7 @@ export function PaymentDetailsDialog({ payment, isOpen, onClose }: PaymentDetail
             {/* Description */}
             {payment.description && (
               <div className="space-y-2">
-                <h3 className="text-lg font-semibold text-gray-900">Description</h3>
+                <h3 className="text-lg font-semibold text-gray-900">{t('payments.details.description')}</h3>
                 <p className="text-gray-700 bg-gray-50 rounded-lg p-4">
                   {payment.description}
                 </p>
@@ -184,7 +186,7 @@ export function PaymentDetailsDialog({ payment, isOpen, onClose }: PaymentDetail
             {/* Payment Items */}
             {payment.paymentItems && payment.paymentItems.length > 0 && (
               <div className="space-y-2">
-                <h3 className="text-lg font-semibold text-gray-900">Payment Items</h3>
+                <h3 className="text-lg font-semibold text-gray-900">{t('payments.details.paymentItems')}</h3>
                 <div className="space-y-2">
                   {payment.paymentItems.map((item, index) => (
                     <div key={index} className="flex justify-between items-center bg-gray-50 rounded-lg p-4">
@@ -204,17 +206,17 @@ export function PaymentDetailsDialog({ payment, isOpen, onClose }: PaymentDetail
             {/* Payment Proof */}
             {payment.paymentProofUrl && (
               <div className="space-y-2">
-                <h3 className="text-lg font-semibold text-gray-900">Payment Proof</h3>
+                <h3 className="text-lg font-semibold text-gray-900">{t('payments.details.paymentProof')}</h3>
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
                       <FileText className="w-6 h-6 text-blue-600" />
                       <div>
                         <div className="font-medium text-gray-900">
-                          {payment.paymentProofFilename || 'Payment Proof'}
+                          {payment.paymentProofFilename || t('payments.details.paymentProof')}
                         </div>
                         <div className="text-sm text-gray-500">
-                          Uploaded proof document
+                          {t('payments.details.uploadedProofDocument')}
                         </div>
                       </div>
                     </div>
@@ -223,7 +225,7 @@ export function PaymentDetailsDialog({ payment, isOpen, onClose }: PaymentDetail
                       className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                     >
                       <Download className="w-4 h-4" />
-                      <span>Download</span>
+                      <span>{t('payments.details.download')}</span>
                     </button>
                   </div>
                 </div>
@@ -233,7 +235,7 @@ export function PaymentDetailsDialog({ payment, isOpen, onClose }: PaymentDetail
             {/* Rejection Reason */}
             {payment.status === PaymentStatus.REJECTED && payment.rejectionReason && (
               <div className="space-y-2">
-                <h3 className="text-lg font-semibold text-gray-900">Rejection Reason</h3>
+                <h3 className="text-lg font-semibold text-gray-900">{t('payments.details.rejectionReason')}</h3>
                 <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                   <p className="text-red-800">{payment.rejectionReason}</p>
                 </div>
@@ -243,7 +245,7 @@ export function PaymentDetailsDialog({ payment, isOpen, onClose }: PaymentDetail
             {/* Manager Notes */}
             {payment.managerNotes && (
               <div className="space-y-2">
-                <h3 className="text-lg font-semibold text-gray-900">Manager Notes</h3>
+                <h3 className="text-lg font-semibold text-gray-900">{t('payments.details.managerNotes')}</h3>
                 <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
                   <p className="text-gray-700">{payment.managerNotes}</p>
                 </div>
@@ -257,7 +259,7 @@ export function PaymentDetailsDialog({ payment, isOpen, onClose }: PaymentDetail
               onClick={onClose}
               className="px-6 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
             >
-              Close
+              {t('payments.details.close')}
             </button>
           </div>
         </DialogPanel>

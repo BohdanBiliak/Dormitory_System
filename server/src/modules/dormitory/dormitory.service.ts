@@ -174,16 +174,29 @@ export class DormitoryService {
         0,
       );
 
-      const availableRooms = allRooms.filter(
-        (room) => room.residents.length === 0,
+      const occupiedRooms = allRooms.filter(
+        (room) => room.residents.length > 0,
       ).length;
+      const availableRooms = roomCount - occupiedRooms;
+      const totalCapacity = allRooms.reduce(
+        (sum, room) => sum + room.capacity,
+        0,
+      );
+
+      const statistics = {
+        totalFloors: floorCount,
+        totalRooms: roomCount,
+        availableRooms,
+        occupiedRooms,
+        totalResidents,
+        occupancyRate: totalCapacity > 0 ? totalResidents / totalCapacity : 0,
+      };
+
+      console.log(`Dormitory ${dormitory.name} statistics:`, statistics);
 
       return {
         ...dormitory,
-        floorCount,
-        roomCount,
-        totalResidents,
-        availableRooms,
+        statistics,
       };
     });
 
@@ -196,15 +209,34 @@ export class DormitoryService {
 
 
   async findDeactivated() {
-    const [data, total] = await this.prismaService.$transaction([
+    const [dormitories, total] = await this.prismaService.$transaction([
       this.prismaService.dormitory.findMany({
         where: { status: "Deactivated" },
         orderBy: { name: "asc" },
         include: {
-          _count: {
-            select: {
-              floors: true,
-              rooms: true,
+          floors: {
+            orderBy: { floorNumber: "asc" },
+          },
+          managers: {
+            include: {
+              user: {
+                select: {
+                  id: true,
+                  displayName: true,
+                  email: true,
+                },
+              },
+            },
+          },
+          admins: {
+            include: {
+              user: {
+                select: {
+                  id: true,
+                  displayName: true,
+                  email: true,
+                },
+              },
             },
           },
         },
@@ -214,12 +246,43 @@ export class DormitoryService {
       }),
     ]);
 
+    const enrichedDormitories = await Promise.all(
+      dormitories.map(async (dormitory) => {
+        const rooms = await this.prismaService.room.findMany({
+          where: { dormitoryId: dormitory.id },
+          include: {
+            residents: true,
+          },
+        });
+        const residents = await this.prismaService.user.findMany({
+          where: { dormitoryId: dormitory.id },
+        });
+
+        const totalRooms = rooms.length;
+        const occupiedRooms = rooms.filter((room) => room.residents.length > 0).length;
+        const availableRooms = totalRooms - occupiedRooms;
+        const totalResidents = residents.length;
+        const totalCapacity = rooms.reduce(
+          (acc, room) => acc + room.capacity,
+          0,
+        );
+
+        return {
+          ...dormitory,
+          statistics: {
+            totalFloors: dormitory.floors.length,
+            totalRooms,
+            availableRooms,
+            occupiedRooms,
+            totalResidents,
+            occupancyRate: totalCapacity > 0 ? totalResidents / totalCapacity : 0,
+          },
+        };
+      }),
+    );
+
     return {
-      data: data.map((dormitory) => ({
-        ...dormitory,
-        floorCount: dormitory._count.floors,
-        roomCount: dormitory._count.rooms,
-      })),
+      data: enrichedDormitories,
       total,
     };
   }
@@ -269,6 +332,12 @@ export class DormitoryService {
       where: { dormitoryId: id },
     });
 
+    console.log(`📊 Dormitory "${dormitory.name}" statistics:`, {
+      dormitoryId: id,
+      roomsCount: rooms.length,
+      residentsCount: residents.length,
+      floorsCount: dormitory.floors.length
+    });
 
     // Calculate statistics
     const totalRooms = rooms.length;
@@ -306,12 +375,15 @@ export class DormitoryService {
       throw new BadRequestException("Dormitory is already active");
     }
 
-    return this.prismaService.dormitory.update({
+    await this.prismaService.dormitory.update({
       where: { id },
       data: {
         status: "Active",
       },
     });
+
+    // Return the dormitory with statistics
+    return this.findOne(id);
   }
 
   async update(id: string, dto: UpdateDormitoryDto) {
@@ -323,12 +395,15 @@ export class DormitoryService {
       throw new NotFoundException(`Dormitory with ID ${id} not found`);
     }
 
-    return this.prismaService.dormitory.update({
+    await this.prismaService.dormitory.update({
       where: { id },
       data: {
         ...dto,
       },
     });
+
+    // Return the dormitory with statistics
+    return this.findOne(id);
   }
 
   async deactivate(id: string) {
@@ -358,12 +433,15 @@ export class DormitoryService {
       );
     }
 
-    return this.prismaService.dormitory.update({
+    await this.prismaService.dormitory.update({
       where: { id },
       data: {
         status: "Deactivated",
       },
     });
+
+    // Return the dormitory with statistics
+    return this.findOne(id);
   }
 
   /**
@@ -401,7 +479,7 @@ export class DormitoryService {
               averagePricePerDay: 0,
               averagePricePerMonth: 0,
               roomsWithPricing: 0,
-              roomsWithoutPricing: dormitory.roomCount,
+              roomsWithoutPricing: dormitory.statistics?.totalRooms || 0,
               pricingSources: {},
             },
           };

@@ -9,6 +9,7 @@ import {
 } from '@/types/maintenance.types';
 import { useCreateMaintenanceReport, useUploadMaintenanceAttachments } from '@/hooks/maintenance.hook';
 import { X, AlertTriangle, Wrench, Upload, Loader2, Image as ImageIcon } from 'lucide-react';
+import { useLanguage } from '@/providers/language.provider';
 
 interface CreateMaintenanceReportDialogProps {
   open: boolean;
@@ -21,6 +22,8 @@ export const CreateMaintenanceReportDialog: React.FC<CreateMaintenanceReportDial
   onClose,
   userRoomId,
 }) => {
+  const { t } = useLanguage();
+  
   const [formData, setFormData] = useState<CreateMaintenanceReportRequest>({
     category: MaintenanceCategory.OTHER,
     priority: MaintenancePriority.MEDIUM,
@@ -38,22 +41,22 @@ export const CreateMaintenanceReportDialog: React.FC<CreateMaintenanceReportDial
   const uploadMutation = useUploadMaintenanceAttachments();
 
   const categoryOptions = [
-    { value: MaintenanceCategory.PLUMBING, label: '🚰 Plumbing', icon: '💧' },
-    { value: MaintenanceCategory.ELECTRICAL, label: '⚡ Electrical', icon: '💡' },
-    { value: MaintenanceCategory.HEATING, label: '🔥 Heating/Cooling', icon: '🌡️' },
-    { value: MaintenanceCategory.FURNITURE, label: '🪑 Furniture', icon: '🛋️' },
-    { value: MaintenanceCategory.APPLIANCES, label: '📱 Appliances', icon: '🔌' },
-    { value: MaintenanceCategory.WINDOWS_DOORS, label: '🚪 Windows/Doors', icon: '🪟' },
-    { value: MaintenanceCategory.CLEANING, label: '🧹 Cleaning', icon: '🧼' },
-    { value: MaintenanceCategory.INTERNET, label: '📡 Internet/Network', icon: '🌐' },
-    { value: MaintenanceCategory.OTHER, label: '📦 Other', icon: '🔧' },
+    { value: MaintenanceCategory.PLUMBING, label: t('maintenance.categories.PLUMBING'), icon: '💧' },
+    { value: MaintenanceCategory.ELECTRICAL, label: t('maintenance.categories.ELECTRICAL'), icon: '💡' },
+    { value: MaintenanceCategory.HEATING, label: t('maintenance.categories.HEATING'), icon: '🌡️' },
+    { value: MaintenanceCategory.FURNITURE, label: t('maintenance.categories.FURNITURE'), icon: '🛋️' },
+    { value: MaintenanceCategory.APPLIANCES, label: t('maintenance.categories.APPLIANCES'), icon: '🔌' },
+    { value: MaintenanceCategory.WINDOWS_DOORS, label: t('maintenance.categories.WINDOWS_DOORS'), icon: '🪟' },
+    { value: MaintenanceCategory.CLEANING, label: t('maintenance.categories.CLEANING'), icon: '🧼' },
+    { value: MaintenanceCategory.INTERNET, label: t('maintenance.categories.INTERNET'), icon: '🌐' },
+    { value: MaintenanceCategory.OTHER, label: t('maintenance.categories.OTHER'), icon: '🔧' },
   ];
 
   const priorityOptions = [
-    { value: MaintenancePriority.LOW, label: 'Low', color: 'bg-green-100 text-green-800 border-green-300' },
-    { value: MaintenancePriority.MEDIUM, label: 'Medium', color: 'bg-yellow-100 text-yellow-800 border-yellow-300' },
-    { value: MaintenancePriority.HIGH, label: 'High', color: 'bg-orange-100 text-orange-800 border-orange-300' },
-    { value: MaintenancePriority.URGENT, label: 'Urgent', color: 'bg-red-100 text-red-800 border-red-300' },
+    { value: MaintenancePriority.LOW, label: t('maintenance.priorities.LOW'), color: 'bg-green-100 text-green-800 border-green-300' },
+    { value: MaintenancePriority.MEDIUM, label: t('maintenance.priorities.MEDIUM'), color: 'bg-yellow-100 text-yellow-800 border-yellow-300' },
+    { value: MaintenancePriority.HIGH, label: t('maintenance.priorities.HIGH'), color: 'bg-orange-100 text-orange-800 border-orange-300' },
+    { value: MaintenancePriority.URGENT, label: t('maintenance.priorities.URGENT'), color: 'bg-red-100 text-red-800 border-red-300' },
   ];
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -120,7 +123,7 @@ export const CreateMaintenanceReportDialog: React.FC<CreateMaintenanceReportDial
                 <Wrench className="w-6 h-6 text-white" />
               </div>
               <DialogTitle className="text-2xl font-bold text-white drop-shadow-lg">
-                Report Maintenance Issue
+                {t('maintenance.createDialog.title')}
               </DialogTitle>
             </div>
             <button
@@ -137,15 +140,15 @@ export const CreateMaintenanceReportDialog: React.FC<CreateMaintenanceReportDial
             <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-4 flex items-start space-x-3">
               <AlertTriangle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
               <div className="text-sm text-blue-800">
-                <p className="font-semibold mb-1">Important Information</p>
-                <p>An admin will be notified immediately and a conversation will be created to discuss the issue with you.</p>
+                <p className="font-semibold mb-1">{t('maintenance.createDialog.alertTitle')}</p>
+                <p>{t('maintenance.createDialog.alertMessage')}</p>
               </div>
             </div>
 
             {/* Category Selection */}
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-3">
-                Issue Category *
+                {t('maintenance.createDialog.categoryLabel')} *
               </label>
               <div className="grid grid-cols-3 gap-3">
                 {categoryOptions.map(option => (
@@ -157,10 +160,10 @@ export const CreateMaintenanceReportDialog: React.FC<CreateMaintenanceReportDial
                       formData.category === option.value
                         ? 'border-red-500 bg-red-50 shadow-md scale-105'
                         : 'border-gray-200 hover:border-red-300 hover:bg-gray-50'
-                    }`}
+                    }
                   >
                     <div className="text-2xl mb-1">{option.icon}</div>
-                    <div className="text-xs font-medium text-gray-700">{option.label.split(' ')[1]}</div>
+                    <div className="text-xs font-medium text-gray-700">{option.label}</div>
                   </button>
                 ))}
               </div>
@@ -169,7 +172,7 @@ export const CreateMaintenanceReportDialog: React.FC<CreateMaintenanceReportDial
             {/* Priority Selection */}
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-3">
-                Priority Level *
+                {t('maintenance.createDialog.priorityLabel')} *
               </label>
               <div className="grid grid-cols-4 gap-3">
                 {priorityOptions.map(option => (
@@ -192,13 +195,13 @@ export const CreateMaintenanceReportDialog: React.FC<CreateMaintenanceReportDial
             {/* Title */}
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Issue Title *
+                {t('maintenance.createDialog.titleLabel')} *
               </label>
               <input
                 type="text"
                 value={formData.title}
                 onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-                placeholder="e.g., Broken faucet in bathroom"
+                placeholder={t('maintenance.createDialog.titlePlaceholder')}
                 required
                 className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
               />
@@ -207,13 +210,13 @@ export const CreateMaintenanceReportDialog: React.FC<CreateMaintenanceReportDial
             {/* Location */}
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Specific Location *
+                {t('maintenance.createDialog.locationLabel')} *
               </label>
               <input
                 type="text"
                 value={formData.location}
                 onChange={(e) => setFormData(prev => ({ ...prev, location: e.target.value }))}
-                placeholder="e.g., Room 204, Bathroom sink"
+                placeholder={t('maintenance.createDialog.locationPlaceholder')}
                 required
                 className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
               />
@@ -222,12 +225,12 @@ export const CreateMaintenanceReportDialog: React.FC<CreateMaintenanceReportDial
             {/* Description */}
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Detailed Description *
+                {t('maintenance.createDialog.descriptionLabel')} *
               </label>
               <textarea
                 value={formData.description}
                 onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                placeholder="Describe the issue in detail..."
+                placeholder={t('maintenance.createDialog.descriptionPlaceholder')}
                 required
                 rows={4}
                 className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all resize-none"
@@ -237,7 +240,7 @@ export const CreateMaintenanceReportDialog: React.FC<CreateMaintenanceReportDial
             {/* File Upload */}
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-3">
-                Attach Photos (Optional)
+                {t('maintenance.createDialog.attachPhotosLabel')}
               </label>
               <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 hover:border-red-400 transition-colors">
                 <input
@@ -260,9 +263,9 @@ export const CreateMaintenanceReportDialog: React.FC<CreateMaintenanceReportDial
                     )}
                   </div>
                   <p className="text-sm font-medium text-gray-700">
-                    {uploadMutation.isPending ? 'Uploading...' : 'Click to upload photos'}
+                    {uploadMutation.isPending ? t('maintenance.createDialog.uploading') : t('maintenance.createDialog.uploadText')}
                   </p>
-                  <p className="text-xs text-gray-500 mt-1">PNG, JPG up to 10MB</p>
+                  <p className="text-xs text-gray-500 mt-1">{t('maintenance.createDialog.uploadHint')}</p>
                 </label>
               </div>
 
@@ -295,7 +298,7 @@ export const CreateMaintenanceReportDialog: React.FC<CreateMaintenanceReportDial
                 onClick={onClose}
                 className="px-6 py-3 text-gray-700 font-semibold bg-gray-100 hover:bg-gray-200 rounded-xl transition-colors"
               >
-                Cancel
+                {t('maintenance.createDialog.cancel')}
               </button>
               <button
                 type="submit"
@@ -305,12 +308,12 @@ export const CreateMaintenanceReportDialog: React.FC<CreateMaintenanceReportDial
                 {createMutation.isPending ? (
                   <>
                     <Loader2 className="w-5 h-5" />
-                    <span>Submitting...</span>
+                    <span>{t('maintenance.createDialog.submitting')}</span>
                   </>
                 ) : (
                   <>
                     <Wrench className="w-5 h-5" />
-                    <span>Submit Report</span>
+                    <span>{t('maintenance.createDialog.submit')}</span>
                   </>
                 )}
               </button>

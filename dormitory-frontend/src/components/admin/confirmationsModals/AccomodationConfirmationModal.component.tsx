@@ -5,6 +5,7 @@ import { BookingConfirmationApproval, Confirmation } from "@/types/confirmations
 import { Description, Dialog, DialogBackdrop, DialogPanel, DialogTitle } from "@headlessui/react"
 import { Room } from "@/types/rooms.types"
 import { roomsApi } from "@/app/lib/rooms.api"
+import { useLanguage } from '@/providers/language.provider';
 
 interface AccommodationConfirmationModalProps {
     confirmation: Confirmation
@@ -20,6 +21,7 @@ export function AccommodationConfirmationModal({
     onReject
 }: AccommodationConfirmationModalProps) {
 
+    const { t } = useLanguage();
     const [room, setRoom] = useState<Room | null>(null)
     const [showRejectionMenu, setShowRejectionMenu] = useState(false)
     const [rejectionReason, setRejectionReason] = useState("")
@@ -74,9 +76,9 @@ export function AccommodationConfirmationModal({
                 <div className="bg-gradient-to-r from-blue-700 to-blue-600 px-6 py-5 text-white">
                     <div className="flex items-center justify-between">
                         <div>
-                            <h2 className="text-2xl font-semibold tracking-wide">Accommodation Request</h2>
+                            <h2 className="text-2xl font-semibold tracking-wide">{t('confirmations.accommodationApproval.title')}</h2>
                             <p className="text-sm text-blue-100 mt-1">
-                                From {confirmation.requester.displayName} {confirmation.requester.secondName} •
+                                {t('confirmations.accommodationApproval.fromText')} {confirmation.requester.displayName} {confirmation.requester.secondName} •
                                 {" "}{formatDateTime(confirmation.createdAt)}
                             </p>
                         </div>
@@ -97,13 +99,13 @@ export function AccommodationConfirmationModal({
 
                     {/* Requester Info */}
                     <div className="rounded-xl border border-gray-200 bg-gray-50 p-5 shadow-sm">
-                        <h3 className="text-gray-800 text-lg font-semibold mb-3">Requester Information</h3>
+                        <h3 className="text-gray-800 text-lg font-semibold mb-3">{t('confirmations.accommodationApproval.requesterInformation')}</h3>
 
                         <div className="grid grid-cols-2 gap-y-2 text-sm">
-                            <p><b>First name:</b> {confirmation.requester.displayName}</p>
-                            <p><b>Middle name:</b> &lt;none&gt;</p>
-                            <p><b>Last name:</b> {confirmation.requester.secondName || "<none>"}</p>
-                            <p><b>Email:</b> {confirmation.requester.email}</p>
+                            <p><b>{t('confirmations.accommodationApproval.firstName')}</b> {confirmation.requester.displayName}</p>
+                            <p><b>{t('confirmations.accommodationApproval.middleName')}</b> &lt;none&gt;</p>
+                            <p><b>{t('confirmations.accommodationApproval.lastName')}</b> {confirmation.requester.secondName || "<none>"}</p>
+                            <p><b>{t('confirmations.accommodationApproval.email')}</b> {confirmation.requester.email}</p>
                         </div>
                     </div>
 
@@ -127,16 +129,16 @@ export function AccommodationConfirmationModal({
 
                     {/* Room Details */}
                     <div className="rounded-xl border border-gray-200 bg-gray-50 p-5 shadow-sm">
-                        <h3 className="text-gray-800 text-lg font-semibold mb-3">Accommodation Details</h3>
+                        <h3 className="text-gray-800 text-lg font-semibold mb-3">{t('confirmations.accommodationApproval.accommodationDetails')}</h3>
 
                         <div className="space-y-1 text-sm">
-                            <p><b>Room:</b> {room ? room.number : "Loading..."}</p>
+                            <p><b>{t('confirmations.accommodationApproval.room')}</b> {room ? room.number : t('confirmations.accommodationApproval.loadingRoom')}</p>
 
                             {(confirmation.from && confirmation.to) && (
-                                <p><b>Dates:</b> {formatDate(confirmation.from)} — {formatDate(confirmation.to)}</p>
+                                <p><b>{t('confirmations.accommodationApproval.dates')}</b> {formatDate(confirmation.from)} — {formatDate(confirmation.to)}</p>
                             )}
 
-                            <p><b>Suggested time:</b> {confirmation.metadata?.suggestedTime || "Not specified"}</p>
+                            <p><b>{t('confirmations.accommodationApproval.suggestedTime')}</b> {confirmation.metadata?.suggestedTime || t('confirmations.accommodationApproval.notSpecified')}</p>
                         </div>
                     </div>
 
@@ -144,14 +146,14 @@ export function AccommodationConfirmationModal({
                     <div className="space-y-6">
 
                         <div>
-                            <label className="block text-gray-700 font-medium mb-1">Set accommodation time</label>
+                            <label className="block text-gray-700 font-medium mb-1">{t('confirmations.accommodationApproval.setAccommodationTime')}</label>
                             <input
                                 name="suggestedTime"
                                 type="text"
                                 value={approvalInfo.suggestedTime || ""}
                                 onChange={handleInputChange}
                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 transition"
-                                placeholder="When should the student arrive?"
+                                placeholder={t('confirmations.accommodationApproval.whenShouldArrive')}
                             />
                         </div>
 
@@ -165,7 +167,7 @@ export function AccommodationConfirmationModal({
                                 value={approvalInfo.reason || ""}
                                 onChange={handleInputChange}
                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 transition"
-                                placeholder="Explain why the time changed..."
+                                placeholder={t('confirmations.accommodationApproval.explainWhyTimeChanged')}
                             />
                         </div>
 
@@ -180,14 +182,14 @@ export function AccommodationConfirmationModal({
                             onClick={openRejectionMenu}
                             className="px-8 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 shadow transition"
                         >
-                            Reject
+                            {t('confirmations.accommodationApproval.rejectBooking')}
                         </button>
 
                         <button
                             onClick={handleConfirm}
                             className="px-8 py-2 rounded-lg bg-blue-700 text-white hover:bg-blue-800 shadow transition"
                         >
-                            Confirm
+                            {t('confirmations.accommodationApproval.approveBooking')}
                         </button>
 
                     </div>
@@ -211,16 +213,16 @@ export function AccommodationConfirmationModal({
 
                             <div className="px-6 py-4 bg-red-50 border-b border-red-200">
                                 <DialogTitle className="text-lg font-semibold text-red-900">
-                                    Rejection Reason
+                                    {t('confirmations.accommodationApproval.rejectionDialogTitle')}
                                 </DialogTitle>
                                 <Description className="text-red-700 text-sm mt-1">
-                                    Provide the reason why you reject the request.
+                                    {t('confirmations.accommodationApproval.provideRejectionReason')}
                                 </Description>
                             </div>
 
                             <div className="p-6">
                                 <label className="block text-sm font-medium text-slate-700 mb-2">
-                                    Reason for rejection
+                                    {t('confirmations.accommodationApproval.reasonForRejection')}
                                 </label>
                                 <input
                                     name="rejectionReason"
@@ -228,7 +230,7 @@ export function AccommodationConfirmationModal({
                                     value={rejectionReason}
                                     onChange={(e) => setRejectionReason(e.target.value)}
                                     className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-red-500"
-                                    placeholder="Enter the reason..."
+                                    placeholder={t('confirmations.accommodationApproval.enterReason')}
                                 />
                             </div>
 
@@ -237,14 +239,14 @@ export function AccommodationConfirmationModal({
                                     onClick={handleReject}
                                     className="flex-1 bg-red-600 text-white py-2 rounded-lg font-medium hover:bg-red-700 transition"
                                 >
-                                    Confirm rejection
+                                    {t('confirmations.accommodationApproval.confirmRejection')}
                                 </button>
 
                                 <button
                                     onClick={closeRejectionMenu}
                                     className="flex-1 bg-slate-200 text-slate-700 py-2 rounded-lg font-medium hover:bg-slate-300 transition"
                                 >
-                                    Cancel
+                                    {t('confirmations.accommodationApproval.cancel')}
                                 </button>
                             </div>
                         </DialogPanel>

@@ -3,9 +3,11 @@
 import {useGetNotification, useNotifications} from "@/hooks/notifications.hook";
 import {Notification, NotificationGetRequest, NotificationType} from "@/types/notifications.types";
 import {useEffect, useState} from "react";
+import { useLanguage } from '@/providers/language.provider';
 
 export function AdminNotifications() {
     const {markAsRead} = useNotifications();
+    const { t } = useLanguage();
 
     const[notificationsFilters, setNotificationsFilters] = useState<NotificationGetRequest>({
         type: null,
@@ -28,11 +30,11 @@ export function AdminNotifications() {
 
     if (loadingNotifications) {
         return (
-            <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-                <div className="bg-white shadow-xl rounded-2xl p-8 max-w-md mx-4 border border-slate-200">
+            <div className="h-screen bg-slate-50 flex items-center justify-center">
+                <div className="bg-white rounded-2xl p-8 max-w-md mx-4 border border-slate-200">
                     <div className="flex items-center justify-center">
-                        <div className="animate-spin rounded-full h-10 w-10 border-4 border-blue-500 border-t-transparent"></div>
-                        <span className="ml-4 text-slate-700 font-medium text-lg">Loading notifications...</span>
+                        <div className="rounded-full h-10 w-10 border-4 border-blue-500 border-t-transparent"></div>
+                        <span className="ml-4 text-slate-700 font-medium text-lg">{t('admin.notifications.loading')}</span>
                     </div>
                 </div>
             </div>
@@ -40,32 +42,32 @@ export function AdminNotifications() {
     }
 
     return(
-        <div className="min-h-screen bg-slate-50">
+        <div className="h-screen bg-slate-50 flex flex-col overflow-hidden">
             {/* Header */}
-            <div className="bg-white border-b border-slate-200 shadow-sm animate-in slide-in-from-top-4 duration-500">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-                    <div className="text-center animate-in fade-in-0 slide-in-from-bottom-4 duration-500">
+            <div className="bg-white border-b border-slate-200 flex-shrink-0">
+                <div className="w-full px-6 py-6">
+                    <div className="text-center">
                         <h1 className="text-3xl font-bold text-slate-900 flex items-center justify-center">
                             <svg className="w-8 h-8 mr-3 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-5 5l-5-5h5m0 0V3" />
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 4v7a4 4 0 108 0V4" />
                             </svg>
-                            Notifications
+                            {t('admin.notifications.title')}
                         </h1>
-                        <p className="text-slate-600 mt-1">Manage and track system notifications</p>
+                        <p className="text-slate-600 mt-1">{t('admin.notifications.subtitle')}</p>
                     </div>
                 </div>
             </div>
 
             {/* Filters */}
-            <div className="bg-white border-b border-slate-200 shadow-sm animate-in slide-in-from-top-4 duration-500 delay-100">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-                    <h2 className="text-lg font-semibold text-slate-900 mb-4">Filters</h2>
+            <div className="bg-white border-b border-slate-200 flex-shrink-0">
+                <div className="w-full px-6 py-6">
+                    <h2 className="text-lg font-semibold text-slate-900 mb-4">{t('admin.notifications.filters')}</h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         {/* Type Filter */}
-                        <div className="space-y-2 delay-200">
+                        <div className="space-y-2">
                             <label className="block text-sm font-medium text-slate-700">
-                                Notification Type
+                                {t('admin.notifications.notificationType')}
                             </label>
                             <select
                                 name="type"
@@ -77,9 +79,9 @@ export function AdminNotifications() {
                                         type : e.target.value === "" ? null : e.target.value as NotificationType
                                     }
                                 })}
-                                className="w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm  hover:shadow-md"
+                                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm"
                             >
-                                <option value="">All Types</option>
+                                <option value="">{t('admin.notifications.allTypes')}</option>
                                 {Object.values(NotificationType).map((type) => (
                                     <option value={type} key={type}>{type.replace(/_/g, " ")}</option>
                                 ))}
@@ -87,9 +89,9 @@ export function AdminNotifications() {
                         </div>
 
                         {/* Read Status Filter */}
-                        <div className="space-y-2 delay-250">
+                        <div className="space-y-2">
                             <label className="block text-sm font-medium text-slate-700">
-                                Read Status
+                                {t('admin.notifications.readStatus')}
                             </label>
                             <select
                                 name="isRead"
@@ -101,10 +103,10 @@ export function AdminNotifications() {
                                         isArchived: e.target.value as 'true' | 'false'
                                     }
                                 })}
-                                className="w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm  hover:shadow-md"
+                                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm"
                             >
-                                <option value={`false`}>Unread</option>
-                                <option value={`true`}>Read</option>
+                                <option value={`false`}>{t('admin.notifications.unread')}</option>
+                                <option value={`true`}>{t('admin.notifications.read')}</option>
                             </select>
                         </div>
                     </div>
@@ -112,22 +114,22 @@ export function AdminNotifications() {
             </div>
 
             {/* Notifications List */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="w-full px-6 py-8 flex-1 overflow-y-auto">
                 {notificationsError ? (
-                    <div className="bg-red-50 border border-red-200 rounded-xl p-6 text-center animate-in fade-in-0 zoom-in-50 duration-500">
+                    <div className="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
                         <div className="text-red-600 mb-2">
                             <svg className="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
                             </svg>
                         </div>
-                        <h3 className="text-lg font-semibold text-red-900 mb-2">Error Loading Notifications</h3>
-                        <p className="text-red-700">Unable to load notification data. Please try again later.</p>
+                        <h3 className="text-lg font-semibold text-red-900 mb-2">{t('admin.notifications.errorTitle')}</h3>
+                        <p className="text-red-700">{t('admin.notifications.errorMessage')}</p>
                     </div>
                 ) : notificationsList && notificationsList.length > 0 ? (
-                    <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden animate-in fade-in-0 slide-in-from-bottom-4 duration-500">
+                    <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
                         <div className="px-6 py-4 bg-slate-50 border-b border-slate-200">
                             <h2 className="text-lg font-semibold text-slate-900">
-                                Notifications ({notificationsList.length})
+                                {t('admin.notifications.notificationsCount')} ({notificationsList.length})
                             </h2>
                         </div>
                         
@@ -135,10 +137,9 @@ export function AdminNotifications() {
                             {notificationsList.map((notification, index) => (
                                 <div 
                                     key={notification.id || index}
-                                    className={`px-6 py-4 hover:bg-slate-50  ${
+                                    className={`px-6 py-4 ${
                                         !notification.isRead ? 'bg-blue-50 border-l-4 border-l-blue-500' : ''
                                     }`}
-                                    style={{ animationDelay: `${index * 50}ms` }}
                                 >
                                     <div className="flex items-start space-x-4">
                                         {/* Read/Unread Indicator */}
@@ -146,8 +147,8 @@ export function AdminNotifications() {
                                             {!notification.isRead ? (
                                                 <button
                                                     onClick={() => markAsRead(notification.id)}
-                                                    className="flex items-center justify-center w-8 h-8 bg-blue-600 text-white rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 "
-                                                    title="Mark as read"
+                                                    className="flex items-center justify-center w-8 h-8 bg-blue-600 text-white rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                                                    title={t('admin.notifications.markAsRead')}
                                                 >
                                                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -178,7 +179,7 @@ export function AdminNotifications() {
                                                     </p>
                                                     {notification.readAt && (
                                                         <p className="text-xs text-slate-400 mt-2">
-                                                            Read: {new Date(notification.readAt).toLocaleString()}
+                                                            {t('admin.notifications.readAt')} {new Date(notification.readAt).toLocaleString()}
                                                         </p>
                                                     )}
                                                 </div>
@@ -216,12 +217,12 @@ export function AdminNotifications() {
                         </div>
                     </div>
                 ) : (
-                    <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-12 text-center animate-in fade-in-0 zoom-in-50 duration-500">
+                    <div className="bg-white rounded-xl border border-slate-200 p-12 text-center">
                         <svg className="mx-auto h-16 w-16 text-slate-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 17h5l-5 5v-5zM15 17V3a2 2 0 00-2-2H5a2 2 0 00-2 2v14l8-4 4 4z" />
                         </svg>
-                        <h3 className="text-xl font-semibold text-slate-900 mb-2">No Notifications Found</h3>
-                        <p className="text-slate-600">There are no notifications matching your current filters.</p>
+                        <h3 className="text-xl font-semibold text-slate-900 mb-2">{t('admin.notifications.noNotificationsTitle')}</h3>
+                        <p className="text-slate-600">{t('admin.notifications.noNotificationsMessage')}</p>
                     </div>
                 )}
             </div>

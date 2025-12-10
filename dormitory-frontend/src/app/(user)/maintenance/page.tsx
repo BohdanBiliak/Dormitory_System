@@ -25,6 +25,7 @@ import {
   MaintenancePriority,
   MaintenanceReport,
 } from '@/types/maintenance.types';
+import { useLanguage } from '@/providers/language.provider';
 
 const STATUS_COLORS: Record<MaintenanceStatus, string> = {
   PENDING: 'bg-yellow-100 text-yellow-800 border-yellow-300',
@@ -60,6 +61,7 @@ const CATEGORY_LABELS: Record<MaintenanceCategory, string> = {
 };
 
 export default function MaintenancePage() {
+  const { t } = useLanguage();
   const [showReportDialog, setShowReportDialog] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState<MaintenanceStatus | undefined>();
   const [selectedReport, setSelectedReport] = useState<MaintenanceReport | null>(null);
@@ -75,187 +77,230 @@ export default function MaintenancePage() {
   const reports = reportsData?.data || [];
   const pagination = reportsData?.pagination;
 
+  // Calculate stats from reports
+  const stats = {
+    total: reports.length,
+    pending: reports.filter(r => r.status === 'PENDING').length,
+    inProgress: reports.filter(r => r.status === 'IN_PROGRESS').length,
+    resolved: reports.filter(r => r.status === 'RESOLVED').length,
+    urgent: reports.filter(r => r.priority === 'URGENT').length,
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-8">
-      <div className="max-w-7xl mx-auto">
+    <div className="h-screen bg-slate-50 overflow-y-auto">
+      <div className="px-6 py-6 space-y-6">
         {/* Header */}
-        <div className="mb-8">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 flex items-center">
-                <Wrench className="w-8 h-8 md:w-10 md:h-10 mr-3 text-orange-600" />
-                My Maintenance Reports
-              </h1>
-              <p className="text-gray-600 mt-2">
-                Report issues and track their resolution status
-              </p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 flex items-center">
+            <Wrench className="w-8 h-8 mr-3 text-orange-600" />
+            {t('maintenance.title')}
+          </h1>
+          <p className="text-gray-600 mt-1">
+            {t('maintenance.dashboard.subtitle')}
+          </p>
+        </div>
+        
+        <button
+          onClick={() => setShowReportDialog(true)}
+          className="flex items-center space-x-2 px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors shadow-sm font-medium"
+        >
+          <Plus className="w-5 h-5" />
+          <span>Report Issue</span>
+        </button>
+      </div>
+
+      {/* Stats Cards */}
+      {reports.length > 0 && (
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-600">Total Reports</p>
+                <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
+              </div>
+              <Wrench className="w-10 h-10 text-gray-400" />
             </div>
-            
-            <button
-              onClick={() => setShowReportDialog(true)}
-              className="flex items-center justify-center space-x-2 px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-all shadow-lg font-medium"
-            >
-              <Plus className="w-5 h-5" />
-              <span>Report Issue</span>
-            </button>
+          </div>
+
+          <div className="bg-yellow-50 rounded-lg shadow-sm border border-yellow-200 p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-yellow-700">{t('maintenance.dashboard.stats.pending')}</p>
+                <p className="text-2xl font-bold text-yellow-900">{stats.pending}</p>
+              </div>
+              <AlertCircle className="w-10 h-10 text-yellow-500" />
+            </div>
+          </div>
+
+          <div className="bg-blue-50 rounded-lg shadow-sm border border-blue-200 p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-blue-700">{t('maintenance.dashboard.stats.inProgress')}</p>
+                <p className="text-2xl font-bold text-blue-900">{stats.inProgress}</p>
+              </div>
+              <Clock className="w-10 h-10 text-blue-500" />
+            </div>
+          </div>
+
+          <div className="bg-green-50 rounded-lg shadow-sm border border-green-200 p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-green-700">{t('maintenance.dashboard.stats.resolved')}</p>
+                <p className="text-2xl font-bold text-green-900">{stats.resolved}</p>
+              </div>
+              <CheckCircle className="w-10 h-10 text-green-500" />
+            </div>
+          </div>
+
+          <div className="bg-red-50 rounded-lg shadow-sm border border-red-200 p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-red-700">{t('maintenance.priorities.URGENT')}</p>
+                <p className="text-2xl font-bold text-red-900">{stats.urgent}</p>
+              </div>
+              <AlertCircle className="w-10 h-10 text-red-500" />
+            </div>
           </div>
         </div>
+      )}
 
-        {/* Status Filter */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-6">
-          <div className="flex items-center space-x-4 overflow-x-auto pb-2">
-            <Filter className="w-5 h-5 text-gray-500 flex-shrink-0" />
-            <div className="flex items-center space-x-2">
+      {/* Filters */}
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+        <div className="flex items-center space-x-4">
+          <Filter className="w-5 h-5 text-gray-500" />
+          <div className="flex-1 flex items-center space-x-2 overflow-x-auto">
+            <button
+              onClick={() => setSelectedStatus(undefined)}
+              className={`px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors ${
+                !selectedStatus
+                  ? 'bg-orange-600 text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              {t('maintenance.dashboard.all')}
+            </button>
+            {Object.values(MaintenanceStatus).map((status) => (
               <button
-                onClick={() => setSelectedStatus(undefined)}
+                key={status}
+                onClick={() => setSelectedStatus(status)}
                 className={`px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors ${
-                  !selectedStatus
-                    ? 'bg-orange-600 text-white'
+                  selectedStatus === status
+                    ? STATUS_COLORS[status]
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
-                All Reports
+                {t(`maintenance.statuses.${status}`)}
               </button>
-              {Object.values(MaintenanceStatus).map((status) => {
-                const Icon = STATUS_ICONS[status];
-                return (
-                  <button
-                    key={status}
-                    onClick={() => setSelectedStatus(status)}
-                    className={`px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors flex items-center space-x-2 ${
-                      selectedStatus === status
-                        ? STATUS_COLORS[status]
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
-                  >
-                    <Icon className="w-4 h-4" />
-                    <span>{status.replace('_', ' ')}</span>
-                  </button>
-                );
-              })}
-            </div>
+            ))}
           </div>
         </div>
+      </div>
 
-        {/* Reports List */}
-        {isLoading ? (
+      {/* Reports List */}
+      {isLoading ? (
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-12">
           <div className="flex items-center justify-center py-12">
             <Loader2 className="w-8 h-8 text-orange-600" />
           </div>
-        ) : reports.length === 0 ? (
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center">
-            <div className="bg-orange-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
-              <Wrench className="w-10 h-10 text-orange-600" />
-            </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">No Reports Yet</h3>
-            <p className="text-gray-600 mb-6">
-              You haven't reported any maintenance issues. <br />
-              Click the "Report Issue" button to submit your first report.
-            </p>
-            <button
-              onClick={() => setShowReportDialog(true)}
-              className="inline-flex items-center space-x-2 px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-all shadow-lg font-medium"
-            >
-              <Plus className="w-5 h-5" />
-              <span>Report Your First Issue</span>
-            </button>
+        </div>
+      ) : reports.length === 0 ? (
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-12 text-center">
+          <div className="bg-orange-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
+            <Wrench className="w-10 h-10 text-orange-600" />
           </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {reports.map((report) => {
-              const StatusIcon = STATUS_ICONS[report.status];
-              return (
-                <div
-                  key={report.id}
-                  className="bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow overflow-hidden"
-                >
-                  {/* Card Header */}
-                  <div className="bg-orange-50 px-6 py-4 border-b border-gray-200">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-gray-900 text-lg mb-1">
-                          {report.title}
-                        </h3>
-                        <p className="text-sm text-gray-600 flex items-center">
-                          <MapPin className="w-4 h-4 mr-1" />
-                          {report.location}
-                        </p>
-                      </div>
-                      <span className={`px-3 py-1 rounded-lg text-xs font-medium border flex items-center space-x-1 ${STATUS_COLORS[report.status]}`}>
-                        <StatusIcon className="w-4 h-4" />
-                        <span>{report.status.replace('_', ' ')}</span>
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Card Body */}
-                  <div className="px-6 py-4 space-y-3">
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">Category:</span>
-                      <span className="font-medium text-gray-900">
-                        {CATEGORY_LABELS[report.category]}
-                      </span>
-                    </div>
-                    
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">Priority:</span>
-                      <span className={`font-semibold ${PRIORITY_COLORS[report.priority]}`}>
-                        {report.priority}
-                      </span>
-                    </div>
-
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">Reported:</span>
-                      <span className="font-medium text-gray-900 flex items-center">
-                        <Calendar className="w-4 h-4 mr-1" />
-                        {new Date(report.createdAt).toLocaleDateString()}
-                      </span>
-                    </div>
-
-                    {report.resolvedAt && (
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-gray-600">Resolved:</span>
-                        <span className="font-medium text-green-600 flex items-center">
-                          <CheckCircle className="w-4 h-4 mr-1" />
-                          {new Date(report.resolvedAt).toLocaleDateString()}
-                        </span>
-                      </div>
-                    )}
-
-                    <div className="pt-3 border-t border-gray-100">
-                      <p className="text-sm text-gray-700 line-clamp-2">
-                        {report.description}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Card Footer */}
-                  <div className="px-6 py-3 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
-                      {report.conversationId && (
-                        <span className="text-xs text-green-600 flex items-center">
-                          <MessageSquare className="w-4 h-4 mr-1" />
-                          Chat Active
-                        </span>
-                      )}
-                    </div>
-                    <button
-                      onClick={() => setSelectedReport(report)}
-                      className="text-sm text-blue-600 hover:text-blue-700 font-medium flex items-center space-x-1"
-                    >
-                      <Eye className="w-4 h-4" />
-                      <span>View Details</span>
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">{t('maintenance.dashboard.empty')}</h3>
+          <p className="text-gray-600 mb-6">
+            {t('maintenance.dashboard.emptySubtitle')}
+          </p>
+          <button
+            onClick={() => setShowReportDialog(true)}
+            className="inline-flex items-center space-x-2 px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors shadow-sm font-medium"
+          >
+            <Plus className="w-5 h-5" />
+            <span>{t('maintenance.reportMaintenance')}</span>
+          </button>
+        </div>
+      ) : (
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-gray-50 border-b border-gray-200">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Report
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Category
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Priority
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Status
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Date
+                    </th>
+                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {reports.map((report) => {
+                    const StatusIcon = STATUS_ICONS[report.status];
+                    return (
+                      <tr key={report.id} className="hover:bg-gray-50">
+                        <td className="px-6 py-4">
+                          <div>
+                            <div className="font-medium text-gray-900">{report.title}</div>
+                            <div className="text-sm text-gray-500 flex items-center mt-1">
+                              <MapPin className="w-3 h-3 mr-1" />
+                              {report.location}
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span className="text-sm text-gray-900">
+                            {CATEGORY_LABELS[report.category]}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span className={`text-sm font-medium ${PRIORITY_COLORS[report.priority]}`}>
+                            {report.priority}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span className={`inline-flex items-center px-3 py-1 rounded-lg text-xs font-medium border ${STATUS_COLORS[report.status]}`}>
+                            <StatusIcon className="w-3 h-3 mr-1" />
+                            {report.status.replace('_', ' ')}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          {new Date(report.createdAt).toLocaleDateString()}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm">
+                          <button
+                            onClick={() => setSelectedReport(report)}
+                            className="text-blue-600 hover:text-blue-700 font-medium inline-flex items-center"
+                          >
+                            <Eye className="w-4 h-4 mr-1" />
+                            View
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
 
-        {/* Pagination */}
-        {pagination && pagination.totalPages > 1 && (
-          <div className="mt-6 flex items-center justify-center space-x-2">
+      {/* Pagination */}
+      {pagination && pagination.totalPages > 1 && (
+          <div className="flex items-center justify-center space-x-2">
             <button
               onClick={() => setPage(page - 1)}
               disabled={page === 1}

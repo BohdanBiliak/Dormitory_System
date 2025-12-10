@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { HandCoins, X } from "lucide-react";
 import { api } from "@/app/lib/api.api";
 import { toast } from "sonner";
+import { useLanguage } from '@/providers/language.provider';
 
 interface EditPaymentDialogProps {
     open: boolean;
@@ -14,6 +15,7 @@ interface EditPaymentDialogProps {
 }
 
 export default function EditPaymentDialog({ open, onClose, payment }: EditPaymentDialogProps) {
+    const { t } = useLanguage();
     const [editedPayment, setEditedPayment] = useState({
         amount: 0,
         description: '',
@@ -45,11 +47,11 @@ export default function EditPaymentDialog({ open, onClose, payment }: EditPaymen
 
         try {
             await api.put(`/payments/${payment.id}`, editedPayment);
-            toast.success('Payment updated successfully');
+            toast.success(t('payments.messages.updated'));
             onClose();
             window.location.reload();
         } catch (error: any) {
-            toast.error('Failed to update payment', {
+            toast.error(t('payments.messages.updateFailed'), {
                 description: error.response?.data?.message || error.message
             });
         }
@@ -75,10 +77,10 @@ export default function EditPaymentDialog({ open, onClose, payment }: EditPaymen
                                 </div>
                                 <div className="min-w-0 flex-1">
                                     <DialogTitle className="text-lg font-semibold text-white truncate">
-                                        Edit Payment
+                                        {t('payments.editDialog.title')}
                                     </DialogTitle>
                                     <Description className="text-yellow-100 text-sm mt-1">
-                                        Update payment details for {payment.user.displayName} {payment.user.secondName}
+                                        {t('payments.editDialog.subtitle', { userName: `${payment.user.displayName} ${payment.user.secondName}` })}
                                     </Description>
                                 </div>
                             </div>
@@ -97,7 +99,7 @@ export default function EditPaymentDialog({ open, onClose, payment }: EditPaymen
                             {/* Amount */}
                             <div className="animate-in fade-in-0 slide-in-from-left-2 duration-300 delay-100">
                                 <label className="block text-sm font-medium text-slate-700 mb-2">
-                                    Amount ($)
+                                    {t('payments.editDialog.amountLabel')}
                                 </label>
                                 <input
                                     type="number"
@@ -106,14 +108,14 @@ export default function EditPaymentDialog({ open, onClose, payment }: EditPaymen
                                     onChange={handleInputChange}
                                     step="0.01"
                                     className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500  hover:shadow-sm"
-                                    placeholder="Enter amount"
+                                    placeholder={t('payments.editDialog.amountPlaceholder')}
                                 />
                             </div>
 
                             {/* Description */}
                             <div className="animate-in fade-in-0 slide-in-from-left-2 duration-300 delay-150">
                                 <label className="block text-sm font-medium text-slate-700 mb-2">
-                                    Description
+                                    {t('payments.editDialog.descriptionLabel')}
                                 </label>
                                 <textarea
                                     name="description"
@@ -121,14 +123,14 @@ export default function EditPaymentDialog({ open, onClose, payment }: EditPaymen
                                     onChange={handleInputChange}
                                     rows={3}
                                     className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500  hover:shadow-sm resize-none"
-                                    placeholder="Enter description"
+                                    placeholder={t('payments.editDialog.descriptionPlaceholder')}
                                 />
                             </div>
 
                             {/* Due Date */}
                             <div className="animate-in fade-in-0 slide-in-from-left-2 duration-300 delay-200">
                                 <label className="block text-sm font-medium text-slate-700 mb-2">
-                                    Due Date
+                                    {t('payments.editDialog.dueDateLabel')}
                                 </label>
                                 <input
                                     type="date"
@@ -142,7 +144,7 @@ export default function EditPaymentDialog({ open, onClose, payment }: EditPaymen
                             {/* Payment Method */}
                             <div className="animate-in fade-in-0 slide-in-from-left-2 duration-300 delay-250">
                                 <label className="block text-sm font-medium text-slate-700 mb-2">
-                                    Payment Method
+                                    {t('payments.editDialog.paymentMethodLabel')}
                                 </label>
                                 <select
                                     name="paymentMethod"
@@ -150,10 +152,10 @@ export default function EditPaymentDialog({ open, onClose, payment }: EditPaymen
                                     onChange={handleInputChange}
                                     className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500  hover:shadow-sm bg-white"
                                 >
-                                    <option value={PaymentMethod.BANK_TRANSFER}>Bank Transfer</option>
-                                    <option value={PaymentMethod.CASH_TO_MANAGER}>Cash to Manager</option>
-                                    <option value={PaymentMethod.STRIPE_CARD}>Stripe Card</option>
-                                    <option value={PaymentMethod.OTHER}>Other</option>
+                                    <option value={PaymentMethod.BANK_TRANSFER}>{t('payments.methods.bankTransfer')}</option>
+                                    <option value={PaymentMethod.CASH_TO_MANAGER}>{t('payments.methods.cashToManager')}</option>
+                                    <option value={PaymentMethod.STRIPE_CARD}>{t('payments.methods.stripeCard')}</option>
+                                    <option value={PaymentMethod.OTHER}>{t('payments.methods.other')}</option>
                                 </select>
                             </div>
                         </div>
@@ -165,13 +167,13 @@ export default function EditPaymentDialog({ open, onClose, payment }: EditPaymen
                             onClick={handleCancel}
                             className="px-6 py-3 bg-slate-200 text-slate-700 text-sm font-medium rounded-lg hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2  hover:scale-105 transform"
                         >
-                            Cancel
+                            {t('common.cancel')}
                         </button>
                         <button
                             onClick={handleSubmit}
                             className="px-6 py-3 bg-yellow-600 text-white text-sm font-medium rounded-lg hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2  hover:scale-105 transform hover:shadow-lg"
                         >
-                            Save Changes
+                            {t('payments.editDialog.saveButton')}
                         </button>
                     </div>
                 </DialogPanel>

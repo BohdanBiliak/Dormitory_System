@@ -3,5 +3,38 @@
     "title": "Informacje o Akademikach",
     "description": "Zarządzaj szczegółami i informacjami o akademikach",
     "noData": "Brak dostępnych akademików"
+  },
+  "dormitoryDetails": {
+    "loading": "Ładowanie szczegółów akademika...",
+    "notFound": "Nie znaleziono akademika",
+    "backToList": "← Powrót do listy akademików",
+    "dormitoryInfo": "Informacje o akademiku",
+    "fields": {
+      "name": "Nazwa",
+      "address": "Adres",
+      "groundFloorPhone": "Telefon parterowy",
+      "status": "Status",
+      "photos": "Zdjęcia"
+    },
+    "statuses": {
+      "active": "Aktywny",
+      "inactive": "Nieaktywny"
+    },
+    "availability": {
+      "title": "Dostępność",
+      "available": "Dostępny",
+      "readyForOccupancy": "Gotowy do zajęcia",
+      "contactInfo": "Aby uzyskać więcej informacji na temat dostępności pokoi i rezerwacji, skontaktuj się z administracją."
+    },
+    "actions": {
+      "writeToManager": "Napisz do menedżera akademika",
+      "viewRooms": "Zobacz pokoje w akademiku"
+    },
+    "contact": {
+      "title": "Informacje kontaktowe",
+      "groundFloorLabel": "Telefon parterowy:",
+      "description": "Skontaktuj się z recepcją na parterze w sprawie zapytań dotyczących dostępności pokoi, wniosków i ogólnych informacji."
+    },
+    "applicationNotice": "Aby ubiegać się o zakwaterowanie w tym akademiku, skontaktuj się z biurem administracji lub zadzwoń do recepcji na parterze."
   }
 }

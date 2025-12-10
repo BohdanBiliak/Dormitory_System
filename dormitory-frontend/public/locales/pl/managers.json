@@ -1,0 +1,26 @@
+{
+  "managerCreation": {
+    "title": "Nowy Manager",
+    "subtitle": "Informacje o Managerze",
+    "name": "Imię",
+    "middleName": "Drugie imię",
+    "lastName": "Nazwisko",
+    "email": "Email",
+    "password": "Hasło",
+    "confirmPassword": "Potwierdź hasło",
+    "dormitory": "Akademik",
+    "placeholders": {
+      "name": "Wprowadź imię",
+      "middleName": "Wprowadź drugie imię",
+      "lastName": "Wprowadź nazwisko",
+      "email": "Wprowadź email",
+      "password": "Wprowadź hasło",
+      "confirmPassword": "Potwierdź hasło",
+      "dormitory": "Wybierz akademik"
+    },
+    "buttons": {
+      "cancel": "Anuluj",
+      "create": "Utwórz Managera"
+    }
+  }
+}

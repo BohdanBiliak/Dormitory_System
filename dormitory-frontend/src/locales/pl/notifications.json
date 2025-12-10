@@ -1,0 +1,56 @@
+{
+  "notifications": {
+    "title": "Powiadomienia",
+    "markAllAsRead": "Oznacz wszystkie jako przeczytane",
+    "noNotifications": "Brak powiadomień",
+    "newNotification": "Nowe powiadomienie",
+    "types": {
+      "INFO": "Informacja",
+      "WARNING": "Ostrzeżenie",
+      "ERROR": "Błąd",
+      "SUCCESS": "Sukces",
+      "MAINTENANCE": "Konserwacja",
+      "PAYMENT": "Płatność",
+      "ANNOUNCEMENT": "Ogłoszenie",
+      "MESSAGE": "Wiadomość",
+      "SYSTEM": "System"
+    },
+    "actions": {
+      "markAsRead": "Oznacz jako przeczytane",
+      "markAsUnread": "Oznacz jako nieprzeczytane",
+      "delete": "Usuń",
+      "viewDetails": "Zobacz szczegóły"
+    },
+    "filters": {
+      "all": "Wszystkie",
+      "unread": "Nieprzeczytane",
+      "read": "Przeczytane",
+      "byType": "Według typu"
+    },
+    "create": {
+      "title": "Utwórz powiadomienie",
+      "selectRecipients": "Wybierz odbiorców",
+      "allUsers": "Wszyscy użytkownicy",
+      "specificUsers": "Konkretni użytkownicy",
+      "dormitoryUsers": "Użytkownicy akademika",
+      "subject": "Temat",
+      "message": "Wiadomość",
+      "type": "Typ",
+      "send": "Wyślij powiadomienie"
+    },
+    "messages": {
+      "sent": "Powiadomienie wysłane pomyślnie",
+      "deleted": "Powiadomienie usunięte pomyślnie",
+      "markedAsRead": "Oznaczono jako przeczytane",
+      "failed": "Akcja nie powiodła się. Spróbuj ponownie."
+    },
+    "timeAgo": {
+      "justNow": "Przed chwilą",
+      "minutesAgo": "{{count}} minut temu",
+      "hoursAgo": "{{count}} godzin temu",
+      "daysAgo": "{{count}} dni temu",
+      "weeksAgo": "{{count}} tygodni temu",
+      "monthsAgo": "{{count}} miesięcy temu"
+    }
+  }
+}

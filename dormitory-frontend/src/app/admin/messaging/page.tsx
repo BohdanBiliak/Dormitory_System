@@ -7,8 +7,10 @@ import { CreateConversationData } from '@/types/messaging.types';
 import { useCreateConversation } from '@/hooks/messaging-api.hook';
 import { useGetAdminProfile } from '@/hooks/profile.hook';
 import { Plus, Users, Loader2 } from 'lucide-react';
+import { useLanguage } from '@/providers/language.provider';
 
 export default function AdminMessagingPage() {
+  const {t} = useLanguage();
   const [showCreateModal, setShowCreateModal] = useState(false);
   
   const { data: profile, isLoading: isLoadingProfile, error: profileError } = useGetAdminProfile();
@@ -30,10 +32,12 @@ export default function AdminMessagingPage() {
   // Show loading state while fetching profile
   if (isLoadingProfile) {
     return (
-      <div className="flex items-center justify-center h-[calc(100vh-4rem)] bg-gray-50">
-        <div className="text-center">
-          <Loader2 className="w-8 h-8 mx-auto mb-4 text-blue-600" />
-          <p className="text-gray-600">Loading profile...</p>
+      <div className="h-screen bg-slate-50 flex items-center justify-center">
+        <div className="bg-white rounded-2xl p-8 max-w-md mx-4 border border-slate-200">
+          <div className="flex items-center justify-center">
+            <div className="rounded-full h-10 w-10 border-4 border-blue-500 border-t-transparent"></div>
+            <span className="ml-4 text-slate-700 font-medium text-lg">{t('messaging.adminPage.loadingProfile')}</span>
+          </div>
         </div>
       </div>
     );
@@ -42,15 +46,17 @@ export default function AdminMessagingPage() {
   // Show error state if profile failed to load
   if (profileError || !profile) {
     return (
-      <div className="flex items-center justify-center h-[calc(100vh-4rem)] bg-gray-50">
-        <div className="text-center">
-          <p className="text-red-600 mb-4">Failed to load profile. Please try logging in again.</p>
-          <button 
-            onClick={() => window.location.href = '/auth/login'}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-          >
-            Go to Login
-          </button>
+      <div className="h-screen bg-slate-50 flex items-center justify-center">
+        <div className="bg-white rounded-2xl p-8 max-w-md mx-4 border border-slate-200">
+          <div className="text-center">
+            <p className="text-red-600 mb-4 font-medium">{t('messaging.adminPage.failedToLoad')}</p>
+            <button 
+              onClick={() => window.location.href = '/auth/login'}
+              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
+            >
+              {t('messaging.adminPage.goToLogin')}
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -59,7 +65,7 @@ export default function AdminMessagingPage() {
   const currentUserId = profile.id;
 
   return (
-    <div className="h-[calc(100vh-4rem)] bg-gray-50">
+    <div className="h-screen bg-slate-50">
       {/* Messaging Interface - Integrated with layout */}
       <MessagingInterface
         currentUserId={currentUserId}

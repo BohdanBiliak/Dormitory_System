@@ -17,6 +17,7 @@ import {
   AlertTriangle,
   ChevronDown
 } from 'lucide-react';
+import { useLanguage } from '@/providers/language.provider';
 
 interface MessageListProps {
   messages: Message[];
@@ -38,6 +39,7 @@ export const MessageList: React.FC<MessageListProps> = React.memo(({
   onDeleteMessage,
   searchQuery = '',
 }) => {
+  const { t } = useLanguage();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
   const [hoveredMessageId, setHoveredMessageId] = useState<string | null>(null);
@@ -100,7 +102,7 @@ export const MessageList: React.FC<MessageListProps> = React.memo(({
     if (isToday(messageDate)) {
       return format(messageDate, 'HH:mm');
     } else if (isYesterday(messageDate)) {
-      return `Yesterday ${format(messageDate, 'HH:mm')}`;
+      return `${t('messaging.yesterday')} ${format(messageDate, 'HH:mm')}`;
     } else {
       return format(messageDate, 'MMM dd, HH:mm');
     }
@@ -119,9 +121,9 @@ export const MessageList: React.FC<MessageListProps> = React.memo(({
     const messageDate = new Date(date);
     
     if (isToday(messageDate)) {
-      return 'Today';
+      return t('messaging.today');
     } else if (isYesterday(messageDate)) {
-      return 'Yesterday';
+      return t('messaging.yesterday');
     } else {
       return format(messageDate, 'MMMM dd, yyyy');
     }
@@ -211,8 +213,8 @@ export const MessageList: React.FC<MessageListProps> = React.memo(({
             <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <Reply className="w-8 h-8 text-gray-400" />
             </div>
-            <h3 className="text-lg font-medium text-gray-700 mb-2">No messages yet</h3>
-            <p className="text-gray-500">Start the conversation by sending a message</p>
+            <h3 className="text-lg font-medium text-gray-700 mb-2">{t('messaging.messages.noMessagesYet')}</h3>
+            <p className="text-gray-500">{t('messaging.messages.startTheConversation')}</p>
           </div>
         </div>
       ) : (
@@ -253,14 +255,14 @@ export const MessageList: React.FC<MessageListProps> = React.memo(({
                     <button
                       onClick={() => onReply?.(message)}
                       className="p-1 hover:bg-gray-100 rounded text-gray-600 hover:text-gray-800"
-                      title="Reply"
+                      title={t('messaging.messages.reply')}
                     >
                       <Reply size={16} />
                     </button>
                     <button
                       onClick={() => setShowActionsMenu(showActionsMenu === message.id ? null : message.id)}
                       className="p-1 hover:bg-gray-100 rounded text-gray-600 hover:text-gray-800"
-                      title="More options"
+                      title={t('messaging.messages.moreOptions')}
                     >
                       <MoreHorizontal size={16} />
                     </button>
@@ -279,7 +281,7 @@ export const MessageList: React.FC<MessageListProps> = React.memo(({
                       className="flex items-center space-x-2 w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       <Copy size={14} />
-                      <span>Copy</span>
+                      <span>{t('messaging.messages.copy')}</span>
                     </button>
                     {isOwnMessage && (
                       <>
@@ -289,7 +291,7 @@ export const MessageList: React.FC<MessageListProps> = React.memo(({
                           className="flex items-center space-x-2 w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           <Edit3 size={14} />
-                          <span>Edit</span>
+                          <span>{t('messaging.messages.edit')}</span>
                         </button>
                         <button
                           onClick={() => {
@@ -299,7 +301,7 @@ export const MessageList: React.FC<MessageListProps> = React.memo(({
                           className="flex items-center space-x-2 w-full px-3 py-2 text-sm text-red-600 hover:bg-red-50"
                         >
                           <Trash2 size={14} />
-                          <span>Delete</span>
+                          <span>{t('messaging.messages.delete')}</span>
                         </button>
                       </>
                     )}
@@ -361,7 +363,7 @@ export const MessageList: React.FC<MessageListProps> = React.memo(({
                           className={`p-1 rounded hover:bg-opacity-20 hover:bg-gray-500 ${
                             isOwnMessage ? 'text-blue-200 hover:text-white' : 'text-gray-500 hover:text-gray-700'
                           }`}
-                          title="Cancel editing"
+                          title={t('messaging.messages.cancelEditing')}
                         >
                           <X size={14} />
                         </button>
@@ -371,7 +373,7 @@ export const MessageList: React.FC<MessageListProps> = React.memo(({
                           className={`p-1 rounded hover:bg-opacity-20 hover:bg-gray-500 disabled:opacity-50 ${
                             isOwnMessage ? 'text-blue-200 hover:text-white' : 'text-gray-500 hover:text-gray-700'
                           }`}
-                          title="Save changes"
+                          title={t('messaging.messages.saveChanges')}
                         >
                           <Save size={14} />
                         </button>
@@ -407,7 +409,7 @@ export const MessageList: React.FC<MessageListProps> = React.memo(({
                               isOwnMessage ? 'text-blue-100 hover:text-white' : 'text-blue-600 hover:text-blue-800'
                             }`}
                           >
-                            <span>File</span>
+                            <span>{t('messaging.messages.file')}</span>
                             <span>{message.attachmentName}</span>
                           </a>
                           {message.content && (
@@ -426,7 +428,7 @@ export const MessageList: React.FC<MessageListProps> = React.memo(({
                 }`}>
                   <div className="flex items-center space-x-1">
                     <span>{formatMessageTime(message.createdAt)}</span>
-                    {message.isEdited && <span className="opacity-75">(edited)</span>}
+                    {message.isEdited && <span className="opacity-75">{t('messaging.messages.edited')}</span>}
                   </div>
                   
                   <div className="flex items-center space-x-1">
@@ -449,7 +451,7 @@ export const MessageList: React.FC<MessageListProps> = React.memo(({
         <button
           onClick={scrollToBottom}
           className="absolute bottom-4 right-4 bg-blue-500 hover:bg-blue-600 text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 z-10 animate-bounce"
-          title="Scroll to bottom"
+          title={t('messaging.messages.scrollToBottom')}
         >
           <ChevronDown size={20} />
         </button>
@@ -462,11 +464,11 @@ export const MessageList: React.FC<MessageListProps> = React.memo(({
               <div className="bg-red-100 rounded-full p-3 mr-4">
                 <AlertTriangle className="w-6 h-6 text-red-600" />
               </div>
-              <h3 className="text-lg font-semibold text-gray-900">Delete Message</h3>
+              <h3 className="text-lg font-semibold text-gray-900">{t('messaging.messages.deleteMessage')}</h3>
             </div>
             
             <p className="text-gray-600 mb-6">
-              Are you sure you want to delete this message? This action cannot be undone.
+              {t('messaging.messages.deleteMessageConfirm')}
             </p>
             
             <div className="flex justify-end space-x-3">
@@ -474,13 +476,13 @@ export const MessageList: React.FC<MessageListProps> = React.memo(({
                 onClick={() => setShowDeleteConfirm(null)}
                 className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors font-medium"
               >
-                Cancel
+                {t('messaging.messages.cancel')}
               </button>
               <button
                 onClick={() => handleDeleteConfirm(showDeleteConfirm)}
                 className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium shadow-sm"
               >
-                Delete
+                {t('messaging.messages.delete')}
               </button>
             </div>
           </div>

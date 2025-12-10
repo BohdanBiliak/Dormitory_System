@@ -3,6 +3,7 @@
 import React, {useState, useEffect} from 'react';
 import {ChevronLeft, ChevronRight} from 'lucide-react';
 import {RoomStatus} from "@/types/rooms.types";
+import { useLanguage } from "@/providers/language.provider";
 
 interface CalendarOfAvailabilityProps {
     statuses: RoomStatus[],
@@ -11,6 +12,7 @@ interface CalendarOfAvailabilityProps {
 }
 
 export function CalendarOfAvailabilityComponent ({statuses, showLegend, setDateStatuses}:CalendarOfAvailabilityProps) {
+    const { t } = useLanguage();
 
     const [currentDate, setCurrentDate] = useState(new Date());
     const [chosenDate, setChosenDate] = useState(new Date());
@@ -52,7 +54,8 @@ export function CalendarOfAvailabilityComponent ({statuses, showLegend, setDateS
     // Check if a date is unavailable based on date ranges
     const isDateUnavailable = (date:Date) => {
         return unavailableDateRanges.some(range => {
-            return isInRange(date, new Date(range.dateOfStart), new Date(range.dateOfEnd));
+            const endDate = range.dateOfEnd ? new Date(range.dateOfEnd) : new Date();
+            return isInRange(date, new Date(range.dateOfStart), endDate);
         });
     };
 
@@ -71,7 +74,8 @@ export function CalendarOfAvailabilityComponent ({statuses, showLegend, setDateS
         setChosenDate(date);
         setChosenDateStatuses([]);
         unavailableDateRanges.forEach(range => {
-            if(isInRange(date, new Date(range.dateOfStart), new Date(range.dateOfEnd))){
+            const endDate = range.dateOfEnd ? new Date(range.dateOfEnd) : new Date();
+            if(isInRange(date, new Date(range.dateOfStart), endDate)){
                 setChosenDateStatuses(prevState => [...prevState, range])
             }
         })
@@ -92,8 +96,9 @@ export function CalendarOfAvailabilityComponent ({statuses, showLegend, setDateS
 
 
     const monthNames = [
-        'January', 'February', 'March', 'April', 'May', 'June',
-        'July', 'August', 'September', 'October', 'November', 'December'
+        t('months.january'), t('months.february'), t('months.march'), t('months.april'),
+        t('months.may'), t('months.june'), t('months.july'), t('months.august'),
+        t('months.september'), t('months.october'), t('months.november'), t('months.december')
     ];
 
     return (
@@ -124,7 +129,7 @@ export function CalendarOfAvailabilityComponent ({statuses, showLegend, setDateS
 
             {/* Days of week header */}
             <div className="grid grid-cols-7 gap-1 mb-2">
-                {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
+                {[t('days.sun'), t('days.mon'), t('days.tue'), t('days.wed'), t('days.thu'), t('days.fri'), t('days.sat')].map(day => (
                     <div key={day} className="text-center text-sm font-medium text-gray-500 py-2">
                         {day}
                     </div>
@@ -178,11 +183,11 @@ export function CalendarOfAvailabilityComponent ({statuses, showLegend, setDateS
             <div className="flex items-center justify-center space-x-6 mt-6 text-sm">
                 <div className="flex items-center space-x-2">
                     <div className="w-4 h-4 bg-green-200 rounded"></div>
-                    <span className="text-gray-600">Available</span>
+                    <span className="text-gray-600">{t('ui.available')}</span>
                 </div>
                 <div className="flex items-center space-x-2">
                     <div className="w-4 h-4 bg-red-200 rounded"></div>
-                    <span className="text-gray-600">Unavailable</span>
+                    <span className="text-gray-600">{t('ui.unavailable')}</span>
                 </div>
             </div>
 
@@ -192,11 +197,11 @@ export function CalendarOfAvailabilityComponent ({statuses, showLegend, setDateS
                     {chosenDate && chosenDateStatuses.length > 0 ? (
                         <div>
                             {chosenDateStatuses.map((status, index) => (
-                                <p key={index}>{`${new Date(status.dateOfStart).toLocaleDateString()} - ${new Date(status.dateOfEnd).toLocaleDateString()}: ${status.description}`}</p>
+                                <p key={index}>{`${new Date(status.dateOfStart).toLocaleDateString()} - ${status.dateOfEnd ? new Date(status.dateOfEnd).toLocaleDateString() : t('ui.ongoing')}: ${status.description}`}</p>
                             ))}
                         </div>
                     ):(
-                        <p>Available</p>
+                        <p>{t('ui.available')}</p>
                     )}
                 </div>
             ):(<></>)}

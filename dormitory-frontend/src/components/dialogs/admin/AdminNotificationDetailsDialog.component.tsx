@@ -2,7 +2,7 @@ import {Notification, NotificationPostData} from "@/types/notifications.types";
 import {Description, Dialog, DialogBackdrop, DialogPanel, DialogTitle} from "@headlessui/react";
 import {BuildingIcon} from "lucide-react";
 import React, {useEffect, useState} from "react";
-import {LanguageSelector} from "@/providers/language.provider";
+import {LanguageSelector, useLanguage} from "@/providers/language.provider";
 import {useUserListQuery} from "@/hooks/userList.hook";
 import {User} from "@/types/auth.types";
 import {useNotifications} from "@/hooks/notifications.hook";
@@ -15,6 +15,7 @@ export interface AdminNotificationDetailsDialogProps {
 }
 
 export default function AdminNotificationDetailsDialogComponent({show, onClose, notification}:AdminNotificationDetailsDialogProps) {
+    const { t } = useLanguage();
     const {markAsRead, createNotification} = useNotifications()
 
     const[userList, setUserList] = useState<User[]>([]);
@@ -96,16 +97,16 @@ export default function AdminNotificationDetailsDialogComponent({show, onClose, 
                                 <div>
                                     <DialogTitle className="text-lg sm:text-xl font-semibold text-white delay-200">
                                         {notification? (
-                                            <>Notification</>
+                                            <>{t('admin.notifications.detailsTitle')}</>
                                         ):(
-                                            <>Create new notification</>
+                                            <>{t('admin.notifications.createTitle')}</>
                                         )}
                                     </DialogTitle>
                                     <Description className="text-blue-100 text-sm mt-1 delay-250">
                                         {notification? (
-                                            <>Notification details</>
+                                            <>{t('admin.notifications.detailsSubtitle')}</>
                                         ):(
-                                            <>Here you can create new notification</>
+                                            <>{t('admin.notifications.createSubtitle')}</>
                                         )}
                                     </Description>
                                 </div>
@@ -135,7 +136,7 @@ export default function AdminNotificationDetailsDialogComponent({show, onClose, 
                                 <div className={`flex-1 overflow-hidden flex flex-col min-h-0`}>
                                     <div className="flex flex-row">
                                         <div>
-                                            Title:
+                                            {t('admin.notifications.titleLabel')}:
                                         </div>
                                         <input
                                             type={`text`}
@@ -146,7 +147,7 @@ export default function AdminNotificationDetailsDialogComponent({show, onClose, 
                                     </div>
                                     <div className="flex flex-row">
                                         <div>
-                                            Message:
+                                            {t('admin.notifications.messageLabel')}:
                                         </div>
                                         <input
                                             type={`text`}
@@ -160,14 +161,14 @@ export default function AdminNotificationDetailsDialogComponent({show, onClose, 
                                         onClick={handleMarkAsRead}
                                         className={`px-2 bg-green-600 border-black border`}
                                     >
-                                        Mark as Read
+                                        {t('admin.notifications.markAsRead')}
                                     </button>
                                 </div>
                             ):(
                                 <div className={`flex-1 overflow-hidden flex flex-col min-h-0`}>
                                     <div className="flex flex-row">
                                         <div>
-                                            Title:
+                                            {t('admin.notifications.titleLabel')}:
                                         </div>
                                         <input
                                             type={`text`}
@@ -178,7 +179,7 @@ export default function AdminNotificationDetailsDialogComponent({show, onClose, 
                                     </div>
                                     <div className="flex flex-row">
                                         <div>
-                                            Message:
+                                            {t('admin.notifications.messageLabel')}:
                                         </div>
                                         <input
                                             type={`text`}
@@ -189,7 +190,7 @@ export default function AdminNotificationDetailsDialogComponent({show, onClose, 
                                     </div>
                                     <div className="flex flex-row">
                                         <div>
-                                            Addresses:
+                                            {t('admin.notifications.addressesLabel')}:
                                         </div>
                                         <select
                                             value={newNotification.targetUserIds}
@@ -205,12 +206,12 @@ export default function AdminNotificationDetailsDialogComponent({show, onClose, 
                                         <button
                                          onClick={handleCancelNotification}
                                         >
-                                            Close
+                                            {t('common.close')}
                                         </button>
                                         <button
                                             onClick={handleSaveNotification}
                                         >
-                                            Save
+                                            {t('common.save')}
                                         </button>
                                     </div>
                                 </div>

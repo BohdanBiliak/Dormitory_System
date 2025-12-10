@@ -8,10 +8,12 @@ import {useGetActiveDormitories} from "@/hooks/dormitories.hook";
 import {useGetRooms} from "@/hooks/rooms.hook";
 import AddressesDialogComponent, {AddresseeItem, AddresseeType } from "@/components/dialogs/admin/AddressesDialog.component";
 import { useRouter } from 'next/navigation';
+import { useLanguage } from "@/providers/language.provider";
 
 
 
 export function AdminNewAnnouncement(){
+    const { t } = useLanguage();
     const router = useRouter()
     const [attachedFiles, setAttachedFiles] = useState<File[]>([])
     const [addresses, setAddresses] = useState<{id: string, label: string, type: AddresseeType, addressee: AddresseeItem}[]>([])
@@ -223,10 +225,10 @@ export function AdminNewAnnouncement(){
                         </div>
                         <div>
                             <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900">
-                                Create New Announcement
+                                {t('announcements.new.title')}
                             </h1>
                             <p className="text-gray-600 text-sm md:text-base mt-1">
-                                Compose and publish announcements for dormitory residents
+                                {t('announcements.new.subtitle')}
                             </p>
                         </div>
                     </div>
@@ -235,7 +237,7 @@ export function AdminNewAnnouncement(){
 
             {/* Main Content */}
             <div className="p-4 md:p-6 lg:p-8">
-                <div className="max-w-7xl mx-auto">
+                <div className="w-full px-6">
                     <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
                         
                         {/* Main Announcement Form */}
@@ -247,7 +249,7 @@ export function AdminNewAnnouncement(){
                                         <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
                                         </svg>
-                                        <h2 className="text-xl font-semibold text-white">Announcement Content</h2>
+                                        <h2 className="text-xl font-semibold text-white">{t('announcements.new.announcementContent')}</h2>
                                     </div>
                                 </div>
 
@@ -256,14 +258,14 @@ export function AdminNewAnnouncement(){
                                     {/* Title Input */}
                                     <div className="space-y-2">
                                         <label className="block text-sm font-medium text-gray-700">
-                                            Announcement Title *
+                                            {t('announcements.new.announcementTitleRequired')}
                                         </label>
                                         <input
                                             type="text"
                                             value={newAnnouncement.title}
                                             name="title"
                                             onChange={handleInputChange}
-                                            placeholder="Enter announcement title..."
+                                            placeholder={t('announcements.new.enterTitle')}
                                             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors text-lg"
                                         />
                                     </div>
@@ -271,18 +273,18 @@ export function AdminNewAnnouncement(){
                                     {/* Description Textarea */}
                                     <div className="space-y-2">
                                         <label className="block text-sm font-medium text-gray-700">
-                                            Description *
+                                            {t('announcements.new.descriptionRequired')}
                                         </label>
                                         <textarea
                                             value={newAnnouncement.content}
                                             name="content"
                                             onChange={handleInputChange}
-                                            placeholder="Write your announcement content here..."
+                                            placeholder={t('announcements.new.writeContent')}
                                             rows={12}
                                             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors resize-none"
                                         />
                                         <p className="text-sm text-gray-500">
-                                            {newAnnouncement.content.length} characters
+                                            {t('announcements.new.charactersCount', { count: newAnnouncement.content.length })}
                                         </p>
                                     </div>
 
@@ -290,7 +292,7 @@ export function AdminNewAnnouncement(){
                                     <div className="space-y-4">
                                         <div className="flex items-center justify-between">
                                             <label className="block text-sm font-medium text-gray-700">
-                                                Attached Files
+                                                {t('announcements.new.attachedFiles')}
                                             </label>
                                             <label className="cursor-pointer">
                                                 <input
@@ -303,7 +305,7 @@ export function AdminNewAnnouncement(){
                                                     <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
                                                     </svg>
-                                                    Attach Files
+                                                    {t('announcements.new.attachFiles')}
                                                 </span>
                                             </label>
                                         </div>
@@ -347,11 +349,11 @@ export function AdminNewAnnouncement(){
                                         <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                                         </svg>
-                                        <h3 className="text-lg font-semibold text-white">Recipients</h3>
+                                        <h3 className="text-lg font-semibold text-white">{t('announcements.new.recipients')}</h3>
                                     </label>
                                     <label className="flex items-center space-x-3">
                                         <h4 className="text-sm text-white">
-                                            General announcement:
+                                            {t('announcements.new.generalAnnouncement')}
                                         </h4>
                                         <input
                                             type="checkbox"
@@ -395,7 +397,7 @@ export function AdminNewAnnouncement(){
                                             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                                             </svg>
-                                            Add Recipient
+                                            {t('announcements.new.addRecipient')}
                                         </button>
                                     </div>
                                 </div>
@@ -409,14 +411,14 @@ export function AdminNewAnnouncement(){
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                         </svg>
-                                        <h3 className="text-lg font-semibold text-white">Settings</h3>
+                                        <h3 className="text-lg font-semibold text-white">{t('announcements.new.settings')}</h3>
                                     </div>
                                 </div>
 
                                 <div className="p-6 space-y-4">
                                     <div className="space-y-2">
                                         <label className="block text-sm font-medium text-gray-700">
-                                            Expiration Date *
+                                            {t('announcements.new.expirationDateRequired')}
                                         </label>
                                         <input
                                             name="expiresAt"
@@ -436,13 +438,13 @@ export function AdminNewAnnouncement(){
                     <div className="mt-8 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                         <div className="flex flex-col sm:flex-row sm:justify-end space-y-3 sm:space-y-0 sm:space-x-4">
                             <Link className="w-full sm:w-auto px-6 py-3 bg-gray-500 text-white font-medium rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors" href={`/admin/announcements`}>
-                                Cancel
+                                {t('announcements.new.cancel')}
                             </Link>
                             <button className="w-full sm:w-auto px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors flex items-center justify-center space-x-2" onClick={handleSubmit}>
                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                                 </svg>
-                                <span>Publish Announcement</span>
+                                <span>{t('announcements.new.publishAnnouncement')}</span>
                             </button>
                         </div>
                     </div>

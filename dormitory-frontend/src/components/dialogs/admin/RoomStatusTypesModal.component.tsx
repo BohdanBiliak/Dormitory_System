@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useGetRoomStatusTypes, useRoomStatusTypeManagement } from "@/hooks/roomStatusTypes.hook";
 import { CreateRoomStatusTypeRequest, UpdateRoomStatusTypeRequest, RoomStatusType } from "@/types/roomStatusTypes.types";
 import { Plus, Trash2, Check, X, Edit3, Power, PowerOff } from "lucide-react";
+import { useLanguage } from '@/providers/language.provider';
 
 interface Props {
     open: boolean;
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export function RoomStatusTypesModal({ open, onClose }: Props) {
+    const { t } = useLanguage();
 
     const { data: statusTypes, isLoading } = useGetRoomStatusTypes(true);
     const {
@@ -61,7 +63,7 @@ export function RoomStatusTypesModal({ open, onClose }: Props) {
                 <DialogPanel className="bg-white w-full max-w-xl rounded-2xl shadow-xl p-6 animate-in fade-in zoom-in-90">
                     
                     <DialogTitle className="text-xl font-semibold text-slate-900 mb-4 flex items-center justify-between">
-                        Room Status Types
+                        {t('rooms.statusTypes.title')}
                         <button
                             onClick={onClose}
                             className="p-2 rounded-full hover:bg-slate-100 transition"
@@ -73,7 +75,7 @@ export function RoomStatusTypesModal({ open, onClose }: Props) {
                     {/* Existing types */}
                     <div className="space-y-3 max-h-80 overflow-y-auto mb-5">
                         {isLoading ? (
-                            <p className="text-center text-slate-400 py-6">Loading types…</p>
+                            <p className="text-center text-slate-400 py-6">{t('common.loading')}</p>
                         ) : (
                             statusTypes?.map(type => (
                                 <div key={type.id} className="bg-slate-50 border border-slate-200 rounded-lg p-3 flex items-center justify-between">
@@ -162,12 +164,12 @@ export function RoomStatusTypesModal({ open, onClose }: Props) {
                     {/* Create new type */}
                     <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 space-y-3">
                         <h3 className="font-medium text-emerald-900 text-sm flex items-center">
-                            <Plus className="w-4 h-4 mr-1" /> Create New Status Type
+                            <Plus className="w-4 h-4 mr-1" /> {t('rooms.statusTypes.createNew')}
                         </h3>
 
                         <input
                             type="text"
-                            placeholder="Name"
+                            placeholder={t('rooms.statusTypes.namePlaceholder')}
                             value={newType.name}
                             onChange={e => setNewType(prev => ({ ...prev, name: e.target.value }))}
                             className="w-full px-3 py-2 border border-emerald-300 rounded-lg"
@@ -175,7 +177,7 @@ export function RoomStatusTypesModal({ open, onClose }: Props) {
 
                         <input
                             type="text"
-                            placeholder="Description"
+                            placeholder={t('rooms.statusTypes.descriptionPlaceholder')}
                             value={newType.description}
                             onChange={e => setNewType(prev => ({ ...prev, description: e.target.value }))}
                             className="w-full px-3 py-2 border border-emerald-300 rounded-lg text-sm"
@@ -185,7 +187,7 @@ export function RoomStatusTypesModal({ open, onClose }: Props) {
                             onClick={handleCreate}
                             className="w-full px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition text-sm"
                         >
-                            Create Status Type
+                            {t('rooms.statusTypes.createButton')}
                         </button>
                     </div>
                 </DialogPanel>
